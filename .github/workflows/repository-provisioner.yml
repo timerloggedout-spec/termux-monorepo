@@ -1,0 +1,139 @@
+name: Repository Provisioner
+
+run-name: "Provision repository: ${{ inputs.repo_name }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      repo_name:
+        description: "New repository slug (lowercase letters, numbers, hyphens)"
+        required: true
+        type: string
+      description:
+        description: "Repository description"
+        required: false
+        type: string
+      visibility:
+        description: "Repository visibility"
+        required: true
+        type: choice
+        options:
+          - private
+          - public
+        default: private
+
+concurrency:
+  group: repository-provisioner-${{ inputs.repo_name }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  provision:
+    name: Create and seed repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+      REPO_NAME: ${{ inputs.repo_name }}
+      REPO_DESCRIPTION: ${{ inputs.description }}
+      REPO_VISIBILITY: ${{ inputs.visibility }}
+    steps:
+      - name: Validate request and create repository
+        id: create
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          : "${GH_TOKEN:?Configure the OPERATOR_GITHUB_TOKEN repository secret}"
+          if [[ ! "${REPO_NAME}" =~ ^[a-z0-9]([a-z0-9-]{0,98}[a-z0-9])?$ ]]; then
+            echo "::error::Use a 1-100 character lowercase repository slug with letters, numbers, and interior hyphens."
+            exit 1
+          fi
+
+          case "${REPO_VISIBILITY}" in
+            private) private=true ;;
+            public) private=false ;;
+            *)
+              echo "::error::Unsupported visibility."
+              exit 1
+              ;;
+          esac
+
+          owner="$(gh api user --jq '.login')"
+          if [[ -z "${owner}" ]]; then
+            echo "::error::The provisioning token did not resolve to an account."
+            exit 1
+          fi
+
+          if gh api "/repos/${owner}/${REPO_NAME}" >/dev/null 2>&1; then
+            echo "::error::Repository ${owner}/${REPO_NAME} already exists."
+            exit 1
+          fi
+
+          created="$(gh api --method POST /user/repos \
+            -f "name=${REPO_NAME}" \
+            -f "description=${REPO_DESCRIPTION}" \
+            -F "private=${private}" \
+            -F "auto_init=true" \
+            -F "has_issues=true" \
+            -F "has_wiki=false")"
+
+          created_owner="$(jq -r '.owner.login // empty' <<<"${created}")"
+          created_name="$(jq -r '.name // empty' <<<"${created}")"
+          default_branch="$(jq -r '.default_branch // empty' <<<"${created}")"
+          if [[ "${created_owner,,}" != "${owner,,}" || "${created_name}" != "${REPO_NAME}" || -z "${default_branch}" ]]; then
+            echo "::error::GitHub returned repository metadata outside the requested identity."
+            exit 1
+          fi
+
+          repo_url="$(jq -r '.html_url' <<<"${created}")"
+          repo_id="$(jq -r '.id' <<<"${created}")"
+          printf 'owner=%s\nname=%s\nurl=%s\nid=%s\ndefault_branch=%s\n' \
+            "${owner}" "${REPO_NAME}" "${repo_url}" "${repo_id}" "${default_branch}" >> "${GITHUB_OUTPUT}"
+
+      - name: Seed repository through the Contents API
+        shell: bash
+        run: |
+          set -euo pipefail
+          created_at="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          content="$(cat <<EOF
+          # ${REPO_NAME}
+
+          ${REPO_DESCRIPTION}
+
+          ## Repository provisioning
+
+          - Created: ${created_at}
+          - Provisioner: `timerloggedout-spec/termux-monorepo/.github/workflows/repository-provisioner.yml`
+          - Visibility: ${REPO_VISIBILITY}
+          - Initial branch: ${{ steps.create.outputs.default_branch }}
+
+          This repository was initialized by the repository provisioner workflow.
+          EOF
+          )"
+          encoded="$(printf '%s' "${content}" | base64 -w 0)"
+
+          gh api --method PUT \
+            "/repos/${{ steps.create.outputs.owner }}/${{ steps.create.outputs.name }}/contents/PROVISIONING.md" \
+            -f "message=chore: seed repository provisioning record" \
+            -f "content=${encoded}" \
+            -f "branch=${{ steps.create.outputs.default_branch }}" >/dev/null
+
+      - name: Publish provisioning receipt
+        env:
+          REPOSITORY_URL: ${{ steps.create.outputs.url }}
+          REPOSITORY_ID: ${{ steps.create.outputs.id }}
+          DEFAULT_BRANCH: ${{ steps.create.outputs.default_branch }}
+        shell: bash
+        run: |
+          {
+            echo "## Repository created"
+            echo
+            echo "- Repository: [${REPOSITORY_URL}](${REPOSITORY_URL})"
+            echo "- Repository ID: ${REPOSITORY_ID}"
+            echo "- Visibility: ${REPO_VISIBILITY}"
+            echo "- Default branch: ${DEFAULT_BRANCH}"
+            echo "- Seed: `PROVISIONING.md` via GitHub Contents API"
+          } >> "${GITHUB_STEP_SUMMARY}"

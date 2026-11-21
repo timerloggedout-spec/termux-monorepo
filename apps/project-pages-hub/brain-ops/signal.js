@@ -1,6 +1,6 @@
 /* Brain BioFeedBack signal renderer.
  * Source: the page's existing GitHub Actions workflow-run response.
- * Each marker is a discrete software event, never a synthesized waveform.
+ * Each marker maps to one discrete software event from the observed workflow-run source.
  */
 (function (root) {
   "use strict";
@@ -42,7 +42,7 @@
     });
 
     if (!observations.length) {
-      return '<p class="empty">No observed Brain workflow events in the current API window.</p>';
+      return '<p class="empty">Awaiting observed Brain workflow events in the current API window.</p>';
     }
 
     var chartWidth = Number.isFinite(width) && width >= 640 ? Math.round(width) : 1000;

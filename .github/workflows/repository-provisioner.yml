@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      GH_TOKEN: ${{ secrets.OPERATOR }}
+      GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.OPERATOR }}
       EXPECTED_OWNER: timerloggedout-spec
     steps:
       - name: Check out provisioning manifest
@@ -33,7 +33,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          : "${GH_TOKEN:?The existing OPERATOR Actions secret is required}"
+          : "${GH_TOKEN:?An existing administrator Actions secret is required}"
 
           manifest=ops/provisioning/controller-2-export.json
           repo_name="$(jq -r '.name' "$manifest")"

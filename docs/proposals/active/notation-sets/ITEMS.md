@@ -166,6 +166,32 @@ Phase contract:
 
 This is the first implementation slice for restoring the Linguist/CedrLang diaspora. Follow-on work must reconcile it with `AGENTS.md` ↔ `AGENTS.hum.md`, INDEX Taxonomy, Caveman/Grimoire, and ICM/README projections without making the compressed surface the canonical truth layer.
 
+
+## NSE-024 — Cross-custom mapping benchmark and canonical feed projection
+
+Build a reproducible retrieval benchmark over source-backed Linguist mapping assertions and the canonical `linguist-panel-feed/v1` snapshot. Preserve custom boundaries, domain scope, semantic relations, evidence grades, kernels, provenance, and lifecycle status through corpus generation and ranking evaluation.
+
+**Scope:**
+
+- Curate a compact Fleet ⇔ Lean/Mathlib and nomenclature cross-custom fixture with exact, approximate, analogue, and proof/evidence-state distinctions.
+- Generate deterministic corpus, retrieval queries, qrels, pair-scoped candidates, hard negatives, surface-collision groups, and ranking metrics.
+- Project enumerated canonical panel-feed entries into benchmark records; prefer native `mapping_id` / `label_id` identities, preserve reused IDs as distinct records, and count exact duplicate source rows.
+- Preserve `runtime-verified`, `lossy-observed`, `candidate`, and `unverified` states with source provenance and feed snapshot time.
+- Keep count-only families outside enumerated benchmark records and retain the complete experiment artifacts under `experiments/linguist/mapping-benchmarks/`.
+
+**Acceptance criteria:**
+
+- Fixed input and seed produce byte-stable benchmark JSON.
+- Every mapping has a unique benchmark ID, source path, locator, domain, relation, and grade.
+- Reused feed entry IDs remain distinct when native mapping/label IDs or source content differ; exact duplicate rows collapse with an explicit occurrence count.
+- The 2026-11-05 feed snapshot projects 522 distinct mappings from 523 enumerated entries and records one collapsed duplicate.
+- Count-only ArchWiz pointer inventory remains excluded from enumerated records.
+- Ranking metrics are emitted only when ranked outputs are supplied; absent rankings remain an unscored state.
+- Focused tests, proposal registry validation, repo-gate, and Termux smoke pass on the same PR head.
+- Dashboard presentation remains a separate follow-on item; this benchmark does not alter the page's feed-only rendering contract.
+
+**Related:** NSE-004 (research expansion loop), NSE-007 (validation and drift detection), NSE-008 (evolution ledger), NSE-020 (mapping pointer / round-trip contract), NSE-023 (Lean/Mathlib oracle evidence).
+
 ## Acceptance criteria
 
 - #320, #309, #182, and #175 are explicitly connected in the proposal registry/source; related issues expanded to include #126, #304, #196, #177, #208, #274 (per #309/#182 maps).

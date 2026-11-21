@@ -110,7 +110,7 @@ forms; the owning lane records it with the profile.
 | Builder.io | `entrant{n0nBuilder}[platform:builder-io]` | Builder.io / Clips | active | D3 | challenge-entries |
 | Code, Not Card | `account{n0nCodeNotCard}[platform:code-not-card]` | — (pending: marketing-channel) | pending | — | marketing-channel |
 | Cohere | `account{HappyCanyon42}[platform:cohere]` | — (pending: account-creation) | registering | — | account-creation |
-| Devpost | `entrant{n0nDevpost}[platform:devpost]` | Devpost | active | D4 | challenge-entries |
+| Devpost | `entrant{n0nDevpost}[platform:devpost]` | Devpost | active | D4, C12, C18, C19 | challenge-entries |
 | Discord | `account{wh1msical_sw4n_06136}[platform:discord]` | Discord | active | — | challenge-entries |
 | Dream In Production | `account{n0nDreamInProduction}[platform:dream-in-production]` | — (pending: marketing-channel) | pending | — | marketing-channel |
 | iFlytek | `account{PluckyOasis73}[platform:iflytek]` | — (pending: account-creation) | pending | — | account-creation |

@@ -11,10 +11,11 @@ reviewers:
     role: operator-authorizer
     status: requested
 related_issues: [320, 309, 182, 175, 126, 304, 196, 177, 208, 274, 1115]
-related_prs: [322, 324]
+related_prs: [322, 324, 5749]
 related_branches:
   - docs/notation-sets-evolution
   - docs/mintlify-notation-sets-page
+  - docs/nse-021-owner-acceptance
 gates_required: [repo-gate, termux-smoke]
 ---
 

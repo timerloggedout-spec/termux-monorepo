@@ -13,7 +13,7 @@ Add an EEG-inspired, multi-lane event raster to the existing Brain Operations pa
 - Reuse the page's existing public GitHub Actions API request and two-minute refresh cycle.
 - Render a lane per observed Brain/MOSAIC workflow name.
 - Plot each run as a discrete timestamp marker; encode success, failure, cancellation, pending, and unknown states with distinct classes.
-- Preserve run name, run number, timestamp, duration, and head SHA in marker tooltips.
+- Preserve run name, run ID, run number, timestamp, duration, and head SHA in marker tooltips.
 - Keep the existing workflow list as the accessible link/detail fallback.
 - Add a pure JavaScript renderer and deterministic Node-backed regression tests.
 
@@ -40,7 +40,7 @@ The chart is a software execution-event visualization. It uses discrete observat
 
 - Every chart marker originates from a returned workflow-run record.
 - The x-axis is time; each lane names an observed workflow.
-- Status, timestamp, duration, and head SHA remain inspectable per event.
+- Run ID, status, timestamp, duration, and head SHA remain inspectable per event.
 - Missing or malformed timestamps yield the explicit empty state.
 - The page identifies the source and labels the chart as software-event telemetry.
 - Existing workflow metrics and list behavior remain intact.

@@ -77,3 +77,19 @@ A connector being exposed does not establish account authorization, paid-plan en
 - Record user-reported provisioning as reported, not verified.
 - Keep secret names in approved configuration docs only; never record secret values.
 - Retire entries by recording a terminal/deprecated state and migration evidence; do not erase history.
+
+
+## Integration-adoption gate
+
+The canonical `docs/integrations/registry.json` requires every integration
+marked `repo_adapter_implemented` or `native_repository_integration` to
+declare `template_adoption`. The disposition must either:
+
+- adopt a concrete `refTemplates/` directory with a stable `template_id`
+  and verified README/SOURCE metadata; or
+- state `not_applicable` with a nonempty reason.
+
+Planned integrations are not blocked prematurely, but must choose an adoption
+or reasoned exemption before they can transition to implemented/native. This
+gate is validated by the same refTemplates CI contract; it does not create a
+second integration registry.

@@ -1,0 +1,15 @@
+{
+  "schema": "smods-integration-index/v1",
+  "entries": [
+    {
+      "id": "agent-browser",
+      "template": "refTemplates/01_Agent_Runtime/vercel-agent-toolchain",
+      "upstream": "https://github.com/vercel-labs/agent-browser",
+      "path": "refTemplates/smods/agent-browser_fork",
+      "fork_url": "https://github.com/timerloggedout-spec/agent-browser_fork.git",
+      "status": "deferred",
+      "pinned_sha": null,
+      "reason": "No custom fork is justified until the existing package is reconciled and the actual Termux/Lightpanda/CDP runtime is tested; create a user-owned fork only if repository-specific patches are proven necessary."
+    }
+  ]
+}

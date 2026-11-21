@@ -1,5 +1,11 @@
 # SOURCE-MAP — refTemplates
 
+## 01_Agent_Runtime (metadata-first)
+
+| Slot | Preferred SOURCE | Disposition |
+|---|---|---|
+| vercel-agent-toolchain | https://github.com/vercel-labs/agent-browser · https://github.com/vercel-labs/skills · https://github.com/vercel-labs/agent-skills · https://github.com/vercel-labs/agent-desktop · https://github.com/vercel-labs/portless · https://github.com/cloudflare/kitesurf | Metadata-only; see `refTemplates/01_Agent_Runtime/vercel-agent-toolchain/integration.json` and `docs/ops/C12-AGENT-BROWSER-INTEGRATION.md` |
+
 ## 15_Research_Repo_Templates (tier A)
 
 | Slot | Preferred SOURCE |
@@ -31,7 +37,9 @@ Policy: `docs/ops/RESEARCH-INTEGRATION-LANE.md`
 
 ## smods (live gitlinks)
 
-See root `.gitmodules`:
+See root `.gitmodules` for live gitlinks and `refTemplates/smods/INTEGRATIONS.json` for fork-required/deferred/pinned dispositions. A ledger entry alone is not a gitlink.
+
+Live gitlinks:
 
 AuditEngine_fork, batteries_fork, content-agent-routing-promptbase_fork, cost-of-remembering_fork, icm-architect_fork, icm-cctv_fork, interpretable-context-methodology_fork, mcp-android-ssh_fork, term_mcp_deepseek_fork, termux-mcp-server_fork, lego_fork
 

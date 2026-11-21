@@ -1,0 +1,169 @@
+from __future__ import annotations
+
+import sys
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.ci.verify_agent_tooling_templates import validate_manifest, validate_security_examples
+
+
+def sample():
+    candidate = {
+        "id": "agent-browser",
+        "path": "refTemplates/smods/agent-browser_fork",
+        "status": "fork_required",
+        "fork_url": "https://github.com/timerloggedout-spec/agent-browser_fork.git",
+        "pinned_sha": None,
+    }
+    manifest = {
+        "schema": "agent-toolchain-template/v1",
+        "template_id": "vercel-agent-toolchain",
+        "status": "discovered",
+        "smods_index": "refTemplates/smods/INTEGRATIONS.json",
+        "mcp": {
+            "transport": "stdio",
+            "default_profile": "core",
+            "exposure_policy": "web_adapter_foundry_only",
+            "raw_server_exposure": False,
+            "tool_allowlist_required": True,
+            "read_only_tool_allowlist": [
+                "agent_browser_open", "agent_browser_snapshot", "agent_browser_read", "agent_browser_get_text",
+                "agent_browser_get_url", "agent_browser_get_title", "agent_browser_wait_ms",
+                "agent_browser_wait_for_selector", "agent_browser_wait_for_text",
+                "agent_browser_wait_for_load", "agent_browser_scroll", "agent_browser_tab_list",
+            ],
+            "authorized_write_tool_allowlist": [
+                "agent_browser_open", "agent_browser_snapshot", "agent_browser_read", "agent_browser_get_text",
+                "agent_browser_get_url", "agent_browser_get_title", "agent_browser_wait_ms",
+                "agent_browser_wait_for_selector", "agent_browser_wait_for_text",
+                "agent_browser_wait_for_load", "agent_browser_scroll", "agent_browser_tab_list",
+                "agent_browser_click", "agent_browser_fill", "agent_browser_type", "agent_browser_press",
+                "agent_browser_check", "agent_browser_uncheck", "agent_browser_select",
+                "agent_browser_confirm", "agent_browser_deny",
+            ],
+        },
+        "upstreams": [
+            {"id": name, "url": f"https://github.com/example/{name}"}
+            for name in (
+                "agent-browser", "skills-cli", "agent-skills",
+                "agent-desktop", "portless", "kitesurf",
+            )
+        ],
+        "smods_candidates": [candidate],
+    }
+    index = {"entries": [dict(candidate)]}
+    return manifest, index, candidate
+
+
+class AgentToolingTemplateTests(unittest.TestCase):
+    def test_fork_required_is_explicit_but_not_a_fake_gitlink(self):
+        manifest, index, _ = sample()
+        self.assertEqual(validate_manifest(manifest, index, {}, set()), [])
+
+    def test_pinned_requires_matching_gitmodules_and_gitlink(self):
+        manifest, index, candidate = sample()
+        pinned = dict(candidate, status="pinned", pinned_sha="a" * 40)
+        manifest["smods_candidates"] = [pinned]
+        index["entries"] = [pinned]
+        errors = validate_manifest(
+            manifest,
+            index,
+            {pinned["path"]: pinned["fork_url"]},
+            {pinned["path"]: pinned["pinned_sha"]},
+        )
+        self.assertEqual(errors, [])
+
+    def test_pinned_without_gitlink_fails_closed(self):
+        manifest, index, candidate = sample()
+        pinned = dict(candidate, status="pinned", pinned_sha="b" * 40)
+        manifest["smods_candidates"] = [pinned]
+        index["entries"] = [pinned]
+        errors = validate_manifest(
+            manifest,
+            index,
+            {pinned["path"]: pinned["fork_url"]},
+            set(),
+        )
+        self.assertTrue(any("missing its 160000 gitlink" in error for error in errors))
+
+    def test_pinned_sha_must_match_actual_gitlink(self):
+        manifest, index, candidate = sample()
+        pinned = dict(candidate, status="pinned", pinned_sha="c" * 40)
+        manifest["smods_candidates"] = [pinned]
+        index["entries"] = [pinned]
+        errors = validate_manifest(
+            manifest,
+            index,
+            {pinned["path"]: pinned["fork_url"]},
+            {pinned["path"]: "d" * 40},
+        )
+        self.assertTrue(any("does not match the actual 160000 gitlink SHA" in error for error in errors))
+
+    def test_template_pin_metadata_must_match_global_index(self):
+        manifest, index, candidate = sample()
+        pinned = dict(candidate, status="pinned", pinned_sha="e" * 40)
+        indexed = dict(pinned, pinned_sha="f" * 40)
+        manifest["smods_candidates"] = [pinned]
+        index["entries"] = [indexed]
+        errors = validate_manifest(
+            manifest,
+            index,
+            {pinned["path"]: pinned["fork_url"]},
+            {pinned["path"]: pinned["pinned_sha"]},
+        )
+        self.assertTrue(any("mismatched pinned_sha" in error for error in errors))
+
+    def test_manifest_and_smods_index_cannot_drift(self):
+        manifest, index, _ = sample()
+        index["entries"][0]["path"] = "refTemplates/smods/wrong_fork"
+        errors = validate_manifest(manifest, index, {}, set())
+        self.assertTrue(any("missing from the global index" in error for error in errors))
+
+    def test_fork_required_cannot_already_be_a_live_submodule(self):
+        manifest, index, candidate = sample()
+        errors = validate_manifest(
+            manifest,
+            index,
+            {candidate["path"]: candidate["fork_url"]},
+            {candidate["path"]},
+        )
+        self.assertTrue(any("fork_required must not be represented" in error for error in errors))
+
+    def test_deferred_entry_must_not_claim_a_live_pin(self):
+        manifest, index, candidate = sample()
+        deferred = dict(candidate, status="deferred")
+        manifest["smods_candidates"] = [deferred]
+        index["entries"] = [deferred]
+        self.assertEqual(validate_manifest(manifest, index, {}, set()), [])
+        errors = validate_manifest(
+            manifest,
+            index,
+            {deferred["path"]: deferred["fork_url"]},
+            {deferred["path"]},
+        )
+        self.assertTrue(any("deferred/research-only entry must not claim" in error for error in errors))
+
+    def test_browser_mcp_examples_use_default_deny_and_confirmation(self):
+        template = ROOT / "refTemplates/01_Agent_Runtime/vercel-agent-toolchain"
+        manifest = __import__("json").loads((template / "integration.json").read_text(encoding="utf-8"))
+        self.assertEqual(validate_security_examples(template, manifest), [])
+
+    def test_raw_mcp_server_exposure_is_rejected(self):
+        manifest, index, _ = sample()
+        manifest["mcp"]["raw_server_exposure"] = True
+        errors = validate_manifest(manifest, index, {}, set())
+        self.assertTrue(any("raw agent-browser MCP server must not be exposed" in error for error in errors))
+
+    def test_mcp_allowlist_rejects_flow_management_tools(self):
+        manifest, index, _ = sample()
+        manifest["mcp"]["authorized_write_tool_allowlist"].append("agent_browser_flow_save")
+        errors = validate_manifest(manifest, index, {}, set())
+        self.assertTrue(any("outside the reviewed core/debug set" in error for error in errors))
+
+
+if __name__ == "__main__":
+    unittest.main()

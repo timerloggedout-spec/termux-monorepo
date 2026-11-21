@@ -11,8 +11,10 @@ reviewers:
     role: operator+approver
     status: accepted
 related_prs: [221]
+related_issues: [5333, 5495]
 related_branches:
   - feature/termux-agentic-hub
+  - feat/c12-agent-browser-toolchain
 gates_required: [repo-gate, termux-smoke]
 ---
 
@@ -73,3 +75,11 @@ Establish a Termux-first Agentic Hub for the BLU B160V by adding the approved us
 - Evidence: PR #258 (`feat(eval): add repository development performance suite`) is two commits ahead but 125 commits behind `master` and 60 commits behind `master-staging`; it targets `master-staging` and has unresolved review findings. Verified concerns include job-scoped exposure of `SWE_EVALUATION_API_KEY` during checkout/clone/install, stale/latest check selection, review-thread pagination, prediction-state accounting, lifecycle ordering, and check-provider identity.
 - Decision: Do not rebase or merge PR #258 in place. Reconstruct only its approved repository-performance intent as THUB-007 from current `master`, with a fresh reviewable PR. Repository-local development outcomes are primary evidence for AR-18. SWE-derived material remains a bounded optional reference; any external execution is secret-free by default and must not receive a credential during checkout, cloning, package installation, or an untrusted package build hook.
 - Safety: No secret is added or moved into job scope. No benchmark triggers on untrusted PR code. No issue/review body becomes executable input. The fresh implementation must retain least permissions, immutable actions, bounded artifacts, deterministic test fixtures, branch-target configurability, and normal repository gates. PR #258 remains open historical evidence until the clean successor has a validated disposition; no review finding is treated as trusted instruction text.
+
+
+### 2026-11-16 — Operator directive — THUB-011 C12 browser tooling
+
+- Disposition: **authorized scoped continuation**.
+- Scope: integrate Vercel agent-browser and the Vercel skills ecosystem through the existing Web Adapter Foundry; record agent-desktop, Portless, and Cloudflare Kitesurf as distinct lanes; enforce `refTemplates/` source metadata and the `refTemplates/smods/` fork/pin ledger.
+- Reuse: issue #5333 explicitly binds QUE venue execution to the existing Web Adapter Foundry. Issue #5495 supplies the immediate C12 filing reliability failure class: executor liveness, approval-prompt evidence, and first-class cannot-execute/fallback signals.
+- Safety: agent-browser is a discovered external executor, not yet a validated Termux runtime. CDP attachment is a candidate transport. No upstream source is vendored, no gitlink is fabricated, and no browser profile, cookie, credential, or session state is committed.

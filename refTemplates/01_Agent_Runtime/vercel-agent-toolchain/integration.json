@@ -1,0 +1,268 @@
+{
+  "schema": "agent-toolchain-template/v1",
+  "template_id": "vercel-agent-toolchain",
+  "proposal_item": "THUB-011",
+  "status": "discovered",
+  "runtime_owner": "ops/web_adapter_foundry/waf.py",
+  "source_file": "refTemplates/01_Agent_Runtime/vercel-agent-toolchain/SOURCE.txt",
+  "smods_index": "refTemplates/smods/INTEGRATIONS.json",
+  "upstreams": [
+    {
+      "id": "agent-browser",
+      "repository": "vercel-labs/agent-browser",
+      "url": "https://github.com/vercel-labs/agent-browser",
+      "role": "browser-automation-cli-and-stdio-mcp-server",
+      "priority": "P0",
+      "capabilities": [
+        "accessibility-snapshot",
+        "element-refs",
+        "cdp-attach",
+        "named-sessions",
+        "stdio-mcp-server",
+        "mcp-tool-profiles",
+        "one-shot-mcp-call",
+        "action-policy",
+        "domain-allowlist",
+        "content-boundaries",
+        "doctor-health-probe"
+      ],
+      "termux_support": "not_established",
+      "runtime_state": "discovered_external_executor",
+      "default_mode": "read_only"
+    },
+    {
+      "id": "skills-cli",
+      "repository": "vercel-labs/skills",
+      "url": "https://github.com/vercel-labs/skills",
+      "role": "agent-skill-discovery-and-installation",
+      "priority": "P0",
+      "capabilities": [
+        "find",
+        "add",
+        "list",
+        "check",
+        "update",
+        "remove"
+      ],
+      "termux_support": "not_established",
+      "runtime_state": "source_reference_only",
+      "default_mode": "project_scoped"
+    },
+    {
+      "id": "agent-skills",
+      "repository": "vercel-labs/agent-skills",
+      "url": "https://github.com/vercel-labs/agent-skills",
+      "role": "upstream-agent-skill-collection",
+      "priority": "P1",
+      "capabilities": [
+        "reusable-agent-instructions"
+      ],
+      "termux_support": "not_applicable",
+      "runtime_state": "source_reference_only",
+      "default_mode": "selective_install"
+    },
+    {
+      "id": "agent-desktop",
+      "repository": "vercel-labs/agent-desktop",
+      "url": "https://github.com/vercel-labs/agent-desktop",
+      "role": "desktop-computer-use-cli",
+      "priority": "P1",
+      "capabilities": [
+        "os-accessibility-tree",
+        "desktop-actions",
+        "ffi"
+      ],
+      "termux_support": "unsupported_target",
+      "runtime_state": "desktop_lane_only",
+      "default_mode": "separate_desktop_executor"
+    },
+    {
+      "id": "portless",
+      "repository": "vercel-labs/portless",
+      "url": "https://github.com/vercel-labs/portless",
+      "role": "named-local-development-urls",
+      "priority": "P1",
+      "capabilities": [
+        "stable-local-hostnames"
+      ],
+      "termux_support": "not_established",
+      "runtime_state": "optional_infrastructure",
+      "default_mode": "developer_opt_in"
+    },
+    {
+      "id": "kitesurf",
+      "repository": "cloudflare/kitesurf",
+      "url": "https://github.com/cloudflare/kitesurf",
+      "role": "experimental-cdp-browser-engine",
+      "priority": "P2",
+      "capabilities": [
+        "workers-browser-engine",
+        "cdp"
+      ],
+      "termux_support": "not_applicable",
+      "runtime_state": "research_only",
+      "default_mode": "benchmark_only"
+    },
+    {
+      "id": "eve-data-analyst-template",
+      "repository": "vercel-labs/eve-data-analyst-template",
+      "role": "reference-data-analyst-agent-starter",
+      "priority": "P2",
+      "status": "reference_only",
+      "capabilities": [
+        "metric-definitions",
+        "sql-cost-approval",
+        "row-caps",
+        "timezone-aware-reporting",
+        "evaluation-fixtures"
+      ],
+      "boundary": "Reference only for Moneyball/SHE analytics. Do not connect production databases, run SQL, export data, or deploy without a separate data-access review."
+    },
+    {
+      "id": "eve-memory-agent-template",
+      "repository": "vercel-labs/eve-memory-agent-template",
+      "role": "reference-memory-agent-starter",
+      "priority": "P2",
+      "status": "reference_only",
+      "capabilities": [
+        "scoped-memory-slots",
+        "memory-provider-adapters",
+        "retention-controls",
+        "user-channel-memory"
+      ],
+      "boundary": "Reference only for memory architecture. Do not import personal data, connect external memory providers, or enable automatic capture without explicit privacy/retention review."
+    },
+    {
+      "id": "eve-vercel-drives-starter",
+      "repository": "vercel-labs/eve-vercel-drives-starter",
+      "role": "reference-artifact-storage-agent-starter",
+      "priority": "P2",
+      "status": "reference_only",
+      "capabilities": [
+        "read-only-snapshots",
+        "serialized-write-path",
+        "drive-busy-backpressure",
+        "sandbox-isolation"
+      ],
+      "boundary": "Reference only for evidence/artifact storage patterns. Do not provision Vercel Drives, upload files, or transfer project data without a separate approval and retention review."
+    }
+  ],
+  "smods_candidates": [
+    {
+      "id": "agent-browser",
+      "path": "refTemplates/smods/agent-browser_fork",
+      "status": "deferred",
+      "upstream": "https://github.com/vercel-labs/agent-browser",
+      "fork_url": "https://github.com/timerloggedout-spec/agent-browser_fork.git",
+      "pinned_sha": null,
+      "reason": "No custom fork is justified until the existing package is reconciled and the actual Termux/Lightpanda/CDP runtime is tested; create a user-owned fork only if repository-specific patches are proven necessary."
+    }
+  ],
+  "policy": {
+    "reuse_existing_web_adapter_foundry": true,
+    "browser_is_last_automated_route": true,
+    "read_only_default": true,
+    "write_retry": "SUBMIT-ONCE; read state before any retry",
+    "secrets_in_git": false,
+    "browser_state_in_git": false,
+    "termux_runtime_claim": "not_established"
+  },
+  "existing_repository_evidence": {
+    "npm_inventory_version": "0.26.0",
+    "expected_termux_executable": "/data/data/com.termux/files/usr/bin/agent-browser",
+    "lightpanda_engine_option_documented": true,
+    "source_paths": [
+      "workspace/llm_map/_TOOL_TAXONOMY/state/npm_curr.json",
+      "workspace/llm_map/_TOOL_TAXONOMY/python3/reverse_engineering.json",
+      "docs/repositories/STARS-FORKS-WATCH.md",
+      "docs/ops/WEB-REVERSE-ENGINEERING-CAMPAIGN.md"
+    ],
+    "verification_state": "historical_inventory_only_live_device_probe_required"
+  },
+  "upstream_version_observed": {
+    "version": "0.43.0",
+    "release_date": "2026-11-12",
+    "source": "https://github.com/vercel-labs/agent-browser/releases/tag/v0.43.0",
+    "inventory_version": "0.26.0",
+    "inventory_state": "stale_reconciliation_required",
+    "inventory_version_release_date": "2026-04-16"
+  },
+  "required_files": [
+    "README.md",
+    "SOURCE.txt",
+    "integration.json",
+    "policy-readonly.json",
+    "policy-authorized-write.json",
+    "mcp-stdio-readonly.example.json",
+    "mcp-stdio-authorized-write.example.json"
+  ],
+  "security_policy_files": {
+    "read_only": "policy-readonly.json",
+    "authorized_write": "policy-authorized-write.json",
+    "mcp_read_only": "mcp-stdio-readonly.example.json",
+    "mcp_authorized_write": "mcp-stdio-authorized-write.example.json"
+  },
+  "mcp": {
+    "transport": "stdio",
+    "command": "agent-browser",
+    "args": [
+      "mcp",
+      "--tools",
+      "core"
+    ],
+    "default_profile": "core",
+    "tool_exposure": "restricted_by_default_deny_action_policy",
+    "read_only_policy": "policy-readonly.json",
+    "authorized_write_policy": "policy-authorized-write.json",
+    "write_confirmation_categories": [
+      "click",
+      "fill",
+      "interact"
+    ],
+    "exposure_policy": "web_adapter_foundry_only",
+    "raw_server_exposure": false,
+    "tool_allowlist_required": true,
+    "read_only_tool_allowlist": [
+      "agent_browser_open",
+      "agent_browser_snapshot",
+      "agent_browser_read",
+      "agent_browser_get_text",
+      "agent_browser_get_url",
+      "agent_browser_get_title",
+      "agent_browser_wait_ms",
+      "agent_browser_wait_for_selector",
+      "agent_browser_wait_for_text",
+      "agent_browser_wait_for_load",
+      "agent_browser_scroll",
+      "agent_browser_tab_list"
+    ],
+    "authorized_write_tool_allowlist": [
+      "agent_browser_open",
+      "agent_browser_snapshot",
+      "agent_browser_read",
+      "agent_browser_get_text",
+      "agent_browser_get_url",
+      "agent_browser_get_title",
+      "agent_browser_wait_ms",
+      "agent_browser_wait_for_selector",
+      "agent_browser_wait_for_text",
+      "agent_browser_wait_for_load",
+      "agent_browser_scroll",
+      "agent_browser_tab_list",
+      "agent_browser_click",
+      "agent_browser_fill",
+      "agent_browser_type",
+      "agent_browser_press",
+      "agent_browser_check",
+      "agent_browser_uncheck",
+      "agent_browser_select",
+      "agent_browser_confirm",
+      "agent_browser_deny"
+    ]
+  },
+  "runtime_requirements": {
+    "skills_cli_node_minimum": "22.20.0",
+    "agent_browser_termux_support": "not_established",
+    "lightpanda_android_binary": "not_documented_upstream"
+  }
+}

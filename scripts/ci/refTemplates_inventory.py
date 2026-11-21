@@ -76,6 +76,16 @@ def main() -> int:
 
     entries = [inventory_entry(s) for s in slots()]
     failures = validate(entries)
+    if args.strict:
+        # This script is the existing refTemplates CI entry point. Import the
+        # broader template/sMods contract here so pull-request runs using the
+        # base workflow still execute the new validator before promotion.
+        from verify_agent_tooling_templates import validate_all
+
+        tooling_failures = validate_all(ROOT)
+        failures.extend(tooling_failures)
+        if not tooling_failures:
+            print("OK: runtime integration templates, MCP policies, and sMods index")
 
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)

@@ -1,6 +1,6 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-21T23:04:47Z",
+ "generated_at": "2026-11-21T23:15:50Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
@@ -28,11 +28,16 @@
   },
   "4": {
    "tier": 4,
-   "queued": 5,
-   "in_progress": 9,
+   "queued": 50,
+   "in_progress": 17,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
     "Quota Dispatch Tree": 1,
+    "lane events recorder": 7,
+    "Context Relationship + Lead/Lag Audit": 1,
+    "Agent Throughput Evidence": 35,
+    "Workflow Surface Policy": 1,
+    "Peer review orchestrator": 1,
     "Agent PR Jules Handoff": 1,
     "PR Change Effectiveness Ledger": 1,
     "Advisory GitHub Actions lint": 1,
@@ -41,8 +46,8 @@
   }
  },
  "totals": {
-  "queued": 7,
-  "in_progress": 12
+  "queued": 52,
+  "in_progress": 20
  },
  "wedged_ancient": [
   {
@@ -206,7 +211,7 @@
    "4": 0
   },
   "explicit_total": 5,
-  "default_t4": 14,
+  "default_t4": 67,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

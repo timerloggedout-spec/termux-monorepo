@@ -44,3 +44,23 @@ MSM-023 implementation: separate pure Typhoon protocol, 40 synthetic protocol/di
 | MSM-024 | P1 | Extend Typhoon into an actual registered HTTP transport and batch as many officially verified provider APIs as practical in one PR below 100 changed files. Reuse existing credentials and adapters before setup-dependent routes; previous MSM-023 offline/legal-hold scope does not block code development. | Callable pinned transports, registry/dispatch and documented catalogs where available; synthetic/public text only, no sensitive/user/repository payloads sent during development; no signup/key creation/new terms acceptance, paid fallback, inference schedules or production-admission changes. Explicit missing-key/setup results, offline transport/HTTP regressions, legitimate no-cost smoke only when existing credentials and verified entitlement permit; existing Gemini production routing and #1441 unchanged, compatible Gemini exact-key helper/tests folded into the same batch; exact-head dual gates before merge. |
 
 MSM-024 implementation: seven native transports and five catalog adapters; exact hub/HTTP fixtures, fail-closed pricing/schema/response tests, sanitized trusted-master readiness command, corrected source/dashboard roster, and the compatible default-off Gemini helper/test commit. Existing Felo integration is preserved without duplicate implementation. Anonymous Requesty/Routeway/xKiro catalog reads succeeded locally; no inference, account/key creation, acceptance or production admission occurred. Live routes still require existing credentials and verified exact-model free admission.
+
+
+## QUE multi-protocol build-arm projection
+
+| ID | Priority | Scope | Acceptance |
+|---|---|---|---|
+| MSM-025 | P1 | Project exact policy-admitted provider/model pairs into the existing QUE build-arm registry. Reuse the canonical provider protocol/extension registries, `research_providers.complete`, shared activation evidence and `pool-cadence/v1`; do not create a second provider catalog or independent admission implementation. | One stable arm per exact admitted pair; explicit disposition for every candidate; exact protocol reference; capability split between `chat_completion` and validated `tool_calling`; shared pricing/terms/capability/quota-or-pool freshness gates; `quota_unknown` deferred; daily-pool arms require authoritative pool evidence; executor claim equals actual invoked arm; QDesk publishes complete denominators; tests cover stale/missing evidence, unsupported protocol/capability, quota exhaustion, pool cadence and no-fallback behavior. No paid spend, account/key changes, terms acceptance, signup, production weight changes or provider inference without separately authorized evidence. |
+
+### Dependencies and current blockers
+
+- [#5454](https://github.com/timerloggedout-spec/termux-monorepo/issues/5454): canonical full-population evidence and activation contract.
+- [#5459](https://github.com/timerloggedout-spec/termux-monorepo/pull/5459): no-cost validation and daily-pool cadence adapter; currently open draft and not yet Actions-validated.
+- [#5468](https://github.com/timerloggedout-spec/termux-monorepo/issues/5468): multi-protocol build-arm projection task.
+- [#5151](https://github.com/timerloggedout-spec/termux-monorepo/issues/5151), [#5152](https://github.com/timerloggedout-spec/termux-monorepo/issues/5152), [#5160](https://github.com/timerloggedout-spec/termux-monorepo/issues/5160): build routing, quota ledger and pool policy.
+
+**Policy-source blocker:** `research_providers._policy()` reads the path in `LLM_API_HUB_PROVIDER_POLICY`; the provider batch contract documents this as an externally supplied JSON policy and ships no enabled policy. The build workflow currently does not establish a canonical safe path for that policy. Do not infer admission from a catalog, credential name or registry row. The projection must remain empty/deferred until the exact policy is made available to the workflow through an approved, secret-safe source and the shared validator is on the validated base.
+
+**Capability blocker:** a text completion does not prove tool calling. Only an actual tool-call round trip may mark `tool_calling` and permit `generic-agent-loop`; chat-only arms remain limited to compatible completion/research work.
+
+Implementation remains gated by the exact-head checks on #5459 and a separately reviewed policy-source decision. The 7 current build arms, 29 native adapters, 31 menu choices, historical g4f universe and historical sandbox successes remain separate denominators.

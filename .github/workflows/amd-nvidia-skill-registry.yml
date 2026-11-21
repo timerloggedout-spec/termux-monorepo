@@ -1,0 +1,50 @@
+name: AMD NVIDIA Skill Registry
+
+on:
+  pull_request:
+    paths:
+      - "docs/ops/AMD-NVIDIA-SKILLS-INTEGRATION.md"
+      - "docs/ops/*skills-registry.json"
+      - "docs/ops/AMD-NVIDIA-SKILL-EXECUTION-RECEIPT.schema.json"
+      - "skills/vendors/**"
+      - ".agents/skills/amd-vendor-workflows/**"
+      - ".agents/skills/nvidia-vendor-workflows/**"
+      - "scripts/ci/validate_vendor_skill_registry.py"
+      - "tests/test_vendor_skill_registry.py"
+      - ".github/workflows/amd-nvidia-skill-registry.yml"
+  push:
+    branches: [master]
+    paths:
+      - "docs/ops/AMD-NVIDIA-SKILLS-INTEGRATION.md"
+      - "docs/ops/*skills-registry.json"
+      - "docs/ops/AMD-NVIDIA-SKILL-EXECUTION-RECEIPT.schema.json"
+      - "skills/vendors/**"
+      - "scripts/ci/validate_vendor_skill_registry.py"
+      - "tests/test_vendor_skill_registry.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: amd-nvidia-skill-registry-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          persist-credentials: false
+      - name: Parse JSON contracts
+        run: |
+          python -m json.tool docs/ops/amd-skills-registry.json >/dev/null
+          python -m json.tool docs/ops/nvidia-skills-registry.json >/dev/null
+          python -m json.tool docs/ops/AMD-NVIDIA-SKILL-EXECUTION-RECEIPT.schema.json >/dev/null
+      - name: Validate registry invariants
+        run: python scripts/ci/validate_vendor_skill_registry.py
+      - name: Run contract tests
+        run: python -m unittest discover -s tests -p 'test_vendor_skill_registry.py' -v

@@ -6,19 +6,21 @@ CREATE ROLE IF NOT EXISTS lane_events_writer WITH LOGIN;
 CREATE ROLE IF NOT EXISTS lane_events_migrator WITH LOGIN;
 
 REVOKE ALL ON DATABASE lane_events FROM public;
+REVOKE ALL ON DATABASE lane_events FROM lane_events_writer;
 GRANT CONNECT ON DATABASE lane_events TO lane_events_writer, lane_events_migrator;
 
 REVOKE ALL ON SCHEMA lane_events.public FROM public;
+REVOKE ALL ON SCHEMA lane_events.public FROM lane_events_writer;
 GRANT USAGE ON SCHEMA lane_events.public TO lane_events_writer;
 GRANT USAGE, CREATE ON SCHEMA lane_events.public TO lane_events_migrator;
 
 REVOKE ALL ON ALL TABLES IN SCHEMA lane_events.public FROM public;
+REVOKE ALL ON ALL TABLES IN SCHEMA lane_events.public FROM lane_events_writer;
 GRANT SELECT, INSERT ON ALL TABLES IN SCHEMA lane_events.public TO lane_events_writer;
-REVOKE UPDATE, DELETE ON ALL TABLES IN SCHEMA lane_events.public FROM lane_events_writer;
 
 ALTER DEFAULT PRIVILEGES FOR ROLE lane_events_migrator IN SCHEMA lane_events.public
   REVOKE ALL ON TABLES FROM public;
 ALTER DEFAULT PRIVILEGES FOR ROLE lane_events_migrator IN SCHEMA lane_events.public
-  GRANT SELECT, INSERT ON TABLES TO lane_events_writer;
+  REVOKE ALL ON TABLES FROM lane_events_writer;
 ALTER DEFAULT PRIVILEGES FOR ROLE lane_events_migrator IN SCHEMA lane_events.public
-  REVOKE UPDATE, DELETE ON TABLES FROM lane_events_writer;
+  GRANT SELECT, INSERT ON TABLES TO lane_events_writer;

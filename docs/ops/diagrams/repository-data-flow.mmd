@@ -1,0 +1,117 @@
+flowchart LR
+  %% Repository-wide data flow map.
+  %% Solid = current documented/implemented path.
+  %% Dashed = optional, contract-only, intended join, or partially verified.
+  subgraph SOURCES["1 · Sources"]
+    GIT["Git repository<br/>commits · files · SHAs"]
+    GH["GitHub records<br/>PRs · issues · reviews · comments · checks"]
+    ACT["GitHub Actions<br/>runs · jobs · steps · artifacts"]
+    AGENTS["Agent workflows<br/>Gemini · DeepSeek · Jules · team lanes"]
+    PROVIDERS["External providers"]
+    SESSIONS["Termux / ArchWiz session callers<br/>session_id + messages"]
+    OPSINPUT["Committed operational inputs<br/>quota · status · provenance · observations"]
+    WEBHOOK["Cloudflare webhook events"]
+  end
+  subgraph COLLECT["2 · Producers and collectors"]
+    PRLED["PR production ledger<br/>read-only GitHub API observer"]
+    ATESOBS["ATES Phase B observer<br/>workflow_run + jobs + task boundary"]
+    CRGCOL["Context relationship collectors<br/>repo files / bounded AST + GitHub metadata"]
+    HISTCOL["Historical corpus builder<br/>bounded history pages + checkpoint"]
+    FEEDCOL["Dashboard surface-feed collector"]
+    LANEOBS["Lane-event recorder<br/>selected workflow / PR events"]
+    RECEIVER["Receiver Mesh Actions processor"]
+    DISPATCH["ArchWiz DispatchPipeline<br/>registered dispatcher fan-out"]
+    ADAPTER["Governed provider adapters<br/>scoped operations"]
+  end
+  subgraph TRANSFORM["3 · Transformations"]
+    EPS["EPS PR-event shaping<br/>stable event ID · SHA/run binding"]
+    ATESSAN["ATES sanitizer<br/>closed schema · fingerprints · null semantics"]
+    ATESRED["ATES reducer<br/>TCV · WTCV · TPV · RPI · ATES"]
+    CRG["CRG normalize + compile<br/>verified / derived / inferred / candidate"]
+    CORPUSBUILD["Historical corpus index build<br/>nodes · edges · manifest · coverage"]
+    FEEDSHAPE["Surface-feed shaping<br/>schema · sources · honesty_rules · gaps"]
+    INTVALID["Integration-event schema validation<br/>provenance · privacy · idempotency"]
+    SHERED["SHE pure reducers<br/>network-free projections"]
+    SNAPBUILD["Snapshot builder<br/>source SHA · manifest SHA · generated_at · coverage"]
+  end
+  subgraph STORES["4 · Evidence stores and projections"]
+    EPSART["EPS NDJSON artifact<br/>PR ledger observations"]
+    ATESART["ATES JSONL + reducer + receipt artifacts"]
+    CRGSTORE["Canonical context index<br/>JSONL · manifest · reports · checkpoint"]
+    HISTSTORE["Historical evidence corpus<br/>nodes · edges · summary · manifest"]
+    NEONLANE["Neon lane_events<br/>append-only · idempotent"]
+    NEONRECV["Neon receiver_events<br/>dedupe / dead-letter contract"]
+    FEEDS["Committed dashboard feeds<br/>apps/tribute-dashboard/data/*.json"]
+    INTEVENTS["Normalized integration events"]
+    SHE["Versioned SHE snapshots<br/>read-only projection"]
+    SSOT["Session SSOT"]
+    CODEX["Codex index"]
+    LINEARHINT["Linear sync hint<br/>log-only; no sync performed"]
+  end
+  subgraph CONSUMERS["5 · Consumers"]
+    VERCEL["Vercel<br/>primary interactive SHE surface"]
+    PAGES["GitHub Pages<br/>optional static mirror"]
+    HEX["Hex<br/>optional analytical consumer"]
+    TRIBUTE["Tribute dashboard<br/>read-only feed consumer"]
+    ANALYTICS["ML / Grafana / analytics<br/>optional consumers"]
+    MONEYBALL["Moneyball / 3L0"]
+    DOE["DOE / MVT experiments"]
+    MANAGER["Manager / team evolution<br/>admission · policy · learning"]
+    ARCHWIZ["ArchWiz query / context builder"]
+    MERMAID["Mermaid graph / diagram source"]
+    AGENTCTX["Agent task context<br/>bounded context delta"]
+  end
+  GH --> PRLED
+  ACT --> PRLED
+  PRLED -->|"PR / SHA / commits / reviews / checks"| EPS
+  EPS --> EPSART
+  ACT --> ATESOBS
+  AGENTS --> ATESOBS
+  GH --> ATESOBS
+  ATESOBS -->|"run / attempt / job timing / task metadata"| ATESSAN
+  ATESSAN --> ATESART
+  ATESART --> ATESRED
+  GIT --> CRGCOL
+  GH --> CRGCOL
+  CRGCOL --> CRG
+  CRG --> CRGSTORE
+  GH --> HISTCOL
+  HISTCOL --> CORPUSBUILD
+  CORPUSBUILD --> HISTSTORE
+  OPSINPUT --> FEEDCOL
+  ACT --> FEEDCOL
+  GH --> FEEDCOL
+  FEEDCOL --> FEEDSHAPE
+  FEEDSHAPE --> FEEDS
+  FEEDS --> TRIBUTE
+  ACT --> LANEOBS
+  GH --> LANEOBS
+  LANEOBS --> NEONLANE
+  WEBHOOK --> RECEIVER
+  RECEIVER --> NEONRECV
+  PROVIDERS --> ADAPTER
+  ADAPTER --> INTVALID
+  INTVALID --> INTEVENTS
+  INTEVENTS -. "eligible validated observations" .-> ANALYTICS
+  SESSIONS --> DISPATCH
+  DISPATCH --> SSOT
+  DISPATCH --> CODEX
+  DISPATCH --> LINEARHINT
+  HISTSTORE --> SHERED
+  SHERED --> SNAPBUILD
+  SNAPBUILD --> SHE
+  SHE --> VERCEL
+  SHE -.-> PAGES
+  SHE -.-> HEX
+  HISTSTORE --> MONEYBALL
+  HISTSTORE --> DOE
+  ATESRED -. "longitudinal join / manager evaluation" .-> MONEYBALL
+  ATESRED -.-> DOE
+  EPSART -. "validated evidence projection" .-> ANALYTICS
+  ATESART -.-> ANALYTICS
+  MONEYBALL --> MANAGER
+  DOE --> MANAGER
+  CRGSTORE --> ARCHWIZ
+  ARCHWIZ --> AGENTCTX
+  CRGSTORE --> MERMAID
+  MANAGER -. "approved policy / next-cycle task selection" .-> AGENTS

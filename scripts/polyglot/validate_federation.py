@@ -50,7 +50,7 @@ def validate() -> list[str]:
         if missing:
             errors.append(f"technology target {index}: missing {', '.join(sorted(missing))}")
         target_id = target.get("target_id", "")
-        if not TARGET_ID_RE.fullmatch(str(target_id)):
+        if not isinstance(target_id, str) or not TARGET_ID_RE.fullmatch(target_id):
             errors.append(f"technology target {index}: invalid target_id {target_id!r}")
         if target_id in seen:
             errors.append(f"technology targets: duplicate target_id {target_id}")

@@ -147,3 +147,25 @@ def test_extract_official_export_security(tmp_path, monkeypatch):
     )
     assert res_sym.returncode != 0
     assert "Symlink config file" in res_sym.stderr
+
+
+def test_extract_official_export_zip_slip_prevention(tmp_path, monkeypatch):
+    import subprocess
+    import zipfile
+    fake_home = tmp_path / "home"
+    fake_home.mkdir()
+    monkeypatch.setattr(Path, "home", lambda: fake_home)
+
+    malicious_zip = tmp_path / "malicious_export.zip"
+    with zipfile.ZipFile(malicious_zip, 'w') as zf:
+        zf.writestr("../../../evil.txt", "evil_content")
+
+    script_path = os.path.abspath("cli-synthegration/extract_from_official_export.py")
+    env = {**os.environ, "HOME": str(fake_home)}
+
+    res = subprocess.run(
+        [sys.executable, script_path, str(malicious_zip)],
+        capture_output=True, text=True, env=env
+    )
+    assert res.returncode != 0
+    assert "Zip Slip path traversal detected" in res.stderr

@@ -1,0 +1,38 @@
+flowchart TB
+    IN["SENSORY INPUTS<br/>Issues · PRs · code · providers · runtime"] --> ATT["ATTENTION & SALIENCE<br/>Triage · watchers · interrupts"]
+    ATT --> MEM["MEMORY & KNOWLEDGE<br/>Context graph · corpus · registries"]
+    MEM --> EXE["EXECUTIVE CONTROL<br/>Manager · goals · plans · constraints"]
+    EXE --> SEL["ACTION SELECTION<br/>Eligibility · admission · routing"]
+    SEL --> ACT["ACTION & INTEGRATION<br/>Agents · adapters · Termux · GitHub Actions"]
+    ACT --> EVD["EVIDENCE & HOMEOSTASIS<br/>SHE · ATES · 3L0 · security · resources"]
+    EVD --> FB["FEEDBACK & LEARNING<br/>Validate · compare · classify · record"]
+    FB --> EXE
+
+    EXE <--> COORD["INTEGRATION FABRIC<br/>Shared events · handoffs · evidence envelopes"]
+    MEM <--> COORD
+    ACT <--> COORD
+    EVD --> SAFE["AUTHORITY & PROTECTION<br/>Permissions · secret boundaries · stop conditions"]
+    SAFE -. constrains .-> SEL
+    SAFE -. constrains .-> ACT
+
+    subgraph FUTURE["PROPOSED EVOLUTION LANES"]
+      DMN["Dreamforge<br/>Offline synthesis"]
+      NOV["Novelty / weak-signal detection"]
+      CONS["Context consolidation"]
+      PLAST["Plasticity governor<br/>Controlled policy adaptation"]
+    end
+    FB -. evidence only .-> DMN
+    FB -. evidence only .-> NOV
+    DMN -. reviewed proposals .-> EXE
+    NOV -. reviewed alerts .-> ATT
+    MEM -. reversible summaries .-> CONS
+    CONS -. source-linked updates .-> MEM
+    FB -. bounded experiments .-> PLAST
+    PLAST -. approved policy version .-> SEL
+
+    classDef existing fill:#dcefe6,stroke:#28734d,color:#123b2a
+    classDef partial fill:#fff1cc,stroke:#a87512,color:#503900
+    classDef proposed fill:#e9e2f8,stroke:#6c4aa1,color:#30204d
+    class IN,ATT,MEM,EXE,SEL,ACT,EVD,FB existing
+    class COORD,SAFE partial
+    class DMN,NOV,CONS,PLAST proposed

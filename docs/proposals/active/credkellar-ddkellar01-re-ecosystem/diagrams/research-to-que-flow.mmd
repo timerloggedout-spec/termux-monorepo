@@ -1,0 +1,24 @@
+flowchart TD
+  A["Docker Hub: credkellar profile"] --> B["Profile census: every page / repository / tag / digest"]
+  C["GitHub: credkellar"] --> D["Identity + repository resolution"]
+  E["GitHub: ddkellar01"] --> D
+  B --> F["Candidate normalization + provenance ledger"]
+  D --> F
+  F --> G{"Source ↔ image provenance?"}
+  G -->|Verified / partial| H["Static source + capability review"]
+  G -->|Unverified / contradicted| I["Hold / request evidence / reference only"]
+  H --> J["Threat model + overlap with existing RE fleet"]
+  J --> K["Offline synthetic verification"]
+  K --> L{"Dynamic verification justified?"}
+  L -->|No| M["Static/offline evidence only"]
+  L -->|Yes, separately approved| N["Disposable isolated lab; deny-by-default egress"]
+  M --> O["Taxonomy intake proposal"]
+  N --> O
+  O --> P["Existing re-taxonomy validator + toolkit review"]
+  P --> Q["QUE admission / rank / dependency / claim"]
+  Q --> R["Adoption decision: ADOPT / ADAPT / REFERENCE / DEFER / REJECT"]
+  R --> S["Independent verification + promotion receipt"]
+  I --> F
+  style I fill:#fff3cd,stroke:#b8860b
+  style N fill:#fce8e6,stroke:#b3261e
+  style S fill:#e6f4ea,stroke:#188038

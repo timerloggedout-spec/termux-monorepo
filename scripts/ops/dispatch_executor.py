@@ -115,6 +115,10 @@ def eligible_filings(filings: list[dict]) -> list[dict]:
             continue
         if "dispatch-claimed" in labels:
             continue
+        # Route project-task filings to QDesk seat-queue claim, not a
+        # provider/build arm. The QUE watchdog owns this claim boundary.
+        if "project-task" in labels:
+            continue
         out.append(f)
     return sorted(out, key=lambda f: f["number"])
 

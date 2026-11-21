@@ -217,40 +217,6 @@
     {
       "if": {
         "properties": {
-          "parity_status": {
-            "const": "above"
-          }
-        },
-        "required": [
-          "parity_status"
-        ]
-      },
-      "then": {
-        "properties": {
-          "correctness": {
-            "const": "pass"
-          },
-          "advantage_claim": {
-            "type": "string",
-            "minLength": 1
-          }
-        },
-        "required": [
-          "correctness",
-          "advantage_claim"
-        ]
-      },
-      "else": {
-        "properties": {
-          "advantage_claim": {
-            "type": "null"
-          }
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": {
           "advantage_claim": {
             "type": "string"
           }

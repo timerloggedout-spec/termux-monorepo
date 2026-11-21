@@ -26,6 +26,7 @@ From 489+ forks + starred set (examples):
 - timerloggedout-spec/alphadesk-terminal
 - timerloggedout-spec/MOBIUS-Searcher
 - Starred agent/research runtimes (hermes-agent, orca, openclaw, pi, …) — pattern harvest vs full slot
+- CockroachDB distributed SQL — upstream reference candidate; native backend adapter at `scripts/ops/cockroach_lane_event.py`; owned-fork gitlink admission follows source-pin validation
 
 Policy: `docs/ops/RESEARCH-INTEGRATION-LANE.md`
 

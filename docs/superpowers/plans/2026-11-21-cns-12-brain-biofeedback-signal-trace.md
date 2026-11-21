@@ -19,14 +19,14 @@ Add an EEG-inspired, multi-lane event raster to the existing Brain Operations pa
 
 ## Evidence and interpretation
 
-The chart is a software execution-event visualization. It is an event raster with discrete observations, not a continuous voltage waveform. The existing page's source remains GitHub Actions public workflow-run metadata. Production Brain-stage telemetry, physiological sensor input, model quality, token cost, and task-level outcomes remain separate measurement domains.
+The chart is a software execution-event visualization. It uses discrete observations in an event raster, with each marker mapped to a workflow run. The existing page source remains GitHub Actions public workflow-run metadata. Production Brain-stage telemetry, physiological sensor input, model quality, token cost, and task-level outcomes remain separate measurement domains.
 
-## Non-goals
+## Out of scope
 
 - Brain kernel, MOSAIC, QUE/QDesk, policy, memory, dispatch, or provider-routing changes.
-- Physiological EEG acquisition or medical interpretation.
-- A new telemetry store, event collector, scheduler, or deployment platform.
-- Synthetic production observations or inferred Brain-stage timings.
+- Physiological EEG acquisition and medical interpretation.
+- Additional telemetry stores, event collectors, schedulers, or deployment platforms.
+- Synthetic production observations and inferred Brain-stage timings.
 
 ## Tasks
 

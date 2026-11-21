@@ -253,7 +253,7 @@ Contracts use explicit schema versions and provenance. Top-level records are clo
 
 ### Phase 5 — Surface integrations
 - Integrate the mandatory DerpWiki layer into GitHub rendering, browser surfaces, public pages and agent-facing knowledge surfaces; reuse the existing Linguist lane registry, mapping runtime and publication profiles.
-- Implement Z3π∅ notification routing into public user interfaces as a first-class delivery surface, preserving classified outcomes, deduplication and auditable receipts.
+- Route Z3π∅ notifications into public user interfaces through the existing single-notification/dashboard pattern and Automated Telemetry Audit receipt contract; preserve classified outcomes, deduplication and auditable receipts.
 - Acceptance: DerpWiki projection is present by default on public interfaces; canonical owner reconstruction remains available; challenge payloads follow validation/public profile rules and include accessible alternatives; Z3π∅ notices are visible in the relevant public UI; Agent Ready validation remains bound to its exact validation URL/profile/commit/digest.
 
 ### Phase 6 — Research Astute readiness
@@ -290,6 +290,6 @@ Contracts use explicit schema versions and provenance. Top-level records are clo
 - MASQUE: https://datatracker.ietf.org/wg/masque/about/
 - WebTransport: https://www.w3.org/TR/webtransport/
 - Multipath QUIC work: https://datatracker.ietf.org/doc/draft-ietf-quic-multipath/
-- Existing repository PolyGlot/CRG acceleration: `docs/ops/CONTEXT-RELATIONSHIP-POLYGLOT-ACCELERATION.md`
+- Existing repository PolyGlot/CRG acceleration: `docs/ops/CONTEXT-RELATIONSHIP-POLYGLOT-ACCELERATION.md`\n- Existing notification/dashboard routing: `docs/ops/ACTIONS-MATRIX.md`\n- Notification classification, deduplication and receipts: `docs/ops/AUTOMATED-TELEMETRY-AUDIT.md`
 
 External standards links are research pointers; implementation records must pin the exact revision and current status at evaluation time.

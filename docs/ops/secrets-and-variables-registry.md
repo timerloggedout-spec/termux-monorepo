@@ -133,6 +133,7 @@ repo Settings -> Secrets and variables -> Actions.
   when the telemetry dataset from the RFP (#1576) is chosen.
 - Buildkite: cross-platform dispatch per RFP; needs the three BUILDKITE_* names
   above.
+- CockroachDB: runtime lane-event projection uses the `COCKROACH_DATABASE_URL` writer secret; schema migration uses the separate `COCKROACH_SCHEMA_DATABASE_URL` migration credential. The writer role receives SELECT/INSERT only. Multi-node failover and native backup/restore CI use `COCKROACH_LICENSE_KEY` when an owner-provisioned valid license is available. Hosted cluster and secret presence remain unverified.
 - Vantage: GitHub-side lane delivered — vantage-cost-report.yml
   (workflow_dispatch-only; woken 2x/day by dispatcher Node H, hour % 12 == 1).
   VANTAGE_PAT_GH_SECRETS was provisioned 2026-10-23 via repo Settings ->

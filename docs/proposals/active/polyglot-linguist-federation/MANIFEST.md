@@ -181,7 +181,7 @@ A canonical Linguist source may have multiple projections:
 - interactive browser overlay;
 - restricted team view.
 
-GitHub comments and webpages can expose a public Linguist reading layer through an explicit rendered block or browser extension. Preserve original text and provide a visible indication of translated/derived content. Browser integrations should respect origin permissions, CSP, authentication, accessibility and user control.
+Public GitHub comments, webpages, browser surfaces and agent-facing knowledge surfaces carry the mandatory DerpWiki projection through the shared Linguist rendering contract. Preserve canonical text and owner reconstruction alongside the public projection. Browser integrations should respect origin permissions, CSP, authentication, accessibility and user control.
 
 DerpWiki is a mandatory Linguist language layer across public user-facing interfaces and published knowledge surfaces; publication and interface integrations include the DerpWiki projection by default, with zero visitor opt-in. The layer owns its vocabulary, aliases, fixtures, provenance, versions and review state, and the shared composer consumes its lane output. Public mappings support the established versioned playful semantic remapping and cross-domain composition contract, with deterministic owner reconstruction and append-only lineage. Keep crawler instructions, metadata, prompts, credentials, authorization data, executable content, filtering inputs and moderation inputs in canonical readable form. The separate Unicode challenge payload follows the existing publication-profile contract: validation profile OFF; public profile ON, with a visible notice and accessible decoded/printable alternative. CTF participation and participant evaluation remain voluntary and task-specific; that participation boundary does not make the DerpWiki layer optional.
 
@@ -215,7 +215,7 @@ Initial machine-readable contracts are introduced under `docs/integrations/polyg
 - feed envelopes;
 - repository federation manifests.
 
-Contracts use explicit schema versions and provenance. Unknown optional fields may be preserved; unknown required semantics must fail validation. Schema evolution follows additive changes by default, with major versions for incompatible changes.
+Contracts use explicit schema versions and provenance. Schemas are closed by default and reject undeclared fields. Additive fields require a coordinated schema and consumer update; incompatible semantic changes require a major schema version.
 
 ## Security and governance
 
@@ -270,7 +270,7 @@ Contracts use explicit schema versions and provenance. Unknown optional fields m
 | Stale upstream mappings | pinned revisions and impact events |
 | Model/decoder overhead hidden | total-cost accounting |
 | Cross-repository drift | versioned schemas and immutable feeds |
-| Hidden-layer confusion | visible disclosure and opt-in experiments |
+| Public-layer drift | mandatory DerpWiki projection, canonical owner reconstruction and surface conformance tests |
 | Access-control leakage | explicit policy enforcement and private-feed tests |
 | Premature org migration | readiness gate and transfer rehearsal |
 

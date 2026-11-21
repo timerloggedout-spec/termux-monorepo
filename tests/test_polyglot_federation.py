@@ -128,6 +128,7 @@ class PolyglotFederationTests(unittest.TestCase):
         measurement = schema["properties"]["measurements"]["items"]
         self.assertIn("variance", measurement["required"])
         self.assertEqual(measurement["properties"]["variance"]["minimum"], 0)
+        self.assertEqual(measurement["properties"]["variance"]["type"], "number")
         above_gate = next(rule for rule in schema["allOf"] if rule.get("if", {}).get("properties", {}).get("parity_status", {}).get("const") == "above")
         self.assertEqual(above_gate["then"]["properties"]["correctness"]["const"], "pass")
         self.assertEqual(above_gate["then"]["properties"]["advantage_claim"]["type"], "string")

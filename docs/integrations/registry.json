@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "registry_id": "termux-monorepo.integration-intelligence",
   "repository": "timerloggedout-spec/termux-monorepo",
-  "updated_at": "2026-11-11",
+  "updated_at": "2026-11-21",
   "authority": "repository-maintained-inventory",
   "capability_scope": "Session-scoped audit of explicitly requested integrations; see INTEGRATION-PORTFOLIO.md for observed access, blockers, and next validation steps. CEEL candidate integrations are inventory-only until independently validated.",
   "integrations": [
@@ -509,6 +509,48 @@
       "write_boundary": "No dataset upload, prompt/completion transfer, scoring mutation or deployment until data classification, retention, scopes and cost ceiling are approved.",
       "next_step": "Verify dataset/version lineage, scorer reproducibility, experiment export and cost controls using sanitized fixtures.",
       "sensitivity": "evaluation-dataset-and-score-metadata"
+    },
+    {
+      "id": "pinecone",
+      "name": "Pinecone",
+      "category": "managed-vector-database",
+      "priority": "P1",
+      "discovery_state": "repo_adapter_implemented",
+      "session_evidence": "Repository REST client and deterministic knowledge-sync workflow exist; historical successful Actions runs 40825414482 and 40825424150 are recorded on source SHA 5fb203a8. Current account/index state was not freshly read in this change.",
+      "repo_skill_path": null,
+      "repo_adapter_state": "repo_adapter_implemented",
+      "authority": "existing-retrieval-adapter; experiment-only extension",
+      "write_boundary": "Existing workflow writes through PINECONE_API_KEY to termux-knowledge/repo-docs. Preserve that incumbent; experimental writes require an isolated namespace/index, current quota check, and explicit spend ceiling.",
+      "next_step": "Run the registered pgvector / pg_pinecone comparison preflight; keep the integrated-inference path as a separate end-to-end reference.",
+      "sensitivity": "provider-credential-and-repository-document-content"
+    },
+    {
+      "id": "pg-pinecone",
+      "name": "pg_pinecone",
+      "category": "postgres-vector-engine",
+      "priority": "P1",
+      "discovery_state": "source_repository_verified",
+      "session_evidence": "Official Apache-2.0 source reviewed at d860f6fd3a21733d75ed2cde2b5b5e71e79bd3ac. README documents pgvector, native, and Pinecone-remote engines plus PostgreSQL 17/18 and superuser requirements; no local install or runtime was performed.",
+      "repo_skill_path": null,
+      "repo_adapter_state": "reference_candidate_only",
+      "authority": "DoE-treatment-candidate-only",
+      "write_boundary": "Reference-only until a reviewed custom fork, immutable release/image provenance, disposable PostgreSQL environment, and admitted DoE preflight exist. Remote writes require isolated Pinecone allocation and budget approval.",
+      "next_step": "Create the custom fork, verify PG17 compatibility and signed image/source provenance, then run only under pinecone-vector-store DoE.",
+      "sensitivity": "database-schema-vector-data-and-external-index-metadata"
+    },
+    {
+      "id": "pgvector",
+      "name": "pgvector",
+      "category": "postgres-vector-extension",
+      "priority": "P1",
+      "discovery_state": "source_repository_verified",
+      "session_evidence": "Official source reviewed at 1d56580cda45d20b6b197fbe325fb0f6301e33cd and the PostgreSQL License text inspected. No local PostgreSQL installation or runtime was performed.",
+      "repo_skill_path": null,
+      "repo_adapter_state": "reference_candidate_only",
+      "authority": "PostgreSQL-vector-baseline-only",
+      "write_boundary": "Reference-only until an isolated PostgreSQL 17 benchmark instance and frozen corpus/vector matrix are available. No production database schema or index changes.",
+      "next_step": "Use HNSW as the registered control in pinecone-vector-store after immutable version and environment preflight.",
+      "sensitivity": "database-schema-and-vector-data"
     }
   ]
 }

@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "graph_id": "termux-monorepo.ceel.opportunity-graph",
   "repository": "timerloggedout-spec/termux-monorepo",
-  "updated_at": "2026-11-20",
+  "updated_at": "2026-11-21",
   "authority": "repository-maintained-capability-index",
   "nodes": [
     {
@@ -561,6 +561,190 @@
         "doe-candidate",
         "restricted-license"
       ]
+    },
+    {
+      "id": "pinecone",
+      "kind": "external_platform",
+      "name": "Pinecone managed vector database",
+      "lifecycle_state": "integrated",
+      "source": {
+        "source_type": "official_documentation",
+        "locator": "https://docs.pinecone.io/",
+        "revision": null,
+        "observed_at": "2026-11-21T16:35:22.129Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "vector.search",
+          "status": "observed",
+          "evidence_refs": [
+            "scripts/pinecone/knowledge_sync.py",
+            "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40825414482"
+          ]
+        },
+        {
+          "capability_id": "vector.upsert",
+          "status": "observed",
+          "evidence_refs": [
+            "scripts/pinecone/pinecone_client.py",
+            "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40825424150"
+          ]
+        },
+        {
+          "capability_id": "integrated.embedding",
+          "status": "documented",
+          "evidence_refs": [
+            "scripts/pinecone/knowledge_sync.py"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "pinecone-knowledge-workflow-history",
+          "status": "partial",
+          "reference": "docs/ops/archive/PINECONE-RECON-2026-10-28.md",
+          "notes": "Historical successful Actions runs 40825414482 and 40825424150 on source SHA 5fb203a8; current master head and live account/index were not revalidated."
+        }
+      ],
+      "owner": "integration-intelligence",
+      "internal_consumers": [
+        "doe-family",
+        "scripts/pinecone/knowledge_sync.py",
+        "she"
+      ],
+      "license": "Commercial managed service; no source-code license",
+      "risk_notes": [
+        "Provider credential remains in Actions secret storage; never export its value.",
+        "Existing termux-knowledge/repo-docs index is the incumbent and must remain isolated from experimental writes.",
+        "Current account quota and index limits require a fresh read before any new remote allocation."
+      ],
+      "tags": [
+        "vector-database",
+        "managed-service",
+        "retrieval",
+        "doe-candidate"
+      ]
+    },
+    {
+      "id": "pg-pinecone",
+      "kind": "foss_project",
+      "name": "pg_pinecone PostgreSQL extension",
+      "lifecycle_state": "mapped",
+      "source": {
+        "source_type": "source_repository",
+        "locator": "https://github.com/pinecone-io/pg_pinecone",
+        "revision": "d860f6fd3a21733d75ed2cde2b5b5e71e79bd3ac",
+        "observed_at": "2026-11-21T16:35:22.129Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "postgres.pgvector.engine",
+          "status": "documented",
+          "evidence_refs": [
+            "https://github.com/pinecone-io/pg_pinecone/tree/d860f6fd3a21733d75ed2cde2b5b5e71e79bd3ac"
+          ]
+        },
+        {
+          "capability_id": "postgres.native.vector.engine",
+          "status": "documented",
+          "evidence_refs": [
+            "https://github.com/pinecone-io/pg_pinecone/tree/d860f6fd3a21733d75ed2cde2b5b5e71e79bd3ac"
+          ]
+        },
+        {
+          "capability_id": "pinecone.remote.vector.engine",
+          "status": "documented",
+          "evidence_refs": [
+            "https://github.com/pinecone-io/pg_pinecone/tree/d860f6fd3a21733d75ed2cde2b5b5e71e79bd3ac"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "pg-pinecone-source-review-2026-11-21",
+          "status": "partial",
+          "reference": "https://github.com/pinecone-io/pg_pinecone/tree/d860f6fd3a21733d75ed2cde2b5b5e71e79bd3ac",
+          "notes": "README and Apache-2.0 license reviewed. The source documents pgvector, native, and remote engines and PostgreSQL 17/18 requirements; no local installation or runtime test was performed."
+        }
+      ],
+      "owner": "integration-intelligence",
+      "internal_consumers": [
+        "doe-family",
+        "pinecone-vector-store",
+        "refTemplates/18_Vector_Databases"
+      ],
+      "license": "Apache-2.0",
+      "risk_notes": [
+        "Requires PostgreSQL 17 or 18, superuser access, and pgvector installed.",
+        "Remote engine requires shared_preload_libraries and a Pinecone API credential.",
+        "Pin release/source provenance and verify Docker image signatures before execution."
+      ],
+      "tags": [
+        "postgresql",
+        "vector-search",
+        "pinecone",
+        "doe-candidate"
+      ]
+    },
+    {
+      "id": "pgvector",
+      "kind": "foss_project",
+      "name": "pgvector PostgreSQL extension",
+      "lifecycle_state": "classified",
+      "source": {
+        "source_type": "source_repository",
+        "locator": "https://github.com/pgvector/pgvector",
+        "revision": "1d56580cda45d20b6b197fbe325fb0f6301e33cd",
+        "observed_at": "2026-11-21T16:35:22.129Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "postgres.vector.types",
+          "status": "documented",
+          "evidence_refs": [
+            "https://github.com/pgvector/pgvector/tree/1d56580cda45d20b6b197fbe325fb0f6301e33cd"
+          ]
+        },
+        {
+          "capability_id": "postgres.hnsw.indexing",
+          "status": "documented",
+          "evidence_refs": [
+            "https://github.com/pgvector/pgvector/tree/1d56580cda45d20b6b197fbe325fb0f6301e33cd"
+          ]
+        },
+        {
+          "capability_id": "postgres.ivfflat.indexing",
+          "status": "documented",
+          "evidence_refs": [
+            "https://github.com/pgvector/pgvector/tree/1d56580cda45d20b6b197fbe325fb0f6301e33cd"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "pgvector-source-review-2026-11-21",
+          "status": "partial",
+          "reference": "https://github.com/pgvector/pgvector/tree/1d56580cda45d20b6b197fbe325fb0f6301e33cd",
+          "notes": "Repository source and PostgreSQL License text reviewed; no local installation or runtime test was performed."
+        }
+      ],
+      "owner": "integration-intelligence",
+      "internal_consumers": [
+        "doe-family",
+        "pinecone-vector-store",
+        "refTemplates/18_Vector_Databases"
+      ],
+      "license": "PostgreSQL License",
+      "risk_notes": [
+        "Baseline version and PostgreSQL server version must be pinned for the experiment.",
+        "Use the same frozen vector matrix and query cohort as the pg_pinecone native and remote arms."
+      ],
+      "tags": [
+        "postgresql",
+        "vector-search",
+        "baseline",
+        "doe-candidate"
+      ]
     }
   ],
   "edges": [
@@ -670,6 +854,36 @@
       "from": "rust-zero-drift-guardrails",
       "to": "doe-family",
       "relationship": "informs",
+      "status": "hypothesis"
+    },
+    {
+      "from": "pinecone",
+      "to": "doe-family",
+      "relationship": "measures",
+      "status": "hypothesis"
+    },
+    {
+      "from": "pg-pinecone",
+      "to": "pinecone",
+      "relationship": "complements",
+      "status": "documented"
+    },
+    {
+      "from": "pg-pinecone",
+      "to": "pgvector",
+      "relationship": "competes_with",
+      "status": "hypothesis"
+    },
+    {
+      "from": "pg-pinecone",
+      "to": "doe-family",
+      "relationship": "measures",
+      "status": "hypothesis"
+    },
+    {
+      "from": "pgvector",
+      "to": "doe-family",
+      "relationship": "measures",
       "status": "hypothesis"
     }
   ]

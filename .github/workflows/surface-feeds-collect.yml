@@ -38,6 +38,8 @@ on:
       - 'deepcli/deepcli/observatory/doe.py'
       - '.agents/skills/multivariate-doe/SKILL.md'
       - 'docs/proposals/active/model-selection-market/DSPY-DOE-LANE.md'
+      - 'docs/ops/DOE-FAMILY.md'
+      - 'experiments/doe/**'
 
 concurrency:
   group: surface-feeds-collect

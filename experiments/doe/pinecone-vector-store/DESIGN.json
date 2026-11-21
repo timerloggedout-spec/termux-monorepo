@@ -1,0 +1,170 @@
+{
+  "schema_version": "doe-design/v1",
+  "campaign_id": "pinecone-vector-store",
+  "issue": null,
+  "owner": "timerloggedout-spec",
+  "registered_at": "2026-11-21T16:34:59.530Z",
+  "status": "design_only",
+  "objective": "Compare the three pg_pinecone storage engines over one frozen ops-document corpus and one shared embedding matrix, while retaining the existing managed Pinecone integrated-inference workflow as a separately labeled incumbent system path.",
+  "hypothesis": "For identical vectors, query tasks, filters, and top-k settings, pg_pinecone native and remote engines will produce retrieval quality comparable to the pgvector engine while changing latency, scale behavior, network dependency, and operational cost. Direction and magnitude remain unknown until the paired experiment runs.",
+  "design": {
+    "type": "paired_blocked_three_level_storage_engine_comparison",
+    "unit": "query_task",
+    "block": "query_id",
+    "baseline_arm": "pgvector-hnsw",
+    "assignment": "Every eligible query task is executed against each engine. Randomize engine order independently within each query block using a recorded seed. Keep SQL, filters, top-k, corpus, vector matrix, and database version fixed.",
+    "sample_size": {
+      "independent_query_tasks": 30,
+      "strata": [
+        {
+          "name": "repository-architecture-and-design",
+          "planned_queries": 6
+        },
+        {
+          "name": "automation-and-workflows",
+          "planned_queries": 6
+        },
+        {
+          "name": "tests-and-ci",
+          "planned_queries": 6
+        },
+        {
+          "name": "proposals-and-doe",
+          "planned_queries": 6
+        },
+        {
+          "name": "operations-and-metrics",
+          "planned_queries": 6
+        }
+      ],
+      "latency_repetitions_per_query_per_arm": 3,
+      "repetitions_are_nested_not_independent_units": true,
+      "extension_rule": "If uncertainty remains wide, add a new predeclared block of 30 independent query tasks; preserve the original cohort and analysis."
+    },
+    "arms": [
+      {
+        "arm_id": "pgvector-hnsw",
+        "role": "control",
+        "provider": "postgres",
+        "engine": "pgvector",
+        "index_type": "HNSW",
+        "vector_source": "shared-precomputed-vectors",
+        "network_dependency": false
+      },
+      {
+        "arm_id": "pg-pinecone-native",
+        "role": "treatment",
+        "provider": "postgres",
+        "engine": "pg_pinecone-native",
+        "vector_source": "shared-precomputed-vectors",
+        "network_dependency": false
+      },
+      {
+        "arm_id": "pg-pinecone-remote",
+        "role": "treatment",
+        "provider": "pinecone",
+        "engine": "pg_pinecone-remote",
+        "vector_source": "shared-precomputed-vectors",
+        "network_dependency": true
+      }
+    ],
+    "separate_system_path": {
+      "arm_id": "pinecone-integrated-inference-incumbent",
+      "role": "incumbent_end_to_end_reference",
+      "index": "termux-knowledge",
+      "namespace": "repo-docs",
+      "embedding_model": "llama-text-embed-v2",
+      "region": "aws/us-east-1",
+      "source": "scripts/pinecone/knowledge_sync.py",
+      "included_in_primary_storage_engine_estimate": false,
+      "reason": "The current REST client upserts text records through integrated inference rather than the same precomputed vector matrix used by the three SQL engine arms."
+    }
+  },
+  "factors": {
+    "engine": [
+      "pgvector-hnsw",
+      "pg-pinecone-native",
+      "pg-pinecone-remote"
+    ]
+  },
+  "corpus": {
+    "source_glob": "docs/ops/*.md",
+    "source_of_chunking": "scripts/pinecone/knowledge_sync.py::build_corpus and chunk_markdown",
+    "max_chunk_chars": 1500,
+    "max_records": 4000,
+    "chunk_id_scheme": "source-stem plus first 12 hexadecimal characters of SHA-256 over chunk text",
+    "freeze_rule": "At preflight, record the source commit SHA, sorted source-file list, per-file SHA-256, chunker revision, chunk IDs, and resulting vector-matrix digest. Every arm consumes the identical frozen corpus and vector matrix."
+  },
+  "embedding_contract": {
+    "storage_only_comparison": "Precompute one immutable document/query vector matrix with one exact model@version and reuse those exact vectors in every engine arm.",
+    "model": "NOT_ESTABLISHED — select and pin the exact embedding model@version before the first run.",
+    "dimensions": "Read from the incumbent index and chosen embedding output at preflight; require exact agreement across arms.",
+    "distance_metric": "Read from the incumbent index and freeze one matching metric across all arms; no metric is inferred from current source code.",
+    "integrated_inference": "Keep the existing Pinecone llama-text-embed-v2 path as a separate end-to-end reference unless the exact embedding model and vector matrix are shared."
+  },
+  "outcomes": {
+    "primary": "Recall@5 against independently curated gold evidence chunk IDs for each query task.",
+    "secondary": [
+      "nDCG@10",
+      "MRR@10",
+      "p50 and p95 query latency",
+      "queries per second under the same concurrency profile",
+      "index build and ingestion time",
+      "database and index storage footprint",
+      "Pinecone read/write units and remote egress",
+      "cost per 1,000 queries and per 1,000 ingested chunks",
+      "error, timeout, and recovery rates",
+      "operator setup and maintenance effort"
+    ],
+    "guardrails": [
+      "Gold evidence labels are frozen before any treatment results are inspected.",
+      "Latency is not a correctness proxy.",
+      "Resource/quota state is recorded as capacity and cost, not quality.",
+      "Unavailable, skipped, failed, and censored arms remain explicit observations."
+    ]
+  },
+  "preflight": {
+    "status": "pending",
+    "required": [
+      "Pin PostgreSQL 17 and pg_pinecone source/release to immutable, provenance-verified revisions.",
+      "Verify pgvector, pg_pinecone, superuser, and shared_preload_libraries requirements in an isolated disposable database.",
+      "Resolve exact embedding model@version, dimensions, distance metric, and identical vector matrix.",
+      "Capture current Pinecone index description and namespace statistics without mutating them.",
+      "Verify current account index limits, remaining quota, and a written spend ceiling before remote-index allocation or write.",
+      "Define isolated experiment namespace/index and cleanup policy; preserve termux-knowledge/repo-docs.",
+      "Add a database-deployment identity extension or owner-approved mapping to the canonical EXPERIMENT record before dispatch."
+    ],
+    "passed": [],
+    "dispatch_authorized": false
+  },
+  "decision_rule": {
+    "quality_first": true,
+    "analysis": "Paired query-block analysis with a bootstrap 95% confidence interval for each treatment-minus-control effect. Report independent query count separately from nested latency repetitions.",
+    "non_inferiority_margin": "Set and record before first run in a versioned amendment; never choose it after viewing outcomes.",
+    "promotion": "Require the primary quality outcome to meet the predeclared non-inferiority/superiority rule, no critical security or reliability regression, and a measured cost/latency/operational benefit. Preserve all raw per-query observations and uncertainty.",
+    "culling": "Cull only after the registered sample and decision rule complete; record reason and source revision."
+  },
+  "execution": {
+    "dispatch_authorized": false,
+    "live_runs": 0,
+    "records_path": "experiments/doe/pinecone-vector-store/records/",
+    "canonical_record_schema": "docs/ops/corpus/EXPERIMENT.schema.json",
+    "record_identity_gap": "The current treatment.instance tuple is agent-configuration-shaped. Define a schema-versioned database-instance identity before emitting run records; do not fabricate system-prompt or tool identities for database engines.",
+    "external_writes_authorized": false,
+    "production_routing_changes_authorized": false
+  },
+  "budget": {
+    "spend_ceiling": null,
+    "status": "NOT_ESTABLISHED",
+    "quota_snapshot": "NOT_RECHECKED",
+    "new_index_creation": "requires explicit budget approval and a current account-limit check"
+  },
+  "provenance": {
+    "pinecone_integration": "scripts/pinecone/pinecone_client.py and scripts/pinecone/knowledge_sync.py",
+    "pg_pinecone_repository": "https://github.com/pinecone-io/pg_pinecone",
+    "pg_pinecone_revision": "d860f6fd3a21733d75ed2cde2b5b5e71e79bd3ac",
+    "pgvector_repository": "https://github.com/pgvector/pgvector",
+    "pgvector_revision": "1d56580cda45d20b6b197fbe325fb0f6301e33cd",
+    "license_review": "pg_pinecone Apache-2.0; pgvector PostgreSQL License"
+  }
+}

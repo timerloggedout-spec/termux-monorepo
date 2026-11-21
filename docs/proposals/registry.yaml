@@ -1,7 +1,27 @@
 version: 1
-updated_at: '2026-11-11T00:00:00Z'
+updated_at: '2026-11-14T17:27:29Z'
 updated_by: ChatGPT
 proposals:
+  - id: repository-subject-certification-profile
+    title: "Standalone repository-subject evaluation and certification evidence profile"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/repository-subject-certification-profile/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_prs: [5433]
+    related_issues: []
+    related_branches:
+      - feat/repository-subject-certification-profile-20261114
+    gates_required:
+      - repo-gate
+      - termux-smoke
 
   - id: master-splinter
     title: 'Master Splinter — GitHub App + Replay Control Plane (ADAPT: control plane over the existing 8-AppID family)'

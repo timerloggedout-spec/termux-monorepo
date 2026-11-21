@@ -1,0 +1,57 @@
+{
+  "schema_version": "repository-subject-evaluation/v1",
+  "evaluation_id": "REPLACE_WITH_STABLE_EVALUATION_ID",
+  "subject": {
+    "repository": "timerloggedout-spec/termux-monorepo",
+    "commit_sha": "0000000000000000000000000000000000000000",
+    "tree_sha": null,
+    "ref": "REPLACE_WITH_EVALUATED_REF",
+    "default_branch": "master"
+  },
+  "profile": {
+    "id": "repository-subject-evaluation",
+    "version": "1"
+  },
+  "evaluation": {
+    "outcome": "UNKNOWN",
+    "started_at": "2026-11-14T00:00:00Z",
+    "completed_at": null,
+    "evaluator": {
+      "id": "REPLACE_WITH_EVALUATOR_ID",
+      "role": "independent-evaluator",
+      "independent": true
+    }
+  },
+  "criteria": [
+    {
+      "criterion_id": "ARCH-001",
+      "dimension": "architecture",
+      "status": "UNKNOWN",
+      "mandatory": true,
+      "finding": "Not evaluated yet.",
+      "evidence_refs": []
+    }
+  ],
+  "limitations": [
+    "Template only; no repository-wide assessment has been performed."
+  ],
+  "certification": {
+    "status": "NOT_SUBMITTED",
+    "program": null,
+    "program_version": null,
+    "authority": null,
+    "decision_ref": null,
+    "scope_assessment": {
+      "status": "OWNER_ASSERTION_UNVERIFIED",
+      "basis": "The owner describes this as an experiment evaluating the repository artifact, not a human-assistance service. The applicable program and current terms have not yet been identified or independently reviewed.",
+      "terms_ref": null,
+      "reviewed_by": null,
+      "reviewed_at": null
+    }
+  },
+  "provenance": {
+    "created_at": "2026-11-14T00:00:00Z",
+    "source_refs": [],
+    "tool_versions": {}
+  }
+}

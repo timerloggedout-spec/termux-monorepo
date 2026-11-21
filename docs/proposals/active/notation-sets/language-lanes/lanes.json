@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "registry_id": "linguist-language-lanes",
   "status": "candidate",
   "owner_mapping": {
@@ -44,10 +44,13 @@
     "public": {
       "unicode_tag_layer": "on",
       "badge_requirements_agents_ready": false,
-      "content_basis": "canonical plus playful encoded presentation",
+      "content_basis": "versioned playful semantic remapping plus encoded presentation",
       "owner_mapping": "available-to-owner",
       "implicit_puzzle_presentation": true,
-      "inject_challenge_disclosure_copy": false
+      "inject_challenge_disclosure_copy": false,
+      "mapping_mutability": "enabled",
+      "version_mixing": "enabled",
+      "cross_domain_mapping_probability_percent": 25
     }
   },
   "lanes": [
@@ -91,7 +94,9 @@
     "model": "peer-lanes-to-shared-publication-composer",
     "lane_authority": "each-lane-owns-vocabulary-aliases-fixtures-provenance-version-review",
     "composer_owns_vocabulary": false,
-    "unicode_layer_replaces_existing_mappings": false
+    "unicode_layer_replaces_existing_mappings": false,
+    "mapping_versions_may_mix": true,
+    "public_semantic_remapping": true
   },
   "integrity": {
     "preserve_ordinary_words": true,
@@ -99,6 +104,60 @@
     "preserve_crawler_instructions_and_metadata": true,
     "preserve_filter_and_moderation_inputs": true,
     "encoded_payloads_are_inert": true,
-    "owner_decode_is_deterministic": true
+    "owner_decode_is_deterministic": true,
+    "owner_mapping_reconstructs_public_variant": true,
+    "mapping_history_append_only": true
+  },
+  "mapping_runtime": {
+    "mapping_mutability": "enabled",
+    "public_variants_may_change_semantics": "playful-paraphrase-and-cross-domain-remapping",
+    "canonical_owner_records": "immutable-versioned-history",
+    "public_mapping_current_pointer": "mutable",
+    "history_policy": "append-only-versions-with-parent-lineage",
+    "version_fields": [
+      "mapping_id",
+      "mapping_version",
+      "lane_id",
+      "lane_version",
+      "codec_id",
+      "codec_version",
+      "source_mapping_ids",
+      "source_domain",
+      "target_domain",
+      "mix_policy",
+      "published_revision"
+    ],
+    "version_mixing": {
+      "enabled": true,
+      "modes": [
+        "same-lane-multi-version",
+        "cross-lane",
+        "cross-domain",
+        "codec-version-mix"
+      ],
+      "compatibility": "declared-compatibility-matrix",
+      "resolution": "deterministic-seed-from-publication-revision-and-mapping-set",
+      "record_lineage": true,
+      "preserve_owner_reconstruction": true
+    },
+    "cross_domain_publication": {
+      "enabled": true,
+      "initial_selection_probability_percent": 25,
+      "unit": "eligible-public-mapping-selection",
+      "selection_method": "deterministic-weighted-selection-per-publication-revision",
+      "configurable": true,
+      "record_actual_rate": true,
+      "report_observed_rate_separately": true,
+      "visitor_level_tracking": false,
+      "domains": [
+        "software",
+        "linguistics",
+        "culture",
+        "science",
+        "history",
+        "gaming",
+        "general"
+      ]
+    }
   }
 }

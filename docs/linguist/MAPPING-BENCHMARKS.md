@@ -117,3 +117,14 @@ The existing Linguist panel feed remains a runtime-source projection.
 Benchmark datasets are experiment artifacts and should be generated in a
 separate path with explicit provenance. Private pointer payloads and secrets
 remain outside public fixtures and generated artifacts.
+
+
+## Expanded first-party mapping lanes
+
+The fixture now incorporates the canonical Fleet ⇔ Lean/Mathlib matrix and vector-store crosswalk plus the 14 concept links currently recorded in the nomenclature seed.
+
+- **Fleet ⇔ Lean/Mathlib:** source rows retain their recorded exact/approximate grade and named kernel. P-001 supplies a proof-verified function-composition row; P-002 supplies a proof-verified matrix-identity row. Other rows remain marked `spec-level` until their own proof or runtime verification exists.
+- **Nomenclature seed:** all 14 source mappings are included as `analogue` retrieval records with their original relation, confidence, evidence note, source IDs, and `candidate` status. Candidate relations remain provisional; the benchmark preserves them as retrieval material rather than upgrading them to semantic equivalence.
+- **Gaps stay gaps:** transpose, ANN top-k, persistence, sqlite-vec, and other rows without a target mapping remain outside the corpus.
+
+The dataset therefore measures retrieval over recorded assertions at multiple evidence states. Report `evidence_status` alongside every score, and interpret candidate-seed results as provisional retrieval coverage rather than adjudicated semantic accuracy.

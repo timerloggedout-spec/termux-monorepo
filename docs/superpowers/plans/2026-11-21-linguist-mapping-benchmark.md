@@ -7,7 +7,7 @@
 ## Global constraints
 
 - Keep `linguist-panel-feed/v1` authoritative.
-- Preserve all source grades, relations, provenance, and feed timestamps.
+- Preserve all source grades, relations, provenance, and feed timestamps.\n- Keep codec round-trip evidence separate from semantic mapping grade.
 - Keep count-only families out of enumerated records.
 - Report ranking quality only when ranked outputs are supplied.
 - Keep dashboard rendering changes outside this plan.

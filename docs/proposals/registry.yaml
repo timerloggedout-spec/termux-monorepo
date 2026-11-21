@@ -1,5 +1,5 @@
 version: 1
-updated_at: '2026-11-11T00:00:00Z'
+updated_at: '2026-11-19T00:00:00Z'
 updated_by: ChatGPT
 proposals:
 
@@ -1261,9 +1261,11 @@ proposals:
       - id: timerloggedout-spec
         role: operator-authorizer
         status: accepted
-    related_prs: []
+    related_prs:
+      - 5656
     related_branches:
       - feat/integration-intelligence-superpowers
+      - feat/multi-project-inference-identity
     gates_required:
       - repo-gate
       - termux-smoke

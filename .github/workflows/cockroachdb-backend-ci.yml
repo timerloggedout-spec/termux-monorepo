@@ -14,6 +14,7 @@ on:
       - "ops/cockroachdb/**"
       - "scripts/ops/cockroach_lane_event.py"
       - "tests/test_cockroach_lane_event.py"
+      - ".github/workflows/cockroachdb-backend-ci.yml"
   workflow_dispatch:
 
 permissions:

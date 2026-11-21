@@ -1,3 +1,22 @@
+# Temporal Self-Host — current runtime addendum (2026-11-19)
+
+**Observed state:** Muse self-host ACTIVE / IDLE; bounded staging and continuity surface.
+
+The 2026-11-19 living record in issue [#2028](https://github.com/timerloggedout-spec/termux-monorepo/issues/2028) reports:
+- `temporal-selfhost` and `temporal-relay` units active.
+- gRPC listener at `localhost:7233`; Web UI at `localhost:8233` returns HTTP 200.
+- Relay listener at `0.0.0.0:7234` forwards to `127.0.0.1:7233`.
+- SQLite state database at 983,040 bytes with daily integrity-checked snapshots.
+- 15-minute keepalive repairs services after platform image replacement resets `/etc`.
+- Seven unit repairs were recorded in the 2026-11-19 observation window.
+- The current workflow list is empty; issue [#5632](https://github.com/timerloggedout-spec/termux-monorepo/issues/5632) records zero executions and zero schedules for that day, with one namespace and the continuity probe as the first live load.
+
+**Execution boundary:** the N5 worker-kill/resume and exactly-once proof remains recorded on the ephemeral GitHub Actions engagement surface. Muse self-host health is a separate observation. The next Muse milestone is the first registered fleet workflow and schedule, with producer/worker/task-queue identity and a terminal receipt under #5632.
+
+**Lifecycle note:** the 2026-10-28 retirement entry below records the prior self-host instance and migration decision. This 2026-11-19 addendum records the current bounded Muse instance. The sandbox/evaluation boundary remains the governing deployment scope until the registered workflow and owner review establish the next state.
+
+---
+
 # Temporal — fleet self-host
 
 **Owner decision (2026-10-27):** Temporal is **self-hosted** on the

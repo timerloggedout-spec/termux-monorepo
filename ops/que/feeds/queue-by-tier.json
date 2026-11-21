@@ -1,26 +1,23 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-21T05:16:16Z",
+ "generated_at": "2026-11-21T05:48:21Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 2,
-   "in_progress": 0,
+   "queued": 1,
+   "in_progress": 1,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "Orchestration Regression Guard": 1,
     "PR scope guard": 1
    }
   },
   "2": {
    "tier": 2,
-   "queued": 1,
+   "queued": 0,
    "in_progress": 2,
-   "oldest_queued_at": "2026-11-21T05:15:35Z",
-   "by_workflow_queued": {
-    "tribute-dashboard-deploy": 1
-   }
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "3": {
    "tier": 3,
@@ -31,20 +28,17 @@
   },
   "4": {
    "tier": 4,
-   "queued": 5,
-   "in_progress": 13,
+   "queued": 1,
+   "in_progress": 10,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "Quota Dispatch Tree": 1,
-    "quota-allocation-planner": 1,
-    "lane events recorder": 2,
     "DO Statement Style": 1
    }
   }
  },
  "totals": {
-  "queued": 8,
-  "in_progress": 15
+  "queued": 2,
+  "in_progress": 13
  },
  "wedged_ancient": [
   {
@@ -203,12 +197,12 @@
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
    "1": 2,
-   "2": 3,
+   "2": 2,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 5,
-  "default_t4": 18,
+  "explicit_total": 4,
+  "default_t4": 11,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

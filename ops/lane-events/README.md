@@ -17,7 +17,7 @@ Append-only Neon Postgres ledger with an optional CockroachDB continuity project
 Idempotency: `event_key = sha256(lane|workflow|run_id|run_attempt|subject|event_type)`
 plus a unique index on `(run_id, run_attempt, coalesce(subject_url, phase_id, ''), event_type)`.
 
-Credentials (repo secrets, names only): `LANE_EVENTS_DATABASE_URL` or `NEON_API_KEY` for Neon; `COCKROACH_DATABASE_URL` for the optional CockroachDB projection. The CockroachDB writer requires `sslmode=verify-full` or `verify-ca`. Each sink writes independently with the same canonical `event_key`; replay from source JSONL reconciles a partial write.
+Credentials (repo secrets, names only): `LANE_EVENTS_DATABASE_URL` or `NEON_API_KEY` for Neon; `COCKROACH_DATABASE_URL` for the optional CockroachDB writer. The CockroachDB writer requires `sslmode=verify-full` or `verify-ca` and uses a SELECT/INSERT-only role. Provision the isolated database and grants with `ops/cockroachdb/lane-events-writer-grants.sql`, then apply schema with the migration-only `COCKROACH_SCHEMA_DATABASE_URL`; runtime event writes perform inserts only. Each sink writes independently with the same canonical `event_key`; replay from source JSONL reconciles a partial write.
 
 Use from any workflow (after `actions/checkout`):
 

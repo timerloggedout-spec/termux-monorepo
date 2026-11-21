@@ -35,7 +35,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+      GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
+      CREDENTIAL_REF: ${{ secrets.ARCHWIZ_GITHUB_TOKEN != '' && 'ARCHWIZ_GITHUB_TOKEN' || secrets.OPERATOR_GITHUB_TOKEN != '' && 'OPERATOR_GITHUB_TOKEN' || secrets.OPERATOR_TOKEN != '' && 'OPERATOR_TOKEN' || 'GITHUB_TOKEN' }}
       EXPECTED_OWNER: timerloggedout-spec
       REPO_NAME: ${{ inputs.repo_name }}
       REPO_DESCRIPTION: ${{ inputs.description }}
@@ -109,4 +110,7 @@ jobs:
             echo "- Visibility: ${REPO_VISIBILITY}"
             echo "- Default branch: ${DEFAULT_BRANCH}"
             echo "- Initialization: GitHub auto_init (default README.md)"
+          echo "- Authenticated owner: ${EXPECTED_OWNER}"
+          echo "- Credential reference: ${CREDENTIAL_REF} (value withheld)"
+          echo "- Provisioning action: POST /user/repos; identity verified via GET /user"
           } >> "${GITHUB_STEP_SUMMARY}"

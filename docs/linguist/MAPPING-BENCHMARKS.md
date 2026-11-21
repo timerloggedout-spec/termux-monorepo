@@ -23,12 +23,19 @@ Reference: [LIMIT dataset generation notebook](https://github.com/google-deepmin
 | External dataset-generation pattern | LIMIT-style corpus/query/qrels construction | reproducible retrieval experiment design |
 | Cross-custom notation | Fleet notation ⇔ Lean/Mathlib | exact, approximate, and domain-qualified mapping |
 | CedrLang / Grimoire | SYMBOL_MAP, MAPPINGS, LEET_MAP, canonical tokens | codec compatibility and round-trip |
-| ZIPFS / Zipf corpora | natural-language and programming-language frequency samples | frequency-skew and rare-token stress tests |
+| `zipfs-law_fork` | natural-language word-frequency corpus | rank/frequency skew and common-to-rare lexical coverage |
+| `zipf_fork` | programming-language corpus (Flask study) | code-token frequency, abbreviation pressure, identifier-tail coverage |
+| `twitter_sentiment_analysis_part3_fork` | sentiment-analysis corpus | domain vocabulary and polarity-label crosswalk stress |
+| `hypemergence_fork` | multi-source social time-series features | feature-name normalization and cross-source alignment |
 | Nomenclature matrix | concept, label, and mapping seed records | relation, confidence, provenance, lifecycle |
 | Cedar pointer maps | pointer command registry and expansion | pointer integrity and reconstruction |
 
-ZIPFS-style corpora measure token-frequency behavior. They act as a distributional
-stress lane; frequency similarity alone does not establish semantic equivalence.
+The four research repositories above are registered in
+`docs/proposals/active/notation-sets/ITEMS.md` as reference corpora. Their
+adapters remain a follow-on ingestion task; this PR establishes the common
+benchmark contract first. Zipf/ZIPFS corpora measure token-frequency behavior
+and act as distributional stress lanes. Frequency similarity alone does not
+establish semantic equivalence.
 
 ## Mapping record contract
 

@@ -175,6 +175,212 @@ class BlockScalarFaultTests(unittest.TestCase):
 class BlockScalarScanTests(unittest.TestCase):
     """The scan itself, so a regression names the property it broke."""
 
+    def test_compact_nested_sequence_sibling_boundaries(self) -> None:
+        for depth in (2, 3, 4):
+            prefix = "  " + "- " * depth
+            sibling = " " * (2 + 2 * (depth - 1))
+            for quote in ('"', "'"):
+                sources = (
+                    f'items:\n{prefix}first\n{sibling}- {quote}second\\n more{quote}\n',
+                    f'items:\n{prefix}first\n{sibling}- {quote}second\n'
+                    f'{sibling}  if: !(false)\n{sibling}  more{quote}\n',
+                    f'items:\n{prefix}name: first\n'
+                    f'{sibling}  {quote}other\\n key{quote}: value\n',
+                )
+                for source in sources:
+                    with self.subTest(depth=depth, quote=quote, source=source):
+                        if yaml is not None:
+                            yaml.safe_load(source)
+                        self.assertEqual(repo_gate.yaml_structure_faults(source), [])
+                        found = repo_gate.yaml_structure_faults(source + "if: !(false)\n")
+                        self.assertEqual(len(found), 1, found)
+                        self.assertIn("scans as a tag", found[0])
+
+    def test_compact_nested_plain_continuation_remains_plain(self) -> None:
+        for depth in (2, 3, 4):
+            prefix = "  " + "- " * depth
+            continuation = " " * (2 + 2 * depth)
+            for value in ("first", "name: first"):
+                indent = continuation + ("  " if value.startswith("name:") else "")
+                source = f'items:\n{prefix}{value}\n{indent}? "unfinished\n'
+                with self.subTest(depth=depth, value=value):
+                    if yaml is not None:
+                        yaml.safe_load(source)
+                    found = repo_gate.yaml_structure_faults(source + "if: !(false)\n")
+                    self.assertEqual(len(found), 1, found)
+                    self.assertIn("scans as a tag", found[0])
+
+    def test_empty_scalar_leading_blanks_preserve_whitespace(self) -> None:
+        # Dedent erases whitespace-only lines, so pass these raw to both scanners.
+        for header in ("|", ">-", "|2"):
+            source = f"description: {header}\n    \ntype: object\n"
+            with self.subTest(header=header):
+                self.assertEqual(repo_gate.yaml_structure_faults(source), [])
+                if yaml is not None:
+                    self.assertEqual(yaml.safe_load(source)["type"], "object")
+
+    def test_quotes_inside_plain_scalars_do_not_mask_later_faults(self) -> None:
+        for value in ("owner's workflow", 'say "hello', "a 'quoted word", 'a - "word'):
+            source = f"name: {value}\nif: !(false)\n"
+            with self.subTest(value=value):
+                found = repo_gate.yaml_structure_faults(source)
+                self.assertEqual(len(found), 1, found)
+                self.assertIn("scans as a tag", found[0])
+                if yaml is not None:
+                    with self.assertRaises(yaml.YAMLError):
+                        yaml.safe_load(source)
+
+    def test_plain_scalar_quotes_do_not_hide_literal_escapes(self) -> None:
+        for value in ("owner's workflow", 'say "hello'):
+            source = f"name: {value}\\n trailing\n"
+            with self.subTest(value=value):
+                found = repo_gate.yaml_structure_faults(source)
+                self.assertEqual(len(found), 1, found)
+                self.assertIn("escape in an unquoted scalar", found[0])
+
+    def test_scalar_start_quotes_keep_multiline_state(self) -> None:
+        for source in (
+            'value: "first\n  second\\n more"\n',
+            "value: 'first\n  second\\n more'\n",
+            'items:\n  - "first\n    second\\n more"\n',
+            'value: ["first\n  second\\n more"]\n',
+            'value: [plain, "first\n  second\\n more"]\n',
+            'value: ["first\n  second", "third\n  fourth\\n more"]\n',
+            'value: [\n  "first\\n more",\n  "second\\n more"]\n',
+            'value: {key: "first\n  second\\n more"}\n',
+            'value: {"key":"first\n  second\\n more"}\n',
+            'value: &anchor "first\n  second\\n more"\n',
+            'value: !!str "first\n  second\\n more"\n',
+            '"value": "first\n  second\\n more"\n',
+        ):
+            with self.subTest(source=source):
+                self.assertEqual(repo_gate.yaml_structure_faults(source), [])
+                if yaml is not None:
+                    yaml.safe_load(source)
+                found = repo_gate.yaml_structure_faults(source + "if: !(false)\n")
+                self.assertEqual(len(found), 1, found)
+                self.assertIn("scans as a tag", found[0])
+
+    def test_explicit_quoted_keys_preserve_escape_boundaries(self) -> None:
+        for source in (
+            'values:\n  ? "first\\n more"\n  : value\n',
+            "values:\n  ? 'first\\n more'\n  : value\n",
+            'values:\n  ? "first\n    second\\n more"\n  : value\n',
+            "values:\n  ? 'first\n    second\\n more'\n  : value\n",
+            "value: {? 'key\\n more': value}\n",
+        ):
+            with self.subTest(source=source):
+                if yaml is not None:
+                    yaml.safe_load(source)
+                self.assertEqual(repo_gate.yaml_structure_faults(source), [])
+                found = repo_gate.yaml_structure_faults(source + "if: !(false)\n")
+                self.assertEqual(len(found), 1, found)
+                self.assertIn("scans as a tag", found[0])
+        # A question mark within a plain scalar must not enable quoted state.
+        for value in ('plain ? "unfinished', "plain ? 'unfinished"):
+            found = repo_gate.yaml_structure_faults(f"value: {value}\nif: !(false)\n")
+            self.assertEqual(len(found), 1, found)
+            self.assertIn("scans as a tag", found[0])
+
+    def test_flow_plain_colons_do_not_open_quote_state(self) -> None:
+        for source in (
+            "value: [prefix:'unfinished]\n",
+            'value: [prefix:"unfinished]\n',
+            "value: {key: prefix:'unfinished}\n",
+        ):
+            with self.subTest(source=source):
+                if yaml is not None:
+                    yaml.safe_load(source)
+                found = repo_gate.yaml_structure_faults(source + "if: !(false)\n")
+                self.assertEqual(len(found), 1, found)
+                self.assertIn("scans as a tag", found[0])
+
+    def test_crlf_block_scalars_match_lf(self) -> None:
+        for source in (
+            "run: |\n  rollback: set flag: false\n",
+            "run: >-\n  rollback: set flag: false\n",
+            "run: |2\n  rollback: set flag: false\n",
+            "run: |\n    first\n  second\n",
+        ):
+            with self.subTest(source=source):
+                crlf = source.replace("\n", "\r\n")
+                self.assertEqual(
+                    repo_gate.yaml_structure_faults(crlf),
+                    repo_gate.yaml_structure_faults(source),
+                )
+                if yaml is not None and "second" not in source:
+                    self.assertIsInstance(yaml.safe_load(crlf)["run"], str)
+
+    def test_lone_carriage_return_is_a_yaml_line_break(self) -> None:
+        source = "run: |\n  echo first\rnot-a-mapping\n"
+        self.assertEqual(
+            repo_gate.yaml_structure_faults(source),
+            repo_gate.yaml_structure_faults(source.replace("\r", "\n")),
+        )
+        self.assertTrue(repo_gate.yaml_structure_faults(source))
+        if yaml is not None:
+            with self.assertRaises(yaml.YAMLError):
+                yaml.safe_load(source)
+        valid = 'value: "first\r  second\\n more"\r'
+        self.assertEqual(repo_gate.yaml_structure_faults(valid), [])
+        if yaml is not None:
+            yaml.safe_load(valid)
+
+    def test_unicode_payload_separators_are_not_structural_lines(self) -> None:
+        # YAML 1.2 section 5.4 treats these as non-breaks; PyYAML uses 1.1
+        # semantics here and is deliberately not the oracle for this fixture.
+        for separator in (" ", " "):
+            source = f"run: |\n  echo first{separator}not-a-mapping\n"
+            with self.subTest(separator=separator):
+                self.assertEqual(repo_gate.yaml_structure_faults(source), [])
+
+    def test_empty_flow_anchor_leaves_delimiters_visible(self) -> None:
+        for source in (
+            'value: [&a,"first\n  second\\n more"]\n',
+            "value: [&a,'first\n  second\\n more']\n",
+            'value: {first: [&a], next: "first\\n more"}\n',
+        ):
+            with self.subTest(source=source):
+                if yaml is not None:
+                    yaml.safe_load(source)
+                self.assertEqual(repo_gate.yaml_structure_faults(source), [])
+
+    def test_plain_continuations_do_not_open_quoted_state(self) -> None:
+        for prefix, indent in (
+            ("description: Ask yourself\n", "  "),
+            ("items:\n  - Ask yourself\n", "    "),
+            ("items:\n  - description: Ask yourself\n", "      "),
+        ):
+            for quote in ('"', "'"):
+                source = prefix + indent + "? " + quote + "unfinished\n"
+                with self.subTest(source=source):
+                    if yaml is not None:
+                        yaml.safe_load(source)
+                    found = repo_gate.yaml_structure_faults(source + "if: !(false)\n")
+                    self.assertEqual(len(found), 1, found)
+                    self.assertIn("scans as a tag", found[0])
+                    escaped = prefix + indent + "? " + quote + "first\\n more" + quote + "\n"
+                    if yaml is not None:
+                        yaml.safe_load(escaped)
+                    found = repo_gate.yaml_structure_faults(escaped)
+                    self.assertEqual(len(found), 1, found)
+                    self.assertIn("escape in an unquoted scalar", found[0])
+
+    def test_plain_continuation_state_resets_at_real_node_boundaries(self) -> None:
+        for source in (
+            'description: first\n  "unfinished\n\n# comment\nvalue: "real\\n more"\n',
+            'items:\n  - first\n    ? "unfinished\n  - "real\\n more"\n',
+            'value: [first,\n  ? prose, "real\\n more"]\n',
+            'description: first\n  ? "unfinished\n---\n  value: "real\\n more"\n',
+        ):
+            with self.subTest(source=source):
+                if yaml is not None:
+                    list(yaml.safe_load_all(source))
+                self.assertEqual(repo_gate.yaml_structure_faults(source), [])
+                found = repo_gate.yaml_structure_faults(source + "if: !(false)\n")
+                self.assertEqual(len(found), 1, found)
+                self.assertIn("scans as a tag", found[0])
+
     def test_over_indented_leading_blank_is_rejected(self) -> None:
         # Do not dedent: textwrap strips whitespace-only lines, erasing the defect.
         source = "run: |\n    \n  echo ok\n"

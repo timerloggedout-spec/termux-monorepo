@@ -184,10 +184,19 @@ SIBLING_ENTRY_RE = re.compile(r"^[ ]*(?:- +[^\s#]|[^\s#][^:]*:)")
 LITERAL_ESCAPE_RE = re.compile(r"\\[nrt]")
 
 
-def literal_escape_fault(line: str, quote_state: list[bool] | None = None) -> str | None:
+def literal_escape_fault(
+    line: str,
+    quote_state: list[bool] | None = None,
+    flow_state: list[int] | None = None,
+    plain_state: list[int] | None = None,
+) -> str | None:
     """Return the offending `\\x` escape in `line`, or None.
 
     Optional mutable quote_state preserves open quotes across YAML lines.
+    Optional flow_state preserves collection depth so a second quoted item after
+    a multiline item still begins at a flow delimiter, not inside a plain scalar.
+    Optional plain_state holds a plain scalar's parent indentation, or -1 when
+    absent, so indented prose cannot masquerade as a fresh quoted node.
     Scans left to right tracking quoted-scalar state, so the rule fires only where
     the escape is unquoted and therefore unintended: inside either quote style the
     author has explicitly asked for the backslash (as a real escape in `"..."`, as
@@ -207,6 +216,24 @@ def literal_escape_fault(line: str, quote_state: list[bool] | None = None) -> st
     """
     index = 0
     in_single, in_double = quote_state if quote_state is not None else (False, False)
+    line_indent = len(line) - len(line.lstrip(" \t"))
+    parent_indent = plain_state[0] if plain_state is not None else -1
+    continued_plain = parent_indent >= 0 and line_indent > parent_indent
+    scalar_start = not (in_single or in_double or continued_plain)
+    plain_content = continued_plain
+    # Compact sequences may have several dashes: the final scalar belongs to
+    # the innermost sequence, or to a mapping starting after its last dash.
+    node_indent = line_indent
+    sequence = re.match(r"[ \t]*(?:-[ \t]+)+", line)
+    if sequence:
+        dashes = list(re.finditer(r"-[ \t]+", sequence.group(0)))
+        node_indent = dashes[-1].start()
+        if re.match(r"[^:]+:(?:[ \t]|$)", line[sequence.end():]):
+            node_indent = sequence.end()
+    if not continued_plain:
+        parent_indent = node_indent
+    flow_depth = flow_state[0] if flow_state is not None else 0
+    quoted_end = -2
     while index < len(line):
         char = line[index]
         if in_double:
@@ -215,16 +242,22 @@ def literal_escape_fault(line: str, quote_state: list[bool] | None = None) -> st
                 continue
             if char == '"':
                 in_double = False
+                scalar_start = False
+                quoted_end = index
         elif in_single:
             if char == "'":
                 if line[index + 1 : index + 2] == "'":
                     index += 2
                     continue
                 in_single = False
-        elif char == '"':
+                scalar_start = False
+                quoted_end = index
+        elif char == '"' and scalar_start:
             in_double = True
-        elif char == "'":
+            plain_content = False
+        elif char == "'" and scalar_start:
             in_single = True
+            plain_content = False
         elif char == "#" and (index == 0 or line[index - 1] in " \t"):
             break
         elif char == "\\" and LITERAL_ESCAPE_RE.match(line, index):
@@ -239,9 +272,42 @@ def literal_escape_fault(line: str, quote_state: list[bool] | None = None) -> st
                 after == "" or after.isspace() or before in ("]", "}", ",")
             ):
                 return line[index : index + 2]
+        elif char == ":" and (
+            line[index + 1 : index + 2] in ("", " ", "\t")
+            or (flow_depth and quoted_end == index - 1)
+        ):
+            scalar_start = True
+            plain_content = False
+        elif scalar_start and char in "-?" and line[index + 1 : index + 2] in (" ", "\t"):
+            pass  # sequence entry or explicit mapping key, not plain content
+        elif scalar_start and char in "[{":
+            flow_depth += 1
+            plain_content = False
+        elif flow_depth and char in "]}":
+            flow_depth -= 1
+            scalar_start = False
+            plain_content = False
+        elif flow_depth and char == ",":
+            scalar_start = True
+            plain_content = False
+        elif scalar_start and char in "!&":
+            # A tag or anchor is a node property before the scalar, not its value.
+            boundaries = " \t,[]{}" if char == "&" else " \t"
+            while index + 1 < len(line) and line[index + 1] not in boundaries:
+                index += 1
+        elif char not in " \t":
+            # Apostrophes/quotes embedded in plain values are ordinary characters.
+            if scalar_start:
+                plain_content = char not in "|>*"
+                parent_indent = node_indent
+            scalar_start = False
         index += 1
     if quote_state is not None:
         quote_state[:] = [in_single, in_double]
+    if flow_state is not None:
+        flow_state[:] = [flow_depth]
+    if plain_state is not None and line.strip() and not line.lstrip().startswith("#"):
+        plain_state[:] = [parent_indent if plain_content else -1]
     return None
 
 
@@ -301,7 +367,7 @@ def block_scalar_scan(lines: list[str]) -> tuple[set[int], list[str]]:
         first_indent = indent_of(line)[0]
         content_indent = declared if declared is not None else first_indent
 
-        if declared is None:
+        if declared is None and first_indent > header_indent:
             for leading in range(index + 1, cursor):
                 if indent_of(lines[leading])[0] > content_indent:
                     faults.append(
@@ -370,16 +436,22 @@ def yaml_structure_faults(text: str) -> list[str]:
     authoritative lint remains the advisory actionlint lane.
     """
     faults: list[str] = []
-    lines = text.split("\n")
+    # YAML 1.2 recognizes LF, CRLF and CR, but not Unicode separators.
+    # splitlines() would also split non-break payload characters.
+    lines = text.replace("\r\n", "\n").replace("\r", "\n").split("\n")
     inside_block, block_faults = block_scalar_scan(lines)
     quote_state = [False, False]
+    flow_state = [0]
+    plain_state = [-1]
 
     for index, line in enumerate(lines):
         number = index + 1
         if index in inside_block:
             continue
         continued_quote = any(quote_state)
-        escape = literal_escape_fault(line, quote_state)
+        escape = literal_escape_fault(line, quote_state, flow_state, plain_state)
+        if not continued_quote and ROOT_MARKER_RE.match(line):
+            plain_state[:] = [-1]
         if continued_quote:
             # YAML folds multiline quoted content; it is not a new mapping entry.
             continue

@@ -160,6 +160,15 @@ class PolyglotFederationTests(unittest.TestCase):
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("capability_id does not resolve", result.stderr)
 
+
+    def test_public_surface_contract_keeps_derpwiki_mandatory_and_z3_notifications_visible(self):
+        manifest = (ROOT / "docs" / "proposals" / "active" / "polyglot-linguist-federation" / "MANIFEST.md").read_text(encoding="utf-8")
+        self.assertIn("mandatory Linguist language layer", manifest)
+        self.assertIn("zero visitor opt-in", manifest)
+        self.assertIn("Z3π∅ notifications into public user interfaces", manifest)
+        self.assertIn("docs/ops/ACTIONS-MATRIX.md", manifest)
+        self.assertIn("docs/ops/AUTOMATED-TELEMETRY-AUDIT.md", manifest)
+
     def test_validator_passes(self):
         result = subprocess.run(
             [sys.executable, str(ROOT / "scripts" / "polyglot" / "validate_federation.py")],

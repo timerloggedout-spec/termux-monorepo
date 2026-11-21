@@ -46,8 +46,8 @@ The repository remains the source of truth. Session connectors and installed ski
 | Inductive Bio | Public LogD, acidic pKa, and basic pKa model catalog retrieved | Preserve model IDs and versions if a scientific prediction lane is built |
 | Superpowers | Skill installed; repository-local skill already exists | Continue using the repository policy bridge |
 | Temporal | Developer skill installed; no Temporal server connector exposed | Reconcile with existing `temporal-langsmith-adapter` proposal |
-| Pinecone | Existing REST client, deterministic sync workflow, and historical successful Actions runs; current account/index not freshly re-read | Implemented; current-head runtime proof pending | Managed semantic retrieval over ops documentation |
-| pg_pinecone | Official Apache-2.0 upstream reviewed at a pinned commit; extension not installed here | Reference candidate only; custom-fork smod pending | PostgreSQL native and Pinecone-remote engines |
+| Pinecone | Existing REST client, deterministic sync workflow, and historical successful Actions runs; fresh account/index observation pending | Implemented; current-head runtime proof pending | Managed semantic retrieval over ops documentation |
+| pg_pinecone | Official Apache-2.0 upstream reviewed at a pinned commit; local extension runtime pending | Reference candidate only; custom-fork smod pending | PostgreSQL native and Pinecone-remote engines |
 | pgvector | Official source and license reviewed at a pinned commit; extension not installed here | Reference candidate only | PostgreSQL HNSW baseline |
 | SiteTriage | Diagnostic tools exposed | Keep diagnostics read-only by default |
 | AI Task Brief Builder | Task brief extraction tool exposed | Use for evidence-separated requirements and acceptance criteria |

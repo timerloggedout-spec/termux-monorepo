@@ -24,7 +24,7 @@ The Flywheel slot is metadata-first and tracks a composable stack; it is not a r
 | pinecone | https://docs.pinecone.io/ | Managed vector database; existing repo REST client and knowledge-sync consumer |
 | pg_pinecone | https://github.com/pinecone-io/pg_pinecone | Apache-2.0 PostgreSQL extension; native and Pinecone-remote engine comparison candidate |
 | pgvector | https://github.com/pgvector/pgvector | PostgreSQL vector baseline; source pin recorded in metadata |
-| pinecone-mcp | https://github.com/pinecone-io/pinecone-mcp | Official Apache-2.0 developer MCP reference; optional interface, not a duplicate runtime adapter |
+| pinecone-mcp | https://github.com/pinecone-io/pinecone-mcp | Official Apache-2.0 developer MCP reference; optional interface, separate from the existing runtime adapter |
 
 The managed Pinecone integration already lives in scripts/pinecone/ and .github/workflows/pinecone-knowledge.yml. The DoE compares retrieval engines over a frozen corpus and shared vectors; it keeps embedding-path comparisons separate. See experiments/doe/pinecone-vector-store/DESIGN.json.
 

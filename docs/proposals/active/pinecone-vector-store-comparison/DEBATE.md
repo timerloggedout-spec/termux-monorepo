@@ -8,7 +8,7 @@
 
 ## D2 — Separate managed Pinecone from pg_pinecone
 
-**Evidence:** pinecone-io/pg_pinecone is an Apache-2.0 PostgreSQL extension with pgvector-compatible columns and native / remote engine choices. It is a distinct open-source project, not the managed Pinecone service itself.
+**Evidence:** pinecone-io/pg_pinecone is an Apache-2.0 PostgreSQL extension with pgvector-compatible columns and native / remote engine choices. It is a distinct open-source project alongside the managed Pinecone service.
 
 **Decision:** Catalogue both as related but distinct capabilities. Include pgvector as the PostgreSQL baseline. Pin exact source commits in the metadata.
 
@@ -22,6 +22,6 @@
 
 **Decision:** Record pg_pinecone as the intended smod candidate and hold the gitlink until the custom fork exists. Direct upstream pinning would violate the current smods contract.
 
-## D5 — No runtime claims before a run
+## D5 — Runtime evidence follows observed runs
 
-**Decision:** This change registers a design-only campaign. It creates no experiment run records, no index, no namespace, no database, and no billing mutation. The feed must show admitted_design_only, zero runs, and null results until real EXPERIMENT records exist.
+**Decision:** This change registers a design-only campaign. The campaign currently has 0 experiment run records, 0 index allocations, 0 namespace allocations, 0 database instances, and 0 billing mutations. The feed shows admitted_design_only, zero runs, and null results until real EXPERIMENT records exist.

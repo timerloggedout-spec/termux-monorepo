@@ -603,7 +603,7 @@
           "evidence_id": "pinecone-knowledge-workflow-history",
           "status": "partial",
           "reference": "docs/ops/archive/PINECONE-RECON-2026-10-28.md",
-          "notes": "Historical successful Actions runs 40825414482 and 40825424150 on source SHA 5fb203a8; current master head and live account/index were not revalidated."
+          "notes": "Historical successful Actions runs 40825414482 and 40825424150 on source SHA 5fb203a8; fresh validation of the current master head and live account/index remains pending."
         }
       ],
       "owner": "integration-intelligence",
@@ -612,9 +612,9 @@
         "scripts/pinecone/knowledge_sync.py",
         "she"
       ],
-      "license": "Commercial managed service; no source-code license",
+      "license": "Commercial proprietary managed service",
       "risk_notes": [
-        "Provider credential remains in Actions secret storage; never export its value.",
+        "Provider credential remains in Actions secret storage; keep its value within Actions secret storage.",
         "Existing termux-knowledge/repo-docs index is the incumbent and must remain isolated from experimental writes.",
         "Current account quota and index limits require a fresh read before any new remote allocation."
       ],
@@ -664,7 +664,7 @@
           "evidence_id": "pg-pinecone-source-review-2026-11-21",
           "status": "partial",
           "reference": "https://github.com/pinecone-io/pg_pinecone/tree/d860f6fd3a21733d75ed2cde2b5b5e71e79bd3ac",
-          "notes": "README and Apache-2.0 license reviewed. The source documents pgvector, native, and remote engines and PostgreSQL 17/18 requirements; no local installation or runtime test was performed."
+          "notes": "README and Apache-2.0 license reviewed. The source documents pgvector, native, and remote engines and PostgreSQL 17/18 requirements; local installation and runtime testing remain pending."
         }
       ],
       "owner": "integration-intelligence",
@@ -725,7 +725,7 @@
           "evidence_id": "pgvector-source-review-2026-11-21",
           "status": "partial",
           "reference": "https://github.com/pgvector/pgvector/tree/1d56580cda45d20b6b197fbe325fb0f6301e33cd",
-          "notes": "Repository source and PostgreSQL License text reviewed; no local installation or runtime test was performed."
+          "notes": "Repository source and PostgreSQL License text reviewed; local installation and runtime testing remain pending."
         }
       ],
       "owner": "integration-intelligence",

@@ -13,4 +13,4 @@ The root .gitmodules file is the source of truth for live gitlinks. This directo
 | State | candidate — custom fork pending |
 | DoE | experiments/doe/pinecone-vector-store/DESIGN.json |
 
-The upstream source is catalogued in refTemplates/18_Vector_Databases/pinecone/. The current GitHub connector provides repository reads and ordinary content writes, but no fork-creation operation. The live gitlink is held until timerloggedout-spec/pg_pinecone_fork exists and passes the submodule integrity, compatibility, and dual-gate checks. Existing Pinecone REST integration remains active independently.
+The upstream source is catalogued in refTemplates/18_Vector_Databases/pinecone/. The current GitHub connector provides repository reads and ordinary content writes, ; fork creation requires an authorized GitHub repository operation outside this connector. Admit the live gitlink after timerloggedout-spec/pg_pinecone_fork exists and passes the submodule integrity, compatibility, and dual-gate checks. Existing Pinecone REST integration remains active independently.

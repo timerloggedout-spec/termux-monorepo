@@ -10,7 +10,7 @@ Bring the existing managed Pinecone vector-database integration into the referen
 The experiment separates two questions:
 
 1. **Storage-engine effect:** Pinecone serverless, PostgreSQL pgvector, pg_pinecone native, and pg_pinecone remote using the same precomputed embeddings and query vectors.
-2. **End-to-end embedding path:** the existing Pinecone integrated-inference index (termux-knowledge, model configuration recorded by the current integration) as a distinct system treatment. This path does not get mixed into the storage-only causal estimate unless the same embedding model/version is used for every arm.
+2. **End-to-end embedding path:** the existing Pinecone integrated-inference index (termux-knowledge, model configuration recorded by the current integration) as a distinct system treatment. Evaluate this path as a separate system-level cohort; combine it with the storage-only causal estimate only when every arm shares the same embedding model/version.
 
 ## Existing implementation
 
@@ -20,7 +20,7 @@ The repository already contains:
 - .github/workflows/pinecone-knowledge.yml — dispatch/monthly/path-triggered workflow with fake-transport tests and a run artifact.
 - tests/test_pinecone_knowledge.py — five fake-transport tests.
 
-Historical live proof is recorded in the Pinecone integration history: successful runs 40825414482 and 40825424150 on source SHA 5fb203a8. This is historical evidence, not a claim that the current master head has been freshly exercised.
+Historical live proof is recorded in the Pinecone integration history: successful runs 40825414482 and 40825424150 on source SHA 5fb203a8. This is historical evidence; the current master head awaits a fresh runtime check.
 
 ## Reference sources
 
@@ -31,16 +31,16 @@ Historical live proof is recorded in the Pinecone integration history: successfu
 
 ## Smods decision
 
-The repository's smods policy requires a real custom fork, immutable reviewed pin, compatibility evidence, and passing gates. No timerloggedout-spec/pg_pinecone_fork repository exists at the inspected snapshot, and this session's GitHub connector exposes no fork-creation action. The source is therefore catalogued and its exact upstream revision recorded; the live gitlink remains a gated follow-on. The implementation uses the existing managed Pinecone REST adapter and does not introduce a direct-upstream gitlink.
+The repository's smods policy requires a real custom fork, immutable reviewed pin, compatibility evidence, and passing gates. Custom fork creation remains pending at the inspected snapshot. This session's GitHub connector supports repository reads and ordinary content writes; fork creation requires a separate authorized GitHub repository operation. The source and exact upstream revision are catalogued, and the live gitlink remains a gated follow-on. Reuse the existing managed Pinecone REST adapter and reserve live gitlinks for the custom fork.
 
 ## Safety and execution boundaries
 
 - Keep all credential values outside source, metadata, experiment records, and artifacts.
-- Preserve PINECONE_API_KEY as the existing Actions secret name; no secret read or rotation occurs in this change.
+- Preserve PINECONE_API_KEY as the existing Actions secret name; perform zero secret reads or rotations in this change.
 - Keep the existing termux-knowledge index as the incumbent. Use a dedicated namespace and explicit budget approval for any experiment writes.
 - Treat PostgreSQL 17/18, superuser access, pgvector installation, Docker image compatibility, and Pinecone remote-index allocation as preflight gates.
 - Keep production routing, existing namespaces, index deletion, and account/billing mutations outside this proposal.
-- Record skipped, unavailable, censored, and failed arms as observations; do not turn admission failures into database-quality failures.
+- Record skipped, unavailable, censored, and failed arms as observations; classify admission failures separately from database-quality failures.
 
 ## Deliverables
 

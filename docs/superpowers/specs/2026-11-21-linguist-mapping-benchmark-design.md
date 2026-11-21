@@ -13,7 +13,7 @@ Create a reproducible retrieval benchmark over source-backed Linguist mapping as
 - Preserve the curated Fleet ⇔ Lean/Mathlib and nomenclature crosswalk evidence.
 - Project enumerated feed records into deterministic, unique benchmark record IDs and stable source identity keys.
 - Retain exact, approximate, analogue, lossy, and unverified grades without promoting candidate relations.
-- Generate deterministic corpus/query/qrels/candidate artifacts and score rankings only when ranked outputs exist.
+- Generate deterministic corpus/query/qrels/candidate/hard-negative artifacts and score rankings only when ranked outputs exist.\n- Enforce query-specific candidate-pool boundaries during evaluation.
 - Keep experiment artifacts separate from the dashboard's runtime feed contract.
 
 ## Non-goals

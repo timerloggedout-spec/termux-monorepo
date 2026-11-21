@@ -30,14 +30,14 @@ def slots() -> list[Path]:
 
 def inventory_entry(slot: Path) -> dict:
     children = [c.name for c in sorted(slot.iterdir()) if c.is_dir() or c.suffix in {".md", ".txt"}]
-    research_children = []
-    if slot.name.startswith("15_"):
+    metadata_children = []
+    if slot.name in METADATA_CHILD_SLOTS:
         for c in sorted(slot.iterdir()):
             if not c.is_dir():
                 continue
             source = c / "SOURCE.txt"
             readme = c / "README.md"
-            research_children.append(
+            metadata_children.append(
                 {
                     "name": c.name,
                     "has_source": source.is_file(),
@@ -51,7 +51,8 @@ def inventory_entry(slot: Path) -> dict:
         "slot": slot.name,
         "path": str(slot.relative_to(ROOT)),
         "entries": children,
-        "research_children": research_children,
+        "research_children": metadata_children if slot.name == "15_Research_Repo_Templates" else [],
+        "metadata_children": metadata_children,
         "collected_at": datetime.now(UTC).isoformat(),
     }
 
@@ -59,8 +60,8 @@ def inventory_entry(slot: Path) -> dict:
 def validate(entries: list[dict]) -> list[str]:
     failures: list[str] = []
     for e in entries:
-        if e["slot"].startswith("15_"):
-            for rc in e.get("research_children", []):
+        if e["slot"] in METADATA_CHILD_SLOTS:
+            for rc in e.get("metadata_children", e.get("research_children", [])):
                 if not rc.get("has_source"):
                     failures.append(f"{e['slot']}/{rc['name']}: missing SOURCE.txt")
                 if not rc.get("has_readme"):

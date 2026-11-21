@@ -19,6 +19,7 @@ inputs:
   command: {description: "record | count | schema", required: false, default: record}
   database-url: {description: "pass secrets.LANE_EVENTS_DATABASE_URL", required: false, default: ""}
   neon-api-key: {description: "pass secrets.NEON_API_KEY", required: false, default: ""}
+  cockroach-database-url: {description: "pass secrets.COCKROACH_DATABASE_URL", required: false, default: ""}
 runs:
   using: composite
   steps:
@@ -26,6 +27,7 @@ runs:
       env:
         LANE_EVENTS_DATABASE_URL: ${{ inputs.database-url }}
         NEON_API_KEY: ${{ inputs.neon-api-key }}
+        COCKROACH_DATABASE_URL: ${{ inputs.cockroach-database-url }}
         IN_LANE: ${{ inputs.lane }}
         IN_WORKFLOW: ${{ inputs.workflow }}
         IN_TYPE: ${{ inputs.event-type }}
@@ -45,4 +47,9 @@ runs:
           --lane "$IN_LANE" --workflow "$IN_WORKFLOW" --event-type "$IN_TYPE" --repo "$GITHUB_REPOSITORY" \
           --run-id "$IN_RUN_ID" --run-attempt "$IN_RUN_ATTEMPT" --subject-url "$IN_SUBJECT" \
           --phase-id "$IN_PHASE" --conclusion "$IN_CONCLUSION" --head-sha "$IN_SHA" \
+          --occurred-at "$IN_AT" --payload "$IN_PAYLOAD" --events-file "$IN_FILE" || true
+        python3 "$GITHUB_WORKSPACE/scripts/ops/cockroach_lane_event.py" "$IN_CMD" \\
+          --lane "$IN_LANE" --workflow "$IN_WORKFLOW" --event-type "$IN_TYPE" --repo "$GITHUB_REPOSITORY" \\
+          --run-id "$IN_RUN_ID" --run-attempt "$IN_RUN_ATTEMPT" --subject-url "$IN_SUBJECT" \\
+          --phase-id "$IN_PHASE" --conclusion "$IN_CONCLUSION" --head-sha "$IN_SHA" \\
           --occurred-at "$IN_AT" --payload "$IN_PAYLOAD" --events-file "$IN_FILE" || true

@@ -135,6 +135,9 @@ class PolyglotFederationTests(unittest.TestCase):
         nonpass_gate = next(rule for rule in schema["allOf"] if rule.get("if", {}).get("properties", {}).get("correctness", {}).get("const") == "pass")
         self.assertEqual(nonpass_gate["else"]["properties"]["parity_status"]["enum"], ["unknown"])
         self.assertEqual(nonpass_gate["else"]["properties"]["advantage_claim"]["type"], "null")
+        claim_gate = next(rule for rule in schema["allOf"] if rule.get("if", {}).get("properties", {}).get("advantage_claim", {}).get("type") == "string")
+        self.assertEqual(claim_gate["then"]["properties"]["parity_status"]["const"], "above")
+        self.assertEqual(claim_gate["then"]["properties"]["correctness"]["const"], "pass")
 
     def test_feed_schema_requires_full_commit_sha(self):
         schema = json.loads((BASE / "schemas" / "feed-envelope.schema.json").read_text(encoding="utf-8"))

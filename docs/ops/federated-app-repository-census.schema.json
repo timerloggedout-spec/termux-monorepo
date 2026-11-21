@@ -1,0 +1,224 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/federated-app-repository-census.schema.json",
+  "title": "Federated repository discovery census",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "generated_at",
+    "source",
+    "classification_contract",
+    "repositories",
+    "application_review_queue",
+    "known_special_cases",
+    "limitations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "provider",
+        "owner",
+        "query",
+        "pages_fetched",
+        "per_page",
+        "returned_records",
+        "unique_repositories",
+        "coverage_note"
+      ],
+      "properties": {
+        "provider": {
+          "const": "GitHub repository search"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "query": {
+          "type": "string"
+        },
+        "pages_fetched": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "per_page": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "returned_records": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unique_repositories": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "coverage_note": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "classification_contract": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "repositories": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/repository"
+      }
+    },
+    "application_review_queue": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "repository",
+          "classification",
+          "product_app_id",
+          "release_lanes",
+          "ui_surface_ids",
+          "reason",
+          "evidence_status"
+        ],
+        "properties": {
+          "repository": {
+            "type": "string",
+            "pattern": "^[^/]+/[^/]+$"
+          },
+          "classification": {
+            "const": "candidate"
+          },
+          "product_app_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "release_lanes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "ui_surface_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reason": {
+            "type": "string"
+          },
+          "evidence_status": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "known_special_cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "repository",
+          "classification",
+          "product_app_id",
+          "reason"
+        ],
+        "properties": {
+          "repository": {
+            "type": "string"
+          },
+          "classification": {
+            "type": "string"
+          },
+          "identity": {
+            "type": "string"
+          },
+          "identity_domain": {
+            "type": "string"
+          },
+          "product_app_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "repository": {
+      "type": "object",
+      "required": [
+        "full_name",
+        "default_branch",
+        "html_url",
+        "classification",
+        "product_app_id",
+        "release_lanes",
+        "ui_surface_ids",
+        "evidence_status"
+      ],
+      "properties": {
+        "full_name": {
+          "type": "string",
+          "pattern": "^[^/]+/[^/]+$"
+        },
+        "default_branch": {
+          "type": "string"
+        },
+        "html_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://github.com/"
+        },
+        "classification": {
+          "const": "discovered"
+        },
+        "product_app_id": {
+          "type": "null"
+        },
+        "release_lanes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ui_surface_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence_status": {
+          "const": "repository-metadata-only"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

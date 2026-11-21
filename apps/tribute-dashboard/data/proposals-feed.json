@@ -1,25 +1,25 @@
 {
  "schema": "proposals-feed/v2",
- "generated_at": "2026-11-13T05:12:54Z",
+ "generated_at": "2026-11-21T16:12:43Z",
  "source": "docs/proposals/registry.yaml",
- "registry_updated_at": "2026-11-11T00:00:00Z",
+ "registry_updated_at": "2026-11-21T00:00:00Z",
  "registry_updated_by": "ChatGPT",
  "counts": {
-  "total": 64,
+  "total": 68,
   "by_status": {
+   "executing": 24,
    "in_review": 19,
    "posted": 18,
-   "executing": 21,
    "draft": 2,
-   "accepted": 4
+   "accepted": 5
   },
   "by_priority": {
-   "P1": 49,
+   "P1": 53,
    "P0": 6,
    "P2": 9
   },
   "by_author": {
-   "ChatGPT": 17,
+   "ChatGPT": 19,
    "grok": 7,
    "timerloggedout-spec": 9,
    "Manus": 3,
@@ -27,15 +27,27 @@
    "Manus AI": 4,
    "Claude": 2,
    "agent-automation": 2,
-   "Hark": 1,
+   "Hark": 2,
    "Cue": 1,
    "gaps-and-opportunities-subagent": 1,
    "oracle-method": 15,
-   "Perplexity": 1
+   "Perplexity": 1,
+   "termux-ops": 1
   },
   "passes": 5
  },
  "proposals": [
+  {
+   "id": "repository-architecture-entry",
+   "title": "Repository architecture entry, system taxonomy, and data-flow map",
+   "author": "ChatGPT",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/repository-architecture-entry/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/repository-architecture-entry/",
+   "issues": [],
+   "prs": []
+  },
   {
    "id": "master-splinter",
    "title": "Master Splinter \u2014 GitHub App + Replay Control Plane (ADAPT: control plane over the existing 8-AppID family)",
@@ -1409,6 +1421,58 @@
      "merged_at": null
     }
    ]
+  },
+  {
+   "id": "que-superagent",
+   "title": "QUE \u21d0 dsh-superagent domain model: Mandate, Report, serial Eval, fan-out, shadow mode",
+   "author": "Hark",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/que-superagent/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/que-superagent/",
+   "issues": [],
+   "prs": [
+    {
+     "number": 5483,
+     "state": "merged",
+     "merged_at": "2026-11-15T18:44:03Z"
+    }
+   ]
+  },
+  {
+   "id": "qdesk-self-repair",
+   "title": "QDesk self-repair loop: detect, fix, merge, measure (lane termux-ops)",
+   "author": "termux-ops",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/qdesk-self-repair/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/qdesk-self-repair/",
+   "issues": [
+    5214
+   ],
+   "prs": [
+    {
+     "number": 5207,
+     "state": "merged",
+     "merged_at": "2026-11-12T09:50:58Z"
+    },
+    {
+     "number": 5523,
+     "state": "merged",
+     "merged_at": "2026-11-18T10:03:13Z"
+    }
+   ]
+  },
+  {
+   "id": "repository-provisioner",
+   "title": "GitHub repository provisioning workflow",
+   "author": "ChatGPT",
+   "status": "accepted",
+   "priority": "P1",
+   "path": "active/repository-provisioner/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/repository-provisioner/",
+   "issues": [],
+   "prs": []
   }
  ],
  "passes": [

@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-21T12:02:33Z)
+# Lane matrix status (2026-11-21T12:03:06Z)
 
-- Master: `02f0bf83d1754b63fd3d950a6dac3cb16e70d0da`
+- Master: `d1a88c18440649a4cb653e8b90b3e7f642bfafef`
 - Open PRs: **500**
 - Oldest: #47 (107.85d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -26,7 +26,7 @@
 | #2702 | 20.82 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
 | #4069 | 18.32 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
 | #4621 | 17.63 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
-| #4898 | 16.97 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
+| #4898 | 16.98 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
 | #5034 | 14.88 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
 | #5722 | 0.78 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted routes and bind local Do |
 | #5723 | 0.78 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted review relay and record  |
@@ -37,7 +37,7 @@
 | #527 | 67.17 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
 | #605 | 63.76 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
 | #684 | 61.73 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
-| #769 | 59.18 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
+| #769 | 59.19 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
 | #969 | 51.09 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
 | #990 | 50.23 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
 | #1020 | 48.96 | CANDIDATE | state:unknown | feat: close provider continuity and executable rou |

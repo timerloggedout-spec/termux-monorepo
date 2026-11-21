@@ -169,7 +169,9 @@ jobs:
           docker run --rm -v "${RUNNER_TEMP}/cockroach-certs:/certs" "${COCKROACH_IMAGE}" cert create-ca --certs-dir=/certs --ca-key=/certs/ca.key
           docker run --rm -v "${RUNNER_TEMP}/cockroach-certs:/certs" "${COCKROACH_IMAGE}" cert create-node localhost,127.0.0.1,cockroachdb --certs-dir=/certs --ca-key=/certs/ca.key
           docker run --rm -v "${RUNNER_TEMP}/cockroach-certs:/certs" "${COCKROACH_IMAGE}" cert create-client root --certs-dir=/certs --ca-key=/certs/ca.key
-          chmod 600 "${RUNNER_TEMP}/cockroach-certs/client.root.key"
+          docker run --rm -v "${RUNNER_TEMP}/cockroach-certs:/certs" "${COCKROACH_IMAGE}" cert create-client lane_events_writer --certs-dir=/certs --ca-key=/certs/ca.key
+          docker run --rm -v "${RUNNER_TEMP}/cockroach-certs:/certs" "${COCKROACH_IMAGE}" cert create-client lane_events_migrator --certs-dir=/certs --ca-key=/certs/ca.key
+          chmod 600 "${RUNNER_TEMP}/cockroach-certs/client.root.key" "${RUNNER_TEMP}/cockroach-certs/client.lane_events_writer.key" "${RUNNER_TEMP}/cockroach-certs/client.lane_events_migrator.key"
       - name: Start disposable CockroachDB
         env:
           COCKROACH_IMAGE: cockroachdb/cockroach:v26.4.0@sha256:45c5caf2720d640cb36c0b7d42b7ca3cb435af85e3903c12e3d35659a2a04c67

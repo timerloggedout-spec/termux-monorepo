@@ -66,3 +66,12 @@ python3 scripts/ci/termux_smoke.py
 - `blocked`: a required permission or source contract is unavailable.
 - `approval-required`: a protected-history or other operator-only action is needed.
 - `stagnated`: repeated verification yields no new evidence or improvement.
+
+
+## Execution ledger
+
+- **2026-11-21 — Task 1:** Preserved the 30-row sourced fixture; added 13 focused tests and corrected the escaped-newline import. The malformed import reproduced a Python `SyntaxError`; the corrected multiline import passed `py_compile`.
+- **2026-11-21 — Task 2:** Audited the canonical feed: 523 enumerated rows, 522 distinct mapping identities, one verbatim duplicate, six reused display IDs resolved by native `label_id` / `mapping_id` identity. Added family-scoped record digests, exact-duplicate counts, and identity-collision metadata. A synthetic regression check passed for reused IDs and exact duplicates.
+- **2026-11-21 — Task 3:** Registered NSE-024, added the design and plan, and linked the draft implementation review to PR #5751 in the proposal manifest and registry. Proposal status remains `posted` with operator review requested.
+- **Review state:** PR #5751 contains nine files and nine imperative commits. The earlier PR #5738 remains open as the predecessor while the replacement validates.
+- **Verification state:** focused pytest, repo-gate, and Termux smoke remain pending. The local runtime has no repository checkout and outbound GitHub access is unavailable; GitHub Actions is the authoritative repository validation surface.

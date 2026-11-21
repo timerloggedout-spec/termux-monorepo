@@ -215,7 +215,7 @@ Initial machine-readable contracts are introduced under `docs/integrations/polyg
 - feed envelopes;
 - repository federation manifests.
 
-Contracts use explicit schema versions and provenance. Schemas are closed by default and reject undeclared fields. Additive fields require a coordinated schema and consumer update; incompatible semantic changes require a major schema version.
+Contracts use explicit schema versions and provenance. Top-level records are closed by default and reject undeclared fields. New fields require coordinated schema and consumer updates; incompatible semantic changes require a major schema version.
 
 ## Security and governance
 

@@ -91,14 +91,21 @@ def mappings_from_panel_feed(feed: dict[str, Any]) -> list[dict[str, Any]]:
             if not target_form:
                 target_form = str(entry.get("definition") or "∅ (elided)")
         verified = entry.get("round_trip_verified")
-        if verified is True:
-            grade, evidence_status = "exact", "runtime-verified"
-        elif verified is False:
-            grade, evidence_status = "lossy", "lossy-observed"
-        else:
-            grade, evidence_status = "unverified", "unverified"
+        raw_grade = entry.get("grade")
+        grade = raw_grade if raw_grade in GRADES else "unverified"
+        round_trip_status = (
+            "verified" if verified is True
+            else "failed" if verified is False
+            else "unverified"
+        )
         if entry.get("status") == "candidate":
             evidence_status = "candidate"
+        elif verified is True:
+            evidence_status = "roundtrip-verified"
+        elif verified is False:
+            evidence_status = "roundtrip-failed"
+        else:
+            evidence_status = "unverified"
         if family_id == "nomenclature-mappings":
             semantic_id = source
             domain = "nomenclature"
@@ -142,10 +149,10 @@ def mappings_from_panel_feed(feed: dict[str, Any]) -> list[dict[str, Any]]:
             "semantic_id": semantic_id,
             "domain": domain,
             "relation": entry.get("relation") or (
-                "equivalent" if verified is True else "maps_to"
+                "maps_to"
             ),
             "grade": grade,
-            "kernel": entry.get("note") if verified is False else None,
+            "kernel": entry.get("kernel"),
             "evidence_status": evidence_status,
             "provenance": {
                 "path": provenance.get("path") or provenance.get("source_path"),
@@ -160,10 +167,10 @@ def mappings_from_panel_feed(feed: dict[str, Any]) -> list[dict[str, Any]]:
             "feed_identity_collision": False,
             "feed_generated_at": feed.get("generated_at"),
             "direction": direction,
-            "round_trip_verified": verified,
+            "round_trip_verified": verified,\n            "round_trip_status": round_trip_status,
         }
         for key in (
-            "confidence", "status", "label_type", "label_id", "concept_id",
+            "confidence", "status", "grade", "label_type", "label_id", "concept_id",
             "mapping_id", "definition", "meaning", "grimoire", "orchestra",
             "section",
         ):

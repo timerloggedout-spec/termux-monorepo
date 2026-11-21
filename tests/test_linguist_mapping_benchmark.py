@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from scripts.linguist.mapping_benchmark import build_dataset, validate_mappings
+from scripts.linguist.mapping_benchmark import (\n    build_dataset, mappings_from_panel_feed, validate_mappings,\n)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -128,3 +128,34 @@ def test_retrieval_metrics_reject_unknown_mapping_ids():
     query_id = next(iter(dataset["queries"]))
     with pytest.raises(ValueError, match="unknown mapping ids"):
         evaluate_rankings(dataset, {query_id: ["missing-mapping"]})
+
+
+
+def test_panel_feed_adapter_preserves_the_canonical_snapshot():
+    feed_path = ROOT / "apps/tribute-dashboard/data/linguist-panel-feed.json"
+    feed = json.loads(feed_path.read_text(encoding="utf-8"))
+    mappings = mappings_from_panel_feed(feed)
+    assert len(mappings) == feed["counts"]["entries_included"] == 523
+    assert all(item["provenance"]["path"] for item in mappings)
+    assert all(item["feed_generated_at"] == feed["generated_at"] for item in mappings)
+    assert any(item["grade"] == "lossy" for item in mappings)
+    assert any(item["grade"] == "unverified" for item in mappings)
+    assert any(item["evidence_status"] == "candidate" for item in mappings)
+    assert all(item["feed_family"] != "archwiz-pointer-index" for item in mappings)
+
+
+def test_panel_feed_adapter_rejects_unknown_schema_and_skips_count_only():
+    with pytest.raises(ValueError, match="unsupported Linguist panel feed schema"):
+        mappings_from_panel_feed({"schema": "unknown"})
+
+    feed = {
+        "schema": "linguist-panel-feed/v1",
+        "generated_at": "2026-11-05T04:02:41Z",
+        "families": [{"id": "private-index", "entries_included": False}],
+        "entries": [{
+            "id": "private-index:opaque", "family": "private-index",
+            "source": "opaque", "variants": ["pointer"], "direction": "decode-only",
+            "round_trip_verified": None,
+        }],
+    }
+    assert mappings_from_panel_feed(feed) == []

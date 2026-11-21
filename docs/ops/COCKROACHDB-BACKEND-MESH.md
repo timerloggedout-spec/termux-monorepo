@@ -34,6 +34,7 @@ The providers remain independent stores. A CockroachDB write does not imply Neon
 |---|---|---|
 | CockroachDB schema | `ops/cockroachdb/lane-events-schema.sql` | Idempotent table/index creation |
 | CockroachDB insert | `ops/cockroachdb/lane-events-insert.sql` | Append event by canonical event key |
+| Writer grants | `ops/cockroachdb/lane-events-writer-grants.sql` | Isolated database and least-privilege runtime identity |
 | Writer | `scripts/ops/cockroach_lane_event.py` | TLS-verified connection, schema, record and count |
 | Tests | `tests/test_cockroach_lane_event.py` | URI security, canonical event identity, explicit skip |
 | Reference record | `docs/submodules/cockroachdb.md` | Upstream provenance and submodule admission boundary |

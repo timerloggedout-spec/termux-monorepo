@@ -1,21 +1,22 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-21T09:06:20Z",
+ "generated_at": "2026-11-21T09:51:43Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 2,
+   "queued": 3,
    "in_progress": 2,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
+    "repo gate": 1,
     "PR scope guard": 2
    }
   },
   "2": {
    "tier": 2,
    "queued": 0,
-   "in_progress": 1,
+   "in_progress": 2,
    "oldest_queued_at": null,
    "by_workflow_queued": {}
   },
@@ -28,21 +29,21 @@
   },
   "4": {
    "tier": 4,
-   "queued": 5,
-   "in_progress": 6,
+   "queued": 6,
+   "in_progress": 12,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "repo-tracking-collect": 1,
+    "DO Statement Style": 2,
+    "Quota Dispatch Tree": 1,
     "Agent PR Jules Handoff": 1,
     "PR Change Effectiveness Ledger": 1,
-    "Advisory GitHub Actions lint": 1,
-    "DO Statement Style": 1
+    "Advisory GitHub Actions lint": 1
    }
   }
  },
  "totals": {
-  "queued": 7,
-  "in_progress": 9
+  "queued": 9,
+  "in_progress": 16
  },
  "wedged_ancient": [
   {
@@ -200,13 +201,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 4,
-   "2": 1,
+   "1": 5,
+   "2": 2,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 5,
-  "default_t4": 11,
+  "explicit_total": 7,
+  "default_t4": 18,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

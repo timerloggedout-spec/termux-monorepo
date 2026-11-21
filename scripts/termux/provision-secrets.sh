@@ -119,6 +119,8 @@ cmd_provision_controller_export() {
   local workflow="repository-provisioner.yml"
   local slug="controller-2-export"
   local description="Controller 🎮 2 Export Repository — provenance-aware, redacted AntiGravity Device 2 exports."
+  local previous_run_id=""
+  local run_id=""
 
   if ! gh secret list -R "$source_repo" --json name --jq '.[].name' | grep -qx REPOSITORY_PROVISIONER_TOKEN; then
     echo "missing Actions secret: REPOSITORY_PROVISIONER_TOKEN on $source_repo" >&2
@@ -129,18 +131,22 @@ cmd_provision_controller_export() {
     exit 3
   fi
 
-  gh workflow run "$workflow" -R "$source_repo" --ref master \
+  previous_run_id="$(gh run list -R "$source_repo" --workflow "$workflow" --limit 1 --json databaseId --jq '.[0].databaseId // empty')"
+  if ! gh workflow run "$workflow" -R "$source_repo" --ref master \
     -f "repo_name=$slug" \
     -f "description=$description" \
-    -f "visibility=public"
+    -f "visibility=public"; then
+    echo "workflow dispatch failed: $source_repo/$workflow" >&2
+    exit 4
+  fi
 
-  local run_id=""
   for _ in {1..10}; do
     run_id="$(gh run list -R "$source_repo" --workflow "$workflow" --event workflow_dispatch --limit 1 --json databaseId --jq '.[0].databaseId // empty')"
-    [ -n "$run_id" ] && break
+    [ -n "$run_id" ] && [ "$run_id" != "$previous_run_id" ] && break
+    run_id=""
     sleep 2
   done
-  [ -n "$run_id" ] || { echo "workflow dispatched; run ID lookup pending at $source_repo/actions" >&2; exit 4; }
+  [ -n "$run_id" ] || { echo "workflow dispatched; new run ID lookup pending at $source_repo/actions" >&2; exit 5; }
 
   gh run watch "$run_id" -R "$source_repo" --exit-status
   gh run view "$run_id" -R "$source_repo" --json conclusion,url,displayTitle \

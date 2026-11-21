@@ -11,10 +11,11 @@ reviewers:
     role: operator-authorizer
     status: requested
 related_issues: [320, 309, 182, 175, 126, 304, 196, 177, 208, 274, 1115]
-related_prs: [322, 324]
+related_prs: [322, 324, 5749]
 related_branches:
   - docs/notation-sets-evolution
   - docs/mintlify-notation-sets-page
+  - docs/nse-021-owner-acceptance
 gates_required: [repo-gate, termux-smoke]
 ---
 
@@ -58,6 +59,16 @@ These additions remain governed by NSE-008 (evolution ledger). The proposal rema
 | ChatGPT | author | posted | 2026-08-22 | Proposal authored from #320 and repository structure |
 
 ## Review log
+
+### 2026-11-21 — Operator acceptance of NSE-021
+
+- Disposition: **NSE-021 accepted for execution**; the parent `notation-sets-evolution` proposal retains its broader `posted` status.
+- Vote: `VOTE: accept`
+- Voter: `timerloggedout-spec` — Operator / Agentic Collaboration Workflows owner.
+- Term: `NSE-021/1`
+- Reason: Operator approval of the bounded sidecar-overlay implementation and DoE/MVT comparison scope.
+- Scope: NSE-021 only; existing notation-set items retain their independent lifecycle and evidence requirements.
+
 
 ### 2026-08-22 — ChatGPT
 

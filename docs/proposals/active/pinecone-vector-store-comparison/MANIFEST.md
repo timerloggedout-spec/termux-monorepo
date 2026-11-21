@@ -15,7 +15,7 @@ reviewers:
     status: executing
 related_prs: [5753]
 related_branches: [feat/pinecone-vector-store-doe-20261121-v2]
-gates_required: [proposal-lifecycle, repo-gate, termux-smoke, refTemplates-inventory, doe-family-contract]
+gates_required: [proposal-lifecycle, repo-gate, termux-smoke]
 ---
 
 # MANIFEST — pinecone-vector-store-comparison

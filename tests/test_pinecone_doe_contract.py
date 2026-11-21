@@ -15,6 +15,7 @@ class PineconeDoEContractTests(unittest.TestCase):
         self.assertEqual(rows[0]["state"], "admitted_design_only")
         self.assertEqual(rows[0]["runs"], 0)
         self.assertIsNone(rows[0]["results"])
+        self.assertIn("admitted_design_only", feed["data"]["family"]["shared"]["intake_rule"])
         self.assertEqual(design["status"], "design_only")
         self.assertFalse(design["execution"]["dispatch_authorized"])
         self.assertEqual(design["execution"]["live_runs"], 0)
@@ -39,6 +40,8 @@ class PineconeDoEContractTests(unittest.TestCase):
         graph = read_json("docs/integrations/capability-opportunity-graph.json")
         node_ids = {node["id"] for node in graph["nodes"]}
         self.assertTrue({"pinecone", "pg-pinecone", "pgvector", "doe-family"} <= node_ids)
+        index = (ROOT / "refTemplates/00_Index/README.md").read_text(encoding="utf-8")
+        self.assertIn("18_Vector_Databases/", index)
         metadata = read_json("refTemplates/18_Vector_Databases/pinecone/metadata.json")
         self.assertEqual(metadata["smod"]["state"], "candidate_pending_custom_fork")
         self.assertFalse(metadata["smod"]["gitlink_present"])

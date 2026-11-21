@@ -105,7 +105,7 @@ The current design already preserves a critical distinction:
 
 A precision detail: the core collector retains provider pricing objects for several native paths, while its classification helper parses prompt/completion values as floats. The extension adapter normalizer also converts some rates to numeric values. An exact-decimal contract should preserve original decimal text and use decimal-safe classification throughout, rather than relying on binary float representations.
 
-A resilience detail: the collector writes its normalized output atomically. The current output document does not retain the complete raw provider response for later re-normalization. Its provider-level error list also lacks a normalized per-model issue collection.
+A resilience detail: the collector writes its normalized output atomically. The current output document stores the normalized view; a complete raw provider response remains unavailable for later re-normalization. Its provider-level error list also needs a normalized per-model issue collection.
 
 ## 4. What to adopt — prioritized recommendations
 
@@ -150,21 +150,21 @@ Expose `network`, `cache`, `stale-cache`, `error` and `unknown` as source/freshn
 
 Use one language-neutral fixture format for each provider's wire response and canonical normalized output. Add predicates for task/model kinds (chat, agent, embedding, rerank, image, audio, video and decision) using explicit capability facts.
 
-Keep task suitability separate from the broad model-kind predicate. For example, a chat model is not automatically an agent model; tool capability, context and readiness evidence remain separate inputs.
+Keep task suitability separate from the broad model-kind predicate. For example, agent suitability requires separate tool capability, context and readiness evidence.
 
 **Acceptance evidence:** identical normalized fixture output across any future Python/TypeScript adapters and regression tests for model-kind boundaries.
 
 ## 5. Adaptation rules for this monorepo
 
-Vultr's implementation is a provider-specific catalog SDK, not a multi-provider aggregator. Its Model Document 2.4 parser should inform the OpenRouter-compatible adapter path. Other providers retain their own official wire schemas and protocol adapters.
+Vultr's implementation is a provider-specific catalog SDK for Vultr. Its Model Document 2.4 parser should inform the OpenRouter-compatible adapter path while other providers retain their own official wire schemas and protocol adapters.
 
 Translate these details carefully:
-- Vultr's `is_ready` defaults to true when absent. The monorepo should preserve unknown readiness when a provider has not stated it.
+- Vultr's `is_ready` defaults to true when absent. The monorepo should preserve unknown readiness when the provider omits the field.
 - Vultr's public endpoint and optional API key are properties of Vultr's catalog. Credential handling remains provider-specific in the monorepo.
-- A successful model-list request proves catalog reachability, not inference health or entitlement.
-- A model-level free price or `:free` suffix remains catalog pricing evidence, not account quota or free inference authorization.
+- A successful model-list request proves catalog reachability; inference health and entitlement require separate evidence.
+- A model-level free price or `:free` suffix remains catalog pricing evidence; account quota and free inference authorization require separate evidence.
 - Stale cache visibility must retain its stale state and freshness timestamp.
-- Tool support and agent suitability must derive from explicit capability facts, not a model name or marketing label.
+- Derive tool support and agent suitability from explicit capability facts rather than model names or marketing labels.
 
 ## 6. Proposed implementation sequence
 
@@ -176,7 +176,7 @@ Translate these details carefully:
 | 4 | Add raw snapshot/cache replay and freshness states | Reproducible source history | Catalog collection behavior, separately gated |
 | 5 | Add adapter parity and model-kind fixtures | Stable cross-provider semantics | Tests/evaluation only |
 
-Each runtime slice needs its own accepted proposal item, test-first implementation, focused review and same-SHA dual-gate evidence. This RECON registers the references and records the design opportunity; it does not activate a new runtime path.
+Each runtime slice needs its own accepted proposal item, test-first implementation, focused review and same-SHA dual-gate evidence. This RECON registers the references and records the design opportunity; runtime activation remains separately gated.
 
 ## 7. Loopy / feedback-cycle disposition
 
@@ -186,7 +186,7 @@ This task is a bounded one-shot reference capture and architecture comparison. T
 - `.github/workflows/provider-availability.yml` is `workflow_dispatch`-only in the inspected revision. Its cadence is owned by `quota-dispatch-tree.yml`; it records credential/catalog continuity and keeps routine inference disabled.
 - `.github/workflows/provider-batch.yml` runs contract tests for relevant changes and exposes separate trusted manual observation inputs. Its inference smoke defaults off.
 
-The strongest loop candidate is therefore an **observation-and-reconciliation loop**, not an autonomous catalog mutator:
+The strongest loop candidate is therefore an **observation-and-reconciliation loop** with a read-only source collector:
 
 1. **Observe:** collect the scheduled public catalog snapshot and authorized provider-availability evidence with source, schema, observation time and digest.
 2. **Choose:** compare the new snapshot with its predecessor; classify additions, removals, schema drift, stale cache and provider-level errors.
@@ -195,7 +195,7 @@ The strongest loop candidate is therefore an **observation-and-reconciliation lo
 5. **Record:** retain the source revision, payload digest, adapter version, run/attempt, test results and observed delta.
 6. **Repeat or stop:** continue on the next existing observation cadence; finish each cycle as `success`, `clean no-op`, `blocked` or `stagnated`.
 
-This is an adapted design grounded in the existing workflows. It introduces no scheduler, inference request, publisher write path or automatic routing change.
+This is an adapted design grounded in the existing workflows. It reuses the existing cadence and keeps scheduler ownership, inference requests, publisher writes and routing authority unchanged.
 
 ## 8. Related repository sources
 

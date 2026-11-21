@@ -122,8 +122,57 @@ cmd_provision_controller_export() {
   local previous_run_id=""
   local run_id=""
 
-  if ! gh secret list -R "$source_repo" --json name --jq '.[].name' | grep -qx OPERATOR; then
-    echo "missing Actions secret: OPERATOR on $source_repo" >&2
+  if ! gh secret list -R "$source_repo" --json name --jq '.[].name' | grep -Eq '^(ARCHWIZ_GITHUB_TOKEN|OPERATOR_GITHUB_TOKEN|OPERATOR_TOKEN)
+    exit 2
+  fi
+  if gh repo view "$OWNER/$slug" >/dev/null 2>&1; then
+    echo "repository already exists: $OWNER/$slug" >&2
+    exit 3
+  fi
+
+  previous_run_id="$(gh run list -R "$source_repo" --workflow "$workflow" --limit 1 --json databaseId --jq '.[0].databaseId // empty')"
+  if ! gh workflow run "$workflow" -R "$source_repo" --ref master; then
+    echo "workflow dispatch failed: $source_repo/$workflow" >&2
+    exit 4
+  fi
+
+  for _ in {1..10}; do
+    run_id="$(gh run list -R "$source_repo" --workflow "$workflow" --event workflow_dispatch --limit 1 --json databaseId --jq '.[0].databaseId // empty')"
+    [ -n "$run_id" ] && [ "$run_id" != "$previous_run_id" ] && break
+    run_id=""
+    sleep 2
+  done
+  [ -n "$run_id" ] || { echo "workflow dispatched; new run ID lookup pending at $source_repo/actions" >&2; exit 5; }
+
+  if ! gh run watch "$run_id" -R "$source_repo" --exit-status; then
+    gh run view "$run_id" -R "$source_repo" --json conclusion,url,displayTitle \
+      --jq '"conclusion=\(.conclusion) run=\(.url) title=\(.displayTitle)"' || true
+    exit 6
+  fi
+  gh run view "$run_id" -R "$source_repo" --json conclusion,url,displayTitle \
+    --jq '"conclusion=\(.conclusion) run=\(.url) title=\(.displayTitle)"'
+}
+
+cmd_rerun() {
+  for pair in "gh-aw-mcpg_fork:gateway-issue-dispatcher.lock.yml" "gh-aw_fork:contribution-check.lock.yml" "gh-aw_fork:aw-failure-investigator.lock.yml" \
+              "termux-monorepo:tribute-dashboard-deploy.yml"; do
+    repo="${pair%%:*}"; wf="${pair#*:}"
+    gh workflow enable "$wf" -R "$OWNER/$repo" >/dev/null 2>&1 || true
+    gh workflow run "$wf" -R "$OWNER/$repo" >/dev/null 2>&1 && echo "dispatched $repo/$wf" || echo "could not dispatch $repo/$wf"
+  done
+}
+
+CLIP=0; ONLY=""; REPO=""; REQ_ONLY=0
+sub="${1:-status}"; shift || true
+while [ $# -gt 0 ]; do case "$1" in
+  --clipboard) CLIP=1 ;; --only) ONLY="$2"; shift ;; --repo) REPO="$2"; shift ;; --required-only) REQ_ONLY=1 ;;
+  *) echo "unknown arg $1" >&2; exit 2 ;; esac; shift; done
+case "$sub" in
+  status) cmd_status ;; set) cmd_set ;; pause-forks) cmd_pause ;; resume-forks) cmd_resume ;; rerun) cmd_rerun ;; provision-controller-export) cmd_provision_controller_export ;;
+  *) sed -n '2,14p' "$0"; exit 2 ;;
+esac
+; then
+    echo "missing existing administrator Actions secret on $source_repo" >&2
     exit 2
   fi
   if gh repo view "$OWNER/$slug" >/dev/null 2>&1; then

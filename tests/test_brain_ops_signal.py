@@ -58,6 +58,7 @@ def test_brain_signal_raster_uses_observed_events(tmp_path):
     assert "signal-failure" in svg
     assert "signal-pending" in svg
     assert "2026-11-21T01:00:00.000Z" in svg
+    assert "2026-11-21 01:00" in svg
     assert "SHA aaaaaaaaaaaa" in svg
     assert "&lt;script&gt;" in svg
     assert "<script>" not in svg

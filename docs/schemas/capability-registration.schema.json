@@ -1,0 +1,195 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/schemas/capability-registration.schema.json",
+  "title": "Capability Registration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "capability_id",
+    "version",
+    "owner_lane",
+    "operation",
+    "input_schema_ref",
+    "output_schema_ref",
+    "required_scopes",
+    "approval_policy",
+    "idempotency",
+    "availability",
+    "lifecycle"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "capability_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.-]+$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "owner_lane": {
+      "type": "string",
+      "minLength": 1
+    },
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "reference"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "github_workflow",
+            "api_adapter",
+            "bounded_command"
+          ]
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1
+        },
+        "workflow_id": {
+          "type": [
+            "string",
+            "integer"
+          ]
+        }
+      }
+    },
+    "input_schema_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "output_schema_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "required_scopes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "approval_policy": {
+      "enum": [
+        "none",
+        "operator",
+        "two_person",
+        "protected_operation"
+      ]
+    },
+    "idempotency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required",
+        "key_scope",
+        "same_payload_behavior",
+        "different_payload_behavior"
+      ],
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "key_scope": {
+          "enum": [
+            "request",
+            "plan",
+            "repository",
+            "global"
+          ]
+        },
+        "same_payload_behavior": {
+          "const": "return_existing"
+        },
+        "different_payload_behavior": {
+          "const": "conflict"
+        }
+      }
+    },
+    "timeout_seconds": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 86400
+    },
+    "retry_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_attempts",
+        "retryable_failures"
+      ],
+      "properties": {
+        "max_attempts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        },
+        "retryable_failures": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "evidence_outputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "availability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "observed_at",
+        "source_ref"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "observed_available",
+            "observed_unavailable",
+            "unknown",
+            "stale"
+          ]
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "source_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "lifecycle": {
+      "enum": [
+        "draft",
+        "reviewed",
+        "registered",
+        "available",
+        "unavailable",
+        "deprecated"
+      ]
+    },
+    "deprecated_by": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

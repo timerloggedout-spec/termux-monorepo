@@ -100,6 +100,34 @@ class PolyglotFederationTests(unittest.TestCase):
             )
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
+
+    def test_benchmark_schema_enforces_variance_and_correctness_gate(self):
+        schema = json.loads((BASE / "schemas" / "benchmark-result.schema.json").read_text(encoding="utf-8"))
+        measurement = schema["properties"]["measurements"]["items"]
+        self.assertIn("variance", measurement["required"])
+        self.assertEqual(measurement["properties"]["variance"]["minimum"], 0)
+        self.assertTrue(any(rule.get("if", {}).get("properties", {}).get("parity_status", {}).get("const") == "above" for rule in schema["allOf"]))
+
+    def test_feed_schema_requires_full_commit_sha(self):
+        schema = json.loads((BASE / "schemas" / "feed-envelope.schema.json").read_text(encoding="utf-8"))
+        self.assertEqual(schema["properties"]["revision"]["pattern"], "^[a-f0-9]{40}$")
+
+    def test_validator_rejects_unknown_mapping_capability(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            fixture = root / "docs" / "integrations" / "polyglot"
+            shutil.copytree(BASE, fixture)
+            mapping_path = fixture / "examples" / "mapping-quic-streams.json"
+            mapping = json.loads(mapping_path.read_text(encoding="utf-8"))
+            mapping["capability_id"] = "missing.capability"
+            mapping_path.write_text(json.dumps(mapping), encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(ROOT / "scripts" / "polyglot" / "validate_federation.py"), "--root", str(root)],
+                capture_output=True, text=True, check=False,
+            )
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("capability_id does not resolve", result.stderr)
+
     def test_validator_passes(self):
         result = subprocess.run(
             [sys.executable, str(ROOT / "scripts" / "polyglot" / "validate_federation.py")],

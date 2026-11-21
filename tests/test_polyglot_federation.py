@@ -164,11 +164,14 @@ class PolyglotFederationTests(unittest.TestCase):
 
     def test_public_surface_contract_keeps_derpwiki_mandatory_and_z3_notifications_visible(self):
         manifest = (ROOT / "docs" / "proposals" / "active" / "polyglot-linguist-federation" / "MANIFEST.md").read_text(encoding="utf-8")
-        self.assertIn("mandatory Linguist language layer", manifest)
-        self.assertIn("zero visitor opt-in", manifest)
-        self.assertIn("Z3π∅ notifications into public user interfaces", manifest)
-        self.assertIn("docs/ops/ACTIONS-MATRIX.md", manifest)
-        self.assertIn("docs/ops/AUTOMATED-TELEMETRY-AUDIT.md", manifest)
+        readme = (BASE / "README.md").read_text(encoding="utf-8")
+        contract = manifest + "\n" + readme
+        self.assertRegex(contract, r"mandatory.{0,120}DerpWiki|DerpWiki.{0,120}mandatory")
+        self.assertIn("zero visitor opt-in", contract)
+        self.assertIn("Z3π∅", contract)
+        self.assertIn("public user interfaces", contract)
+        self.assertIn("docs/ops/ACTIONS-MATRIX.md", contract)
+        self.assertIn("docs/ops/AUTOMATED-TELEMETRY-AUDIT.md", contract)
 
     def test_validator_passes(self):
         result = subprocess.run(

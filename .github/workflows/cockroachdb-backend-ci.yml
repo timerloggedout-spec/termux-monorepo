@@ -1,0 +1,68 @@
+name: CockroachDB backend contract
+
+on:
+  pull_request:
+    paths:
+      - "ops/cockroachdb/**"
+      - "scripts/ops/cockroach_lane_event.py"
+      - "tests/test_cockroach_lane_event.py"
+      - "docs/ops/COCKROACHDB-BACKEND-MESH.md"
+      - ".github/workflows/cockroachdb-backend-ci.yml"
+  push:
+    branches: [master]
+    paths:
+      - "ops/cockroachdb/**"
+      - "scripts/ops/cockroach_lane_event.py"
+      - "tests/test_cockroach_lane_event.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cockroachdb-backend-ci-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start disposable CockroachDB
+        run: |
+          docker run -d --name cockroachdb -p 26257:26257 \
+            cockroachdb/cockroach:v26.4.0 start-single-node --insecure \
+            --listen-addr=0.0.0.0:26257 --http-addr=0.0.0.0:8080
+          for attempt in $(seq 1 40); do
+            if docker exec cockroachdb cockroach sql --insecure \
+              --execute="SELECT 1" >/dev/null 2>&1; then
+              exit 0
+            fi
+            sleep 2
+          done
+          docker logs cockroachdb
+          exit 1
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+      - name: Apply schema and exercise write/readback
+        env:
+          COCKROACH_DATABASE_URL: postgresql://root@127.0.0.1:26257/defaultdb?sslmode=disable
+          COCKROACH_ALLOW_INSECURE_TEST: "1"
+        run: |
+          python3 scripts/ops/cockroach_lane_event.py schema --strict
+          python3 scripts/ops/cockroach_lane_event.py record --lane ci --workflow cockroach-contract \
+            --event-type run_completed --repo "${GITHUB_REPOSITORY}" \
+            --run-id "${GITHUB_RUN_ID}" --run-attempt "${GITHUB_RUN_ATTEMPT}" \
+            --conclusion success --head-sha "${GITHUB_SHA}" --strict
+          python3 scripts/ops/cockroach_lane_event.py count --strict | tee /tmp/cockroach-count.txt
+          grep -q "COCKROACHDB_COUNT rows=1" /tmp/cockroach-count.txt
+      - name: Run offline adapter tests
+        run: python3 -m unittest tests.test_cockroach_lane_event tests.test_lane_event -v
+      - name: Record runtime evidence
+        if: always()
+        run: |
+          docker inspect cockroachdb --format='container={{.Id}} status={{.State.Status}}' || true
+          docker logs cockroachdb 2>&1 | tail -40 || true

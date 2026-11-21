@@ -690,3 +690,37 @@ Session 2026-10-19 14:15 PDT / 2026-10-19 21:15 UTC:
 - Recent gates success/skipped. help-wanted execute in_progress on tip. No tip failures. Decision: QUIET / KEEP. No promote.
 - #1286 dual-gate PASS but not on tip base. Master functional. Disjoint: skills updated with recon.
 - Agent-Identity: Grok (Administrator)
+
+
+## Bounded feedback-loop integration (Loopy adaptation)
+
+The user-supplied Loopy Skill contributes a reusable six-phase pattern:
+
+**Observe → Choose → Act → Verify → Record → Repeat.**
+
+This is an **adaptation of the pattern**, not adoption of a separate runtime, scheduler, agent framework, or source of truth. The repository-native owners remain authoritative:
+
+| Loop phase | Native owner | Required evidence / boundary |
+|---|---|---|
+| Observe | evidence-led-monorepo-ops + context-relationship-graph | Fresh repo/ref/SHA, bounded exact-root context, current run/job/review state; verified and candidate relationships stay separate. |
+| Choose | proposal registry + active ITEMS.md + ICM | Select one authorized item using priority, risk, dependency, and measurable task outcome; do not invent unregistered work. |
+| Act | isolated feature branch / worktree | One bounded, reversible change; no competing writers, secret changes, or production activation without authority. |
+| Verify | deterministic tests + repository dual gates | Re-run the same acceptance check on the candidate SHA; task outcome remains separate from workflow state and promotion. |
+| Record | evidence-envelope + orchestration receipt + relationship corpus | Preserve immutable SHA, run/attempt/job IDs, evidence IDs, delta, decision, outcome, and remaining uncertainty; never store secrets or raw private discussion bodies. |
+| Repeat | adaptive-wait + adaptive-feedback-cycle | Continue only when new evidence can change the next action or measurable progress is occurring; otherwise back off, do disjoint work, or stop. |
+
+### Terminal-state mapping
+
+Use the existing terminal vocabulary: success, clean-no-op, blocked, approval-required, exhausted, and stagnated. A successful execution state does not itself establish TASK_PASS, and TASK_PASS does not itself establish PROMOTABLE; preserve the separate fields in docs/ops/ORCHESTRATION-RECEIPT.schema.json.
+
+- success requires the requested task outcome to be verified.
+- clean-no-op means fresh evidence shows no change is required.
+- blocked and approval-required preserve the missing input or authority; they are not success.
+- exhausted means an authoritative platform/task limit was reached, not an invented local retry ceiling.
+- stagnated means repeated observations produced no measurable progress or informative change.
+
+Use a one-shot workflow when no new feedback can change the next action. Retry only with an evidence-backed changed input, SHA, environment, capacity state, hypothesis, or authoritative instruction. Preserve every attempt.
+
+**Authority boundary:** crafting or selecting a loop does not run it. Running a loop does not authorize scheduling, provider spending/invocation, external messages, production changes, credential movement, branch promotion, or merge. Those actions remain governed by repository permissions and explicit approval boundaries.
+
+**Source provenance:** user-supplied Loopy Skill Documentation JSON; no source commit/version or published Loop Library entry was supplied. This repository adaptation is not represented as upstream-published.

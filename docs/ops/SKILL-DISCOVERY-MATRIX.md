@@ -42,7 +42,7 @@ These uploaded packages are **session evidence, not repository SSOT**. They shou
 
 ## External candidate references supplied with this session
 
-- **Loopy API / Loop Library Skill** — describes bounded Observe -> Choose -> Act -> Verify -> Record -> Repeat workflows, explicit terminal states, and run receipts. Candidate adaptation only; no repository adoption is implied.
+- **Loopy API / Loop Library Skill** — user-supplied JSON skill; source commit/version and published catalog entry were not supplied. Its six-phase cycle and terminal-state discipline are adapted into the native Adaptive WAIT contract; no external runtime or publication is adopted.
 - **Google Jules skill/workflow references** — supplied material describes `skills/<skill-name>/SKILL.md`, issue automation, PR review, test-driven development, and subagent-driven development. Candidate ecosystem evidence only; no external policy is imported automatically.
 
 ## Adoption rule
@@ -54,7 +54,7 @@ Use the smallest repository-native skill that fills the evidence gap. If an exte
 - `termux-mcp-project-steward.skill` → adopted as `.agents/skills/termux-mcp-project-steward/SKILL.md`.
 - `context-relationship-graph_2.skill` → current repository relationship-graph contract.
 - The older duplicate `context-relationship-graph.skill` remains reference-only.
-- Loopy bounded Observe → Choose → Act → Verify → Record → Repeat semantics are adapted into the repository-native WAIT loop.
+- Loopy Observe → Choose → Act → Verify → Record → Repeat semantics are **ADAPTED** in `.agents/skills/adaptive-wait/SKILL.md` and its docs mirror. Native proposal, evidence-envelope, orchestration-receipt, context-graph, and dual-gate owners remain authoritative; no parallel state machine or receipt store is introduced.
 - `timerloggedout-spec/Wingman_fork` is pinned at `a6d5cea2d48009b5555e138c8d6b8f620388fb1b` as a reference/customization/template resource.
 
 ## Current operating chain
@@ -65,6 +65,20 @@ Promotion remains downstream of current-SHA task-outcome verification and the re
 
 **Discovery note:** `SKILLS-INVENTORY.md` remains the repository navigator; this matrix is the focused discovery/audit companion for wait/evidence operations.
 
+
+## Loopy adaptation crosswalk
+
+| Supplied phase | Repository-native owner |
+|---|---|
+| Observe | evidence-led-monorepo-ops + context-relationship-graph |
+| Choose | proposal registry + active ITEMS.md + ICM |
+| Act | isolated feature branch/worktree |
+| Verify | deterministic tests + current-SHA repository dual gates |
+| Record | evidence-envelope + orchestration receipt + relationship corpus |
+| Repeat | adaptive-wait + adaptive-feedback-cycle |
+
+The existing orchestration receipt keeps execution state, task outcome, and promotion distinct. Loopy terminal states map to the native terminal vocabulary; they do not override repository permissions or authorize scheduling, provider calls, external messages, production changes, credential movement, or merges.
+
 ## Native orchestration treatment layer
 
 | Cluster | Skill | Path | Role |
@@ -73,4 +87,4 @@ Promotion remains downstream of current-SHA task-outcome verification and the re
 | Orchestration contract | treatment schema | `docs/ops/ORCHESTRATION-TREATMENT.schema.json` | source/strategy/wait/retry/evidence/validation contract |
 | Orchestration contract | receipt schema | `docs/ops/ORCHESTRATION-RECEIPT.schema.json` | shared execution-state/outcome/promotion projection |
 
-External loop/framework material remains candidate pattern evidence until explicit schema mapping, bounded implementation, deterministic validation, evidence capture, and promotion.
+Other external loop/framework material remains candidate pattern evidence until explicit schema mapping, bounded implementation, deterministic validation, evidence capture, and a recorded promotion decision. Loopy is the limited ADAPTED exception: its phase mapping is documented and contract-checked, but it is not an adopted external runtime, ranked treatment, or published Loop Library entry.

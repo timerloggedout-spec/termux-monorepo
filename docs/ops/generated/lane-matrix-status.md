@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-21T12:05:05Z)
+# Lane matrix status (2026-11-21T12:06:32Z)
 
-- Master: `84efda7956f9bc632c9f2b05ff976924797fc398`
+- Master: `29ada187823e6f91bb377fdc1fff363172c4480a`
 - Open PRs: **500**
 - Oldest: #47 (107.85d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -48,7 +48,7 @@
 | #1495 | 30.4 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
 | #1513 | 30.16 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 30.16 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
-| #1516 | 30.15 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
+| #1516 | 30.16 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
 | #1531 | 30.14 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
 | #1537 | 30.13 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 29.46 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |

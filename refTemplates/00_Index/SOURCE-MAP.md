@@ -29,10 +29,11 @@ From 489+ forks + starred set (examples):
 
 Policy: `docs/ops/RESEARCH-INTEGRATION-LANE.md`
 
-## smods (live gitlinks)
+## smods (live gitlinks + cited inspiration register)
 
-See root `.gitmodules`:
+See root `.gitmodules` for the live custom-adapted gitlinks:
+AuditEngine_fork, batteries_fork, content-agent-routing-promptbase_fork, cost-of-remembering_fork, icm-architect_fork, icm-cctv_fork, interpretable-context-methodology_fork, mcp-android-ssh_fork, term_mcp_deepseek_fork, termux-mcp-server_fork, lego_fork, GPTmetrics_fork, Wingman_fork, and other registered pins.
 
-AuditEngine_fork, batteries_fork, content-agent-routing-promptbase_fork, cost-of-remembering_fork, icm-architect_fork, icm-cctv_fork, interpretable-context-methodology_fork, mcp-android-ssh_fork, term_mcp_deepseek_fork, termux-mcp-server_fork, lego_fork
+Cited inspiration sources are catalogued separately in [smods/INSPIRATION-SOURCES.md](../smods/INSPIRATION-SOURCES.md). Notary, ShipProof, and the unresolved Transcend showcase candidate are metadata-only citations, not gitlinks or runtime dependencies.
 
-Pins intentional; no auto-advance without dual-gate green. Flywheel components remain metadata-only until a real customized fork and compatibility evidence exist.
+Pins intentional; no auto-advance without dual-gate green. New live pins require a real customized fork, immutable reviewed pin, compatibility evidence, and passing gates.

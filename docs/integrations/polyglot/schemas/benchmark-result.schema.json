@@ -126,10 +126,7 @@
             "type": "string"
           },
           "variance": {
-            "type": [
-              "number",
-              "null"
-            ],
+            "type": "number",
             "minimum": 0
           },
           "sample_count": {
@@ -242,6 +239,13 @@
           "correctness",
           "advantage_claim"
         ]
+      },
+      "else": {
+        "properties": {
+          "advantage_claim": {
+            "type": "null"
+          }
+        }
       }
     }
   ]

@@ -35,6 +35,10 @@ Start with the repository-wide [`architecture.md`](../../architecture.md) for th
 
 **Landed 2026-10-26:** the CMDB / IDRR family (PR #1678, superseding draft PR #1655) — see the residents table above. Issue #1654 closed on landing; the design's implementation phases remain separate decisions under its own phase gates.
 
+## Linked modular repository flow maps
+
+The root entry is [architecture.md](../../architecture.md); paired subsystem maps and Mermaid sources are indexed in [flows/README.md](flows/README.md).
+
 ## Domain pointers — canonical spec lives elsewhere
 
 | Domain | Canonical source |

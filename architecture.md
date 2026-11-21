@@ -31,6 +31,7 @@
 - [5. Canonical source index](#5-canonical-source-index)
 - [6. Change-impact routing](#6-change-impact-routing)
 - [7. Maintenance and freshness](#7-maintenance-and-freshness)
+- [8. Linked modular flow maps](#8-linked-modular-flow-maps)
 
 ## 1. Reading protocol
 
@@ -131,7 +132,7 @@ EPS NDJSON, ATES JSONL, normalized integration events, Neon lane events, Neon re
 
 ArchWiz `DispatchPipeline` fans out to Session SSOT and the Codex index, plus a Linear sync hint that is log-only. Treat the hint as an observation, not a completed Linear synchronization.
 
-Editable diagram source: [repository-data-flow.mmd](docs/ops/diagrams/repository-data-flow.mmd). Solid and dashed edges carry the semantics below.
+Editable diagram source: [repository-data-flow.mmd](docs/ops/diagrams/repository-data-flow.mmd). Interactive versioned view: [Mermaid.ai root diagram](https://mermaid.ai/app/projects/affbc609-b2b7-420c-af5b-ca0ccb74fe14/diagrams/080c5454-1215-40a8-afb5-7ef30e42dfcb/version/v0.1/edit). Focused views: [flow module index](docs/architecture/flows/README.md). Solid and dashed edges carry the semantics below.
 
 ### 3.4 Confidence semantics
 
@@ -238,3 +239,98 @@ This is a navigation taxonomy of major ownership zones, not a recursive inventor
 - Run link checks, `git diff --check`, `python3 scripts/ci/repo_gate.py`, and `python3 scripts/ci/termux_smoke.py` through the authorized project lane; record each result with the commit SHA.
 
 **Freshness:** initial consolidation from repository documentation and selected implementation paths, 2026-11-21. Revalidate dynamic directory inventories and runtime integrations against the live tree before treating them as exhaustive.
+
+
+## 8. Linked modular flow maps
+
+The root map is the system index. Follow a plane into its paired detailed Markdown map and editable Mermaid source.
+
+### Execution and Session Plane
+
+**Origins:** Android/Termux device, hub_mcp capability boundary, CLI/TUI and agent session callers.
+
+**Flow:** callers supply session identity and structured events → ArchWiz DispatchPipeline → Session SSOT and Codex index. The documented Linear route is a log-only sync hint.
+
+**Consumers:** operator cockpit, session continuation, context retrieval and bounded task context.
+
+**Findings:** caller → ArchWiz → Session SSOT/Codex is documented. Device/remote MCP reachability needs deployment evidence. Separate CLI families do not prove a shared session store. Linear hint does not prove a completed write.
+
+**Sources:** [Termux Agentic Hub](../../architecture/termux-agentic-hub.md) · [Session SSOT](../../schemas/session-ssot.md) · [ICM platform cards](../../icm/objects/platform/CONTEXT.md)
+
+
+[Detailed mapping](docs/architecture/flows/execution-session.md) · [Mermaid source](docs/architecture/flows/execution-session.mmd)
+
+### Agent Orchestration and Provider Routing
+
+**Planes:** ephemeral GitHub Actions review/ops; chat completion through llm_api_hub and CLI wrappers; MCP tool execution through hosted/device MCP servers; provider adapters translate external calls into repository event envelopes.
+
+**Flow:** task/role selection → model-router and quota gate → chat or MCP route → scoped adapter → schema/privacy/provenance validation → normalized integration event.
+
+**Findings:** chat and MCP paths are distinct. Hosted MCP, device MCP, Actions and local gateway are separate execution surfaces. Adapter contract is generic; provider promotion state lives in integration registry. Aggregate quota coverage does not prove every provider has a live reader. Provider outputs remain untrusted observations.
+
+**Sources:** [Routing map](../../ops/ROUTING-ORCHESTRATION-MAP.md) · [Adapter contract](../../integrations/ADAPTER-CONTRACT.md) · [Integration catalog](../../integrations/README.md) · [Quota registry](../../ops/QUOTA-REGISTRY.md)
+
+
+[Detailed mapping](docs/architecture/flows/agent-orchestration.md) · [Mermaid source](docs/architecture/flows/agent-orchestration.mmd)
+
+### Evidence and Telemetry Plane
+
+**Sources:** GitHub PRs/issues/commits/reviews/checks; Actions runs/attempts/jobs/steps/artifacts; admitted agent workflows; selected lane events; Cloudflare webhook events.
+
+**Producers:** PR production ledger → EPS deterministic provenance-bound NDJSON. ATES observes completed admitted runs, sanitizes task-boundary evidence and reduces events. Lane recorder and Receiver Mesh write separate append-only Neon streams.
+
+**Stores:** EPS NDJSON, ATES JSONL/reducer/receipt, Neon lane_events and Neon receiver_events remain separate products.
+
+**Findings:** PR ledger → EPS and admitted workflow_run → ATES → reducer are connected. Jules execution-time ATES is excluded pending attributable receipts. ATES parallel-yield metrics remain null pending comparable serial baseline. Neon streams have separate contracts; unified join is unproven. Privacy excludes prompts, completions, credentials and raw payloads.
+
+**Sources:** [EPS](../../ops/EVIDENCE-PROJECTION-SURFACE.md) · [ATES Phase B](../../ops/AGENT-THROUGHPUT-PHASE-B.md) · [Adapter contract](../../integrations/ADAPTER-CONTRACT.md)
+
+
+[Detailed mapping](docs/architecture/flows/evidence-telemetry.md) · [Mermaid source](docs/architecture/flows/evidence-telemetry.mmd)
+
+### Context Relationship and Historical Corpus
+
+**Sources:** Git tree/files at pinned SHA; GitHub issues, PRs, commits, reviews, comments and workflow metadata; prior canonical nodes/edges and coverage checkpoints.
+
+**Pipeline:** source_collector.py + github_collector.py → seed_merger.py → compiler.py → build_index.py → canonical JSONL nodes/edges, manifest, reports and checkpoint. Temporal helpers build snapshots, lineage and comparisons.
+
+**Consumers:** ArchWiz context query, bounded agent context deltas, temporal views, Mermaid projections and SHE reducers.
+
+**Findings:** Git/GitHub collectors → compiler → canonical index is connected. COMPLETE requires contiguous page windows from page one; otherwise preserve PARTIAL_CONTINUATION_REQUIRED or UNVERIFIED. Confidence labels verified/derived/inferred/candidate remain distinct. Mermaid graphs are projections, not source evidence. Freshness depends on source SHA, observed_at, checkpoint and coverage.
+
+**Sources:** [CRG contract](../../ops/CONTEXT-RELATIONSHIP-INDEX.md) · [build_index.py](../../../archwiz/context_relationships/build_index.py) · [Temporal evidence](../../ops/CONTEXT-RELATIONSHIP-TEMPORAL-EVIDENCE.md)
+
+
+[Detailed mapping](docs/architecture/flows/context-historical.md) · [Mermaid source](docs/architecture/flows/context-historical.mmd)
+
+### Dashboard, Snapshot and Surface Consumers
+
+**Inputs:** historical corpus/CRG; validated EPS and ATES evidence where configured; operational feeds; Tribute JSON feeds.
+
+**Snapshot path:** SHE pure reducers → snapshot builder → versioned read-only snapshot. Contract requires schema_version, snapshot_id, source_ref, source_sha, generated_at, coverage and corpus manifest SHA. Vercel is the primary interactive surface; Pages and Hex are optional consumers. Tribute consumes a separate committed feed family.
+
+**Findings:** corpus → SHE reducers → snapshot → Vercel is documented. Pages/Hex require current deployment/import evidence. Tribute feeds are a separate projection silo; shared repository does not prove automatic synchronization. Display source_sha, generated_at, coverage and manifest SHA together. Historical views use immutable L2 snapshots.
+
+**Sources:** [SHE architecture](../../ops/SHE-DASHBOARD-ARCHITECTURE.mmd) · [Snapshot contract](../../ops/SHE-DASHBOARD-SNAPSHOT-CONTRACT.md) · [Tribute feed](../../ops/TRIBUTE-EVIDENCE-FEED.md)
+
+
+[Detailed mapping](docs/architecture/flows/dashboard-snapshots.md) · [Mermaid source](docs/architecture/flows/dashboard-snapshots.mmd)
+
+### Legacy Local Snapshot Pipeline — Gap Audit
+
+<badge color="danger">Disconnected / requires repair</badge>
+
+**Observed:** archwiz/trace_data_flow.py scans local source directories for data-file path strings and writes $HOME/tmp/data_flow_map.txt. archwiz/build_data_flow_manifest.py reads $HOME/central_index.jsonl and the temporary map, then writes to absolute path $HOME/archwiz/DATA_FLOW_MANIFEST.md. The builder stamps a wall-clock Generated field and indexed-file count. The tracked archwiz/DATA_FLOW_MANIFEST.md blob is zero bytes at observed master SHA 5135731c389c6b1b8ed8332b3415a60f8163c2a1.
+
+**Findings:** output path mismatch; no source SHA/tree SHA/generator version/input digest; substring/basename heuristics create candidate matches, not verified writer edges; temporary map is untracked scratch; central_index.jsonl lacks repo-owned freshness/coverage contract; no verified consumer reaches CRG/SHE/EPS; Generated proves run time, not input freshness.
+
+**Repair contract:** resolve repo root from script location or explicit output path; publish to declared repo-owned generated directory; include generated_at, source_sha, tree_sha, generator_version, input_manifest_sha256, indexed_file_count, mapped_file_count, coverage_status and unmapped_count; classify heuristic matches as candidate; add freshness validation. Connect to CRG/SHE only after provenance and coverage pass.
+
+Actual local generated_at remains unknown; this audit does not infer it.
+
+
+[Detailed mapping](docs/architecture/flows/legacy-snapshot-audit.md) · [Mermaid source](docs/architecture/flows/legacy-snapshot-audit.mmd)
+
+### Snapshot freshness and legacy inventory gap
+
+SHE snapshots require source_sha, generated_at, coverage and corpus manifest SHA. The legacy ArchWiz data-flow manifest generator emits a local wall-clock Generated field, but its tracked output is zero bytes, its script writes to an absolute home-directory path, and it omits source SHA, tree SHA and input digest. Its generated timestamp proves execution time only, not input freshness. No verified consumer connects this inventory to CRG, SHE or EPS. See the [legacy snapshot gap audit](docs/architecture/flows/legacy-snapshot-audit.md). The actual local generated_at is unknown; audit date 2026-11-21 is not a substitute.

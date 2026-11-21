@@ -98,7 +98,7 @@
 - [x] Run `python3 scripts/ci/refTemplates_inventory.py --strict` in the isolated source-mirror harness: 3 slots validated, 0 failures.
 - [ ] Run `python3 scripts/ci/repo_gate.py`.
 - [ ] Run `python3 scripts/ci/termux_smoke.py`.
-- [x] Re-fetch all 18 changed paths and compare the final branch against current `master`: 19 commits ahead, 0 behind; final head recorded separately.
+- [x] Re-fetch all 18 changed paths and compare the final branch against current `master`: ahead of current `master`, 0 commits behind; final head recorded separately.
 - [ ] Open a PR citing `Implements: MSM-025`.
 - [ ] Inspect repo-gate, Termux smoke, proposal validation and any review findings on the same immutable head SHA.
 - [x] Preserve the isolated branch for review; promotion follows repository gates. PR creation awaits an explicit request.

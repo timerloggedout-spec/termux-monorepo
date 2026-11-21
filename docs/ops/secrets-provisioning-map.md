@@ -1,6 +1,6 @@
 # Secrets provisioning map
 
-Names only; secret values stay in GitHub Actions / device keyrings. The existing administrator token chain is documented in `docs/ops/ARCHWIZ-ADMIN-TOKEN.md`: `ARCHWIZ_GITHUB_TOKEN`, `OPERATOR_GITHUB_TOKEN`, then `OPERATOR_TOKEN`. The provisioner consumes the selected secret inside Actions; values stay out of source, logs, and chat.
+Names only; secret values stay in GitHub Actions / device keyrings. The existing administrator token chain is documented in `docs/ops/ARCHWIZ-ADMIN-TOKEN.md`: `ARCHWIZ_GITHUB_TOKEN`, `OPERATOR_GITHUB_TOKEN`, then `OPERATOR_TOKEN`. The repository provisioner specifically consumes `OPERATOR_GITHUB_TOKEN`; values stay out of source, logs, and chat.
 
 | Repo | Secret | Required | Purpose |
 |---|---|---|---|
@@ -10,7 +10,7 @@ Names only; secret values stay in GitHub Actions / device keyrings. The existing
 
 ## Controller export repository provisioning
 
-The committed manifest at `ops/provisioning/controller-2-export.json` is the request record. The audited `operator-wake` command `provision-controller-export` reads the manifest, dispatches `.github/workflows/repository-provisioner.yml`, and watches the run. The provisioner uses the existing administrator secret chain, verifies its identity is the personal account `timerloggedout-spec`, creates the public repository with GitHub's default README initialization, validates returned metadata, and publishes a run receipt. The request uses the existing `<!-- request-operator-wake -->` issue-comment marker; the provisioning workflow remains `workflow_dispatch` only.
+The committed manifest at `ops/provisioning/controller-2-export.json` is the request record. The audited `operator-wake` command `provision-controller-export` reads the manifest, dispatches `.github/workflows/repository-provisioner.yml`, and watches the run. The provisioner uses the existing `OPERATOR_GITHUB_TOKEN` secret, verifies its identity is the personal account `timerloggedout-spec`, creates the public repository with GitHub's default README initialization, validates returned metadata, and publishes a run receipt. The request uses the existing `<!-- request-operator-wake -->` issue-comment marker; the provisioning workflow remains `workflow_dispatch` only.
 
 The separate `REPOSITORY_PROVISIONER_TOKEN` setup path is retired.
 

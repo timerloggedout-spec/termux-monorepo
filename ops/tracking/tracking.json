@@ -1,15 +1,15 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-21T17:35:16Z",
+ "generated_at": "2026-11-21T17:44:45Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-21T17:35:15Z",
+   "read_at": "2026-11-21T17:44:45Z",
    "merged": 150,
    "open": 200
   },
   "lane_events": {
-   "read_at": "2026-11-21T17:35:15Z",
+   "read_at": "2026-11-21T17:44:45Z",
    "status": "error:HTTPError",
    "count": null,
    "events_in_snapshot": 0
@@ -46,9 +46,9 @@
   },
   "by_state": {
    "closed": 1,
-   "unknown": 8,
+   "unknown": 7,
+   "in-flight": 12,
    "landed": 1,
-   "in-flight": 11,
    "active": 1
   }
  },
@@ -67,7 +67,7 @@
     "coordinator event D0 status=closed",
     "desk-feed traversal D0 pr=#1702"
    ],
-   "updated_at": "2026-11-21T17:35:16Z"
+   "updated_at": "2026-11-21T17:44:45Z"
   },
   {
    "lane": "challenge-entries-d1",
@@ -83,22 +83,23 @@
     "coordinator event D1 status=submitted - PUBLISHED 2026-11-03; in edit window until the Nov 4 23:59 PT freeze",
     "desk-feed traversal D1 pr=#2626"
    ],
-   "updated_at": "2026-11-21T17:35:16Z"
+   "updated_at": "2026-11-21T17:44:45Z"
   },
   {
    "lane": "challenge-entries-d2",
    "project": "D2 Vultr Agent Rush",
    "domain": "challenges",
    "project_id": "d2-vultr",
-   "state": "unknown",
+   "state": "in-flight",
    "last_merge": null,
    "next": "Queue leg CLOSED (WAF spec struck, owner direct 2026-11-01) \u00b7 D2 production target DECIDED 2026-11-04 00:51 PT: B \u2014 Quarantine Browser Clerk (C1\u00b7B) \u00b7 kickoff mechanics stand OUTSIDE batch @2026-11-03T15:00Z: {new repo \u2227 new AppID via 7075f9c0 \u2227 Vultr account + $200 gift code (gate D2-NOCARD) \u2227 team} \u00b7 kickoff mechanics FIRE on the decision (pick stage done \u2192 spec active) \u00b7 ROUTE \u0394 (D2 seat, 2026-11-01): kickoff routing = DeepSeek + command-dispatch until recovery probe PASS; Jules-primary suspended \u00ac deleted; \u2205 silent reroute beyond this named pair \u00b7 ARMS \u0394 (2026-11-01, manager/Swarm): DeepSeek tunnel DOWN (tunnel-unresolved skip \u00d72, agent \u2205 invoked \u2014 runs 41301295882/41321691938) \u21d2 live arms @kickoff 2026-11-03 = command-dispatch ALONE {Jules DOWN \u00b7 Gemini OUT \u00b7 DeepSeek DOWN}; restoration \u21d2 desk flags D2 seat same-turn \u00b7 LANDING TARGET Nov 7 (wall: submission \u2264 Nov 8 15:00 PT). OWNER BUFFER RULE (2026-11-02): wall \u2260 landing \u2014 desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, \u2205 build dispatch into it.",
    "next_basis": "record",
    "evidence": [
     "coordinator submission=DRAFT saved on lablab (NOT submitted) - 76%",
-    "coordinator event D2 status=registered - PICK DECIDED (B Quarantine Browser Clerk); build sequence firing 2026-11-04; landing Nov 7, wall Nov 8 15:00 PT"
+    "coordinator event D2 status=registered - PICK DECIDED (B Quarantine Browser Clerk); build sequence firing 2026-11-04; landing Nov 7, wall Nov 8 15:00 PT",
+    "open PRs: #5754"
    ],
-   "updated_at": "2026-11-21T17:35:16Z"
+   "updated_at": "2026-11-21T17:44:45Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -118,7 +119,7 @@
     "desk-feed traversal D3 pr=#2616",
     "open PRs: #5252"
    ],
-   "updated_at": "2026-11-21T17:35:16Z"
+   "updated_at": "2026-11-21T17:44:45Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -133,7 +134,7 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-21T17:35:16Z"
+   "updated_at": "2026-11-21T17:44:45Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -152,7 +153,7 @@
    "evidence": [
     "open PRs: #5563"
    ],
-   "updated_at": "2026-11-21T17:35:16Z"
+   "updated_at": "2026-11-21T17:44:45Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -173,7 +174,7 @@
     "coordinator event C11 status=active",
     "open PRs: #5429, #5428, #5426, #5327"
    ],
-   "updated_at": "2026-11-21T17:35:16Z"
+   "updated_at": "2026-11-21T17:44:45Z"
   },
   {
    "lane": "challenge-entries",
@@ -192,7 +193,7 @@
    "evidence": [
     "open PRs: #2235"
    ],
-   "updated_at": "2026-11-21T17:35:16Z"
+   "updated_at": "2026-11-21T17:44:45Z"
   },
   {
    "lane": "quota",
@@ -212,7 +213,7 @@
     "quota registry services=172",
     "open PRs: #5034, #5505, #5493, #5478, #5459"
    ],
-   "updated_at": "2026-11-21T17:35:16Z"
+   "updated_at": "2026-11-21T17:44:45Z"
   },
   {
    "lane": "doe",
@@ -232,7 +233,7 @@
     "doe DESIGN.json campaigns=19",
     "open PRs: #5753, #5739, #5722, #5708, #5680"
    ],
-   "updated_at": "2026-11-21T17:35:16Z"
+   "updated_at": "2026-11-21T17:44:45Z"
   },
   {
    "lane": "doe-nc1",
@@ -244,7 +245,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-21T17:35:16Z"
+   "updated_at": "2026-11-21T17:44:45Z"
   },
   {
    "lane": "tier-1",
@@ -258,7 +259,7 @@
    "evidence": [
     "open PRs: #5681"
    ],
-   "updated_at": "2026-11-21T17:35:16Z"
+   "updated_at": "2026-11-21T17:44:45Z"
   },
   {
    "lane": "contribution-desk",
@@ -277,7 +278,7 @@
    "evidence": [
     "desk-feed traversals=13 generated_at=2026-11-17T14:36:00Z"
    ],
-   "updated_at": "2026-11-21T17:35:16Z"
+   "updated_at": "2026-11-21T17:44:45Z"
   },
   {
    "lane": "web-design-viz",
@@ -291,7 +292,7 @@
    "evidence": [
     "open PRs: #5673, #4069, #5337"
    ],
-   "updated_at": "2026-11-21T17:35:16Z"
+   "updated_at": "2026-11-21T17:44:45Z"
   },
   {
    "lane": "marketing",
@@ -310,7 +311,7 @@
    "evidence": [
     "open PRs: #5721, #5630"
    ],
-   "updated_at": "2026-11-21T17:35:16Z"
+   "updated_at": "2026-11-21T17:44:45Z"
   },
   {
    "lane": "marketing-social",
@@ -322,7 +323,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-21T17:35:16Z"
+   "updated_at": "2026-11-21T17:44:45Z"
   },
   {
    "lane": "swarm",
@@ -341,7 +342,7 @@
    "evidence": [
     "open PRs: #1470, #5222"
    ],
-   "updated_at": "2026-11-21T17:35:16Z"
+   "updated_at": "2026-11-21T17:44:45Z"
   },
   {
    "lane": "providers",
@@ -356,7 +357,7 @@
     "quota registry services=172",
     "open PRs: #3916, #5734, #5670, #5644, #3209"
    ],
-   "updated_at": "2026-11-21T17:35:16Z"
+   "updated_at": "2026-11-21T17:44:45Z"
   },
   {
    "lane": "providers-phrases",
@@ -368,7 +369,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-21T17:35:16Z"
+   "updated_at": "2026-11-21T17:44:45Z"
   },
   {
    "lane": "repo-replay",
@@ -380,7 +381,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-21T17:35:16Z"
+   "updated_at": "2026-11-21T17:44:45Z"
   },
   {
    "lane": "ops",
@@ -392,7 +393,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-21T17:35:16Z"
+   "updated_at": "2026-11-21T17:44:45Z"
   },
   {
    "lane": "telemetry",
@@ -411,7 +412,7 @@
    "evidence": [
     "open PRs: #3890, #5750, #5663, #5427"
    ],
-   "updated_at": "2026-11-21T17:35:16Z"
+   "updated_at": "2026-11-21T17:44:45Z"
   }
  ],
  "doe_join": {

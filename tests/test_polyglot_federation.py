@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import hashlib
+import shutil
 import tempfile
 import subprocess
 import sys
@@ -51,6 +52,53 @@ class PolyglotFederationTests(unittest.TestCase):
             canonical = json.dumps(feed["records"], sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
             self.assertEqual(feed["artifact_digest"], "sha256:" + hashlib.sha256(canonical).hexdigest())
             self.assertTrue(all(record["content_digest"].startswith("sha256:") for record in feed["records"]))
+
+
+    def test_validator_rejects_dangling_capability_and_target_references(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            fixture = root / "docs" / "integrations" / "polyglot"
+            shutil.copytree(BASE, fixture)
+            targets_path = fixture / "examples" / "technology-targets.json"
+            targets = json.loads(targets_path.read_text(encoding="utf-8"))
+            targets["targets"][-1]["capability_ids"] = ["missing.capability"]
+            targets_path.write_text(json.dumps(targets), encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(ROOT / "scripts" / "polyglot" / "validate_federation.py"), "--root", str(root)],
+                capture_output=True, text=True, check=False,
+            )
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("unknown capability_id", result.stderr)
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            fixture = root / "docs" / "integrations" / "polyglot"
+            shutil.copytree(BASE, fixture)
+            mapping_path = fixture / "examples" / "mapping-quic-streams.json"
+            mapping = json.loads(mapping_path.read_text(encoding="utf-8"))
+            mapping["target_id"] = "missing-target"
+            mapping_path.write_text(json.dumps(mapping), encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(ROOT / "scripts" / "polyglot" / "validate_federation.py"), "--root", str(root)],
+                capture_output=True, text=True, check=False,
+            )
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("target_id does not resolve", result.stderr)
+
+    def test_validator_accepts_numeric_transport_target_ids(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            fixture = root / "docs" / "integrations" / "polyglot"
+            shutil.copytree(BASE, fixture)
+            targets_path = fixture / "examples" / "technology-targets.json"
+            targets = json.loads(targets_path.read_text(encoding="utf-8"))
+            targets["targets"][0]["target_id"] = "14.4-kbps-modem"
+            targets_path.write_text(json.dumps(targets), encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(ROOT / "scripts" / "polyglot" / "validate_federation.py"), "--root", str(root)],
+                capture_output=True, text=True, check=False,
+            )
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_validator_passes(self):
         result = subprocess.run(

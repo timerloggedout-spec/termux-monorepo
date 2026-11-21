@@ -98,7 +98,15 @@
 - [x] Run `python3 scripts/ci/refTemplates_inventory.py --strict` in the isolated source-mirror harness: 3 slots validated, 0 failures.
 - [ ] Run `python3 scripts/ci/repo_gate.py`.
 - [ ] Run `python3 scripts/ci/termux_smoke.py`.
-- [ ] Re-fetch all changed files and the final branch SHA.
+- [x] Re-fetch all 18 changed paths and compare the final branch against current `master`: 19 commits ahead, 0 behind; final head recorded separately.
 - [ ] Open a PR citing `Implements: MSM-025`.
 - [ ] Inspect repo-gate, Termux smoke, proposal validation and any review findings on the same immutable head SHA.
-- [ ] Preserve the branch and PR for review; promotion follows repository gates.
+- [x] Preserve the isolated branch for review; promotion follows repository gates. PR creation awaits an explicit request.
+
+
+### Environment and external-check observations
+
+- The Termux MCP `get_device_info` action is unavailable in this session; Android device pressure and the Termux home checkout remain unobserved.
+- GitHub connector writes used an isolated feature branch based on the current `master` tip. The local source-mirror harness passed five focused tests and strict inventory validation across three synthetic slots.
+- Full repository `repo_gate.py` and `termux_smoke.py` remain pending a repository-native run. The final commit's combined status currently contains a Vercel `failure` with a build-rate-limit target; this is a preview-capacity observation, not a Python test result.
+- The Termux stewardship skill reserves PR creation for an explicit PR request; this task prepared the branch and records the PR gate as pending.

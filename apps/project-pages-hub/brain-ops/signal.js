@@ -60,13 +60,13 @@
     var x = function (time) { return labelWidth + ((time - minTime) / timeSpan) * plotWidth; };
     var parts = [
       '<svg class="brain-signal-chart" viewBox="0 0 ' + chartWidth + ' ' + chartHeight + '" role="img" aria-label="Brain workflow event raster across time">',
-      '<text class="signal-axis-title" x="' + labelWidth + '" y="13">Workflow event time · oldest → newest</text>'
+      '<text class="signal-axis-title" x="' + labelWidth + '" y="13">Workflow event time (UTC) · oldest → newest</text>'
     ];
 
     for (var tick = 0; tick <= 4; tick += 1) {
       var tickTime = minTime + (timeSpan * tick / 4);
       var tickX = x(tickTime);
-      var tickLabel = new Date(tickTime).toISOString().slice(11, 19);
+      var tickLabel = new Date(tickTime).toISOString().slice(0, 16).replace("T", " ");
       parts.push('<line class="signal-grid" x1="' + tickX.toFixed(1) + '" y1="' + (topPad - 8) + '" x2="' + tickX.toFixed(1) + '" y2="' + (chartHeight - bottomPad + 4) + '"/>');
       parts.push('<text class="signal-tick" x="' + tickX.toFixed(1) + '" y="' + (chartHeight - 12) + '" text-anchor="middle">' + tickLabel + '</text>');
     }

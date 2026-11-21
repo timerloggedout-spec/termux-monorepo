@@ -49,19 +49,19 @@
       }
     },
     {
-      "mapping_id": "fleet-lean-category-composition",
+      "mapping_id": "fixture-only-lean-function-composition",
       "source_custom": "fleet-notation",
       "target_custom": "Lean/Mathlib",
       "source_form": "∘",
-      "target_form": "Category.comp",
-      "semantic_id": "category.morphism_composition",
-      "domain": "category_theory",
-      "relation": "equivalent",
-      "grade": "exact",
-      "kernel": null,
+      "target_form": "Function.comp",
+      "semantic_id": "function.composition",
+      "domain": "functions",
+      "relation": "analogue",
+      "grade": "analogue",
+      "kernel": "synthetic collision fixture; this row tests domain disambiguation and makes no production equivalence claim",
       "provenance": {
-        "path": "docs/proposals/active/notation-sets/LEAN-NOTATION-MAPPING.md",
-        "locator": "Cross-domain notation; domain-qualified mapping fixture"
+        "path": "experiments/linguist/mapping-benchmarks/fixtures/fleet-lean-mappings.json",
+        "locator": "explicit synthetic collision fixture"
       }
     }
   ]

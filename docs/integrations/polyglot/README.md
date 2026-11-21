@@ -43,4 +43,4 @@ The validator uses Python standard-library JSON and performs deterministic struc
 - [Matrice dimensions](examples/matrice-dimensions.json): shared dimensions and hierarchical aggregation policy.
 - [QUIC mapping example](examples/mapping-quic-streams.json): capability-to-target mapping record.
 
-The initial cohort is intentionally small and expandable. New language, codec, compiler, kernel, runtime, transport, protocol, physical-medium, application and knowledge-surface targets use the same contracts.
+The initial cohort is intentionally small and expandable. New language, codec, compiler, kernel, runtime, transport, protocol, physical-medium, application and knowledge-surface targets use the same contracts. DerpWiki remains a mandatory public-interface language layer under the existing Linguist lane contract; Z3π∅ notifications are delivered through public user interfaces.

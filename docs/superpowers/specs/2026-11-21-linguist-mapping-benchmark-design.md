@@ -35,7 +35,8 @@ Create a reproducible retrieval benchmark over source-backed Linguist mapping as
 - Use `mapping_id` or `label_id` when present; otherwise use the family-scoped entry ID.
 - Keep a family-scoped source identity key; append a digest of the canonical source record to create a snapshot-scoped unique benchmark record ID.
 - Collapse exact duplicate source records and preserve their occurrence count.
-- Preserve semantic mapping grade independently from codec round-trip status; round-trip success does not imply exact semantic equivalence.\n- Preserve evidence state, relation, confidence, kernel, provenance, and `generated_at`.
+- Preserve semantic mapping grade independently from codec round-trip status; round-trip success does not imply exact semantic equivalence.
+- Preserve evidence state, relation, confidence, kernel, provenance, and `generated_at`.
 - Exclude families marked `entries_included: false`.
 - Keep the dashboard projection separate from the benchmark generator.
 

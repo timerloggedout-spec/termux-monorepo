@@ -30,6 +30,8 @@
 
 | MSM-024 | Batch passive quota management on existing provider catalog responses and operational readiness | **executing** | MSM-019, MSM-023 | Owner-authorized batch: reuse canonical managers and existing responses; expose status only, unknown when no endpoint-specific contract exists. Reconcile Felo daily-credit eligibility separately from the ended OX Alpha preview without duplicating its adapter. No new requests, inference, account/key/terms action, paid fallback, routing/admission or schedule changes. |
 
+| MSM-025 | Vultr Python/TypeScript model-catalog reference capture + provider Inference catalogue architecture review | **executing** | MSM-006, MSM-008, MSM-010 | Metadata-only sources under `refTemplates/19_Provider_Inference_Catalogs/`; pinned revisions, comparative RECON and inventory integrity. Runtime catalog, inference, credentials, quotas and routing remain unchanged. |
+
 ## Runtime package
 
 ```text

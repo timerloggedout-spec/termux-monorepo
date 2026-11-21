@@ -31,3 +31,28 @@ Use this skill when optimizing **exploration or orchestration policy**, not when
 - bypass provenance or dual gates;
 - silently replace an incumbent with a candidate that only looks better after changing the evaluator;
 - delete failed or negative observations.
+
+## DoE-controlled plane
+
+Use `scripts/agent_evolution/doe_control.py` when a replay study needs controlled
+factor variation. DoE owns the pre-registered design and assignment; the replay
+engine supplies deterministic offline observations.
+
+1. Freeze campaign ID, hypothesis, evaluator/history revision, factors and levels,
+   seed and practical threshold.
+2. Generate the full-factorial policy design and retain exactly one incumbent control.
+3. Validate design ID, arm uniqueness and control identity.
+4. Replay every arm against the same immutable history.
+5. Preserve every result and its design/campaign/arm/policy/history lineage.
+6. Select at most one candidate for a fresh online confirmation cohort.
+7. Create a separate confirmation assignment containing only incumbent + selected
+   candidate; randomize within declared task blocks and emit canonical EXPERIMENT
+   records for actual executions.
+8. Analyze primary outcome, correctness, integration, cost and interactions separately.
+9. Route promotion through proposal lifecycle and the existing dual gates.
+
+The offline DoE design artifact is a preregistration record. The separate confirmation
+assignment artifact covers only the incumbent and one selected candidate. Canonical
+EXPERIMENT records remain the per-run observation ledger. Replay rows remain
+`replay_only` and carry `recorded_outcomes_only` verification. Promotion-readiness
+output is advisory; route promotion through proposal lifecycle and dual gates.

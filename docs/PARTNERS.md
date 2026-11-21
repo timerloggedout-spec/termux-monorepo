@@ -12,6 +12,7 @@ Affiliate, referral, and gifted-usage lanes this project takes part in — the c
 | UnoRouter | LLM routing | 10% of referred top-ups as account balance (no cash payout; balance transfers to main) | https://unorouter.com/register?aff=kHp6 | issued referral badge (dark, MD, SVG) — landing grid | Marketing (Chloe) |
 | Neon | Serverless Postgres | Referral link — offer NOT ESTABLISHED (verify on signup) | https://neon.com/signup?refcode=BZL02IH2 | — | Marketing (Chloe) |
 | Replit | Developer platforms | $20 in credits to the referred user when they upgrade; referrer-side $20 requires a paid plan (not claimable on the free tier) | https://replit.com/refer/timerloggedout | — | Marketing (Chloe) |
+| MermaidChart | Diagramming & visual collaboration | Affiliate link; visitor offer and commission terms unverified | https://mermaidchart.cello.so/uztNIvj9s4a | `MermaidChart — affiliate link` (`FF3670`) | Marketing |
 | Grafana | Observability & cloud | Referral code `gr8WEigykKjVGTV` | https://grafana.com/auth/sign-up?refCode=gr8WEigykKjVGTV | `Grafana Cloud — referral sign-up` (`F46800`, grafana logo) — row 2 | Marketing (Chloe) |
 
 ## 1b. Code lanes (invite / referral codes, owner-supplied, free no-CC)

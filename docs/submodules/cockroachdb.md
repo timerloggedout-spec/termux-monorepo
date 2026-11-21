@@ -16,7 +16,7 @@ The upstream repository is reference material. Repository-owned code remains the
 
 Configure the Actions secret `COCKROACH_DATABASE_URL` with a PostgreSQL-wire connection URI using `sslmode=verify-full` (preferred) or `sslmode=verify-ca`. The writer emits only credential names and status. Local insecure mode is available exclusively to the CI integration test with `CI=true` and `COCKROACH_ALLOW_INSECURE_TEST=1`.
 
-Run `ops/cockroachdb/lane-events-writer-grants.sql` as a cluster administrator. It creates the isolated `lane_events` database and `lane_events_writer` login, removes default PUBLIC access, and grants the writer `CONNECT`, schema `USAGE`, and table `SELECT, INSERT` with matching default privileges. Apply `ops/cockroachdb/lane-events-schema.sql` through `COCKROACH_SCHEMA_DATABASE_URL` using a migration identity. Set the runtime Actions secret `COCKROACH_DATABASE_URL` to the dedicated writer identity. The writer role receives no `UPDATE`, `DELETE`, or DDL grants.
+Run `ops/cockroachdb/lane-events-writer-grants.sql` as a cluster administrator. It creates the isolated `lane_events` database and `lane_events_writer` login, removes default PUBLIC access, and grants the writer `CONNECT`, schema `USAGE`, and table `SELECT, INSERT` with matching default privileges. Set a generated login password through the cluster's secret manager, then store the resulting TLS connection URI as the Actions secret `COCKROACH_DATABASE_URL`. Apply `ops/cockroachdb/lane-events-schema.sql` through `COCKROACH_SCHEMA_DATABASE_URL` using a migration identity. The writer role receives no `UPDATE`, `DELETE`, or DDL grants.
 
 ## Continuity semantics
 

@@ -9,6 +9,7 @@
 | 15_Research_Repo_Templates/ | Consolidated research scaffolds, including the Dicklesworthstone Flywheel stack profile |
 | 16_Org_Phased/ | Orgs + Enterprise phase gates |
 | 17_Papers/ | Cited research + implementation sources |
+| 18_Vector_Databases/ | Vector database engines, APIs, adapters, and benchmark references |
 | smods/ | **Live** custom-adapted gitlink lane |
 
 ## Continuous evaluation

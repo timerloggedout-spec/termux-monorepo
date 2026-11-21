@@ -9,11 +9,11 @@ keywords: ["integrations", "connectors", "MCP", "documentation", "readiness", "p
 
 This portfolio records the current evidence for the tools and services named in the integration stewardship request. It separates what is visible in this assistant session from what is implemented in the repository, what is authenticated, and what has passed an end-to-end runtime check.
 
-**Audit performed:** 2026-11-06. **Registry update date:** 2026-11-11. Connector, account, and scan observations are a dated snapshot, not a claim of current live readiness.
+**Audit performed:** 2026-11-06. **Registry update date:** 2026-11-21. Connector, account, and scan observations are a dated snapshot, not a claim of current live readiness.
 
 ## Executive status
 
-The existing Integration Intelligence foundation is established by merged PR #4009. The current registry contained eight integrations. This expansion adds the requested portfolio as 24 separately tracked entries, including two distinct DeepWiki surfaces.
+The existing Integration Intelligence foundation is established by merged PR #4009. The current registry contained 36 integrations. This update adds Pinecone, pg_pinecone, and pgvector as three separately tracked vector-database entries, bringing the registry to 39. The managed Pinecone adapter and the two PostgreSQL source candidates retain distinct implementation and runtime states.
 
 The repository remains the source of truth. Session connectors and installed skills are capabilities of this assistant environment, not automatic capabilities of GitHub Actions, Termux, other collaborators, or production.
 
@@ -46,6 +46,9 @@ The repository remains the source of truth. Session connectors and installed ski
 | Inductive Bio | Public LogD, acidic pKa, and basic pKa model catalog retrieved | Preserve model IDs and versions if a scientific prediction lane is built |
 | Superpowers | Skill installed; repository-local skill already exists | Continue using the repository policy bridge |
 | Temporal | Developer skill installed; no Temporal server connector exposed | Reconcile with existing `temporal-langsmith-adapter` proposal |
+| Pinecone | Existing REST client, deterministic sync workflow, and historical successful Actions runs; fresh account/index observation pending | Implemented; current-head runtime proof pending | Managed semantic retrieval over ops documentation |
+| pg_pinecone | Official Apache-2.0 upstream reviewed at a pinned commit; local extension runtime pending | Reference candidate only; custom-fork smod pending | PostgreSQL native and Pinecone-remote engines |
+| pgvector | Official source and license reviewed at a pinned commit; local extension runtime pending | Reference candidate only | PostgreSQL HNSW baseline |
 | SiteTriage | Diagnostic tools exposed | Keep diagnostics read-only by default |
 | AI Task Brief Builder | Task brief extraction tool exposed | Use for evidence-separated requirements and acceptance criteria |
 | Google Calendar | Calendar tools exposed; no personal calendar data accessed | Use only for a specific scheduling request |
@@ -56,6 +59,10 @@ The repository remains the source of truth. Session connectors and installed ski
 | Manus | Research and task tools exposed | Dispatch only bounded briefs; independently validate outputs |
 | Sixtyfour Intelligence | Company/person research tools exposed; not exercised | Require an explicit legitimate research purpose and privacy review |
 | WorkOS | Login authenticated, but no dashboard account backs it | Provisioning is blocked until a supported account setup path exists |
+
+## Pinecone vector-store comparison
+
+The existing managed Pinecone path is implemented through scripts/pinecone/ and the pinecone-knowledge workflow. Its historical successful runs are recorded, while current account/index state remains unverified in this audit. The controlled DoE is design-only: pgvector HNSW is the control, pg_pinecone native and remote are treatments, and the existing integrated-inference index is a separate end-to-end reference. The custom-fork smod pin and live execution remain gated on preflight, quota, budget, and database-instance evidence.
 
 ## DeepWiki and Devin are separate systems
 

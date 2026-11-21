@@ -27,6 +27,7 @@ propagations recorded as design events in the campaign record.
 | FB Pages MVT-1 — copy angle × code-pool split (marketing-channel) | campaign | admitted 2026-10-31 — `executing_partial`: fb-a/fb-b live since 2026-10-27, fb-c `arm_not_started` (deviation recorded in-design); in-repo record post-launch, marked as such | `experiments/marketing/fb-pages-mvt-1/` |
 | bf-1-backfill-methods — competing backfill method versions (rule 8) over the provenance attribution set + routed-dispatch records | live, implementing | weekly comparison; cull/promote only at the standing significance gate | `experiments/doe/bf-1-backfill-methods/` |
 | util-1-provider-rotation — desk rotation bench on live production flow (rule 6 basis; owner USE-THEM-ALL) | live, implementing; AgentRouter conditionally pre-registered, not dispatchable | window: 24 stamped dispatches ∨ 2026-12-01; auditor weekly | `experiments/doe/util-1-provider-rotation/` |
+| pinecone-vector-store — pgvector HNSW vs pg_pinecone native vs remote over identical vectors; existing integrated-inference path retained as a separate incumbent | admitted 2026-11-21 — design-only, 0 runs, results=null; database-instance record contract is a preflight gate | `experiments/doe/pinecone-vector-store/` |
 | cmp-register — standing register of comparison examples evaluated over time (owner order 2026-11-01) | register | open — CMP-1 SKILL.md vs *.skill packaging · CMP-2 new-competition routing (dedicated opportunity channel vs fold-in; first instance .approxination) | `experiments/doe/cmp-register/` |
 | nc-1-notation-compliance — notation-drift detection stack (L3 GH classifier ∧ L2 transcript sweep ⇒ L1 main relay-validation) | campaign | admitted 2026-10-31 — design-only, **pre-registered**; owner order via main: the detection TEST is a DoE experiment homed here; Tier-1 builds L3+L2; verdict ↦ main on first runs | `experiments/doe/nc-1-notation-compliance/` |
 | live-2-prlane-tuning — classifier rule/threshold tuning (joint w/ tier1-classifiers-steward) | campaign | admitted 2026-10-31 — design-only, **pre-registered**; replay factorial over frozen pr-lane snapshots (live series = non-stationary, steward caveat); phase-2 levels by amendment after rule-file read; phase-3 sibling (decide/laya weighted merger, 0.7 Jev + 0.3 Kev): VARIANCE PRECONDITION (owner, 2026-11-02) — weight optimization blocked-by-design until variance inputs exist {per-judge score variance - judge-pair covariance/disagreement}, supplied by the phase-3 trial population (trial records carrying dispersion fields); no weight optimization on constants alone | `experiments/doe/live-2-prlane-tuning/` |
@@ -56,9 +57,12 @@ propagations recorded as design events in the campaign record.
 - **Feed sections** — `doe-feed.json` carries, per member: designs /
   campaigns / results. A member with no results renders its state
   exactly (design-only, proposal-only), never a borrowed result.
-- **Intake rule** — a campaign joins the family only with a committed
-  **design record + run evidence** (EXPERIMENT-conforming records).
-  Proposals alone don't count.
+- **Intake rule** — a committed `experiments/doe/*/DESIGN.json` registers
+  a campaign as `admitted_design_only`; zero run records means zero results.
+  Each dispatched run emits exactly one canonical EXPERIMENT record.
+  Executed outcomes and promotion require run evidence plus the applicable
+  analysis and repository gates. Proposal-only candidates without a design
+  record remain outside the campaign list.
 - **Evaluation doctrine** — parallel lanes under a shared capability
   contract; scoring distinguishes execution status → task outcome →
   correctness → integration → regression → resource cost (multivariate-doe

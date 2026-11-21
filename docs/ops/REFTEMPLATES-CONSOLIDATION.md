@@ -30,6 +30,8 @@ refTemplates/
 ├── 15_Research_Repo_Templates/        # consolidated research scaffolds
 │   └── jogyo-research-lab/            # primary — Yeachan-Heo/My-Jogyo pattern
 ├── 16_Org_Phased/                     # Enterprise + complementary orgs
+├── 17_Papers/                         # cited research and implementation sources
+├── 18_Vector_Databases/               # vector DB engines and comparison references
 └── smods/                             # LIVE custom-adapted gitlink lane
 ```
 
@@ -77,9 +79,9 @@ No forced full clone on every runner. Sparse / on-demand only.
 
 1. This document lands.
 2. Create `refTemplates/00_Index/` + jogyo metadata.
-3. Expand skeleton categories as metadata-only.
+3. Expand skeleton categories as metadata-only, including 18_Vector_Databases/.
 4. Wire inventory / integrity into Actions.
-5. Optional `smods/` pin when dual-gate ready.
+5. Optional smods pin when dual-gate ready and backed by a custom fork.
 
 Promote when dual gates green and task outcome verified. Agents auto-promote under full scoped authority (#184). Sovereignty cockpit = ArchWiz + chat for build-request projects.
 

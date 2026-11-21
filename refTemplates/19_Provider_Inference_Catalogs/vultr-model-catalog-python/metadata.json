@@ -1,0 +1,37 @@
+{
+  "schema_version": "ref-template-source/v1",
+  "name": "vultr-model-catalog-python",
+  "category": "provider-inference-catalog",
+  "observed_at": "2026-11-21T17:25:10Z",
+  "authority": "reference-metadata-only",
+  "sources": [
+    {
+      "id": "vultr-model-catalog-python",
+      "role": "python-provider-catalog-sdk",
+      "url": "https://github.com/vultr/model-catalog-python",
+      "revision": "4a414ab26e1f596cb98b3974a7d12182bf62dab3",
+      "license": "MIT",
+      "license_evidence_url": "https://github.com/vultr/model-catalog-python/blob/4a414ab26e1f596cb98b3974a7d12182bf62dab3/LICENSE",
+      "runtime": "Python 3.11+",
+      "runtime_dependencies": []
+    }
+  ],
+  "repository_consumer": {
+    "comparison_target": "scripts/provider_model_catalog.py",
+    "adapters": [
+      "scripts/provider_catalog_protocols.py",
+      "scripts/provider_extension_catalogs.py"
+    ],
+    "tests": [
+      "tests/test_provider_model_catalog.py"
+    ],
+    "status": "research_only"
+  },
+  "smod": {
+    "target": null,
+    "upstream": "https://github.com/vultr/model-catalog-python.git",
+    "upstream_revision": "4a414ab26e1f596cb98b3974a7d12182bf62dab3",
+    "state": "metadata_only_reference",
+    "gitlink_present": false
+  }
+}

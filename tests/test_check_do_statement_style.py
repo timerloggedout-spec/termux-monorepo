@@ -72,7 +72,8 @@ def test_preserves_baseline_action_verbs(monkeypatch):
     } <= module["IMPERATIVE"]
 
 
-def run_push_check(tmp_path, subject, *, body="", instruction="Preserve checks.\n", script=SCRIPT, merge=False):
+def run_push_check(tmp_path, subject, *, body="", instruction="Preserve checks.\n", script=SCRIPT, merge=False,
+                   mainline_subject="test(ci): add mainline coverage", mainline_body=""):
     """Exercise the public CLI with a real, credential-free Git commit range."""
     def git(*args):
         return subprocess.run(
@@ -94,7 +95,7 @@ def run_push_check(tmp_path, subject, *, body="", instruction="Preserve checks.\
     git("commit", "-m", subject, "-m", body)
     if merge:
         git("switch", "main")
-        git("commit", "--allow-empty", "-m", "test(ci): add mainline coverage")
+        git("commit", "--allow-empty", "-m", mainline_subject, "-m", mainline_body)
         git("merge", "--no-ff", "side", "-m", "Merge side", "-m", "Do not bypass validation.")
         # Prove this is a real two-parent merge, rather than a fast-forward.
         assert len(git("rev-list", "--parents", "-n", "1", "HEAD").split()) == 3
@@ -183,5 +184,23 @@ def test_real_push_checks_side_branch_inside_merge_range(tmp_path, location):
     else:
         label = "commit.body" if location == "body" else "docs/ops/instructions.md"
         assert label in result.stdout
+        assert "lead with the intended DO action" in result.stdout
+    assert "action verb after its scope: Merge side" not in result.stdout
+
+
+@pytest.mark.parametrize("location", ["subject", "body"])
+def test_real_push_checks_mainline_inside_merge_range(tmp_path, location):
+    kwargs = {"subject": "test(ci): add side coverage", "merge": True}
+    kwargs[f"mainline_{location}"] = (
+        "fix(ci): miscellaneous mainline cleanup" if location == "subject"
+        else "Do not bypass mainline validation.\n"
+    )
+    result = run_push_check(tmp_path, **kwargs)
+    assert result.returncode == 1, result.stdout + result.stderr
+    if location == "subject":
+        assert "miscellaneous mainline cleanup" in result.stdout
+        assert "commit subject requires an imperative action verb" in result.stdout
+    else:
+        assert "commit.body" in result.stdout
         assert "lead with the intended DO action" in result.stdout
     assert "action verb after its scope: Merge side" not in result.stdout

@@ -107,3 +107,25 @@ returns `23 passed`. A temporary checker mutation removing both `--no-merges`
 flags makes the valid merged range fail with synthetic subject and body errors
 (RED). Existing checker passes (GREEN). Temporary mutation is outside git.
 Required local gates and committed-head checks are recorded separately in the PR.
+
+## Merge ancestry counterexamples — 2026-11-21
+
+Live head `1d1688892b91f601df9867e105ea763be95accb7` passed both required
+GitHub gates (runs 44701654759 and 44701654966); no current-head inline review
+roots at initial fetch. Continue registered AR-33, tests/docs only.
+
+Maintainer critique: the merge fixture validates side ancestors but has only a
+valid mainline commit. Adversarial critique: replacing the full ancestry walk
+with first-parent enumeration could silently skip invalid side subjects/bodies.
+Allow fixture-local mainline subject/body overrides and add two rejection cases;
+the default merge and all linear cases remain unchanged. Synthetic merge text
+must remain excluded while both non-merge ancestor paths remain checked.
+
+Focused working-tree command over the initial head:
+`PYTHONPATH=/home/user/style-test-deps python3 -m pytest -q tests/test_check_do_statement_style.py`
+returns `25 passed`. Temporary checker mutation adding `--first-parent` to both
+Git log calls produces false PASS for invalid side subject and invalid side body.
+The existing side tests therefore detect that mutation; the new cases cover the
+complementary mainline path. Temporary mutation lives outside git and is removed.
+No production defect claim: the unchanged checker rejects both paths correctly.
+Required local gates and current committed-SHA GitHub results are separate receipts.

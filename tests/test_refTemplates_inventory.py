@@ -17,7 +17,7 @@ def test_metadata_reference_slots_require_source_and_readme(tmp_path, monkeypatc
     slot = ref / slot_name
     child = slot / "reference"
     child.mkdir(parents=True)
-    (child / "README.md").write_text("reference\\n", encoding="utf-8")
+    (child / "README.md").write_text("reference\n", encoding="utf-8")
     monkeypatch.setattr(inventory, "ROOT", root)
     monkeypatch.setattr(inventory, "REF", ref)
 
@@ -32,9 +32,9 @@ def test_complete_provider_inference_reference_passes(tmp_path, monkeypatch):
     slot = ref / "19_Provider_Inference_Catalogs"
     child = slot / "vultr-model-catalog-typescript"
     child.mkdir(parents=True)
-    (child / "README.md").write_text("reference\\n", encoding="utf-8")
+    (child / "README.md").write_text("reference\n", encoding="utf-8")
     (child / "SOURCE.txt").write_text(
-        "https://github.com/vultr/model-catalog-typescript\\n", encoding="utf-8"
+        "https://github.com/vultr/model-catalog-typescript\n", encoding="utf-8"
     )
     monkeypatch.setattr(inventory, "ROOT", root)
     monkeypatch.setattr(inventory, "REF", ref)
@@ -50,7 +50,7 @@ def test_legacy_research_children_field_remains_available(tmp_path, monkeypatch)
     slot = ref / "15_Research_Repo_Templates"
     child = slot / "jogyo"
     child.mkdir(parents=True)
-    (child / "README.md").write_text("reference\\n", encoding="utf-8")
+    (child / "README.md").write_text("reference\n", encoding="utf-8")
     (child / "SOURCE.txt").write_text("https://example.test\\n", encoding="utf-8")
     monkeypatch.setattr(inventory, "ROOT", root)
     monkeypatch.setattr(inventory, "REF", ref)

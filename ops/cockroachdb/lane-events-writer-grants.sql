@@ -1,5 +1,6 @@
 -- Run as a CockroachDB cluster/database administrator before schema migration.
 -- Isolate the lane-event ledger and grant the runtime identity least privilege.
+-- Set a generated login password through the cluster secret manager after role creation.
 CREATE DATABASE IF NOT EXISTS lane_events;
 CREATE ROLE IF NOT EXISTS lane_events_writer WITH LOGIN;
 

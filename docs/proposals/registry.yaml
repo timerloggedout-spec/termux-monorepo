@@ -1,5 +1,5 @@
 version: 1
-updated_at: '2026-11-11T00:00:00Z'
+updated_at: '2026-11-20T10:40:00Z'
 updated_by: ChatGPT
 proposals:
 
@@ -1348,4 +1348,28 @@ proposals:
     gates_required:
       - repo-gate
       - proposal-lifecycle
+      - termux-smoke
+
+  - id: cns-integration
+    title: "Cognitive Network Systems integration — Brain kernel host composition"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/cns-integration/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_issues:
+      - 5693
+      - 5588
+      - 5501
+    related_prs:
+      - 5525
+      - 5712
+    related_branches:
+      - feat/brain-shadow-host-composition-final
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
       - termux-smoke

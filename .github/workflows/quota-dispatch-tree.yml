@@ -71,6 +71,8 @@ jobs:
       dispatch_hw_execute: ${{ steps.tree.outputs.dispatch_hw_execute }}
       dispatch_hw_assist: ${{ steps.tree.outputs.dispatch_hw_assist }}
       dispatch_hourly: ${{ steps.tree.outputs.dispatch_hourly }}
+      dispatch_reconciliation: ${{ steps.tree.outputs.dispatch_reconciliation }}
+      dispatch_context_backfill: ${{ steps.tree.outputs.dispatch_context_backfill }}
       dispatch_repochange: ${{ steps.tree.outputs.dispatch_repochange }}
       dispatch_q3: ${{ steps.tree.outputs.dispatch_q3 }}
       dispatch_q4: ${{ steps.tree.outputs.dispatch_q4 }}
@@ -119,7 +121,8 @@ jobs:
                 'dispatch_stall_watch', 'dispatch_bridge', 'dispatch_probe',
                 'dispatch_eval', 'dispatch_recon', 'dispatch_hw_refresh',
                 'dispatch_hw_pair', 'dispatch_hw_execute', 'dispatch_hw_assist',
-                'dispatch_hourly', 'dispatch_repochange', 'dispatch_q3',
+                'dispatch_hourly', 'dispatch_reconciliation',
+                'dispatch_context_backfill', 'dispatch_repochange', 'dispatch_q3',
                 'dispatch_q4', 'dispatch_q6', 'dispatch_vantage'
               ]) core.setOutput(name, 'false');
               core.info('Duplicate force request: no dispatch fan-out');
@@ -234,6 +237,23 @@ jobs:
                 return latest ? (Date.now() - new Date(latest.created_at).getTime()) / 60000 : 1e9;
               } catch (_) { return 1e9; /* unreadable run history = treat as stale */ }
             };
+            // Node F2: independent hourly reconciliation recovery. The 30-minute
+            // dispatcher schedule is jittered, so these lanes use their own
+            // latest-run age rather than the first-ten-minutes phase window.
+            // An active latest run counts as fresh to prevent duplicate fan-out;
+            // missing/unreadable history counts as stale and is still subject to
+            // Node A admission. A 75m threshold gives the hourly target 15m slack.
+            const workflowAgeMin = async (workflowId) => {
+              try {
+                const r = await github.rest.actions.listWorkflowRuns({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  workflow_id: workflowId, per_page: 1
+                });
+                return admissionMod.workflowAgeMinutes(r.data.workflow_runs?.[0], Date.now());
+              } catch (_) { return 1e9; /* unreadable run history = treat as stale */ }
+            };
+            const reconciliationStaleMin = await workflowAgeMin('reconciliation-engine.yml');
+            const contextBackfillStaleMin = await workflowAgeMin('context-relationship-backfill.yml');
             const hwRefreshStaleMin = await laneAgeMin('tribute-status-refresh.yml');
             // Node F1: sibling-lane staleness (4 calls) — G-02 follow-up.
             // hw-pair / hw-execute / hw-assist carried the same phase
@@ -269,10 +289,12 @@ jobs:
             verdicts.dispatch_hw_pair = (((firstCycle && hour % 2 === 1) || hwPairStaleMin > 150) || force);
             verdicts.dispatch_hw_execute = (((firstCycle && hour % 4 === 3) || hwExecuteStaleMin > 300) || force);
             verdicts.dispatch_hw_assist = (((firstCycle && hour % 6 === 5) || hwAssistStaleMin > 450) || force);
-            // Node G: Tier 3 tranche (issue #1573). Hourly lanes reuse Node F's
-            // firstCycle arithmetic; repo-state lanes reuse Node E's watermark
-            // check. Zero additional API calls.
+            // Node G: Tier 3 tranche (issue #1573). General hourly lanes retain
+            // the scheduled phase slot. Reconciliation lanes have independent
+            // age-based recovery so schedule jitter cannot starve either lane.
             verdicts.dispatch_hourly = (firstCycle || force);
+            verdicts.dispatch_reconciliation = (reconciliationStaleMin > 75 || force);
+            verdicts.dispatch_context_backfill = (contextBackfillStaleMin > 75 || force);
             verdicts.dispatch_repochange = ((repoChanged && (slow || eventDemand)) || force);
             // Tranche 2 (Tier 3, issue #1573): hour-mod cadences at firstCycle.
             // Same firstCycle arithmetic as Node F, different modulus offsets.
@@ -325,6 +347,8 @@ jobs:
                 dispatch_hw_pair: { stale_min: hwPairStaleMin, threshold_min: 150 },
                 dispatch_hw_execute: { stale_min: hwExecuteStaleMin, threshold_min: 300 },
                 dispatch_hw_assist: { stale_min: hwAssistStaleMin, threshold_min: 450 },
+                dispatch_reconciliation: { stale_min: reconciliationStaleMin, threshold_min: 75 },
+                dispatch_context_backfill: { stale_min: contextBackfillStaleMin, threshold_min: 75 },
                 dispatch_q6: { stale_min: paStaleMin, threshold_min: paThresholdMin }
               }
             });
@@ -358,7 +382,9 @@ jobs:
                 ['F hw-pair', 'odd hours || stale > 150m', String((firstCycle && hour % 2 === 1) || hwPairStaleMin > 150)],
                 ['F hw-execute', 'hour % 4 == 3 || stale > 300m', String((firstCycle && hour % 4 === 3) || hwExecuteStaleMin > 300)],
                 ['F hw-assist', 'hour % 6 == 5 || stale > 450m', String((firstCycle && hour % 6 === 5) || hwAssistStaleMin > 450)],
-                ['G tier3-hourly', 'hourly cycle && admission', String(finals.dispatch_hourly)],
+                ['G tier3-hourly', 'hourly phase slot && admission', String(finals.dispatch_hourly)],
+                ['G reconciliation', `reconciliation age ${Math.round(reconciliationStaleMin)}m > 75m && admission`, String(finals.dispatch_reconciliation)],
+                ['G context-backfill', `context backfill age ${Math.round(contextBackfillStaleMin)}m > 75m && admission`, String(finals.dispatch_context_backfill)],
                 ['G tier3-repochange', 'commits since watermark && slow-cycle', String(finals.dispatch_repochange)],
                 ['G q3', 'firstCycle && hour % 3 == 1', String(finals.dispatch_q3)],
                 ['G q4', 'firstCycle && hour % 4 == 1', String(finals.dispatch_q4)],
@@ -498,7 +524,7 @@ jobs:
             sweep: 'false'
             advance_watermark: 'false'
           - lane: reconciliation-engine
-            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            run: ${{ needs.decide.outputs.dispatch_reconciliation }}
             sweep: 'false'
             advance_watermark: 'false'
           - lane: historical-evaluation-correlation
@@ -518,7 +544,7 @@ jobs:
             sweep: 'false'
             advance_watermark: 'false'
           - lane: context-relationship-backfill
-            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            run: ${{ needs.decide.outputs.dispatch_context_backfill }}
             inputs_json: ''
             advance_watermark: 'false'
           - lane: tribute-system1

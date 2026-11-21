@@ -71,6 +71,11 @@ class FreeTierValueBoardContractTests(unittest.TestCase):
         self.assertIn("safeHref", self.page)
         self.assertIn("u.protocol==='https:'", self.page)
 
+    def test_headline_prefers_exact_first_projection_total(self):
+        self.assertIn("d.totals&&d.totals.availability==='AVAILABLE'", self.page)
+        self.assertIn("d.totals.published_session_count===rows.length", self.page)
+        self.assertIn("d.totals.paid_equivalent_usd", self.page)
+
     def test_public_page_and_methodology_are_linked(self):
         self.assertIn("free-tier-value.json", self.page)
         self.assertIn("FREE-TIER-USE-VALUE-BOARD.md", self.page)

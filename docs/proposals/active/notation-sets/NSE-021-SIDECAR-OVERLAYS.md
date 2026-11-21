@@ -30,6 +30,6 @@ Compare four representations—English control, operator-first, dense registered
 
 ## Dependencies and governance
 
-Reuse NSE-020's lossless mapping/pointer contract, ICM-08's repository-native FA-ADE maintenance process, `docs/ops/DOE-FAMILY.md`, and `docs/ops/MVT-DOE-ATES-SEPARATION.md`. Keep the proposal posted until the Operator records acceptance. Implementation and corpus conversion begin after acceptance.
+Reuse NSE-005's context-relationship integration, NSE-007's drift detection, NSE-008's evolution ledger, ICM-03's documentation-only maintenance pipeline, ICM-07's master-rebuild integration evidence, `docs/ops/DOE-FAMILY.md`, and `docs/ops/MVT-DOE-ATES-SEPARATION.md`. The Operator accepted NSE-021 on 2026-11-21; the parent notation proposal retains its broader posted state. Execute only the accepted NSE-021 scope.
 
 **Acceptance:** bounded inventory complete; mapping aliases verified; source/executable-token invariants pass; staged campaign pre-registered; held-out replication meets quality floors; exact-head dual gates green before promotion.

@@ -63,7 +63,7 @@ Record observed values from drills. The design target is an independently replay
 
 ## Validation
 
-The dedicated workflow runs a TLS-secured single-node contract without a license key. It provisions least-privilege writer/migrator identities, applies the schema, verifies insert/readback, checks UPDATE/DELETE denial, runs adapter tests, and backs up/drops/restores the lane-events database from node-local test storage. A separate three-node node-failure drill runs only when `COCKROACH_LICENSE_KEY` contains a valid license. Hosted multi-region availability and external-storage disaster recovery remain separate drills.
+The dedicated workflow runs a TLS-secured single-node contract without a license key. It provisions least-privilege writer/migrator identities, applies the schema, verifies insert/readback, checks UPDATE/DELETE denial, drops and recreates the database, replays the canonical event and runs offline unit tests. A separate three-node drill runs only when `COCKROACH_LICENSE_KEY` contains a valid license; it tests node failure and native backup/restore through a surviving node. Hosted multi-region availability and external-storage disaster recovery remain separate drills.
 
 ## Upstream references
 

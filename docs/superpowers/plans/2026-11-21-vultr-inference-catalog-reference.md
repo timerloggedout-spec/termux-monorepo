@@ -41,11 +41,11 @@
 - Preserve `research_children` output for slot 15.
 - Add metadata-child validation for `15_Research_Repo_Templates`, `18_Vector_Databases` and `19_Provider_Inference_Catalogs`.
 
-- [ ] Write a failing test proving a slot-19 child missing `SOURCE.txt` is reported.
-- [ ] Run the focused test and confirm the expected assertion failure.
-- [ ] Implement the shared metadata-child collection/validation while preserving the slot-15 output contract.
-- [ ] Add a passing fixture with both required files and a regression for slot-18 compatibility.
-- [ ] Run the focused test and inventory strict mode.
+- [x] Write a failing test proving a slot-19 child missing `SOURCE.txt` is reported.
+- [x] Run the focused test and confirm the expected assertion failure (RED observed in the isolated source-mirror harness).
+- [x] Implement the shared metadata-child collection/validation while preserving the slot-15 output contract.
+- [x] Add a passing fixture with both required files and regressions for slot-15 and slot-18 compatibility.
+- [x] Run the focused tests (5 passed) and strict inventory mode (3 synthetic slots, 0 contract failures) in the isolated source-mirror harness.
 
 ### Task 2: Register pinned Vultr references
 
@@ -58,9 +58,9 @@
 - Create: `refTemplates/19_Provider_Inference_Catalogs/vultr-model-catalog-typescript/SOURCE.txt`
 - Create: `refTemplates/19_Provider_Inference_Catalogs/vultr-model-catalog-typescript/metadata.json`
 
-- [ ] Record exact source URLs, commit SHAs, default branch and MIT license evidence.
-- [ ] Mark both references metadata-only and research-only.
-- [ ] Validate JSON syntax and every local source path.
+- [x] Record exact source URLs, commit SHAs, default branch and MIT license evidence.
+- [x] Mark both references metadata-only and research-only.
+- [x] Re-fetch all source metadata and reference files; final CI remains the authoritative repository validation.
 
 ### Task 3: Connect repository navigation and ICM
 
@@ -70,18 +70,18 @@
 - Modify: `docs/icm/objects/knowledge/reference-inputs.md`
 - Modify: `docs/ops/REFTEMPLATES-WORKFLOW-HOOKS.md`
 
-- [ ] Link slot 19 from the refTemplates index and source map.
-- [ ] Record the provider-catalog reference class in the ICM knowledge card.
-- [ ] Extend the metadata integrity checklist to cover slot 19 and the existing slot 18 contract.
+- [x] Link slot 19 from the refTemplates index and source map.
+- [x] Record the provider-catalog reference class in the ICM knowledge card.
+- [x] Extend the metadata integrity checklist to cover slot 19 and the existing slot 18 contract.
 
 ### Task 4: Publish the comparative RECON
 
 **Files:**
 - Create: `docs/ops/VULTR-INFERENCE-CATALOG-REFERENCE-RECON.md`
 
-- [ ] Compare the Vultr wire schema, normalized model, media catalog, cache, parser tolerance and shared fixture strategy with the existing v5 collector/adapters.
-- [ ] Separate verified source facts, current monorepo facts and recommendations.
-- [ ] Prioritize v6 design opportunities without changing runtime behavior.
+- [x] Compare the Vultr wire schema, normalized model, media catalog, cache, parser tolerance and shared fixture strategy with the existing v5 collector/adapters.
+- [x] Separate verified source facts, current monorepo facts and recommendations.
+- [x] Prioritize v6 design opportunities without changing runtime behavior.
 
 ### Task 5: Record proposal scope and authorization
 
@@ -89,13 +89,13 @@
 - Modify: `docs/proposals/active/model-selection-market/ITEMS.md`
 - Modify: `docs/proposals/active/model-selection-market/DEBATE.md`
 
-- [ ] Add MSM-025 with metadata-only scope and dependencies.
-- [ ] Record the operator's task-scoped authorization; preserve the proposal-wide lifecycle state.
+- [x] Add MSM-025 with metadata-only scope and dependencies.
+- [x] Record the operator's task-scoped authorization; preserve the proposal-wide lifecycle state.
 
 ### Task 6: Verify and prepare review
 
-- [ ] Run the focused inventory tests.
-- [ ] Run `python3 scripts/ci/refTemplates_inventory.py --strict`.
+- [x] Run the focused inventory tests in the isolated source-mirror harness: 5 passed.
+- [x] Run `python3 scripts/ci/refTemplates_inventory.py --strict` in the isolated source-mirror harness: 3 slots validated, 0 failures.
 - [ ] Run `python3 scripts/ci/repo_gate.py`.
 - [ ] Run `python3 scripts/ci/termux_smoke.py`.
 - [ ] Re-fetch all changed files and the final branch SHA.

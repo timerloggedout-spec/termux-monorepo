@@ -86,6 +86,7 @@
       var title = [
         item.lane,
         "#" + String(run.run_number == null ? "?" : run.run_number),
+        "run id " + String(run.id == null ? "unavailable" : run.id),
         state,
         new Date(item.time).toISOString(),
         "duration " + durationLabel(run),

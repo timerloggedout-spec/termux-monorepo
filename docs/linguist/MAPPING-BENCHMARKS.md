@@ -88,6 +88,10 @@ python -m pytest tests/test_linguist_mapping_benchmark.py -q
 The generator uses the Python standard library. Dataset output is deterministic
 for a fixed input and seed.
 
+The evaluator exposes `evaluate_rankings(dataset, rankings)` for macro
+precision@k, recall@k, mean reciprocal rank, and nDCG. It validates query and
+mapping identifiers and treats an omitted query ranking as an empty result.
+
 ## Evaluation dimensions
 
 1. **Retrieval:** recall@k, precision@k, mean reciprocal rank, and nDCG.

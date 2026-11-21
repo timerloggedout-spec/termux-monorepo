@@ -1,0 +1,47 @@
+# Routing control-plane contract graph
+
+Companion to [ROUTING-CONTROL-PLANE-RECONCILIATION.md](ROUTING-CONTROL-PLANE-RECONCILIATION.md). Derived from current contracts and implementation pointers; this graph is a navigation aid, not an execution specification.
+
+```mermaid
+flowchart TD
+  ISSUE[Issue template filing] -->|declares| CONTRACT[issue-dispatch/v1]
+  TIER[queue.dispatch-tiers/v2] -->|configures| ADMIT[QUE admission evaluator]
+  CONTRACT -->|gated by| ADMIT
+  ADMIT -->|admits named route; does not spawn| ROUTE[Task execution route]
+  CATALOG[desk-feed/v1.3 provider catalog] -->|governs eligible pool| DOE[DoE policy]
+  DOE -->|policy input| SCOUT[Scout task-fit selection]
+  SCOUT -->|selected arm / hand-off contract unresolved| ROUTE
+  ROUTE -->|canonical dispatch stamp| STAMP[dispatch stamp]
+  STAMP --> FAN[dispatch-stamp-fanout workflow + stamp_fanout.py]
+  FAN --> THREE[3L0 intake]
+  FAN --> EXP[DoE / MVT / ATES records]
+  FAN --> MONEY[MoneyBall records]
+  FAN --> TRAV[Desk traversal evidence]
+  MODEL[model_router.py / llm_api_hub] -.->|invocation-plane composition unresolved| ROUTE
+  WATCH[dispatch watchdog] -->|dispatch-state-feed/v1| WATCHFEED[Watchdog state feed]
+  WATCHFEED -->|folded at publish| QUECOL[QUE feed collector]
+  TIER --> QUECOL
+  QUECOL --> QFEED[QUE feed family]
+  DESK[Tribute Desk read-only page] -->|reads| DESKFEED[desk-feed + watchdog state]
+  DESK -->|separate QUE surface| QFEED
+  classDef contract fill:#e8f1ff,stroke:#3568a8,color:#17365d
+  classDef runtime fill:#eaf7ed,stroke:#37834a,color:#174a25
+  classDef evidence fill:#fff4df,stroke:#b7791f,color:#68420d
+  classDef unresolved fill:#fce8e6,stroke:#b3261e,color:#7f1d1d
+  class CONTRACT,TIER,CATALOG contract
+  class ADMIT,ROUTE,SCOUT,FAN,QUECOL runtime
+  class STAMP,THREE,EXP,MONEY,TRAV,WATCHFEED,QFEED,DESKFEED evidence
+  class MODEL unresolved
+```
+
+## Edge semantics
+
+- `declares`: a task filing carries a typed route declaration.
+- `gated by`: admission decides whether the declared route may proceed.
+- `governs eligible pool`: DoE defines the population/policy constraints, not a preferred provider.
+- `selects`: Scout binds task-fit to an eligible arm; exact runtime hand-off remains an open contract.
+- `emits`: execution produces one canonical dispatch stamp.
+- `fans out`: the same stamp is copied into multiple evidence planes; this is not multiple dispatches.
+- `folded at publish`: the QUE collector incorporates watchdog claims into its producer-of-record queue feed.
+- `projects`: Tribute Desk renders independent feed snapshots and does not execute dispatch.
+- `composition unresolved`: the repository has not established a typed contract between task dispatch and invocation-level model routing.

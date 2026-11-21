@@ -137,13 +137,20 @@ def test_panel_feed_adapter_preserves_the_canonical_snapshot():
     feed_path = ROOT / "apps/tribute-dashboard/data/linguist-panel-feed.json"
     feed = json.loads(feed_path.read_text(encoding="utf-8"))
     mappings = mappings_from_panel_feed(feed)
-    assert len(mappings) == feed["counts"]["entries_included"] - 1 == 522\n    assert sum(item.get("feed_duplicate_count", 1) for item in mappings) == 523\n    assert len({item["mapping_id"] for item in mappings}) == len(mappings)
+    assert len(mappings) == feed["counts"]["entries_included"] - 1 == 522
+    assert sum(item.get("feed_duplicate_count", 1) for item in mappings) == 523
+    assert len({item["mapping_id"] for item in mappings}) == len(mappings)
     assert all(item["provenance"]["path"] for item in mappings)
     assert all(item["feed_generated_at"] == feed["generated_at"] for item in mappings)
     assert any(item["round_trip_status"] == "failed" for item in mappings)
     assert all(item["grade"] == "unverified" for item in mappings)
     assert any(item["grade"] == "unverified" for item in mappings)
-    assert any(item["evidence_status"] == "candidate" for item in mappings)\n    assert any(item.get("feed_duplicate_count") == 2 for item in mappings)\n    group_labels = [item for item in mappings if item.get("feed_entry_id") == "nomenclature-labels:g"]\n    assert len(group_labels) == 2\n    assert len({item["mapping_id"] for item in group_labels}) == 2\n    assert len({item["feed_label_id"] for item in group_labels}) == 2
+    assert any(item["evidence_status"] == "candidate" for item in mappings)
+    assert any(item.get("feed_duplicate_count") == 2 for item in mappings)
+    group_labels = [item for item in mappings if item.get("feed_entry_id") == "nomenclature-labels:g"]
+    assert len(group_labels) == 2
+    assert len({item["mapping_id"] for item in group_labels}) == 2
+    assert len({item["feed_label_id"] for item in group_labels}) == 2
     assert all(item["feed_family"] != "archwiz-pointer-index" for item in mappings)
 
 

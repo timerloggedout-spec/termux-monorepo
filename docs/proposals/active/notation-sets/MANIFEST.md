@@ -11,9 +11,9 @@ reviewers:
     role: operator-authorizer
     status: requested
 related_issues: [320, 309, 182, 175, 126, 304, 196, 177, 208, 274, 1115]
-related_prs: [322, 324]
+related_prs: [322, 324, 5752]
 related_branches:
-  - linguist/mapping-benchmark-final-20261121
+  - linguist/mapping-benchmark-final2-20261121
   - docs/notation-sets-evolution
   - docs/mintlify-notation-sets-page
 gates_required: [repo-gate, termux-smoke]
@@ -83,7 +83,7 @@ These additions remain governed by NSE-008 (evolution ledger). The proposal rema
 
 ### 2026-11-21 — ChatGPT (NSE-024 benchmark registration)
 
-- Disposition: item registered; clean implementation branch prepared for review.
+- Disposition: item registered; draft PR #5752 opened from the clean implementation branch.
 - Notes: Added the cross-custom mapping benchmark scope to ITEMS.md. The implementation preserves canonical Linguist feed provenance, duplicate accounting, independent round-trip evidence, and candidate-pool boundaries. Proposal status remains posted pending operator review and acceptance.
 
 ## Checklist (process)

@@ -107,7 +107,7 @@ Normalize each eligible span into a canonical semantic IR with fixed fields: sco
 
 ## DoE / MVT design
 
-Use the existing DoE family and `EXPERIMENT.schema.json` as the record contract. Keep campaign-specific treatment assignment and overlay digests in a companion manifest keyed by run ID; evolve the shared schema only through its own accepted scope.
+Use the existing DoE family and `EXPERIMENT.schema.json` as the record contract. Keep campaign-specific treatment assignment and overlay digests in a companion manifest keyed by run ID; evolve the shared schema only through its own accepted scope. Keep the campaign design-only until committed run evidence satisfies the DoE family admission contract. Keep code-reference MVT/ATES comparisons separate from model/provider task dispatch; record each execution lane with its own configured-instance provenance.
 
 Factors:
 - representation: English / operators / dense / hybrid;

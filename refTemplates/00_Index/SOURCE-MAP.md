@@ -36,3 +36,12 @@ See root `.gitmodules`:
 AuditEngine_fork, batteries_fork, content-agent-routing-promptbase_fork, cost-of-remembering_fork, icm-architect_fork, icm-cctv_fork, interpretable-context-methodology_fork, mcp-android-ssh_fork, term_mcp_deepseek_fork, termux-mcp-server_fork, lego_fork
 
 Pins intentional; no auto-advance without dual-gate green. Flywheel components remain metadata-only until a real customized fork and compatibility evidence exist.
+
+## 19_Provider_Inference_Catalogs (metadata-first)
+
+| Slot | Preferred SOURCE | Inspected revision | License |
+|---|---|---|---|
+| vultr-model-catalog-python | https://github.com/vultr/model-catalog-python | 4a414ab26e1f596cb98b3974a7d12182bf62dab3 | MIT |
+| vultr-model-catalog-typescript | https://github.com/vultr/model-catalog-typescript | 6e55057cb718213937c4c118271f5a2ca1779d0d | MIT |
+
+Both entries are metadata-only SDK references. Their revisions, license evidence and adaptation notes live under `refTemplates/19_Provider_Inference_Catalogs/`; the comparative analysis is `docs/ops/VULTR-INFERENCE-CATALOG-REFERENCE-RECON.md`.

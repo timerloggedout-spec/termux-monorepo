@@ -81,6 +81,7 @@ See [docs/ops/TERMUX-ARCHWIZ-HYPERFORGE.md](docs/ops/TERMUX-ARCHWIZ-HYPERFORGE.m
   <a href="https://polsia.com/?ref=B5K7S8NL"><img src="https://img.shields.io/badge/Polsia-referral_bonus-7c3aed?style=for-the-badge" alt="Polsia referral bonus"></a>
   <br>
   <a href="https://grafana.com/auth/sign-up?refCode=gr8WEigykKjVGTV"><img src="https://img.shields.io/badge/Grafana_Cloud-referral_sign--up-F46800?style=for-the-badge&logo=grafana&logoColor=white" alt="Grafana Cloud referral sign-up"></a>
+  <a href="https://mermaidchart.cello.so/uztNIvj9s4a"><img src="https://img.shields.io/badge/MermaidChart-affiliate_link-FF3670?style=for-the-badge" alt="MermaidChart affiliate link"></a>
   <a href="https://termux-monorepo.vercel.app/"><img src="https://img.shields.io/badge/Preview_portal-Vercel_%28WIP%29-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Preview portal on Vercel (work in progress)"></a>
   <a href="https://timerloggedout-spec.github.io/"><img src="https://img.shields.io/badge/Landing_page-GitHub_Pages-1e6fd9?style=for-the-badge&logo=github&logoColor=white" alt="Landing page on GitHub Pages"></a>
 </p>

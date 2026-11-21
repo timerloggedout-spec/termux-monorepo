@@ -1,7 +1,7 @@
 {
   "schema_version": "pinecone-vector-store-metrics/v1",
   "fixture_type": "synthetic_unit_test_fixture",
-  "description": "Synthetic relevance labels and rankings used to verify Recall@k, nDCG@k, MRR@k, and paired bootstrap behavior. These values are test inputs, not experiment observations.",
+  "description": "Synthetic relevance labels and rankings verify Recall@k, nDCG@k, MRR@k, and paired bootstrap behavior. Fixture values are test inputs; experiment observations enter through registered run records.",
   "queries": [
     {
       "query_id": "architecture-001",

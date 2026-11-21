@@ -22,7 +22,7 @@ gates_required: [proposal-lifecycle, repo-gate, termux-smoke]
 
 ## Summary
 
-Register the existing managed Pinecone integration in refTemplates and Integration Intelligence, then pre-register a quality-first DoE comparing pgvector HNSW, pg_pinecone native, and pg_pinecone remote over the same frozen corpus and vector matrix. The current integrated-inference index remains a separate end-to-end reference.
+Register the existing managed Pinecone integration in refTemplates and Integration Intelligence, then pre-register a quality-first DoE comparing pgvector HNSW, pg_pinecone native, and pg_pinecone remote over the same frozen corpus and vector matrix. The current integrated-inference index remains a separate end-to-end reference. The pure-Python metric evaluator and synthetic golden-ranking fixture are part of the offline contract.
 
 ## Reviewers
 

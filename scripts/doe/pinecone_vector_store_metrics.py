@@ -107,7 +107,7 @@ def paired_bootstrap_ci(
     if resamples < 1 or confidence <= 0.0 or confidence >= 1.0:
         raise ValueError("resamples and confidence must be within their valid ranges")
     differences = [float(t) - float(c) for c, t in zip(control_scores, treatment_scores)]
-    if any(not math.isfinite(value) for value in differences):
+    if any(math.isfinite(value) is False for value in differences):
         raise ValueError("paired scores must be finite")
     rng = random.Random(seed)
     size = len(differences)

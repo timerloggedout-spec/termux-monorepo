@@ -23,6 +23,13 @@ The contracts are metadata-only. They carry references, digests, metrics and pro
 
 Each record declares `schema_version`. Producers pin immutable source revisions and artifact digests. Consumers validate records before aggregation. Top-level records are closed by default; new fields require coordinated schema and consumer updates. Breaking schema semantics require a major schema version.
 
+
+## Mandatory public-surface integration
+
+The architecture requires DerpWiki as the mandatory Linguist language layer across public user interfaces and published knowledge surfaces. Completed integrations include the DerpWiki projection by default, with zero visitor opt-in. The separate Unicode challenge payload follows the existing publication-profile contract; voluntary CTF participation remains a distinct participant-level choice.
+
+Z3π∅ notifications route to public user interfaces through the existing single-notification/dashboard pattern in `docs/ops/ACTIONS-MATRIX.md` and the classification, deduplication and receipt contract in `docs/ops/AUTOMATED-TELEMETRY-AUDIT.md`. Runtime delivery remains tracked in Phase 5 of the federation proposal.
+
 ## Validation
 
 Run:

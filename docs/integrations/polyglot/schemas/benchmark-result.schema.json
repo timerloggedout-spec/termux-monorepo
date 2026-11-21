@@ -217,12 +217,12 @@
     {
       "if": {
         "properties": {
-          "advantage_claim": {
-            "type": "string"
+          "parity_status": {
+            "const": "above"
           }
         },
         "required": [
-          "advantage_claim"
+          "parity_status"
         ]
       },
       "then": {
@@ -230,14 +230,22 @@
           "correctness": {
             "const": "pass"
           },
-          "parity_status": {
-            "const": "above"
+          "advantage_claim": {
+            "type": "string",
+            "minLength": 1
           }
         },
         "required": [
           "correctness",
-          "parity_status"
+          "advantage_claim"
         ]
+      },
+      "else": {
+        "properties": {
+          "advantage_claim": {
+            "type": "null"
+          }
+        }
       }
     }
   ]

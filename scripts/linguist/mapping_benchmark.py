@@ -151,6 +151,68 @@ def build_dataset(
     }
 
 
+
+def evaluate_rankings(
+    dataset: dict[str, Any],
+    rankings: dict[str, list[str]],
+    *,
+    ks: tuple[int, ...] = (1, 3, 5),
+) -> dict[str, Any]:
+    """Score ranked mapping retrieval with macro precision/recall, MRR, and nDCG."""
+    import math
+
+    qrels = dataset["qrels"]
+    corpus_ids = set(dataset["corpus"])
+    unknown_queries = set(rankings) - set(qrels)
+    if unknown_queries:
+        raise ValueError(f"unknown query ids: {sorted(unknown_queries)}")
+    if any(k < 1 for k in ks):
+        raise ValueError("all cutoff values must be positive")
+
+    per_query = {}
+    for query_id in sorted(qrels):
+        ranked = rankings.get(query_id, [])
+        if len(ranked) != len(set(ranked)):
+            raise ValueError(f"{query_id}: duplicate ranked mapping ids")
+        unknown_mappings = set(ranked) - corpus_ids
+        if unknown_mappings:
+            raise ValueError(f"{query_id}: unknown mapping ids {sorted(unknown_mappings)}")
+        relevant = set(qrels[query_id])
+        reciprocal_rank = next(
+            (1.0 / rank for rank, mapping_id in enumerate(ranked, 1)
+             if mapping_id in relevant),
+            0.0,
+        )
+        row = {"mrr": reciprocal_rank}
+        for k in ks:
+            hits = sum(mapping_id in relevant for mapping_id in ranked[:k])
+            precision = hits / k
+            recall = hits / len(relevant) if len(relevant) else 0.0
+            dcg = sum(
+                1.0 / math.log2(rank + 1)
+                for rank, mapping_id in enumerate(ranked[:k], 1)
+                if mapping_id in relevant
+            )
+            ideal_hits = min(len(relevant), k)
+            idcg = sum(1.0 / math.log2(rank + 1) for rank in range(1, ideal_hits + 1))
+            row[f"precision@{k}"] = precision
+            row[f"recall@{k}"] = recall
+            row[f"ndcg@{k}"] = dcg / idcg if idcg else 0.0
+        per_query[query_id] = row
+
+    metric_names = sorted({name for row in per_query.values() for name in row})
+    aggregate = {
+        name: sum(row[name] for row in per_query.values()) / len(per_query)
+        for name in metric_names
+    } if per_query else {}
+    return {
+        "schema": "linguist-mapping-evaluation/v1",
+        "query_count": len(per_query),
+        "aggregate": aggregate,
+        "per_query": per_query,
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", required=True, help="JSON file containing a mappings array")

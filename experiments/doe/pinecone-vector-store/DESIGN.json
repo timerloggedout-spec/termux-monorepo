@@ -99,7 +99,7 @@
   },
   "embedding_contract": {
     "storage_only_comparison": "Precompute one immutable document/query vector matrix with one exact model@version and reuse those exact vectors in every engine arm.",
-    "model": "NOT_ESTABLISHED — select and pin the exact embedding model@version before the first run.",
+    "model": "PENDING_PREFLIGHT — select and pin the exact embedding model@version before the first run.",
     "dimensions": "Read from the incumbent index and chosen embedding output at preflight; require exact agreement across arms.",
     "distance_metric": "Select the metric from the live index description and freeze the same metric across all arms.",
     "integrated_inference": "Keep the existing Pinecone llama-text-embed-v2 path as a separate end-to-end reference unless the exact embedding model and vector matrix are shared."

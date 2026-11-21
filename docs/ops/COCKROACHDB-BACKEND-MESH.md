@@ -52,13 +52,14 @@ Record observed values from drills. The design target is an independently replay
 
 ## Security and operations
 
-1. Store the URI only as the Actions secret `COCKROACH_DATABASE_URL`.
-2. Use `sslmode=verify-full` or `verify-ca` for hosted clusters.
-3. Use a dedicated writer role with SELECT/INSERT grants; keep UPDATE/DELETE privileges with the migration owner.
-4. Keep CockroachDB schema changes versioned and idempotent.
-5. Replay from canonical JSONL using the existing event key.
-6. Capture sink outcome and run identity in workflow logs and receipts.
-7. Run a restore drill before assigning a production continuity grade.
+1. Run `ops/cockroachdb/lane-events-writer-grants.sql` with the cluster administrator.
+2. Apply the versioned schema with a migration identity through `COCKROACH_SCHEMA_DATABASE_URL`.
+3. Store the dedicated writer URI only as the Actions secret `COCKROACH_DATABASE_URL`.
+4. Use `sslmode=verify-full` or `verify-ca` for hosted clusters.
+5. Keep the runtime role on SELECT/INSERT; reserve DDL, UPDATE and DELETE for the migration owner.
+6. Replay from canonical JSONL using the existing event key.
+7. Capture sink outcome and run identity in workflow logs and receipts.
+8. Run a restore drill before assigning a production continuity grade.
 
 ## Validation
 

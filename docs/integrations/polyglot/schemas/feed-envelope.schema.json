@@ -30,7 +30,9 @@
     },
     "revision": {
       "type": "string",
-      "pattern": "^[a-f0-9]{40}$"
+      "pattern": "^[a-f0-9]{40}$",
+      "minLength": 40,
+      "maxLength": 40
     },
     "generated_at": {
       "type": "string",

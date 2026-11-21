@@ -78,3 +78,40 @@ def test_duplicate_mapping_ids_fail_validation():
     mappings[1]["mapping_id"] = mappings[0]["mapping_id"]
     with pytest.raises(ValueError, match="duplicate mapping_id"):
         validate_mappings(mappings)
+
+
+def test_retrieval_metrics_reward_correct_top_rank():
+    from scripts.linguist.mapping_benchmark import evaluate_rankings
+
+    dataset = build_dataset(load_mappings())
+    rankings = {
+        query_id: [next(iter(relevant)), *[
+            mapping_id for mapping_id in dataset["candidates"][query_id]
+            if mapping_id not in relevant
+        ]]
+        for query_id, relevant in dataset["qrels"].items()
+    }
+    scored = evaluate_rankings(dataset, rankings, ks=(1, 3))
+    assert scored["query_count"] == 4
+    assert scored["aggregate"]["mrr"] == 1.0
+    assert scored["aggregate"]["precision@1"] == 1.0
+    assert scored["aggregate"]["recall@1"] == 1.0
+    assert scored["aggregate"]["ndcg@1"] == 1.0
+
+
+def test_retrieval_metrics_report_empty_rankings_as_zero():
+    from scripts.linguist.mapping_benchmark import evaluate_rankings
+
+    dataset = build_dataset(load_mappings())
+    scored = evaluate_rankings(dataset, {})
+    assert scored["aggregate"]["mrr"] == 0.0
+    assert scored["aggregate"]["recall@1"] == 0.0
+
+
+def test_retrieval_metrics_reject_unknown_mapping_ids():
+    from scripts.linguist.mapping_benchmark import evaluate_rankings
+
+    dataset = build_dataset(load_mappings())
+    query_id = next(iter(dataset["queries"]))
+    with pytest.raises(ValueError, match="unknown mapping ids"):
+        evaluate_rankings(dataset, {query_id: ["missing-mapping"]})

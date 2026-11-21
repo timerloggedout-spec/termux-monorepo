@@ -1,6 +1,6 @@
 # Deployment and visual composition lanes
 
-**Status:** documented from existing repository architecture; no new runtime dependency is introduced by this record.
+**Status:** documented from existing repository architecture; no new runtime dependency is introduced by this record. See [Vercel alternatives and failover plan](VERCEL-ALTERNATIVES-AND-FAILOVER.md) for provider selection, workload boundaries and migration gates.
 
 ## Existing architecture
 

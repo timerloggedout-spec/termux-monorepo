@@ -1,22 +1,38 @@
-# Agent/Jules PR Handoff Evidence Contract
+# Legacy Google Jules PR Request Receipt
 
-This lane makes PR-scoped `@jules` delegation observable without treating delegation as execution or completion.
+This lane records trusted PR-scoped @jules comments as legacy request evidence. Google Jules became read-only after 2026-11-11 and is scheduled to wind down on 2026-12-31.
 
-## State machine
+## Receipt state
 
-`DISPATCHED -> MUTATION_OBSERVED -> FRESH_GATES -> VERIFIED`
+`LEGACY_REQUEST_RECORDED`
 
-- **DISPATCHED** records the trusted initiator, PR branch, exact baseline head SHA, base SHA, context key, and source comment ID.
-- **MUTATION_OBSERVED** is emitted only after a subsequent PR synchronization proves the head SHA changed from the recorded baseline.
-- **FRESH_GATES** requires checks evaluated against the exact observed head, not merely a merge ref or an earlier commit.
-- **VERIFIED** is a steward disposition after independent inspection of the resulting diff, checks, reviews, and provenance.
+The receipt captures:
+- trusted initiator and source comment ID;
+- PR branch, exact baseline head SHA, and base SHA;
+- local DoE role guidance and canonical role register;
+- workflow run URL and idempotency marker.
+
+## Local DoE role handoff
+
+Use the canonical DoE role register and active provider roster:
+
+- `docs/ops/DOE-ROLES-EPOCH-2026-11-03.md`
+- `docs/schemas/agent-roster.yaml`
+
+The locally adapted issue-analysis and action-verification skills are tracked in PR #5722. They map the upstream patterns to observer, scout, builder, operator, steward, reviewer, participant, and gambler duties. Provider execution remains under the live agent roster and verified adapter contract.
 
 ## Provenance boundary
 
-Trusted human initiators are limited to `OWNER`, `MEMBER`, or `COLLABORATOR` author associations. The only automation initiator admitted by the workflow is `github-actions[bot]`; other bots must not create a handoff receipt merely by mentioning `@jules`.
+Trusted human initiators are limited to OWNER, MEMBER, or COLLABORATOR author associations. The workflow re-fetches the source comment before recording a receipt. Receipt comments are authored by github-actions[bot] and carry an idempotency marker tied to the source comment ID.
 
-The workflow re-fetches the source comment before accepting it as evidence and re-validates its provenance when processing a later synchronization event. Receipt comments are authored by `github-actions[bot]` and carry an idempotency marker tied to the source comment or observed head SHA.
+## Authority boundaries
 
-## Non-authority rules
+- Treat the receipt as historical request evidence.
+- Route new implementation through the current agent roster and a verified live adapter.
+- Evaluate fresh checks against the exact candidate head.
+- Use provider output as supporting evidence and inspect the resulting diff, checks, reviews, and provenance independently.
+- Keep merge, force-push, and promotion under the repository's established review and governance controls.
 
-A comment is not completion. A changed SHA is not correctness. Provider prose is evidence only. This workflow never merges, force-pushes, or promotes a PR.
+## Historical mutation-observation contract
+
+The 2026-11-19 rate-limit optimization introduced a pending-label gate and a PR synchronization mutation scan. That state machine applied to live Google Jules delegation. The read-only service cutoff retires that execution assumption; the current workflow records the legacy request once and removes the synchronization scan.

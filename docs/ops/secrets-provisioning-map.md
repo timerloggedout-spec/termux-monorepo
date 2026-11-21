@@ -19,6 +19,7 @@ Token sources refer to the inventory in #184. Least privilege: prefer a new fine
 | gh-aw_fork | `OPENAI_API_KEY` | no | provider key (not a GitHub token) | 59 Codex-engine workflows |
 | gh-aw_fork | `CODEX_API_KEY` | no | provider key; same value as OPENAI_API_KEY | 58 Codex-engine workflows |
 | termux-monorepo | `OPERATOR_GITHUB_TOKEN` | yes | ARCHWIZ_GITHUB_TOKEN (fine-grained, termux-monorepo: Contents/Issues/PRs/Actions/Workflows RW) | 23 workflows (preferred operator token) |
+| termux-monorepo | `REPOSITORY_PROVISIONER_TOKEN` | yes | NEW fine-grained PAT for personal account `timerloggedout-spec`, Repository creation: write only | `.github/workflows/repository-provisioner.yml` |
 | termux-monorepo | `OPERATOR_TOKEN` | no | same value as OPERATOR_GITHUB_TOKEN | 22 workflows (legacy name) |
 | termux-monorepo | `ARCHWIZ_GITHUB_TOKEN` | no | ARCHWIZ_GITHUB_TOKEN (fine-grained) | 22 workflows (fallback chain) |
 | termux-monorepo | `GH_PAT` | no | NEW fine-grained (Contents RW on timerloggedout-spec.github.io) | tribute-dashboard-deploy mirror |
@@ -30,6 +31,7 @@ Token sources refer to the inventory in #184. Least privilege: prefer a new fine
 | termux-monorepo | `JULES_API_KEY` | no | Jules API key | agent-jules-on-issues, agent-review-auto-jules |
 
 ## Notes
+- `REPOSITORY_PROVISIONER_TOKEN` is a dedicated account-level creation credential for `/user/repos`; keep it separate from `OPERATOR_GITHUB_TOKEN`, which is scoped to the existing monorepo. The provisioner verifies the token identity is `timerloggedout-spec`. GitHub fine-grained PAT permission: `Repository creation: write` (least-privilege alternative to broad Administration: write).
 - `gh-aw_fork` and `gh-aw-mcpg_fork` run upstream github/gh-aw schedules (268 scheduled `.lock.yml`). Until required secrets are set, `provision-secrets.sh pause-forks` disables them reversibly; `resume-forks` restores exactly that list.
 - gh-aw_fork has Issues disabled, so the `conclusion` job cannot open failure-tracking issues; enable Issues on the fork or accept that warning.
 - Optional, leave unset unless wanted: GH_AW_OTEL_* (Sentry/Grafana), GH_AW_DEFAULT_OTLP_HEADERS, DOCKER_*, DD_*, SLACK_BOT_TOKEN, TAVILY_API_KEY.

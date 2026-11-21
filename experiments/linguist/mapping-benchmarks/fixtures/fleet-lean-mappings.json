@@ -1,0 +1,68 @@
+{
+  "mappings": [
+    {
+      "mapping_id": "fleet-lean-matrix-cell",
+      "source_custom": "fleet-notation",
+      "target_custom": "Lean/Mathlib",
+      "source_form": "M[i,j]",
+      "target_form": "M i j",
+      "semantic_id": "matrix.cell_access",
+      "domain": "matrices",
+      "relation": "equivalent",
+      "grade": "exact",
+      "kernel": null,
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/LEAN-NOTATION-MAPPING.md",
+        "locator": "Class 1 — MATRICES; cell access"
+      }
+    },
+    {
+      "mapping_id": "fleet-lean-vector-literal",
+      "source_custom": "fleet-notation",
+      "target_custom": "Lean/Mathlib",
+      "source_form": "![a,b,c]",
+      "target_form": "![a,b,c] : Fin n → α",
+      "semantic_id": "vector.literal",
+      "domain": "vectors",
+      "relation": "equivalent",
+      "grade": "exact",
+      "kernel": null,
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/LEAN-NOTATION-MAPPING.md",
+        "locator": "Class 1 — MATRICES; vector literal"
+      }
+    },
+    {
+      "mapping_id": "fleet-lean-matrix-composition",
+      "source_custom": "fleet-notation",
+      "target_custom": "Lean/Mathlib",
+      "source_form": "∘",
+      "target_form": "Matrix.mul (*)",
+      "semantic_id": "matrix.composition",
+      "domain": "matrices",
+      "relation": "related_match",
+      "grade": "approximate",
+      "kernel": "Σ over the middle index plus ring structure",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/LEAN-NOTATION-MAPPING.md",
+        "locator": "Class 1 — MATRICES; composition"
+      }
+    },
+    {
+      "mapping_id": "fleet-lean-category-composition",
+      "source_custom": "fleet-notation",
+      "target_custom": "Lean/Mathlib",
+      "source_form": "∘",
+      "target_form": "Category.comp",
+      "semantic_id": "category.morphism_composition",
+      "domain": "category_theory",
+      "relation": "equivalent",
+      "grade": "exact",
+      "kernel": null,
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/LEAN-NOTATION-MAPPING.md",
+        "locator": "Cross-domain notation; domain-qualified mapping fixture"
+      }
+    }
+  ]
+}

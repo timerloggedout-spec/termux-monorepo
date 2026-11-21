@@ -168,5 +168,16 @@
     "pgvector_repository": "https://github.com/pgvector/pgvector",
     "pgvector_revision": "1d56580cda45d20b6b197fbe325fb0f6301e33cd",
     "license_review": "pg_pinecone Apache-2.0; pgvector PostgreSQL License"
+  },
+  "metric_implementation": {
+    "library": "scripts/doe/pinecone_vector_store_metrics.py",
+    "reference_fixture": "tests/fixtures/pinecone-vector-store-metrics.json",
+    "metrics": [
+      "Recall@k",
+      "nDCG@k",
+      "MRR@k",
+      "paired bootstrap confidence interval"
+    ],
+    "fixture_state": "synthetic_unit_test_only"
   }
 }

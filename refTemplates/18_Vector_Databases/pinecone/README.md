@@ -23,4 +23,4 @@ The Pinecone account/index state and current live usage remain runtime observati
 
 ## Experiment
 
-The controlled comparison is pre-registered at experiments/doe/pinecone-vector-store/DESIGN.json. The storage-only comparison requires identical precomputed vectors and query vectors across Pinecone serverless, pgvector HNSW, pg_pinecone native, and pg_pinecone remote. The integrated-inference path is a separately labeled end-to-end arm.
+The controlled comparison is pre-registered at experiments/doe/pinecone-vector-store/DESIGN.json. Its offline evaluator lives at scripts/doe/pinecone_vector_store_metrics.py, with synthetic ranking fixtures under tests/fixtures/. The storage-only comparison requires identical precomputed vectors and query vectors across Pinecone serverless, pgvector HNSW, pg_pinecone native, and pg_pinecone remote. The integrated-inference path is a separately labeled end-to-end arm.

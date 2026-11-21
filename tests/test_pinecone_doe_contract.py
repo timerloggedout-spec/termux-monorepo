@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 import unittest
 from pathlib import Path
+
+from scripts.doe.pinecone_vector_store_metrics import evaluate_arm, paired_bootstrap_ci
 ROOT = Path(__file__).resolve().parents[1]
 def read_json(path: str) -> dict:
     return json.loads((ROOT / path).read_text(encoding="utf-8"))
@@ -27,6 +29,26 @@ class PineconeDoEContractTests(unittest.TestCase):
         self.assertEqual(design["design"]["baseline_arm"], "pgvector-hnsw")
         self.assertEqual(design["design"]["unit"], "query_task")
         self.assertEqual(design["design"]["sample_size"]["independent_query_tasks"], 30)
+    def test_offline_metric_fixture_has_expected_ranking_behavior(self):
+        fixture = read_json("tests/fixtures/pinecone-vector-store-metrics.json")
+        queries = fixture["queries"]
+        control = evaluate_arm(queries, fixture["rankings"]["pgvector-hnsw"])
+        native = evaluate_arm(queries, fixture["rankings"]["pg-pinecone-native"])
+        remote = evaluate_arm(queries, fixture["rankings"]["pg-pinecone-remote"])
+        expected = fixture["expected_macro_recall_at_5"]
+        self.assertAlmostEqual(control["mean_recall_at_5"], expected["pgvector-hnsw"])
+        self.assertAlmostEqual(native["mean_recall_at_5"], expected["pg-pinecone-native"])
+        self.assertAlmostEqual(remote["mean_recall_at_5"], expected["pg-pinecone-remote"])
+        effect = paired_bootstrap_ci(
+            control["per_query_recall_at_5"],
+            native["per_query_recall_at_5"],
+            seed=17,
+            resamples=1000,
+        )
+        self.assertAlmostEqual(effect["mean_difference"], 0.5)
+        self.assertLessEqual(effect["ci_lower"], effect["mean_difference"])
+        self.assertGreaterEqual(effect["ci_upper"], effect["mean_difference"])
+
     def test_integrated_inference_remains_a_separate_system_path(self):
         design = read_json("experiments/doe/pinecone-vector-store/DESIGN.json")
         incumbent = design["design"]["separate_system_path"]

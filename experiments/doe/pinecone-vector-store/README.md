@@ -17,4 +17,7 @@ The existing managed Pinecone integration remains the incumbent end-to-end refer
 - Isolated disposable database and remote namespace/index, with current account quota and explicit spend ceiling.
 - Database-instance identity contract compatible with the canonical EXPERIMENT schema.
 
-The campaign has 0 run records. Dispatch, index creation, external writes, and production routing changes remain disabled until every preflight gate is closed.
+The campaign has 0 run records. The offline evaluator and synthetic ranking fixture establish metric behavior before any live engine run.
+
+- Metric library: scripts/doe/pinecone_vector_store_metrics.py
+- Synthetic ranking fixture: tests/fixtures/pinecone-vector-store-metrics.json Dispatch, index creation, external writes, and production routing changes remain disabled until every preflight gate is closed.

@@ -1,7 +1,7 @@
 {
  "schema": "dashboard-surface-feed/v1",
  "surface": "doe",
- "generated_at": "2026-11-21T16:34:59.530Z",
+ "generated_at": "2026-11-21T16:36:22.978Z",
  "sources": [
   "deepcli/deepcli/observatory/doe.py",
   ".agents/skills/multivariate-doe/SKILL.md",
@@ -150,7 +150,7 @@
    "statement": "DoE is a family; MVT is one member, not the whole.",
    "shared": {
     "experiment_record_schema": "docs/ops/corpus/EXPERIMENT.schema.json — DOE/MVT Experiment Record v1.0 (primary home: MVT surface; family campaigns emit records conforming to it)",
-    "intake_rule": "A campaign joins the family only with a committed design record + run evidence (EXPERIMENT-conforming records). Proposals alone do not count.",
+    "intake_rule": "A committed experiments/doe/*/DESIGN.json registers a campaign as admitted_design_only; zero run records means zero results. Each dispatched run emits exactly one canonical EXPERIMENT record. Executed outcomes and promotion require run evidence plus applicable analysis and repository gates. Proposal-only candidates without a design record remain outside the campaign list.",
     "evaluation_doctrine": "Parallel lanes under a shared capability contract; scoring separates execution status, task outcome, correctness, integration, regression, resource cost; cherry-pick customizations are recorded as a new cohort/version, never folded silently into a running design."
    },
    "members": [

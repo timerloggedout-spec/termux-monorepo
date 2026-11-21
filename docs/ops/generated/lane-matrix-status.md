@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-21T12:58:56Z)
+# Lane matrix status (2026-11-21T13:01:19Z)
 
-- Master: `8b6e2d35e7223e1b4c26cf16b6a7510bb01a90d9`
+- Master: `725e7689fc85cf44e058ec32290e651dbd4fb9b1`
 - Open PRs: **501**
 - Oldest: #47 (107.89d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -26,7 +26,7 @@
 | #2702 | 20.86 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
 | #4069 | 18.36 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
 | #4621 | 17.67 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
-| #4898 | 17.01 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
+| #4898 | 17.02 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
 | #5034 | 14.92 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
 | #5722 | 0.82 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted routes and bind local Do |
 | #5723 | 0.82 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted review relay and record  |
@@ -36,23 +36,23 @@
 | #103 | 104.5 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
 | #527 | 67.21 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
 | #605 | 63.8 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
-| #684 | 61.77 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
-| #769 | 59.22 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
+| #684 | 61.78 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
+| #769 | 59.23 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
 | #969 | 51.13 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
 | #990 | 50.27 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
-| #1020 | 49.0 | CANDIDATE | state:unknown | feat: close provider continuity and executable rou |
-| #1274 | 33.15 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
+| #1020 | 49.01 | CANDIDATE | state:unknown | feat: close provider continuity and executable rou |
+| #1274 | 33.16 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
 | #1441 | 31.22 | CANDIDATE | state:unknown | feat(triage): reconcile official quota before disp |
 | #1469 | 31.0 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
 | #1470 | 30.99 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
 | #1495 | 30.44 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
 | #1513 | 30.2 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
-| #1515 | 30.19 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
+| #1515 | 30.2 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
 | #1516 | 30.19 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
 | #1531 | 30.18 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
 | #1537 | 30.17 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 29.5 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
-| #1614 | 28.41 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
+| #1614 | 28.42 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
 | #1616 | 28.41 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 28.4 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
 | #1626 | 28.28 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |

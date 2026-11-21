@@ -62,8 +62,8 @@ def test_brain_signal_raster_uses_observed_events(tmp_path):
     assert "SHA aaaaaaaaaaaa" in svg
     assert "&lt;script&gt;" in svg
     assert "<script>" not in svg
-    assert "No observed Brain workflow events" in rendered["empty"]
-    assert "No observed Brain workflow events" in rendered["malformed"]
+    assert "Awaiting observed Brain workflow events" in rendered["empty"]
+    assert "Awaiting observed Brain workflow events" in rendered["malformed"]
 
 
 def test_brain_operations_page_wires_biofeedback_to_live_actions_data():

@@ -11,7 +11,7 @@ Create a reproducible retrieval benchmark over source-backed Linguist mapping as
 ## Goals
 
 - Preserve the curated Fleet ⇔ Lean/Mathlib and nomenclature crosswalk evidence.
-- Project enumerated feed records into stable, unique benchmark mapping identities.
+- Project enumerated feed records into deterministic, unique benchmark record IDs and stable source identity keys.
 - Retain exact, approximate, analogue, lossy, and unverified grades without promoting candidate relations.
 - Generate deterministic corpus/query/qrels/candidate artifacts and score rankings only when ranked outputs exist.
 - Keep experiment artifacts separate from the dashboard's runtime feed contract.
@@ -33,9 +33,9 @@ Create a reproducible retrieval benchmark over source-backed Linguist mapping as
 ## Design decisions
 
 - Use `mapping_id` or `label_id` when present; otherwise use the family-scoped entry ID.
-- Append a digest of the canonical source record to distinguish reused source IDs.
+- Keep a family-scoped source identity key; append a digest of the canonical source record to create a snapshot-scoped unique benchmark record ID.
 - Collapse exact duplicate source records and preserve their occurrence count.
-- Preserve evidence state, relation, confidence, kernel, provenance, and `generated_at`.
+- Preserve semantic mapping grade independently from codec round-trip status; round-trip success does not imply exact semantic equivalence.\n- Preserve evidence state, relation, confidence, kernel, provenance, and `generated_at`.
 - Exclude families marked `entries_included: false`.
 - Keep the dashboard projection separate from the benchmark generator.
 

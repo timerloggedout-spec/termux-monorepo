@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-21T16:33:02.572694+00:00",
+ "census_at_utc": "2026-11-21T16:40:43.748071+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -15,14 +15,14 @@
  "branches": {
   "total": 4235,
   "stale": 1512,
-  "orphan_no_assoc_PR": 423,
+  "orphan_no_assoc_PR": 422,
   "stale_and_orphan": 268
  },
  "prs": {
-  "total": 4881,
-  "open": 505,
-  "open_draft": 125,
-  "open_draft_share": 0.2475,
+  "total": 4882,
+  "open": 506,
+  "open_draft": 126,
+  "open_draft_share": 0.249,
   "drafts": [
    {
     "number": 386,
@@ -52,7 +52,7 @@
     "number": 761,
     "title": "lane: Desktop Commander fork + Android execution alternatives",
     "created_at": "2026-09-23T03:23:38Z",
-    "age_days": 59.5
+    "age_days": 59.6
    },
    {
     "number": 762,
@@ -76,7 +76,7 @@
     "number": 958,
     "title": "feat(multi-ai-cli): Complete Mistralai Vibe Code webWrapper CLI with Termux Hub",
     "created_at": "2026-10-01T01:04:39Z",
-    "age_days": 51.6
+    "age_days": 51.7
    },
    {
     "number": 970,
@@ -238,13 +238,13 @@
     "number": 5008,
     "title": "Proposal: evidence-led polyglot build orchestration",
     "created_at": "2026-11-05T10:40:33Z",
-    "age_days": 16.2
+    "age_days": 16.3
    },
    {
     "number": 5010,
     "title": "feat: add AgentRouter catalog and unified observability index",
     "created_at": "2026-11-05T13:03:46Z",
-    "age_days": 16.1
+    "age_days": 16.2
    },
    {
     "number": 5013,
@@ -256,7 +256,7 @@
     "number": 5014,
     "title": "perf(observer): bound scheduled and shared poller scans",
     "created_at": "2026-11-05T17:51:01Z",
-    "age_days": 15.9
+    "age_days": 16.0
    },
    {
     "number": 5024,
@@ -706,13 +706,13 @@
     "number": 5663,
     "title": "docs: compound evaluation, provenance, and compute operations",
     "created_at": "2026-11-19T15:27:25Z",
-    "age_days": 2.0
+    "age_days": 2.1
    },
    {
     "number": 5664,
     "title": "refTemplates: register Agentic Wallet and MergeEarn lineage",
     "created_at": "2026-11-19T15:28:42Z",
-    "age_days": 2.0
+    "age_days": 2.1
    },
    {
     "number": 5677,
@@ -766,28 +766,32 @@
     "number": 5743,
     "title": "feat(linguist): register playful language lanes and profile switch",
     "created_at": "2026-11-21T13:04:17Z",
-    "age_days": 0.1
+    "age_days": 0.2
    },
    {
     "number": 5751,
     "title": "feat(linguist): Build cross-custom mapping benchmark suite",
     "created_at": "2026-11-21T16:25:42Z",
     "age_days": 0.0
+   },
+   {
+    "number": 5753,
+    "title": "feat(pinecone): register vector-store DoE and refTemplates source",
+    "created_at": "2026-11-21T16:37:01Z",
+    "age_days": 0.0
    }
   ],
   "merged": 3785,
   "closed_unmerged": 591,
-  "open_no_closing_ref": 497,
-  "open_unlinked_issue_target": 382,
-  "open_unlinked_any_ref": 312,
+  "open_no_closing_ref": 498,
+  "open_unlinked_issue_target": 383,
+  "open_unlinked_any_ref": 313,
   "merged_no_closing_ref": 3754,
   "merged_unlinked_issue_target": 2111,
   "merged_unlinked_any_ref": 1215,
   "open_zero_commits": [],
   "merged_head_branch_residual_name_match": 3703,
-  "open_head_branch_missing": [
-   5752
-  ]
+  "open_head_branch_missing": []
  },
  "issues": {
   "total": 865,

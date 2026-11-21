@@ -49,7 +49,7 @@ BIUDL is the compounding development motion: a broad system view selects a focus
 6. [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) — adaptive wait + ops skills
 7. [`docs/ops/LANE-MATRIX.md`](docs/ops/LANE-MATRIX.md) — living session SSOT (rewrite every admin cycle)
 
-Then route the task with **[`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md)** — one verified component or process card before loading deeper source.
+Then route the task with **[`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md)** — one verified component or process card before loading deeper source. For capability expansion, load `.agents/skills/capability-discovery/SKILL.md` and search metadata before hydrating full skill bodies or tool schemas.
 
 ## Hard rules
 
@@ -98,7 +98,7 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 | Status | `docs/ARCHW1Z-STATUS.md` |
 | Permissions / human edges | `docs/proposals/AGENTIC-PERMISSIONS.md` |
 | ICM task routing | `docs/icm/CLAUDE.md` |
-| Skills + adaptive wait | `docs/ops/SKILLS-INVENTORY.md` |
+| Skills + adaptive wait | `docs/ops/SKILLS-INVENTORY.md` |\n| Capability discovery / contextual activation | `docs/ops/CAPABILITY-DISCOVERY-AND-ACTIVATION.md` · `scripts/capabilities/discover.py` |\n| Plugin skill catalog / tool action catalog | `docs/integrations/session-plugin-skill-catalog.json` · `docs/integrations/session-tool-action-catalog.json` |
 | Session / lane SSOT | `docs/ops/LANE-MATRIX.md` |
 | Dependency-phase system | `docs/agentic/README.md` |
 | Credential names inventory | issue #184 (no values) |

@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/capability_discovery/ledger.schema.json",
+  "title": "Capability Discovery Ledger Event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "capability_id",
+    "event",
+    "content_sha256",
+    "taxonomy_sha256",
+    "record_sha256",
+    "source_id",
+    "recorded_at"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "capability_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event": {
+      "type": "string",
+      "enum": [
+        "added",
+        "changed",
+        "reclassified"
+      ]
+    },
+    "content_sha256": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "taxonomy_sha256": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "record_sha256": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "source_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "recorded_at": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

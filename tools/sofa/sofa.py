@@ -13,10 +13,11 @@ Usage:
   sofa.py <tool> [--k v ...]           shorthand for call
   sofa.py refresh                      force refresh_token exchange
 
-Scope classes: READ tools run under the granted scopes (sofa.read +
-sofa.identity.read + offline_access). WRITE tools are typed and callable but
-the server rejects them until the owner widens scopes (vote/write) — that
-widening is owner-gated and intentionally NOT requested by this helper.
+Scope classes: READ tools use the read scopes. WRITE tools are typed and
+callable only when the current provider grant and owner-gated publication
+workflow authorize them. The 2026-11-03 connection record documents an
+expanded scope grant; run status before each session and treat stored scope
+notes as historical evidence, not current authorization.
 Tokens live in ../.tokens.json (0600); values are never printed.
 """
 import json
@@ -158,7 +159,7 @@ def call_tool(tool, args):
     if "error" in res:
         print(json.dumps(res["error"], indent=2)[:1500])
         if tool not in READ_TOOLS:
-            print(f"note: {tool} is a WRITE-class tool; granted scopes are read/identity only (owner-gated widening).")
+            print(f"note: {tool} is a WRITE-class tool; verify current scopes and owner-gated publication approval before retry.")
         sys.exit(1)
     result = res.get("result", {})
     content = result.get("content", [])

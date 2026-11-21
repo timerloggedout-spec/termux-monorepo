@@ -1,0 +1,407 @@
+{
+  "schema": "capability-source-registry/v1",
+  "policy": "Discovery records leads. Inspect source, pin immutable revision, scan permissions/secrets, map overlap, and run validators before adoption.",
+  "sources": [
+    {
+      "id": "repo-agent-skills",
+      "kind": "repository",
+      "locator": ".agents/skills/**/SKILL.md",
+      "trust": "repository-canonical",
+      "refresh": "git-tree",
+      "import_mode": "metadata-only"
+    },
+    {
+      "id": "repo-github-skills",
+      "kind": "repository",
+      "locator": ".github/skills/**/SKILL.md",
+      "trust": "repository-canonical",
+      "refresh": "git-tree",
+      "import_mode": "metadata-only"
+    },
+    {
+      "id": "repo-claude-skills",
+      "kind": "repository",
+      "locator": ".claude/**/SKILL.md",
+      "trust": "repository-canonical",
+      "refresh": "git-tree",
+      "import_mode": "metadata-only"
+    },
+    {
+      "id": "repo-nested-skills",
+      "kind": "repository",
+      "locator": "**/SKILL.md, **/SKILLS.md, **/*.SKILLS, **/*.skill",
+      "trust": "repository-canonical",
+      "refresh": "git-tree",
+      "import_mode": "metadata-only"
+    },
+    {
+      "id": "repo-plugin-manifests",
+      "kind": "repository-plugin-tool-manifest",
+      "locator": "**/plugin.json, **/marketplace.json, **/.mcp.json, **/mcp.json, **/tools.json, **/tool-manifest.json",
+      "trust": "repository-canonical",
+      "refresh": "git-tree",
+      "import_mode": "metadata-only",
+      "note": "Index manifest names, descriptions, versions and entry counts only. Keep MCP server configs, tool schemas, endpoints and credentials in their owning source; hydrate selected manifest/schema only after permission review."
+    },
+    {
+      "id": "repo-vendor-skills",
+      "kind": "repository",
+      "locator": "vendor/**/SKILL.md, vendor/**/SKILLS.md, vendor/**/*.skill",
+      "trust": "unverified",
+      "refresh": "git-tree",
+      "import_mode": "quarantine-metadata-only",
+      "note": "Vendor content is untrusted data; inspect provenance, license, scripts and requested permissions."
+    },
+    {
+      "id": "workspace-extra-roots",
+      "kind": "external-workspace",
+      "locator": "Explicit --extra-root paths only (for example $HOME/workspace/project); home-directory scans require explicit allowlisting.",
+      "trust": "unverified",
+      "refresh": "operator-invoked",
+      "import_mode": "metadata-only",
+      "note": "Symlinks are skipped; roots are allowlisted per invocation; candidate records use external:<root>/<relative-path> identity and remain unverified until provenance review."
+    },
+    {
+      "id": "skills-sh",
+      "kind": "external-catalog",
+      "locator": "https://skills.sh/api/v1/skills/search?q=<query>; /api/v1/skills/curated; /api/v1/skills/{id}; /api/v1/skills/audit/{id}",
+      "trust": "community-reference",
+      "refresh": "on-demand",
+      "auth": "Vercel OIDC bearer token; search q >= 2 chars, limit 1-200; authenticated limit 600/min/team+project; 401 means token missing/expired.",
+      "import_mode": "candidate-metadata-first; fetch detail and audit only for selected candidates",
+      "note": "Search supports fuzzy single-word and semantic multi-word queries. Detail exposes content hash and file tree; audit endpoint aggregates partner security audits and returns 404 when none exist. Official CLI is npx skills; it collects anonymous telemetry by default (DISABLE_TELEMETRY=1 opts out).",
+      "reference_urls": [
+        "https://www.skills.sh/docs/api",
+        "https://www.skills.sh/docs/cli"
+      ]
+    },
+    {
+      "id": "approxination",
+      "kind": "external-catalog",
+      "locator": "approx find <query>",
+      "trust": "community-reference",
+      "refresh": "on-demand",
+      "auth": "Hosted arena requires provisioned APPROX_TOKEN; offline ranking remains available.",
+      "import_mode": "candidate-only"
+    },
+    {
+      "id": "jules-skills",
+      "kind": "external-vendor",
+      "locator": "https://github.com/google-labs-code/jules-skills",
+      "trust": "community-reference",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Published under google-labs-code; its README classifies the repository as a community project outside Google's officially supported product set. Uses npx skills add google-labs-code/jules-skills --list; inspect skill scripts/assets and pin commit before use.",
+      "reference_urls": [
+        "https://github.com/google-labs-code/jules-skills"
+      ]
+    },
+    {
+      "id": "loopy-loop-library",
+      "kind": "external-catalog",
+      "locator": "https://raw.githubusercontent.com/Forward-Future/loopy/main",
+      "trust": "community-reference",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Supplied JSON describes bounded Discover/Find/Audit/Adapt/Craft/Run/Debrief/Save/Publish routes; the catalog host is a placeholder in the supplied material and must be resolved upstream."
+    },
+    {
+      "id": "session-plugin-skills",
+      "kind": "session-snapshot",
+      "locator": "docs/integrations/session-plugin-skill-catalog.json (refresh per session)",
+      "trust": "session-observed",
+      "refresh": "per-session",
+      "import_mode": "metadata-only"
+    },
+    {
+      "id": "session-tool-actions",
+      "kind": "session-snapshot",
+      "locator": "docs/integrations/session-tool-action-catalog.json (refresh per session)",
+      "trust": "session-observed",
+      "refresh": "per-session",
+      "import_mode": "metadata-only"
+    },
+    {
+      "id": "google-vendor-skills-and-plugins",
+      "kind": "vendor-repository",
+      "locator": "https://github.com/google/skills",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Google product skills plus bundled plugins/MCP servers; README documents agent-specific plugin installation. Select a specific skill/plugin, inspect permissions and pin revision.",
+      "reference_urls": [
+        "https://github.com/google/skills"
+      ]
+    },
+    {
+      "id": "jules-github-action",
+      "kind": "vendor-workflow",
+      "locator": "https://github.com/google-labs-code/jules-action",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Current repository documentation uses google-labs-code/jules-invoke@v1 with JULES_API_KEY; issue-triggered invocation requires allowlists and PR review. The supplied PDF's older action name/GEMINI_API_KEY example requires correction before reuse.",
+      "reference_urls": [
+        "https://github.com/google-labs-code/jules-action",
+        "https://github.com/google-labs-code/jules-action/blob/main/examples/README.md"
+      ]
+    },
+    {
+      "id": "anthropic-skills",
+      "kind": "vendor-skill-repository",
+      "locator": "https://github.com/anthropics/skills",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Anthropic reference implementation for Claude skills; inspect each skill's license individually because the repository contains mixed licensing, including proprietary document skills.",
+      "reference_urls": [
+        "https://github.com/anthropics/skills"
+      ]
+    },
+    {
+      "id": "microsoft-skills",
+      "kind": "vendor-skill-plugin-repository",
+      "locator": "https://github.com/microsoft/skills",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Microsoft Azure SDK/AI Foundry skills, agents, AGENTS.md and MCP configurations. README labels the repository work in progress; select individual skills rather than loading the entire deep tree.",
+      "reference_urls": [
+        "https://github.com/microsoft/skills"
+      ]
+    },
+    {
+      "id": "vercel-agent-skills",
+      "kind": "vendor-skill-repository",
+      "locator": "https://github.com/vercel-labs/agent-skills",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Vercel React/Next.js best practices, web design guidelines and Vercel project optimization skills.",
+      "reference_urls": [
+        "https://github.com/vercel-labs/agent-skills"
+      ]
+    },
+    {
+      "id": "cloudflare-skills-plugins",
+      "kind": "vendor-plugin-repository",
+      "locator": "https://github.com/cloudflare/skills",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Cloudflare repository ships skills and a native plugin that installs Cloudflare guidance plus the Cloudflare MCP server. Review plugin manifest and requested MCP scopes before installation.",
+      "reference_urls": [
+        "https://github.com/cloudflare/skills"
+      ]
+    },
+    {
+      "id": "trailofbits-skills-plugins",
+      "kind": "vendor-plugin-marketplace",
+      "locator": "https://github.com/trailofbits/skills",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Security analysis, testing and development skills distributed through Claude Code/Codex plugin marketplace; inspect each plugin and license before import.",
+      "reference_urls": [
+        "https://github.com/trailofbits/skills"
+      ]
+    },
+    {
+      "id": "huggingface-skills",
+      "kind": "vendor-skill-plugin-repository",
+      "locator": "https://github.com/huggingface/skills",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "HF CLI, datasets, training and evaluation workflows. The hf-cli skill is generated from the installed CLI and is the recommended bootstrap path; prefer it for current command behavior.",
+      "reference_urls": [
+        "https://github.com/huggingface/skills"
+      ]
+    },
+    {
+      "id": "openai-codex-plugins",
+      "kind": "vendor-plugin-repository",
+      "locator": "https://github.com/openai/plugins",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Current OpenAI Codex plugin examples. Each plugin may bundle .codex-plugin/plugin.json, skills, .mcp.json, agents, commands, hooks and assets; inspect manifest and scopes as one package.",
+      "reference_urls": [
+        "https://github.com/openai/plugins"
+      ]
+    },
+    {
+      "id": "openai-legacy-skills",
+      "kind": "deprecated-vendor-repository",
+      "locator": "https://github.com/openai/skills",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "reference-only",
+      "note": "README explicitly marks this repository deprecated and directs users to openai/plugins and current Codex plugin/skill documentation.",
+      "reference_urls": [
+        "https://github.com/openai/skills",
+        "https://github.com/openai/plugins"
+      ],
+      "lifecycle": "deprecated"
+    },
+    {
+      "id": "github-awesome-copilot",
+      "kind": "community-skill-repository",
+      "locator": "https://github.com/github/awesome-copilot",
+      "trust": "community-reference",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "GitHub organization-hosted community agents, instructions and skills. Classify as community content; verify vendor support status separately.",
+      "reference_urls": [
+        "https://github.com/github/awesome-copilot"
+      ]
+    },
+    {
+      "id": "anthropic-official-plugins",
+      "kind": "vendor-plugin-marketplace",
+      "locator": "https://github.com/anthropics/claude-plugins-official",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Anthropic-owned plugins only; repository README says third-party marketplace submissions are moving to claude.ai/directory/manage and warns that plugins may include MCP servers/files/software from independent publishers. Verify plugin provenance and permissions.",
+      "reference_urls": [
+        "https://github.com/anthropics/claude-plugins-official"
+      ]
+    },
+    {
+      "id": "anthropic-knowledge-work-plugins",
+      "kind": "vendor-plugin-repository",
+      "locator": "https://github.com/anthropics/knowledge-work-plugins",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Role-oriented plugins bundle skills, connectors, slash commands and subagents. Inspect connector scopes and role-specific workflow instructions.",
+      "reference_urls": [
+        "https://github.com/anthropics/knowledge-work-plugins"
+      ]
+    },
+    {
+      "id": "google-agents-cli",
+      "kind": "vendor-cli-skill-repository",
+      "locator": "https://github.com/google/agents-cli",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Google CLI and skills for building/evaluating agents on the Gemini platform.",
+      "reference_urls": [
+        "https://github.com/google/agents-cli"
+      ]
+    },
+    {
+      "id": "google-gemini-skills",
+      "kind": "vendor-skill-repository",
+      "locator": "https://github.com/google-gemini/gemini-skills",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Gemini API, SDK and model-interaction skills; inspect evaluation claims against task-specific independent fixtures.",
+      "reference_urls": [
+        "https://github.com/google-gemini/gemini-skills"
+      ]
+    },
+    {
+      "id": "microsoft-azure-skills-plugin",
+      "kind": "vendor-plugin-repository",
+      "locator": "https://github.com/microsoft/azure-skills",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Azure skills plugin combines skill guidance and MCP-backed execution; inspect the tool scopes and environment before authorizing actions.",
+      "reference_urls": [
+        "https://github.com/microsoft/azure-skills"
+      ]
+    },
+    {
+      "id": "microsoft-power-platform-plugins",
+      "kind": "vendor-plugin-repository",
+      "locator": "https://github.com/microsoft/power-platform-skills",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Power Platform plugins include build, update and publish workflows. Preserve preview/approval boundaries before environment mutations.",
+      "reference_urls": [
+        "https://github.com/microsoft/power-platform-skills"
+      ]
+    },
+    {
+      "id": "aws-agent-toolkit",
+      "kind": "vendor-agent-toolkit",
+      "locator": "https://github.com/aws/agent-toolkit-for-aws",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "AWS agent toolkit supplies tools, knowledge and guardrails for AWS build/deploy/manage workflows; review IAM and account scopes before enabling write actions.",
+      "reference_urls": [
+        "https://github.com/aws/agent-toolkit-for-aws"
+      ]
+    },
+    {
+      "id": "termux-tool-taxonomy-snapshot",
+      "kind": "repository-generated-tool-catalog",
+      "locator": "workspace/llm_map/_TOOL_TAXONOMY/{README.md,REPO_INFO,TAGS.txt,TOOL_TAXONOMY.json,TAG_INDEX.json,all_tools.jsonl,auto_tag_rules.json,roles_custom.json,categories/**,roles/**,modules/**,python3/**,delta/**,state/**}",
+      "trust": "repository-canonical",
+      "refresh": "git-tree",
+      "import_mode": "metadata-only; snapshot not live inventory",
+      "note": "Existing Termux/ArchWiz taxonomy baseline. all_tools.jsonl contains 3,388 valid JSONL tool records, 243 package/source groups and 104 tags; TOOL_TAXONOMY.json reports 25 roles. At the inspected master baseline, README claimed 3,387 tools and embedded unrendered shell substitutions. Preserve the generated artifact; correct it through the owning taxonomy generator after workspace-owner approval. categories/ and roles/ are derived views; modules/ are the generator; python3/ and delta/ are generated projections; state/ is a 531-entry device/package-state snapshot excluded from default content hydration. REPO_INFO declares NO_REMOTE. Treat tool availability as unverified until a current device scan confirms it; do not execute build_tool_taxonomy.sh in CI because it invokes Termux package and local-environment scanners."
+    },
+    {
+      "id": "claude-export-issue-5657",
+      "kind": "external-vendor-export",
+      "locator": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5657",
+      "trust": "unverified",
+      "refresh": "issue-attachment-reconciliation",
+      "import_mode": "candidate-only; metadata-only after source-integrity reconciliation",
+      "note": "Issue lists SHA256SUMS.txt, plugins-inventory.csv, skills-inventory.csv and skills-SKILL-md-all.tar.gz. The supplied SHA256SUMS content lists five skills-part-00..04.tgzpart files, not the combined archive or CSV/JSONL files; the issue body supplies no skills-inventory.jsonl or split-part attachments. Do not infer checksum verification from the generated source-manifest archive hash."
+    },
+    {
+      "id": "claude-export-import-pr-5667",
+      "kind": "repository-import-adapter",
+      "locator": "https://github.com/timerloggedout-spec/termux-monorepo/commit/baf927ae71ad1d740dc66442ee333a6938bb5074",
+      "trust": "repository-canonical",
+      "refresh": "pull-request-head",
+      "import_mode": "review-required; source-data-integrity-unverified",
+      "note": "PR #5667 contains scripts/skills/import_claude_export.py, scripts/skills/validate_claude_export.py, vendor/skills-mirror, .skills/index.json and source-manifest records for 1,299 skills and 1,218 plugin inventory rows. The importer now derives JSONL from CSV when absent, compares downloaded JSONL field-for-field, verifies any available SHA256SUMS entries and records source coverage. Current source status remains UNVERIFIED because five listed split parts are absent and the sums do not cover the combined archive or CSVs. 43 skill rows have blank plugin_dir; examples/public appear in plugin inventory without matching skill rows. Imported definitions remain unverified vendor content until the source checksum chain is resolved. The branch is currently 26,515 commits behind master and its PR is non-mergeable; retain it as a pinned forensic reference and split/rebase before promotion."
+    },
+    {
+      "id": "repo-tool-docs",
+      "kind": "repository-tool-reference",
+      "locator": "tools/**/CONNECTOR.md;tools/**/TOOLS.md",
+      "trust": "repository-canonical",
+      "refresh": "git-tree",
+      "import_mode": "metadata-only",
+      "note": "Connector and typed-tool documentation. Index the heading and short purpose text; retain full documents as the authoritative source."
+    },
+    {
+      "id": "repo-tool-schema",
+      "kind": "repository-tool-schema",
+      "locator": "tools/**/tools-schema.json",
+      "trust": "repository-canonical",
+      "refresh": "git-tree",
+      "import_mode": "metadata-only",
+      "note": "Index tool names, descriptions, parameter counts and tags; retain the full typed schema in the source file and hydrate only for a selected action."
+    },
+    {
+      "id": "sofa-mcp-connector",
+      "kind": "repository-mcp-connector",
+      "locator": "tools/sofa/{CONNECTOR.md,TOOLS.md,tools-schema.json,sofa.py}",
+      "trust": "repository-canonical",
+      "refresh": "git-tree",
+      "import_mode": "metadata-only",
+      "note": "SOFA = Stack Overflow for Agents, distinct from standard Stack Overflow MCP. Schema snapshot lists 27 actions: 16 READ and 11 WRITE. docs/ops/SOFA-CONNECTION-2026-10-28.md records a 2026-11-03 update with expanded scopes; tools/sofa/CONNECTOR.md and TOOLS.md still contain 2026-10-28 read-only claims. Current live authorization is unverified; run the read-only status check before use. Require explicit user intent and owner-gated workflow for every write. Never index or expose .tokens.json."
+    },
+    {
+      "id": "contextual-activation-pr-5680",
+      "kind": "repository-proposal-branch",
+      "locator": "https://github.com/timerloggedout-spec/termux-monorepo/commit/c1532c062182e8bebca07b6f1992ebd23f650b3e",
+      "trust": "repository-canonical; overlapping proposal branch",
+      "refresh": "pull-request-head",
+      "import_mode": "review-required; preserve independent dashboard artifacts only",
+      "note": "PR #5680 contains an initial contextual activation matrix/session catalogs and CMP-7 dashboard/admission-feed work. It overlaps PR #5681 on discovery/activation docs, is 30 commits behind current master and changes 19 files (+23,430/-195). Reconcile and retain the independent dashboard artifacts after PR #5681 is promoted."
+    }
+  ]
+}

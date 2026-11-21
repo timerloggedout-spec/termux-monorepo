@@ -1,6 +1,6 @@
 # DoE Questions Matrix
 
-**`doe-questions-matrix` v1** — registered 2026-11-02 under
+**`doe-questions-matrix` v1.1** — additive discovery dimensions registered 2026-11-19 under
 DoE governance (see `docs/ops/DOE-FAMILY.md`, Method
 versions). Owner directive 2026-11-02: the DoE questions
 matrices require more breadth and depth — larger dimension
@@ -19,7 +19,7 @@ chain, and dimensions that existed only as RULES (instance
 identity, corroboration, accumulation, backfill origin)
 without matrix form.
 
-AFTER: **40 dimensions in 6 clusters**, every dimension
+AFTER v1.0: **40 dimensions in 6 clusters**. v1.1 adds **8 nested discovery dimensions** in Cluster G (48 total), every dimension
 carrying sub-dimensions in the nested::research scheme:
 
 ```
@@ -179,6 +179,18 @@ misattributed to a listed factor.
     (rule 5)? Subs: {automation ref in DESIGN ·
     admitted_design_only flag} (unbound runs =
     OBSERVATIONAL).
+
+
+## Cluster G — DISCOVERY (how capabilities enter and hydrate the candidate set)
+
+41. **discovery source scope** — Q: which source populations were searched? Subs: {repository-local · nested workspace · vendor · external catalog · session snapshot · source allowlist}. Evidence: source registry + captured source set. Research: source breadth versus false-positive and trust burden.
+42. **taxonomy depth** — Q: how were candidates tagged? Subs: {flat keyword tags · hierarchical domain/function/facets · cross-cutting relationship edges}. Evidence: taxonomy version/hash. Research: hierarchical precision/recall versus tagging cost.
+43. **retrieval and ranking method** — Q: how was the shortlist ranked? Subs: {lexical · FTS/BM25 · semantic · hybrid · source-specific rank}. Evidence: index version, query and ranker stamp. Research: relevance, repeatability and index cost.
+44. **deduplication policy** — Q: which candidate identities were collapsed or linked? Subs: {source locator · package/skill/action ID · content hash · alias/fork/version relationship}. Evidence: dedupe rule version and resolution ledger. Research: false merge versus duplicate burden.
+45. **context hydration policy** — Q: how much source definition entered the model context? Subs: {metadata-only · selected excerpt · full skill body · full tool schema · namespace bundle}. Evidence: bytes/tokens loaded and selected IDs. Research: quality versus context cost.
+46. **source trust and admission class** — Q: what trust state governed each candidate? Subs: {repository-canonical · official-vendor · verified-upstream · community-reference · session-observed · unverified · quarantined}. Evidence: source provenance, permission review and admission decision. Research: trust calibration and risk-weighted ranking.
+47. **catalog freshness and version** — Q: which immutable or time-stamped catalog state was searched? Subs: {source revision · content hash · captured_at · stale/unknown state · refresh mode}. Evidence: source snapshot hash. Research: freshness benefit versus refresh cost.
+48. **result budget / shortlist size** — Q: how many candidates and definitions were surfaced? Subs: {top-k · per-source cap · diversity constraint · token/byte budget}. Evidence: query output and context utilization. Research: coverage/precision versus context and tool-call cost.
 
 ## Use
 

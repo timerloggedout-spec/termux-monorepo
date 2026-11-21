@@ -32,7 +32,7 @@ jobs:
       - name: Start disposable CockroachDB
         run: |
           docker run -d --name cockroachdb -p 26257:26257 \
-            cockroachdb/cockroach:v26.4.0 start-single-node --insecure \
+            cockroachdb/cockroach:v26.4.0@sha256:45c5caf2720d640cb36c0b7d42b7ca3cb435af85e3903c12e3d35659a2a04c67 start-single-node --insecure \
             --listen-addr=0.0.0.0:26257 --http-addr=0.0.0.0:8080
           for attempt in $(seq 1 40); do
             if docker exec cockroachdb cockroach sql --insecure \

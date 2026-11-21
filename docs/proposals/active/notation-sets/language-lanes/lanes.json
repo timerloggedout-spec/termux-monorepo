@@ -158,6 +158,18 @@
         "gaming",
         "general"
       ]
+    },
+    "existing_codec_reuse": {
+      "cedrlang_phase_codec": {
+        "source": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+        "tests": "tests/test_cedrlang_phase_codec.py",
+        "initial_substitution_probability": 0.7,
+        "probability_unit": "per eligible character within known compressed dictionary tokens",
+        "seeded_rng": true,
+        "reversible_variant_normalization": true,
+        "reuse_mode": "existing-versioned-codec",
+        "independent_of_cross_domain_mapping_selection": true
+      }
     }
   }
 }

@@ -13,14 +13,10 @@ concurrency:
 jobs:
   poll:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     permissions:
       actions: read
-      contents: read
-      issues: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
       - name: Poll recent runs and emit batched receipt
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -28,8 +24,11 @@ jobs:
           set -euo pipefail
           echo "## Shared Observer Poller Receipt" >> $GITHUB_STEP_SUMMARY
           echo "Timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_STEP_SUMMARY
-          # Fetch recent completed runs (last 30 min window approx)
-          runs=$(gh api --paginate "/repos/${{ github.repository }}/actions/runs?status=completed&per_page=50" | jq -c '.workflow_runs[] | select(.created_at > (now - 1800 | todate))')
+          # Bound the API query to the same 30-minute creation window used below.
+          # Server-side filtering prevents pagination through the repository's full run history.
+          SINCE=$(date -u -d '30 minutes ago' +%Y-%m-%dT%H:%M:%SZ)
+          echo "Created-at cutoff: ${SINCE}" >> "$GITHUB_STEP_SUMMARY"
+          runs=$(gh api --paginate "/repos/${{ github.repository }}/actions/runs?status=completed&created=%3E%3D${SINCE}&per_page=100" | jq -c '.workflow_runs[] | select(.created_at > (now - 1800 | todate))')
           echo "Recent completed runs observed: $(echo "$runs" | wc -l)" >> $GITHUB_STEP_SUMMARY
           # Count by conclusion
           echo "$runs" | jq -s 'group_by(.conclusion) | map({conclusion: .[0].conclusion, count: length})' >> $GITHUB_STEP_SUMMARY

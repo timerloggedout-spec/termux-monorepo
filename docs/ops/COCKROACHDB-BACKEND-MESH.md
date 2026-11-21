@@ -61,7 +61,7 @@ Record observed values from drills. The design target is an independently replay
 
 ## Validation
 
-The dedicated workflow starts a disposable CockroachDB single-node test cluster, applies the schema, writes one canonical event, reads the row count, and runs offline unit tests. The local test cluster validates SQL and driver compatibility; it does not establish hosted multi-region availability.
+The dedicated workflow runs two disposable contracts. The adapter contract starts a TLS-secured single-node cluster, applies the schema, writes a canonical event, verifies readback and runs offline unit tests. The replicated-continuity contract starts three TLS-secured nodes, writes through node one, stops node one and verifies the same event through node two. This exercises one-node failure tolerance in an ephemeral cluster; hosted multi-region availability and production restore remain separate drills.
 
 ## Upstream references
 

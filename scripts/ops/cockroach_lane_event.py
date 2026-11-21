@@ -12,6 +12,7 @@ import argparse
 import os
 import subprocess
 import sys
+import time
 from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlsplit, urlunsplit
 
@@ -56,16 +57,21 @@ def psql(url: str, args: list[str]) -> str:
     safe_url, connection_env = connection_parts(url)
     env = dict(os.environ)
     env.update(connection_env)
-    result = subprocess.run(
-        ["psql", safe_url, "-X", "-q", "-v", "ON_ERROR_STOP=1", *args],
-        capture_output=True,
-        text=True,
-        env=env,
-        timeout=120,
-    )
-    if result.returncode:
-        raise RuntimeError(f"psql exited with status {result.returncode}")
-    return result.stdout.strip()
+    for attempt in range(5):
+        result = subprocess.run(
+            ["psql", safe_url, "-X", "-q", "-v", "ON_ERROR_STOP=1", *args],
+            capture_output=True,
+            text=True,
+            env=env,
+            timeout=120,
+        )
+        if result.returncode == 0:
+            return result.stdout.strip()
+        # CockroachDB SERIALIZABLE transactions surface retryable conflicts as SQLSTATE 40001.
+        if "40001" not in (result.stderr or "") or attempt == 4:
+            raise RuntimeError(f"psql exited with status {result.returncode}")
+        time.sleep(0.05 * (2 ** attempt))
+    raise RuntimeError("psql retry budget exhausted")
 
 
 def parser() -> argparse.ArgumentParser:
@@ -95,7 +101,6 @@ def main(argv: list[str] | None = None) -> int:
             print(f"COCKROACHDB_COUNT rows={count}")
             return 0
         events = load_events(ns)
-        psql(url, ["-f", str(SQL_DIR / "lane-events-schema.sql")])
         for raw in events:
             event = normalize(raw)
             args: list[str] = ["-f", str(SQL_DIR / "lane-events-insert.sql")]

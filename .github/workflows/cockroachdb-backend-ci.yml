@@ -25,6 +25,114 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  replicated-continuity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate cluster TLS certificates
+        env:
+          COCKROACH_IMAGE: cockroachdb/cockroach:v26.4.0@sha256:45c5caf2720d640cb36c0b7d42b7ca3cb435af85e3903c12e3d35659a2a04c67
+        run: |
+          mkdir -p "${RUNNER_TEMP}/cockroach-certs"
+          chmod 700 "${RUNNER_TEMP}/cockroach-certs"
+          docker run --rm -v "${RUNNER_TEMP}/cockroach-certs:/certs" "${COCKROACH_IMAGE}" cert create-ca --certs-dir=/certs --ca-key=/certs/ca.key
+          docker run --rm -v "${RUNNER_TEMP}/cockroach-certs:/certs" "${COCKROACH_IMAGE}" cert create-node node1,node2,node3,localhost,127.0.0.1 --certs-dir=/certs --ca-key=/certs/ca.key
+          docker run --rm -v "${RUNNER_TEMP}/cockroach-certs:/certs" "${COCKROACH_IMAGE}" cert create-client root --certs-dir=/certs --ca-key=/certs/ca.key
+          chmod 600 "${RUNNER_TEMP}/cockroach-certs/client.root.key"
+      - name: Start three CockroachDB nodes
+        env:
+          COCKROACH_IMAGE: cockroachdb/cockroach:v26.4.0@sha256:45c5caf2720d640cb36c0b7d42b7ca3cb435af85e3903c12e3d35659a2a04c67
+        run: |
+          docker network create cockroach-net
+          for node in 1 2 3; do
+            port=$((26256 + node))
+            docker run -d --name "cockroach${node}" --network cockroach-net \
+              --network-alias "node${node}" -p "${port}:26257" \
+              -v "${RUNNER_TEMP}/cockroach-certs:/certs:ro" \
+              "${COCKROACH_IMAGE}" start --certs-dir=/certs \
+              --listen-addr=0.0.0.0:26257 --advertise-addr="node${node}:26257" \
+              --http-addr=0.0.0.0:8080 \
+              --join=node1:26257,node2:26257,node3:26257 \
+              --cache=128MiB --max-sql-memory=128MiB
+          done
+          initialized=false
+          for attempt in $(seq 1 40); do
+            if docker run --rm --network cockroach-net \
+              -v "${RUNNER_TEMP}/cockroach-certs:/certs:ro" "${COCKROACH_IMAGE}" \
+              init --certs-dir=/certs --host=node1:26257; then
+              initialized=true
+              break
+            fi
+            sleep 2
+          done
+          test "${initialized}" = true
+          for node in 1 2 3; do
+            ready=false
+            for attempt in $(seq 1 30); do
+              if docker run --rm --network cockroach-net \
+                -v "${RUNNER_TEMP}/cockroach-certs:/certs:ro" "${COCKROACH_IMAGE}" \
+                sql --certs-dir=/certs --host="node${node}:26257" --execute="SELECT 1" >/dev/null 2>&1; then
+                ready=true
+                break
+              fi
+              sleep 2
+            done
+            test "${ready}" = true
+          done
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+      - name: Write canonical event through node one
+        env:
+          COCKROACH_DATABASE_URL: postgresql://root@127.0.0.1:26257/defaultdb?sslmode=verify-full&sslrootcert=${{ runner.temp }}/cockroach-certs/ca.crt&sslcert=${{ runner.temp }}/cockroach-certs/client.root.crt&sslkey=${{ runner.temp }}/cockroach-certs/client.root.key
+        run: |
+          python3 scripts/ops/cockroach_lane_event.py schema --strict
+          python3 scripts/ops/cockroach_lane_event.py record --lane ci --workflow cockroach-replicated-continuity \
+            --event-type run_completed --repo "${GITHUB_REPOSITORY}" \
+            --run-id "${GITHUB_RUN_ID}" --run-attempt "${GITHUB_RUN_ATTEMPT}" \
+            --conclusion success --head-sha "${GITHUB_SHA}" --strict
+          python3 scripts/ops/cockroach_lane_event.py count --strict | tee /tmp/cockroach-before-failure.txt
+          grep -q "COCKROACHDB_COUNT rows=1" /tmp/cockroach-before-failure.txt
+      - name: Verify replicated readback through node two before failure
+        env:
+          COCKROACH_DATABASE_URL: postgresql://root@127.0.0.1:26258/defaultdb?sslmode=verify-full&sslrootcert=${{ runner.temp }}/cockroach-certs/ca.crt&sslcert=${{ runner.temp }}/cockroach-certs/client.root.crt&sslkey=${{ runner.temp }}/cockroach-certs/client.root.key
+        run: |
+          for attempt in $(seq 1 40); do
+            if python3 scripts/ops/cockroach_lane_event.py count --strict > /tmp/cockroach-replica-readback.txt 2>&1 \
+              && grep -q "COCKROACHDB_COUNT rows=1" /tmp/cockroach-replica-readback.txt; then
+              cat /tmp/cockroach-replica-readback.txt
+              exit 0
+            fi
+            sleep 2
+          done
+          cat /tmp/cockroach-replica-readback.txt
+          exit 1
+      - name: Stop node one and verify replicated readback through node two
+        env:
+          COCKROACH_DATABASE_URL: postgresql://root@127.0.0.1:26258/defaultdb?sslmode=verify-full&sslrootcert=${{ runner.temp }}/cockroach-certs/ca.crt&sslcert=${{ runner.temp }}/cockroach-certs/client.root.crt&sslkey=${{ runner.temp }}/cockroach-certs/client.root.key
+        run: |
+          docker stop cockroach1
+          for attempt in $(seq 1 40); do
+            if python3 scripts/ops/cockroach_lane_event.py count --strict > /tmp/cockroach-after-failure.txt 2>&1 \
+              && grep -q "COCKROACHDB_COUNT rows=1" /tmp/cockroach-after-failure.txt; then
+              cat /tmp/cockroach-after-failure.txt
+              exit 0
+            fi
+            sleep 2
+          done
+          cat /tmp/cockroach-after-failure.txt
+          docker logs cockroach2
+          exit 1
+      - name: Record replicated continuity evidence
+        if: always()
+        run: |
+          docker ps -a --filter name=cockroach --format='{{.Names}} {{.Status}}'
+          for node in cockroach1 cockroach2 cockroach3; do
+            docker logs "${node}" 2>&1 | tail -20 || true
+          done
+
   contract:
     runs-on: ubuntu-latest
     timeout-minutes: 15

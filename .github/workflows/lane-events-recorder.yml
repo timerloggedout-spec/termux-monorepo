@@ -8,13 +8,6 @@
 name: lane events recorder
 
 on:
-  pull_request:
-    paths:
-      - "ops/cockroachdb/**"
-      - "scripts/ops/cockroach_lane_event.py"
-      - "tests/test_cockroach_lane_event.py"
-      - ".github/workflows/lane-events-recorder.yml"
-      - ".github/workflows/cockroachdb-backend-ci.yml"
   # #5219 RE-FIX: `tribute-status-refresh` removed from the fan-in.
   # It is itself triggered by tribute execute/followup/scout
   # completions, so one tribute event created a recorder run directly
@@ -42,64 +35,6 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  cockroach-contract:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - name: Generate disposable TLS certificates
-        env:
-          COCKROACH_IMAGE: cockroachdb/cockroach:v26.4.0@sha256:45c5caf2720d640cb36c0b7d42b7ca3cb435af85e3903c12e3d35659a2a04c67
-        run: |
-          mkdir -p "${RUNNER_TEMP}/cockroach-certs"
-          chmod 700 "${RUNNER_TEMP}/cockroach-certs"
-          docker run --rm -v "${RUNNER_TEMP}/cockroach-certs:/certs" "${COCKROACH_IMAGE}" cert create-ca --certs-dir=/certs --ca-key=/certs/ca.key
-          docker run --rm -v "${RUNNER_TEMP}/cockroach-certs:/certs" "${COCKROACH_IMAGE}" cert create-node localhost,127.0.0.1,cockroachdb --certs-dir=/certs --ca-key=/certs/ca.key
-          docker run --rm -v "${RUNNER_TEMP}/cockroach-certs:/certs" "${COCKROACH_IMAGE}" cert create-client root --certs-dir=/certs --ca-key=/certs/ca.key
-          chmod 600 "${RUNNER_TEMP}/cockroach-certs/client.root.key"
-      - name: Start disposable CockroachDB
-        env:
-          COCKROACH_IMAGE: cockroachdb/cockroach:v26.4.0@sha256:45c5caf2720d640cb36c0b7d42b7ca3cb435af85e3903c12e3d35659a2a04c67
-        run: |
-          docker run -d --name cockroachdb -p 26257:26257 \
-            -v "${RUNNER_TEMP}/cockroach-certs:/certs:ro" \
-            "${COCKROACH_IMAGE}" start-single-node --certs-dir=/certs \
-            --listen-addr=0.0.0.0:26257 --http-addr=0.0.0.0:8080
-          for attempt in $(seq 1 40); do
-            if docker exec cockroachdb cockroach sql --certs-dir=/certs --host=localhost \
-              --execute="SELECT 1" >/dev/null 2>&1; then
-              exit 0
-            fi
-            sleep 2
-          done
-          docker logs cockroachdb
-          exit 1
-      - name: Install PostgreSQL client
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y postgresql-client
-      - name: Apply schema and exercise write/readback
-        env:
-          COCKROACH_DATABASE_URL: postgresql://root@127.0.0.1:26257/defaultdb?sslmode=verify-full&sslrootcert=${{ runner.temp }}/cockroach-certs/ca.crt&sslcert=${{ runner.temp }}/cockroach-certs/client.root.crt&sslkey=${{ runner.temp }}/cockroach-certs/client.root.key
-        run: |
-          python3 scripts/ops/cockroach_lane_event.py schema --strict
-          python3 scripts/ops/cockroach_lane_event.py record --lane ci --workflow cockroach-contract \
-            --event-type run_completed --repo "${GITHUB_REPOSITORY}" \
-            --run-id "${GITHUB_RUN_ID}" --run-attempt "${GITHUB_RUN_ATTEMPT}" \
-            --conclusion success --head-sha "${GITHUB_SHA}" --strict
-          python3 scripts/ops/cockroach_lane_event.py count --strict | tee /tmp/cockroach-count.txt
-          grep -q "COCKROACHDB_COUNT rows=1" /tmp/cockroach-count.txt
-      - name: Run CockroachDB adapter tests
-        run: python3 -m unittest discover -s tests -p 'test_cockroach_lane_event.py' -v
-      - name: Run canonical lane-event tests
-        run: python3 -m unittest discover -s tests -p 'test_lane_event.py' -v
-      - name: Record runtime evidence
-        if: always()
-        run: |
-          docker inspect cockroachdb --format='container={{.Id}} status={{.State.Status}}' || true
-          docker logs cockroachdb 2>&1 | tail -40 || true
-
   record:
     if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest

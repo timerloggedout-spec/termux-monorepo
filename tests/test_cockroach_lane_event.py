@@ -37,6 +37,16 @@ class CockroachLaneEventTests(unittest.TestCase):
             self.assertEqual(cr.main(["record", "--strict"]), 1)
             self.assertEqual(cr.main(["record"]), 0)
 
+    def test_serializable_conflicts_retry_with_bounded_backoff(self):
+        url = "postgresql://user:secret@db.example:26257/app?sslmode=verify-full"
+        failed = cr.subprocess.CompletedProcess([], 1, "", "restart transaction: SQLSTATE: 40001")
+        passed = cr.subprocess.CompletedProcess([], 0, "1", "")
+        with mock.patch.object(cr.subprocess, "run", side_effect=[failed, passed]) as run:
+            with mock.patch.object(cr.time, "sleep") as sleep:
+                self.assertEqual(cr.psql(url, ["-At", "-c", "SELECT 1"]), "1")
+        self.assertEqual(run.call_count, 2)
+        sleep.assert_called_once_with(0.05)
+
     def test_event_identity_reuses_canonical_normalizer(self):
         from pathlib import Path
         import sys

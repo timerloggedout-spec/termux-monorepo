@@ -1,7 +1,7 @@
 name: lane-event
 description: >-
-  Append one event (or a JSONL file of events) to the Neon lane_events ledger.
-  No-op when neither LANE_EVENTS_DATABASE_URL nor NEON_API_KEY is provided.
+  Append canonical lane events to Neon and an optional CockroachDB projection.
+  Each sink reports its own outcome and reuses the same event key.
   Never fails the calling job. Requires the repo to be checked out.
 inputs:
   lane: {description: "lane name (help-wanted, she, ...)", required: true}

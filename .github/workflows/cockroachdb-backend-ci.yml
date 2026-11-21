@@ -133,6 +133,19 @@ jobs:
           cat /tmp/cockroach-after-failure.txt
           docker logs cockroach2
           exit 1
+      - name: Backup and restore lane-event database through surviving node
+        env:
+          COCKROACH_ADMIN_DATABASE_URL: postgresql://root@127.0.0.1:26258/defaultdb?sslmode=verify-full&sslrootcert=${{ runner.temp }}/cockroach-certs/ca.crt&sslcert=${{ runner.temp }}/cockroach-certs/client.root.crt&sslkey=${{ runner.temp }}/cockroach-certs/client.root.key
+        run: |
+          node_id=$(psql "${COCKROACH_ADMIN_DATABASE_URL}" -X -At -v ON_ERROR_STOP=1 -c "SELECT crdb_internal.node_id()")
+          backup_uri="nodelocal://${node_id}/cockroach-backups/lane-events"
+          psql "${COCKROACH_ADMIN_DATABASE_URL}" -X -v ON_ERROR_STOP=1 -c "BACKUP DATABASE lane_events INTO '${backup_uri}'"
+          psql "${COCKROACH_ADMIN_DATABASE_URL}" -X -v ON_ERROR_STOP=1 -c "DROP DATABASE lane_events CASCADE"
+          psql "${COCKROACH_ADMIN_DATABASE_URL}" -X -v ON_ERROR_STOP=1 -c "RESTORE DATABASE lane_events FROM LATEST IN '${backup_uri}'"
+          psql "${COCKROACH_ADMIN_DATABASE_URL}" -X -v ON_ERROR_STOP=1 -f ops/cockroachdb/lane-events-writer-grants.sql
+          export COCKROACH_DATABASE_URL="postgresql://lane_events_writer@127.0.0.1:26258/lane_events?sslmode=verify-full&sslrootcert=${RUNNER_TEMP}/cockroach-certs/ca.crt&sslcert=${RUNNER_TEMP}/cockroach-certs/client.lane_events_writer.crt&sslkey=${RUNNER_TEMP}/cockroach-certs/client.lane_events_writer.key"
+          python3 scripts/ops/cockroach_lane_event.py count --strict | tee /tmp/cockroach-after-restore.txt
+          grep -q "COCKROACHDB_COUNT rows=1" /tmp/cockroach-after-restore.txt
       - name: Record replicated continuity evidence
         if: always()
         run: |

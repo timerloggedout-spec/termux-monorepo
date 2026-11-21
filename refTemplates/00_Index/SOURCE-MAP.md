@@ -46,4 +46,4 @@ See root `.gitmodules`:
 
 AuditEngine_fork, batteries_fork, content-agent-routing-promptbase_fork, cost-of-remembering_fork, icm-architect_fork, icm-cctv_fork, interpretable-context-methodology_fork, mcp-android-ssh_fork, term_mcp_deepseek_fork, termux-mcp-server_fork, lego_fork, Wingman_fork, GPTmetrics_fork, Reddit-Evidence-Usage-and-Stance-Analysis-Elon-Musk-Discussion_fork
 
-Pins intentional; no auto-advance without dual-gate green. Pinecone pg_pinecone is catalogued as a pin candidate, but no pg_pinecone_fork exists yet. Add its gitlink only after a real custom fork, immutable reviewed pin, compatibility evidence, and passing gates.
+Pins advance through dual-gate review. Pinecone pg_pinecone is catalogued as a pin candidate; custom fork creation remains pending. Add its gitlink after the custom fork, immutable reviewed pin, compatibility evidence, and passing gates are complete.

@@ -167,7 +167,8 @@ def mappings_from_panel_feed(feed: dict[str, Any]) -> list[dict[str, Any]]:
             "feed_identity_collision": False,
             "feed_generated_at": feed.get("generated_at"),
             "direction": direction,
-            "round_trip_verified": verified,\n            "round_trip_status": round_trip_status,
+            "round_trip_verified": verified,
+            "round_trip_status": round_trip_status,
         }
         for key in (
             "confidence", "status", "grade", "label_type", "label_id", "concept_id",

@@ -38,10 +38,11 @@ class PolyglotFederationTests(unittest.TestCase):
     def test_feed_builder_emits_content_addressed_records(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             output = Path(temp_dir) / "feed.json"
+            revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
             command = [
                 sys.executable, str(ROOT / "scripts" / "polyglot" / "build_feed.py"),
                 "--repository", "timerloggedout-spec/termux-monorepo",
-                "--revision", subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+                "--revision", revision,
                 "--generated-at", "2026-11-19T00:00:00Z",
                 "--output", str(output),
             ]
@@ -53,6 +54,9 @@ class PolyglotFederationTests(unittest.TestCase):
             canonical = json.dumps(feed["records"], sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
             self.assertEqual(feed["artifact_digest"], "sha256:" + hashlib.sha256(canonical).hexdigest())
             self.assertTrue(all(record["content_digest"].startswith("sha256:") for record in feed["records"]))
+            for record in feed["records"]:
+                source = subprocess.check_output(["git", "show", f"{revision}:{record['path']}"], cwd=ROOT)
+                self.assertEqual(record["content_digest"], "sha256:" + hashlib.sha256(source).hexdigest())
 
 
     def test_validator_rejects_dangling_capability_and_target_references(self):

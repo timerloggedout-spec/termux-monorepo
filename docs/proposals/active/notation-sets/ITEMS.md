@@ -175,7 +175,7 @@ Build a reproducible retrieval benchmark over source-backed Linguist mapping ass
 - Curate a compact Fleet ⇔ Lean/Mathlib and nomenclature cross-custom fixture with exact, approximate, analogue, and proof/evidence-state distinctions.
 - Generate deterministic corpus, retrieval queries, qrels, pair-scoped candidates, hard negatives, surface-collision groups, and ranking metrics.
 - Project enumerated canonical panel-feed entries into benchmark records; prefer native `mapping_id` / `label_id` identities, preserve reused IDs as distinct records, and count exact duplicate source rows.
-- Preserve `runtime-verified`, `lossy-observed`, `candidate`, and `unverified` states with source provenance and feed snapshot time.
+- Preserve `roundtrip-verified`, `roundtrip-failed`, `candidate`, and `unverified` evidence states separately from semantic mapping grade, with source provenance and feed snapshot time.
 - Keep count-only families outside enumerated benchmark records and retain the complete experiment artifacts under `experiments/linguist/mapping-benchmarks/`.
 
 **Acceptance criteria:**

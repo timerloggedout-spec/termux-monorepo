@@ -72,7 +72,7 @@ def evaluate_arm(
         if len(ranked_ids) != len(set(ranked_ids)):
             raise ValueError(f"ranking IDs must be unique for {query_id}")
         relevance = query["relevance_by_chunk_id"]
-        if not isinstance(relevance, Mapping):
+        if isinstance(relevance, Mapping) is False:
             raise TypeError(f"relevance_by_chunk_id must be a mapping for {query_id}")
         relevant_ids = [chunk_id for chunk_id, grade in relevance.items() if float(grade) > 0]
         per_query.append({

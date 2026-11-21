@@ -63,7 +63,7 @@ analogies to equivalences or infer missing mappings.
 - `candidates`: pair-scoped candidate pool for each query;
 - `hard_negatives`: same-surface candidates with a different domain or semantic key;
 - `conflicts`: identical source surfaces with distinct semantic/domain keys;
-- `stats`: corpus, query, relevance, conflict, and grade counts.
+- `stats`: corpus, query, relevance, conflict, hard-negative, grade, and evidence-state counts.
 
 Query identity includes source custom, target custom, domain, and semantic ID.
 This makes overloaded symbols such as `∘` separable by domain. Competing

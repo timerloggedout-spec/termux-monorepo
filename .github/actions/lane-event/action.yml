@@ -48,8 +48,8 @@ runs:
           --run-id "$IN_RUN_ID" --run-attempt "$IN_RUN_ATTEMPT" --subject-url "$IN_SUBJECT" \
           --phase-id "$IN_PHASE" --conclusion "$IN_CONCLUSION" --head-sha "$IN_SHA" \
           --occurred-at "$IN_AT" --payload "$IN_PAYLOAD" --events-file "$IN_FILE" || true
-        python3 "$GITHUB_WORKSPACE/scripts/ops/cockroach_lane_event.py" "$IN_CMD" \\
-          --lane "$IN_LANE" --workflow "$IN_WORKFLOW" --event-type "$IN_TYPE" --repo "$GITHUB_REPOSITORY" \\
-          --run-id "$IN_RUN_ID" --run-attempt "$IN_RUN_ATTEMPT" --subject-url "$IN_SUBJECT" \\
-          --phase-id "$IN_PHASE" --conclusion "$IN_CONCLUSION" --head-sha "$IN_SHA" \\
+        python3 "$GITHUB_WORKSPACE/scripts/ops/cockroach_lane_event.py" "$IN_CMD" \
+          --lane "$IN_LANE" --workflow "$IN_WORKFLOW" --event-type "$IN_TYPE" --repo "$GITHUB_REPOSITORY" \
+          --run-id "$IN_RUN_ID" --run-attempt "$IN_RUN_ATTEMPT" --subject-url "$IN_SUBJECT" \
+          --phase-id "$IN_PHASE" --conclusion "$IN_CONCLUSION" --head-sha "$IN_SHA" \
           --occurred-at "$IN_AT" --payload "$IN_PAYLOAD" --events-file "$IN_FILE" || true

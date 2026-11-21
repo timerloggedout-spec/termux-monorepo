@@ -180,16 +180,22 @@ Each runtime slice needs its own accepted proposal item, test-first implementati
 
 ## 7. Loopy / feedback-cycle disposition
 
-This task is a bounded one-shot reference capture and architecture comparison. The reusable catalog maintenance candidate is the existing provider catalog refresh lifecycle, with the following loop:
+This task is a bounded one-shot reference capture and architecture comparison. The codebase already has two distinct observation surfaces:
 
-1. **Observe:** fetch the current official provider catalog and record source, schema, observation time and digest.
-2. **Choose:** compare the new source against the prior normalized snapshot and select the smallest schema/adapter change supported by evidence.
-3. **Act:** update one provider adapter or versioned projection with a focused regression fixture.
-4. **Verify:** run the same fixture, inventory and provider-catalog contract tests.
-5. **Record:** append the source revision, payload digest, adapter version, test results and observed delta.
-6. **Repeat or stop:** continue while a new source or regression changes the next action; finish as `success`, `clean no-op`, `blocked` or `stagnated`.
+- `.github/workflows/openrouter-free-catalog-sync.yml` runs daily at `17 12 * * *`, compares the public OpenRouter free-model snapshot, and uploads immutable run-attempt artifacts with 14-day retention. Its contract is observation-only.
+- `.github/workflows/provider-availability.yml` is `workflow_dispatch`-only in the inspected revision. Its cadence is owned by `quota-dispatch-tree.yml`; it records credential/catalog continuity and keeps routine inference disabled.
+- `.github/workflows/provider-batch.yml` runs contract tests for relevant changes and exposes separate trusted manual observation inputs. Its inference smoke defaults off.
 
-This is an adapted design based on the existing collector and provider refresh architecture, not a claim that a new scheduled loop has been deployed.
+The strongest loop candidate is therefore an **observation-and-reconciliation loop**, not an autonomous catalog mutator:
+
+1. **Observe:** collect the scheduled public catalog snapshot and authorized provider-availability evidence with source, schema, observation time and digest.
+2. **Choose:** compare the new snapshot with its predecessor; classify additions, removals, schema drift, stale cache and provider-level errors.
+3. **Act:** create a scoped adapter/schema proposal only when the delta changes a documented capability or parser contract. The existing snapshot job remains read-only.
+4. **Verify:** run provider fixtures, refTemplates inventory and provider-batch contracts against the exact candidate SHA.
+5. **Record:** retain the source revision, payload digest, adapter version, run/attempt, test results and observed delta.
+6. **Repeat or stop:** continue on the next existing observation cadence; finish each cycle as `success`, `clean no-op`, `blocked` or `stagnated`.
+
+This is an adapted design grounded in the existing workflows. It introduces no scheduler, inference request, publisher write path or automatic routing change.
 
 ## 8. Related repository sources
 

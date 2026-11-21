@@ -1,0 +1,9 @@
+{
+  "name": "planning-queue-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static dashboard for the planning queue: enqueue a task, watch ops_queue.",
+  "engines": { "node": ">=20" },
+  "scripts": { "start": "node server.js" },
+  "dependencies": { "express": "^5.1.0" }
+}

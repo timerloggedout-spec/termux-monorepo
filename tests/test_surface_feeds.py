@@ -8,6 +8,7 @@ never drift from the record silently.
 from __future__ import annotations
 
 import ast
+import importlib.util
 import json
 import subprocess
 import sys
@@ -183,3 +184,69 @@ def test_separation_boundaries():
     ates = _feed("ates-feed.json")
     inv = json.dumps(ates["data"]["invariants"])
     assert inv not in json.dumps(mvt["data"]) and inv not in json.dumps(doe["data"])
+
+
+def _load_surface_feeds_module():
+    spec = importlib.util.spec_from_file_location(
+        "surface_feeds_test", ROOT / "scripts" / "dashboards" / "surface_feeds.py")
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    return module
+
+
+def _write_doe_design(root: Path, *, status: str, member_kind: str = "campaign") -> Path:
+    design_dir = root / "experiments" / "doe" / "fixture-campaign"
+    design_dir.mkdir(parents=True, exist_ok=True)
+    (design_dir / "DESIGN.json").write_text(json.dumps({
+        "campaign_id": "fixture-campaign",
+        "member_kind": member_kind,
+        "status": status,
+        "design": {"type": "2x2x2 full factorial"},
+    }))
+    return design_dir
+
+
+def test_doe_campaign_state_preserves_pending_admission(tmp_path):
+    module = _load_surface_feeds_module()
+    module.ROOT = tmp_path
+    _write_doe_design(tmp_path, status="proposal_only_not_admitted")
+    entry = module._doe_campaigns()[0]
+    assert entry["state"] == "proposal_only_not_admitted"
+    assert entry["declared_status"] == "proposal_only_not_admitted"
+    assert entry["kind"] == "campaign"
+    assert entry["runs"] == 0
+
+
+def test_doe_campaign_state_flags_records_before_admission(tmp_path):
+    module = _load_surface_feeds_module()
+    module.ROOT = tmp_path
+    design_dir = _write_doe_design(tmp_path, status="proposed_not_admitted")
+    records = design_dir / "records"
+    records.mkdir()
+    (records / "run-001.json").write_text("{}")
+    entry = module._doe_campaigns()[0]
+    assert entry["state"] == "unapproved_execution_detected"
+    assert entry["declared_status"] == "proposed_not_admitted"
+    assert entry["runs"] == 1
+
+
+def test_doe_registers_remain_separate_from_campaigns(tmp_path):
+    module = _load_surface_feeds_module()
+    module.ROOT = tmp_path
+    _write_doe_design(tmp_path, status="open_register", member_kind="register")
+    members = module._doe_campaigns()
+    campaigns, registers = module._split_doe_members(members)
+    assert campaigns == []
+    assert len(registers) == 1
+    assert registers[0]["kind"] == "register"
+    assert registers[0]["state"] == "open_register"
+
+
+def test_legacy_admitted_design_keeps_design_only_state(tmp_path):
+    module = _load_surface_feeds_module()
+    module.ROOT = tmp_path
+    _write_doe_design(tmp_path, status="admitted")
+    entry = module._doe_campaigns()[0]
+    assert entry["state"] == "admitted_design_only"
+    assert entry["declared_status"] == "admitted"

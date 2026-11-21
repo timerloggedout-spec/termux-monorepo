@@ -1,6 +1,6 @@
 # Skill Discovery Matrix — adaptive wait + evidence-led repo ops
 
-**Discovery basis:** recursive Git tree of `master` at SHA `2327859f0b2432631177346e93492e67cdc7b3d2`, plus the session-scoped `.skill` attachments and supplied skill/loop references.
+**Discovery basis:** recursive Git tree of `master` at baseline SHA `f1840cf0488bb48bbbf7df1b62d15808d58b5dfe`, plus the session-scoped skill attachments, plugin skill catalog, and tool-action catalog captured 2026-11-19. See [Contextual Capability Activation Matrix](CAPABILITY-ACTIVATION-MATRIX.md) for the complete activation route.
 
 ## Repository-native related skills
 
@@ -22,13 +22,16 @@
 | Evaluation | mvt-experiment | `.github/skills/mvt-experiment/SKILL.md` | controlled experiment lane |
 | Discovery | find-skills | `.agents/skills/find-skills/SKILL.md` | external skill discovery/install guidance |
 
-## Other repository-native skill files
+## Complete repository skill census
 
-The recursive tree contains 27 paths matching `**/SKILL.md` or `*.skill`: 25 `SKILL.md` files and 2 documentation mirrors. The repository tree currently contains **no tracked `.skill` archive**.
+The recursive tree at `f1840cf0488bb48bbbf7df1b62d15808d58b5dfe` contains **45 `SKILL.md` paths** and zero tracked `.skill` archives:
 
-Agent-loadable paths also include: approxination-lane, blind-agent-evaluation, gemini-performance-psychology, github-pages-operator, tribute-lane, multivariate-doe, termux-monorepo, termux-monorepo-agentic-governance, and the Claude companion skill.
+- 32 agent-loadable definitions under `.agents/skills/`;
+- 1 Claude-harness companion under `.claude/skills/`;
+- 10 CI/production definitions under `.github/skills/`;
+- 2 documentation mirrors under `docs/ops/skills/`.
 
-CI/production paths also include: github-pages-operator, forensic-recovery, pr-evidence-evaluation, and the evidence/provenance/action-effectiveness lanes listed above.
+The complete path list and contextual triggers live in [CAPABILITY-ACTIVATION-MATRIX.md](CAPABILITY-ACTIVATION-MATRIX.md). `SKILLS-INVENTORY.md` is the role-oriented navigation index.
 
 ## Session-scoped `.skill` discoveries
 
@@ -44,6 +47,27 @@ These uploaded packages are **session evidence, not repository SSOT**. They shou
 
 - **Loopy API / Loop Library Skill** — describes bounded Observe -> Choose -> Act -> Verify -> Record -> Repeat workflows, explicit terminal states, and run receipts. Candidate adaptation only; no repository adoption is implied.
 - **Google Jules skill/workflow references** — supplied material describes `skills/<skill-name>/SKILL.md`, issue automation, PR review, test-driven development, and subagent-driven development. Candidate ecosystem evidence only; no external policy is imported automatically.
+
+## Session plugin and tool inventory
+
+The 2026-11-19 ChatGPT session discovery snapshot contains **545 plugin skill references across 74 skill packages**, plus **4,705 callable tool actions across 123 MCP namespaces** and 3 additional core namespaces. Full activation descriptions and action names are captured in:
+
+- `docs/integrations/session-plugin-skill-catalog.json`
+- `docs/integrations/session-tool-catalog.json`
+
+These snapshots describe the active session only. They do not establish availability, entitlement, authorization, repository adapters, or production readiness in Termux, Actions, another agent harness, or a later session.
+
+The uploaded `Notation Registry Proposal.txt` was inspected by content and is a duplicate of the historical PR #523 WAIT/WATCH status report, not a notation-registry proposal. It is excluded as notation-source evidence until the correct proposal is available.
+
+## Additional session-supplied architecture and operations references
+
+- **`Diagnose Routing Architecture.txt`** — historical team-centric orchestration, provider attribution, manager comparison, MoneyBall/3L0 and outcome-based efficiency. Map to `docs/ops/AGENT-TEAM-ORCHESTRATION.md`, `docs/ops/AGENT-THROUGHPUT-METRICS.md`, `docs/ops/AGENT-OBSERVABILITY-RESEARCH-MATRIX.md` and `docs/ops/ROUTING-ORCHESTRATION-MAP.md`.
+- **`Implement GitLab Sync Diagnosis.txt`** — historical PR #311 cross-platform credential placement, authenticated GitLab transport, single-writer review coordination and canonical-branch reconciliation. Map to `docs/ops/SECRET-NAMING-CONVENTION.md`, `docs/ops/secrets-and-variables-registry.md`, `docs/integrations/INTEGRATION-REGISTRY.md` and current GitHub/GitLab workflow evidence before any operational decision.
+- **`Awesome Jules Skills Actions and Workflows for GitHub Development.`** — external Jules action/skill reference material. Treat action versions, account access, trigger behavior and runtime support as candidate claims pending current official-source verification.
+- **`skill-loopy-api-loop-library-skill.json`** — bounded Observe → Choose → Act → Verify → Record → Repeat patterns, terminal states and run receipts. Reuse through the repository adaptive-WAIT and orchestration contracts.
+- **`Notation Registry Proposal.txt`** — content inspection identifies a duplicate historical WAIT/WATCH status report. Use the canonical notation register and repository Linguist/Siglary mandate for notation work.
+
+These attachments are session evidence. Their repository mappings are the durable navigation path; their historical status claims require fresh verification before execution.
 
 ## Adoption rule
 

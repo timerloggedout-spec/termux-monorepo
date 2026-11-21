@@ -62,7 +62,7 @@ def _stable_id(*parts: str) -> str:
 
 
 def mappings_from_panel_feed(feed: dict[str, Any]) -> list[dict[str, Any]]:
-    """Project included Linguist feed entries into stable lookup records.
+    """Project included Linguist feed entries into deterministic snapshot-scoped records.
 
     Source IDs are family-scoped hints, not guaranteed unique. Prefer native
     mapping_id/label_id values, then disambiguate reused IDs with a digest of

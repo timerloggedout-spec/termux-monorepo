@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "registry_id": "linguist-language-lanes",
+  "status": "candidate",
+  "owner_mapping": {
+    "required": true,
+    "source_of_truth": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "fields": [
+      "lane_id",
+      "mapping_id",
+      "term_id",
+      "canonical_text",
+      "rendered_text",
+      "decoded_text",
+      "unicode_code_points",
+      "codec_id",
+      "codec_version",
+      "publication_profile",
+      "source_provenance",
+      "reviewed_revision"
+    ],
+    "presentation": [
+      "rendered_text",
+      "canonical_text",
+      "decoded_text",
+      "unicode_code_points"
+    ]
+  },
+  "unicode_tag_layer": {
+    "codec_id": "unicode-tag-puzzle",
+    "version": 1,
+    "code_point_range": "U+E0000..U+E007F",
+    "payload_role": "inert playful challenge data",
+    "scope": "explicitly delimited public presentation payloads",
+    "canonical_content_is_preserved": true
+  },
+  "profiles": {
+    "validation": {
+      "unicode_tag_layer": "off",
+      "badge_requirements_agents_ready": true,
+      "content_basis": "canonical-readable",
+      "owner_mapping": "available"
+    },
+    "public": {
+      "unicode_tag_layer": "on",
+      "badge_requirements_agents_ready": false,
+      "content_basis": "canonical plus playful encoded presentation",
+      "owner_mapping": "available-to-owner",
+      "implicit_puzzle_presentation": true,
+      "inject_challenge_disclosure_copy": false
+    }
+  },
+  "lanes": [
+    {
+      "lane_id": "devinwiki",
+      "name": "DevinWiki",
+      "kind": "provider-source",
+      "registry": "provider-managed",
+      "transform_layer": false
+    },
+    {
+      "lane_id": "leet",
+      "name": "Leet / 1337$934K",
+      "kind": "notation-mapping",
+      "registry": "existing-mapping",
+      "transform_layer": true
+    },
+    {
+      "lane_id": "siglary",
+      "name": "Siglary",
+      "kind": "notation-mapping",
+      "registry": "existing-mapping",
+      "transform_layer": true
+    },
+    {
+      "lane_id": "derpwiki",
+      "name": "DerpWiki / d3rpWiki",
+      "kind": "playful-language",
+      "registry": "independent-candidate-lane",
+      "transform_layer": true
+    },
+    {
+      "lane_id": "piglatin",
+      "name": "PigLatin",
+      "kind": "language-rotation",
+      "registry": "independent-candidate-lane",
+      "transform_layer": true
+    }
+  ],
+  "composition": {
+    "model": "peer-lanes-to-shared-publication-composer",
+    "lane_authority": "each-lane-owns-vocabulary-aliases-fixtures-provenance-version-review",
+    "composer_owns_vocabulary": false,
+    "unicode_layer_replaces_existing_mappings": false
+  },
+  "integrity": {
+    "preserve_ordinary_words": true,
+    "preserve_canonical_control_text": true,
+    "preserve_crawler_instructions_and_metadata": true,
+    "preserve_filter_and_moderation_inputs": true,
+    "encoded_payloads_are_inert": true,
+    "owner_decode_is_deterministic": true
+  }
+}

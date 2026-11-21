@@ -26,6 +26,10 @@ name: quota-readings-promote
 # in-job with the same invocation and env.
 
 on:
+  # Public status readings are intentionally published; state-gated commits
+  # keep this six-hour producer cheap when observations do not change.
+  schedule:
+    - cron: '17 */6 * * *'
   workflow_dispatch:
   push:
     branches: [master]

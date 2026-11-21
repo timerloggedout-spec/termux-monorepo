@@ -47,6 +47,25 @@ class CockroachLaneEventTests(unittest.TestCase):
         self.assertEqual(run.call_count, 2)
         sleep.assert_called_once_with(0.05)
 
+    def test_record_uses_writer_url_and_preprovisioned_schema(self):
+        event = {
+            "lane": "ci", "workflow": "test", "event_type": "run_completed",
+            "repo": "owner/repo", "run_id": "42", "run_attempt": "1",
+        }
+        with mock.patch.dict(os.environ, {"COCKROACH_DATABASE_URL": "postgresql://writer@db.example/app?sslmode=verify-full"}):
+            with mock.patch.object(cr, "load_events", return_value=[event]):
+                with mock.patch.object(cr, "psql") as psql:
+                    self.assertEqual(cr.main(["record", "--strict"]), 0)
+        self.assertEqual(psql.call_count, 1)
+        self.assertIn("lane-events-insert.sql", psql.call_args.args[1][1])
+
+    def test_schema_command_uses_separate_migration_url(self):
+        with mock.patch.dict(os.environ, {
+            "COCKROACH_DATABASE_URL": "postgresql://writer@db.example/app?sslmode=verify-full",
+            "COCKROACH_SCHEMA_DATABASE_URL": "",
+        }):
+            self.assertIsNone(cr.resolve_url("schema"))
+
     def test_event_identity_reuses_canonical_normalizer(self):
         from pathlib import Path
         import sys

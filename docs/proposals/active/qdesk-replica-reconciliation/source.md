@@ -1,0 +1,419 @@
+# Source Record — qdesk-replica-reconciliation
+
+## 1. Scope and authority
+
+Target repository: `timerloggedout-spec/termux-monorepo`.
+
+Reference project: `timerloggedout-spec/replica_fork`, a fork of `github/replica`.
+
+The intended deliverable is an optional visual extension to the existing QDesk/QUE operating architecture, branded `Q^∆3sk`. It combines selected Contribution Desk and Admin Graph projections with a Browser Quarantine Clerk proposal/access-risk view and stronger release/preview evidence. The initial deliverable is a design and read-only shell. Existing QDesk admission, ranking, claim, deadline, portfolio and DoE machinery remains authoritative.
+
+Existing QDesk lineage already in flight:
+
+- PR #5145: QDesk Observatory + Delphi + DoE self-implementation pipeline; its RFP packet and acceptance matrix own that pipeline design.
+- PR #5197: QDesk portfolio decision and delivery report contract/schema.
+- PR #5199: deadline closure, alarms, page freshness and QDesk Gantt.
+- PR #5330 and #5376: safe admission drain and explicit project-task/provider-dispatch boundary.
+- PR #5622: QUE ranking and claim pipeline, including DoE authority for its comparison method.
+
+These are related active work, not assumed merged or runtime-complete. The present proposal is a visual/integration extension only. QDesk UI must link to these existing authorities and preserve their status distinctions.
+
+Authority map:
+
+| Concern | Existing canonical owner | QDesk role |
+|---|---|---|
+| Proposal intent/status | `docs/proposals/registry.yaml`, proposal MANIFEST/ITEMS/PROCESS | Read-only proposal index and navigation |
+| Dependency lifecycle | `docs/agentic/dependency-phases.json`, approvals, deterministic phase engine | Show phase state and evidence |
+| Contribution/build traversal | `ops/challenge/desk-feed.json`, desk feed contract | Reuse existing desk projection |
+| Admin relationships | `apps/tribute-dashboard/admin-graph.html` plus its source feeds | Reuse selected graph excerpts |
+| Page/build identity | `apps/tribute-dashboard/version-manifest.json`, `versioning.js` | Extend current comparison |
+| DoE campaigns | `docs/ops/DOE-FAMILY.md`, `DOE-TAXONOMY.md`, `EXPERIMENT.schema.json`, QDesk RFP #5145 and existing campaign records | Display campaign references and results; do not create another DoE pipeline |
+| Integrations/capabilities | `docs/integrations/registry.json`, adapter/event contracts, capability opportunity graph | Show source-linked integration status |
+| Collaborator identity/provenance | `docs/ops/AGENT-MONIKERS.md`, `BIUDL-EXECUTION-AND-PROVENANCE.md`, session SSOT and capability contracts | Display attributed, confidence-labelled evidence |
+| Visual review | Native ICM `docs/icm/_tv/` artifacts and optional-visual-review card | Optional visual projection; source files remain canonical |
+
+QDesk must not introduce another scheduler, phase engine, proposal registry, agent identity registry, experiment ledger, telemetry store, credential store or merge authority.
+
+## 2. Replica native behavior to preserve
+
+The fork README describes an open-source AI prototyping tool built around team design-system guidance, starter apps, a local Copilot canvas, optional hosted Replica Hub for publishing/feedback, and a GitHub build action for Hub publication.
+
+The upstream workflow separates:
+- Local prototyping from hosted publication.
+- Starter creation from adapting an existing repository.
+- Guidance drafting, review and activation.
+- Source repository sharing from publishing a Hub Build.
+- Preview availability from proof that the current session loaded the canvas.
+
+Native starter catalog:
+- `minimal`: small React/TanStack Router app with no component library.
+- `coreai`: React Router app with CoreAI components and a Foundry-style shell.
+
+Preserve the app's own router, dependencies, conventions and design-system guidance. Inspect before adapting. Existing files, Git history and remotes remain intact. Local prototyping does not require Hub, Docker, a domain or GitHub repository access. Hosted publishing remains optional and separately authorized.
+
+Replica's shared workflow includes local preview preflight, component mapping, rendered review, test/build checks and explicit publishing steps. Use the Replica canvas when available; a supported local browser preview is a fallback when the host lacks canvas support. Plugin installation, source migration and publishing remain separate authority edges.
+
+License/provenance: the Replica README states MIT. Preserve upstream attribution and license notices; verify bundled asset/font notices before copying individual assets. The fork's README identifies GitHub Design and Microsoft CoreAI Design as creators.
+
+
+## 2.1. Issue filing and model-provider boundaries
+
+Replica supplies an interactive local prototyping loop through the Copilot canvas: users describe a change, inspect the running prototype, and refine it in conversation. Its documented native workflow covers prototype creation, local preview, design guidance, build checks and optional Hub publication/review. The README and local-prototyping guide describe GitHub sign-in and model access through a Copilot plan or a user's own BYOK provider. They do not define a native GitHub issue-submission service or a project-task intake API.
+
+The existing Contribution Desk remains the issue-dispatch surface. Its New dispatch action opens GitHub issue intake, and .github/ISSUE_TEMPLATE/project-task.yml defines the canonical issue-dispatch/v1 payload: Entry, Task/spec, Scope, Done-evidence, Target repo and post-hoc Instance stamps. Filing is the trigger; the existing dispatch system selects providers across its wired endpoints and records the resolved provider/model and run identity after execution.
+
+The proposed QDesk filing portal should provide a guided, template-backed flow over that canonical contract:
+1. Collect the existing required fields and validate them against the current issue form contract.
+2. Show a rendered issue preview, target repository, dispatch effect and data-sharing notice.
+3. Let the user revise the draft and explicitly confirm submission.
+4. Submit through GitHub's native issue form or a separately authorized GitHub App/API adapter with repository-scoped issue-write permission.
+5. Return the created issue URL and stable intake receipt; preserve idempotency across retries.
+
+For public use, authenticate the submitting GitHub principal and bind the submission to that principal's authorized repository installation. Keep credentials server-side, use least-privilege installation permissions, and record the actor, repository, template version, submitted payload digest and issue URL. The static Replica/QDesk client remains credential-free. The native issue form remains the fallback and canonical filing route until an authenticated portal adapter passes its own review.
+
+Keep model access as a separate choice from issue filing. Replica's documented model path is the Copilot app using either the user's Copilot plan or a user-connected BYOK provider; the selected provider's costs and terms apply. The monorepo also has its own workflow/provider routing, including scripts/model_router.py, .github/actions/model-router, .github/connectors/llm-peers.yaml and quota gates. Those workflow routes and Replica's interactive Copilot session are separate execution planes. The checked-in model-router action declares triage, review and invoke roles; the project-task filing route uses its own provider-dispatch boundary. A project-task model preference therefore needs an explicit contract and adapter between intake and the owning dispatch mechanism. The current model-router capacity cache is advisory catalog/capacity state; the action documents live observations as authoritative for provider quota/rate-limit state. The Gemini quota gate currently tracks repository workflow credentials and primary/backup keys, which establishes an organization workflow quota path rather than per-user BYOK accounting. Per-principal BYOK credential custody, quota metering and billing attribution remain new requirements to design and validate.
+
+The eventual user-facing model selector should expose only catalogued, capability-eligible choices and record a preference rather than fabricate availability:
+- **Automatic (system routing):** use the existing task/role router and its eligible provider/model selection.
+- **Organization provider pool:** use organization-managed credentials and organization quota under the repository's existing authorization policy.
+- **My provider (BYOK):** use the authenticated user's own provider connection and quota, with provider costs and terms shown before use.
+- **Specific provider/model:** show only live, eligible choices for the selected task capability; retain an explicit fallback policy and record the actual resolved provider/model after execution.
+
+Quota ownership follows the credential owner. User-owned BYOK usage is attributed to that user's provider account; organization-owned credentials consume the organization's quota. Keep per-principal credential boundaries, usage attribution, rate-limit state and billing records isolated so an individual user's quota exhaustion leaves the shared organization pool's health unchanged. Keep all API keys outside browser storage, public feeds, issue bodies and prototype source. The user selection contract, credential custody and billing attribution require a dedicated provider-routing review before runtime wiring.
+
+
+## 2.2. Drafting Desk and monorepo-owned project profiles
+
+Add a distinct `apps/tribute-dashboard/drafting-desk.html` surface for prototype iteration. Keep `apps/tribute-dashboard/desk.html` as the operational Contribution Desk and filing/dispatch entry point. The Drafting Desk owns draft exploration and candidate comparison; the Contribution Desk owns filing and dispatch. The two surfaces link to each other through stable candidate and issue references.
+
+The Drafting Desk sequence is:
+
+1. Select a monorepo-managed project profile.
+2. Load the profile's declared project scope, repositories, issue classes, lanes, artifact stores and selected surfaces.
+3. Load the profile-approved templates, starter choices, design guidance and allowed integration references.
+4. Open Replica's local Copilot canvas against a local working copy or isolated prototype workspace; preserve the target repository's router, dependencies, conventions and design system.
+5. Iterate alternate drafts as separately versioned candidates, each with source revision, profile reference, template/source pins, preview/build evidence and change summary.
+6. Compare candidate versions side-by-side using the existing versioning/release evidence path; record visual, behavior, accessibility, schema/API, security and task-outcome evidence.
+7. Select a candidate with an explicit rationale and acceptance criteria; then create a project-task filing draft populated from the selected profile and candidate.
+8. Hand the reviewed filing draft to the existing Contribution Desk / GitHub issue form. Filing invokes the existing `issue-dispatch/v1` route and QUE admission. A candidate selection alone creates no issue and triggers no dispatch.
+
+The canonical project-profile schema already exists at `ops/projects/profile.schema.json`, with schema ID `project-profile/v1`. Its scope axes are `repos`, `issue_classes`, `lanes` and `artifact_stores`; its surface set can include `obsidian`, `github-repo`, `github-issues`, `github-pages`, `vercel`, `artifact-store`, `local-device` and `external-linked`. Its project classes include `custom-project`, `challenge`, `certification`, `user-project` and `artifact`. Optional Obsidian, spaced-repetition and encryption declarations remain governed by that schema.
+
+The design record `docs/ops/ARCHWIZ-CONCEPT-MAP.md` describes the next project-profile implementation step as S2: instances under `.config/llm_map/profiles/projects/`, a resolver at `scripts/projects/profile_resolve.py`, and schema/secret-exclusion tests. Current `.config/llm_map/profiles/*.json` files such as `archwiz.json` and `mapper.json` are existing device/workspace scan scopes with `include[]`/`exclude[]`; they are distinct from project profiles. The project-profile S2 instances and resolver were absent from the paths/search inspected for this proposal. Therefore, QDesk consumes the canonical schema and waits for the project-profile registry/resolver contract; it does not reinterpret scan profiles or create a competing profile catalog.
+
+Project-profile identity and lifecycle remain monorepo-owned. The current project-profile/v1 schema defines name, class, scope and surfaces but no dedicated profile_id or version property. Until the profile S2 contract adds explicit fields, use the canonical repository-relative profile file path as the stable reference and the containing Git commit/blob SHA as its immutable revision; do not invent a second identifier. The Drafting Desk stores that reference/revision with every candidate and stores only draft/candidate metadata and links to source artifacts. Project scope, allowed repositories, issue classes, lanes, artifact stores, encryption policy and surface bindings resolve from the monorepo profile. A user may create or revise a profile only through the monorepo's reviewed profile-management workflow. Replica receives a resolved, least-privilege working context; it does not write the canonical profile, widen scope, or retain independent project settings.
+
+
+### S2 registry/resolver contract (proposed)
+
+S2 is the canonical project-profile registry and resolver dependency. Keep the registry as the governed instance set under `.config/llm_map/profiles/projects/`; derive the catalog from validated profile files in deterministic repository-relative path order rather than adding a second independent catalog. Keep existing scan profiles under `.config/llm_map/profiles/` separate.
+
+- **Profile reference:** canonical repository-relative path under the S2 directory; the path is the stable identity until the schema owner approves a dedicated identity field.
+- **Revision:** Git blob SHA for the exact profile file, paired with the repository commit SHA that supplied the tree. Candidate and filing provenance retain both.
+- **Resolver input:** profile reference, repository root, and optional expected revision. The resolver accepts only paths inside the S2 directory and resolves against the checked-out repository tree.
+- **Resolver output:** schema ID, profile reference/revision, repository commit, validated profile document, and resolved scope/surface metadata. Preserve the schema's existing class, scope, surface, Obsidian, spaced-repetition and encryption semantics.
+- **Validation:** validate every instance against `project-profile/v1`; enforce required secret-exclusion patterns inherited from the mapper scope-safety rule; reject unknown properties, duplicate/ambiguous profile references, path traversal, symlink escape, malformed documents and revision mismatch.
+- **Determinism:** enumerate by normalized relative path; emit stable JSON; report invalid instances as explicit validation failures with path and reason; never silently omit them from a profile catalog.
+- **Authority:** resolver is read-only and repository-local. It performs no network calls, credential lookup, environment-secret expansion, file writes, issue creation, dispatch, encryption or permission changes.
+- **Tests:** cover all five schema classes, conditional Obsidian requirements, SR/encryption declarations, scope-axis validation, secret exclusions, path containment, symlink handling, duplicate references, deterministic ordering, revision pinning and fail-closed behavior.
+
+S2 scope ends at validated profile discovery/resolution. Issue-template selection and auto-labels belong to S3; issue-opened dispatch and routing receipts belong to S4; profile-body encryption belongs to S6. QDesk and Replica consume resolver output and retain only candidate/profile provenance. This contract is a proposal pending operator review and acceptance.
+
+The filing contract should carry the selected profile reference/revision and selected candidate reference as provenance fields while retaining the existing required project-task headings. The issue form currently exposes Entry, Task / spec, Scope, Done-evidence, Target repo and post-hoc Instance stamps; it does not yet expose a project-profile selector. Add profile-aware fields only through the profile S2 + issue-template integration work, and preserve the existing dispatch block, QUE admission, provider selection and post-hoc instance-stamp semantics.
+
+## 3. refTemplates/smods reconciliation
+
+The monorepo's root `CLAUDE.md`, `docs/ops/REFTEMPLATES-CONSOLIDATION.md` and `docs/icm/objects/knowledge/reference-inputs.md` define `refTemplates/smods/` as a narrow, shallow, metadata-first reference lane. References inform the monorepo; they do not operate it or override its governance. Full recursive materialization is explicit and selective.
+
+Relevant references and their bounded QDesk roles:
+
+| Reference | Adoptable pattern | Boundary |
+|---|---|---|
+| `icm-architect_fork` | Six workspace forms, form selection, restructure audit, file-role classification, walk test | Method/template input; monorepo ICM remains operative |
+| `interpretable-context-methodology_fork` | Stage folders, local CONTEXT contracts, small routing catalogs | Use existing ICM paths; avoid duplicate workspace roots |
+| `content-agent-routing-promptbase_fork` | Layer 0–3 selective routing, canonical source ownership, one-way dependencies | Adopt routing discipline, not the content business payload |
+| `cost-of-remembering_fork` | Filesystem-backed context and cost measurement | Reference evidence only; benchmark claims remain scoped to their study |
+| `icm-cctv_fork` | File-backed visual cards, mirror links, separate response artifacts | Optional projection; native files remain authoritative; no renderer/deployment dependency by default |
+| `AuditEngine_fork` | Assessment and ethics review patterns | Research input; no live psychometric classification or provider-key custody |
+| `GPTmetrics_fork` | Multi-model assessment and response comparison | Research input; no automatic collaborator trust score |
+| `lego_fork` | Compose complete sets from available capability pieces | Selection/compatibility model; no partial set promoted as complete |
+
+Other pinned `smods` repositories remain candidates until a task maps them to a QDesk capability contract. Section 3.1 records the exact gitlink object SHAs for the mapped QDesk references, observed directly from the repository tree. Record source URL, commit, license, last verification, role and runtime/reference status when any reference is promoted into an implementation dependency. `.gitmodules` establishes URLs and tracking configuration; the Git tree establishes the checked-out commit identity. Keep pins unchanged in this proposal.
+
+## 3.1. Exact relevant `refTemplates/smods` gitlink pins
+
+Observed directly from the recursive Git tree for `master` at commit `35f40296d1bd3881b18a212c668e0f5951e09542` on 2026-11-20. These are gitlink object SHAs (the pinned submodule commit identities), not file blob SHAs.
+
+| Reference | Repository path | Gitlink SHA | Bounded QDesk role |
+|---|---|---|---|
+| ICM Architect | `refTemplates/smods/icm-architect_fork` | `e16cafe6a664dcf6d787a726b452adba77d913f4` | ICM forms and restructure-audit reference |
+| ICM methodology | `refTemplates/smods/interpretable-context-methodology_fork` | `02ba5d85c7871b75c7c702a2d8da6524723d53d4` | Stage/context contract and routing reference |
+| Selective routing | `refTemplates/smods/content-agent-routing-promptbase_fork` | `fc41a3d718bcd16a9e0db9e7e6176a8063d7d2c9` | Layered context-routing reference |
+| Cost of remembering | `refTemplates/smods/cost-of-remembering_fork` | `14c6f74a877a2f7b94b332c03395b4793158942e` | Context-cost measurement reference |
+| ICM CCTV | `refTemplates/smods/icm-cctv_fork` | `787a66cb8d3d7f19231359a4aa47c83c92c1ba61` | Optional file-backed visual-card projection |
+| AuditEngine | `refTemplates/smods/AuditEngine_fork` | `4b8313fcd9198b0cdc266014ee002828ac79a7b2` | Assessment/ethics review reference |
+| GPTmetrics | `refTemplates/smods/GPTmetrics_fork` | `c767850b9fa70a649f0834f279c95b8e642fb46c` | Multi-model response-comparison reference |
+
+The source inventory also names `lego_fork` as a composition reference, but the inspected `master` tree contains no `refTemplates/smods/lego_fork` gitlink. Its pin therefore remains unverified and outside this QDesk pin set. The remaining smods entries are unmapped candidates and stay outside the current QDesk integration scope.
+
+Verification method: inspect Git tree entries with `type=commit` under `refTemplates/smods/`; record the entry SHA exactly. The tree snapshot is pinned above so later branch movement does not silently change this evidence. No submodule was initialized recursively and no gitlink was changed.
+
+## 4. Existing UI and versioning facts
+
+Verified current repository paths:
+- `apps/tribute-dashboard/desk.html` exists.
+- `apps/tribute-dashboard/admin-graph.html` exists (lowercase filename).
+- `apps/tribute-dashboard/versioning.html` exists.
+- `apps/tribute-dashboard/versioning.js` exists.
+- `apps/tribute-dashboard/version-manifest.json` exists.
+- `ops/challenge/desk-feed.json` exists.
+- `apps/tribute-dashboard/data/desk-feed.json` exists.
+
+The Contribution Desk page declares itself a read-only projection of `desk-feed/v1.3` plus `dispatch-state-feed/v1`; dispatch opens a GitHub intake issue. The page says it mutates nothing and does not present internal metrics as win odds. Its pipeline is spec → desk → builder → PR → CI → merge → sync. Preserve these boundaries.
+
+The Admin Graph page is a repository-owned source surface. Its comments describe prepared-not-sent dispatch payloads and visual-only graph pulse. Reuse excerpts/links; do not duplicate its model or imply that visual animation executes work.
+
+The current versioning code:
+- Uses stable page IDs.
+- Loads a local build manifest and a production manifest.
+- Displays version/channel/source SHA.
+- Compares page content hashes.
+- Shows links to preview and production pages.
+- Links source SHAs through GitHub compare when both are present.
+- Labels missing hashes as `HASH UNAVAILABLE` and missing source SHAs as unavailable.
+
+The current tracked `version-manifest.json` is `dev+unbuilt`, channel `development`, has empty `source_sha`, `built_at: null`, and null per-page `content_sha256` values. Therefore the comparison surface exists, but this checked-in development manifest does not establish a completed build or comparable preview hashes.
+
+The current comparison is hash/source comparison, not a full screenshot/visual regression, route/interaction, accessibility, API/schema or security comparison. The surface map also records pages such as `admin-graph.html` as feed-timestamp/stale-chip only, with no dedicated per-surface release line. Extend the existing manifest/versioning path and release map; do not create a competing release registry.
+
+## 5. QDesk visual-extension architecture
+
+Brand: `Q^∆3sk`. Proposed overview page: `apps/tribute-dashboard/Q^∆3sk.html` (subject to URL/path compatibility checks). Stable machine ID: `qdesk`.
+
+Add the separate prototype surface `apps/tribute-dashboard/drafting-desk.html`, stable machine ID `drafting-desk`. The two desks have different jobs:
+
+| Surface | Owns | Primary actions |
+|---|---|---|
+| Drafting Desk | Profile-bound draft workspaces, Replica iterations, template integrations, candidate versions and comparison evidence | Select profile; open local prototype; iterate alternates; compare; select candidate; prepare filing draft |
+| Contribution Desk (`desk.html`) | Canonical operational issue intake and dispatch | Review filed task; submit through GitHub issue form; trigger the existing QUE admission route; show dispatch receipts |
+| Q^∆3sk overview | Cross-system navigation and read-only status projection | View attention queue, Gantt, proposals, Clerk, graph excerpts, release comparison and evidence |
+
+The Drafting Desk does not submit issues or dispatch work when a user iterates or selects a candidate. Its selected candidate produces a prefilled filing draft; the user reviews and explicitly submits it through the Contribution Desk. GitHub issue creation then triggers the existing `issue-dispatch/v1` workflow and QUE admission path.
+
+QDesk remains the existing operating architecture. The `Q^∆3sk` overview is a read-only shell with deep links or embedded read-only regions:
+1. Overview and attention queue.
+2. Drafting Desk candidate status and links.
+3. Existing Contribution Desk / traversal state.
+4. Proposal catalog and public available proposals.
+5. Browser Quarantine Clerk.
+6. Admin Graph excerpts and provenance drawer.
+7. Release Observatory / preview comparison.
+8. DoE and automation competition index.
+9. Source, freshness and validation evidence.
+
+The overview is a navigation/projection surface alongside `drafting-desk.html`, existing `desk.html`, `qdesk-gantt.html` (PR #5199), `doe.html`, `proposals.html`, `versioning.html` and QDesk portfolio/Observatory work. It does not replace either desk or the proposed QDesk Gantt.
+
+Start with existing feeds and links. Add a new QDesk index/read-model schema only if existing feed contracts cannot support navigation. Any new read model references canonical object IDs, source paths, source SHAs and generated timestamps; it does not duplicate domain payloads or own lifecycle transitions.
+
+The UI must distinguish observed, derived, inferred and unavailable data. Partial/stale/unverified states remain explicit. All three surfaces remain credential-free static projections and degrade gracefully when optional Replica Hub/canvas is absent.
+
+## 6. Browser Quarantine Clerk threat model
+
+Treat every collaborator as a potential threat actor regardless of permission level or access duration. This is a threat-model assumption, not an accusation about an individual. Read-only, low-privilege and temporary access still carry exposure.
+
+Keep separate:
+- Principal identity and attribution confidence.
+- Granted capability and resource scope.
+- Access duration, expiry and review cadence.
+- Risk assessment and residual risk.
+- Quarantine state and disposition.
+
+Proposed access record fields (design only):
+`grant_id`, `principal_ref`, `resource_scope`, `capabilities[]`, `granted_by`, `approved_by`, `granted_at`, `expires_at`, `review_due_at`, `status`, `policy_version`, `evidence_refs[]`.
+
+Proposed risk record fields:
+`risk_id`, `subject_ref`, `threat_model_version`, `attack_surface`, `likelihood`, `impact`, `exposure`, `confidence`, `controls[]`, `residual_risk`, `assessed_at`, `evidence_refs[]`.
+
+Proposed quarantine case fields:
+`case_id`, `subject_ref`, `trigger_ref`, `restriction_scope`, `opened_at`, `review_due_at`, `disposition`, `actor_ref`, `evidence_refs[]`.
+
+Public proposal cards expose only approved/sanitized fields: title, purpose, requested capability, proposed access tier, declared duration, risk band, review state and evidence links cleared for public access. Private identities, credentials, browser profiles, session contents and restricted evidence stay out of public feeds.
+
+The Clerk initially observes and recommends. Permission grant/revocation, account changes, browser isolation and quarantine enforcement require their existing authoritative mechanisms and explicit policy/approval. The UI itself does not grant permissions. Use least privilege, short-lived grants, expiry, periodic review, revocation evidence and append-only transition records. Never infer trust from GitHub actor identity alone.
+
+Proposed review bands (assessment states, not direct permission mutations):
+- Q0 — routine observation.
+- Q1 — additional identity/evidence verification.
+- Q2 — capability/scope reduction recommended.
+- Q3 — isolated execution recommended.
+- Q4 — suspend access through the owning authority and open incident review.
+
+Every band records trigger, confidence, scope, reviewer, next review time and disposition. A risk band is not a trust score, and no single scalar automatically grants or revokes access.
+
+## 7. Release and preview comparison refinement
+
+Reuse `version-manifest.json`, `versioning.js`, `versioning.html`, current deploy workflows and the existing visual-architecture versioning work (PR #4085).
+
+A candidate release should bind:
+- stable surface/page ID;
+- schema version;
+- source ref and full commit SHA;
+- build ID/channel/time;
+- artifact URI and SHA-256;
+- page content SHA-256;
+- dependency/template pins;
+- test/check evidence;
+- preview URL and capture metadata;
+- comparison result against a named production baseline.
+
+Comparison layers:
+1. Source/manifest/hash diff.
+2. Screenshot/visual diff at fixed viewport and state.
+3. Route and interaction regression.
+4. Accessibility regression.
+5. API/schema compatibility.
+6. Security/permission delta.
+7. Build/test/runtime evidence.
+
+Missing production or preview evidence is `UNAVAILABLE`, not `SAME`. A successful build is not a release. A preview is not production. A tag is not promotion evidence by itself.
+
+Keep schema SemVer, template pin identity and release/build identity separate. A template update creates a new immutable template revision; an experiment treatment change creates a new cohort/version; a release candidate references the exact template and schema versions it used. Preserve superseded manifests and release receipts.
+
+Suggested lifecycle:
+`DRAFT → VERSIONED → PREVIEW_BUILT → PREVIEW_COMPARED → VALIDATED → REVIEWED → RELEASE_CANDIDATE → PROMOTED → MONITORED`.
+Failure, rejection, supersession and rollback are separate recorded outcomes.
+
+## 8. DoE and automation competition fit
+
+Use the existing DoE family and taxonomy:
+- DoE is the umbrella design discipline.
+- MVT is a member nested under DoE.
+- ATES is the execution harness/measurement layer nested within the family.
+- One dispatched/executed run produces one immutable record conforming to `docs/ops/corpus/EXPERIMENT.schema.json`.
+- Full factorial and Taguchi L9 generators are implemented; other design classes retain their documented status.
+- Quality/correctness precedes time and throughput; ATES is observational and never a merge gate.
+
+The existing QDesk DoE/RFP work (#5145, #5197) and the DoE family own campaign design, decision quality and portfolio comparison. This proposal contributes a candidate visual-integration experiment only after those owners reconcile it. Do not start a competing QDesk campaign ledger.
+
+Do not compare unlike automation categories as if they were direct competitors. Classify candidates by capability contract and existing monorepo taxonomy:
+- intake/proposal lifecycle;
+- orchestration/dispatch;
+- build/fix execution;
+- review/quality/security;
+- CI/workflow reliability;
+- runtime watching/reconciliation;
+- telemetry/evidence;
+- context/memory/routing;
+- templates/composition;
+- visual/dashboard projection;
+- release/deployment;
+- integration/adapters;
+- DoE/evaluation.
+
+Use the existing DEVOPS-REGISTER categories, DOE-FAMILY, DOE-TAXONOMY, Integration Intelligence registry and SURFACES-MAP as source taxonomies. Keep one primary placement with cross-membership facets; do not create a new parallel taxonomy. The proposed `Q^∆3sk` page is a visualization/control surface, not a replacement automation engine. In the existing surface taxonomy it belongs primarily to Web & Presentation, with cross-links to Coordination & QUE, Challenges & Entries, and Scoring & Method; keep one primary placement plus explicit facets.
+
+Candidate capability strata for competition (these are proposed comparison groups, not a new official taxonomy):
+
+| Existing capability family | Existing monorepo candidates/surfaces | Valid competition unit |
+|---|---|---|
+| Intake / portfolio / deadlines | Proposal registry, QDesk portfolio report (#5197), deadline desk (#5199) | Same proposal cohort and requirement-closure task |
+| Admission / ranking / claim | QUE admission drain (#5330), project-task boundary (#5376), ranking/claim pipeline (#5622) | Same issue cohort, admission policy and claim contract |
+| Dispatch / orchestration | Provider dispatch, dispatch executor, manager policies | Same task class, configured-instance stamps and execution permissions |
+| Build / review / quality | Jules, Gemini, DeepSeek, CodeRabbit/Qodo/Devin review lanes | Same PR/task fixture; separate build and review outcomes |
+| CI / workflow reliability | Repo gate, Termux smoke, workflow health and Action Effectiveness Ledger | Same change set and gate contract |
+| Runtime observation / evidence | Actions watchers, PR evidence, telemetry and feed collectors | Same event cohort; coverage, freshness, false alarms and provenance |
+| Context / memory / routing | ICM, selective context routing, cost-of-remembering reference | Same retrieval/task cohort; correctness first, then tokens and latency |
+| Visual projection / navigation | Contribution Desk, Admin Graph, ICM CCTV cards | Same operator tasks; findability, error rate and evidence traceability |
+| Release / publication | version-manifest, versioning.js, preview/production deploy surfaces | Same candidate SHA and production baseline |
+| Access / quarantine | Existing permission/provenance contracts; proposed Clerk | Synthetic adversarial access scenarios until a separately approved enforcement adapter exists |
+| DoE / evaluation | doe.py, MVT, ATES and existing DoE family campaigns | Design and measurement methodology; these are the experiment plane, not contestants |
+
+Official category placement remains with the current registers: the DevOps register's L family is DoE evaluation and M is Tribute operations; the visual page's primary surface group is Web & Presentation. QDesk can expose these categories together without flattening their authority or comparing unlike systems.
+
+Proposed bounded factorial design (design-only; no runs claimed; submit as a child/sibling campaign through the existing QDesk DoE owner path):
+- Factor A — context routing: existing routing vs ICM selective routing.
+- Factor B — visual review: existing page-only review vs file-backed CCTV card projection.
+- Factor C — release comparison: current manifest/hash comparison vs manifest + visual + route/interaction evidence.
+- Factor D — access review: existing proposal/issue review vs Clerk access/risk/expiry workflow (synthetic fixtures only until an enforcement adapter is separately authorized).
+
+A 2^4 full-factorial design has 16 treatment combinations and matches the implemented generator. Block by task family (proposal intake, collaborator review, release review, graph navigation); randomize order within blocks; use independent tasks for task replication and identify repeated measures separately. Freeze baseline/candidate SHAs, templates, feeds, evaluator, task set and runtime. Set replication count from pilot variance and a predeclared minimum practical effect; do not invent significance from a small pilot.
+
+Primary outcome: verified task completion against a predeclared acceptance rubric. Secondary outcomes: correctness, evidence completeness, permission-scope errors, false-positive/false-negative risk flags, regression rate, time-to-verified, human interventions, retries, context/token use and maintenance burden. Report uncertainty and missingness. Do not use a weighted black-box score or activity volume as the winner criterion. Compare Pareto tradeoffs; ATES remains diagnostic.
+
+Each run uses the existing EXPERIMENT record with baseline/candidate SHA, suite, cohort, treatment/policy, configured-instance identity when applicable, status, outcome, metrics, provenance, confidence and evidence refs. Pre-register design in the existing DoE family before execution. A cherry-picked customization becomes a new version/cohort, never a silent amendment to a running arm.
+
+## 9. Implementation sequence and gates
+
+1. **Reconcile active ownership.** Inspect #5145, #5197, #5199, #5330, #5376, #5622 and the current project-profile, issue/dispatch and provider contracts. Record file ownership, dependency edges, accepted overlap, supersession candidates and the exact integration point for each feature.
+2. **Verify source and profile foundations.** Record exact refTemplates/smods gitlink SHAs and licenses before acceptance; inspect Replica's pinned source revision; verify `project-profile/v1`, distinguish it from scan profiles, and establish the S2 profile-instance/resolver dependency. Map the project-task form, QUE admission route, model router, provider catalog, credential ownership and quota attribution.
+3. **Accept and version the proposal.** Complete operator and independent review, register dependencies, assign item owners, and freeze the accepted scope and baseline commit after step 2 evidence is complete.
+4. **Define the two-desk architecture and Gantt integration.** Specify Drafting Desk prototype/candidate flows separately from Contribution Desk filing/dispatch; define profile-bound workspaces, stable candidate IDs, responsive/accessibility states, Gantt milestones, dependencies, version selection and source/freshness receipts.
+5. **Build profile-aware issue filing.** Mirror the canonical issue-dispatch/v1 project-task form, hydrate Entry/Scope/Target repo and template choices from the selected monorepo profile, show a reviewable issue preview, then route confirmed submissions through GitHub issue creation and the existing QUE admission path. Return the created issue and idempotent intake receipt.
+6. **Define model choice and quota isolation.** Separate Replica Copilot sessions from repository workflow dispatch. Specify Automatic, Organization provider pool, My provider (BYOK) and eligible specific provider/model choices; bind each choice to its credential owner, authorization, quota, billing attribution, fallback policy and post-run instance stamp.
+7. **Implement Clerk and candidate comparison.** Reuse canonical proposal/access records for sanitized Clerk cards. Extend the existing version-manifest/versioning path with source/build/artifact hashes, visual captures, route/interaction, accessibility, schema/API, security and runtime evidence. Compare alternate drafts against the same profile and baseline; record selection, completion criteria, migration and retirement.
+8. **Pre-register the DoE and automation comparison.** Submit the bounded 2^4 campaign through the existing DoE owner, freeze baseline/candidate versions and cohort, define blocking/randomization/replication/outcomes, and classify candidates within existing capability families.
+9. **Implement the smallest accepted vertical slice.** Build the Drafting Desk as a profile-consuming Replica workspace and candidate comparison surface; compose QDesk read-only feeds; deliver profile resolver, filing and provider adapters only through their owning reviewed workstreams; use synthetic fixtures for Clerk risk scenarios.
+10. **Validate the exact candidate.** Run profile-schema/resolver, issue-form/admission, security, accessibility and candidate-comparison tests; build the Replica/local preview; inspect issue receipts, source hashes, artifacts and runtime evidence; pass repo-gate plus termux-smoke on the exact candidate SHA.
+11. **Select, promote and phase out.** Compare completed candidates against predeclared acceptance criteria; record the selected version and rationale; migrate consumers in bounded batches; retain rollback and lineage receipts; retire superseded versions after consumer migration and post-promotion monitoring.
+
+## 9.1. Execution guardrails
+
+- Keep Replica local prototyping independent from optional Hub hosting and publication.
+- Keep `ops/projects/profile.schema.json` and the monorepo-managed project-profile registry/resolver as the authority; keep existing device scan profiles in their separate directory and semantics.
+- Keep Drafting Desk draft/candidate metadata separate from Contribution Desk issue filing and QUE admission.
+- Reuse the existing proposal, scheduler, admission, claim, dispatch, provider, quota, DoE and release authorities.
+- Keep static visual surfaces credential-free and source-linked.
+- Keep collaborator-private data, credentials and browser/session material within their authorized stores.
+- Preserve identity attribution confidence and distinguish a GitHub actor from a verified agent principal.
+- Treat preview, queued workflow, successful build and ATES observations as evidence inputs; require the declared release gates and task outcome for selection.
+- Record every candidate, selection, migration, retirement and rollback with immutable version and evidence references.
+
+## 10. Live reconciliation snapshot — 2026-11-19
+
+The related PRs were fetched directly from GitHub during this proposal update. All six remain open and unmerged. GitHub reported `mergeable=false` for each at retrieval; the proposal treats that as a reconciliation signal and preserves each PR as its own owner until the maintainers resolve its branch state.
+
+| PR | Current state | Draft | Mergeable at retrieval | QDesk ownership |
+|---|---|---:|---:|---|
+| #5145 | open | false | false | Observatory, Delphi, DoE pipeline RFP and acceptance matrix |
+| #5197 | open | true | false | Portfolio decision and delivery report contract/schema |
+| #5199 | open | true | false | Deadline desk, alarms, freshness and Gantt |
+| #5330 | open | false | false | Deferred-admission drain and admission receipts |
+| #5376 | open | true | false | Project-task / provider-execution boundary |
+| #5622 | open | false | false | QUE ranking and claim pipeline |
+
+Treat the #5199 Gantt as an existing in-flight implementation and dependency. Q^∆3sk should link to and compose its requirement-closure schedule, alarm and freshness evidence after that owner establishes its accepted interface. The current proposal owns the overview/navigation and release/version-selection projection.
+
+## 10.1. Verified source file identities
+
+| Source | Ref | Blob SHA |
+|---|---|---|
+| Replica fork README | `timerloggedout-spec/replica_fork:main/README.md` | `2404a95ceec73f9698b879c53270c2badd7975c4` |
+| Replica local prototyping guide | `timerloggedout-spec/replica_fork:main/docs/local-prototyping.md` | `dc3395204ea36bfd763914db4e03fb86d9328d17` |
+| Canonical project-task issue form | `.github/ISSUE_TEMPLATE/project-task.yml` | `bb13a8dcd5153368338cdce737feefd18be0e934` |
+| Model router | `scripts/model_router.py` | `1651c692e4473cc31039c25aa7fb9f9fdc9319ef` |
+| Model router action | `.github/actions/model-router/action.yml` | `c80d15099b117caddb5d97ec5646b5c3b0f37e7f` |
+| Provider peer catalog | `.github/connectors/llm-peers.yaml` | `28e4a6104dadaecce3c6075af89ff32cc89143bc` |
+| Gemini workflow quota gate | `.github/actions/gemini-quota-gate/action.yml` | `4d280d7f3b27514af256cec5d764b4acb7ada1ea` |
+| Project profile schema | `ops/projects/profile.schema.json` | `a709a82d6fb8cf43859ba49f5ee1026760bf3872` |
+| Project profile design record | `docs/ops/ARCHWIZ-CONCEPT-MAP.md` | `02ba0c8a69aa5981fa3c39b216ab05dce9bcc5c9` |
+| Existing scan profile (ArchWiz) | `.config/llm_map/profiles/archwiz.json` | `bf98546c484846f71fae6b190572404a8bd04f24` |
+| Existing scan profile (Mapper) | `.config/llm_map/profiles/mapper.json` | `a881ee5ad4ac39e36511aba35f0763e42946b202` |
+| Issue dispatch contract | `docs/ops/ISSUE-TEMPLATE-DISPATCH.md` | `5cce6f9d43b5f2beede2dea3eaa74d3977154ca8` |
+
+Blob SHAs identify the exact file contents fetched; they are distinct from the containing commit SHA and the submodule gitlink object SHA. The project-profile schema and design record are present on master. The S2 project-profile instance directory and `scripts/projects/profile_resolve.py` were not found; existing ArchWiz/Mapper files remain scan-scope profiles and are not substitutes.
+
+## 10.2. Remaining evidence and authorization gates
+
+- Verify exact gitlink commit SHAs for relevant `refTemplates/smods/` entries from the Git tree before any pin or source update.
+- Reconcile current head/base/check state and overlapping file ownership for all six related PRs before changing QDesk feed, claim or provider semantics.
+- Inspect `versioning.js`, its build/deploy workflow and the production manifest to establish populated production fields and artifact provenance.
+- Inspect complete desk/Admin Graph feeds and owning collectors before composing the shell.
+- Verify active release automation and the disposition of visual-architecture versioning PR #4085 before changing that contract.
+- Confirm the public brand/filename: `Q^∆3sk.html` or stable `qdesk.html` URL with visible `Q^∆3sk` branding.
+- Identify existing access-grant/quarantine contracts before proposing a new schema.
+- Design a user-authenticated GitHub App/API filing adapter, installation scope, payload validation, idempotency and audit receipt.
+- Define per-user BYOK credential custody, quota accounting, rate-limit isolation, cost disclosure and billing attribution; current workflow quota controls establish repository workflow credentials, not a per-user quota service.
+- Confirm the explicit mapping from a user-selected model preference to the project-task provider-dispatch owner.
+- Complete the project-profile S2 implementation or verify its accepted profile-instance/resolver contract before wiring the Drafting Desk; current scan profiles are not project profiles.
+- Define stable profile identity/revision semantics and profile-aware issue-form fields without changing the existing dispatch block or admission behavior.
+- Confirm Replica workspace isolation and the candidate artifact/version format before enabling multiple concurrent draft iterations.

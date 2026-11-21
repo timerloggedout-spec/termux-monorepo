@@ -6,6 +6,6 @@ status: done
 source: _meta/master-rebuild-integration-evidence.md
 ---
 
-**Master-conflict cleanup is initiated.** The pre-rebuild PR tip is preserved on the read-only archive branch `archive/pr232-pre-master-rebuild-20260817` for later integration review. The active PR branch is rebuilt from current `master` and replays only the repository-native ICM scope.
+**PR #232 master-conflict cleanup is complete.** [PR #232](https://github.com/timerloggedout-spec/termux-monorepo/pull/232) merged into `master` on 2026-08-18. The ICM documentation and submodule scope was replayed onto the current master baseline. The pre-rebuild tip remains preserved on the read-only archive branch for evidence review.
 
-This card mirrors the evidence index. It does not approve or import archived workflow, CI, provider, or application changes.
+The archive preserves inherited workflow, CI, provider, application, and governance alternatives as review candidates. Each candidate enters its own scoped proposal with an owner, validation plan, and review.

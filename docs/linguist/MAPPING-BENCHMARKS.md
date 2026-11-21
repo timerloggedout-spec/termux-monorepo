@@ -128,3 +128,32 @@ The fixture now incorporates the canonical Fleet ⇔ Lean/Mathlib matrix and vec
 - **Gaps stay gaps:** transpose, ANN top-k, persistence, sqlite-vec, and other rows without a target mapping remain outside the corpus.
 
 The dataset therefore measures retrieval over recorded assertions at multiple evidence states. Report `evidence_status` alongside every score, and interpret candidate-seed results as provisional retrieval coverage rather than adjudicated semantic accuracy.
+
+
+## Canonical panel-feed adapter
+
+The collector already exposes a broader, source-backed vocabulary surface.
+The benchmark generator accepts the canonical feed directly:
+
+```sh
+python scripts/linguist/mapping_benchmark.py \
+  --panel-feed apps/tribute-dashboard/data/linguist-panel-feed.json \
+  --output /tmp/linguist-panel-benchmark.json \
+  --seed 42
+```
+
+The checked-in feed snapshot at `2026-11-05T04:02:41Z` contains **523
+enumerated entries** across CedrLang, phase codec, Grimoire, Cedar pointer,
+nomenclature, and routing families. The 7,287-entry ArchWiz pointer index is
+count-only and is excluded from enumeration. Feed metadata is retained in
+the benchmark output so snapshot age remains visible.
+
+The adapter maps live round-trip results to `exact` or `lossy`; absent
+round-trip evidence maps to `unverified`. Candidate nomenclature records
+retain their `candidate` status, relation, confidence, and provenance.
+Count-only families remain excluded. The panel feed remains the source of
+record; the benchmark is a reproducible retrieval projection.
+
+The feed snapshot is dated 2026-11-05 and is therefore a historical snapshot,
+not a claim about the current runtime. Regenerate from the refreshed canonical
+feed after the feed-collector workflow publishes a newer version.

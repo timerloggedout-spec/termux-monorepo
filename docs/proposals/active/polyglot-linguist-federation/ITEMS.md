@@ -9,9 +9,10 @@
 | PLF-005 | Transport | Physical-to-application transport research | Fax/modem/optics through QUIC and application protocols represented |
 | PLF-006 | Matrice | Hierarchical scorecards | Local, domain and federation levels with correctness gate |
 | PLF-007 | Federation | Immutable feed envelopes | Revision, provenance, digest and schema version |
-| PLF-008 | Surfaces | GitHub/web/browser/derpWiki design | Visible transformations, access policy and clean Agent Ready baseline |
+| PLF-008 | Surfaces | Mandatory DerpWiki projection across public GitHub/web/browser/knowledge interfaces | Default-on layer, owner reconstruction, publication-profile correctness and clean Agent Ready validation |
 | PLF-009 | Governance | Research Astute migration readiness | Transfer checklist and explicit approval gate |
 | PLF-010 | Validation | Lightweight validator and tests | Standard-library validation succeeds on Termux and CI |
+| PLF-011 | Notifications | Z3π∅ notification delivery to public user interfaces | Relevant notices render in public UI surfaces with classification, deduplication and auditable receipts |
 
 ## Initial implementation state
 

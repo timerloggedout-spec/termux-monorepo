@@ -148,7 +148,11 @@ cmd_provision_controller_export() {
   done
   [ -n "$run_id" ] || { echo "workflow dispatched; new run ID lookup pending at $source_repo/actions" >&2; exit 5; }
 
-  gh run watch "$run_id" -R "$source_repo" --exit-status
+  if ! gh run watch "$run_id" -R "$source_repo" --exit-status; then
+    gh run view "$run_id" -R "$source_repo" --json conclusion,url,displayTitle \
+      --jq '"conclusion=\(.conclusion) run=\(.url) title=\(.displayTitle)"' || true
+    exit 6
+  fi
   gh run view "$run_id" -R "$source_repo" --json conclusion,url,displayTitle \
     --jq '"conclusion=\(.conclusion) run=\(.url) title=\(.displayTitle)"'
 }

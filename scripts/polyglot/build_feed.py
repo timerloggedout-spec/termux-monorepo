@@ -31,27 +31,33 @@ def committed_bytes(revision: str, path: Path) -> bytes:
     return result.stdout
 
 def build_records(revision: str) -> list[dict[str, str]]:
-    capability_path = BASE / "capability.json"
-    capability = json.loads(capability_path.read_text(encoding="utf-8"))
-    targets_path = BASE / "technology-targets.json"
-    targets = json.loads(targets_path.read_text(encoding="utf-8"))
-    mapping_path = BASE / "mapping-quic-streams.json"
-    mapping = json.loads(mapping_path.read_text(encoding="utf-8"))
-    dimensions_path = BASE / "matrice-dimensions.json"
-    dimensions = json.loads(dimensions_path.read_text(encoding="utf-8"))
+    paths = {
+        "capability": BASE / "capability.json",
+        "technology_targets": BASE / "technology-targets.json",
+        "mapping": BASE / "mapping-quic-streams.json",
+        "dimensions": BASE / "matrice-dimensions.json",
+    }
+    committed = {key: committed_bytes(revision, path) for key, path in paths.items()}
+    documents = {key: json.loads(content) for key, content in committed.items()}
+    capability = documents["capability"]
+    targets = documents["technology_targets"]
+    mapping = documents["mapping"]
     sources = [
-        ("capability", capability["capability_id"], capability_path),
-        *[("technology_target", item["target_id"], targets_path) for item in targets["targets"]],
-        ("mapping", mapping["mapping_id"], mapping_path),
-        ("matrice_dimensions", "matrice.shared-dimensions", dimensions_path),
+        ("capability", capability["capability_id"], paths["capability"], committed["capability"]),
+        *[
+            ("technology_target", item["target_id"], paths["technology_targets"], committed["technology_targets"])
+            for item in targets["targets"]
+        ],
+        ("mapping", mapping["mapping_id"], paths["mapping"], committed["mapping"]),
+        ("matrice_dimensions", "matrice.shared-dimensions", paths["dimensions"], committed["dimensions"]),
     ]
     records = []
-    for record_type, record_id, path in sources:
+    for record_type, record_id, path, content in sources:
         records.append({
             "record_type": record_type,
             "record_id": record_id,
             "path": path.relative_to(ROOT).as_posix(),
-            "content_digest": "sha256:" + sha256(committed_bytes(revision, path)),
+            "content_digest": "sha256:" + sha256(content),
         })
     return records
 

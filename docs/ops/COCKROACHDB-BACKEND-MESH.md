@@ -52,7 +52,7 @@ Record observed values from drills. The design target is an independently replay
 
 ## Security and operations
 
-1. Run `ops/cockroachdb/lane-events-writer-grants.sql` with the cluster administrator.
+1. Run `ops/cockroachdb/lane-events-writer-grants.sql` with the cluster administrator to create `lane_events_writer` for runtime inserts and `lane_events_migrator` for schema DDL.
 2. Apply the versioned schema with a migration identity through `COCKROACH_SCHEMA_DATABASE_URL`.
 3. Store the dedicated writer URI only as the Actions secret `COCKROACH_DATABASE_URL`.
 4. Use `sslmode=verify-full` or `verify-ca` for hosted clusters.

@@ -1572,3 +1572,31 @@ Awareness is event-driven. GitHub push, pull-request, release, issue, workflow-c
 The four initial platform factors are Langfuse, PromptLayer, PostHog and Braintrust. Their capabilities remain hypotheses until pinned documentation and runtime evidence exist. The native repository baseline is mandatory. Combination and interaction effects must be measured rather than assumed; the 2^4 full-factorial comparison has 16 cells when all four factors are executable.
 
 Every dispatched run continues to emit exactly one canonical experiment record under docs/ops/corpus/EXPERIMENT.schema.json. Candidate status, proposal status, execution state, outcome validation and promotion remain distinct. Delphi/EGM and repository dual gates retain their existing authority.
+
+## Evolutionary policy experiments
+
+Pre-register factors, levels, the incumbent control, confirmation assignment,
+replication and analysis design through the existing DoE family. The bounded
+AlphaEvolve/Dream-RSI replay adapter is an execution pattern within that family.
+The existing DoE family retains family and control-plane ownership. `scripts/agent_evolution/doe_control.py`
+emits an offline design artifact and a separate selected-candidate confirmation
+assignment. The design validator checks the frozen design hash, arm identities and
+single-control invariant in code. The confirmation validator checks the assignment
+hash, campaign/design linkage, selected candidate, replicate count, task blocks,
+assignment membership and coverage in code. The JSON Schemas define the serialized
+artifact contracts; the confirmation schema currently has no runtime schema-validation
+call in this adapter.
+
+- Offline replay evaluates data-only policy arms against one shared discovery-history
+  object; each emitted `history_nodes` value records the node count, not a revision ID.
+- The incumbent is exactly one explicit control arm in every design.
+- Replay observations retain design/campaign/arm/policy lineage and the history node count.
+- Fresh online confirmation assigns only the incumbent and one selected candidate,
+  exactly once per task unit × replicate in deterministic randomized order.
+- Online execution emits the existing canonical EXPERIMENT record per run.
+- Held-out confirmation and the existing correctness/integration + dual gates govern
+  promotion; replay score alone never promotes.
+
+DESIGN artifacts describe preregistered intent. Confirmation assignments describe
+randomized online treatment allocation. EXPERIMENT records describe observed runs.
+Keep all three roles distinct and preserve negative, skipped and censored evidence.

@@ -60,7 +60,8 @@ analogies to equivalences or infer missing mappings.
 - `corpus`: mapping records keyed by `mapping_id`;
 - `queries`: generated cross-custom retrieval tasks;
 - `qrels`: positive mapping IDs for each query;
-- `candidates`: pair-scoped candidates, including hard negatives;
+- `candidates`: pair-scoped candidate pool for each query;
+- `hard_negatives`: same-surface candidates with a different domain or semantic key;
 - `conflicts`: identical source surfaces with distinct semantic/domain keys;
 - `stats`: corpus, query, relevance, conflict, and grade counts.
 
@@ -90,7 +91,8 @@ for a fixed input and seed.
 
 The evaluator exposes `evaluate_rankings(dataset, rankings)` for macro
 precision@k, recall@k, mean reciprocal rank, and nDCG. It validates query and
-mapping identifiers and treats an omitted query ranking as an empty result.
+mapping identifiers, enforces each query's pair-scoped candidate pool, and
+treats an omitted query ranking as an empty result.
 
 ## Evaluation dimensions
 

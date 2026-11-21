@@ -2,11 +2,11 @@
 
 - **Upstream:** https://github.com/cockroachdb/cockroach
 - **Observed upstream pin:** `d30c905fff79ef825adc96bcc647f1872a90f2ff` (GitHub commit search; 2026-09-23)
-- **Intended reference target:** `refTemplates/smods/cockroachdb` (shallow gitlink admission pending)
+- **Reference target:** `refTemplates/smods/cockroachdb` (shallow gitlink pinned to `d30c905fff79ef825adc96bcc647f1872a90f2ff`)
 - **Role:** distributed SQL reference for continuity, replicated state and PostgreSQL-wire interoperability.
 - **Repository-native adapter:** `scripts/ops/cockroach_lane_event.py`
 - **Schema:** `ops/cockroachdb/lane-events-schema.sql`
-- **Status:** adapter implementation staged for PR validation; upstream gitlink promotion remains a separate source-pin operation requiring a Git tree update and dual-gate validation.
+- **Status:** upstream CockroachDB is pinned as a shallow submodule; repository-native adapter remains independently maintained and is validated through the CockroachDB contract workflow.
 
 ## Boundary
 

@@ -34,6 +34,6 @@ Policy: `docs/ops/RESEARCH-INTEGRATION-LANE.md`
 
 See root `.gitmodules`:
 
-AuditEngine_fork, batteries_fork, content-agent-routing-promptbase_fork, cost-of-remembering_fork, icm-architect_fork, icm-cctv_fork, interpretable-context-methodology_fork, mcp-android-ssh_fork, term_mcp_deepseek_fork, termux-mcp-server_fork, lego_fork
+AuditEngine_fork, batteries_fork, cockroachdb, content-agent-routing-promptbase_fork, cost-of-remembering_fork, icm-architect_fork, icm-cctv_fork, interpretable-context-methodology_fork, mcp-android-ssh_fork, term_mcp_deepseek_fork, termux-mcp-server_fork, lego_fork
 
 Pins intentional; no auto-advance without dual-gate green. Flywheel components remain metadata-only until a real customized fork and compatibility evidence exist.

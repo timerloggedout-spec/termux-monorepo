@@ -1,5 +1,7 @@
 # CONTINUITY SPOF CENSUS — 2026-11-01
 
+> **Jules status amendment (2026-11-20):** The Jules API observations below describe the pre-cutoff census window. Google Jules became read-only after 2026-11-11; hosted build dispatch is retired. The custom.jules helper is a GET-only archive through 2026-12-31, while new task guidance routes through the local DoE role skills.
+
 `role:backend-mesh-resiliency` ∘ census-pin: master `3a67aaedf899` (2026-11-02T00:38Z) ∘ spot-check window 2026-11-01 16:40–17:10 PT
 Scope: READ-ONLY census + remediation scoping. ∅ failover executed, ∅ telemetry file touched, ∅ deployment changed.
 Notation: `↦` evidence · `∅` none found · `?` UNKNOWN (¬verifiable from repo/API) · S/M/L = remediation size · claims w/o `↦` = fleet-record, labelled.
@@ -118,7 +120,7 @@ Baseline (fleet record): Jules DOWN (entry builds created 3 / completed 0 / erro
 
 | arm | NOW (spot-check firsthand) | verdict |
 |---|---|---|
-| Jules | API alive. Latest session 2026-11-02T00:14Z `AWAITING_USER_FEEDBACK`; completion 2026-11-01T23:26Z; **but** webWrapper entry-build class FAILED ×3 on 2026-11-01 (14:12/14:32/14:56Z) + ×2 earlier (03:56/04:11Z). Lifetime census 374 {COMPLETED 345, FAILED 19, AWAITING 7, PAUSED 3} ↦ `custom.jules jules.py census/list-sessions` live | **DEGRADED** — general sessions complete; build-dispatch class ¬ restored/proven |
+| Google Jules (historical) | API alive during the 2026-11-01 census. Latest session 2026-11-02T00:14Z `AWAITING_USER_FEEDBACK`; completion 2026-11-01T23:26Z; webWrapper entry-build class FAILED ×3 on 2026-11-01 plus ×2 earlier. Lifetime census 374 {COMPLETED 345, FAILED 19, AWAITING 7, PAUSED 3}; custom.jules census/list-sessions supplied the read evidence | **RETIRED for execution** — read-only after 2026-11-11; custom.jules remains GET-only archive through 2026-12-31 |
 | Gemini CLI | Latest `gemini-interactions-smoke` run `41315002638` = failure 2026-11-01T14:12:07Z; 5/5 recent = failure; `gemini-dispatch` runs 2026-11-02T00:42Z = skipped (comment triggers, ∅ invocation) ↦ Actions runs API | **OUT** — ∅ restoration evidence |
 | DeepSeek agent | Workflow converts tunnel-unresolved → `exit 0` "success" (vacuous green) ↦ `deepseek-termux-agent.yml:134-142`; latest runs 2026-11-02T00:40Z job = `skipped`; ∅ invocation evidence; `DEEPSEEK_AGENT_URL` = one static secret (2026-10-05) aimed at a rotating tunnel endpoint ⇒ structural staleness | **DOWN** — ¬ restored |
 | command-dispatch | `provider-invoke.yml` success 2026-11-01T16:19Z (`41325724792`); `provider-batch.yml` success 21:53Z (`41354262886`); carried the 2026-11-01 inference batch (24 fired; cohere/sealion proven — fleet record) | **ALIVE** — sole arm with same-day production proof |

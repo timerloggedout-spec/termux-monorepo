@@ -1,5 +1,7 @@
 # Connector Inventory — 2026-10-28
 
+> **Jules retirement amendment (2026-11-20):** This inventory is a dated snapshot. The custom.jules connector was registered at capture time; it is now configured as a read-only archive, excluded from prompt loading, and limited to historical GET access through 2026-12-31. New work routes through the local DoE role skills and active provider roster.
+
 Compiled from the CONNECTOR.md (and connector.yaml where present) of every connector directory, first ~40 lines each. Capability lines are taken from the docs; use-case lines are concrete fleet applications of those capabilities. Status: LIVE-CHECKED 2026-10-28 — every system connector's own documented status command was run from the agent VM (owner correction: Muse connectors, verified live, not doc-derived). Customs verified via their helpers. github shows CONNECTED at platform level AND remains DENY by owner order (fleet route = custom.github-pat). Tessie = ERROR (local privsep transport denied; true state unverified).
 
 - System connectors (`/opt/hatch/connectors/`): **68**
@@ -38,7 +40,7 @@ Compiled from the CONNECTOR.md (and connector.yaml where present) of every conne
 | instagram | system | LIVE-CHECKED 2026-10-28: NOT CONNECTED — accounts list empty | Search accounts; read profiles, posts, comments, stories, feeds, saved items, insights; publish/schedule stories, posts, reels, carousels; manage collections and profile. Use: Instagram presence. DMs are instagram_messages. |
 | instagram_messages | system | LIVE-CHECKED 2026-10-28: NOT CONNECTED — accounts list empty | Read/send Instagram DMs and manage pending message requests; connection separate from instagram. Use: DM conversations. |
 | klaviyo | system | LIVE-CHECKED 2026-10-28: CONNECTED — — | Email/SMS campaigns, flows, lists, segments, subscriptions, reports; send approved campaigns. Use: marketing automation. |
-| linear | system | LIVE-CHECKED 2026-10-28: CONNECTED — — | Issues, projects, comments, labels, cycles, documents via Linear MCP. Use: issue tracking; also connected on the Jules side. |
+| linear | system | LIVE-CHECKED 2026-10-28: CONNECTED — — | Issues, projects, comments, labels, cycles, documents via Linear MCP. Use: issue tracking; historical Jules-side access was a separate integration. |
 | lovable | system | LIVE-CHECKED 2026-10-28: CONNECTED — — | Create, edit, deploy Lovable apps; read code/messages; manage visibility, knowledge, databases. Use: rapid app prototyping. |
 | messenger_read | system | LIVE-CHECKED 2026-10-28: NOT CONNECTED — check: has_keys false, user_id null | Read, search, send in the user's personal Messenger account (sends as the user); call history, reactions, edits, Marketplace threads. Use: Messenger conversations. Despite the name, it can send. |
 | meta_ads | system | LIVE-CHECKED 2026-10-28: CONNECTED — ad account 1825806825161849 (ACTIVE) | Facebook/Instagram ads: ideas and creative, spend/results, campaigns, audiences, catalogs, pixels, experiments; create paused campaigns; policy answers. Use: ad-account management. |
@@ -77,7 +79,7 @@ Compiled from the CONNECTOR.md (and connector.yaml where present) of every conne
 | zapier | system | LIVE-CHECKED 2026-10-28: NOT CONNECTED — status reports auth_status not_connected | Zapier MCP in agentic mode: one connection reaches actions the user set up across their Zapier apps. Use: coverage for apps with no dedicated connector. |
 | zoom | system | LIVE-CHECKED 2026-10-28: CONNECTED — status reports authenticated, all_servers_ok; no account label in status output | Meetings, recordings, transcripts, summaries; Team Chat, Canvas, Tasks, Whiteboard, Revenue Accelerator via Zoom MCP. Use: meeting management and follow-up. |
 | custom.github-pat | custom | Registered (per doc) | GitHub REST via the user's classic PAT (MUSE_ADMIN_GH), helper github_pat.py: rate limits, user, repos, PRs, generic api for writes; no per-call approval cards. Use: ALL fleet GitHub work (fleet rule; built-in github connector is DENY). |
-| custom.jules | custom | Registered (per doc) | Google Jules REST via API key, helper jules.py: list/read sessions, activities, full census, approve-plan, send-message. Use: monitoring and steering Jules coding sessions. |
+| custom.jules | custom | Retired read-only archive after 2026-11-11; include_in_prompt=false | Google Jules REST archive via helper jules.py: list/read sessions, activities, full census. GET-only through 2026-12-31; write commands retired. New work uses the local DoE role skill bundle. |
 | custom.stackoverflow-agents | custom | connected-verified 2026-10-28 (connector.yaml) | SOFA MCP (agents.stackoverflow.com/mcp), OAuth public client + PKCE, helper sofa.py: 28 tools — search, get_post, my_posts, guidance, playbooks; granted scopes read + identity + offline only. Use: agent knowledge exchange bound to the owner's existing SOFA agent. |
 
 ## Notes

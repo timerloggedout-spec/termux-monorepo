@@ -3,12 +3,11 @@
 Creative **display** call-signs for high-performance agent orchestration.
 
 **Critical:** Do **not** `@`-mention monikers that collide with real GitHub usernames.
-Use backticks or plain text for display. Live triggers remain the original handles
-(plus approved aliases registered in the matching workflow).
+Use backticks or plain text for display. Live triggers appear only in rows with a callable handle; historical entries use NONE.
 
 | Role | Display moniker | Live trigger (callable) | Notes |
 |------|-----------------|-------------------------|-------|
-| Jules (implementation) | `h3yVern` | `@jules` | App only reacts to `@jules` · v2 graduated 2026-11-01 (v1 `heyVern`; see Graduations of record) |
+| Jules (Google Labs; retired) | `h3yVern` (historical) | NONE | Hosted service read-only after 2026-11-11; local DoE role guidance lives at `.agents/skills/jules-doe-role-adapter/SKILL.md` · v2 moniker graduation remains historical |
 | Gemini CLI (RETIRED 2026-11-12) | `sparkFlux` (historical only) | NONE — dispatch retired | `@gemini-cli` / `@sparkFlux` are no longer callable routes; use QUE governor + registered peer orchestration. Reviewer unavailable is not a pass. |
 | DeepSeek CI (review/invoke) | `deepCore` | `@deepseek` / `@deepseek-ci` | Workflow also accepts case-insensitive `@deepCore`; labels `deepseek-ci`, `deepseek`, `deepCore` |
 | CodeRabbit (review) | `c0deHound` | `@coderabbitai` | Reviewer identity unchanged · v2 graduated 2026-11-01 (v1 `codeHound`; see Graduations of record) |
@@ -1736,8 +1735,8 @@ Issuance notes (screens of record, 2026-11-17): S1 in-fleet — the coined forms
 
 ## Rules
 
-1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`, `@deepseek` / `@deepseek-ci`).
-2. Workflows matching a live trigger **must** also accept the display moniker case-insensitively where registered above.
+1. Automated comments: **display** moniker in backticks; **ping** only live triggers (`@gemini-cli`, `@deepseek` / `@deepseek-ci`). Jules is historical; the live trigger set excludes Jules.
+2. Workflows matching a live trigger **must** also accept the display moniker case-insensitively where registered above; historical monikers remain display-only.
 3. Never put secrets or Class 3/4 material in moniker docs.
 4. If a moniker string is later registered as a GH username we do not control, keep it non-@ only.
 5. **Agent2Agent comms ∀ chats = CAVEMAN NOTATION MICRO DENSE** (owner order 2026-11-04; supersedes relay-only scope): ids ∧ outcomes ∧ symbols first, fewest words; sources compress too — a relay carries the dense form, ¬ the source's prose; prose only where precision ∨ safety requires; compliance = silence elsewhere (∅ ACK).

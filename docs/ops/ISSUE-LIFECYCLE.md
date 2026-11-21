@@ -73,7 +73,7 @@ Labels are the repo's categorization source of truth. Families in use:
   ledger #1489.
 - **Hark:** `hark:queue`, `hark:done`, `hark:deferred`,
   `hark:blocked:config`, `hark:blocked:rate_limit`.
-- **Agent:** `jules`, `gemini`, `deepseek` (implementation/review routing).
+- **Agent:** `gemini`, `deepseek` (implementation/review routing); `jules` is a legacy retirement-receipt signal.
 - **Legacy / programme:** `BIUDL` (26), `` `gh`ActionsWorkflows `` (27),
   `MoneyBall`, `FORENSICS`, `Roster:Teams:Games:Players`, and a long tail of
   one-programme labels. These are provenance, not noise; this lane does not
@@ -93,12 +93,12 @@ Most-applied on open issues today: `enhancement` 78, `priority` 56,
    `gemini-dispatch.yml` is its sole caller, code-search verified).
 2. `gemini-triage.yml` routes Gemini PRIMARY → peer Omni ↔ OpenRouter
    secondary and posts **one triage comment**: a classification, suggested
-   labels, a priority, and a Jules recommendation.
+   labels, a priority, and a role-guided provider recommendation.
 3. Specialized intakes run in parallel where their label applies:
    `target-intake.yml` posts the Foundry dispatch plan (36 runs all-time:
    20 success / 16 skipped); `delphi-intake.yml` / the Delphi gate handle
    `delphi:rfp`; `issue-comment-router.yml` (8,401 runs) classifies comments
-   for `@jules` / `@gemini` / ledger routes — its route steps are
+   for the legacy `@jules` retirement receipt / `@gemini` / ledger routes — its route steps are
    placeholder echoes, no consumer workflow depends on its outputs.
 
 **What triage does NOT do (the central gap, G1/G2):**
@@ -133,7 +133,7 @@ GitHub primitives are nearly unused for ownership: 8/225 issues assigned,
   `[MUSEai]@{role:{moniker}}` comment on the issue (the coordination
   protocol of record);
 - the **label family** (`delphi:*` → Delphi lane, `hark:*` → Hark,
-  `target-brief` → inventory/foundry lane, `jules` → Jules implementation);
+  `target-brief` → inventory/foundry lane, `jules` → retirement receipt and local DoE role guidance);
 - special-family **ledgers** (Delphi #1487/#1489, the GAP-LEDGER) for
   families that keep one.
 
@@ -151,12 +151,7 @@ the URL.
 
 ## 5. Implementation — from triaged issue to change
 
-- **Jules lane:** `agent-jules-on-issues.yml` (24,886 runs, overwhelmingly
-  skipped comment events) starts a bounded Jules session when a trusted
-  operator applies the `jules` label or opens a comment with `@jules`.
-  It verifies the actor's repo permission, never checks out or merges,
-  and produces PRs through the Jules GitHub App. `agent-pr-jules-handoff.yml`
-  is the PR-side equivalent.
+- **Legacy Jules lane:** `agent-jules-on-issues.yml` now records an idempotent retirement receipt for trusted `jules` labels or `@jules` issue comments. Google Jules became read-only after 2026-11-11. The local DoE skill bundle supplies issue-analysis and verification guidance; implementation routes through the active provider roster and a verified adapter. `agent-pr-jules-handoff.yml` records PR-scoped legacy requests, while `agent-review-auto-jules.yml` records review feedback.
 - **Lane lanes:** most issues are implemented by the owning side-chat lane
   directly (branch → PR → dual-gate merge, per repo `CLAUDE.md`), with the
   PR body/comment carrying the issue reference. The `Implements:` marker

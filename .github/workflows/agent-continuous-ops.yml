@@ -5,10 +5,10 @@ name: Continuous agent ops
 # - No false "4-day stall" on brand-new / never-commented PRs
 # - Self-nudge excluded from loop + approval; SHA sticky-skip
 # - checks:read so failing status detection works
-# - Display moniker heyVern; live ping only @jules
+# - Jules display moniker heyVern is historical; this sweep emits governed receipts only
 #
-# Complements event-driven agent-review-auto-jules + peer-review-orchestrator.
-# Requires: Jules GitHub App. Optional: OPERATOR_GITHUB_TOKEN for privileged comments.
+# Complements peer-review-orchestrator; Google Jules execution is retired.
+# Requires: OPERATOR_GITHUB_TOKEN for privileged comments.
 
 on:
   # Cadence owned by quota-dispatch-tree.yml (Tier 3 tranche, issue #1573).
@@ -338,14 +338,14 @@ jobs:
               if (emptyDiff) instructions.push('- **Empty diff:** commit and push real changes.');
               instructions.push('- Push to existing head branch. No Class 3/4 artifacts.');
 
-              // Display moniker only — live trigger is @jules (do not @heyVern real users)
+              // Preserve a plain DoE review receipt; Google Jules trigger is retired.
               const body = [
                 marker,
                 `sha: ${pr.head.sha}`,
                 `state: ${mergeableState}`,
                 `threads_open: ${openThreads}`,
                 '',
-                `@jules **opsSweep** (heyVern lane) — high-perf unattended advance.`,
+                `**DoE review handoff pending** — Google Jules hosted execution is retired; select a live adapter through the agent roster.`,
                 '',
                 `PR #${pr.number} · \`${pr.head.ref}\` → \`${pr.base.ref}\``,
                 `**Why:** ${reasons.join('; ')}`,

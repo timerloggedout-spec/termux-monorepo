@@ -183,3 +183,14 @@ This is the first implementation slice for restoring the Linguist/CedrLang diasp
 ## TDQS-CI-001 — Read-only TDQS quality-lane coverage
 
 **Status:** executing. Extend the existing Agent Quality Lane to cover TDQS preparation/aggregation: implementation, focused tests, evidence schema, specification, and admission-matrix path filters; compile the focused test, validate schema JSON, and run the deterministic TDQS tests alongside the existing telemetry tests. Acceptance requires the focused commands, repository gate, and Termux smoke to pass. This item does not authorize external rubric evaluation, prompt/tool execution, or acceptance of the broader notation proposal.
+
+## NSE-021 — Sidecar Comment Overlays and Siglary Context Tournament
+
+**Status:** accepted for execution by Operator vote on 2026-11-21.  
+**Scope:** Content-addressed sidecar overlays for eligible prose in `docs/icm/**/*.md` and `workspace/llm_map/**/*.md`, plus syntax-aware code comments discovered through authoritative ICM/LLM source references.
+
+**Execution sequence:** bounded inventory and mapping ledger → overlay schema and stable anchors → Markdown/Tree-sitter extraction → validator, renderer, and disposable materializer → pre-registered DoE/MVT screening → held-out replication → quality-gated comment/documentation-only release.
+
+**Invariant:** experimental arms share a canonical source SHA; materialization preserves executable code tokens, protected Markdown spans, exact technical literals, citations, and historical evidence. Every treatment carries notation, renderer, source, overlay, task, context, and configured-instance provenance.
+
+**Acceptance gates:** inventory classification complete; historical CLAUDE/AGENTS relationships verified; deterministic semantic round-trip and source-integrity tests pass; DoE records retain raw quality outcomes and treatment provenance; held-out replication meets pre-registered quality floors; `repo-gate` and `termux-smoke` pass on the exact promotion head.

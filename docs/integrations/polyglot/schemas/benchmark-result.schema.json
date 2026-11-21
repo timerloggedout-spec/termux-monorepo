@@ -112,7 +112,8 @@
         "required": [
           "metric",
           "value",
-          "unit"
+          "unit",
+          "variance"
         ],
         "properties": {
           "metric": {
@@ -128,7 +129,8 @@
             "type": [
               "number",
               "null"
-            ]
+            ],
+            "minimum": 0
           },
           "sample_count": {
             "type": [
@@ -188,5 +190,61 @@
         "null"
       ]
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "correctness": {
+            "const": "pass"
+          }
+        },
+        "required": [
+          "correctness"
+        ]
+      },
+      "then": {},
+      "else": {
+        "properties": {
+          "parity_status": {
+            "enum": [
+              "unknown",
+              "below",
+              "parity"
+            ]
+          },
+          "advantage_claim": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "parity_status": {
+            "const": "above"
+          }
+        },
+        "required": [
+          "parity_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "correctness": {
+            "const": "pass"
+          },
+          "advantage_claim": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "correctness",
+          "advantage_claim"
+        ]
+      }
+    }
+  ]
 }

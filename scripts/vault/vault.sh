@@ -38,7 +38,7 @@ case "${1:-}" in
       rclone mkdir "$r"
       rclone copy "$VAULT" "$r" --exclude ".gitkeep"
       rclone check "$VAULT" "$r" --one-way --exclude ".gitkeep"
-      printf 'verified ciphertext mirror -> %s\\n' "$r"
+      printf 'verified ciphertext mirror -> %s\n' "$r"
     done ;;
   verify) # verify one encrypted artifact can be restored and decrypted from every configured remote
     read -r -a remotes <<< "${TMX_VAULT_REMOTES:-}"
@@ -73,7 +73,7 @@ case "${1:-}" in
       cmp -s "$artifact" "$copy" || { echo "ciphertext mismatch at $r" >&2; exit 6; }
       age -d -i "$k" -o "$plain" "$copy"
       cmp -s "$tmp/local.plain" "$plain" || { echo "plaintext mismatch after restore from $r" >&2; exit 7; }
-      printf 'restore + decrypt verified <- %s\\n' "$r"
+      printf 'restore + decrypt verified <- %s\n' "$r"
     done ;;
   *) echo "usage: vault.sh seal <src> [name] | open <file.age> [out] | mirror | verify"; exit 1 ;;
 esac

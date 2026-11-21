@@ -21,7 +21,7 @@
 
 ## Follow-up implementation
 
-- Extend evidence-led inventory script to walk `15_*` and diff `smods` vs `.gitmodules`
-- Optional: thin GHA job on path `refTemplates/**` that asserts SOURCE.txt presence
+- Inventory script validates `README.md` + `SOURCE.txt` for child references in slots 15, 18 and 19.
+- Follow-up: diff `smods/` vs `.gitmodules` and add a thin GHA job on `refTemplates/**` for source-path integrity.
 
 Provider catalog SDKs under slot 19 remain metadata-only. Runtime adoption requires a separate accepted item, provider-specific adapter contract, tests and dual-gate evidence.

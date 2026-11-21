@@ -14,6 +14,46 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT / "docs" / "integrations" / "polyglot"
 
+def schema_accepts_conditionals(record: dict, schema: dict) -> bool:
+    def matches(condition: dict) -> bool:
+        if any(key not in record for key in condition.get("required", [])):
+            return False
+        for key, rule in condition.get("properties", {}).items():
+            if key not in record:
+                continue
+            value = record[key]
+            if "const" in rule and value != rule["const"]:
+                return False
+            if "type" in rule:
+                expected = rule["type"]
+                if expected == "null" and value is not None:
+                    return False
+                if expected == "string" and not isinstance(value, str):
+                    return False
+        return True
+
+    for rule in schema.get("allOf", []):
+        branch = rule.get("then", {}) if matches(rule.get("if", {})) else rule.get("else", {})
+        if any(key not in record for key in branch.get("required", [])):
+            return False
+        for key, constraint in branch.get("properties", {}).items():
+            if key not in record:
+                continue
+            value = record[key]
+            if "const" in constraint and value != constraint["const"]:
+                return False
+            if "enum" in constraint and value not in constraint["enum"]:
+                return False
+            expected = constraint.get("type")
+            if expected == "null" and value is not None:
+                return False
+            if expected == "string" and not isinstance(value, str):
+                return False
+            if expected == "string" and len(value) < constraint.get("minLength", 0):
+                return False
+    return True
+
+
 class PolyglotFederationTests(unittest.TestCase):
     def test_example_json_documents_parse(self):
         for path in sorted((BASE / "examples").glob("*.json")):
@@ -129,16 +169,14 @@ class PolyglotFederationTests(unittest.TestCase):
         self.assertIn("variance", measurement["required"])
         self.assertEqual(measurement["properties"]["variance"]["minimum"], 0)
         self.assertEqual(measurement["properties"]["variance"]["type"], "number")
-        above_gate = next(rule for rule in schema["allOf"] if rule.get("if", {}).get("properties", {}).get("parity_status", {}).get("const") == "above")
-        self.assertEqual(above_gate["then"]["properties"]["correctness"]["const"], "pass")
-        self.assertEqual(above_gate["then"]["properties"]["advantage_claim"]["type"], "string")
-        self.assertEqual(above_gate["else"]["properties"]["advantage_claim"]["type"], "null")
-        nonpass_gate = next(rule for rule in schema["allOf"] if rule.get("if", {}).get("properties", {}).get("correctness", {}).get("const") == "pass")
-        self.assertEqual(nonpass_gate["else"]["properties"]["parity_status"]["enum"], ["unknown"])
-        self.assertEqual(nonpass_gate["else"]["properties"]["advantage_claim"]["type"], "null")
-        claim_gate = next(rule for rule in schema["allOf"] if rule.get("if", {}).get("properties", {}).get("advantage_claim", {}).get("type") == "string")
-        self.assertEqual(claim_gate["then"]["properties"]["parity_status"]["const"], "above")
-        self.assertEqual(claim_gate["then"]["properties"]["correctness"]["const"], "pass")
+        gate = next(rule for rule in schema["allOf"] if rule.get("if", {}).get("properties", {}).get("parity_status", {}).get("const") == "above")
+        self.assertEqual(gate["then"]["properties"]["correctness"]["const"], "pass")
+        self.assertEqual(gate["then"]["properties"]["advantage_claim"]["type"], "string")
+        self.assertEqual(gate["else"]["properties"]["advantage_claim"]["type"], "null")
+        self.assertTrue(schema_accepts_conditionals({"correctness": "pass", "parity_status": "above", "advantage_claim": "verified advantage"}, schema))
+        self.assertTrue(schema_accepts_conditionals({"correctness": "pass", "parity_status": "parity", "advantage_claim": None}, schema))
+        self.assertFalse(schema_accepts_conditionals({"correctness": "pass", "parity_status": "parity", "advantage_claim": "claimed advantage"}, schema))
+        self.assertFalse(schema_accepts_conditionals({"correctness": "fail", "parity_status": "above", "advantage_claim": "claimed advantage"}, schema))
 
     def test_feed_schema_requires_full_commit_sha(self):
         schema = json.loads((BASE / "schemas" / "feed-envelope.schema.json").read_text(encoding="utf-8"))

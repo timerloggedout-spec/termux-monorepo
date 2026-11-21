@@ -10,9 +10,9 @@
 
 ## Source classification
 
-| Path | Role | Universe | Owner / source of truth | Evidence location | Why it is in scope | Do not edit? |
+| Path | Role | Universe | Owner / source of truth | Evidence location | Why it is in scope | Edit boundary |
 |---|---|---|---|---|---|---|
-| `<path>` | catalog / contract / factory / product / dead | live / leftover / ghost | `<owner>` | `<path:line or SHA>` | `<reason>` | yes / no |
+| `<path>` | catalog / contract / factory / product / dead | live / leftover / ghost | `<owner>` | `<path:line or SHA>` | `<reason>` | editable / protected |
 
 ## Candidate nouns and movements
 
@@ -28,7 +28,7 @@ Record code paths, generated artifacts, device state, credentials, or unrelated 
 
 - Every in-scope claim has a canonical source or is explicitly labeled unknown/candidate.
 - The source list is sufficient to construct the proposed map change.
-- No `dead`, `leftover`, or sensitive artifact is promoted to a live source without evidence.
+- Require canonical source evidence before promoting `dead`, `leftover`, or sensitive artifacts to the live source set.
 - The inventory maps to the registered work-item scope.
 
 Record unresolved ambiguity as a concrete blocker. Human input is requested only when a true authorization or policy boundary prevents safe continuation.

@@ -31,7 +31,7 @@ Skipping registration, branching without a registered item, or treating unrelate
 2. Create a feature branch from `master` (a `master-staging` base only when that lane is active). Cite `CLAUDE.md:56` and `CLAUDE.md:72-74`.
 3. Implement only the item scope and record the `Implements: <ITEM-ID>` reference in the commit or pull request. Cite `CLAUDE.md:60-61`.
 4. Run `python3 scripts/ci/repo_gate.py` and `python3 scripts/ci/termux_smoke.py`; separate pre-existing failures from branch changes. Cite `CLAUDE.md:57-59`.
-5. Re-fetch the exact head SHA and inspect checks, jobs, steps, logs, and artifacts. Auto-promote when both required gates are green and the task outcome is verified, subject to configured repository protections. Stop for explicit authorization only at the human-only edges in `docs/proposals/AGENTIC-PERMISSIONS.md`; do not force-push, rotate credentials, or change protected settings without that authority.
+5. Re-fetch the exact head SHA and inspect checks, jobs, steps, logs, and artifacts. Auto-promote when both required gates are green and the task outcome is verified, subject to configured repository protections. Request explicit Operator authorization before force-push, credential rotation, or protected-setting changes listed in `docs/proposals/AGENTIC-PERMISSIONS.md`.
 
 ## If you change this
 

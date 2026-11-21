@@ -1,6 +1,6 @@
 # 02_design — propose one map change
 
-One job: convert a completed source inventory into a minimal, reviewable documentation proposal without editing source code or expanding the registered scope.
+One job: convert a completed source inventory into a minimal, reviewable documentation proposal within the documentation-only boundary and registered scope.
 
 ## Inputs
 
@@ -18,7 +18,7 @@ One job: convert a completed source inventory into a minimal, reviewable documen
 2. Write `output/map-change-proposal.md` with the proposed location, card type, source citations, first-order Hits/Does not hit, and links to update.
 3. State every intended documentation file change and every explicitly excluded code/source file.
 4. Check that the proposal fits the registered item, canonical ownership, one-way-reference policy, and ICM schema.
-5. If the proposal passes these checks, proceed to verification; do not wait for a human to approve or edit the intermediate proposal.
+5. Advance to verification when the proposal passes these checks; reserve human review for explicit permission and policy boundaries.
 
 ## Outputs
 
@@ -31,7 +31,7 @@ One job: convert a completed source inventory into a minimal, reviewable documen
 - Every proposed edit is supported by the inventory and canonical sources.
 - The change list is complete and remains within the authorized item.
 - First-order impact and exclusions are explicit.
-- No application-code, generated-index, credential, or device-state mutation is proposed.
+- Keep application-code, generated-index, credential, and device-state mutations outside the proposed change.
 - The proposal is deterministic enough for a second agent/checker or repository validation to verify.
 
-If scope is materially ambiguous, sources conflict, or the change crosses a human-only permission boundary, record the exact blocker. Ordinary design choice and proposal review are agent responsibilities, not mandatory human checkpoints.
+If scope is materially ambiguous, sources conflict, or the change crosses a human-only permission boundary, record the exact blocker. Assign ordinary design choices and proposal review to the agent workflow; escalate human-only boundaries.

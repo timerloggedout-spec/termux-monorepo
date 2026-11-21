@@ -15,12 +15,12 @@ One job: turn a verified ICM map change into a focused repository update, observ
 ## Process
 
 1. Confirm the verification record is complete and the diff is documentation-only.
-2. Update stable map files and the active proposal item; do not commit per-run output artifacts.
+2. Update stable map files and the active proposal item; keep per-run output artifacts in their stage output folders.
 3. Commit on the authorized feature branch with `Implements: <ITEM-ID>` in the commit or PR record.
-4. Open or update the review PR as required by the repository workflow; do not target `master-staging` unless root policy declares that lane active.
+4. Open or update the review PR as required by the repository workflow; target `master` by default and use `master-staging` when root policy declares that lane active.
 5. WAIT while checks execute. Inspect jobs, steps, logs, and artifacts; re-fetch the exact PR head SHA and compare it with the verified SHA.
 6. Promote when both required gates are green on the current head and the task outcome is verified, subject to the repository's configured permissions and protections.
-7. If a required gate fails, the head changes, the outcome is unverified, or policy blocks promotion, record `BLOCKED` with the exact evidence. Do not relabel pending or cancelled checks as success.
+7. If a required gate fails, the head changes, the outcome is unverified, or policy blocks promotion, record `BLOCKED` with exact evidence. Classify pending and cancelled checks explicitly; require terminal success on the exact head.
 
 ## Outputs
 
@@ -38,4 +38,4 @@ One job: turn a verified ICM map change into a focused repository update, observ
 
 ## Human-only boundary
 
-Do not add a routine human approval step here. Stop only when the requested operation requires an authorization listed in `docs/proposals/AGENTIC-PERMISSIONS.md` (credentials/provider login, destructive history operations, protected settings or permission grants, device-side state), or when a genuine policy conflict cannot be resolved. Follow the root FA-ADE auto-promotion rule whenever the repository permits it.
+Use automated evidence for routine progression. Request human authorization when an operation reaches a boundary listed in `docs/proposals/AGENTIC-PERMISSIONS.md` (credentials/provider login, destructive history operations, protected settings or permission grants, device-side state), or when a genuine policy conflict remains unresolved. Follow the root FA-ADE auto-promotion rule when repository protections permit it.

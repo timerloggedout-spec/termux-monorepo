@@ -1,6 +1,6 @@
 # ICM Map Maintenance Pipeline
 
-This is the agent-executed, evidence-gated maintenance pipeline for the `docs/icm/` System map. It updates documentation without refactoring application code or treating generated/device artifacts as pipeline output. It follows the repository's FA-ADE operating contract: no routine human evaluation checkpoints are inserted between stages.
+This is the agent-executed, evidence-gated maintenance pipeline for the `docs/icm/` System map. It updates documentation within the application-code and generated/device artifact ownership boundaries. It follows the repository's FA-ADE operating contract: reserve human input for explicit permission and policy boundaries.
 
 ## Where things live
 
@@ -24,10 +24,10 @@ This is the agent-executed, evidence-gated maintenance pipeline for the `docs/ic
 
 ## Execution rule
 
-The four stages are sequential evidence boundaries, not approval queues. Agents execute the authorized item through inventory, design, verification, commit/PR, adaptive WAIT, and promotion. Use the repository's required `repo_gate` and `termux_smoke` checks; queued/in-progress is not success; re-fetch the exact head and its jobs, steps, logs, and artifacts before classifying it.
+Treat the four stages as sequential evidence boundaries. Agents execute the authorized item through inventory, design, verification, commit/PR, adaptive WAIT, and promotion. Use the repository's required `repo_gate` and `termux_smoke` checks; classify queued/in-progress as pending; re-fetch the exact head and its jobs, steps, logs, and artifacts before classifying it.
 
 ## Human-only boundary
 
-No routine stage requires a person to approve an inventory, proposal, or verification record. Stop only for a permission edge explicitly reserved in root `CLAUDE.md` and `docs/proposals/AGENTIC-PERMISSIONS.md` (such as credential/provider login, destructive history operations, protected settings/permission grants, or device-side state), or for a genuine unresolved policy/scope conflict. Promotion follows the root FA-ADE rule: both required gates green and task outcome verified, subject to configured repository protections.
+Advance routine stages through their evidence criteria. Request human input for permission edges explicitly reserved in root `CLAUDE.md` and `docs/proposals/AGENTIC-PERMISSIONS.md` (such as credential/provider login, destructive history operations, protected settings/permission grants, or device-side state), or for a genuine unresolved policy/scope conflict. Promote under the root FA-ADE rule after both required gates are green and the task outcome is verified, subject to configured repository protections.
 
-The pipeline may add or revise map documentation; it must not refactor application code.
+Keep the pipeline documentation-only; route application-code refactors through their owning proposals.

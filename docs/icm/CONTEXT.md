@@ -1,6 +1,6 @@
 # termux-monorepo ICM System Map — Context
 
-This is a **system map**, not a replacement architecture specification. The nested maintenance Pipeline is agent-executed and evidence-gated under the repository's FA-ADE contract. Its job is to help a later editor answer **what is this component** and **what else moves if I change it** without loading the whole repository.
+This **system map** complements the canonical architecture specification. The nested maintenance Pipeline is agent-executed and evidence-gated under the repository's FA-ADE contract. It helps a later editor answer **what is this component** and **what else moves if I change it** with a bounded source set.
 
 ## Inputs
 
@@ -37,4 +37,4 @@ This is a **system map**, not a replacement architecture specification. The nest
 
 ## Cold-walk acceptance
 
-A fresh agent should be able to read `CLAUDE.md` plus one card and identify the source of truth, scope, and first-order impact. Validate this navigation contract through link/source checks; it is not a mandatory human approval checkpoint.
+A fresh agent should read `CLAUDE.md` plus one card and identify the source of truth, scope, and first-order impact. Validate this navigation contract through link/source checks; ordinary map changes advance through the repository's automated acceptance path.

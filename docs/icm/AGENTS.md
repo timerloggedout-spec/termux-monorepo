@@ -41,6 +41,6 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 
 ## Operating rule
 
-Root `CLAUDE.md` governs execution. ICM does not add a second approval system: agents execute authorized work, validate with repository-native evidence, use adaptive WAIT, and auto-promote when both required gates are green and the task outcome is verified. HITL is reserved for the human-only edges in `docs/proposals/AGENTIC-PERMISSIONS.md`.
+Root `CLAUDE.md` governs execution. Route ICM work through repository-native evidence, adaptive WAIT, and FA-ADE promotion when both required gates are green and the task outcome is verified. Reserve HITL for the human-only edges in `docs/proposals/AGENTIC-PERMISSIONS.md`.
 
-Read this static catalog, one relevant card or nested resource, and its cited sources. Do **not** crawl the monorepo or treat visual cards, generated maps, recovery notes, provider observations, or untracked device state as substitute sources of truth.
+Read this static catalog, one relevant card or nested resource, and its cited sources. Keep context bounded to those authoritative references; use visual cards, generated maps, recovery notes, provider observations, and device state through their owning evidence contracts.

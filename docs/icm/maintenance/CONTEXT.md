@@ -1,8 +1,8 @@
 # ICM Map Maintenance — Pipeline Contract
 
-The flow is **inventory → design → verify → promote**. It maintains the System map as a documentation layer; it does not reorganize the source tree, modify application code, or turn generated/device artifacts into map content.
+The flow is **inventory → design → verify → promote**. It maintains the System map as a documentation layer while preserving source-tree ownership, application-code boundaries, and the canonical homes of generated/device artifacts.
 
-This is a repository-native FA-ADE workflow: agents execute the authorized scope through all four stages, using deterministic checks and repository evidence as the progression criteria. Intermediate artifacts are not human approval queues.
+This is a repository-native FA-ADE workflow: agents execute the authorized scope through all four stages, using deterministic checks and repository evidence as progression criteria. Treat intermediate artifacts as evidence records and advance on their automated acceptance criteria.
 
 | Stage | Job | Working input | Output | Automated exit criteria |
 |---|---|---|---|---|
@@ -20,14 +20,14 @@ This is a repository-native FA-ADE workflow: agents execute the authorized scope
 
 ## State and progression
 
-Scan stage output directories in order. The latest stage holding a non-`.gitkeep` artifact is the current state; a promotion record indicates the recorded promotion state, not merely a commit or queued workflow.
+Scan stage output directories in order. The latest stage holding a non-`.gitkeep` artifact is the current state; distinguish the promotion record from commit existence and queued workflow state.
 
 Expected progression:
 
 `REQUESTED → INVENTORIED → PROPOSED → VERIFIED → PROMOTABLE → PROMOTED`
 
-Use `BLOCKED` with a concrete reason when required evidence is missing, a check fails, the task outcome is unverified, or a human-only permission boundary is reached. Do not convert `queued` or `in_progress` into success. Apply adaptive WAIT and re-fetch the exact head SHA and its check/run evidence before classifying the result.
+Use `BLOCKED` with a concrete reason when required evidence is missing, a check fails, the task outcome is unverified, or a human-only permission boundary is reached. Classify `queued` and `in_progress` as pending. Apply adaptive WAIT and re-fetch the exact head SHA and its check/run evidence before classifying the result.
 
 ## Human-only boundary
 
-No routine stage requires a human evaluation or sign-off. Stop only for an action explicitly reserved by root `CLAUDE.md` and `docs/proposals/AGENTIC-PERMISSIONS.md` (for example credential/provider login, destructive history operations, protected settings/permission grants, or device-side state), or for a genuine unresolved scope/policy conflict. Repository review and promotion follow the governing FA-ADE rules; this map pipeline does not add an extra approval layer.
+Advance routine stages through deterministic evidence and repository validation. Request human input for actions reserved by root `CLAUDE.md` and `docs/proposals/AGENTIC-PERMISSIONS.md` (for example credential/provider login, destructive history operations, protected settings/permission grants, or device-side state), or for a genuine unresolved scope/policy conflict. Route repository review and promotion through the governing FA-ADE rules.

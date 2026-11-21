@@ -6,7 +6,7 @@ One job: hold stable rules and blank starters used by the `maintenance/` pipelin
 
 - Root map contract: [`../CONTEXT.md`](../CONTEXT.md)
 - Maintenance pipeline: [`../maintenance/CONTEXT.md`](../maintenance/CONTEXT.md)
-- Repository operating contract: [`../../../../CLAUDE.md`](../../../../CLAUDE.md)
+- Repository operating contract: [`../../../CLAUDE.md`](../../../CLAUDE.md)
 
 ## Contents
 
@@ -18,4 +18,4 @@ One job: hold stable rules and blank starters used by the `maintenance/` pipelin
 
 ## Maintenance
 
-Edit this shelf only when a rule or blank template should apply to future maintenance runs. Put run-specific evidence and decisions in a stage `output/` file. Normal factory edits proceed through the authorized proposal and repository validation flow; no separate human approval ritual is added by ICM.
+Edit this shelf when a rule or blank template should apply to future maintenance runs. Put run-specific evidence and decisions in a stage `output/` file. Route normal factory edits through the authorized proposal and repository validation flow; reserve human input for explicit permission and policy boundaries.

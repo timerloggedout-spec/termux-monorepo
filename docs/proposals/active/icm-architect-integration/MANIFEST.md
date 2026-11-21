@@ -59,7 +59,7 @@ This change introduces the user-owned fork of **ICM Architect** as a pinned, sha
 ### 2026-11-18 — ICM-08 FA-ADE maintenance adaptation
 
 - Disposition: accepted for execution under the existing operator-authorized ICM integration.
-- Notes: Corrected the imported maintenance Pipeline so inventory, design, verification, WAIT/WATCH, and promotion advance on repository-native evidence rather than routine human evaluations. Preserved HITL only for the human-only permission boundaries in root `CLAUDE.md` and `docs/proposals/AGENTIC-PERMISSIONS.md`. Aligned the map navigation, stage contracts, stable templates, and method-coverage record with the live dual-gate and FA-ADE policy. Documentation-only scope; no application code, workflow, device, credential, or branch-protection changes.
+- Notes: Corrected the imported maintenance Pipeline so inventory, design, verification, WAIT/WATCH, and promotion advance on repository-native evidence. Reserved HITL for the human-only permission boundaries in root `CLAUDE.md` and `docs/proposals/AGENTIC-PERMISSIONS.md`. Aligned map navigation, stage contracts, stable templates, and method-coverage records with the live dual-gate and FA-ADE policy. Scope remains documentation-only; application code, workflow, device, credential, and branch-protection surfaces remain in their owning scopes.
 
 ## Checklist (process)
 

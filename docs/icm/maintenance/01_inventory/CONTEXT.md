@@ -14,12 +14,12 @@ One job: turn a requested ICM-map update into a small inventory of authoritative
 
 ## Process
 
-1. Record the requested scope in `output/request.md` if it is not already present.
+1. Record the requested scope in `output/request.md` when the request record is absent.
 2. Copy the source-inventory template to `output/source-inventory.md`.
 3. Classify only the minimum relevant sources as catalog, contract, factory, product, or dead.
 4. Mark each source as live, leftover, or ghost; identify the canonical owner and cite the exact source location.
 5. Identify the noun, process, or effect card to add, update, or leave as a stub.
-6. Record exclusions, missing evidence, and unresolved source conflicts explicitly; do not infer a source of truth.
+6. Record exclusions, missing evidence, and unresolved source conflicts explicitly; mark source authority unknown until canonical evidence resolves it.
 
 ## Outputs
 
@@ -32,7 +32,7 @@ One job: turn a requested ICM-map update into a small inventory of authoritative
 
 - The request maps to an active/authorized proposal item or an explicitly permitted maintenance task.
 - Every proposed fact has a canonical source or is labeled unknown/candidate.
-- Roles, universes, owners, and exclusions are populated; sensitive/device/generated artifacts are not promoted to live sources.
-- The inventory is internally consistent and ready for design without human sign-off.
+- Roles, universes, owners, and exclusions are populated; keep sensitive/device/generated artifacts outside the live source set until evidence establishes their canonical role.
+- The inventory is internally consistent and ready for design under automated acceptance criteria.
 
-If authorization is absent, the requested scope exceeds the registered item, or source authority cannot be resolved, record `BLOCKED` and the exact reason. Request human input only when the issue is a true authorization or policy boundary, not as a routine evaluation step.
+When authorization is missing, the requested scope exceeds the registered item, or source authority remains unresolved, record `BLOCKED` and the exact reason. Request human input for an actual authorization or policy boundary; use routine automated evaluation for other cases.

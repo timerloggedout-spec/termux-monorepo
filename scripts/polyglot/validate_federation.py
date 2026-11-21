@@ -10,7 +10,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE = ROOT / "docs" / "integrations" / "polyglot"
-ID_RE = re.compile(r"^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$")
+CAPABILITY_ID_RE = re.compile(r"^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$")
+TARGET_ID_RE = re.compile(r"^[a-z0-9][a-z0-9._-]+$")
 REQUIRED = {
     "capability": {"schema_version", "capability_id", "name", "domain", "description", "status", "provenance"},
     "technology_target": {"schema_version", "target_id", "name", "domain", "target_kind", "lifecycle_state", "sources", "specialist"},
@@ -34,10 +35,11 @@ def validate() -> list[str]:
         errors.append("capability example: required fields missing")
     if capability.get("schema_version") != "1.0.0":
         errors.append("capability example: unsupported schema_version")
-    if not ID_RE.fullmatch(str(capability.get("capability_id", ""))):
+    if not CAPABILITY_ID_RE.fullmatch(str(capability.get("capability_id", ""))):
         errors.append("capability example: invalid capability_id")
     if not isinstance(capability.get("provenance"), dict) or not capability["provenance"].get("source_uri"):
         errors.append("capability example: provenance.source_uri required")
+    capability_ids = {str(capability.get("capability_id", ""))}
     targets = targets_doc.get("targets")
     if not isinstance(targets, list) or not targets:
         errors.append("technology targets: targets must be a non-empty array")
@@ -48,7 +50,7 @@ def validate() -> list[str]:
         if missing:
             errors.append(f"technology target {index}: missing {', '.join(sorted(missing))}")
         target_id = target.get("target_id", "")
-        if not ID_RE.fullmatch(str(target_id)):
+        if not TARGET_ID_RE.fullmatch(str(target_id)):
             errors.append(f"technology target {index}: invalid target_id {target_id!r}")
         if target_id in seen:
             errors.append(f"technology targets: duplicate target_id {target_id}")
@@ -57,12 +59,22 @@ def validate() -> list[str]:
             errors.append(f"technology target {target_id}: unsupported schema_version")
         if not isinstance(target.get("sources"), list) or not target["sources"]:
             errors.append(f"technology target {target_id}: at least one source required")
+        target_capabilities = target.get("capability_ids", [])
+        if not isinstance(target_capabilities, list):
+            errors.append(f"technology target {target_id}: capability_ids must be an array")
+        else:
+            for capability_id in target_capabilities:
+                if capability_id not in capability_ids:
+                    errors.append(f"technology target {target_id}: unknown capability_id {capability_id}")
         for source in target.get("sources", []):
             if not str(source.get("uri", "")).startswith(("https://", "http://")):
                 errors.append(f"technology target {target_id}: source URI must be HTTP(S)")
+    missing_mapping = REQUIRED["mapping"] - set(mapping)
+    if missing_mapping:
+        errors.append(f"mapping example: missing {', '.join(sorted(missing_mapping))}")
     if mapping.get("schema_version") != "1.0.0":
         errors.append("mapping example: unsupported schema_version")
-    if mapping.get("capability_id") != capability.get("capability_id"):
+    if mapping.get("capability_id") not in capability_ids:
         errors.append("mapping example: capability_id does not resolve")
     if mapping.get("target_id") not in seen:
         errors.append("mapping example: target_id does not resolve")

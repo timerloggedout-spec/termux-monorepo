@@ -14,7 +14,7 @@ TOKEN_FILE = os.path.expanduser("~/.obsidian_termux_token")
 def get_token():
     # Reject symlinks so an attacker cannot redirect the token read to another file.
     token_path = Path(TOKEN_FILE)
-    if token_path.exists() and not token_path.is_symlink():
+    if token_path.exists() and not token_path.is_symlink() and not token_path.parent.is_symlink():
         with open(token_path, "r", encoding="utf-8") as f:
             return f.read().strip()
     return None

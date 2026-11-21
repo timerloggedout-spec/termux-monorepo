@@ -62,6 +62,23 @@ drain (Tranche 4) re-evaluates deferred filings as the queue
 clears. Evaluation errors defer too, with the error as the reason:
 admission never admits blind.
 
+### Deferred-admission drain (QUE #4977 Fix 3b)
+
+The scheduled `.github/workflows/swarm-admission-drain.yml` invokes
+`scripts/ops/swarm_admission_drain.py` every 15 minutes and can be
+run manually in dry-run mode. It scans only existing open
+`deferred-by-tier` filings, reuses the canonical template matcher,
+queue-picture freshness gate and dispatch-tiers v2 evaluator, and
+publishes an idempotent decision receipt. It changes only the
+mutually-exclusive admission labels; it preserves `dispatch-queued`
+and any producer-claim state.
+
+The drain is deliberately not triggered by `issues.opened` or
+`issues.reopened`. It never opens/reopens a filing, calls a provider,
+starts `build-dispatch`, or claims work. Admission and execution
+remain separate transitions. Unknown flow-tier queue state remains
+deferred; no blind admission.
+
 ## Receipts
 
 The filing's **first fleet comment is its dispatch stamp**:
@@ -78,10 +95,13 @@ point the same fields emit as plane events.
 Filed as exhibits, not parallel-built:
 
 - **project-task** (#3577, PR #4076): the form + intake workflow
-  validate and receipt filings; selection/execution happens in the
-  dispatch machinery. **The proof conversion** (below) adds the
-  block + admission in front of this existing route — the RFP/task
-  batches that routed by hand now route by contract.
+  validates and receipts filings. These filings are QDesk seat-queue
+  work: the dispatch watchdog may claim them as `seat-queue`, while
+  `dispatch_executor.eligible_filings()` explicitly excludes the
+  `project-task` label so they are not fired through a provider/build
+  arm. **The proof conversion** adds the block + admission in front
+  of this existing route — the RFP/task batches that routed by hand
+  now route by contract.
 - **delphi-rfp**: filings wake the Delphi gate by event
   (`delphi-intake.yml`). Converts by adding the block; its gate
   becomes the route.

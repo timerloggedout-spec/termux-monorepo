@@ -135,6 +135,11 @@ def test_unadmitted_filing_excluded():
     assert d["decisions"] == []
 
 
+def test_project_task_routes_to_qdesk_not_provider_executor():
+    d = _decide([_filing(5195, ("swarm-admitted", "dispatch-queued", "project-task"))])
+    assert d["decisions"] == []
+
+
 def test_oldest_first_and_one_per_run():
     d = _decide([_filing(5239), _filing(5230)], max_conversions=1)
     assert d["decisions"][0] == {"issue": 5230, "action": "fire",

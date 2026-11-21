@@ -96,6 +96,26 @@ class AgentThroughputTest(unittest.TestCase):
         self.assertIsNone(metrics.ates)
 
 
+    def test_remaining_eta_uses_observed_weighted_work_rate(self):
+        events = [
+            {"timestamp": "2026-09-14T10:00:00Z", "agent_id": "a",
+             "event": "task_completed", "complexity_score": 3.0},
+            {"timestamp": "2026-09-14T10:01:00Z", "agent_id": "a",
+             "event": "task_started"},
+        ]
+        metrics = reduce_events(events, remaining_work_units=12.0)
+        self.assertEqual(metrics.estimated_remaining_seconds, 240.0)
+        self.assertIsNone(metrics.parallel_yield)
+
+    def test_remaining_eta_preserves_missing_and_zero_rate_evidence(self):
+        from she.metrics.agent_throughput import estimate_remaining_seconds
+
+        self.assertIsNone(estimate_remaining_seconds(12, 0, 60))
+        self.assertIsNone(estimate_remaining_seconds(12, 3, 0))
+        self.assertIsNone(estimate_remaining_seconds(None, 3, 60))
+        self.assertEqual(estimate_remaining_seconds(0, 0, 0), 0.0)
+
+
 class AgentThroughputSchemaTest(unittest.TestCase):
     """Protect the telemetry boundary against undeclared sensitive fields."""
 

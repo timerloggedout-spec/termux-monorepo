@@ -1,6 +1,13 @@
 name: Tribute Dashboard Preview
 
 on:
+  push:
+    branches:
+      - fix/admin-graph-history-eta-20261119
+    paths:
+      - "apps/tribute-dashboard/**"
+      - ".github/workflows/tribute-dashboard-preview.yml"
+      - "scripts/build_dashboard_manifest.py"
   workflow_dispatch:
     inputs:
       source_ref:
@@ -20,7 +27,7 @@ permissions:
 
 jobs:
   publish-preview:
-    if: ${{ github.repository == 'timerloggedout-spec/termux-monorepo' && !contains(inputs.preview_key, '/') && !contains(inputs.preview_key, '..') }}
+    if: ${{ github.repository == 'timerloggedout-spec/termux-monorepo' && (github.event_name != 'workflow_dispatch' || (!contains(inputs.preview_key, '/') && !contains(inputs.preview_key, '..'))) }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -44,8 +51,8 @@ jobs:
           persist-credentials: false
       - name: Prepare atomic production plus preview artifact
         env:
-          SOURCE_REF: ${{ inputs.source_ref }}
-          PREVIEW_KEY: ${{ inputs.preview_key }}
+          SOURCE_REF: ${{ inputs.source_ref || github.ref_name }}
+          PREVIEW_KEY: ${{ inputs.preview_key || 'admin-graph-history' }}
         run: |
           set -euo pipefail
           if ! [[ "$PREVIEW_KEY" =~ ^[a-z0-9][a-z0-9-]{0,60}$ ]]; then

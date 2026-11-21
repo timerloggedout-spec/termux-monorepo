@@ -1,0 +1,9 @@
+name = "admin-graph-live"
+main = "worker.js"
+compatibility_date = "2026-11-16"
+workers_dev = true
+
+[[d1_databases]]
+binding = "EVENTS_DB"
+database_name = "admin-graph-runtime-events"
+database_id = "4a5ba0cf-3227-47e1-af34-de444507e92c"

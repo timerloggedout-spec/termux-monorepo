@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/integrations/schemas/integration-batch.schema.json",
+  "title": "Termux Monorepo Integration Ingestion Batch Receipt",
+  "description": "Append-only accounting receipt for one bounded event or measurement batch. It records processing facts without retaining raw batch payloads.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "batch_id",
+    "integration_id",
+    "adapter_version",
+    "record_type",
+    "status",
+    "started_at",
+    "completed_at",
+    "counts",
+    "payload_bytes",
+    "payload_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "batch_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "integration_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{1,63}$"
+    },
+    "adapter_version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "record_type": {
+      "enum": [
+        "event",
+        "measurement"
+      ]
+    },
+    "status": {
+      "enum": [
+        "emitted",
+        "partial",
+        "skipped",
+        "deferred",
+        "failed"
+      ]
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "received",
+        "inserted",
+        "duplicates",
+        "rejected"
+      ],
+      "properties": {
+        "received": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "inserted": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "duplicates": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "rejected": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "payload_bytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "payload_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "cursor_before": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 512,
+      "minLength": 1
+    },
+    "cursor_after": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 512,
+      "minLength": 1
+    },
+    "error_class": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 120
+    }
+  }
+}

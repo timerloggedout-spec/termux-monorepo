@@ -25,7 +25,7 @@ These states are independent of provider marketing claims and session-local conn
 
 ## 3. Event envelope
 
-All adapters emit the normalized event described by [integration-event.schema.json](schemas/integration-event.schema.json). Minimum requirements:
+All adapters emit the normalized event described by [integration-event.schema.json](schemas/integration-event.schema.json). New adapters use v1.1.0; existing v1.0.0 events remain valid during migration. Numerical observations use [integration-measurement.schema.json](schemas/integration-measurement.schema.json), and every ingestion transaction emits an [integration-batch.schema.json](schemas/integration-batch.schema.json) receipt. Minimum requirements:
 
 - stable event and idempotency keys;
 - repository, commit, PR, and workflow references when applicable;
@@ -34,7 +34,8 @@ All adapters emit the normalized event described by [integration-event.schema.js
 - evidence artifact references;
 - validation status;
 - provider/capture attribution;
-- privacy classification.
+- privacy classification;
+- separate event_at, observed_at and database recorded_at semantics where available.
 
 Do not emit raw prompts, completions, cookies, tokens, credentials, session transcripts, or unredacted private data. Keep detailed provider artifacts in the approved source system or restricted artifact store and reference them by opaque ID/URI.
 
@@ -47,7 +48,7 @@ Do not emit raw prompts, completions, cookies, tokens, credentials, session tran
 - Require explicit authorization for writes, paid inference, data export/publication, deployment, campaign sends, and physical device/robot actions.
 - Enforce bounded retries, concurrency, timeouts, rate limits, and spend.
 - Preserve source IDs and immutable repository SHAs.
-- Make ingestion idempotent and append-only; corrections are new events with explicit supersession links, not silent mutation.
+- Make ingestion idempotent and append-only; corrections are new events with explicit supersession links, not silent mutation. Use bounded batches with explicit record/byte ceilings, one transaction per batch, durable accepted/duplicate/failed receipts, and cursor advancement only after durable acknowledgement. Persist `cursor_before` on the first chunk and `cursor_after` on the final chunk; read the latest acknowledged cursor from the derived cursor view. Separate migration, writer and read-only credentials; never use the legacy owner URL or auto-apply DDL from the runtime writer.
 - Keep unknown actor/model attribution null; GitHub actor identity is not provider authorship.
 
 ## 5. Provider-specific guardrails
@@ -69,11 +70,12 @@ Before promotion:
 1. Unit-test adapter mapping, redaction, pagination, retries, idempotency, and failure states.
 2. Run contract tests against sanitized fixtures.
 3. Verify provider access and least-privilege scopes in the intended runtime.
-4. Compare event output against the JSON Schema.
+4. Compare event and measurement output against their JSON Schemas; preserve v1.0.0 compatibility.
 5. Verify no secrets or raw sensitive content in logs/artifacts.
 6. Run repository gates on the same immutable commit SHA.
-7. Record current workflow/run/job/artifact references.
-8. Re-fetch the final repository and provider state before declaring validated.
+7. Record current workflow/run/job/artifact references and per-batch accepted/duplicate/rejected counts.
+8. Keep database project resolution read-only; an adapter must never create a new Neon project as an ingestion fallback.
+9. Re-fetch the final repository and provider state before declaring validated.
 
 ## 7. Failure semantics
 

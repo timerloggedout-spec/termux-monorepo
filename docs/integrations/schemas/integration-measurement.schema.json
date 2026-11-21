@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/integrations/schemas/integration-measurement.schema.json",
+  "title": "Termux Monorepo Integration Measurement",
+  "description": "Append-only numeric observation linked to one canonical integration event. Missing measurements remain null with an explicit status.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "measurement_id",
+    "event_id",
+    "integration_id",
+    "metric_name",
+    "metric_type",
+    "value",
+    "unit",
+    "temporality",
+    "measurement_status",
+    "observed_at",
+    "dimensions",
+    "provenance",
+    "idempotency_key"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "measurement_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "integration_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{1,63}$"
+    },
+    "metric_name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+    },
+    "metric_type": {
+      "enum": [
+        "counter",
+        "gauge",
+        "rate",
+        "duration",
+        "percentage"
+      ]
+    },
+    "value": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "unit": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 64,
+      "minLength": 1
+    },
+    "temporality": {
+      "enum": [
+        "instant",
+        "delta",
+        "cumulative"
+      ]
+    },
+    "measurement_status": {
+      "enum": [
+        "measured",
+        "estimated",
+        "activity_only",
+        "not_established"
+      ]
+    },
+    "event_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "dimensions": {
+      "type": "object",
+      "maxProperties": 32,
+      "additionalProperties": {
+        "type": [
+          "string",
+          "number",
+          "integer",
+          "boolean",
+          "null"
+        ]
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider",
+        "capture_method",
+        "attribution"
+      ],
+      "properties": {
+        "provider": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "capture_method": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "attribution": {
+          "enum": [
+            "direct",
+            "provider_reported",
+            "derived",
+            "unknown"
+          ]
+        },
+        "adapter_version": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 100
+        }
+      }
+    },
+    "evidence_ref": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri",
+      "maxLength": 1000
+    },
+    "confidence": {
+      "enum": [
+        "confirmed",
+        "high",
+        "medium",
+        "low",
+        "unknown"
+      ]
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "supersedes": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 200
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "measurement_status": {
+            "enum": [
+              "measured",
+              "estimated"
+            ]
+          }
+        },
+        "required": [
+          "measurement_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "value": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "measurement_status": {
+            "enum": [
+              "activity_only",
+              "not_established"
+            ]
+          }
+        },
+        "required": [
+          "measurement_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "value": {
+            "const": null
+          }
+        }
+      }
+    }
+  ]
+}

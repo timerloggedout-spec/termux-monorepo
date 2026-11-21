@@ -9,7 +9,12 @@ Integration Intelligence is the governed catalog and evidence boundary for exter
 - [Integration registry](INTEGRATION-REGISTRY.md) — human-readable capabilities, priorities, and adoption states.
 - [Machine-readable registry](registry.json) — structured inventory for automation and cockpit consumers.
 - [Adapter contract](ADAPTER-CONTRACT.md) — read/write boundaries, event normalization, provenance, and validation.
-- [Event JSON Schema](schemas/integration-event.schema.json) — canonical normalized event envelope.
+- [Event JSON Schema](schemas/integration-event.schema.json) — canonical normalized event envelope (1.0.0 compatibility + 1.1.0 event/observation clocks).
+- [Measurement Schema](schemas/integration-measurement.schema.json) — append-only time-series points linked to event IDs.
+- [Batch Receipt Schema](schemas/integration-batch.schema.json) — ingestion accounting and cursor receipts.
+- [Unified Feed Ingestion](UNIFIED-FEED-INGESTION.md) — shared event, measurement, batch, database and multi-surface architecture.
+- [Unified feed implementation plan](../superpowers/plans/2026-11-14-unified-feed-ingestion.md).
+- Batch writer: `scripts/ops/integration_event.py`; offline tests: `tests/test_integration_event_batch.py`.
 - [Superpowers design](../superpowers/specs/2026-11-02-integration-intelligence-design.md) and [implementation plan](../superpowers/plans/2026-11-02-integration-intelligence.md).
 - [CEEL architecture](../superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md), [platform comparison](PLATFORM-COMPARISON.md), [event contract](CEEL-EVENT-CONTRACT.md), and [capability opportunity graph](capability-opportunity-graph.json).
 

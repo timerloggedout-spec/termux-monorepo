@@ -119,7 +119,7 @@ The repository’s public language is deliberately compact, but never opaque. **
 
 ## 0. Fast start: choose the right map
 
-Start with **one** of these routes. Do not load the entire repository merely because it is available.
+Start with **one** of these routes. Use [architecture.md](architecture.md) for repository-wide taxonomy, directory structure, and data-flow orientation; use [docs/icm/CLAUDE.md](docs/icm/CLAUDE.md) to route into one bounded component.
 
 | Need | Start here | What it owns |
 |---|---|---|

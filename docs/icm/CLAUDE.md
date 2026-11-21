@@ -2,12 +2,13 @@
 
 This is the agent-navigable system map for `termux-monorepo`. It routes an editor to the smallest authoritative source set needed to understand a component or plan a change; source code, governing documents, and generated indexes remain the sources of truth.
 
-Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect_fork/README.md) method: hierarchy scopes context, cards record change impact, and the filesystem makes the current documentation surface inspectable.
+Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect_fork/README.md) method: hierarchy scopes context, cards record change impact, and the filesystem makes the current documentation surface inspectable. For repository-wide orientation, read [`architecture.md`](../../architecture.md) before selecting a bounded ICM route.
 
 ## Where things live
 
 | Shelf | What it holds |
 |---|---|
+| [`../../architecture.md`](../../architecture.md) | Repository-wide architecture entry: taxonomy, data flow, and directory map. |
 | [`objects/platform/`](objects/platform/CONTEXT.md) | The Android/Termux execution plane and its device/service boundary. |
 | [`objects/operations/`](objects/operations/CONTEXT.md) | ArchWiz and the bounded operational tool surface, including file-backed visual review. |
 | [`objects/knowledge/`](objects/knowledge/CONTEXT.md) | Navigation, routing governance, pinned reference inputs, methodology references, indices, and generated-map boundaries. |
@@ -22,6 +23,7 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 
 | If you need to… | Read | Then stop at |
 |---|---|---|
+| orient across the monorepo | [`../../architecture.md`](../../architecture.md) | the relevant plane, then one owning ICM card |
 | orient before a change | [`CONTEXT.md`](CONTEXT.md) | the one relevant object or process card |
 | change the Android execution plane | [`objects/platform/termux-agentic-hub.md`](objects/platform/termux-agentic-hub.md) | the cited architecture source |
 | check device or service assumptions | [`objects/platform/blu-b160v-free-services.md`](objects/platform/blu-b160v-free-services.md) | the declared envelope and the required re-verification boundary |

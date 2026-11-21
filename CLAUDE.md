@@ -42,6 +42,7 @@ BIUDL is the compounding development motion: a broad system view selects a focus
 ## Governance sequence (read in order)
 
 1. **This file** — orientation + hard rules + BIUDL + FA-ADE
+1a. [`architecture.md`](architecture.md) — repository-wide system taxonomy, directory map, and data-flow entry
 2. [`docs/proposals/registry.yaml`](docs/proposals/registry.yaml) — what is active
 3. [`docs/proposals/PROCESS.md`](docs/proposals/PROCESS.md) — post / debate / consensus / close
 4. [`docs/ARCHW1Z-GATE.md`](docs/ARCHW1Z-GATE.md) — dual gates (automated)
@@ -97,6 +98,7 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 | Gates | `docs/ARCHW1Z-GATE.md` |
 | Status | `docs/ARCHW1Z-STATUS.md` |
 | Permissions / human edges | `docs/proposals/AGENTIC-PERMISSIONS.md` |
+| Repository architecture | `architecture.md` |
 | ICM task routing | `docs/icm/CLAUDE.md` |
 | Skills + adaptive wait | `docs/ops/SKILLS-INVENTORY.md` |
 | Session / lane SSOT | `docs/ops/LANE-MATRIX.md` |

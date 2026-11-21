@@ -5,6 +5,10 @@
 **Canonical for:** where the canonical architecture spec for each domain lives
 **Last verified:** 2026-10-28, against the live master tree at `9fd23dc2` (docs/ = 2,439 files; docs/ops root = 288 Markdown files; docs/ops/generated = 1,583 files; docs/architecture = 13 Markdown + 3 Mermaid + 1 JSON receipt)
 
+## Entry point
+
+Start with the repository-wide [`architecture.md`](../../architecture.md) for the system taxonomy, directory map, and consolidated data-flow view. This index remains the authority for canonical architecture specs by domain.
+
 ## How this surface is organized
 
 - Canonical architecture specs and decision records live in `docs/architecture/`.

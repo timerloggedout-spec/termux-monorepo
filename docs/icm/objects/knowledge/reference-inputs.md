@@ -6,13 +6,13 @@
 | Cluster | knowledge |
 | Universe | live |
 | Status | verified |
-| Entity | The pinned external references that inform, but do not operate, the monorepo ICM workspace |
+| Entity | Pinned external references that inform the monorepo ICM workspace; the workspace retains execution authority |
 
 ## What this is
 
-The monorepo is the ICM workspace. Its own `docs/icm/` catalog, contracts, cards, process definitions, and maintenance Pipeline are the **operative** method. The shallow submodules under `refTemplates/smods/` are read-only **reference inputs**: they supply a form-selection skill, full conventions/examples, layered-routing precedent, filesystem-memory evidence, and an optional visual-review pattern. Separately, metadata-first entries under `refTemplates/19_Provider_Inference_Catalogs/` pin upstream SDK source identity and architecture evidence; they remain source records rather than submodules or runtime dependencies. These reference inputs inform method selection while governance retains change authority.
+The monorepo is the ICM workspace. Its own `docs/icm/` catalog, contracts, cards, process definitions, and maintenance Pipeline are the **operative** method. The shallow submodules under `refTemplates/smods/` are read-only **reference inputs**: they supply a form-selection skill, full conventions/examples, layered-routing precedent, filesystem-memory evidence, and an optional visual-review pattern. Separately, metadata-first entries under `refTemplates/19_Provider_Inference_Catalogs/` pin upstream SDK source identity and architecture evidence; they are source records with their own review path. These references inform method selection while governance retains change authority.
 
-| Reference input | Use in this repository | Do not treat as |
+| Reference input | Use in this repository | Boundary |
 |---|---|---|
 | `icm-architect_fork` | Form selection, map audit, templates, and walk-test method | Runtime agent or source-of-truth monorepo policy |
 | `interpretable-context-methodology_fork` | Full conventions, example workspaces, and workspace-builder patterns | A second live repository workspace |
@@ -29,7 +29,7 @@ Open this card when selecting a reference, updating a pinned fork, deciding whet
 ## First-order impact
 
 **Hits:** custom-reference Gitlinks, metadata-first provider catalog sources, the ICM map, method coverage, and the human review boundary.
-**Does not hit:** application runtime, Termux MCP/device access, external service accounts, or a new deployment automatically.
+**Unchanged surfaces:** application runtime, Termux MCP/device access, external service accounts and deployment authority.
 
 ## Evidence
 

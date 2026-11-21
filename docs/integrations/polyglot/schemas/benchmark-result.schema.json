@@ -247,6 +247,32 @@
           }
         }
       }
+    },
+    {
+      "if": {
+        "properties": {
+          "advantage_claim": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "advantage_claim"
+        ]
+      },
+      "then": {
+        "properties": {
+          "correctness": {
+            "const": "pass"
+          },
+          "parity_status": {
+            "const": "above"
+          }
+        },
+        "required": [
+          "correctness",
+          "parity_status"
+        ]
+      }
     }
   ]
 }

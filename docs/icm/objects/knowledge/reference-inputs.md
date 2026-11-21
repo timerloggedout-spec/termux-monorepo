@@ -10,7 +10,7 @@
 
 ## What this is
 
-The monorepo is the ICM workspace. Its own `docs/icm/` catalog, contracts, cards, process definitions, and maintenance Pipeline are the **operative** method. The shallow submodules under `refTemplates/smods/` are read-only **reference inputs**: they supply a form-selection skill, full conventions/examples, layered-routing precedent, filesystem-memory evidence, and an optional visual-review pattern. They do not run automatically, replace governance, or authorize code changes.
+The monorepo is the ICM workspace. Its own `docs/icm/` catalog, contracts, cards, process definitions, and maintenance Pipeline are the **operative** method. The shallow submodules under `refTemplates/smods/` are read-only **reference inputs**: they supply a form-selection skill, full conventions/examples, layered-routing precedent, filesystem-memory evidence, and an optional visual-review pattern. Separately, metadata-first entries under `refTemplates/19_Provider_Inference_Catalogs/` pin upstream SDK source identity and architecture evidence; they remain source records rather than submodules or runtime dependencies. These reference inputs inform method selection while governance retains change authority.
 
 | Reference input | Use in this repository | Do not treat as |
 |---|---|---|
@@ -28,7 +28,7 @@ Open this card when selecting a reference, updating a pinned fork, deciding whet
 
 ## First-order impact
 
-**Hits:** the custom-reference Gitlinks, the ICM map, method coverage, and the human review boundary.
+**Hits:** custom-reference Gitlinks, metadata-first provider catalog sources, the ICM map, method coverage, and the human review boundary.
 **Does not hit:** application runtime, Termux MCP/device access, external service accounts, or a new deployment automatically.
 
 ## Evidence

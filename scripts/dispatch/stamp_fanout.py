@@ -66,8 +66,32 @@ def emit(stamp: dict, root: Path, head_sha: str | None = None) -> dict:
     usage = stamp.get("usage") or {"status": "not_established", "value": None, "unit": None, "source": None}
     if usage.get("status") not in ("measured", "estimated"):
         usage = {**usage, "value": None}
+
+    # Consumption carry (fix leg, owner 2026-11-03): a stamp that
+    # carries raw invoke token counts but no adjudicated usage shape
+    # gets the filled measured shape here, so every plane sees the
+    # same record. Null sides stay null; only present parts sum.
+    def _num(v):
+        return isinstance(v, (int, float)) and not isinstance(v, bool) and v >= 0
+    _tin, _tout = usage.get("tokens_in"), usage.get("tokens_out")
+    if usage.get("status") not in ("measured", "estimated") and (_num(_tin) or _num(_tout)):
+        usage = {**usage, "status": "measured", "source": "provider-response",
+                 "unit": "tokens",
+                 "value": (_tin if _num(_tin) else 0) + (_tout if _num(_tout) else 0),
+                 "method": "fleet-self-count/response-usage"}
     provider = stamp.get("provider")
     model = stamp.get("model")
+
+    # Join-key carry (Convergence addendum, 2026-11-03): a record
+    # whose quota.pool/slice is null cannot join allocation pools
+    # and lands in the consumption gap as UNJOINED. Pool defaults
+    # to the provider (allocations.json pool ids are provider ids);
+    # slice defaults to the focus the dispatch drew on, when the
+    # dispatch context carries one. Stamped values always win.
+    if not quota.get("pool") and provider:
+        quota = {**quota, "pool": provider}
+    if quota.get("slice") is None and stamp.get("focus"):
+        quota = {**quota, "slice": stamp["focus"]}
     instance = stamp.get("instance")
     run_url = None
     if run.get("run_id"):
@@ -242,7 +266,9 @@ def emit(stamp: dict, root: Path, head_sha: str | None = None) -> dict:
         "exploration": bool(stamp.get("exploration", False)),
         "window": None,
         "usage": {"status": usage.get("status", "not_established"), "value": usage.get("value"),
-                  "unit": usage.get("unit"), "source": usage.get("source")},
+                  "unit": usage.get("unit"), "source": usage.get("source"),
+                  "tokens_in": usage.get("tokens_in"), "tokens_out": usage.get("tokens_out"),
+                  "method": usage.get("method")},
         "metrics": {
             "task_class": stamp.get("task_class"),
             "quota_cost_class": quota.get("cost_class"),

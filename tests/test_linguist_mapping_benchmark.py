@@ -20,26 +20,39 @@ def test_benchmark_generation_is_deterministic():
     second = build_dataset(mappings, seed=42)
     assert first == second
     assert first["schema"] == "linguist-mapping-benchmark/v1"
-    assert first["stats"]["mappings"] == 4
-    assert first["stats"]["queries"] == 4
+    assert first["stats"]["mappings"] == 30
+    assert first["stats"]["queries"] == 30
+    assert first["stats"]["evidence_status"] == {
+        "candidate": 14, "proof-verified": 2, "spec-level": 11, "unspecified": 3
+    }
 
 
-def test_qrels_preserve_exact_and_approximate_grades():
+def test_qrels_preserve_grade_kernel_and_evidence_state():
     dataset = build_dataset(load_mappings())
     by_id = dataset["corpus"]
     assert by_id["fleet-lean-matrix-cell"]["grade"] == "exact"
     assert by_id["fleet-lean-matrix-composition"]["grade"] == "approximate"
     assert by_id["fleet-lean-matrix-composition"]["kernel"]
+    assert by_id["fleet-lean-function-composition"]["evidence_status"] == "proof-verified"
+    assert by_id["fleet-lean-matrix-identity"]["evidence_status"] == "proof-verified"
+    assert by_id["nomenclature-map-bind-not-compose"]["grade"] == "analogue"
+    assert by_id["nomenclature-map-bind-not-compose"]["evidence_status"] == "candidate"
+    assert by_id["nomenclature-map-bind-not-compose"]["relation"] == "related_match"
 
 
 def test_same_surface_across_domains_is_reported_as_conflict_group():
     dataset = build_dataset(load_mappings())
-    assert len(dataset["conflicts"]) == 1
-    conflict = dataset["conflicts"][0]
-    assert conflict["source_form"] == "∘"
-    assert set(conflict["mapping_ids"]) == {
+    conflicts = {
+        conflict["source_form"]: set(conflict["mapping_ids"])
+        for conflict in dataset["conflicts"]
+    }
+    assert conflicts["∘"] == {
         "fleet-lean-matrix-composition",
-        "fixture-only-lean-function-composition",
+        "fleet-lean-function-composition",
+    }
+    assert conflicts["dual_valence.conversion_operator"] == {
+        "nomenclature-map-dv-conversion-morphism",
+        "nomenclature-map-dv-conversion-homomorphism",
     }
 
 
@@ -49,15 +62,15 @@ def test_domain_scoping_keeps_overloaded_symbol_qrels_separate():
         query_id for query_id, query in dataset["queries"].items()
         if query["domain"] == "matrices" and query["semantic_id"] == "matrix.composition"
     )
-    category_query = next(
+    function_query = next(
         query_id for query_id, query in dataset["queries"].items()
         if query["domain"] == "functions"
     )
     assert dataset["qrels"][matrix_query] == {"fleet-lean-matrix-composition": 1}
-    assert dataset["qrels"][category_query] == {"fixture-only-lean-function-composition": 1}
+    assert dataset["qrels"][function_query] == {"fleet-lean-function-composition": 1}
     assert set(dataset["candidates"][matrix_query]) >= {
         "fleet-lean-matrix-composition",
-        "fixture-only-lean-function-composition",
+        "fleet-lean-function-composition",
     }
 
 
@@ -92,7 +105,7 @@ def test_retrieval_metrics_reward_correct_top_rank():
         for query_id, relevant in dataset["qrels"].items()
     }
     scored = evaluate_rankings(dataset, rankings, ks=(1, 3))
-    assert scored["query_count"] == 4
+    assert scored["query_count"] == len(dataset["queries"])
     assert scored["aggregate"]["mrr"] == 1.0
     assert scored["aggregate"]["precision@1"] == 1.0
     assert scored["aggregate"]["recall@1"] == 1.0

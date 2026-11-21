@@ -158,17 +158,24 @@ def _top_scalar(lines: list[str], key: str) -> str:
     return ""
 
 
+# Bolt optimization: Pre-allocate classification tuples at module scope
+VALIDATION_TOKENS = ("scorecard", "codeql", "dependency", "actionlint", "repo-gate", "termux-smoke", "integrity")
+RECONCILIATION_TOKENS = ("wiki", "reconcile", "fork-sync", "repository-surface", "workflow-surface")
+PEER_TOKENS = ("peer", "provider", "gemini", "pull request review", "pr review")
+AGENTIC_TOKENS = ("jules", "deepseek", "agentic", "agent-", "hub")
+
+
 def _domain(path: str, name: str) -> str:
     value = f"{path} {name}".lower()
-    if any(token in value for token in ("scorecard", "codeql", "dependency", "actionlint", "repo-gate", "termux-smoke", "integrity")):
+    if any(token in value for token in VALIDATION_TOKENS):
         return "validation-security"
     if "context-relationship" in value or "proposal" in value:
         return "governance-relationships"
-    if any(token in value for token in ("wiki", "reconcile", "fork-sync", "repository-surface", "workflow-surface")):
+    if any(token in value for token in RECONCILIATION_TOKENS):
         return "reconciliation-publishing"
-    if any(token in value for token in ("peer", "provider", "gemini", "pull request review", "pr review")):
+    if any(token in value for token in PEER_TOKENS):
         return "peer-provider-review"
-    if any(token in value for token in ("jules", "deepseek", "agentic", "agent-", "hub")):
+    if any(token in value for token in AGENTIC_TOKENS):
         return "agentic-development"
     return "repository-automation"
 
@@ -194,6 +201,8 @@ def _triggers(lines: list[str]) -> tuple[str, ...]:
 
 
 def _schedules(text: str) -> tuple[str, ...]:
+    if "cron:" not in text:
+        return ()
     return tuple(sorted(RE_CRON.findall(text)))
 
 
@@ -204,6 +213,8 @@ def _jobs(lines: list[str]) -> tuple[str, ...]:
 
 
 def _pins(text: str) -> tuple[str, ...]:
+    if "@" not in text:
+        return ()
     values = RE_PINS.findall(text)
     return tuple(sorted(set(values)))
 
@@ -221,9 +232,9 @@ def parse_workflow(
     relative = path.relative_to(root).as_posix()
 
     name = ""
-    concurrency_lines: list[str] = []
-    on_lines: list[str] = []
-    jobs_lines: list[str] = []
+    concurrency_parts: list[str] = []
+    triggers: list[str] = []
+    jobs: list[str] = []
 
     active_section = None
     for line in lines:
@@ -245,31 +256,24 @@ def parse_workflow(
             active_section = None
 
         if active_section == "concurrency":
-            concurrency_lines.append(line)
+            stripped = line.strip()
+            if stripped:
+                concurrency_parts.append(stripped)
         elif active_section == "on":
-            on_lines.append(line)
+            match = RE_TRIGGER.match(line)
+            if match:
+                triggers.append(match.group(1))
         elif active_section == "jobs":
-            jobs_lines.append(line)
+            match = RE_JOB.match(line)
+            if match:
+                jobs.append(match.group(1))
 
     if not name:
         name = path.stem
 
-    concurrency = " ".join(l.strip() for l in concurrency_lines if l.strip()) if concurrency_lines else ""
-
-    triggers = []
-    for l in on_lines:
-        match = RE_TRIGGER.match(l)
-        if match:
-            triggers.append(match.group(1))
+    concurrency = " ".join(concurrency_parts)
     triggers_tuple = tuple(sorted(set(triggers)))
-
-    jobs = []
-    for l in jobs_lines:
-        match = RE_JOB.match(l)
-        if match:
-            jobs.append(match.group(1))
     jobs_tuple = tuple(sorted(set(jobs)))
-
     schedules_tuple = _schedules(text)
     pins_tuple = _pins(text)
 
@@ -336,14 +340,24 @@ def diagram_asset_manifest(root: Path = ROOT) -> dict[str, object]:
 
 
 def build_catalog(root: Path = ROOT) -> dict[str, object]:
+    paths = control_plane_paths(root)
     workflow_paths = sorted((root / WORKFLOW_DIR).glob("*.yml"))
+    # Bolt optimization: Pre-populate content_cache with control plane files in a single pass
+    # so fingerprint() performs zero redundant disk reads.
     content_cache: dict[Path, bytes] = {}
+    for path in paths:
+        try:
+            content_cache[path] = path.read_bytes()
+        except OSError:
+            pass
+
     records = []
     for path in workflow_paths:
-        data = path.read_bytes()
-        content_cache[path] = data
+        data = content_cache.get(path)
+        if data is None:
+            data = path.read_bytes()
+            content_cache[path] = data
         records.append(asdict(parse_workflow(path, root, content_bytes=data)))
-    paths = control_plane_paths(root)
     return {
         "schema_version": SCHEMA_VERSION,
         "source_fingerprint": fingerprint(paths, root, content_cache=content_cache),

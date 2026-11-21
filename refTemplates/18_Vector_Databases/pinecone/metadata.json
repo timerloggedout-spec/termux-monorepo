@@ -1,0 +1,52 @@
+{
+  "schema_version": "ref-template-source/v1",
+  "name": "pinecone-vector-database",
+  "category": "vector-database",
+  "observed_at": "2026-11-21T16:23:00Z",
+  "authority": "reference-metadata-only",
+  "sources": [
+    {
+      "id": "pinecone-managed",
+      "role": "managed-vector-database",
+      "url": "https://docs.pinecone.io/",
+      "revision": null,
+      "license": "vendor-service"
+    },
+    {
+      "id": "pg-pinecone",
+      "role": "postgres-extension-and-experiment-treatment",
+      "url": "https://github.com/pinecone-io/pg_pinecone",
+      "revision": "d860f6fd3a21733d75ed2cde2b5b5e71e79bd3ac",
+      "license": "Apache-2.0"
+    },
+    {
+      "id": "pgvector",
+      "role": "postgres-vector-baseline",
+      "url": "https://github.com/pgvector/pgvector",
+      "revision": "1d56580cda45d20b6b197fbe325fb0f6301e33cd",
+      "license": "PostgreSQL License"
+    },
+    {
+      "id": "pinecone-mcp",
+      "role": "optional-developer-mcp-interface",
+      "url": "https://github.com/pinecone-io/pinecone-mcp",
+      "revision": "275aa5cb8b4dc7fb6471f3483cb05191c338b61c",
+      "license": "Apache-2.0"
+    }
+  ],
+  "repository_consumer": {
+    "client": "scripts/pinecone/pinecone_client.py",
+    "sync": "scripts/pinecone/knowledge_sync.py",
+    "workflow": ".github/workflows/pinecone-knowledge.yml",
+    "tests": "tests/test_pinecone_knowledge.py",
+    "index": "termux-knowledge"
+  },
+  "doe_design": "experiments/doe/pinecone-vector-store/DESIGN.json",
+  "smod": {
+    "target": "refTemplates/smods/pg_pinecone_fork",
+    "upstream": "https://github.com/pinecone-io/pg_pinecone.git",
+    "upstream_revision": "d860f6fd3a21733d75ed2cde2b5b5e71e79bd3ac",
+    "state": "candidate_pending_custom_fork",
+    "gitlink_present": false
+  }
+}

@@ -1391,3 +1391,27 @@ proposals:
     gates_required:
       - repo-gate
       - termux-smoke
+
+  - id: pinecone-vector-store-comparison
+    title: "Pinecone vector-store reference and controlled PostgreSQL comparison"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/pinecone-vector-store-comparison/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues: []
+    related_prs: []
+    related_branches:
+      - feat/pinecone-vector-store-doe-20261121-v2
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke
+      - refTemplates-inventory
+      - doe-family-contract

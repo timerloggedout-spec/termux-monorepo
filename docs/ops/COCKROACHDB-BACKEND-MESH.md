@@ -1,6 +1,6 @@
 # CockroachDB — Backend Mesh Integration and Continuity Contract
 
-**Status:** IMPLEMENTATION SLICE — native writer + CI integration test; hosted-cluster admission pending an owner-managed connection secret and a forced continuity drill.
+**Status:** IMPLEMENTATION SLICE — native writer + TLS single-node CI contract; three-node failover drill is license-gated; hosted-cluster admission awaits owner-managed credentials and measured continuity evidence.
 
 ## Decision
 
@@ -35,7 +35,7 @@ The providers remain independent stores. A CockroachDB write does not imply Neon
 | CockroachDB schema | `ops/cockroachdb/lane-events-schema.sql` | Idempotent table/index creation |
 | CockroachDB insert | `ops/cockroachdb/lane-events-insert.sql` | Append event by canonical event key |
 | Writer grants | `ops/cockroachdb/lane-events-writer-grants.sql` | Isolated database and least-privilege runtime identity |
-| Writer | `scripts/ops/cockroach_lane_event.py` | TLS-verified connection, schema, record and count |
+| Writer | `scripts/ops/cockroach_lane_event.py` | TLS-verified runtime insert/count; schema migration uses a separate credential |
 | Tests | `tests/test_cockroach_lane_event.py` | URI security, canonical event identity, explicit skip |
 | Reference record | `docs/submodules/cockroachdb.md` | Upstream provenance and submodule admission boundary |
 
@@ -59,14 +59,15 @@ Record observed values from drills. The design target is an independently replay
 5. Keep the runtime role on SELECT/INSERT; reserve DDL, UPDATE and DELETE for the migration owner.
 6. Replay from canonical JSONL using the existing event key.
 7. Capture sink outcome and run identity in workflow logs and receipts.
-8. Run a restore drill before assigning a production continuity grade.
+8. Run an external-storage restore drill before assigning a production continuity grade.
 
 ## Validation
 
-The dedicated workflow runs two disposable contracts. The adapter contract starts a TLS-secured single-node cluster, provisions the least-privilege writer, applies the schema, verifies insert/readback, checks UPDATE/DELETE denial and runs offline unit tests. The replicated-continuity contract starts three TLS-secured nodes, writes through node one, verifies node-two readback, stops node one, verifies continuity through node two, then backs up, drops and restores the lane-events database from node-local test storage. This exercises one-node failure tolerance and database restore in an ephemeral cluster; hosted multi-region availability and external-storage disaster recovery remain separate drills.
+The dedicated workflow runs a TLS-secured single-node contract without a license key. It provisions least-privilege writer/migrator identities, applies the schema, verifies insert/readback, checks UPDATE/DELETE denial, runs adapter tests, and backs up/drops/restores the lane-events database from node-local test storage. A separate three-node node-failure drill runs only when `COCKROACH_LICENSE_KEY` contains a valid license. Hosted multi-region availability and external-storage disaster recovery remain separate drills.
 
 ## Upstream references
 
 - https://www.cockroachlabs.com/docs/stable/developer-basics.html
 - https://www.cockroachlabs.com/docs/stable/architecture/overview.html
 - https://github.com/cockroachdb/cockroach
+- https://www.cockroachlabs.com/blog/cockroachdb-source-code-moved-private/

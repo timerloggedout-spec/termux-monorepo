@@ -208,8 +208,8 @@ class PolyglotFederationTests(unittest.TestCase):
         manifest = (ROOT / "docs" / "proposals" / "active" / "polyglot-linguist-federation" / "MANIFEST.md").read_text(encoding="utf-8")
         readme = (BASE / "README.md").read_text(encoding="utf-8")
         contract = manifest + "\n" + readme
-        self.assertRegex(contract, r"mandatory.{0,120}DerpWiki|DerpWiki.{0,120}mandatory")
-        self.assertIn("zero visitor opt-in", contract)
+        derpwiki_lines = [line for line in contract.splitlines() if "DerpWiki" in line]
+        self.assertTrue(any("mandatory" in line and "zero visitor opt-in" in line for line in derpwiki_lines))
         z3_lines = [line for line in contract.splitlines() if "Z3π∅" in line]
         self.assertTrue(any("public user interfaces" in line for line in z3_lines))
         self.assertIn("docs/ops/ACTIONS-MATRIX.md", contract)

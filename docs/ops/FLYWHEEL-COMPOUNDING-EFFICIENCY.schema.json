@@ -1,0 +1,327 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/FLYWHEEL-COMPOUNDING-EFFICIENCY.schema.json",
+  "title": "Flywheel Compounding Efficiency Observation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "method",
+    "observation_id",
+    "observed_at",
+    "cohort_id",
+    "task_id",
+    "manager_policy_id",
+    "source_ref",
+    "source_sha",
+    "task_contract_sha256",
+    "environment_fingerprint",
+    "validation_suite_sha256",
+    "cohort_manifest_sha256",
+    "cost_normalization_id",
+    "dimensions",
+    "costs",
+    "realization",
+    "evidence_refs"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "method": {
+      "const": "flywheel-compounding-efficiency/v1"
+    },
+    "observation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "cohort_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "manager_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "task_contract_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "environment_fingerprint": {
+      "type": "string",
+      "minLength": 1
+    },
+    "validation_suite_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "cohort_manifest_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "cost_normalization_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "direct_verified_outcome",
+        "downstream_unlock",
+        "recurrence_eliminated",
+        "reuse_leverage",
+        "reliability_risk_reduction",
+        "evidence_confidence"
+      ],
+      "properties": {
+        "direct_verified_outcome": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "downstream_unlock": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "recurrence_eliminated": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "reuse_leverage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "reliability_risk_reduction": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "evidence_confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "costs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "execution_effort",
+        "elapsed_delay",
+        "context_consumption",
+        "feedback_cycles",
+        "conflicts_retries",
+        "human_intervention",
+        "provider_cost"
+      ],
+      "properties": {
+        "execution_effort": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "elapsed_delay": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "context_consumption": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "feedback_cycles": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "conflicts_retries": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "human_intervention": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "provider_cost": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "realization": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "evidence_refs": {
+      "$ref": "#/$defs/evidence_refs"
+    },
+    "baseline": {
+      "$ref": "#/$defs/baseline"
+    },
+    "derived": {
+      "$ref": "#/$defs/derived"
+    }
+  },
+  "$defs": {
+    "evidence_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "uri",
+          "sha256"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uri": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "observation_id",
+        "observed_at",
+        "source_ref",
+        "source_sha",
+        "fce_raw",
+        "cohort_id",
+        "task_id",
+        "task_contract_sha256",
+        "environment_fingerprint",
+        "validation_suite_sha256",
+        "cohort_manifest_sha256",
+        "cost_normalization_id",
+        "evidence_refs"
+      ],
+      "properties": {
+        "method": {
+          "const": "flywheel-compounding-efficiency/v1"
+        },
+        "observation_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "source_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_sha": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "fce_raw": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "cohort_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "task_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "task_contract_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "environment_fingerprint": {
+          "type": "string",
+          "minLength": 1
+        },
+        "validation_suite_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "cohort_manifest_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "cost_normalization_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/evidence_refs"
+        }
+      }
+    },
+    "derived": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "fce_raw": {
+          "type": "number",
+          "minimum": 0
+        },
+        "fce_vs_baseline": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "fce_delta": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "baseline_status": {
+          "enum": [
+            "NOT_SUPPLIED",
+            "COMPARABLE",
+            "INCOMPARABLE",
+            "INVALID"
+          ]
+        }
+      }
+    }
+  }
+}

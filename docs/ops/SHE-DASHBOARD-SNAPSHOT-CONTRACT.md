@@ -57,3 +57,9 @@ The SHE projection may use the repository-native temporal query surface for poin
 - Snapshot inventory: temporal_query --timeline
 
 These queries are read-only projections. Coverage and provenance from the selected snapshot remain authoritative.
+
+## FCE snapshot projection
+
+The optional metrics.flywheel_compounding_efficiency projection may expose status (OBSERVED, PARTIAL, UNVERIFIED, or MISSING), method and observation_id, fce_raw and matched fce_vs_baseline/fce_delta when comparable, cohort_id, sample size, and evidence reference.
+
+Every value must resolve to the canonical FCE record and the snapshot source SHA. Missing values remain absent/null; never render them as zero. Percentiles are cohort-local and must be labeled as such. FCE is read-only presentation, not a dispatch, merge, or promotion authority.

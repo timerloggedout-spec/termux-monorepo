@@ -43,3 +43,7 @@ ACFS capabilities must be evaluated as candidate adapters to these control plane
 This profile is a reference and integration map, not a new runtime control plane. Existing GitHub Actions, task tracking, agent telemetry, and current refTemplates/smods/ pins remain authoritative until a capability passes its own compatibility, security, and dual-gate checks.
 
 See the integration matrix and staged acceptance criteria in the linked contract.
+
+## FCE measurement application
+
+The monorepo flywheel-compounding-efficiency/v1 shadow contract uses this slot as a capability reference for plan → dependency graph → triage → coordinated execution → reusable memory. It does not treat upstream ACFS installation as evidence of productivity. FCE observations measure verified outcomes and realized reuse against normalized effort, delay, context, feedback, conflicts/retries, human intervention, and provider cost. Existing GitHub Actions, Action→Effect, ATES, Delphi, and cadence surfaces remain authoritative; no second scheduler or weights ledger is permitted.

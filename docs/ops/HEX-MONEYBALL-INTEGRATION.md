@@ -157,3 +157,9 @@ The connected Hex workspace currently has a public/demo Snowflake connection and
 No secret value belongs in this document or in the repository. Configure credentials through the relevant platform secret stores only.
 
 \n## Artifact provenance and Hex import boundary\n\nEach sanitized GitHub Actions bundle now includes `artifact-provenance.json` with a full source commit SHA/ref/path, run ID plus attempt, a stable run UID, generation timestamp, contract version, file inventory, byte sizes, and SHA-256 checksums. The receipt covers the three payload files (`evidence.ndjson`, `evidence.csv`, and `receipt.json`).\n\nThe provenance record deliberately declares `artifact_kind = sanitized_github_actions_artifact`, `native_hex_export = false`, and `hex_import_confirmed = false`. Uploading an Actions artifact is not evidence that Hex exported it or imported it. The workflow does not persist a recovered native Hex ZIP; any such ZIP must be separately registered from actual source evidence.\n
+
+## FCE analytical extension (separate contract)
+
+FCE may be projected to Hex as an optional fce_observation dataset keyed by observation_id, with method, cohort/task/manager identity, fce_raw, optional matched fce_vs_baseline, cost-normalization ID, source SHA, and evidence references. Its schema remains flywheel-compounding-efficiency/v1; it is not silently relabeled as 3l0.moneyball.v1 and does not change that existing contract.
+
+The current scripts/hex_moneyball_export.py remains the sanitizer for its existing contract. A dedicated, schema-validated FCE export adapter is required before any FCE batch is sent to Hex. Until that adapter and import are verified, FCE remains in repository-owned evidence and SHE snapshots; no live Hex ingestion is claimed.

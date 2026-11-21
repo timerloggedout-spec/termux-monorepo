@@ -132,6 +132,7 @@ class PolyglotFederationTests(unittest.TestCase):
         above_gate = next(rule for rule in schema["allOf"] if rule.get("if", {}).get("properties", {}).get("parity_status", {}).get("const") == "above")
         self.assertEqual(above_gate["then"]["properties"]["correctness"]["const"], "pass")
         self.assertEqual(above_gate["then"]["properties"]["advantage_claim"]["type"], "string")
+        self.assertEqual(above_gate["else"]["properties"]["advantage_claim"]["type"], "null")
         nonpass_gate = next(rule for rule in schema["allOf"] if rule.get("if", {}).get("properties", {}).get("correctness", {}).get("const") == "pass")
         self.assertEqual(nonpass_gate["else"]["properties"]["parity_status"]["enum"], ["unknown"])
         self.assertEqual(nonpass_gate["else"]["properties"]["advantage_claim"]["type"], "null")
@@ -171,8 +172,8 @@ class PolyglotFederationTests(unittest.TestCase):
         contract = manifest + "\n" + readme
         self.assertRegex(contract, r"mandatory.{0,120}DerpWiki|DerpWiki.{0,120}mandatory")
         self.assertIn("zero visitor opt-in", contract)
-        self.assertIn("Z3π∅", contract)
-        self.assertIn("public user interfaces", contract)
+        z3_lines = [line for line in contract.splitlines() if "Z3π∅" in line]
+        self.assertTrue(any("public user interfaces" in line for line in z3_lines))
         self.assertIn("docs/ops/ACTIONS-MATRIX.md", contract)
         self.assertIn("docs/ops/AUTOMATED-TELEMETRY-AUDIT.md", contract)
 

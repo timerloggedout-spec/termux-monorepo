@@ -32,7 +32,7 @@ gh-aw_fork|ANTHROPIC_API_KEY|no|provider key (not a GitHub token)|49 Claude-engi
 gh-aw_fork|OPENAI_API_KEY|no|provider key (not a GitHub token)|59 Codex-engine workflows
 gh-aw_fork|CODEX_API_KEY|no|provider key; same value as OPENAI_API_KEY|58 Codex-engine workflows
 termux-monorepo|OPERATOR_GITHUB_TOKEN|yes|ARCHWIZ_GITHUB_TOKEN (fine-grained, termux-monorepo: Contents/Issues/PRs/Actions/Workflows RW)|23 workflows (preferred operator token)
-termux-monorepo|OPERATOR|yes|existing full-access steward Actions secret|repository-provisioner workflow
+termux-monorepo|OPERATOR_GITHUB_TOKEN|yes|existing administrator chain: ARCHWIZ_GITHUB_TOKEN preferred; OPERATOR_TOKEN fallback|repository-provisioner workflow
 termux-monorepo|OPERATOR_TOKEN|no|same value as OPERATOR_GITHUB_TOKEN|22 workflows (legacy name)
 termux-monorepo|ARCHWIZ_GITHUB_TOKEN|no|ARCHWIZ_GITHUB_TOKEN (fine-grained)|22 workflows (fallback chain)
 termux-monorepo|GH_PAT|no|NEW fine-grained (Contents RW on timerloggedout-spec.github.io)|tribute-dashboard-deploy mirror

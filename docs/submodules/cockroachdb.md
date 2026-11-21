@@ -8,6 +8,13 @@
 - **Schema:** `ops/cockroachdb/lane-events-schema.sql`
 - **Status:** upstream CockroachDB is pinned as a shallow submodule; repository-native adapter remains independently maintained and is validated through the CockroachDB contract workflow.
 
+## Source and license boundary
+
+Cockroach Labs announced that new CockroachDB source development moved to a private repository on 2026-09-15. This public GitHub repository is retained as a historical source snapshot; the gitlink pins an immutable commit and omits branch tracking. Runtime images are versioned and digest-pinned independently.
+
+The submodule retains its CockroachDB Software License. Preserve the upstream `LICENSE` file and follow its use, license-key and telemetry terms. Unlicensed non-production use is limited to a single-node deployment. The CI single-node adapter and restore contract runs without a license key; the three-node failover drill runs only when the `COCKROACH_LICENSE_KEY` Actions secret contains a valid license. Keep license keys in the secret store.
+
+
 ## Boundary
 
 The upstream repository is reference material. Repository-owned code remains the runtime integration and canonical evidence contract. The CockroachDB projection mirrors the existing append-only `lane_events` identity using the same `event_key`; GitHub JSON/JSONL and immutable SHA/run provenance remain canonical.

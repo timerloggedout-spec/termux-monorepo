@@ -147,6 +147,13 @@ def build_dataset(
                 grade: sum(item["grade"] == grade for item in records)
                 for grade in sorted(GRADES)
             },
+            "evidence_status": {
+                status: sum(item.get("evidence_status", "unspecified") == status
+                            for item in records)
+                for status in sorted({
+                    item.get("evidence_status", "unspecified") for item in records
+                })
+            },
         },
     }
 

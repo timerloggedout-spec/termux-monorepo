@@ -30,6 +30,23 @@ Token sources refer to the inventory in #184. Least privilege: prefer a new fine
 | termux-monorepo | `LINEAR_API_KEY` | no | Linear API key | agent-feedback-linear-sync, context-relationship-linear-freshness |
 | termux-monorepo | `JULES_API_KEY` | no | Jules API key | agent-jules-on-issues, agent-review-auto-jules |
 
+## Controller export repository provisioning
+
+1. Create a fine-grained PAT owned by `timerloggedout-spec` with the single account permission `Repository creation: write`. GitHub added this least-privilege permission in October 2026; it replaces the broader `Administration: write` requirement for this endpoint.
+2. On the Termux device, store it as the Actions secret using the existing hidden-input helper:
+
+   ```bash
+   scripts/termux/provision-secrets.sh set --only REPOSITORY_PROVISIONER_TOKEN --repo timerloggedout-spec/termux-monorepo
+   ```
+
+3. Dispatch and watch the exact personal-account provisioning run:
+
+   ```bash
+   scripts/termux/provision-secrets.sh provision-controller-export
+   ```
+
+The workflow enforces token identity `timerloggedout-spec`, creates `controller-2-export` as public, and emits a run receipt. The general operator token remains scoped to the monorepo.
+
 ## Notes
 - `REPOSITORY_PROVISIONER_TOKEN` is a dedicated account-level creation credential for `/user/repos`; keep it separate from `OPERATOR_GITHUB_TOKEN`, which is scoped to the existing monorepo. The provisioner verifies the token identity is `timerloggedout-spec`. GitHub fine-grained PAT permission: `Repository creation: write` (least-privilege alternative to broad Administration: write).
 - `gh-aw_fork` and `gh-aw-mcpg_fork` run upstream github/gh-aw schedules (268 scheduled `.lock.yml`). Until required secrets are set, `provision-secrets.sh pause-forks` disables them reversibly; `resume-forks` restores exactly that list.

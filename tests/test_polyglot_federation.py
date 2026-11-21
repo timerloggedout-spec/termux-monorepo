@@ -40,7 +40,7 @@ class PolyglotFederationTests(unittest.TestCase):
             command = [
                 sys.executable, str(ROOT / "scripts" / "polyglot" / "build_feed.py"),
                 "--repository", "timerloggedout-spec/termux-monorepo",
-                "--revision", "0123456789abcdef0123456789abcdef01234567",
+                "--revision", subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
                 "--generated-at", "2026-11-19T00:00:00Z",
                 "--output", str(output),
             ]

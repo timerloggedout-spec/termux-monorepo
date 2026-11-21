@@ -14,6 +14,9 @@ import sys
 from pathlib import Path
 from typing import Any
 
+API_REQUESTS = 0
+API_PAGES = 0
+
 
 def run(args: list[str], *, check: bool = True, cwd: str | Path | None = None) -> str:
     proc = subprocess.run(args, text=True, capture_output=True, cwd=cwd)
@@ -22,12 +25,21 @@ def run(args: list[str], *, check: bool = True, cwd: str | Path | None = None) -
     return proc.stdout.strip()
 
 
-def gh_pages(endpoint: str) -> list[dict[str, Any]]:
-    raw = run(["gh", "api", "--paginate", "--slurp", endpoint])
-    pages = json.loads(raw or "[]")
-    if not isinstance(pages, list):
-        raise RuntimeError(f"unexpected GitHub API pagination payload for {endpoint}")
-    return [row for page in pages if isinstance(page, list) for row in page if isinstance(row, dict)]
+def gh_pages(endpoint: str, max_pages: int) -> list[dict[str, Any]]:
+    global API_REQUESTS, API_PAGES
+    rows: list[dict[str, Any]] = []
+    for page in range(1, max_pages + 1):
+        separator = "&" if "?" in endpoint else "?"
+        raw = run(["gh", "api", f"{endpoint}{separator}per_page=100&page={page}"])
+        API_REQUESTS += 1
+        API_PAGES += 1
+        batch = json.loads(raw or "[]")
+        if not isinstance(batch, list):
+            raise RuntimeError(f"unexpected GitHub API page payload for {endpoint}")
+        rows.extend(row for row in batch if isinstance(row, dict))
+        if len(batch) < 100:
+            return rows
+    return rows
 
 
 def git_count(base: str, head: str, *, cwd: str | Path | None = None) -> tuple[int, int] | None:
@@ -59,12 +71,13 @@ def main() -> int:
     parser.add_argument("--repo", required=True, help="owner/repository")
     parser.add_argument("--default-branch", required=True)
     parser.add_argument("--output-dir", default="artifacts/branch-reconciliation")
+    parser.add_argument("--max-api-pages", type=int, default=10)
     args = parser.parse_args()
 
     owner, repo = args.repo.split("/", 1)
     run(["git", "fetch", "--no-tags", "origin", "+refs/heads/*:refs/remotes/origin/*"])
-    branches = gh_pages(f"repos/{args.repo}/branches?per_page=100")
-    pulls = gh_pages(f"repos/{args.repo}/pulls?state=all&per_page=100")
+    branches = gh_pages(f"repos/{args.repo}/branches", args.max_api_pages)
+    pulls = gh_pages(f"repos/{args.repo}/pulls?state=all", args.max_api_pages)
     default_ref = f"refs/remotes/origin/{args.default_branch}"
     if run(["git", "rev-parse", "--verify", default_ref], check=False) == "":
         raise RuntimeError(f"default branch ref unavailable locally: {default_ref}")
@@ -126,7 +139,10 @@ def main() -> int:
         "repository": args.repo,
         "default_branch": args.default_branch,
         "generated_at": now,
-        "inventory_complete_for_api_pages": True,
+        "inventory_complete_for_api_pages": len(branches) < args.max_api_pages * 100 and len(pulls) < args.max_api_pages * 100,
+        "api_requests": API_REQUESTS,
+        "api_pages": API_PAGES,
+        "api_page_budget": args.max_api_pages * 2,
         "branch_count": len(records),
         "pull_request_count": len(pulls),
         "policy": {

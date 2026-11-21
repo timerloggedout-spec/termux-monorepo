@@ -16,7 +16,7 @@ from pathlib import Path
 from typing import Any
 
 SCHEMA = "linguist-mapping-benchmark/v1"
-GRADES = {"exact", "approximate", "analogue", "lossy"}
+GRADES = {"exact", "approximate", "analogue", "lossy", "unverified"}
 
 
 def _required_text(record: dict[str, Any], key: str) -> str:
@@ -61,8 +61,95 @@ def _stable_id(*parts: str) -> str:
     return hashlib.sha256(raw).hexdigest()[:16]
 
 
+def mappings_from_panel_feed(feed: dict[str, Any]) -> list[dict[str, Any]]:
+    """Project included Linguist feed entries into lookup benchmark records.
+
+    The projection preserves the feed snapshot and source evidence. It does
+    not convert candidate nomenclature assertions into verified equivalence.
+    """
+    if feed.get("schema") != "linguist-panel-feed/v1":
+        raise ValueError("unsupported Linguist panel feed schema")
+    families = {item["id"]: item for item in feed.get("families", [])}
+    records = []
+    for entry in feed.get("entries", []):
+        family_id = entry.get("family")
+        family = families.get(family_id)
+        if not family or not family.get("entries_included", False):
+            continue
+        direction = entry.get("direction")
+        variants = [str(value) for value in entry.get("variants", [])]
+        source = str(entry.get("source", ""))
+        if direction == "decode-only" and variants:
+            source_form, target_form = " | ".join(variants), source
+        else:
+            source_form = source
+            target_form = " | ".join(variants)
+            if not target_form:
+                target_form = str(entry.get("definition") or "∅ (elided)")
+        verified = entry.get("round_trip_verified")
+        if verified is True:
+            grade, evidence_status = "exact", "runtime-verified"
+        elif verified is False:
+            grade, evidence_status = "lossy", "lossy-observed"
+        else:
+            grade, evidence_status = "unverified", "unverified"
+        if entry.get("status") == "candidate":
+            evidence_status = "candidate"
+        if family_id == "nomenclature-mappings":
+            semantic_id = source
+            domain = "nomenclature"
+            source_custom, target_custom = "nomenclature-concepts", "nomenclature-concepts"
+        elif family_id == "nomenclature-labels":
+            semantic_id = str(entry.get("concept_id") or entry.get("id"))
+            domain = str(semantic_id).split(".", 1)[0]
+            source_custom, target_custom = "nomenclature-labels", "nomenclature-concepts"
+        elif family_id == "nomenclature-concepts":
+            semantic_id = str(entry.get("concept_id") or entry.get("id"))
+            domain = str(entry.get("domain_id") or "nomenclature")
+            source_custom, target_custom = "nomenclature-labels", "nomenclature-concepts"
+        else:
+            semantic_id = str(entry.get("id"))
+            domain = str(entry.get("section") or family_id)
+            source_custom = f"{family_id}:source"
+            target_custom = f"{family_id}:target"
+        provenance = entry.get("provenance") or {}
+        record = {
+            "mapping_id": f"panel-feed:{entry.get('id')}",
+            "source_custom": source_custom,
+            "target_custom": target_custom,
+            "source_form": source_form,
+            "target_form": target_form,
+            "semantic_id": semantic_id,
+            "domain": domain,
+            "relation": entry.get("relation") or (
+                "equivalent" if verified is True else "maps_to"
+            ),
+            "grade": grade,
+            "kernel": entry.get("note") if verified is False else None,
+            "evidence_status": evidence_status,
+            "provenance": {
+                "path": provenance.get("path") or provenance.get("source_path"),
+                "locator": provenance.get("detail") or (
+                    f"line {provenance['line']}" if provenance.get("line") else entry.get("id")
+                ),
+            },
+            "feed_family": family_id,
+            "feed_generated_at": feed.get("generated_at"),
+            "direction": direction,
+            "round_trip_verified": verified,
+        }
+        for key in (
+            "confidence", "status", "label_type", "concept_id", "mapping_id",
+            "definition", "meaning", "grimoire", "orchestra", "section",
+        ):
+            if key in entry:
+                record[f"feed_{key}"] = entry[key]
+        records.append(record)
+    return records
+
+
 def build_dataset(
-    mappings: list[dict[str, Any]], *, seed: int = 42
+    mappings: list[dict[str, Any]], *, seed: int = 42, metadata: dict[str, Any] | None = None
 ) -> dict[str, Any]:
     """Build query/corpus/qrels plus pair-scoped hard negatives.
 
@@ -133,6 +220,7 @@ def build_dataset(
     return {
         "schema": SCHEMA,
         "seed": seed,
+        "metadata": metadata or {},
         "corpus": {item["mapping_id"]: item for item in records},
         "queries": queries,
         "qrels": qrels,
@@ -222,14 +310,28 @@ def evaluate_rankings(
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--input", required=True, help="JSON file containing a mappings array")
+    parser.add_argument("--input", help="JSON file containing a mappings array")
+    parser.add_argument("--panel-feed", help="Linguist panel feed JSON to benchmark")
     parser.add_argument("--output", required=True, help="Output benchmark JSON path")
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
 
-    source = json.loads(Path(args.input).read_text(encoding="utf-8"))
-    mappings = source["mappings"] if isinstance(source, dict) else source
-    dataset = build_dataset(mappings, seed=args.seed)
+    if bool(args.input) == bool(args.panel_feed):
+        parser.error("provide exactly one of --input or --panel-feed")
+    if args.panel_feed:
+        source = json.loads(Path(args.panel_feed).read_text(encoding="utf-8"))
+        mappings = mappings_from_panel_feed(source)
+        metadata = {
+            "source": "linguist-panel-feed",
+            "feed_schema": source.get("schema"),
+            "feed_generated_at": source.get("generated_at"),
+            "feed_contract": source.get("contract"),
+        }
+    else:
+        source = json.loads(Path(args.input).read_text(encoding="utf-8"))
+        mappings = source["mappings"] if isinstance(source, dict) else source
+        metadata = source.get("metadata", {}) if isinstance(source, dict) else {}
+    dataset = build_dataset(mappings, seed=args.seed, metadata=metadata)
     destination = Path(args.output)
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(

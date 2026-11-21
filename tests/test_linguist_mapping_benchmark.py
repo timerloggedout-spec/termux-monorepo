@@ -140,7 +140,7 @@ def test_panel_feed_adapter_preserves_the_canonical_snapshot():
     assert len(mappings) == feed["counts"]["entries_included"] - 1 == 522\n    assert sum(item.get("feed_duplicate_count", 1) for item in mappings) == 523\n    assert len({item["mapping_id"] for item in mappings}) == len(mappings)
     assert all(item["provenance"]["path"] for item in mappings)
     assert all(item["feed_generated_at"] == feed["generated_at"] for item in mappings)
-    assert any(item["grade"] == "lossy" for item in mappings)
+    assert any(item["round_trip_status"] == "failed" for item in mappings)\n    assert all(item["grade"] == "unverified" for item in mappings)
     assert any(item["grade"] == "unverified" for item in mappings)
     assert any(item["evidence_status"] == "candidate" for item in mappings)\n    assert any(item.get("feed_duplicate_count") == 2 for item in mappings)\n    group_labels = [item for item in mappings if item.get("feed_entry_id") == "nomenclature-labels:g"]\n    assert len(group_labels) == 2\n    assert len({item["mapping_id"] for item in group_labels}) == 2\n    assert len({item["feed_label_id"] for item in group_labels}) == 2
     assert all(item["feed_family"] != "archwiz-pointer-index" for item in mappings)
@@ -206,3 +206,46 @@ def test_panel_feed_adapter_collapses_exact_duplicates_with_count():
     mappings = mappings_from_panel_feed(feed)
     assert len(mappings) == 1
     assert mappings[0]["feed_duplicate_count"] == 2
+
+
+
+def test_round_trip_evidence_does_not_upgrade_mapping_grade():
+    feed = {
+        "schema": "linguist-panel-feed/v1",
+        "families": [{"id": "sample", "entries_included": True}],
+        "entries": [
+            {
+                "id": "sample:verified", "family": "sample", "source": "alpha",
+                "variants": ["A"], "direction": "bidirectional",
+                "provenance": {"path": "a.md", "detail": "line 1"},
+                "round_trip_verified": True,
+            },
+            {
+                "id": "sample:failed", "family": "sample", "source": "beta",
+                "variants": ["B"], "direction": "bidirectional",
+                "provenance": {"path": "b.md", "detail": "line 2"},
+                "round_trip_verified": False,
+            },
+            {
+                "id": "sample:candidate", "family": "sample", "source": "gamma",
+                "variants": ["C"], "direction": "bidirectional",
+                "provenance": {"path": "c.md", "detail": "line 3"},
+                "round_trip_verified": True, "grade": "analogue",
+                "relation": "related_match", "status": "candidate",
+            },
+        ],
+    }
+    by_id = {
+        item["feed_entry_id"]: item for item in mappings_from_panel_feed(feed)
+    }
+    assert by_id["sample:verified"]["grade"] == "unverified"
+    assert by_id["sample:verified"]["round_trip_status"] == "verified"
+    assert by_id["sample:verified"]["evidence_status"] == "roundtrip-verified"
+    assert by_id["sample:verified"]["relation"] == "maps_to"
+    assert by_id["sample:failed"]["grade"] == "unverified"
+    assert by_id["sample:failed"]["round_trip_status"] == "failed"
+    assert by_id["sample:failed"]["evidence_status"] == "roundtrip-failed"
+    assert by_id["sample:candidate"]["grade"] == "analogue"
+    assert by_id["sample:candidate"]["round_trip_status"] == "verified"
+    assert by_id["sample:candidate"]["evidence_status"] == "candidate"
+    assert by_id["sample:candidate"]["relation"] == "related_match"

@@ -46,7 +46,7 @@ Each mapping record carries:
 - `source_form` and `target_form`: observed forms;
 - `semantic_id` and `domain`: semantic identity and scope;
 - `relation`: relation asserted by the source record;
-- `grade`: `exact`, `approximate`, `analogue`, or `lossy`;
+- `grade`: `exact`, `approximate`, `analogue`, `lossy`, or `unverified`;
 - `kernel`: explicit information lost or extra assumptions required;
 - `provenance`: source path plus a stable locator.
 

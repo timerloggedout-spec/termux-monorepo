@@ -23,8 +23,9 @@ sys.path.insert(0, str(HERE))
 from lane_event import FIELDS, load_events, normalize  # noqa: E402
 
 
-def resolve_url() -> str | None:
-    return os.environ.get("COCKROACH_DATABASE_URL", "").strip() or None
+def resolve_url(command: str = "record") -> str | None:
+    variable = "COCKROACH_SCHEMA_DATABASE_URL" if command == "schema" else "COCKROACH_DATABASE_URL"
+    return os.environ.get(variable, "").strip() or None
 
 
 def connection_parts(url: str) -> tuple[str, dict[str, str]]:
@@ -88,9 +89,10 @@ def parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     ns = parser().parse_args(argv)
     try:
-        url = resolve_url()
+        url = resolve_url(ns.command)
         if not url:
-            print("::notice title=cockroach-lane-events::COCKROACH_DATABASE_URL absent; projection skipped")
+            variable = "COCKROACH_SCHEMA_DATABASE_URL" if ns.command == "schema" else "COCKROACH_DATABASE_URL"
+            print(f"::notice title=cockroach-lane-events::{variable} absent; projection skipped")
             return 1 if ns.strict else 0
         if ns.command == "schema":
             psql(url, ["-f", str(SQL_DIR / "lane-events-schema.sql")])

@@ -27,6 +27,8 @@ Version mixing is enabled for same-lane multi-version, cross-lane, cross-domain,
 
 Initial selection probability: **25% of eligible public mapping selections** use a cross-domain mapping. This is a configurable rollout parameter, not an observed usage statistic or a per-visitor probability. Record the actual selected share and report it separately from the configured probability. Use publication-level deterministic selection; visitor-level tracking is outside this contract.
 
+This 25% mapping-selection rate is independent of the existing CedrLang phase codec's historical **70% per-eligible-character** substitution probability. Reuse `workspace/compression_sandbox/cedrlang/phase_codec.py` and `tests/test_cedrlang_phase_codec.py` as the established reversible 1337 surface; preserve its seeded RNG and known-token scope. The two probabilities govern different operations and remain separately configurable.
+
 ## Owner mapping contract
 
 The owner view preserves canonical terms and exposes each public transformation: rendered text, canonical text, decoded text, exact Unicode code points, mapping and lane versions, codec version, source mapping lineage, source/target domains, mix policy, provenance, publication profile, and reviewed revision. It supports deterministic reconstruction and export of both public and canonical forms.

@@ -150,14 +150,22 @@ with `feed_duplicate_count: 2`. The 7,287-entry ArchWiz pointer index is
 count-only and is excluded from enumeration. Feed metadata is retained in
 the benchmark output so snapshot age remains visible.
 
-The adapter maps live round-trip results to `exact` or `lossy`; absent
-round-trip evidence maps to `unverified`. Candidate nomenclature records
-retain their `candidate` status, relation, confidence, and provenance.
-Mapping identity prefers the feed's native `mapping_id` or `label_id`, then
-the family-scoped entry ID, and appends a digest of the canonical source
-record. This preserves distinct records that reuse a display ID while exact
-duplicate rows collapse with an explicit occurrence count. The output also
-reports identity-collision groups and duplicate entries collapsed.
+Mapping grade and codec round-trip evidence are separate dimensions.
+The adapter preserves an explicit source `grade`; a missing grade remains
+`unverified`. The feed's `round_trip_verified` flag maps to
+`round_trip_status` (`verified`, `failed`, or `unverified`) and a
+corresponding evidence status. Round-trip success does not promote a mapping
+to `exact`, and round-trip failure does not promote it to `lossy`.
+Candidate nomenclature records retain their `candidate` status, relation,
+confidence, and provenance.
+
+Snapshot-scoped benchmark IDs prefer the feed's native `mapping_id` or
+`label_id`, then the family-scoped entry ID, and append a digest of the
+canonical source record. The stable `feed_identity_key` remains available
+for grouping reused source IDs. This preserves distinct records that reuse
+a display ID while exact duplicate rows collapse with an explicit
+occurrence count. The output also reports identity-collision groups and
+duplicate entries collapsed.
 Count-only families remain excluded. The panel feed remains the source of
 record; the benchmark is a reproducible retrieval projection.
 

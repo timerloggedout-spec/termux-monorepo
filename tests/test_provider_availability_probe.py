@@ -342,3 +342,35 @@ def test_missing_provider_credential_reports_only_expected_environment_name():
     assert row["credential_env_resolved"] is None
     assert row["credential_env_expected"] == "GROQ_API_KEY"
     assert "fixture" not in json.dumps(row)
+
+
+def test_catalog_only_probe_reports_inference_not_attempted():
+    row = probe.result("groq")
+    assert row["inference_ok"] is False
+    assert row["inference_status"] == "not_attempted"
+
+
+def test_openrouter_safe_observation_does_not_mark_inference_failed():
+    from scripts.ops import provider_free_smoke
+
+    row = probe.result("openrouter")
+    row["catalog_ok"] = True
+    with patch.object(provider_free_smoke, "observe", return_value={
+        "inference_attempted": False, "inference_ok": False,
+        "reason": "explicit_smoke_not_requested",
+    }):
+        probe.openrouter_inference(row, "fixture-secret")
+    assert row["inference_status"] == "not_attempted"
+
+
+def test_explicit_failed_inference_observation_is_distinct_from_not_attempted():
+    from scripts.ops import provider_free_smoke
+
+    row = probe.result("openrouter")
+    row["catalog_ok"] = True
+    with patch.object(provider_free_smoke, "observe", return_value={
+        "inference_attempted": True, "inference_ok": False,
+        "reason": "inference_http_429",
+    }):
+        probe.openrouter_inference(row, "fixture-secret")
+    assert row["inference_status"] == "failed"

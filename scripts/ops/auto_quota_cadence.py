@@ -12,16 +12,17 @@ Inputs
 - ``ops/quota/registry.json`` (``quota.registry.v2``): entitlement/observation
   evidence per service record.
 - ``--snapshot`` (optional, ``ledger-snapshot/v1``): a *published* ledger
-  snapshot carrying per-arm draws + coverage + budgets incl. explicit
-  ``{reset_window, reset_tz}``. See ``docs/ops/LEDGER-SNAPSHOT-CONTRACT.md``.
+  snapshot carrying per-arm draws + budgets and shared daily-pool observations.
+- ``--allocations`` (optional): canonical ``ops/quota/allocations.json`` pool/focus allocations.
+  See ``docs/ops/LEDGER-SNAPSHOT-CONTRACT.md``.
 
 Gap 1 (Cadence review c.6802642639, QDesk addendum c.6802661589): the #5152
 ledger read contract {store, fields, freshness} is UNPUBLISHED until #5113
 T2 publishes it. Until then the snapshot input is ABSENT by definition and
-this derivation treats ledger reads as UNAVAILABLE: every arm defers on
-``quota_unknown`` and the pool is empty with named reasons. The derivation
-never invents a metering leg in Actions -- unknown/stale quota means defer
-(clause 4), never a zero or a guess.
+this derivation treats ledger reads as UNAVAILABLE: provider-quota-backed
+arms defer on ``quota_unknown``; daily-pool/no-provider-quota arms defer on
+``pool_unknown``. The derivation never invents a metering leg in Actions --
+unknown/stale quota or pool state means defer, never zero or a guess.
 
 Gap 2 (same review): budget records carry reset only as prose today. This
 derivation reads ``{reset_window, reset_tz}`` ONLY from a published snapshot's
@@ -35,17 +36,20 @@ Outputs
 - ``--out``: ``pool-cadence/v1`` feed (``ops/que/feeds/pool-cadence.json``):
   per-arm eligibility + cadence decisions + rotation order + source SHAs.
 - ``--usage-out``: the executor's ``--usage`` record shape
-  (``{arms: {arm_id: {date: {draws}}}, coverage: {...}, budgets: {...}}``),
-  populated ONLY from a published snapshot; empty + coverage-incomplete
-  when the snapshot is absent/stale. The dispatch executor
+  (``{arms, coverage, budgets, pools, pool_eligibility}``),
+  populated ONLY from a published snapshot plus explicit allocation inputs;
+  empty + coverage-incomplete when the snapshot is absent/stale. The dispatch executor
   (``scripts/ops/dispatch_executor.py``) consumes it verbatim.
 
 Per-arm gate (clause 3) -- an arm is dispatchable only when ALL hold:
 exact invoke route; current census pass from the relevant environment;
-entitlement record in the quota registry; usable quota headroom with source
-+ observation time + reset window/tz; no duplicate route_id. Anything else
-defers with a named reason; a listing, a ``/v1/models`` hit, a sandbox-only
-success, or a bare 429 never proves entitlement/headroom.
+entitlement record in the quota registry; then either (a) usable provider-quota
+headroom with source + observation time + reset window/tz, or (b) an explicit
+``daily_pool_no_provider_quota`` class with matching pool/focus allocation,
+fresh pool status, reset evidence, and experiment label. No provider quota
+counter is required for (b). Anything else defers with a named reason; a
+listing, a ``/v1/models`` hit, a sandbox-only success, or a bare 429 never
+proves entitlement/headroom.
 
 Gemini participates on the SAME gate as every other arm (clause 5): no
 fallback-of-record, no precedence, no hard dependency. The pool generation
@@ -123,6 +127,18 @@ def _budget_total(budget: dict, quota_class: str = "primary") -> int | None:
         total = budget.get("spendable_primary", budget.get("daily_total"))
     return None if total is None else int(total)
 
+def _pool_allocation(allocations_doc: dict | None, pool_id: str, focus: str) -> dict | None:
+    """Find the explicit pool/focus allocation; never infer a pool from a provider name."""
+    if not isinstance(allocations_doc, dict):
+        return None
+    pools = allocations_doc.get("pools")
+    if not isinstance(pools, list):
+        return None
+    pool = next((p for p in pools if isinstance(p, dict) and p.get("id") == pool_id), None)
+    if pool is None or not isinstance(pool.get("allocations"), list):
+        return None
+    return next((a for a in pool["allocations"]
+                 if isinstance(a, dict) and a.get("focus") == focus), None)
 
 def derive(
     arms_doc: dict,
@@ -131,6 +147,7 @@ def derive(
     snapshot: dict | None,
     previous: dict | None,
     now: datetime,
+    allocations_doc: dict | None = None,
 ) -> dict:
     """Derive the pool + cadence decisions. Pure; no I/O, no inference."""
     arms = arms_doc.get("arms", [])
@@ -158,8 +175,9 @@ def derive(
             "reason": "ledger_snapshot_absent",
             "note": "Read contract unpublished until #5113 T2 publishes "
             "{store, fields, freshness} (Cadence c.6802642639 gap 1); "
-            "ledger reads treated as UNAVAILABLE, arms defer on "
-            "quota_unknown. No metering invented in Actions.",
+            "ledger reads treated as UNAVAILABLE; quota-backed arms defer on "
+            "quota_unknown and daily-pool/no-provider-quota arms on pool_unknown. "
+            "No metering invented in Actions.",
         }
         snapshot_fresh = False
     else:
@@ -172,10 +190,16 @@ def derive(
         }
     snap_arms = (snapshot or {}).get("arms", {}) if snapshot_fresh else {}
     snap_coverage = (snapshot or {}).get("coverage", {}) if snapshot_fresh else {}
+    if not isinstance(snap_coverage, dict):
+        snap_coverage = {}
     snap_budgets = (snapshot or {}).get("budgets", {}) if snapshot_fresh else {}
+    snap_pools = (snapshot or {}).get("pools", {}) if snapshot_fresh else {}
+    if not isinstance(snap_pools, dict):
+        snap_pools = {}
 
     seen_routes: set[str] = set()
     arm_rows: list[dict] = []
+    pool_eligibility_rows: dict = {}
     for arm in arms:
         arm_id = arm["arm_id"]
         reasons: list[str] = []
@@ -216,32 +240,133 @@ def derive(
         if record is None:
             reasons.append("entitlement_unknown")
 
-        # 4. quota headroom: snapshot-only, never invented.
+        # 4. Quota is conditional: provider-quota arms use per-arm headroom;
+        # daily-pool/no-provider-quota arms use a shared, fresh pool snapshot.
+        quota_class = budget.get("quota_class") or "provider_quota_backed"
+        pool_id = budget.get("pool_id")
         headroom: int | None = None
         reset_window: str | None = None
         reset_tz: str | None = None
-        snap_budget = snap_budgets.get(arm_id) or {}
-        if snap_budget:
-            reset_window = snap_budget.get("reset_window")
-            reset_tz = snap_budget.get("reset_tz")
-        total = _budget_total(budget)
-        if total is None:
-            reasons.append("quota_unbudgeted")
-        elif not snapshot_fresh:
-            reasons.append("quota_unknown")
+        pool_state = None
+        pool_reasons: list[str] = []
+        if quota_class == "daily_pool_no_provider_quota":
+            if budget.get("class") == "credit-funded":
+                pool_reasons.append("pool_paid_budget_forbidden")
+            focus = budget.get("focus")
+            experiment_label = budget.get("experiment_label")
+            quota_evidence_ref = budget.get("quota_evidence_ref")
+            if (record is None or record.get("quota_class") != quota_class
+                    or not record.get("source") or not quota_evidence_ref):
+                pool_reasons.append("quota_class_evidence_missing")
+            if not pool_id:
+                pool_reasons.append("pool_id_missing")
+            if not focus:
+                pool_reasons.append("pool_focus_missing")
+            if not experiment_label:
+                pool_reasons.append("pool_experiment_label_missing")
+            allocation = _pool_allocation(allocations_doc, pool_id, focus) if pool_id and focus else None
+            if allocation is None:
+                pool_reasons.append("pool_allocation_unknown")
+            pool_state = snap_pools.get(pool_id) if snapshot_fresh and isinstance(pool_id, str) and pool_id else None
+            if not isinstance(pool_state, dict):
+                pool_state = None
+            if pool_state is None:
+                pool_reasons.append("pool_unknown")
+            else:
+                if not snap_coverage.get("complete"):
+                    pool_reasons.append("pool_coverage_incomplete")
+                observed_at = pool_state.get("observed_at")
+                try:
+                    pool_age = (now - _parse_ts(observed_at)).total_seconds() if isinstance(observed_at, str) else None
+                except (ValueError, TypeError, AttributeError):
+                    pool_age = None
+                if pool_age is None or pool_age < 0:
+                    pool_reasons.append("pool_unstamped")
+                elif pool_age > SNAPSHOT_MAX_AGE_SECONDS:
+                    pool_reasons.append("pool_stale")
+                if pool_state.get("status") == "exhausted":
+                    pool_reasons.append("pool_exhausted")
+                elif pool_state.get("status") != "available":
+                    pool_reasons.append("pool_unavailable")
+                if not pool_state.get("reset_window"):
+                    pool_reasons.append("pool_reset_window_unknown")
+                if not pool_state.get("reset_tz"):
+                    pool_reasons.append("pool_reset_tz_unknown")
+                if not pool_state.get("source_ref"):
+                    pool_reasons.append("pool_source_unknown")
+                if pool_state.get("experiment_label") != experiment_label:
+                    pool_reasons.append("pool_experiment_label_mismatch")
+            if allocation is not None:
+                mode = allocation.get("mode")
+                try:
+                    pct = int(allocation.get("pct", 0))
+                except (TypeError, ValueError):
+                    pct = None
+                if mode == "standing" and pct is not None and pct > 0:
+                    pass
+                elif mode == "leftover-only" and pool_state and pool_state.get("leftover_available") is True:
+                    pass
+                elif mode == "leftover-only":
+                    pool_reasons.append("pool_leftover_unverified")
+                elif pct is None:
+                    pool_reasons.append("pool_allocation_unknown")
+                else:
+                    pool_reasons.append("pool_allocation_zero" if pct <= 0 else "pool_allocation_unknown")
+            reasons.extend(pool_reasons)
+            if pool_state:
+                reset_window = pool_state.get("reset_window")
+                reset_tz = pool_state.get("reset_tz")
+            pool_eligibility_rows[arm_id] = {
+                "status": "eligible" if not pool_reasons else "deferred",
+                "hold_reason": pool_reasons[0] if pool_reasons else None,
+                "pool_id": pool_id,
+                "focus": focus,
+                "allocation_mode": (allocation or {}).get("mode"),
+                "allocation_pct": (allocation or {}).get("pct"),
+                "experiment_label": experiment_label,
+                "quota_evidence_ref": quota_evidence_ref,
+                "observed_at": (pool_state or {}).get("observed_at"),
+                "reset_window": reset_window or "unknown",
+                "reset_tz": reset_tz or "unknown",
+                "source_ref": (pool_state or {}).get("source_ref"),
+            }
         else:
-            day = (snap_arms.get(arm_id) or {}).get(now.date().isoformat())
-            if day is None:
+            snap_budget = snap_budgets.get(arm_id) or {}
+            if snap_budget:
+                reset_window = snap_budget.get("reset_window")
+                reset_tz = snap_budget.get("reset_tz")
+            primary_total = _budget_total(budget, "primary")
+            escalation_total = _budget_total(budget, "escalation")
+            headroom_by_quota_class: dict[str, int | None] = {
+                "primary": None, "escalation": None,
+            }
+            if primary_total is None and escalation_total is None:
+                reasons.append("quota_unbudgeted")
+            elif not snapshot_fresh:
                 reasons.append("quota_unknown")
             else:
-                headroom = total - int(day.get("draws", 0))
-                if headroom < 1:
-                    reasons.append("quota_exhausted")
-        if reset_window is None:
-            reasons.append("reset_window_unknown")
-        if reset_tz is None:
-            reasons.append("reset_tz_unknown")
-
+                day = (snap_arms.get(arm_id) or {}).get(now.date().isoformat())
+                if day is None:
+                    reasons.append("quota_unknown")
+                else:
+                    draws = int(day.get("draws", 0))
+                    if primary_total is not None:
+                        headroom_by_quota_class["primary"] = primary_total - draws
+                    if escalation_total is not None:
+                        headroom_by_quota_class["escalation"] = escalation_total - draws
+                    headroom = headroom_by_quota_class["primary"]
+                    # An arm remains in the shared eligible union when either
+                    # quota class has capacity. dispatch_executor independently
+                    # checks the filing's exact quota class before firing.
+                    if not any(
+                        value is not None and value >= 1
+                        for value in headroom_by_quota_class.values()
+                    ):
+                        reasons.append("quota_exhausted")
+            if reset_window is None:
+                reasons.append("reset_window_unknown")
+            if reset_tz is None:
+                reasons.append("reset_tz_unknown")
         status = "eligible" if not reasons else "deferred"
         arm_rows.append(
             {
@@ -249,16 +374,34 @@ def derive(
                 "status": status,
                 "defer_reasons": reasons,
                 "headroom": headroom,
+                "headroom_by_quota_class": (
+                    headroom_by_quota_class
+                    if quota_class != "daily_pool_no_provider_quota" else None
+                ),
                 "reset_window": reset_window or "unknown",
                 "reset_tz": reset_tz or "unknown",
                 "availability_env": availability_env,
                 "route_id": route_id,
                 "registry_record": record_id,
                 "census_verdict": (row or {}).get("verdict"),
+                "quota_class": quota_class,
+                "pool_id": pool_id,
+                "pool_status": (pool_state or {}).get("status"),
+                "pool_eligibility_status": (pool_eligibility_rows.get(arm_id) or {}).get("status"),
             }
         )
 
     eligible = [r for r in arm_rows if r["status"] == "eligible"]
+    # Unknown provider quota is not dispatch eligibility, but it can be
+    # measured by the executor's separately bounded probe. Only candidates
+    # whose non-quota gates passed may enter this list.
+    probe_blockers = {"quota_unknown", "reset_window_unknown", "reset_tz_unknown"}
+    probe_candidates = [
+        r["arm_id"] for r in arm_rows
+        if r.get("quota_class") == "provider_quota_backed"
+        and "quota_unknown" in r.get("defer_reasons", [])
+        and set(r.get("defer_reasons", [])).issubset(probe_blockers)
+    ]
 
     # Rotation: registry order, free-tier before credit-funded; avoid a
     # consecutive same-arm selection when the previous feed names one.
@@ -284,6 +427,8 @@ def derive(
             "last_quota_terminal": snap_coverage.get("last_quota_terminal"),
         },
         "budgets": snap_budgets,
+        "pools": snap_pools,
+        "pool_eligibility": pool_eligibility_rows,
     }
 
     return {
@@ -300,6 +445,7 @@ def derive(
         "pool": {
             "eligible": order,
             "deferred": [r["arm_id"] for r in arm_rows if r["status"] == "deferred"],
+            "probe_candidates": probe_candidates,
             "eligible_count": len(order),
         },
         "rotation": {
@@ -316,6 +462,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--census", required=True)
     parser.add_argument("--registry", required=True)
     parser.add_argument("--snapshot", default=None)
+    parser.add_argument("--allocations", default=None,
+                        help="canonical ops/quota/allocations.json pool/focus allocations")
     parser.add_argument("--previous", default=None)
     parser.add_argument("--now", required=True)
     parser.add_argument("--out", required=True)
@@ -341,13 +489,17 @@ def main(argv: list[str] | None = None) -> int:
             )
             return 2
         snapshot_sha = _sha256_file(args.snapshot)
+    allocations = None
+    if args.allocations:
+        with open(args.allocations) as fh:
+            allocations = json.load(fh)
     previous = None
     if args.previous:
         with open(args.previous) as fh:
             previous = json.load(fh)
 
     now = _parse_ts(args.now)
-    feed = derive(arms_doc, census_doc, registry_doc, snapshot, previous, now)
+    feed = derive(arms_doc, census_doc, registry_doc, snapshot, previous, now, allocations)
     feed["sources"] = {
         "arms": args.arms,
         "arms_sha256": _sha256_file(args.arms),
@@ -357,6 +509,8 @@ def main(argv: list[str] | None = None) -> int:
         "registry_sha256": _sha256_file(args.registry),
         "snapshot": args.snapshot,
         "snapshot_sha256": snapshot_sha,
+        "allocations": args.allocations,
+        "allocations_sha256": _sha256_file(args.allocations) if args.allocations else None,
     }
     with open(args.out, "w") as fh:
         json.dump(feed, fh, indent=1, sort_keys=True)

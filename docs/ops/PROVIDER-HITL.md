@@ -45,3 +45,22 @@ DeepAgent task dispatch, role/transport changes, worker claims, and origin-devic
 ## Current disposition
 
 Direct code repairs, tests, deployment, existing-credential use, and routine signup steps within the user's authorization are executable work, not blanket human-only gates. Remaining human inputs are a usable Agent-owned signup contact/verification where required, any genuinely missing credentials or first-time permission grants, and an authorized reachable Origin device. Exact-model no-cost admission still requires account evidence; catalog success alone does not activate inference. The voting record separately awaits real independent ballots, never synthetic votes or inferred consent.
+
+
+## QUE activation evidence contract
+
+The batch inference smoke is policy-gated. It must not call a provider/model unless the exact provider/model pair is present in `LLM_API_HUB_PROVIDER_POLICY_JSON` and passes the existing `research-provider-admission/v1` checks (`free_account_verified`, `terms_accepted`, `data_class=public`, current `expires_at`, and configured credential). Those policy fields are owner assertions, not independent provider verification.
+
+Before a pair can be used by the QUE smoke lane, the same exact policy entry must also carry:
+
+- `no_cost_verified: true`
+- `pricing_source`, `pricing_verified_at`
+- `terms_source`, `terms_verified_at`
+- `capability_source`, `capability_verified_at`
+- `quota_class`: `provider_quota_backed`, `daily_pool_no_provider_quota`, `quota_unknown`, or `quota_not_applicable`
+- For `daily_pool_no_provider_quota`: `pool_id` and `pool_evidence_ref`
+- For `provider_quota_backed` or `quota_not_applicable`: `quota_evidence_ref`
+
+All source refs must be HTTPS and all verification timestamps must be timezone-aware ISO timestamps. The admission policy remains an auditable owner assertion; it does not accept terms, create accounts, or verify the provider on the owner's behalf.
+
+A successful inference smoke proves only that the exact admitted no-cost model responded. Its receipt records `terms_accepted=policy_asserted` and `entitlement_verified=policy_asserted`, never provider-verified. It always records `dispatch_eligible=false`; dispatch additionally requires the current QUE census and quota-or-pool cadence gate. A `quota_unknown` arm may be smoke-tested but remains ineligible for dispatch.

@@ -72,6 +72,11 @@ def _decide(filings, **kw):
         kw.get("usage", _usage()), NOW, run_id="test-1",
         max_conversions=kw.get("max_conversions", 1),
         workflow_ref="w.yml", workflow_sha="aa" * 20, script_sha="bb" * 20,
+        cadence=kw.get("cadence", {
+            "schema": "pool-cadence/v1",
+            "generated_at": NOW.isoformat(),
+            "pool": {"eligible": ["gemini-cli"], "deferred": []},
+        }),
     )
 
 
@@ -229,7 +234,9 @@ def _decide_full(filings, usage=None, measured=None, probe_budget=1):
     return ex.decide(
         filings, _registry(), _census(), usage, NOW, run_id="test-probe",
         max_conversions=1, workflow_ref="w.yml", workflow_sha="aa" * 20,
-        script_sha="bb" * 20, measured=measured, probe_budget=probe_budget)
+        script_sha="bb" * 20, measured=measured, probe_budget=probe_budget,
+        cadence={"schema": "pool-cadence/v1", "generated_at": NOW.isoformat(),
+                 "pool": {"eligible": ["gemini-cli"], "deferred": []}})
 
 
 def _measured(kind, value, as_of="2026-11-12T14:30:00Z", valid_until=None,
@@ -329,3 +336,180 @@ def test_probe_result_shape_for_record_probe():
     assert result["probe"]["request_count"] == 3
     assert result["probe"]["token_draw"] == 1  # the proven invoke draw
     assert result["coverage_scope"] == "exact-bucket"
+
+
+# --- daily pool with no provider quota counter ---
+
+def _daily_pool_arm():
+    return {
+        "arm_id": "daily-pool-arm",
+        "model": "free-model",
+        "model_version": "free-model-v1",
+        "status": "eligible",
+        "selectable": True,
+        "harness_ref": "scripts/ops/build_arm_harness.py",
+        "harness": "generic-agent-loop",
+        "endpoint": {"provider": "example", "route_id": "example::free-model"},
+        "budget": {
+            "class": "free-tier",
+            "quota_class": "daily_pool_no_provider_quota",
+            "pool_id": "daily-free-inference",
+            "experiment_label": "QUE-5454",
+        },
+    }
+
+
+def _daily_pool_usage(status="eligible", experiment_label="QUE-5454"):
+    return {
+        "coverage": {"complete": True, "stamped_at": "2026-11-12T14:59:00Z"},
+        "pools": {"daily-free-inference": {
+            "status": "available",
+            "experiment_label": "QUE-5454",
+            "observed_at": "2026-11-12T14:59:00Z",
+            "reset_window": "daily",
+            "reset_tz": "UTC",
+            "source_ref": "https://provider.example/terms/free-pool",
+        }},
+        "pool_eligibility": {"daily-pool-arm": {
+            "status": status,
+            "pool_id": "daily-free-inference",
+            "experiment_label": experiment_label,
+            "observed_at": "2026-11-12T14:59:00Z",
+            "reset_window": "daily",
+            "reset_tz": "UTC",
+        }},
+    }
+
+
+def test_daily_pool_no_provider_quota_bypasses_provider_counter_but_requires_pool_evidence():
+    arm = _daily_pool_arm()
+    usage = _daily_pool_usage()
+    headroom, hold = ex.quota_headroom(arm, usage, NOW, "primary")
+    assert headroom is None
+    assert hold is None
+    read, hold = ex.preflight(arm, usage, NOW, headroom)
+    assert hold is None
+    assert read["bucket"] == "daily-free-inference"
+    assert read["source"] == "daily-pool-snapshot"
+    assert read["headroom"] is None
+    assert read["headroom_kind"] == "not_applicable"
+
+
+def test_daily_pool_missing_pool_evidence_holds():
+    arm = _daily_pool_arm()
+    headroom, hold = ex.quota_headroom(arm, None, NOW, "primary")
+    assert headroom is None
+    assert hold == "pool_unknown"
+
+
+def test_daily_pool_exhaustion_holds():
+    arm = _daily_pool_arm()
+    usage = _daily_pool_usage(status="pool_exhausted")
+    headroom, hold = ex.quota_headroom(arm, usage, NOW, "primary")
+    assert headroom is None
+    assert hold == "pool_exhausted"
+
+
+def test_daily_pool_experiment_label_must_match_arm():
+    arm = _daily_pool_arm()
+    usage = _daily_pool_usage(experiment_label="OTHER-EXPERIMENT")
+    headroom, hold = ex.quota_headroom(arm, usage, NOW, "primary")
+    assert headroom is None
+    assert hold == "pool_experiment_label_mismatch"
+
+def test_dispatch_fires_daily_pool_arm_without_provider_quota_headroom():
+    arm = _daily_pool_arm()
+    registry = {"arms": [arm]}
+    census = {
+        "schema": "arm-census/v1",
+        "generated_at": "2026-11-12T14:00:00Z",
+        "run_id": 43045718809,
+        "arms": [{"arm_id": "daily-pool-arm", "verdict": "passed",
+                  "quota_terminal": {"terminal": False}}],
+    }
+    decision = ex.decide(
+        [_filing(5454)], registry, census, _daily_pool_usage(), NOW,
+        run_id="daily-pool-test", max_conversions=1,
+        workflow_ref="dispatch-executor.yml", workflow_sha="aa" * 20,
+        script_sha="bb" * 20,
+        cadence={"schema": "pool-cadence/v1", "generated_at": "2026-11-12T14:59:00Z",
+                 "pool": {"eligible": ["daily-pool-arm"]}},
+    )
+    assert len(decision["decisions"]) == 1
+    fired = decision["decisions"][0]
+    assert fired["action"] == "fire"
+    assert fired["stamp"]["provider_quota_class"] == "daily_pool_no_provider_quota"
+    assert fired["stamp"]["preflight"]["headroom"] is None
+    assert fired["stamp"]["preflight"]["headroom_kind"] == "not_applicable"
+
+def test_dispatch_rejects_credit_funded_daily_pool_arm():
+    arm = _daily_pool_arm()
+    arm["budget"]["class"] = "credit-funded"
+    headroom, hold = ex.quota_headroom(arm, _daily_pool_usage(), NOW, "primary")
+    assert headroom is None
+    assert hold == "pool_paid_budget_forbidden"
+
+def test_executor_holds_when_cadence_excludes_registry_arm():
+    arm = _daily_pool_arm()
+    registry = {"arms": [arm]}
+    census = {"generated_at": "2026-11-12T14:00:00Z",
+              "arms": [{"arm_id": "daily-pool-arm", "verdict": "passed"}]}
+    cadence = {"schema": "pool-cadence/v1", "generated_at": "2026-11-12T14:59:00Z",
+               "pool": {"eligible": []}}
+    decision = ex.decide([_filing(5455)], registry, census, _daily_pool_usage(), NOW,
+                         run_id="cadence-hold", cadence=cadence)
+    assert decision["decisions"][0]["action"] == "hold"
+    assert decision["decisions"][0]["hold_reason"] == "cadence_no_eligible_arms"
+
+
+def test_executor_holds_on_stale_cadence_feed():
+    arm = _daily_pool_arm()
+    registry = {"arms": [arm]}
+    census = {"generated_at": "2026-11-12T14:00:00Z",
+              "arms": [{"arm_id": "daily-pool-arm", "verdict": "passed"}]}
+    cadence = {"schema": "pool-cadence/v1", "generated_at": "2026-11-12T13:00:00Z",
+               "pool": {"eligible": ["daily-pool-arm"]}}
+    decision = ex.decide([_filing(5456)], registry, census, _daily_pool_usage(), NOW,
+                         run_id="cadence-stale", cadence=cadence)
+    assert decision["decisions"][0]["action"] == "hold"
+    assert decision["decisions"][0]["hold_reason"] == "cadence_stale"
+
+def test_executor_holds_on_invalid_cadence_schema():
+    arm = _daily_pool_arm()
+    registry = {"arms": [arm]}
+    census = {"generated_at": "2026-11-12T14:00:00Z",
+              "arms": [{"arm_id": "daily-pool-arm", "verdict": "passed"}]}
+    cadence = {"schema": "wrong-version", "generated_at": "2026-11-12T14:59:00Z",
+               "pool": {"eligible": ["daily-pool-arm"]}}
+    decision = ex.decide([_filing(5457)], registry, census, _daily_pool_usage(), NOW,
+                         run_id="cadence-invalid", cadence=cadence)
+    assert decision["decisions"][0]["action"] == "hold"
+    assert decision["decisions"][0]["hold_reason"] == "cadence_schema_invalid"
+
+
+def test_missing_cadence_holds_even_when_registry_and_census_pass():
+    decision = ex.decide(
+        [_filing(5488)], _registry(), _census(), _usage(), NOW,
+        run_id="missing-cadence", cadence=None,
+    )
+    row = decision["decisions"][0]
+    assert row["action"] == "hold"
+    assert row["hold_reason"] == "cadence_missing"
+
+
+def test_quota_unknown_candidate_remains_probe_only_when_cadence_has_no_dispatch_arms():
+    cadence = {
+        "schema": "pool-cadence/v1",
+        "generated_at": NOW.isoformat(),
+        "pool": {"eligible": [], "deferred": ["gemini-cli"],
+                 "probe_candidates": ["gemini-cli"]},
+    }
+    decision = ex.decide(
+        [_filing(5489)], _registry(), _census(), usage=None, now=NOW,
+        run_id="probe-only", cadence=cadence,
+    )
+    row = decision["decisions"][0]
+    assert row["action"] == "hold"
+    assert row["probe"]["arm"] == "gemini-cli"
+    assert row["probe"]["max_requests"] == 3
+    assert "arm" not in row  # a probe never authorizes dispatch

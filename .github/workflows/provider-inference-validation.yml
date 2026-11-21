@@ -1,0 +1,292 @@
+name: Native Provider Inference Validation
+
+on:
+  workflow_dispatch:
+    inputs:
+      experiment_label:
+        description: "Required audit label for this bounded no-cost validation batch"
+        required: true
+        default: QUE-5454
+        type: string
+      emit_stamps:
+        description: "Emit each provider result through the canonical scoring-plane fan-out"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: native-provider-inference-validation
+  cancel-in-progress: false
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      providers: ${{ steps.matrix.outputs.providers }}
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+      - name: Derive the complete native provider adapter matrix (read-only)
+        id: matrix
+        run: |
+          set -euo pipefail
+          python3 -m pip install PyYAML==6.0.3
+          python3 scripts/ops/provider_population_census.py --out /tmp/provider-population-census.json
+          python3 - <<'PY'
+          import json, os
+          report = json.load(open('/tmp/provider-population-census.json', encoding='utf-8'))
+          providers = report.get('adapter_population', {}).get('native_provider_ids', [])
+          if not providers:
+              raise SystemExit('native provider adapter matrix is empty')
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as output:
+              output.write('providers=' + json.dumps(providers, separators=(',', ':')) + '\n')
+          print('Native provider adapters discovered:', len(providers))
+          PY
+
+  validate:
+    needs: [discover]
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        provider: ${{ fromJson(needs.discover.outputs.providers) }}
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+      - name: Materialize exact provider admission policy (fail closed)
+        env:
+          POLICY_JSON: ${{ secrets.LLM_API_HUB_PROVIDER_POLICY_JSON }}
+        run: |
+          set -euo pipefail
+          if [ -n "${POLICY_JSON:-}" ]; then
+            printf '%s' "$POLICY_JSON" > /tmp/provider-admission.json
+          else
+            printf '%s' '{"schema":"research-provider-admission/v1","entries":[]}' > /tmp/provider-admission.json
+            echo "No provider admission policy configured; every provider will be deferred without inference calls."
+          fi
+          echo "LLM_API_HUB_PROVIDER_POLICY=/tmp/provider-admission.json" >> "$GITHUB_ENV"
+      - name: Invoke only policy-admitted no-cost chat model
+        env:
+          EXPERIMENT_LABEL: ${{ inputs.experiment_label }}
+          INVOKE_MODEL: ""
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          HUGGINGFACE_TOKEN: ${{ secrets.HUGGINGFACE_TOKEN }}
+          HUGGING_FACE_HUB_TOKEN: ${{ secrets.HUGGING_FACE_HUB_TOKEN }}
+          HF_API_TOKEN: ${{ secrets.HF_API_TOKEN }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+          NVIDIA_NIM_API_KEY: ${{ secrets.NVIDIA_NIM_API_KEY }}
+          AION_API_KEY: ${{ secrets.AION_API_KEY }}
+          LLM7_API_TOKEN: ${{ secrets.LLM7_API_TOKEN }}
+          ZAI_API_KEY: ${{ secrets.ZAI_API_KEY }}
+          MODELSCOPE_TOKEN: ${{ secrets.MODELSCOPE_TOKEN }}
+          SILICONFLOW_API_KEY: ${{ secrets.SILICONFLOW_API_KEY }}
+          KILO_API_KEY: ${{ secrets.KILO_API_KEY }}
+          OVHCLOUD_API_KEY: ${{ secrets.OVHCLOUD_API_KEY }}
+          SAMBANOVA_API_KEY: ${{ secrets.SAMBANOVA_API_KEY }}
+          OPENTYPHOON_API_KEY: ${{ secrets.OPENTYPHOON_API_KEY }}
+          TYPHOON_API_KEY: ${{ secrets.TYPHOON_API_KEY }}
+          UNOROUTER_API_KEY: ${{ secrets.UNOROUTER_API_KEY }}
+          ROUTEWAY_API_KEY: ${{ secrets.ROUTEWAY_API_KEY }}
+          REQUESTY_API_KEY: ${{ secrets.REQUESTY_API_KEY }}
+          XKIRO_API_KEY: ${{ secrets.XKIRO_API_KEY }}
+          XFYUN_API_KEY: ${{ secrets.XFYUN_API_KEY }}
+          IFLYTEK_SPARK_API_PASSWORD: ${{ secrets.IFLYTEK_SPARK_API_PASSWORD }}
+          SEALION_API_KEY: ${{ secrets.SEALION_API_KEY }}
+          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          OLLAMA_API_KEY: ${{ secrets.OLLAMA_API_KEY }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          FELO_AI_API: ${{ secrets.FELO_AI_API }}
+          DEEPINFRA_API_KEY: ${{ secrets.DEEPINFRA_API_KEY }}
+          NOVITA_API_KEY: ${{ secrets.NOVITA_API_KEY }}
+          FRIENDLI_API_KEY: ${{ secrets.FRIENDLI_API_KEY }}
+          BASETEN_API_KEY: ${{ secrets.BASETEN_API_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
+        run: |
+          set -euo pipefail
+          python3 scripts/ops/provider_invoke.py \
+            --provider "${{ matrix.provider }}" \
+            --prompt-file docs/ops/tasks/inference-health-smoke.md \
+            --out /tmp/completion.txt \
+            --max-tokens 16 \
+            --free-only 2>&1 | tee /tmp/invoke.log
+          grep '^INVOKE_VERDICT ' /tmp/invoke.log | tail -1 | sed 's/^INVOKE_VERDICT //' > /tmp/verdict.json
+          python3 - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          verdict = json.load(open('/tmp/verdict.json', encoding='utf-8'))
+          diagnosis = str(verdict.get('diagnosis') or '')
+          if verdict.get('ok') and verdict.get('no_cost_verified'):
+              status = 'inference_validated'
+              inference_status = 'passed'
+          elif not verdict.get('policy_admitted') or any(token in diagnosis for token in ('not_admitted', 'policy_', 'no_verified_no_cost', 'no_canonical_model_catalog', 'missing_secret', 'free_catalog_unavailable', 'catalog_unavailable', 'provider_unconfigured')):
+              status = 'deferred'
+              inference_status = 'not_attempted'
+          else:
+              status = 'failed'
+              inference_status = 'failed' if verdict.get('no_cost_verified') else 'not_attempted'
+          receipt = {
+              'schema': 'provider-inference-validation/v1',
+              'provider': '${{ matrix.provider }}',
+              'model': verdict.get('model'),
+              'validation_status': status,
+              'inference_status': inference_status,
+              'no_cost_verified': bool(verdict.get('no_cost_verified', False)),
+              'policy_admitted': bool(verdict.get('policy_admitted', False)),
+              'validation_scope': verdict.get('validation_scope', 'policy_gated_no_cost_inference_smoke'),
+              'terms_accepted': verdict.get('terms_accepted', 'not_verified'),
+              'entitlement_verified': verdict.get('entitlement_verified', 'not_verified'),
+              'dispatch_eligible': False,
+              'pricing_classification': verdict.get('model_pricing_classification'),
+              'access_classification': verdict.get('model_access_classification'),
+              'latency_ms': verdict.get('latency_ms'),
+              'input_tokens': verdict.get('input_tokens'),
+              'output_tokens': verdict.get('output_tokens'),
+              'quota_class': verdict.get('quota_class', 'unclassified'),
+              'pool_id': verdict.get('pool_id'),
+              'diagnosis': diagnosis,
+              'experiment_label': os.environ['EXPERIMENT_LABEL'],
+              'observed_at': datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z'),
+              'run_id': os.environ.get('GITHUB_RUN_ID'),
+              'run_attempt': os.environ.get('GITHUB_RUN_ATTEMPT'),
+              'source_ref': os.environ.get('GITHUB_SERVER_URL', '') + '/' + os.environ.get('GITHUB_REPOSITORY', '') + '/actions/runs/' + os.environ.get('GITHUB_RUN_ID', ''),
+          }
+          json.dump(receipt, open('/tmp/receipt.json', 'w', encoding='utf-8'), indent=2, sort_keys=True)
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as summary:
+              summary.write('## ' + receipt['provider'] + ': ' + status + '\n\n')
+              summary.write('Model: `' + str(receipt['model']) + '`  \n')
+              summary.write('Inference: `' + inference_status + '`  \n')
+              summary.write('Reason: `' + (diagnosis or 'none') + '`  \n')
+              summary.write('Experiment: `' + receipt['experiment_label'] + '`\n')
+              summary.write('Dispatch eligibility: `not established` (quota/pool cadence pending)\n')
+          PY
+      - name: Upload sanitized validation receipt only
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: provider-validation-${{ matrix.provider }}
+          path: /tmp/receipt.json
+          if-no-files-found: error
+          retention-days: 14
+  census:
+    needs: [discover, validate]
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+      - name: Materialize admission policy for read-only census
+        env:
+          POLICY_JSON: ${{ secrets.LLM_API_HUB_PROVIDER_POLICY_JSON }}
+        run: |
+          set -euo pipefail
+          if [ -n "${POLICY_JSON:-}" ]; then
+            printf '%s' "$POLICY_JSON" > /tmp/provider-admission.json
+          else
+            printf '%s' '{"schema":"research-provider-admission/v1","entries":[]}' > /tmp/provider-admission.json
+          fi
+      - name: Download provider validation receipts
+        if: always()
+        continue-on-error: true
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: provider-validation-*
+          path: /tmp/provider-validation-receipts
+          merge-multiple: false
+          if-no-artifact-found: warn
+      - name: Build source-pinned provider population census
+        run: |
+          set -euo pipefail
+          python3 -m pip install PyYAML==6.0.3
+          python3 scripts/ops/provider_population_census.py \
+            --policy /tmp/provider-admission.json \
+            --receipts-dir /tmp/provider-validation-receipts \
+            --out /tmp/provider-population-census.json
+          python3 - <<'PY'
+          import json, os
+          report = json.load(open('/tmp/provider-population-census.json', encoding='utf-8'))
+          p = report['canonical_population']
+          g = report['g4f_population']
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as f:
+              f.write('## QUE provider population census\n\n')
+              f.write(f"All-lane providers: **{p['all_lane_distinct_providers']}**  \n")
+              f.write(f"Model-lane distinct providers: **{p['model_lane_distinct_providers']}**  \n")
+              f.write(f"Native invoke adapters: **{len(report['adapter_population'].get('native_provider_ids', []))}**; manual menu choices: **{report['adapter_population'].get('workflow_menu_choices')}**  \n")
+              f.write(f"Invoke wiring records: **{p['invoke_wiring_records']}/{p['invoke_wiring_record_denominator']}**  \n")
+              f.write(f"Inference-availability records: **{p['inference_availability_records']}**; covered **{p['availability_covered_records']}**; secret-only **{p['availability_secret_only_records']}**; not covered **{p['availability_not_covered_records']}**  \n")
+              f.write(f"Historical verified endpoint floor: **{p['endpoint_verified_floor']}** (counted {p['endpoint_census_counted_at']})  \n")
+              f.write(f"g4f universe pairs: **{g['universe_pairs_total']}**; historical inference successes: **{g['historical_probe_inference_ok']} / {g['historical_probe_attempted']}**  \n")
+              f.write(f"Configured build arms: **{report['build_dispatch']['configured_build_arms']}**  \n")
+              f.write(f"Current policy entries: **{report['policy']['entry_count']}**  \n")
+              f.write(f"Current inference-validated receipts: **{report['validation_receipts']['inference_validated']}**  \n")
+              f.write('Historical endpoint/g4f figures are not current activation proof. Dispatch eligibility is separately gated.\n')
+          PY
+      - name: Upload provider population census
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: provider-population-census
+          path: /tmp/provider-population-census.json
+          if-no-files-found: error
+          retention-days: 14
+
+  stamp:
+    needs: [discover, validate]
+    if: always() && inputs.emit_stamps && needs.discover.result == 'success'
+    runs-on: ubuntu-latest
+    permissions: {}
+    timeout-minutes: 20
+    steps:
+      - name: Mint Swarm App token for canonical evidence fan-out
+        id: app-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: true
+      - name: Download sanitized per-provider receipts
+        if: always()
+        continue-on-error: true
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: provider-validation-*
+          path: /tmp/provider-validation-receipts
+          if-no-artifact-found: warn
+      - name: Emit per-provider stamps to all scoring planes
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          EXPERIMENT_LABEL: ${{ inputs.experiment_label }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          python3 scripts/ops/provider_validation_stamp.py \
+            --receipts-dir /tmp/provider-validation-receipts \
+            --repository "$REPOSITORY" \
+            --run-id "$RUN_ID" \
+            --run-attempt "$RUN_ATTEMPT" \
+            --run-url "$RUN_URL" \
+            --experiment-label "$EXPERIMENT_LABEL"

@@ -6,7 +6,7 @@ import os
 import re
 import urllib.error
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -124,7 +124,8 @@ def _validate_entry(entry: Mapping[str, Any], provider: str, model: str, now: da
             raise ProviderAdmissionError(503, "native provider account is not configured", "provider_unconfigured")
 
 
-def authorize(provider: str, model: str) -> str:
+def admission_entry(provider: str, model: str) -> dict[str, Any]:
+    """Return the exact current operator-admitted entry after base policy checks."""
     if not isinstance(provider, str) or provider not in ENDPOINTS or not _valid_model(model):
         raise ProviderAdmissionError(403, "native provider model is not admitted", "provider_not_admitted")
     entries = _policy()["entries"]
@@ -132,6 +133,54 @@ def authorize(provider: str, model: str) -> str:
     if len(matches) != 1:
         raise ProviderAdmissionError(403, "native provider model is not admitted", "provider_not_admitted")
     _validate_entry(matches[0], provider, model, datetime.now(timezone.utc))
+    key = next((os.environ.get(k) for k in ENDPOINTS[provider][1] if os.environ.get(k)), None)
+    if not key:
+        raise ProviderAdmissionError(503, "native provider credential is not configured", "provider_unconfigured")
+    return dict(matches[0])
+
+
+def validate_activation_entry(entry: dict[str, Any]) -> str | None:
+    """Validate source-backed no-cost and quota/pool assertions for QUE.
+
+    Admission values are owner assertions. This validates their shape and
+    evidence references; it does not independently accept provider terms or
+    verify account entitlement.
+    """
+    if entry.get("no_cost_verified") is not True:
+        return "policy_no_cost_not_verified"
+    for key in ("pricing_source", "terms_source", "capability_source"):
+        value = entry.get(key)
+        if not isinstance(value, str) or not value.startswith("https://"):
+            return f"policy_{key}_missing"
+    for key in ("pricing_verified_at", "terms_verified_at", "capability_verified_at"):
+        value = entry.get(key)
+        if not isinstance(value, str):
+            return f"policy_{key}_missing"
+        try:
+            parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        except ValueError:
+            return f"policy_{key}_invalid"
+        now = datetime.now(timezone.utc)
+        if parsed.tzinfo is None or parsed > now:
+            return f"policy_{key}_invalid"
+        max_age_days = {"pricing_verified_at": 30, "terms_verified_at": 365, "capability_verified_at": 90}[key]
+        if parsed < now - timedelta(days=max_age_days):
+            return f"policy_{key}_stale"
+    quota_class = entry.get("quota_class")
+    allowed = {"provider_quota_backed", "daily_pool_no_provider_quota", "quota_unknown", "quota_not_applicable"}
+    if quota_class not in allowed:
+        return "policy_quota_class_missing"
+    if quota_class == "daily_pool_no_provider_quota":
+        if not entry.get("pool_id") or not str(entry.get("pool_evidence_ref", "")).startswith("https://"):
+            return "policy_daily_pool_evidence_missing"
+    if quota_class in {"provider_quota_backed", "quota_not_applicable"}:
+        if not str(entry.get("quota_evidence_ref", "")).startswith("https://"):
+            return "policy_quota_evidence_missing"
+    return None
+
+
+def authorize(provider: str, model: str) -> str:
+    admission_entry(provider, model)
     key = next((os.environ.get(k) for k in ENDPOINTS[provider][1] if os.environ.get(k)), None)
     if not key:
         raise ProviderAdmissionError(503, "native provider credential is not configured", "provider_unconfigured")

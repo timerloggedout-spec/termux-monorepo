@@ -14,13 +14,51 @@ from pathlib import Path
 
 PROMPT = "Reply with exactly: OK"
 
+
+def select_entries(entries, offset, limit):
+    if offset < 0:
+        raise ValueError("offset_must_be_nonnegative")
+    if limit < 0:
+        raise ValueError("limit_must_be_nonnegative")
+    return entries[offset : offset + limit]
+
+
+def build_receipt(results, *, source, offset, limit, source_population_total,
+                  workers, timeout_s, deadline_s, observed_at=None):
+    # Selection size and actual invocation starts are different populations:
+    # queued futures cancelled at the deadline were selected, not attempted.
+    attempted = sum(row.get("attempted", True) is True for row in results)
+    selected_count = len(results)
+    inference_ok = sum(1 for row in results if row.get("inference_ok") is True)
+    return {
+        "schema": "g4f-inference-smoke/v1",
+        "observed_at": observed_at or dt.datetime.now(dt.timezone.utc).isoformat(),
+        "source": source,
+        "offset": offset,
+        "limit": limit,
+        "source_population_total": source_population_total,
+        "workers": workers,
+        "timeout_s": timeout_s,
+        "deadline_s": deadline_s,
+        "selected_count": selected_count,
+        "attempted": attempted,
+        "not_started": selected_count - attempted,
+        "inference_ok": inference_ok,
+        "providers_ok": sorted({row["provider"] for row in results if row.get("inference_ok") is True}),
+        "results": results,
+        "production_admission_changed": False,
+        "paid_fallback_allowed": False,
+        "dispatch_eligible": False,
+        "quota_class": "unclassified",
+    }
+
 def probe(entry):
     import g4f
     from g4f.client import Client
     provider_id, model = entry
     started = time.time()
-    result = {"provider": provider_id, "model": model, "inference_ok": False,
-              "latency_s": None, "error": None}
+    result = {"provider": provider_id, "model": model, "attempted": True,
+              "inference_ok": False, "latency_s": None, "error": None}
     try:
         provider = None
         for name in dir(g4f.Provider):
@@ -51,10 +89,15 @@ def main():
     ap.add_argument("--universe", default="data/g4f-working/universe.json")
     ap.add_argument("--output", default="g4f-inference-smoke.json")
     ap.add_argument("--limit", type=int, default=100, help="max completions this run")
+    ap.add_argument("--offset", type=int, default=0, help="zero-based offset into the selected source population")
     ap.add_argument("--workers", type=int, default=6)
     ap.add_argument("--timeout", type=int, default=90, help="per-call timeout seconds")
     ap.add_argument("--deadline", type=int, default=1500, help="global wall-clock deadline seconds; stragglers recorded as DeadlineExceeded and the receipt still writes")
     args = ap.parse_args()
+    if args.offset < 0:
+        ap.error("--offset must be non-negative")
+    if args.limit < 0:
+        ap.error("--limit must be non-negative")
 
     if args.source == "working":
         doc = json.loads(Path(args.working).read_text())
@@ -68,7 +111,8 @@ def main():
         for p in catalog["providers"]:
             for wm in p.get("working_models", []):
                 entries.append((p["id"], wm["model"]))
-    entries = entries[: args.limit]
+    total_entries = len(entries)
+    entries = select_entries(entries, args.offset, args.limit)
 
     results = []
     ex = concurrent.futures.ThreadPoolExecutor(max_workers=args.workers)
@@ -79,26 +123,23 @@ def main():
             results.append(fut.result())
         except Exception as exc:
             prov, model = futures[fut]
-            results.append({"provider": prov, "model": model, "inference_ok": False,
-                            "latency_s": None, "error": type(exc).__name__})
+            results.append({"provider": prov, "model": model, "attempted": True,
+                            "inference_ok": False, "latency_s": None,
+                            "error": type(exc).__name__})
     for fut in not_done:
         prov, model = futures[fut]
-        results.append({"provider": prov, "model": model, "inference_ok": False,
-                        "latency_s": None, "error": "DeadlineExceeded"})
+        started = fut.running()
+        results.append({"provider": prov, "model": model, "attempted": started,
+                        "inference_ok": False, "latency_s": None,
+                        "error": "DeadlineExceeded" if started else "NotStartedDeadline"})
         fut.cancel()
     ex.shutdown(wait=False, cancel_futures=True)
     results.sort(key=lambda r: (r["provider"], r["model"]))
-    receipt = {
-        "schema": "g4f-inference-smoke/v1",
-        "observed_at": dt.datetime.now(dt.timezone.utc).isoformat(),
-        "source": args.source,
-        "attempted": len(results),
-        "inference_ok": sum(1 for r in results if r["inference_ok"]),
-        "providers_ok": sorted({r["provider"] for r in results if r["inference_ok"]}),
-        "results": results,
-        "production_admission_changed": False,
-        "paid_fallback_allowed": False,
-    }
+    receipt = build_receipt(
+        results, source=args.source, offset=args.offset, limit=args.limit,
+        source_population_total=total_entries, workers=args.workers,
+        timeout_s=args.timeout, deadline_s=args.deadline,
+    )
     Path(args.output).write_text(json.dumps(receipt, indent=1) + "\n")
     print(json.dumps({k: receipt[k] for k in ("attempted", "inference_ok", "providers_ok")}, indent=1), flush=True)
     # Probe threads are non-daemon and some providers ignore timeouts entirely;

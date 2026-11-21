@@ -1,0 +1,11 @@
+flowchart LR
+ GH["GitHub PR / issue / commit"] --> LED["PR production ledger"]
+ ACT["Actions runs / jobs"] --> LED --> EPS["EPS shaping"] --> EPSART["EPS NDJSON"]
+ ACT --> OBS["ATES workflow_run observer"]
+ AGENT["Gemini / DeepSeek admitted workflows"] --> OBS --> SAN["Sanitizer + task boundary"] --> JSONL["ATES JSONL + receipt"] --> RED["ATES reducer"]
+ ACT --> LANE["Lane event recorder"]
+ GH --> LANE --> NEON1["Neon lane_events"]
+ WEBHOOK["Cloudflare webhook"] --> RECEIVER["Receiver Mesh"] --> NEON2["Neon receiver_events"]
+ EPSART -. "validated projection" .-> ANALYTICS["Analytics / Grafana / Hex"]
+ RED -. "baseline + join required" .-> MB["Moneyball / DOE"]
+ JULES["Jules execution"] -. "receipt missing; excluded" .-> OBS

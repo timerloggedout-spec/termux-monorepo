@@ -1,0 +1,9 @@
+flowchart LR
+ CALLERS["CLI / TUI / agent callers"] -->|"session_id + event"| ARCH["ArchWiz"]
+ DEVICE["Android / Termux"] --> HUB["hub_mcp capability boundary"] --> ARCH
+ ARCH --> DP["DispatchPipeline"]
+ DP --> SSOT["Session SSOT"]
+ DP --> CODEX["Codex index"]
+ DP -. "log-only hint" .-> LINEAR["Linear"]
+ SSOT --> CTX["Session continuation / context"]
+ CODEX --> CTX

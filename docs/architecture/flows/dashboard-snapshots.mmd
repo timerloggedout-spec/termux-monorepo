@@ -1,0 +1,10 @@
+flowchart LR
+ CORPUS["Historical corpus / CRG"] --> RED["SHE pure reducers"]
+ EPS["EPS / ATES validated evidence"] -. "eligible projection" .-> RED
+ OPS["Operational inputs"] --> FEED["Surface-feed collector"] --> TJSON["Tribute JSON feeds"] --> TRIBUTE["Tribute dashboard"]
+ RED --> SNAP["Snapshot builder"]
+ SNAP --> META["schema_version · snapshot_id · source_sha
+generated_at · coverage · manifest_sha"]
+ META --> VERCEL["Vercel SHE · primary"]
+ META -. "optional / verify deployment" .-> PAGES["GitHub Pages"]
+ META -. "optional / verify import" .-> HEX["Hex"]

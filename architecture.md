@@ -31,6 +31,7 @@
 - [5. Canonical source index](#5-canonical-source-index)
 - [6. Change-impact routing](#6-change-impact-routing)
 - [7. Maintenance and freshness](#7-maintenance-and-freshness)
+- [8. Linked modular flow maps](#8-linked-modular-flow-maps)
 
 ## 1. Reading protocol
 
@@ -131,7 +132,7 @@ EPS NDJSON, ATES JSONL, normalized integration events, Neon lane events, Neon re
 
 ArchWiz `DispatchPipeline` fans out to Session SSOT and the Codex index, plus a Linear sync hint that is log-only. Treat the hint as an observation, not a completed Linear synchronization.
 
-Editable diagram source: [repository-data-flow.mmd](docs/ops/diagrams/repository-data-flow.mmd). Solid and dashed edges carry the semantics below.
+Editable diagram source: [repository-data-flow.mmd](docs/ops/diagrams/repository-data-flow.mmd). Interactive versioned view: [Mermaid.ai root diagram](https://mermaid.ai/app/projects/affbc609-b2b7-420c-af5b-ca0ccb74fe14/diagrams/080c5454-1215-40a8-afb5-7ef30e42dfcb/version/v0.1/edit). Focused views: [flow module index](docs/architecture/flows/README.md). Solid and dashed edges carry the semantics below.
 
 ### 3.4 Confidence semantics
 
@@ -238,3 +239,36 @@ This is a navigation taxonomy of major ownership zones, not a recursive inventor
 - Run link checks, `git diff --check`, `python3 scripts/ci/repo_gate.py`, and `python3 scripts/ci/termux_smoke.py` through the authorized project lane; record each result with the commit SHA.
 
 **Freshness:** initial consolidation from repository documentation and selected implementation paths, 2026-11-21. Revalidate dynamic directory inventories and runtime integrations against the live tree before treating them as exhaustive.
+
+
+## 8. Linked modular flow maps
+
+The root map is the system index. Follow each plane into its paired detailed Markdown mapping and editable Mermaid source.
+
+### Execution and Session Plane
+
+[Detailed mapping](docs/architecture/flows/execution-session.md) · [Mermaid source](docs/architecture/flows/execution-session.mmd)
+
+### Agent Orchestration and Provider Routing
+
+[Detailed mapping](docs/architecture/flows/agent-orchestration.md) · [Mermaid source](docs/architecture/flows/agent-orchestration.mmd)
+
+### Evidence and Telemetry Plane
+
+[Detailed mapping](docs/architecture/flows/evidence-telemetry.md) · [Mermaid source](docs/architecture/flows/evidence-telemetry.mmd)
+
+### Context Relationship and Historical Corpus
+
+[Detailed mapping](docs/architecture/flows/context-historical.md) · [Mermaid source](docs/architecture/flows/context-historical.mmd)
+
+### Dashboard, Snapshot and Surface Consumers
+
+[Detailed mapping](docs/architecture/flows/dashboard-snapshots.md) · [Mermaid source](docs/architecture/flows/dashboard-snapshots.mmd)
+
+### Legacy Local Snapshot Pipeline — Gap Audit
+
+[Detailed mapping](docs/architecture/flows/legacy-snapshot-audit.md) · [Mermaid source](docs/architecture/flows/legacy-snapshot-audit.mmd)
+
+### Snapshot freshness and legacy inventory gap
+
+SHE snapshots require source_sha, generated_at, coverage and corpus manifest SHA. The legacy ArchWiz data-flow manifest generator emits a local wall-clock Generated field, but its tracked output is zero bytes, its script writes to an absolute home-directory path, and it omits source SHA, tree SHA and input digest. Its generated timestamp proves execution time only, not input freshness. No verified consumer connects this inventory to CRG, SHE or EPS. See the [legacy snapshot gap audit](docs/architecture/flows/legacy-snapshot-audit.md). The actual local generated_at is unknown; audit date 2026-11-21 is not a substitute.

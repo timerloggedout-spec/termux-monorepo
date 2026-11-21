@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "authority_boundary": "candidate only: typed cross-matrix references; not semantic equivalence, domain acceptance, or runtime authority",
+  "source_contracts": {
+    "nomenclature": {
+      "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+      "schema_version": 1
+    },
+    "domain_composition": {
+      "path": "docs/proposals/active/domain-composition-matrix/seed.json",
+      "schema_version": 1
+    }
+  },
+  "links": [
+    {
+      "link_id": "nse-dcm-001",
+      "concept_id": "category_theory.morphism",
+      "target_type": "domain",
+      "target_id": "category_theory",
+      "relation": "domain_scope",
+      "status": "candidate",
+      "basis": "The nomenclature concept and domain record share the explicit category_theory identifier.",
+      "non_equivalence_note": "Identifier alignment scopes the concept; it does not establish an equivalence between records."
+    },
+    {
+      "link_id": "nse-dcm-002",
+      "concept_id": "category_theory.morphism",
+      "target_type": "entity_type",
+      "target_id": "morphism",
+      "relation": "describes_entity_type",
+      "status": "candidate",
+      "basis": "The domain matrix entity type is named Morphism and belongs to category_theory.",
+      "non_equivalence_note": "This is a navigational concept-to-entity reference, not a proof of full definitional identity."
+    },
+    {
+      "link_id": "nse-dcm-003",
+      "concept_id": "category_theory.composition",
+      "target_type": "domain",
+      "target_id": "category_theory",
+      "relation": "domain_scope",
+      "status": "candidate",
+      "basis": "The nomenclature concept and domain record share the explicit category_theory identifier.",
+      "non_equivalence_note": "Identifier alignment scopes the concept; it does not establish an equivalence between records."
+    },
+    {
+      "link_id": "nse-dcm-004",
+      "concept_id": "category_theory.composition",
+      "target_type": "operation",
+      "target_id": "morphism_composition",
+      "relation": "describes_operation",
+      "status": "candidate",
+      "basis": "The nomenclature concept describes morphism composition and the domain matrix operation is named morphism_composition.",
+      "non_equivalence_note": "The link identifies a related operation record; notation order and domain-specific laws remain governed by the target rule."
+    },
+    {
+      "link_id": "nse-dcm-005",
+      "concept_id": "category_theory.composition",
+      "target_type": "composition_rule",
+      "target_id": "cat-morphism-compose-001",
+      "relation": "contextualized_by_rule",
+      "status": "candidate",
+      "basis": "The target rule is the category_theory composition rule for morphism_composition.",
+      "non_equivalence_note": "The rule is a candidate research record and does not validate every label or mapping attached to the concept."
+    },
+    {
+      "link_id": "nse-dcm-006",
+      "concept_id": "haskell.monadic_bind",
+      "target_type": "domain",
+      "target_id": "haskell",
+      "relation": "domain_scope",
+      "status": "candidate",
+      "basis": "The nomenclature concept and domain record share the explicit haskell identifier.",
+      "non_equivalence_note": "Identifier alignment scopes the concept; it does not establish an equivalence between records."
+    },
+    {
+      "link_id": "nse-dcm-007",
+      "concept_id": "haskell.monadic_bind",
+      "target_type": "operation",
+      "target_id": "monadic_bind",
+      "relation": "describes_operation",
+      "status": "candidate",
+      "basis": "The nomenclature concept is monadic_bind and the domain matrix operation is named monadic_bind.",
+      "non_equivalence_note": "This reference does not make bind interchangeable with ordinary morphism/function composition."
+    },
+    {
+      "link_id": "nse-dcm-008",
+      "concept_id": "haskell.monadic_bind",
+      "target_type": "composition_rule",
+      "target_id": "haskell-bind-001",
+      "relation": "contextualized_by_rule",
+      "status": "candidate",
+      "basis": "The target rule is the Haskell monadic_bind composition rule.",
+      "non_equivalence_note": "The rule remains a candidate hypothesis; associativity and identity laws require domain review."
+    }
+  ]
+}

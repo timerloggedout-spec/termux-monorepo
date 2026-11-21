@@ -28,3 +28,13 @@ This proposal does not claim the seed is validated research. It makes the on-dis
 - Schema and seed stay research artifacts (`schema.sql`, `seed.json`).
 - No runtime authority over notation or execution paths.
 - Evidence of closure is a green `proposal-lifecycle` validate-registry job on this SHA.
+
+
+## Cross-matrix integration
+
+The nomenclature lane owns the typed candidate references into this database:
+- [Integration contract](../notation-sets/nomenclature-matrix/DOMAIN-COMPOSITION-INTEGRATION.md)
+- [Candidate links](../notation-sets/nomenclature-matrix/DOMAIN-COMPOSITION-LINKS.json)
+- [Validator](../../../../scripts/ci/validate_nomenclature_domain_links.py)
+
+These references preserve ownership and do not promote DCM hypotheses to accepted rules.

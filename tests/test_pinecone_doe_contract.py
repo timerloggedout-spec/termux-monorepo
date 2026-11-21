@@ -35,10 +35,17 @@ class PineconeDoEContractTests(unittest.TestCase):
         control = evaluate_arm(queries, fixture["rankings"]["pgvector-hnsw"])
         native = evaluate_arm(queries, fixture["rankings"]["pg-pinecone-native"])
         remote = evaluate_arm(queries, fixture["rankings"]["pg-pinecone-remote"])
-        expected = fixture["expected_macro_recall_at_5"]
-        self.assertAlmostEqual(control["mean_recall_at_5"], expected["pgvector-hnsw"])
-        self.assertAlmostEqual(native["mean_recall_at_5"], expected["pg-pinecone-native"])
-        self.assertAlmostEqual(remote["mean_recall_at_5"], expected["pg-pinecone-remote"])
+        expected_recall = fixture["expected_macro_recall_at_5"]
+        expected_ndcg = fixture["expected_macro_ndcg_at_10"]
+        expected_mrr = fixture["expected_macro_mrr_at_10"]
+        for arm_id, result in (
+            ("pgvector-hnsw", control),
+            ("pg-pinecone-native", native),
+            ("pg-pinecone-remote", remote),
+        ):
+            self.assertAlmostEqual(result["mean_recall_at_5"], expected_recall[arm_id])
+            self.assertAlmostEqual(result["mean_ndcg_at_10"], expected_ndcg[arm_id])
+            self.assertAlmostEqual(result["mean_mrr_at_10"], expected_mrr[arm_id])
         effect = paired_bootstrap_ci(
             control["per_query_recall_at_5"],
             native["per_query_recall_at_5"],

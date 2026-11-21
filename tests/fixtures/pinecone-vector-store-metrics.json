@@ -108,5 +108,15 @@
     "pgvector-hnsw": 0.5,
     "pg-pinecone-native": 1,
     "pg-pinecone-remote": 0.3333333333333333
+  },
+  "expected_macro_ndcg_at_10": {
+    "pgvector-hnsw": 0.7734019984013771,
+    "pg-pinecone-native": 0.8479336579316714,
+    "pg-pinecone-remote": 0.6296574979186553
+  },
+  "expected_macro_mrr_at_10": {
+    "pgvector-hnsw": 0.7222222222222222,
+    "pg-pinecone-native": 1,
+    "pg-pinecone-remote": 0.5555555555555556
   }
 }

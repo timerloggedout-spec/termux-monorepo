@@ -542,5 +542,5 @@ CockroachDB joins the database continuity lane as an optional projection of cano
 - Recorder: `.github/workflows/lane-events-recorder.yml` sends the same canonical event file to each configured sink.
 - CI: `.github/workflows/cockroachdb-backend-ci.yml` runs a disposable, digest-pinned CockroachDB cluster and validates schema, idempotent insert/readback and offline tests.
 - Credential state: `COCKROACH_DATABASE_URL` is a reserved name; hosted cluster provisioning and secret presence remain unverified.
-- Reference state: CockroachDB is indexed in `refTemplates/00_Index/SOURCE-MAP.md`; the shallow gitlink under `refTemplates/smods` remains pending source-tree admission.
+- Reference state: CockroachDB is indexed in `refTemplates/00_Index/SOURCE-MAP.md`; `refTemplates/smods/cockroachdb` is now a live shallow gitlink pinned to upstream commit `d30c905fff79ef825adc96bcc647f1872a90f2ff`.
 - Continuity state: dual-write implementation is committed on the PR branch; hosted failover, restore and multi-region continuity remain untested. RPO/RTO remain `null` until a drill emits evidence.

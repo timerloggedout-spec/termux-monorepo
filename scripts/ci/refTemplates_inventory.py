@@ -16,6 +16,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 REF = ROOT / "refTemplates"
 SLOT_RE = re.compile(r"^(\d{2}|[0-9]+)_|^smods$")
+METADATA_CHILD_SLOTS = frozenset({
+    "15_Research_Repo_Templates",
+    "18_Vector_Databases",
+    "19_Provider_Inference_Catalogs",
+})
 
 
 def slots() -> list[Path]:

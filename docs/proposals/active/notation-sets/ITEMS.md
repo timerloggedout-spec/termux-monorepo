@@ -166,6 +166,15 @@ Phase contract:
 
 This is the first implementation slice for restoring the Linguist/CedrLang diaspora. Follow-on work must reconcile it with `AGENTS.md` ↔ `AGENTS.hum.md`, INDEX Taxonomy, Caveman/Grimoire, and ICM/README projections without making the compressed surface the canonical truth layer.
 
+## NSE-020 — MAXC × Siglary formal semantic codec
+
+Evolve MAXC into a multi-target, semantics-preserving compiler/codec over a typed canonical IR. Add deterministic deduplication, factoring, alias normalization, codebook interning, tokenizer-aware cost selection, reversible emitters, and proof-gated rewrite rules. Integrate Lean 4 + Batteries as a reproducible proof oracle; use Mathlib where extended structures are required. Treat PDDL as a planning adapter, SMT/Z3 as a constraint adapter, JSON Schema as the contract layer, TLA+ as a concurrency-verification lane, and e-graphs as an optimization candidate.
+
+**Safety/compatibility:** preserve the Siglary Standard (accuracy > compression; three notation classes; named shorthand domains; N∅ chat-only); keep canonical IR truth-bearing; retain source/provenance and round-trip decoding; measure target tokenizer cost rather than character count; preserve existing MAXC HTML/Leptos/micro-v1 outputs. Inventory `workspace/maxc` and `appliedSxi/maxc` before selecting a canonical crate; keep both intact until an evidence-backed ownership decision. PDDL remains pure PDDL and planner output remains a proposal until runtime authorization/evidence.
+
+**Acceptance:** typed/versioned IR; rewrite-rule registry with side conditions; Lean proof artifacts for rules marked PROVEN; Rust property + round-trip tests; A2A token/quality/ambiguity benchmarks; backward-compatible golden fixtures; explicit crate-consolidation decision; `repo-gate` + `termux-smoke`. Full design: [MAXC-SIGLARY-FORMAL-CODEC.md](MAXC-SIGLARY-FORMAL-CODEC.md).
+
+
 ## Acceptance criteria
 
 - #320, #309, #182, and #175 are explicitly connected in the proposal registry/source; related issues expanded to include #126, #304, #196, #177, #208, #274 (per #309/#182 maps).

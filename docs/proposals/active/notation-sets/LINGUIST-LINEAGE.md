@@ -24,7 +24,8 @@ Linguist
 │       └── #275 bounded CEDRlang + local A2A successor
 │
 ├── projection / contact surfaces
-│   └── #304 human/machine contact-document projections
+│   ├── #304 human/machine contact-document projections
+│   └── LMP-01 comparative README evolution (separate, human-readable lane)
 │
 └── semantic research/specification
     └── #320 Notation Sets
@@ -42,6 +43,7 @@ Linguist
 | #274 | governed reconciliation tracker | Records the Linguist integration boundary. |
 | #275 | bounded successor implementation | Current governed CEDRlang/local-A2A implementation candidate in the lineage. |
 | #304 | projection implementation | Human/machine contact-document projection surface and public bootstrap lexicon boundary. |
+| LMP-01 / PR #5188 | governed README evolution | Comparative README versions, seeded report-only change budgets, and visual/navigation projection; separate from NSE implementation and GitHub Linguist language classification. |
 | #320 | relationship/research seed | Supplies notation sets and cross-domain semantic distinctions. |
 | NSE-001..008 | specification | Canonical taxonomy, semantic preservation, living lexicon, evolution, relationships, governance, validation, ledger. |
 | NSE-009..018 | research program | Measurement and codec/compression hypotheses requiring empirical validation. |
@@ -72,10 +74,11 @@ Historical PR descriptions are evidence of what was proposed or implemented at t
 - #309 / #182 — Grimoire/compression lineage
 - #274 / #275 — governed Linguist/CEDRlang reconciliation
 - #304 — projection/contact-doc implementation
+- LMP-01 / PR #5188 — comparative README evolution, policy, and seeded report-only planner
 - #175 — operator/master gate
 - `docs/proposals/active/notation-sets/ITEMS.md` — NSE specification/research items
 - `docs/proposals/active/notation-sets/MANIFEST.md` — proposal lifecycle and review state
 
 ## Evolution rule
 
-New Linguist-related issues or PRs should be classified here before being promoted into NSE work. A new artifact may extend the lineage without automatically becoming canonical. Semantic promotion requires provenance, classification, review disposition, and—when executable—its own accepted item and required repository gates.
+New Linguist-related issues or PRs should be classified here before being promoted into NSE work. LMP-01 is classified as a separate README projection/evolution lane; it does not create a new canonical mapping family or promote its change-budget policy into NSE. A new artifact may extend the lineage without automatically becoming canonical. Semantic promotion requires provenance, classification, review disposition, and—when executable—its own accepted item and required repository gates.

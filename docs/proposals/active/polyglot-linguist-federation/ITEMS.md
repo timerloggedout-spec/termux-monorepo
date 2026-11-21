@@ -12,7 +12,7 @@
 | PLF-008 | Surfaces | Public-surface integration contract for mandatory DerpWiki projection | Specify default-on layer, owner reconstruction, publication-profile behavior and Agent Ready validation; runtime rendering remains Phase 5 |
 | PLF-009 | Governance | Research Astute migration readiness | Transfer checklist and explicit approval gate |
 | PLF-010 | Validation | Lightweight validator and tests | Standard-library validation succeeds on Termux and CI |
-| PLF-011 | Notifications | Z3π∅ public-interface notification delivery contract | Specify public UI routing, classification, deduplication and auditable receipts; runtime delivery remains Phase 5 |
+| PLF-011 | Notifications | Z3π∅ public-interface notification delivery contract | Reuse the existing single-notification/dashboard emitter and audit receipt contract; specify public UI routing, classification and deduplication; runtime delivery remains Phase 5 |
 
 ## Initial implementation state
 

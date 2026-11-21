@@ -183,7 +183,7 @@ A canonical Linguist source may have multiple projections:
 
 GitHub comments and webpages can expose a public Linguist reading layer through an explicit rendered block or browser extension. Preserve original text and provide a visible indication of translated/derived content. Browser integrations should respect origin permissions, CSP, authentication, accessibility and user control.
 
-derpWiki may provide an optional collaborative discovery layer. Experimental invisible-character encodings belong only in clearly labelled, opt-in test fixtures. Public `llms.txt`, Agent Ready checks and ordinary agent discovery should use explicit, documented metadata and standards-compliant content. Baseline tests run with derpWiki features disabled and verify the ordinary published surface.
+DerpWiki is a mandatory Linguist language layer across public user-facing interfaces and published knowledge surfaces; publication and interface integrations include the DerpWiki projection by default, with zero visitor opt-in. The layer owns its vocabulary, aliases, fixtures, provenance, versions and review state, and the shared composer consumes its lane output. Public mappings support the established versioned playful semantic remapping and cross-domain composition contract, with deterministic owner reconstruction and append-only lineage. Keep crawler instructions, metadata, prompts, credentials, authorization data, executable content, filtering inputs and moderation inputs in canonical readable form. The separate Unicode challenge payload follows the existing publication-profile contract: validation profile OFF; public profile ON, with a visible notice and accessible decoded/printable alternative. CTF participation and participant evaluation remain voluntary and task-specific; that participation boundary does not make the DerpWiki layer optional.
 
 Versioned publishing includes source hash, language version, mapping version, surface ID, visibility and access policy. Protect private material with explicit access controls; treat obscurity and hidden characters as presentation experiments rather than confidentiality controls.
 
@@ -252,8 +252,9 @@ Contracts use explicit schema versions and provenance. Unknown optional fields m
 - Acceptance: consumer validates schema and digest, pins source revisions and detects stale feeds.
 
 ### Phase 5 — Surface integrations
-- Prototype GitHub rendering and browser overlay; publish derpWiki opt-in experiment.
-- Acceptance: original content remains available; transformed layer is visibly identified; permissions and access policies are tested; Agent Ready baseline remains clean.
+- Integrate the mandatory DerpWiki layer into GitHub rendering, browser surfaces, public pages and agent-facing knowledge surfaces; reuse the existing Linguist lane registry, mapping runtime and publication profiles.
+- Route Z3π∅ notifications into public user interfaces as a first-class delivery surface, preserving classified outcomes, deduplication and auditable receipts.
+- Acceptance: DerpWiki projection is present by default on public interfaces; canonical owner reconstruction remains available; challenge payloads follow validation/public profile rules and include accessible alternatives; Z3π∅ notices are visible in the relevant public UI; Agent Ready validation remains bound to its exact validation URL/profile/commit/digest.
 
 ### Phase 6 — Research Astute readiness
 - Produce transfer checklist and rehearsal plan.

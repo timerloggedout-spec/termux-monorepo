@@ -1,0 +1,195 @@
+schema_version: cns-organ-registry/v1
+updated_at: "2026-11-19"
+repository: timerloggedout-spec/termux-monorepo
+source_ref: "master@b36c8257544d27b740fcd7d5f56e4c79be81fcd4"
+authority_model: "Existing organs retain canonical state and mutation authority; CNS records metadata and relationships."
+organs:
+  - id: governance
+    name: Governance and permissions
+    plane: governance
+    status: implemented
+    owner: repository-governance
+    canonical_sources:
+      - CLAUDE.md
+      - docs/proposals/PROCESS.md
+      - docs/proposals/AGENTIC-PERMISSIONS.md
+      - docs/ARCHW1Z-GATE.md
+    responsibilities: [proposal_lifecycle, permissions, dual_gates, promotion_policy]
+    authority_boundary: "Owns governance rules and approval boundaries."
+    evidence_class: verified
+  - id: icm
+    name: Interpretable Context Methodology
+    plane: knowledge
+    status: implemented
+    owner: icm
+    canonical_sources: [docs/icm/CONTEXT.md, docs/icm/CLAUDE.md]
+    responsibilities: [context_navigation, task_context_selection, knowledge_cards]
+    authority_boundary: "Provides navigation and context selection; source records remain authoritative."
+    evidence_class: verified
+  - id: crg
+    name: Context Relationship Graph
+    plane: knowledge
+    status: implemented_with_active_extensions
+    owner: context_relationship_graph
+    canonical_sources:
+      - config/context_relationships/schema.json
+      - config/context_relationships/scope_registry.json
+      - archwiz/context_relationships/
+      - workspace/llm_map/context_relationships/
+      - docs/ops/CONTEXT-RELATIONSHIP-INDEX.md
+    responsibilities: [metadata_relationships, temporal_traversal, provenance, bounded_context_retrieval]
+    authority_boundary: "Canonical graph schemas and evidence sources own relationship truth; generated graph artifacts are projections."
+    evidence_class: verified
+  - id: pointer_fabric
+    name: Context Relationship Pointer Fabric
+    plane: knowledge
+    status: proposed_contract
+    owner: context_relationship_graph
+    canonical_sources: [docs/ops/CONTEXT-RELATIONSHIP-POINTER-FABRIC.md]
+    responsibilities: [forward_pointers, reverse_content_hash_index, optional_rust_acceleration]
+    authority_boundary: "Acceleration and indexing preserve CRG authority."
+    evidence_class: proposed
+  - id: brain
+    name: Brain reasoning kernel
+    plane: cognition
+    status: kernel_merged_host_integration_open
+    owner: brain
+    canonical_sources: [brain.rs, brain/, archwiz/mosaic_brain/]
+    related_prs: [5525]
+    responsibilities: [typed_reasoning_stages, specialist_extensions, reflection_candidates]
+    authority_boundary: "Reasoning and advisory handoff; tool execution, policy authority, and durable memory remain with their existing owners."
+    evidence_class: verified
+  - id: manager
+    name: Manager / Conductor
+    plane: orchestration
+    status: documented_control_plane
+    owner: agent_team_orchestration
+    canonical_sources:
+      - docs/architecture/AGENT-TEAM-CONTROL-PLANE.md
+      - docs/ops/AGENT-TEAM-ORCHESTRATION.md
+    responsibilities: [sequencing,parallelism,waiting,escalation,culling]
+    authority_boundary: "Owns work coordination policy within repository permissions."
+    evidence_class: verified
+  - id: admission
+    name: QUE / QDesk
+    plane: execution
+    status: existing_execution_lane
+    owner: que_qdesk
+    canonical_sources: [docs/proposals/active/que-superagent/, docs/proposals/active/qdesk-self-repair/]
+    responsibilities: [task_admission, execution_claims, queue_lifecycle]
+    authority_boundary: "Owns admission and execution claims on its approved lanes."
+    evidence_class: verified
+  - id: ballet
+    name: Ballet dependency choreography
+    plane: orchestration
+    status: existing_dependency_lane
+    owner: ballet
+    canonical_sources: [docs/agentic/]
+    responsibilities: [dependency_waves, readiness]
+    authority_boundary: "Readiness is admission evidence; provider selection remains with the approved Router."
+    evidence_class: verified
+  - id: router
+    name: Provider Router
+    plane: routing
+    status: existing_routing_plane
+    owner: provider_router
+    canonical_sources: [docs/ops/AGENT-TEAM-ORCHESTRATION.md, docs/schemas/agent-roster.yaml]
+    responsibilities: [eligible_provider_model_selection]
+    authority_boundary: "Selects eligible provider/model candidates; requires a real execution adapter and admission contract."
+    evidence_class: verified
+  - id: orbit_shield
+    name: ORBIT / SHIELD
+    plane: routing
+    status: proposed_open_draft
+    owner: provider_arbitration
+    canonical_sources: [docs/ops/AGENT-TEAM-ORCHESTRATION.md]
+    proposal_refs: ["https://github.com/timerloggedout-spec/termux-monorepo/pull/5544"]
+    related_prs: [5544]
+    responsibilities: [context_admission,provider_arbitration,select_defer_veto_observations]
+    authority_boundary: "Observe-only integration precedes any routing-policy authority."
+    evidence_class: proposed
+  - id: synaptic_bus
+    name: ADE-SYNAPSE / Synaptic Bus
+    plane: interoperability
+    status: proposed_open_draft
+    owner: event_contract
+    canonical_sources:
+      - docs/ops/AGENT-OBSERVABILITY-RESEARCH-MATRIX.md
+    proposal_refs: ["https://github.com/timerloggedout-spec/termux-monorepo/pull/5637"]
+    related_prs: [5637]
+    responsibilities: [typed_event_envelopes,correlation,canonical_record_references]
+    authority_boundary: "Interoperability contract and projection adapter; existing event stores retain authority."
+    evidence_class: proposed
+  - id: telemetry
+    name: ATES and Action-Effect evidence
+    plane: observability
+    status: existing_evidence_planes
+    owner: telemetry
+    canonical_sources: [docs/ops/AGENT-OBSERVABILITY-RESEARCH-MATRIX.md, docs/ops/RUNTIME-WATCHER-LOOP.md]
+    responsibilities: [runtime_observation,action_effect_evidence,execution_lineage]
+    authority_boundary: "Records observed execution and effects; does not grant routing or promotion authority."
+    evidence_class: verified
+  - id: three_l0
+    name: 3L0 scoring plane
+    plane: intelligence
+    status: implemented_input_reconciliation_required
+    owner: three_l0
+    canonical_sources: [docs/ops/3L0-PLANE.md, apps/tribute-dashboard/data/3l0-feed.json]
+    responsibilities: [actor_scoring,eligibility_evidence,performance_history]
+    authority_boundary: "Scores actors after attributable outcomes; Router consumes scores for candidate weighting."
+    evidence_class: verified
+  - id: moneyball
+    name: MoneyBall PR scoring
+    plane: intelligence
+    status: implemented
+    owner: moneyball
+    canonical_sources: [ml/pipelines/moneyball/]
+    responsibilities: [pull_request_scoring,quota_multiplier]
+    authority_boundary: "Scores PRs; remains separate from 3L0 actor records."
+    evidence_class: verified
+  - id: doe_mvt
+    name: DoE / MVT
+    plane: intelligence
+    status: existing_experiment_plane
+    owner: experiment_system
+    canonical_sources: [docs/ops/AGENT-TEAM-CONTROL-PLANE.md, docs/ops/AGENT-TEAM-ORCHESTRATION.md]
+    responsibilities: [cohort_design,treatment_comparison,manager_policy_evaluation]
+    authority_boundary: "Produces experiment evidence; promotion follows governance and outcome gates."
+    evidence_class: verified
+  - id: writer_lease
+    name: Cross-provider writer lease
+    plane: governance
+    status: proposed_contract
+    owner: Unassigned enforcement authority
+    canonical_sources: [docs/architecture/CNS-WRITER-LEASE-CONTRACT.md, docs/schemas/cns-writer-lease-receipt.schema.json, docs/ops/AGENT-EVIDENCE-SUBSTRATE.md]
+    responsibilities: [revision_bound_lease,monotonic_fencing,provider_write_admission,append_only_lease_receipts]
+    authority_boundary: "Proposed contract only; global single-writer enforcement remains unverified until every write-capable provider uses the lease authority."
+    evidence_class: proposed
+  - id: she
+    name: SHE projections
+    plane: presentation
+    status: projection_architecture_existing
+    owner: she
+    canonical_sources: [docs/ops/SHE-DASHBOARD-ARCHITECTURE.mmd, apps/tribute-dashboard/]
+    responsibilities: [deterministic_reducers,versioned_snapshots,read_only_presentation]
+    authority_boundary: "Read-only projection; canonical evidence remains in source records."
+    evidence_class: verified
+  - id: historical_explorer
+    name: Historical Corpus Explorer
+    plane: presentation
+    status: partial_not_deployed
+    owner: she
+    canonical_sources: [apps/historical-corpus-explorer/, docs/proposals/active/context-relationship-graph/ITEMS.md]
+    related_prs: [232, 1286]
+    responsibilities: [bounded_graph_exploration,temporal_comparison,coverage_presentation]
+    authority_boundary: "Read-only CRG projection with lineage and coverage gates."
+    evidence_class: derived
+  - id: skills
+    name: Agent skills and operating methods
+    plane: execution
+    status: existing_skills_under_reconciliation
+    owner: repository_skills
+    canonical_sources: [.agents/skills/, .github/skills/, docs/ops/SKILLS-INVENTORY.md]
+    responsibilities: [adaptive_wait,workflow_guidance,task_methodology]
+    authority_boundary: "Skills guide execution; repository workflows and permission contracts enforce authority."
+    evidence_class: verified

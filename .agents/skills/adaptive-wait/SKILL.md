@@ -84,6 +84,11 @@ Each cycle should be representable by a compact receipt:
     reason: <evidence-backed reason>
     next_check: <authoritative condition>
     outcome: PASS|FAIL|UNKNOWN
+    loop_ref: <skill or Loop Library reference>
+    attempt_id: <native attempt identity>
+    input_refs: [<bounded input evidence references>]
+    output_refs: [<artifact or result references>]
+    terminal_state: <canonical terminal state>
 
 Never store secrets, authorization headers, raw discussion bodies, or private session state in the receipt.
 
@@ -113,6 +118,22 @@ Never report exhausted, stalled, or blocked as success.
 Record what was proven, what remains unproven, the watched SHA, the final authoritative evidence, and the next disjoint action or terminal state.
 
 This skill is the wait/controller layer. adaptive-feedback-cycle owns broader continuous learning; production-reconciliation owns ref alignment; evidence-envelope owns normalized observation fields.
+
+
+## Loop Library compatibility
+
+The supplied Loop Library defines nine workflow routes: Discover, Find, Audit/Loop Doctor, Adapt, Craft, Run, Debrief, Save/Reuse, and Publish. Treat route names as workflow vocabulary; repository permissions and canonical owners govern each action.
+
+Bounded micro-loop: Observe → Choose → Act → Verify → Record → Repeat/stop.
+
+- Observe: bind the watched repository/ref/SHA, current operation state, and evidence delta.
+- Choose: select the next evidence-backed decision from WAIT, BACKOFF, STEER, RETRY, STOP, or PROMOTE.
+- Act: perform one bounded action within the approved task scope.
+- Verify: re-fetch current-SHA evidence and validate the requested effect.
+- Record: append the existing evidence receipt with loop reference, native attempt identity, input/output references, and terminal state.
+- Repeat/stop: continue only while a new observation can change the next action; otherwise use the canonical terminal classification.
+
+The canonical terminal vocabulary is success, clean-no-op (user-facing alias: clean no-op), blocked, approval-required, exhausted, and stagnated. The existing receipt and permission contracts remain authoritative. Save/Reuse/Publish route labels carry workflow meaning; repository write and publication authority comes from the existing permission and approval model.
 
 ## Session stamp write rule
 

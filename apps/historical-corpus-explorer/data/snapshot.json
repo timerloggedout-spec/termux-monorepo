@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0",
+  "projection": "historical_corpus_coverage",
+  "snapshot_id": "hce-04a892ab70c4-bcd13129b3eb",
+  "provenance": {
+    "source_ref": "master",
+    "source_sha": "04a892ab70c48dad675b21e69bd3e652ca5ec3af",
+    "manifest_blob_sha": "bcd13129b3ebd283df920ae18cf1426fb0d8ba85",
+    "generated_at": "2026-10-26T13:04:26.270236Z",
+    "provenance_complete": true
+  },
+  "coverage": {
+    "status": "PARTIAL_CONTINUATION_REQUIRED",
+    "next_start_page": 2,
+    "start_page": 1,
+    "checkpoint_eligible": false,
+    "checkpoint_eligibility": "INELIGIBLE"
+  },
+  "counts": {
+    "nodes": 35221,
+    "edges": 57358,
+    "verified_edges": 52416,
+    "candidate_edges": 4942
+  },
+  "reconciliation": {
+    "status": "CONSISTENT",
+    "error_count": 0,
+    "warning_count": 0,
+    "findings": []
+  }
+}

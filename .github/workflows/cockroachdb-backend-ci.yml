@@ -9,7 +9,7 @@ on:
       - "docs/ops/COCKROACHDB-BACKEND-MESH.md"
       - ".github/workflows/cockroachdb-backend-ci.yml"
   push:
-    branches: ["**"]
+    branches: [master]
     paths:
       - "ops/cockroachdb/**"
       - "scripts/ops/cockroach_lane_event.py"
@@ -22,7 +22,7 @@ permissions:
 
 concurrency:
   group: cockroachdb-backend-ci-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   replicated-continuity:

@@ -11,18 +11,20 @@
 |---|---:|---|---|---|
 | Superpowers | P0 | Skill installed in this session and repository-local skill exists | Native skill implemented | Engineering methodology |
 | API Impact Mapper | P0 | Connector tools exposed; a SHA-bound advisory PR lane exists | Planned; PR #4019 advisory lane remains proposed pending validation | API evolution and PR impact analysis |
-| Context7 | P0 | Documentation tools exposed | Planned | Version-aware upstream documentation |
-| Mintlify | P0 | Authenticated deployment and repository source verified | Native repository integration | Published developer documentation |
+| Context7 | P0 | Resolver and documentation-query calls succeeded for official Temporal and Cloudinary references | Planned; no CI adapter exercised | Version-aware upstream documentation |
+| Mintlify | P0 | Authenticated deployment diasporic3lee7 connected to this repository on master; navigation inspected | Native repository integration | Published developer documentation, with deployment verification separate from Git review |
 | Agent Ready | P0 | Live site scan completed | Planned remediation work | Agent readability and protocol audit |
 | AI Task Brief Builder | P0 | Brief extraction tool exposed | Planned | Evidence-based task requirements |
 | Devin AI / DEVINdeepWiki | P1 | User reports secret provisioned; no successful indexing run verified in this session | Indexing controller/workflow implemented | Private branch-level wiki indexing |
 | DeepWiki.com | P1 | Public page verified; indexed source ref is stale | Structure-harvest workflow implemented; refresh campaign open | Public generated wiki discovery |
 | Mermaid Chart | P1 | Account authenticated; no saved diagrams | Planned | Architecture visualization |
 | Engram | P1 | Connector available; no project memory written in this audit | Planned | Opt-in long-term context |
-| Context.dev | P1 | Search/scrape and usage tools available | Planned | Attributed web research and extraction |
+| Context.dev | P1 | Search, scrape, usage, request-log, and request-detail tools available | Planned; no repository adapter or monitor created | Attributed web research and extraction |
+| Cloudinary | P2 | Asset-management tools exposed; read-only usage inspection succeeded; no asset mutation | Planned; no repository adapter exercised | Media asset storage and delivery |
+| Exa | P1 | Search and fetch tools exposed and used for official Temporal and Opscotch source retrieval | Planned; no repository adapter exercised | External source discovery and research retrieval |
 | Consensus | P1 | Academic search/fetch tools exposed | Planned | Peer-reviewed research |
-| Opscotch | P1 | Root guidance retrieved | Planned | Constrained workflow runtime |
-| Temporal | P1 | Developer skill installed; server access not established | Existing adapter proposal requires reconciliation | Durable workflow orchestration |
+| Opscotch | P1 | Public system and architect guidance retrieved; no workflow/deployment created | Planned; advisory only | Constrained workflow runtime and trust-boundary validation |
+| Temporal | P1 | Developer/operations skills installed; temporal-engagement workflow and §6 harness exist; historical Actions proof is documented | Repository implementation; no standing server or current runtime reachability established | Durable workflow orchestration |
 | SiteTriage | P1 | Diagnostic tools exposed | Planned | Read-only DNS/TLS/HTTP diagnostics |
 | Product Design | P1 | Skill installed; Work Mode required for full workflow | Planned | UX research, audit, prototyping |
 | Flow AI Collaboration tool | P1 | Workspace tools exposed; no records modified | Planned | Team work-item projection |

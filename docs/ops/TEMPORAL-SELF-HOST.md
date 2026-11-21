@@ -6,7 +6,7 @@ tier is not permanent, and the card rule closes the paid route).
 This page is the operator record; the pass evidence lives in
 `docs/proposals/passes/temporal-durable-execution/`.
 
-**Live status (living record): issue #2028** — unit states, port checks, DB/backups, workflow list; refreshed by the keepalive on every repair + daily. Collaborators review there.
+**Historical status snapshot:** issue #2028 contains an earlier 2026-10-28 observation and predates the migration/teardown recorded below. Do not use that issue body as evidence that the VM units or a standing Temporal endpoint remain live. The current operational home is the GitHub Actions engagement workflow documented in `docs/ops/TEMPORAL-MIGRATION.md`.
 
 > **RETIRED (2026-10-28) — historical record.** No Temporal
 > exception to the VM = sandbox-only rule exists — the exception

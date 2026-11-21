@@ -63,3 +63,14 @@ The user's direct continuation request authorizes extending the existing quota s
 The previously merged MSM-018 dashboard is now published through [run 39576915984](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39576915984), source `09d59cc767e522e1f70a0c4a9aeb594027389699` (quota assets unchanged from merge `7c5e0c2b`). The UI, evidence helper and coverage JSON returned HTTP 200 and matched source bytes; the latter still honestly reported 20 families, two model-service mappings and 26 service resources. This is publication evidence for that revision, not for the unmerged MSM-019 additions. Vercel was not requested and its job was skipped.
 
 The [collaborator capability map](../../../ops/PROVIDER-COLLABORATOR-CAPABILITY-MAP.md) links role/moniker declarations, concrete workflow/tool/context bindings and bounded GitHub provenance. Shared account commits do not identify an underlying model. Rubric Delphi outputs remain rubric-only, not independent provider ballots. No proposal-wide acceptance, formal review or human consensus is claimed by this implementation record. Current-head gates, technical review and deployment outcomes belong in the implementation PR and [status](../../../ops/PROVIDER-QUOTA-UPGRADE-STATUS.md).
+
+
+## MSM-025 — Vultr provider-catalog reference RECON
+
+**Operator direction (2026-11-21):** register both supplied Vultr model-catalog repositories in `refTemplates` and assess their architecture for improvements to the existing provider Inference catalogue. This task-scoped direction authorizes the metadata-only reference registration, source pinning, comparison report and inventory-integrity update under MSM-025.
+
+The reference work uses inspected immutable upstream revisions and verified MIT license files. The Python and TypeScript projects describe matching clients for Vultr's public Model Document 2.4 catalog. Their schema is treated as a reference input for the multi-provider v5 contract, not as a replacement provider wire contract.
+
+Scope remains documentation, metadata and deterministic inventory validation. Provider polling, inference, credential changes, quota observation, account activation, schedules, routing/admission changes, package installation, upstream code execution, forks and gitlinks remain separately gated. Proposal-wide acceptance and closure remain unchanged.
+
+The implementation PR records the comparative findings, source pins, validation commands and final SHA-bound Actions evidence.

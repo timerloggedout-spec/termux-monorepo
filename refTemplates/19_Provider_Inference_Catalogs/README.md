@@ -25,4 +25,4 @@ The reference is useful for:
 
 The pinned repositories inform the monorepo's provider catalog design. This slot records source identity and architectural evidence; package installation, upstream execution, custom forks, gitlinks, provider activation and inference remain separate decisions.
 
-Comparative analysis: [Vultr Inference Catalog Reference RECON](../../../docs/ops/VULTR-INFERENCE-CATALOG-REFERENCE-RECON.md).
+Comparative analysis: [Vultr Inference Catalog Reference RECON](../../docs/ops/VULTR-INFERENCE-CATALOG-REFERENCE-RECON.md).

@@ -1349,3 +1349,29 @@ proposals:
       - repo-gate
       - proposal-lifecycle
       - termux-smoke
+
+  - id: devpost-registration-escalation
+    title: Devpost registration, escalation, and Wagering Book reconciliation
+    author: ChatGPT
+    status: in_review
+    priority: P1
+    path: active/devpost-registration-escalation/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues:
+      - 5050
+    related_prs:
+      - 5051
+      - 5063
+    related_branches:
+      - feat/challenge-game-off-2026-intake
+      - feat/unified-wager-event-projections
+      - feat/devpost-registration-escalation-2026-11-20
+    gates_required:
+      - repo-gate
+      - termux-smoke

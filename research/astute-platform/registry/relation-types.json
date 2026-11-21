@@ -1,0 +1,188 @@
+{
+  "schema_version": "1.0",
+  "registry_id": "research-astute-relation-types",
+  "relation_types": [
+    {
+      "relation_type": "identity",
+      "family": "identity",
+      "semantics": "An entity mapped to itself.",
+      "allowed_graph_types": [
+        "concept_map"
+      ],
+      "direction": "reflexive",
+      "laws": [
+        "reflexive"
+      ],
+      "law_status": "definition"
+    },
+    {
+      "relation_type": "equivalence",
+      "family": "identity",
+      "semantics": "Entities treated as equivalent under a declared equivalence criterion.",
+      "allowed_graph_types": [
+        "concept_map"
+      ],
+      "direction": "symmetric",
+      "laws": [
+        "reflexive",
+        "symmetric",
+        "transitive"
+      ],
+      "law_status": "definition"
+    },
+    {
+      "relation_type": "prerequisite",
+      "family": "dependency",
+      "semantics": "The source is a prerequisite for the target.",
+      "allowed_graph_types": [
+        "prerequisite_dag"
+      ],
+      "direction": "prerequisite_to_dependent",
+      "cycles_allowed": false,
+      "law_status": "domain_contract"
+    },
+    {
+      "relation_type": "derivation",
+      "family": "dependency",
+      "semantics": "The target is derived from the source under declared rules.",
+      "allowed_graph_types": [
+        "concept_map",
+        "lineage"
+      ],
+      "direction": "source_to_derived",
+      "law_status": "domain_contract"
+    },
+    {
+      "relation_type": "composition",
+      "family": "structure",
+      "semantics": "The source participates as a component in the target.",
+      "allowed_graph_types": [
+        "concept_map"
+      ],
+      "direction": "part_to_composite",
+      "law_status": "domain_contract"
+    },
+    {
+      "relation_type": "decomposition",
+      "family": "structure",
+      "semantics": "The target is a component obtained by decomposing the source.",
+      "allowed_graph_types": [
+        "concept_map"
+      ],
+      "direction": "whole_to_part",
+      "law_status": "domain_contract"
+    },
+    {
+      "relation_type": "membership",
+      "family": "structure",
+      "semantics": "The source is a member of the target collection or structure.",
+      "allowed_graph_types": [
+        "concept_map"
+      ],
+      "direction": "member_to_collection",
+      "law_status": "domain_contract"
+    },
+    {
+      "relation_type": "containment",
+      "family": "structure",
+      "semantics": "The source is contained within the target.",
+      "allowed_graph_types": [
+        "concept_map"
+      ],
+      "direction": "contained_to_container",
+      "law_status": "domain_contract"
+    },
+    {
+      "relation_type": "representation",
+      "family": "mapping",
+      "semantics": "The source represents the target under a declared representation map.",
+      "allowed_graph_types": [
+        "concept_map"
+      ],
+      "direction": "representation_to_represented",
+      "law_status": "domain_contract"
+    },
+    {
+      "relation_type": "transformation",
+      "family": "mapping",
+      "semantics": "A declared transform maps the source into the target.",
+      "allowed_graph_types": [
+        "concept_map"
+      ],
+      "direction": "input_to_output",
+      "law_status": "domain_contract"
+    },
+    {
+      "relation_type": "state_transition",
+      "family": "dynamics",
+      "semantics": "A modeled state may transition from the source to the target.",
+      "allowed_graph_types": [
+        "markov_transition"
+      ],
+      "direction": "current_to_next",
+      "cycles_allowed": true,
+      "requires_probability_or_weight": true,
+      "law_status": "model_contract"
+    },
+    {
+      "relation_type": "supports",
+      "family": "evidence",
+      "semantics": "The evidence or model node supports the claim node.",
+      "allowed_graph_types": [
+        "bayesian_evidence"
+      ],
+      "direction": "evidence_to_claim",
+      "law_status": "evidence_contract"
+    },
+    {
+      "relation_type": "contradicts",
+      "family": "evidence",
+      "semantics": "The evidence or claim node contradicts the target claim.",
+      "allowed_graph_types": [
+        "bayesian_evidence"
+      ],
+      "direction": "source_to_claim",
+      "law_status": "evidence_contract"
+    },
+    {
+      "relation_type": "qualifies",
+      "family": "evidence",
+      "semantics": "The source qualifies the scope or assumptions of the target claim.",
+      "allowed_graph_types": [
+        "bayesian_evidence"
+      ],
+      "direction": "qualifier_to_claim",
+      "law_status": "evidence_contract"
+    },
+    {
+      "relation_type": "derived_from",
+      "family": "lineage",
+      "semantics": "The target artifact or version derives from the source.",
+      "allowed_graph_types": [
+        "lineage"
+      ],
+      "direction": "ancestor_to_descendant",
+      "law_status": "lineage_contract"
+    },
+    {
+      "relation_type": "supersedes",
+      "family": "lineage",
+      "semantics": "The source version supersedes the target version.",
+      "allowed_graph_types": [
+        "lineage"
+      ],
+      "direction": "newer_to_older",
+      "law_status": "lineage_contract"
+    },
+    {
+      "relation_type": "records",
+      "family": "lineage",
+      "semantics": "The source record documents the target event or state.",
+      "allowed_graph_types": [
+        "lineage"
+      ],
+      "direction": "record_to_subject",
+      "law_status": "lineage_contract"
+    }
+  ]
+}

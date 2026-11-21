@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/source-registry.schema.json",
+  "title": "Research Astute Source Registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "experiment_id",
+    "sources"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "experiment_id": {
+      "type": "string"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "source_id",
+          "title",
+          "type",
+          "url"
+        ],
+        "properties": {
+          "source_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "creator": {
+            "type": "string"
+          },
+          "year": {
+            "type": "integer"
+          },
+          "type": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "preprint": {
+            "type": "string",
+            "format": "uri"
+          },
+          "role": {
+            "type": "string"
+          },
+          "evidence_status": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

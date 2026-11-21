@@ -1,0 +1,88 @@
+name: research-astute-bootstrap
+
+on:
+  workflow_dispatch:
+    inputs:
+      visibility:
+        description: Repository visibility
+        type: choice
+        options: [private, public]
+        default: private
+        required: true
+      run_validation:
+        description: Dispatch the initial validation workflow
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: research-astute-bootstrap
+  cancel-in-progress: false
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
+      TARGET_REPO: timerloggedout-spec/research-astute
+      VISIBILITY: ${{ inputs.visibility }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            templates/research-astute
+            research/astute-platform
+            research/astute-computational-limits
+            scripts/research
+            .github/workflows/research-astute-validate.yml
+      - name: Verify operator token
+        run: |
+          set -euo pipefail
+          test -n "$GH_TOKEN" || { echo "::error::operator token unavailable"; exit 1; }
+          gh api user --jq '"::notice title=operator::login=" + .login'
+      - name: Create repository or verify existing target
+        run: |
+          set -euo pipefail
+          if gh api "repos/$TARGET_REPO" >/dev/null 2>&1; then
+            echo "::notice title=repository::existing target $TARGET_REPO"
+          else
+            gh repo create "$TARGET_REPO" "--$VISIBILITY" \
+              --description "Research Astute — shared platform for evolving scientific and computational thought experiments"
+            echo "::notice title=repository::created $TARGET_REPO"
+          fi
+          PRIVATE="$(gh api "repos/$TARGET_REPO" --jq .private)"
+          if [ "$VISIBILITY" = private ] && [ "$PRIVATE" != true ]; then
+            echo "::error::existing repository visibility differs from requested private visibility"; exit 1
+          fi
+          if [ "$VISIBILITY" = public ] && [ "$PRIVATE" != false ]; then
+            echo "::error::existing repository visibility differs from requested public visibility"; exit 1
+          fi
+      - name: Seed platform and first experiment through Contents API
+        run: python3 scripts/research/seed_astute_repository.py
+      - name: Read back repository state
+        id: readback
+        run: |
+          set -euo pipefail
+          BRANCH="$(gh api "repos/$TARGET_REPO" --jq .default_branch)"
+          SHA="$(gh api "repos/$TARGET_REPO/commits/$BRANCH" --jq .sha)"
+          COUNT="$(gh api "repos/$TARGET_REPO/git/trees/$BRANCH?recursive=1" --jq '[.tree[] | select(.type=="blob")] | length')"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+          echo "::notice title=readback::repo=$TARGET_REPO visibility=$VISIBILITY branch=$BRANCH head=${SHA:0:7} files=$COUNT"
+      - name: Dispatch initial validation
+        if: ${{ inputs.run_validation }}
+        run: |
+          set -euo pipefail
+          BRANCH="${{ steps.readback.outputs.branch }}"
+          for attempt in 1 2 3 4 5 6; do
+            if gh workflow run research-astute-validate.yml --repo "$TARGET_REPO" --ref "$BRANCH"; then
+              echo "::notice title=validation::dispatched target=$TARGET_REPO ref=$BRANCH"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::error::initial validation dispatch failed"; exit 1

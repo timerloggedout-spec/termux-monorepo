@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0",
+  "path_set_id": "ucl-alternate-paths-v1",
+  "experiment_id": "ultimate-computation-limits",
+  "graph_id": "ucl-prerequisite-v1",
+  "target_node_id": "BHC",
+  "semantics": "candidate_research_routes",
+  "status": "preliminary",
+  "paths": [
+    {
+      "path_id": "holography-led",
+      "label": "Holography-led route",
+      "status": "candidate",
+      "node_ids": [
+        "QM",
+        "QINFO",
+        "HOLO",
+        "QG",
+        "INFOX",
+        "BHC"
+      ],
+      "edge_ids": [
+        "ucl-e-013",
+        "ucl-e-031",
+        "ucl-e-035",
+        "ucl-e-038",
+        "ucl-e-044"
+      ],
+      "assumptions": [
+        "The holographic route is relevant to the selected quantum-gravity setting.",
+        "The selected path is a research route, not a complete prerequisite proof."
+      ],
+      "notes": "Candidate route emphasizing quantum information, holography, and AdS/CFT."
+    },
+    {
+      "path_id": "semiclassical-thermodynamics-led",
+      "label": "Semiclassical and thermodynamic route",
+      "status": "candidate",
+      "node_ids": [
+        "GR",
+        "QFT",
+        "CURVED",
+        "HAWK",
+        "INFOX",
+        "BHC"
+      ],
+      "edge_ids": [
+        "ucl-e-021",
+        "ucl-e-022",
+        "ucl-e-023",
+        "ucl-e-036",
+        "ucl-e-044"
+      ],
+      "assumptions": [
+        "Semiclassical gravity and thermodynamic bounds inform the question.",
+        "Quantum-gravity and information-recovery gaps remain explicit.",
+        "This path isolates one explanatory branch and does not represent all incoming prerequisites of BHC."
+      ],
+      "notes": "Candidate partial research route emphasizing curved-spacetime QFT and Hawking radiation; QG, QSL, and BOUND remain separate required dependencies in the full target graph."
+    }
+  ],
+  "notes": [
+    "Paths are alternate research framings over a shared prerequisite graph.",
+    "Path edge references were checked against the canonical graph edge IDs.",
+    "Each path is a partial route lens; the target node retains all incoming prerequisites in the full graph.",
+    "No path ranking or feasibility conclusion is implied."
+  ]
+}

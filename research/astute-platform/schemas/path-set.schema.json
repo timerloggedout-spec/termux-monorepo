@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/path-set.schema.json",
+  "title": "Research Astute Alternate Path Set",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "path_set_id",
+    "experiment_id",
+    "graph_id",
+    "semantics",
+    "status",
+    "paths"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "path_set_id": {
+      "type": "string"
+    },
+    "experiment_id": {
+      "type": "string"
+    },
+    "graph_id": {
+      "type": "string"
+    },
+    "target_node_id": {
+      "type": "string"
+    },
+    "semantics": {
+      "enum": [
+        "candidate_research_routes",
+        "validated_routes",
+        "transition_trajectories",
+        "evidence_chains"
+      ]
+    },
+    "status": {
+      "enum": [
+        "preliminary",
+        "active",
+        "under_review",
+        "published",
+        "retired"
+      ]
+    },
+    "paths": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path_id",
+          "label",
+          "status",
+          "node_ids",
+          "edge_ids"
+        ],
+        "properties": {
+          "path_id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "candidate",
+              "active",
+              "supported",
+              "challenged",
+              "blocked",
+              "superseded",
+              "retired"
+            ]
+          },
+          "node_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "edge_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "assumptions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

@@ -2,6 +2,23 @@ version: 1
 updated_at: '2026-11-11T00:00:00Z'
 updated_by: ChatGPT
 proposals:
+  - id: research-astute-platform
+    title: "Research Astute — multi-experiment research platform and shared interactive graph surface"
+    author: ChatGPT
+    status: in_review
+    priority: P1
+    path: active/research-astute-platform/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_prs:
+      - 5649
+    related_branches:
+      - research/research-astute-preliminary
+    gates_required:
+      - repo-gate
+      - termux-smoke
 
   - id: master-splinter
     title: 'Master Splinter — GitHub App + Replay Control Plane (ADAPT: control plane over the existing 8-AppID family)'

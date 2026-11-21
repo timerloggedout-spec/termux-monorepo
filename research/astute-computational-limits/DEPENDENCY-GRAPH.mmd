@@ -1,0 +1,103 @@
+flowchart TD
+  subgraph P0["P0 · Formal foundations"]
+    LOGIC["Logic and proof"]
+    ALG["Abstract algebra"]
+    LIN["Linear algebra"]
+    ANALYSIS["Real / complex analysis"]
+    PROB["Probability and measure"]
+    INFO["Information theory"]
+    GRAPH["Graph theory"]
+    DIFF["Differential geometry"]
+  end
+
+  subgraph P1["P1 · Computation and thermodynamics"]
+    BOOL["Boolean circuits"]
+    STAT["Statistical mechanics"]
+    LAN["Landauer principle"]
+    REV["Reversible computation"]
+    COMP["Computational complexity"]
+  end
+
+  subgraph P2["P2 · Quantum foundations"]
+    HILBERT["Hilbert spaces and operators"]
+    QM["Quantum mechanics"]
+    QINFO["Quantum information"]
+    QEC["Quantum error correction"]
+    QSL["Quantum speed limits"]
+  end
+
+  subgraph P3["P3 · Relativity and black-hole thermodynamics"]
+    SR["Special relativity"]
+    GR["General relativity"]
+    QFT["Quantum field theory"]
+    CURVED["QFT on curved spacetime"]
+    BHT["Black-hole thermodynamics"]
+    BHENT["Bekenstein–Hawking entropy"]
+    BOUND["Entropy / information bounds"]
+  end
+
+  subgraph P4["P4 · Quantum gravity and information"]
+    HOLO["Holographic principle"]
+    ADS["AdS/CFT"]
+    QG["Quantum gravity"]
+    HAWK["Hawking radiation"]
+    INFOX["Black-hole information problem"]
+  end
+
+  subgraph P5["P5 · Technology paths"]
+    DEV["Quantum device platforms"]
+    CONTROL["Control, readout, metrology"]
+    FAULT["Fault-tolerant logical processors"]
+    BHC["Black-hole computer hypothesis"]
+  end
+
+  LOGIC --> BOOL
+  LOGIC --> ALG
+  ALG --> LIN
+  LIN --> HILBERT
+  ANALYSIS --> HILBERT
+  PROB --> STAT
+  PROB --> INFO
+  INFO --> LAN
+  STAT --> LAN
+  LAN --> REV
+  GRAPH --> INFO
+
+  HILBERT --> QM
+  QM --> QINFO
+  INFO --> QINFO
+  QINFO --> QEC
+  QM --> QSL
+  COMP --> REV
+
+  DIFF --> GR
+  SR --> GR
+  QM --> QFT
+  GR --> CURVED
+  QFT --> CURVED
+  CURVED --> HAWK
+  GR --> BHT
+  STAT --> BHT
+  HAWK --> BHT
+  BHT --> BHENT
+  INFO --> BOUND
+  BHENT --> BOUND
+
+  BHENT --> HOLO
+  QINFO --> HOLO
+  HOLO --> ADS
+  GR --> QG
+  QM --> QG
+  HOLO --> QG
+  HAWK --> INFOX
+  QINFO --> INFOX
+  QG --> INFOX
+
+  QINFO --> DEV
+  DEV --> CONTROL
+  CONTROL --> FAULT
+  QEC --> FAULT
+  QG --> BHC
+  INFOX --> BHC
+  QSL --> BHC
+  BOUND --> BHC

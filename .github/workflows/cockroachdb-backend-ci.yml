@@ -30,7 +30,19 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+      - name: Check CockroachDB multi-node license
+        id: license
+        env:
+          COCKROACH_LICENSE_KEY: ${{ secrets.COCKROACH_LICENSE_KEY }}
+        run: |
+          if [ -n "${COCKROACH_LICENSE_KEY}" ]; then
+            echo "enabled=true" >> "${GITHUB_OUTPUT}"
+          else
+            echo "enabled=false" >> "${GITHUB_OUTPUT}"
+            echo "::notice title=cockroachdb-multinode::Three-node failover validation requires a valid COCKROACH_LICENSE_KEY."
+          fi
       - name: Generate cluster TLS certificates
+        if: steps.license.outputs.enabled == 'true'
         env:
           COCKROACH_IMAGE: cockroachdb/cockroach:v26.4.0@sha256:45c5caf2720d640cb36c0b7d42b7ca3cb435af85e3903c12e3d35659a2a04c67
         run: |
@@ -43,6 +55,7 @@ jobs:
           docker run --rm -v "${RUNNER_TEMP}/cockroach-certs:/certs" "${COCKROACH_IMAGE}" cert create-client lane_events_migrator --certs-dir=/certs --ca-key=/certs/ca.key
           chmod 600 "${RUNNER_TEMP}/cockroach-certs/client.root.key" "${RUNNER_TEMP}/cockroach-certs/client.lane_events_writer.key" "${RUNNER_TEMP}/cockroach-certs/client.lane_events_migrator.key"
       - name: Start three CockroachDB nodes
+        if: steps.license.outputs.enabled == 'true'
         env:
           COCKROACH_IMAGE: cockroachdb/cockroach:v26.4.0@sha256:45c5caf2720d640cb36c0b7d42b7ca3cb435af85e3903c12e3d35659a2a04c67
         run: |
@@ -82,19 +95,33 @@ jobs:
             done
             test "${ready}" = true
           done
+      - name: Apply CockroachDB license
+        if: steps.license.outputs.enabled == 'true'
+        env:
+          COCKROACH_LICENSE_KEY: ${{ secrets.COCKROACH_LICENSE_KEY }}
+          COCKROACH_IMAGE: cockroachdb/cockroach:v26.4.0@sha256:45c5caf2720d640cb36c0b7d42b7ca3cb435af85e3903c12e3d35659a2a04c67
+        run: |
+          docker run --rm --network cockroach-net \
+            -v "${RUNNER_TEMP}/cockroach-certs:/certs:ro" "${COCKROACH_IMAGE}" \
+            sql --certs-dir=/certs --host=node1:26257 \
+            --execute="SET CLUSTER SETTING enterprise.license = '${COCKROACH_LICENSE_KEY}'"
       - name: Install PostgreSQL client
+        if: steps.license.outputs.enabled == 'true'
         run: |
           sudo apt-get update
           sudo apt-get install -y postgresql-client
       - name: Bootstrap lane-event database and writer role
+        if: steps.license.outputs.enabled == 'true'
         env:
           COCKROACH_ADMIN_DATABASE_URL: postgresql://root@127.0.0.1:26257/defaultdb?sslmode=verify-full&sslrootcert=${{ runner.temp }}/cockroach-certs/ca.crt&sslcert=${{ runner.temp }}/cockroach-certs/client.root.crt&sslkey=${{ runner.temp }}/cockroach-certs/client.root.key
         run: psql "${COCKROACH_ADMIN_DATABASE_URL}" -X -v ON_ERROR_STOP=1 -f ops/cockroachdb/lane-events-writer-grants.sql
       - name: Apply lane-event schema as migration owner
+        if: steps.license.outputs.enabled == 'true'
         env:
           COCKROACH_SCHEMA_DATABASE_URL: postgresql://lane_events_migrator@127.0.0.1:26257/lane_events?sslmode=verify-full&sslrootcert=${{ runner.temp }}/cockroach-certs/ca.crt&sslcert=${{ runner.temp }}/cockroach-certs/client.lane_events_migrator.crt&sslkey=${{ runner.temp }}/cockroach-certs/client.lane_events_migrator.key
         run: python3 scripts/ops/cockroach_lane_event.py schema --strict
       - name: Write canonical event through node one
+        if: steps.license.outputs.enabled == 'true'
         env:
           COCKROACH_DATABASE_URL: postgresql://lane_events_writer@127.0.0.1:26257/lane_events?sslmode=verify-full&sslrootcert=${{ runner.temp }}/cockroach-certs/ca.crt&sslcert=${{ runner.temp }}/cockroach-certs/client.lane_events_writer.crt&sslkey=${{ runner.temp }}/cockroach-certs/client.lane_events_writer.key
         run: |
@@ -105,6 +132,7 @@ jobs:
           python3 scripts/ops/cockroach_lane_event.py count --strict | tee /tmp/cockroach-before-failure.txt
           grep -q "COCKROACHDB_COUNT rows=1" /tmp/cockroach-before-failure.txt
       - name: Verify replicated readback through node two before failure
+        if: steps.license.outputs.enabled == 'true'
         env:
           COCKROACH_DATABASE_URL: postgresql://lane_events_writer@127.0.0.1:26258/lane_events?sslmode=verify-full&sslrootcert=${{ runner.temp }}/cockroach-certs/ca.crt&sslcert=${{ runner.temp }}/cockroach-certs/client.lane_events_writer.crt&sslkey=${{ runner.temp }}/cockroach-certs/client.lane_events_writer.key
         run: |
@@ -119,6 +147,7 @@ jobs:
           cat /tmp/cockroach-replica-readback.txt
           exit 1
       - name: Stop node one and verify replicated readback through node two
+        if: steps.license.outputs.enabled == 'true'
         env:
           COCKROACH_DATABASE_URL: postgresql://lane_events_writer@127.0.0.1:26258/lane_events?sslmode=verify-full&sslrootcert=${{ runner.temp }}/cockroach-certs/ca.crt&sslcert=${{ runner.temp }}/cockroach-certs/client.lane_events_writer.crt&sslkey=${{ runner.temp }}/cockroach-certs/client.lane_events_writer.key
         run: |
@@ -134,19 +163,6 @@ jobs:
           cat /tmp/cockroach-after-failure.txt
           docker logs cockroach2
           exit 1
-      - name: Backup and restore lane-event database through surviving node
-        env:
-          COCKROACH_ADMIN_DATABASE_URL: postgresql://root@127.0.0.1:26258/defaultdb?sslmode=verify-full&sslrootcert=${{ runner.temp }}/cockroach-certs/ca.crt&sslcert=${{ runner.temp }}/cockroach-certs/client.root.crt&sslkey=${{ runner.temp }}/cockroach-certs/client.root.key
-        run: |
-          node_id=$(psql "${COCKROACH_ADMIN_DATABASE_URL}" -X -At -v ON_ERROR_STOP=1 -c "SELECT crdb_internal.node_id()")
-          backup_uri="nodelocal://${node_id}/cockroach-backups/lane-events"
-          psql "${COCKROACH_ADMIN_DATABASE_URL}" -X -v ON_ERROR_STOP=1 -c "BACKUP DATABASE lane_events INTO '${backup_uri}'"
-          psql "${COCKROACH_ADMIN_DATABASE_URL}" -X -v ON_ERROR_STOP=1 -c "DROP DATABASE lane_events CASCADE"
-          psql "${COCKROACH_ADMIN_DATABASE_URL}" -X -v ON_ERROR_STOP=1 -c "RESTORE DATABASE lane_events FROM LATEST IN '${backup_uri}'"
-          psql "${COCKROACH_ADMIN_DATABASE_URL}" -X -v ON_ERROR_STOP=1 -f ops/cockroachdb/lane-events-writer-grants.sql
-          export COCKROACH_DATABASE_URL="postgresql://lane_events_writer@127.0.0.1:26258/lane_events?sslmode=verify-full&sslrootcert=${RUNNER_TEMP}/cockroach-certs/ca.crt&sslcert=${RUNNER_TEMP}/cockroach-certs/client.lane_events_writer.crt&sslkey=${RUNNER_TEMP}/cockroach-certs/client.lane_events_writer.key"
-          python3 scripts/ops/cockroach_lane_event.py count --strict | tee /tmp/cockroach-after-restore.txt
-          grep -q "COCKROACHDB_COUNT rows=1" /tmp/cockroach-after-restore.txt
       - name: Record replicated continuity evidence
         if: always()
         run: |
@@ -211,6 +227,27 @@ jobs:
             --conclusion success --head-sha "${GITHUB_SHA}" --strict
           python3 scripts/ops/cockroach_lane_event.py count --strict | tee /tmp/cockroach-count.txt
           grep -q "COCKROACHDB_COUNT rows=1" /tmp/cockroach-count.txt
+          if psql "${COCKROACH_DATABASE_URL}" -X -v ON_ERROR_STOP=1 -c "UPDATE lane_events SET conclusion='tampered'"; then
+            echo "writer role update privilege requires review"
+            exit 1
+          fi
+          if psql "${COCKROACH_DATABASE_URL}" -X -v ON_ERROR_STOP=1 -c "DELETE FROM lane_events"; then
+            echo "writer role delete privilege requires review"
+            exit 1
+          fi
+      - name: Backup and restore lane-event database on the single-node contract
+        env:
+          COCKROACH_ADMIN_DATABASE_URL: postgresql://root@127.0.0.1:26257/defaultdb?sslmode=verify-full&sslrootcert=${{ runner.temp }}/cockroach-certs/ca.crt&sslcert=${{ runner.temp }}/cockroach-certs/client.root.crt&sslkey=${{ runner.temp }}/cockroach-certs/client.root.key
+          COCKROACH_DATABASE_URL: postgresql://lane_events_writer@127.0.0.1:26257/lane_events?sslmode=verify-full&sslrootcert=${{ runner.temp }}/cockroach-certs/ca.crt&sslcert=${{ runner.temp }}/cockroach-certs/client.lane_events_writer.crt&sslkey=${{ runner.temp }}/cockroach-certs/client.lane_events_writer.key
+        run: |
+          node_id=$(psql "${COCKROACH_ADMIN_DATABASE_URL}" -X -At -v ON_ERROR_STOP=1 -c "SELECT crdb_internal.node_id()")
+          backup_uri="nodelocal://${node_id}/cockroach-backups/lane-events"
+          psql "${COCKROACH_ADMIN_DATABASE_URL}" -X -v ON_ERROR_STOP=1 -c "BACKUP DATABASE lane_events INTO '${backup_uri}'"
+          psql "${COCKROACH_ADMIN_DATABASE_URL}" -X -v ON_ERROR_STOP=1 -c "DROP DATABASE lane_events CASCADE"
+          psql "${COCKROACH_ADMIN_DATABASE_URL}" -X -v ON_ERROR_STOP=1 -c "RESTORE DATABASE lane_events FROM LATEST IN '${backup_uri}'"
+          psql "${COCKROACH_ADMIN_DATABASE_URL}" -X -v ON_ERROR_STOP=1 -f ops/cockroachdb/lane-events-writer-grants.sql
+          python3 scripts/ops/cockroach_lane_event.py count --strict | tee /tmp/cockroach-after-restore.txt
+          grep -q "COCKROACHDB_COUNT rows=1" /tmp/cockroach-after-restore.txt
           if psql "${COCKROACH_DATABASE_URL}" -X -v ON_ERROR_STOP=1 -c "UPDATE lane_events SET conclusion='tampered'"; then
             echo "writer role update privilege requires review"
             exit 1

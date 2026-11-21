@@ -20,6 +20,6 @@ One job: route a planned tracked change to the controls that determine whether i
 
 - A reviewable feature branch with its work item, validation evidence, and known blockers.
 
-## Human check
+## Automated acceptance
 
-Confirm the branch base, item citation, gate evidence, and absence of destructive history operations before merge.
+Confirm the branch base and registered item, run both required gates, re-fetch the current head, and verify task outcome before promotion. Stop only for destructive history operations or another explicitly human-only permission boundary.

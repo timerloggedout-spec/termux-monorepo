@@ -1,11 +1,11 @@
 # ICM Map Verification Checklist
 
-Use this checklist in `maintenance/03_verify/`. Record results in that stage’s `output/verification-record.md`; do not copy run-specific results into this stable reference file.
+Use this checklist in `maintenance/03_verify/`. Record results in that stage's `output/verification-record.md`; keep run-specific results in stage output and maintain this file as a stable reference.
 
 ## Structure
 
-- [ ] `CLAUDE.md` and `AGENTS.md` are byte-identical in each ICM workspace that supplies both names. (`routing.md` is a separately owned resource, not an alias: verify its links resolve and its contract is current instead.)
-- [ ] Every active working folder has a `CONTEXT.md` with explicit inputs, process, outputs, and human check.
+- [ ] Verify each declared `CLAUDE.md` / `AGENTS.md` relationship from its mapping ledger. Enforce byte identity only for explicit alias pairs; record compatibility, historical-rename, and independent-entry relationships separately. Verify `routing.md` under its own contract.
+- [ ] Every active working folder has a `CONTEXT.md` with explicit inputs, process, outputs, and automated acceptance criteria.
 - [ ] No active pipeline stage is empty; each stage has a contract and an `output/.gitkeep` placeholder.
 - [ ] Factory/reference material and per-run output are structurally separate.
 
@@ -16,16 +16,20 @@ Use this checklist in `maintenance/03_verify/`. Record results in that stage’s
 - [ ] No routing file carries large source payload that belongs in a canonical shelf.
 - [ ] References remain one-way from map documents to their sources unless a source-level reason requires otherwise.
 
-## Scope and human oversight
+## Scope and automated evidence
 
-- [ ] The requested change was inventoried and the design proposal received a human decision.
-- [ ] No application code, Python file, generated index, credential artifact, or device state was modified as ICM maintenance.
+- [ ] The requested change maps to an authorized proposal item and the source inventory is complete.
+- [ ] The design proposal is explicit, source-backed, and within the registered scope; advance ordinary map edits through deterministic evidence and repository validation.
+- [ ] Keep application code, Python files, generated indexes, credential artifacts, and device state in their owning scopes; ICM maintenance changes documentation and approved templates.
 - [ ] The effect index gives only first-order change routing.
 - [ ] The root map plus one stage/card answers where the editor is, what to read, what to change, and where to stop.
+- [ ] The diff is documentation-only and `git diff --check` passes.
+- [ ] Local map-specific checks and worktree preflight are recorded in verification; exact-head `repo_gate` and `termux_smoke` results are recorded in the promotion stage.
+- [ ] Verify the task outcome independently of commit/workflow completion; classify queued, in-progress, and cancelled states as pending or non-passing.
 
 ## Promotion
 
-- [ ] `git diff --check` passes.
-- [ ] Required repository validation has been run and any baseline failures are recorded separately from branch changes.
-- [ ] The proposal item and commit/PR reference are present.
-- [ ] The change is reviewable; no automatic merge is implied.
+- [ ] The proposal item and `Implements: <ITEM-ID>` reference are present.
+- [ ] Resolve critical PR threads and classify every required-check result before promotion.
+- [ ] Both required gates are green on the current head and the promotion state is re-fetched.
+- [ ] Auto-promotion follows root `CLAUDE.md`; stop for human authorization only at an explicitly listed human-only permission boundary.

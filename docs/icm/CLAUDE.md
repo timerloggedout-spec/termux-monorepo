@@ -14,10 +14,10 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 | [`objects/knowledge/`](objects/knowledge/CONTEXT.md) | Navigation, routing governance, pinned reference inputs, methodology references, indices, and generated-map boundaries. |
 | [`objects/governance/`](objects/governance/CONTEXT.md) | Branch, proposal, validation, and approval constraints. |
 | [`routing.md`](routing.md) | A separately owned nested provider-routing evidence resource; it is intentionally not a root alias. |
-| [`_tv/`](./_tv/README.md) | Initiated file-backed CCTV cards for human review; renderer and publication remain separate scopes. |
+| [`_tv/`](./_tv/README.md) | Initiated file-backed CCTV cards for optional human review; renderer and publication remain separate scopes. |
 | [`processes/`](processes/CONTEXT.md) | Real editor workflows with explicit inputs and outputs. |
 | [`effects/`](effects/CONTEXT.md) | A compact “if you change X, read Y” index. |
-| [`maintenance/`](maintenance/CLAUDE.md) | A human-gated, documentation-only pipeline for future map updates. |
+| [`maintenance/`](maintenance/CLAUDE.md) | An agent-executed, evidence-gated, documentation-only pipeline aligned with repository FA-ADE policy. |
 
 ## Route by task
 
@@ -30,17 +30,19 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 | change the shared Brain kernel or its specialist extension contract | [objects/operations/brain-kernel.md](objects/operations/brain-kernel.md) | `brain.rs`, `brain/` and the typed extension contract |
 | change MOSAIC methodology intelligence or its Brain adapter | [objects/operations/mosaic-brain.md](objects/operations/mosaic-brain.md) | `archwiz/mosaic_brain/`, its pure recommendation API and the integration proposal |
 | change ArchWiz or a verification tool | [`objects/operations/archwiz.md`](objects/operations/archwiz.md) | the cited tool catalog or source path |
-| use the initiated visual-review cards or plan a human checkpoint | [`objects/operations/optional-visual-review.md`](objects/operations/optional-visual-review.md) | the canonical source artifact and human approval boundary |
+| use initiated visual-review cards or plan an optional human checkpoint | [`objects/operations/optional-visual-review.md`](objects/operations/optional-visual-review.md) | the canonical source artifact and its explicit approval boundary |
 | review provider-routing state or propose polling | [`routing.md`](routing.md) | the nested source, observation, and post-ICM workflow gate |
 | alter navigation or an index | [`objects/knowledge/navigation-and-indexes.md`](objects/knowledge/navigation-and-indexes.md) | the owning navigation/index file |
-| reconstruct related source/GitHub history before a nontrivial change | [`processes/context-relationship-reconnaissance.md`](processes/context-relationship-reconnaissance.md) | the exact graph root, its evidence, and separately labeled candidates |
+| reconstruct related source/GitHub history before nontrivial work | [`processes/context-relationship-reconnaissance.md`](processes/context-relationship-reconnaissance.md) | the exact graph root, its evidence, and separately labeled candidates |
 | select or update an ICM reference | [`objects/knowledge/reference-inputs.md`](objects/knowledge/reference-inputs.md) | the pinned reference input and custom-submodule review |
 | design or customize a recurring ICM workspace | [`objects/knowledge/interpretable-context-methodology.md`](objects/knowledge/interpretable-context-methodology.md) | the smallest suitable form and reference workspace |
-| classify nested `workspace/` artifacts | [`processes/workspace-artifact-triage.md`](processes/workspace-artifact-triage.md) | the human decision before any cleanup or promotion |
-| modify tracked code or documentation | [`processes/change-and-validate.md`](processes/change-and-validate.md) | the required human gate |
+| classify nested `workspace/` artifacts | [`processes/workspace-artifact-triage.md`](processes/workspace-artifact-triage.md) | classification and the human-only boundary before cleanup or promotion |
+| modify tracked code or documentation | [`processes/change-and-validate.md`](processes/change-and-validate.md) | the registered scope, automated dual-gate evidence, and explicit permission boundary |
 | assess first-order change impact | [`effects/CONTEXT.md`](effects/CONTEXT.md) | the linked object/process card |
-| maintain or extend the ICM map | [`maintenance/CLAUDE.md`](maintenance/CLAUDE.md) | the `02_design` human gate |
+| maintain or extend the ICM map | [`maintenance/CLAUDE.md`](maintenance/CLAUDE.md) | the automated acceptance criteria and any concrete blocker |
 
-## One rule
+## Operating rule
 
-Read this static catalog, one relevant card or nested resource, and its cited sources. Do **not** crawl the monorepo or treat visual cards, generated maps, recovery notes, provider observations, or untracked device state as substitute sources of truth.
+Root `CLAUDE.md` governs execution. Route ICM work through repository-native evidence, adaptive WAIT, and FA-ADE promotion when both required gates are green and the task outcome is verified. Reserve HITL for the human-only edges in `docs/proposals/AGENTIC-PERMISSIONS.md`.
+
+Read this static catalog, one relevant card or nested resource, and its cited sources. Keep context bounded to those authoritative references; use visual cards, generated maps, recovery notes, provider observations, and device state through their owning evidence contracts.

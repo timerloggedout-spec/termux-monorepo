@@ -1,16 +1,29 @@
 name: Repository Provisioner
 
-run-name: "Provision controller-2-export"
+run-name: "Provision repository: ${{ inputs.repo_name }}"
 
 on:
-  push:
-    branches: [master]
-    paths:
-      - ops/provisioning/controller-2-export.json
   workflow_dispatch:
+    inputs:
+      repo_name:
+        description: "New repository slug (lowercase letters, numbers, hyphens)"
+        required: true
+        type: string
+      description:
+        description: "Repository description"
+        required: false
+        type: string
+      visibility:
+        description: "Repository visibility"
+        required: true
+        type: choice
+        options:
+          - private
+          - public
+        default: private
 
 concurrency:
-  group: repository-provisioner-controller-2-export
+  group: repository-provisioner-${{ inputs.repo_name }}
   cancel-in-progress: false
 
 permissions:
@@ -18,77 +31,68 @@ permissions:
 
 jobs:
   provision:
-    name: Create personal-account export repository
+    name: Create repository
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.OPERATOR }}
+      GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
       EXPECTED_OWNER: timerloggedout-spec
+      REPO_NAME: ${{ inputs.repo_name }}
+      REPO_DESCRIPTION: ${{ inputs.description }}
+      REPO_VISIBILITY: ${{ inputs.visibility }}
     steps:
-      - name: Check out provisioning manifest
-        uses: actions/checkout@v4
-
       - name: Validate request and create repository
         id: create
         shell: bash
         run: |
           set -euo pipefail
-          : "${GH_TOKEN:?An existing administrator Actions secret is required}"
+          : "${GH_TOKEN:?Configure one of the existing administrator secrets: ARCHWIZ_GITHUB_TOKEN, OPERATOR_GITHUB_TOKEN, OPERATOR_TOKEN}"
 
-          manifest=ops/provisioning/controller-2-export.json
-          repo_name="$(jq -r '.name' "$manifest")"
-          description="$(jq -r '.description' "$manifest")"
-          visibility="$(jq -r '.visibility' "$manifest")"
-
-          if [[ ! "$repo_name" =~ ^[a-z0-9]([a-z0-9-]{0,98}[a-z0-9])?$ ]]; then
-            echo "::error::Invalid repository slug in $manifest"
+          if [[ ! "${REPO_NAME}" =~ ^[a-z0-9]([a-z0-9-]{0,98}[a-z0-9])?$ ]]; then
+            echo "::error::Use a 1-100 character lowercase repository slug with letters, numbers, and interior hyphens."
             exit 1
           fi
 
-          owner="$(gh api user --jq '.login')"
-          if [[ -z "$owner" || "${owner,,}" != "${EXPECTED_OWNER,,}" ]]; then
-            echo "::error::OPERATOR token identity must be $EXPECTED_OWNER; received ${owner:-empty}."
-            exit 1
-          fi
-
-          case "$visibility" in
-            public) private=false ;;
+          case "${REPO_VISIBILITY}" in
             private) private=true ;;
+            public) private=false ;;
             *)
-              echo "::error::Unsupported visibility: $visibility"
+              echo "::error::Unsupported visibility."
               exit 1
               ;;
           esac
 
-          if created="$(gh api "/repos/$owner/$repo_name" 2>/dev/null)"; then
-            actual_owner="$(jq -r '.owner.login // empty' <<<"$created")"
-            actual_name="$(jq -r '.name // empty' <<<"$created")"
-            actual_private="$(jq -r '.private' <<<"$created")"
-            if [[ "${actual_owner,,}" != "${owner,,}" || "$actual_name" != "$repo_name" || "$actual_private" != "$private" ]]; then
-              echo "::error::Existing repository metadata differs from the manifest."
-              exit 1
-            fi
-          else
-            created="$(gh api --method POST /user/repos \
-              -f "name=$repo_name" \
-              -f "description=$description" \
-              -F "private=$private" \
-              -F "auto_init=true" \
-              -F "has_issues=true" \
-              -F "has_wiki=false")"
+          owner="$(gh api user --jq '.login')"
+          if [[ -z "${owner}" || "${owner,,}" != "${EXPECTED_OWNER,,}" ]]; then
+            echo "::error::Provisioning credential identity must be ${EXPECTED_OWNER}; received ${owner:-empty}."
+            exit 1
           fi
 
-          created_owner="$(jq -r '.owner.login // empty' <<<"$created")"
-          created_name="$(jq -r '.name // empty' <<<"$created")"
-          default_branch="$(jq -r '.default_branch // empty' <<<"$created")"
-          repo_url="$(jq -r '.html_url // empty' <<<"$created")"
-          repo_id="$(jq -r '.id // empty' <<<"$created")"
-          if [[ "${created_owner,,}" != "${owner,,}" || "$created_name" != "$repo_name" || -z "$default_branch" || -z "$repo_id" ]]; then
+          if gh api "/repos/${owner}/${REPO_NAME}" >/dev/null 2>&1; then
+            echo "::error::Repository ${owner}/${REPO_NAME} already exists."
+            exit 1
+          fi
+
+          created="$(gh api --method POST /user/repos \
+            -f "name=${REPO_NAME}" \
+            -f "description=${REPO_DESCRIPTION}" \
+            -F "private=${private}" \
+            -F "auto_init=true" \
+            -F "has_issues=true" \
+            -F "has_wiki=false")"
+
+          created_owner="$(jq -r '.owner.login // empty' <<<"${created}")"
+          created_name="$(jq -r '.name // empty' <<<"${created}")"
+          default_branch="$(jq -r '.default_branch // empty' <<<"${created}")"
+          if [[ "${created_owner,,}" != "${owner,,}" || "${created_name}" != "${REPO_NAME}" || -z "${default_branch}" ]]; then
             echo "::error::GitHub returned repository metadata outside the requested identity."
             exit 1
           fi
 
-          printf 'url=%s\nid=%s\ndefault_branch=%s\n' "$repo_url" "$repo_id" "$default_branch" >> "$GITHUB_OUTPUT"
+          repo_url="$(jq -r '.html_url' <<<"${created}")"
+          repo_id="$(jq -r '.id' <<<"${created}")"
+          printf 'owner=%s\nname=%s\nurl=%s\nid=%s\ndefault_branch=%s\n' \
+            "${owner}" "${REPO_NAME}" "${repo_url}" "${repo_id}" "${default_branch}" >> "${GITHUB_OUTPUT}"
 
       - name: Publish provisioning receipt
         env:
@@ -98,12 +102,11 @@ jobs:
         shell: bash
         run: |
           {
-            echo "## Controller export repository provisioned"
+            echo "## Repository created"
             echo
-            echo "- Repository: [$REPOSITORY_URL]($REPOSITORY_URL)"
-            echo "- Repository ID: $REPOSITORY_ID"
-            echo "- Visibility: public"
-            echo "- Default branch: $DEFAULT_BRANCH"
+            echo "- Repository: [${REPOSITORY_URL}](${REPOSITORY_URL})"
+            echo "- Repository ID: ${REPOSITORY_ID}"
+            echo "- Visibility: ${REPO_VISIBILITY}"
+            echo "- Default branch: ${DEFAULT_BRANCH}"
             echo "- Initialization: GitHub auto_init (default README.md)"
-            echo "- Credential: existing OPERATOR Actions secret (value withheld)"
-          } >> "$GITHUB_STEP_SUMMARY"
+          } >> "${GITHUB_STEP_SUMMARY}"

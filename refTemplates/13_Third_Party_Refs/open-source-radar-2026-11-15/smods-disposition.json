@@ -1,0 +1,45 @@
+{
+  "schema": "third-party-ref-disposition/v1",
+  "source_record": "refTemplates/13_Third_Party_Refs/open-source-radar-2026-11-15",
+  "canonical_smods_registry": "refTemplates/smods/INTEGRATIONS.json",
+  "reviewed_at": "2026-11-16",
+  "entries": [
+    {
+      "id": "alibaba-open-code-review",
+      "upstream": "https://github.com/alibaba/open-code-review",
+      "status": "research_only",
+      "fork_required": false,
+      "live_gitlink": false,
+      "promotion_gate": "Select for advisory review evaluation; only create a custom fork if repository-owned changes are justified."
+    },
+    {
+      "id": "chrome-devtools-mcp",
+      "upstream": "https://github.com/ChromeDevTools/chrome-devtools-mcp",
+      "status": "research_only",
+      "fork_required": false,
+      "live_gitlink": false,
+      "promotion_gate": "Select for isolated browser smoke through Web Adapter Foundry; custom fork only if local adapter changes are required."
+    },
+    {
+      "id": "ag-ui",
+      "upstream": "https://github.com/ag-ui-protocol/ag-ui",
+      "status": "research_only",
+      "fork_required": false,
+      "live_gitlink": false,
+      "promotion_gate": "Map event semantics and failure behavior to the canonical event schema before protocol adoption."
+    },
+    {
+      "id": "univer-office-sdk",
+      "upstream": "https://github.com/dream-num/univer",
+      "status": "research_only",
+      "fork_required": false,
+      "live_gitlink": false,
+      "promotion_gate": "Verify exact open-source package and license scope; benchmark headless artifact needs before adoption."
+    }
+  ],
+  "transition_policy": {
+    "selected_without_fork": "Record the package/API/adapter and immutable version in its owning integration manifest; do not create a submodule.",
+    "fork_required": "Add a matching entry to the canonical sMods registry with an explicit planned path and fork URL; do not claim a gitlink or pinned SHA yet.",
+    "pinned": "Require an existing user-owned fork, immutable 40-character commit SHA, exact .gitmodules URL, 160000 gitlink, license/provenance review, and passing dual-gate evidence."
+  }
+}

@@ -63,7 +63,7 @@ Record observed values from drills. The design target is an independently replay
 
 ## Validation
 
-The dedicated workflow runs two disposable contracts. The adapter contract starts a TLS-secured single-node cluster, applies the schema, writes a canonical event, verifies readback and runs offline unit tests. The replicated-continuity contract starts three TLS-secured nodes, writes through node one, stops node one and verifies the same event through node two. This exercises one-node failure tolerance in an ephemeral cluster; hosted multi-region availability and production restore remain separate drills.
+The dedicated workflow runs two disposable contracts. The adapter contract starts a TLS-secured single-node cluster, provisions the least-privilege writer, applies the schema, verifies insert/readback, checks UPDATE/DELETE denial and runs offline unit tests. The replicated-continuity contract starts three TLS-secured nodes, writes through node one, verifies node-two readback, stops node one, verifies continuity through node two, then backs up, drops and restores the lane-events database from node-local test storage. This exercises one-node failure tolerance and database restore in an ephemeral cluster; hosted multi-region availability and external-storage disaster recovery remain separate drills.
 
 ## Upstream references
 

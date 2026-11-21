@@ -193,7 +193,7 @@ The strongest loop candidate is therefore an **observation-and-reconciliation lo
 3. **Act:** create a scoped adapter/schema proposal only when the delta changes a documented capability or parser contract. The existing snapshot job remains read-only.
 4. **Verify:** run provider fixtures, refTemplates inventory and provider-batch contracts against the exact candidate SHA.
 5. **Record:** retain the source revision, payload digest, adapter version, run/attempt, test results and observed delta.
-6. **Repeat or stop:** continue on the next existing observation cadence; finish each cycle as `success`, `clean no-op`, `blocked` or `stagnated`.
+6. **Repeat or stop:** continue on the next existing observation cadence; finish each cycle as `success`, `clean no-op`, `blocked`, `approval-required`, `exhausted` or `stagnated`.
 
 This is an adapted design grounded in the existing workflows. It reuses the existing cadence and keeps scheduler ownership, inference requests, publisher writes and routing authority unchanged.
 

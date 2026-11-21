@@ -1,0 +1,70 @@
+# CockroachDB — Backend Mesh Integration and Continuity Contract
+
+**Status:** IMPLEMENTATION SLICE — native writer + CI integration test; hosted-cluster admission pending an owner-managed connection secret and a forced continuity drill.
+
+## Decision
+
+Use CockroachDB as an independently operated distributed-SQL continuity projection for the existing lane-events evidence stream. Preserve the current Neon route and the canonical repository evidence spine. Keep each provider independently addressable and observable.
+
+CockroachDB speaks the PostgreSQL wire protocol and supports most PostgreSQL syntax. Its default transaction isolation is SERIALIZABLE, and application clients must handle retryable SQLSTATE `40001` where multi-statement transactions require client-side retry. This integration uses single-statement idempotent inserts, reducing the retry surface.
+
+## Mesh topology
+
+```text
+Canonical GitHub JSONL + immutable SHA/run provenance
+                    |
+                    v
+          lane-event composite action
+             /                 \
+            v                   v
+       Neon projection     CockroachDB projection
+       existing writer      new native writer
+            |                   |
+            +---------+---------+
+                      v
+              continuity receipts
+         {sink, status, event_key, run_id}
+```
+
+The providers remain independent stores. A CockroachDB write does not imply Neon replication, and a Neon write does not imply CockroachDB replication. The source JSONL and event keys support deterministic replay into either sink.
+
+## Runtime surface
+
+| Surface | Path | Function |
+|---|---|---|
+| CockroachDB schema | `ops/cockroachdb/lane-events-schema.sql` | Idempotent table/index creation |
+| CockroachDB insert | `ops/cockroachdb/lane-events-insert.sql` | Append event by canonical event key |
+| Writer | `scripts/ops/cockroach_lane_event.py` | TLS-verified connection, schema, record and count |
+| Tests | `tests/test_cockroach_lane_event.py` | URI security, canonical event identity, explicit skip |
+| Reference record | `docs/submodules/cockroachdb.md` | Upstream provenance and submodule admission boundary |
+
+## Admission and health states
+
+- `UNCONFIGURED`: `COCKROACH_DATABASE_URL` is absent; the optional sink emits a skip notice.
+- `READY`: TLS-verified connection succeeds and schema/read/write/readback probes pass.
+- `DEGRADED`: connection, schema or insert probe fails; canonical GitHub evidence remains authoritative.
+- `CONTINUITY_TESTED`: the canary has been read back after a forced failure of the primary path, with a receipt containing source SHA, event key, timestamps and observed result.
+
+## RPO / RTO evidence
+
+Record observed values from drills. The design target is an independently replayable event projection; measured RPO/RTO remain `null` until a real test produces timestamps and readback evidence. A second provider name alone earns no continuity credit.
+
+## Security and operations
+
+1. Store the URI only as the Actions secret `COCKROACH_DATABASE_URL`.
+2. Use `sslmode=verify-full` or `verify-ca` for hosted clusters.
+3. Use a dedicated writer role with SELECT/INSERT grants; keep UPDATE/DELETE privileges with the migration owner.
+4. Keep CockroachDB schema changes versioned and idempotent.
+5. Replay from canonical JSONL using the existing event key.
+6. Capture sink outcome and run identity in workflow logs and receipts.
+7. Run a restore drill before assigning a production continuity grade.
+
+## Validation
+
+The dedicated workflow starts a disposable CockroachDB single-node test cluster, applies the schema, writes one canonical event, reads the row count, and runs offline unit tests. The local test cluster validates SQL and driver compatibility; it does not establish hosted multi-region availability.
+
+## Upstream references
+
+- https://www.cockroachlabs.com/docs/stable/developer-basics.html
+- https://www.cockroachlabs.com/docs/stable/architecture/overview.html
+- https://github.com/cockroachdb/cockroach

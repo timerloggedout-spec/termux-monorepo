@@ -290,6 +290,8 @@ Contracts use explicit schema versions and provenance. Top-level records are clo
 - MASQUE: https://datatracker.ietf.org/wg/masque/about/
 - WebTransport: https://www.w3.org/TR/webtransport/
 - Multipath QUIC work: https://datatracker.ietf.org/doc/draft-ietf-quic-multipath/
-- Existing repository PolyGlot/CRG acceleration: `docs/ops/CONTEXT-RELATIONSHIP-POLYGLOT-ACCELERATION.md`\n- Existing notification/dashboard routing: `docs/ops/ACTIONS-MATRIX.md`\n- Notification classification, deduplication and receipts: `docs/ops/AUTOMATED-TELEMETRY-AUDIT.md`
+- Existing repository PolyGlot/CRG acceleration: `docs/ops/CONTEXT-RELATIONSHIP-POLYGLOT-ACCELERATION.md`
+- Existing notification/dashboard routing: `docs/ops/ACTIONS-MATRIX.md`
+- Notification classification, deduplication and receipts: `docs/ops/AUTOMATED-TELEMETRY-AUDIT.md`
 
 External standards links are research pointers; implementation records must pin the exact revision and current status at evaluation time.

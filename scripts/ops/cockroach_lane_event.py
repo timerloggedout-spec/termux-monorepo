@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Append canonical lane events to an optional CockroachDB continuity projection.
 
-Credential: COCKROACH_DATABASE_URL (PostgreSQL wire-protocol URI).
+Runtime credential: COCKROACH_DATABASE_URL (least-privilege PostgreSQL-wire URI).
+Migration credential: COCKROACH_SCHEMA_DATABASE_URL (schema command only).
 The writer reuses lane_event.py normalization and event-key identity.
 Credentials stay in the process environment; connection passwords are moved
 from the URI into PGPASSWORD before psql starts.

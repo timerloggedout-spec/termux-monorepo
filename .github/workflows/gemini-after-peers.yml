@@ -33,7 +33,7 @@ jobs:
       issues: write
       actions: read
     steps:
-      - name: Resolve PR number from workflow_run
+      - name: Validate PR and peer-response evidence
         id: pr
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
@@ -56,9 +56,27 @@ jobs:
               core.setOutput('reason', 'cycle ID does not bind the dispatched PR and SHA');
               return;
             }
-            const { data: pr } = await github.rest.pulls.get({
-              owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber,
-            });
+            const isRateLimited = error => {
+              const headers = error?.response?.headers || {};
+              const remaining = headers['x-ratelimit-remaining'] ?? headers['X-RateLimit-Remaining'];
+              return (error?.status === 403 || error?.status === 429) &&
+                (String(remaining) === '0' || /rate limit exceeded/i.test(error?.message || ''));
+            };
+            let pr;
+            try {
+              ({ data: pr } = await github.rest.pulls.get({
+                owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber,
+              }));
+            } catch (error) {
+              if (!isRateLimited(error)) throw error;
+              core.warning('GitHub API rate limit exhausted; defer second-pass review without bypassing PR/SHA validation.');
+              core.setOutput('skip', 'true');
+              core.setOutput('reason', 'github_api_rate_limited');
+              await core.summary.addHeading('Second-pass deferred')
+                .addText('GitHub API rate limit exhausted during PR validation. No review provider was invoked; rerun after the quota reset.')
+                .write();
+              return;
+            }
             if (pr.head.repo.full_name !== `${context.repo.owner}/${context.repo.repo}` || pr.draft) {
               core.info('Fork or draft — skip second pass');
               core.setOutput('skip', 'true');
@@ -70,12 +88,28 @@ jobs:
               core.setOutput('reason', 'peer gate SHA is stale');
               return;
             }
-            const comments = await github.paginate(github.rest.issues.listComments, {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              per_page: 100,
-            });
+            let comments;
+            try {
+              // The peer-state marker is written by the current cycle. Read the latest
+              // bounded page instead of paginating an arbitrarily long comment history.
+              ({ data: comments } = await github.rest.issues.listComments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                per_page: 100,
+                sort: 'updated',
+                direction: 'desc',
+              }));
+            } catch (error) {
+              if (!isRateLimited(error)) throw error;
+              core.warning('GitHub API rate limit exhausted while reading peer-response state; defer without invoking a review provider.');
+              core.setOutput('skip', 'true');
+              core.setOutput('reason', 'github_api_rate_limited');
+              await core.summary.addHeading('Second-pass deferred')
+                .addText('GitHub API rate limit exhausted while reading peer-response state. No review provider was invoked; rerun after the quota reset.')
+                .write();
+              return;
+            }
             const stateComment = comments
               .filter(comment =>
                 statePublisherLogins.has((comment.user?.login || '').toLowerCase()) &&

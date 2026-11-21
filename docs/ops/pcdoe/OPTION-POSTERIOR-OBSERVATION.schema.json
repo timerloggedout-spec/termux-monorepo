@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://timerloggedout-spec.github.io/termux-monorepo/docs/ops/pcdoe/OPTION-POSTERIOR-OBSERVATION.schema.json",
+  "title": "PCDOE option posterior observation",
+  "description": "A provenance-preserving observation about a prioritization option. Human DoE review is recorded as an observation and enters posterior analysis only through an explicitly calibrated likelihood model.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "observation_id",
+    "observation_type",
+    "option_id",
+    "option_version",
+    "assessment",
+    "confidence",
+    "reviewer_ref",
+    "reviewer_role",
+    "snapshot_ref",
+    "observed_at",
+    "evidence_refs",
+    "posterior_use"
+  ],
+  "properties": {
+    "schema_version": { "const": "pcdoe.option-posterior-observation.v1" },
+    "observation_id": { "type": "string", "minLength": 1 },
+    "observation_type": { "enum": ["human_doe_review", "measured_outcome", "independent_audit", "operational_observation"] },
+    "option_id": { "type": "string", "minLength": 1 },
+    "option_version": { "type": ["string", "integer"] },
+    "option_sha256": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$" },
+    "assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dimension", "finding"],
+      "properties": {
+        "dimension": { "enum": ["hypothesis", "design_validity", "randomization", "blocking", "power", "measurement_quality", "effect_direction", "safety_guardrail", "operational_fit", "overall"] },
+        "finding": { "enum": ["supports", "opposes", "mixed", "inconclusive", "insufficient_evidence"] },
+        "rationale": { "type": "string" },
+        "effect_estimate": { "type": "number" },
+        "uncertainty_interval": {
+          "type": "array",
+          "items": { "type": "number" },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      }
+    },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "reviewer_ref": { "type": "string", "minLength": 1 },
+    "reviewer_role": { "type": "string", "minLength": 1 },
+    "cohort_ref": { "type": "string" },
+    "run_ref": { "type": "string" },
+    "snapshot_ref": { "type": "string", "minLength": 1 },
+    "snapshot_sha256": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$" },
+    "observed_at": { "type": "string", "format": "date-time" },
+    "evidence_refs": { "type": "array", "items": { "type": "string" } },
+    "posterior_use": { "enum": ["pending_calibration", "included", "excluded"] },
+    "likelihood_model_ref": { "type": "string", "minLength": 1 },
+    "exclusion_reason": { "type": "string" },
+    "supersedes_observation_id": { "type": "string" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "posterior_use": { "const": "included" } }, "required": ["posterior_use"] },
+      "then": { "required": ["likelihood_model_ref"] }
+    },
+    {
+      "if": { "properties": { "posterior_use": { "const": "excluded" } }, "required": ["posterior_use"] },
+      "then": { "required": ["exclusion_reason"] }
+    }
+  ]
+}

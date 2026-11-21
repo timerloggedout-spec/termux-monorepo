@@ -108,5 +108,5 @@
 
 - The Termux MCP `get_device_info` action is unavailable in this session; Android device pressure and the Termux home checkout remain unobserved.
 - GitHub connector writes used an isolated feature branch based on the current `master` tip. The local source-mirror harness passed five focused tests and strict inventory validation across three synthetic slots.
-- Full repository `repo_gate.py` and `termux_smoke.py` remain pending a repository-native run. An intermediate commit returned a Vercel build-rate-limit status; the final head currently has no combined status checks, so that earlier preview-capacity observation is not a final-head result.
+- Full repository `repo_gate.py` and `termux_smoke.py` remain pending a repository-native run. An intermediate commit returned a Vercel build-rate-limit status; the final head currently exposes an empty combined-status set; the earlier preview-capacity observation belongs to its own SHA.
 - The Termux stewardship skill reserves PR creation for an explicit PR request; this task prepared the branch and records the PR gate as pending.

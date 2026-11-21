@@ -24,8 +24,8 @@
 | Opscotch | P1 | Root guidance retrieved | Planned | Constrained workflow runtime |
 | Temporal | P1 | Developer skill installed; server access not established | Existing adapter proposal requires reconciliation | Durable workflow orchestration |
 | Pinecone | P1 | Existing repository REST client, deterministic knowledge sync, and historical successful Actions runs; current account/index not freshly read | repo_adapter_implemented; current-head runtime proof pending | Managed semantic retrieval |
-| pg_pinecone | P1 | Official Apache-2.0 upstream reviewed at immutable commit; no local extension runtime | Reference candidate only; custom-fork smod pending | PostgreSQL native and Pinecone-remote vector engines |
-| pgvector | P1 | Official source and PostgreSQL License reviewed at immutable commit; no local runtime | Reference candidate only | PostgreSQL vector baseline |
+| pg_pinecone | P1 | Official Apache-2.0 upstream reviewed at immutable commit; no local extension runtime | repo_adapter_planned; custom-fork smod pending | PostgreSQL native and Pinecone-remote vector engines |
+| pgvector | P1 | Official source and PostgreSQL License reviewed at immutable commit; no local runtime | repo_adapter_planned | PostgreSQL vector baseline |
 | SiteTriage | P1 | Diagnostic tools exposed | Planned | Read-only DNS/TLS/HTTP diagnostics |
 | Product Design | P1 | Skill installed; Work Mode required for full workflow | Planned | UX research, audit, prototyping |
 | Flow AI Collaboration tool | P1 | Workspace tools exposed; no records modified | Planned | Team work-item projection |

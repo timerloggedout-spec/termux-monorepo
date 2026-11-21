@@ -1,0 +1,594 @@
+{
+  "mappings": [
+    {
+      "mapping_id": "fleet-lean-cosine-similarity",
+      "source_custom": "fleet-notation",
+      "target_custom": "Lean/Mathlib",
+      "source_form": "cosine similarity",
+      "target_form": "⟪x, y⟫ / (‖x‖ ‖y‖)",
+      "semantic_id": "vector.cosine_similarity",
+      "domain": "vector_stores",
+      "relation": "equivalent",
+      "grade": "exact",
+      "kernel": null,
+      "evidence_status": "spec-level",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/LEAN-NOTATION-MAPPING.md",
+        "locator": "Class 2 cosine similarity row"
+      }
+    },
+    {
+      "mapping_id": "fleet-lean-crosswalk-table",
+      "source_custom": "fleet-notation",
+      "target_custom": "Lean/Mathlib",
+      "source_form": "crosswalk table: relation-valued cells",
+      "target_form": "Matrix m n α",
+      "semantic_id": "matrix.crosswalk_relation_cell",
+      "domain": "nomenclature",
+      "relation": "related_match",
+      "grade": "approximate",
+      "kernel": "relation semantics, confidence, and provenance",
+      "evidence_status": "spec-level",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/LEAN-NOTATION-MAPPING.md",
+        "locator": "crosswalk table row"
+      }
+    },
+    {
+      "mapping_id": "fleet-lean-finite-table",
+      "source_custom": "fleet-notation",
+      "target_custom": "Lean/Mathlib",
+      "source_form": "[[a,b],[c,d]]",
+      "target_form": "!![a, b; c, d]",
+      "semantic_id": "matrix.finite_table_literal",
+      "domain": "matrices",
+      "relation": "related_match",
+      "grade": "approximate",
+      "kernel": "Fin m × Fin n index types versus fleet string keys",
+      "evidence_status": "spec-level",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/LEAN-NOTATION-MAPPING.md",
+        "locator": "literal finite table row"
+      }
+    },
+    {
+      "mapping_id": "fleet-lean-function-composition",
+      "source_custom": "fleet-notation",
+      "target_custom": "Lean/Mathlib",
+      "source_form": "∘",
+      "target_form": "Function.comp",
+      "semantic_id": "function.composition",
+      "domain": "functions",
+      "relation": "equivalent",
+      "grade": "exact",
+      "kernel": null,
+      "provenance": {
+        "path": "research/nse-023/packets/P-001.md",
+        "locator": "Verdict — PASS; Fleet (G, ∘) composition associativity; Lean core Function.comp"
+      },
+      "evidence_status": "proof-verified"
+    },
+    {
+      "mapping_id": "fleet-lean-isomorphism-proof-gate",
+      "source_custom": "fleet-notation",
+      "target_custom": "Lean/Mathlib",
+      "source_form": "≅",
+      "target_form": "Lean proof term discharges the claim",
+      "semantic_id": "isomorphism.proof_gate",
+      "domain": "logic",
+      "relation": "related_match",
+      "grade": "approximate",
+      "kernel": "proof term required; otherwise use ≈",
+      "evidence_status": "spec-level",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/LEAN-NOTATION-MAPPING.md",
+        "locator": "Class 1 proof-gated isomorphism row"
+      }
+    },
+    {
+      "mapping_id": "fleet-lean-lane-matrix",
+      "source_custom": "fleet-notation",
+      "target_custom": "Lean/Mathlib",
+      "source_form": "lane-matrix: lanes × scopes/status grid",
+      "target_form": "Matrix m n α",
+      "semantic_id": "matrix.lane_status_grid",
+      "domain": "operations",
+      "relation": "related_match",
+      "grade": "approximate",
+      "kernel": "cell payload (links and states) beyond scalar status",
+      "evidence_status": "spec-level",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/LEAN-NOTATION-MAPPING.md",
+        "locator": "lane-matrix row"
+      }
+    },
+    {
+      "mapping_id": "fleet-lean-matrix-cell",
+      "source_custom": "fleet-notation",
+      "target_custom": "Lean/Mathlib",
+      "source_form": "M[i,j]",
+      "target_form": "M i j",
+      "semantic_id": "matrix.cell_access",
+      "domain": "matrices",
+      "relation": "equivalent",
+      "grade": "exact",
+      "kernel": null,
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/LEAN-NOTATION-MAPPING.md",
+        "locator": "Class 1 — MATRICES; cell access"
+      }
+    },
+    {
+      "mapping_id": "fleet-lean-matrix-composition",
+      "source_custom": "fleet-notation",
+      "target_custom": "Lean/Mathlib",
+      "source_form": "∘",
+      "target_form": "Matrix.mul (*)",
+      "semantic_id": "matrix.composition",
+      "domain": "matrices",
+      "relation": "related_match",
+      "grade": "approximate",
+      "kernel": "Σ over the middle index plus ring structure",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/LEAN-NOTATION-MAPPING.md",
+        "locator": "Class 1 — MATRICES; composition"
+      }
+    },
+    {
+      "mapping_id": "fleet-lean-matrix-identity",
+      "source_custom": "fleet-notation",
+      "target_custom": "Lean/Mathlib",
+      "source_form": "e",
+      "target_form": "1 : Matrix n n α",
+      "semantic_id": "matrix.identity_element",
+      "domain": "matrices",
+      "relation": "equivalent",
+      "grade": "exact",
+      "kernel": null,
+      "evidence_status": "proof-verified",
+      "provenance": {
+        "path": "research/nse-023/packets/P-002.md",
+        "locator": "Verdict — PASS; Matrix.one_mul at Mathlib pin cc8b6526"
+      }
+    },
+    {
+      "mapping_id": "fleet-lean-metadata-filter",
+      "source_custom": "fleet-notation",
+      "target_custom": "Lean/Mathlib",
+      "source_form": "Pinecone metadata filter",
+      "target_form": "Finset.filter p",
+      "semantic_id": "vector.metadata_filter",
+      "domain": "vector_stores",
+      "relation": "equivalent",
+      "grade": "exact",
+      "kernel": null,
+      "evidence_status": "spec-level",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/LEAN-NOTATION-MAPPING.md",
+        "locator": "Class 2 metadata filter row"
+      }
+    },
+    {
+      "mapping_id": "fleet-lean-namespace",
+      "source_custom": "fleet-notation",
+      "target_custom": "Lean/Mathlib",
+      "source_form": "Pinecone namespace",
+      "target_form": "{x // p x} / index-set partition",
+      "semantic_id": "vector.namespace",
+      "domain": "vector_stores",
+      "relation": "related_match",
+      "grade": "approximate",
+      "kernel": "loose correspondence",
+      "evidence_status": "spec-level",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/LEAN-NOTATION-MAPPING.md",
+        "locator": "Class 2 namespace row"
+      }
+    },
+    {
+      "mapping_id": "fleet-lean-nonabelian-default",
+      "source_custom": "fleet-notation",
+      "target_custom": "Lean/Mathlib",
+      "source_form": "non-abelian default",
+      "target_form": "Matrix.mul is non-commutative",
+      "semantic_id": "matrix.noncommutative_default",
+      "domain": "matrices",
+      "relation": "equivalent",
+      "grade": "exact",
+      "kernel": null,
+      "evidence_status": "spec-level",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/LEAN-NOTATION-MAPPING.md",
+        "locator": "Class 1 non-abelian default row"
+      }
+    },
+    {
+      "mapping_id": "fleet-lean-operator-matrix",
+      "source_custom": "fleet-notation",
+      "target_custom": "Lean/Mathlib",
+      "source_form": "operator-matrix: incidence of issues/PRs × families",
+      "target_form": "Matrix m n ℕ (or Bool)",
+      "semantic_id": "matrix.operator_incidence",
+      "domain": "operations",
+      "relation": "related_match",
+      "grade": "approximate",
+      "kernel": "classification provenance",
+      "evidence_status": "spec-level",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/LEAN-NOTATION-MAPPING.md",
+        "locator": "operator-matrix incidence row"
+      }
+    },
+    {
+      "mapping_id": "fleet-lean-upsert",
+      "source_custom": "fleet-notation",
+      "target_custom": "Lean/Mathlib",
+      "source_form": "Pinecone upsert",
+      "target_form": "Function.update f i v",
+      "semantic_id": "vector.upsert",
+      "domain": "vector_stores",
+      "relation": "related_match",
+      "grade": "approximate",
+      "kernel": "finite function update versus effectful remote store operation",
+      "evidence_status": "spec-level",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/LEAN-NOTATION-MAPPING.md",
+        "locator": "Class 2 upsert row"
+      }
+    },
+    {
+      "mapping_id": "fleet-lean-vector-embedding",
+      "source_custom": "fleet-notation",
+      "target_custom": "Lean/Mathlib",
+      "source_form": "vector / embedding",
+      "target_form": "Fin n → ℝ; EuclideanSpace ℝ (Fin n); ![…]",
+      "semantic_id": "vector.embedding",
+      "domain": "vector_stores",
+      "relation": "related_match",
+      "grade": "approximate",
+      "kernel": "embedding model, float32 precision, normalization",
+      "evidence_status": "spec-level",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/LEAN-NOTATION-MAPPING.md",
+        "locator": "Class 2 vector / embedding row"
+      }
+    },
+    {
+      "mapping_id": "fleet-lean-vector-literal",
+      "source_custom": "fleet-notation",
+      "target_custom": "Lean/Mathlib",
+      "source_form": "![a,b,c]",
+      "target_form": "![a,b,c] : Fin n → α",
+      "semantic_id": "vector.literal",
+      "domain": "vectors",
+      "relation": "equivalent",
+      "grade": "exact",
+      "kernel": null,
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/LEAN-NOTATION-MAPPING.md",
+        "locator": "Class 1 — MATRICES; vector literal"
+      }
+    },
+    {
+      "mapping_id": "nomenclature-map-bind-not-compose",
+      "source_custom": "nomenclature-matrix",
+      "target_custom": "SKOS-concept-map",
+      "source_form": "haskell.monadic_bind",
+      "target_form": "category_theory.composition",
+      "semantic_id": "nomenclature.crosswalk.map-bind-not-compose",
+      "domain": "haskell→category_theory",
+      "relation": "related_match",
+      "grade": "analogue",
+      "kernel": null,
+      "evidence_status": "candidate",
+      "confidence": 0.35,
+      "source_ids": [
+        "issue-320"
+      ],
+      "evidence_note": "Keep related rather than exact: typeclass/monadic semantics and ordinary composition differ.",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+        "locator": "mappings[].mapping_id=map-bind-not-compose; status=candidate"
+      }
+    },
+    {
+      "mapping_id": "nomenclature-map-cmd-conforming-isomorphism",
+      "source_custom": "nomenclature-matrix",
+      "target_custom": "SKOS-concept-map",
+      "source_form": "caveman_micro_dense.conforming",
+      "target_form": "group_theory.isomorphism",
+      "semantic_id": "nomenclature.crosswalk.map-cmd-conforming-isomorphism",
+      "domain": "caveman_micro_dense→group_theory",
+      "relation": "related_match",
+      "grade": "analogue",
+      "kernel": null,
+      "evidence_status": "candidate",
+      "confidence": 0.5,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ],
+      "evidence_note": "Same glyph, different slot: caveman-register ≅ = conformance predicate (no proof owed); math-register ≅ = isomorphism claim, proof-gated (house notation spec: ≅ only where a proof discharges it, else ≈). Register determines which rule binds.",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+        "locator": "mappings[].mapping_id=map-cmd-conforming-isomorphism; status=candidate"
+      }
+    },
+    {
+      "mapping_id": "nomenclature-map-cmd-discharged-verdict",
+      "source_custom": "nomenclature-matrix",
+      "target_custom": "SKOS-concept-map",
+      "source_form": "caveman_micro_dense.discharged",
+      "target_form": "caveman_micro_dense.verdict",
+      "semantic_id": "nomenclature.crosswalk.map-cmd-discharged-verdict",
+      "domain": "caveman_micro_dense→caveman_micro_dense",
+      "relation": "related_match",
+      "grade": "analogue",
+      "kernel": null,
+      "evidence_status": "candidate",
+      "confidence": 0.9,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04"
+      ],
+      "evidence_note": "⚖✓ is ⚖ plus discharge: same judgment, its owed action closed. Composition of glyphs mirrors composition of states.",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+        "locator": "mappings[].mapping_id=map-cmd-discharged-verdict; status=candidate"
+      }
+    },
+    {
+      "mapping_id": "nomenclature-map-comms-quic-succeeds-tcptls",
+      "source_custom": "nomenclature-matrix",
+      "target_custom": "SKOS-concept-map",
+      "source_form": "comms_matrix.quic_transport",
+      "target_form": "comms_matrix.tcp_tls_baseline",
+      "semantic_id": "nomenclature.crosswalk.map-comms-quic-succeeds-tcptls",
+      "domain": "comms_matrix→comms_matrix",
+      "relation": "supersedes",
+      "grade": "analogue",
+      "kernel": null,
+      "evidence_status": "candidate",
+      "confidence": 0.9,
+      "source_ids": [
+        "owner-order-comms-matrices-2026-11-19"
+      ],
+      "evidence_note": "For HTTP-class traffic QUIC is the established successor: multiplexing without transport HoL blocking + combined handshake (RFC 9000/9114). TCP+TLS remains the fallback where UDP is blocked.",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+        "locator": "mappings[].mapping_id=map-comms-quic-succeeds-tcptls; status=candidate"
+      }
+    },
+    {
+      "mapping_id": "nomenclature-map-comms-rendezvous-above-transport",
+      "source_custom": "nomenclature-matrix",
+      "target_custom": "SKOS-concept-map",
+      "source_form": "comms_matrix.repo_rendezvous",
+      "target_form": "comms_matrix.quic_transport",
+      "semantic_id": "nomenclature.crosswalk.map-comms-rendezvous-above-transport",
+      "domain": "comms_matrix→comms_matrix",
+      "relation": "related_match",
+      "grade": "analogue",
+      "kernel": null,
+      "evidence_status": "candidate",
+      "confidence": 0.8,
+      "source_ids": [
+        "owner-order-comms-matrices-2026-11-19"
+      ],
+      "evidence_note": "Different layers: rendezvous is an application pattern that rides any transport; QUIC does not replace it — it would only speed the legs underneath it.",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+        "locator": "mappings[].mapping_id=map-comms-rendezvous-above-transport; status=candidate"
+      }
+    },
+    {
+      "mapping_id": "nomenclature-map-dv-conversion-homomorphism",
+      "source_custom": "nomenclature-matrix",
+      "target_custom": "SKOS-concept-map",
+      "source_form": "dual_valence.conversion_operator",
+      "target_form": "group_theory.homomorphism",
+      "semantic_id": "nomenclature.crosswalk.map-dv-conversion-homomorphism",
+      "domain": "dual_valence→group_theory",
+      "relation": "related_match",
+      "grade": "analogue",
+      "kernel": null,
+      "evidence_status": "candidate",
+      "confidence": 0.5,
+      "source_ids": [
+        "owner-doctrine-dual-valence-2026-11-03",
+        "issue-320"
+      ],
+      "evidence_note": "κ preserves the operator-side structure (pipelines compose: κ2 ∘ κ1 is a conversion) while acting as identity on the object — homomorphism-like on relationships, NOT a map between two entities. ker rule carries over: a lossy conversion names ker κ.",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+        "locator": "mappings[].mapping_id=map-dv-conversion-homomorphism; status=candidate"
+      }
+    },
+    {
+      "mapping_id": "nomenclature-map-dv-conversion-morphism",
+      "source_custom": "nomenclature-matrix",
+      "target_custom": "SKOS-concept-map",
+      "source_form": "dual_valence.conversion_operator",
+      "target_form": "category_theory.morphism",
+      "semantic_id": "nomenclature.crosswalk.map-dv-conversion-morphism",
+      "domain": "dual_valence→category_theory",
+      "relation": "related_match",
+      "grade": "analogue",
+      "kernel": null,
+      "evidence_status": "candidate",
+      "confidence": 0.7,
+      "source_ids": [
+        "owner-doctrine-dual-valence-2026-11-03",
+        "issue-320"
+      ],
+      "evidence_note": "κ is a morphism in the category of readings over a fixed object E (slice over E): its object-component is id_E and its work is entirely in the arrow. Composition of conversions = morphism composition.",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+        "locator": "mappings[].mapping_id=map-dv-conversion-morphism; status=candidate"
+      }
+    },
+    {
+      "mapping_id": "nomenclature-map-dv-target-action",
+      "source_custom": "nomenclature-matrix",
+      "target_custom": "SKOS-concept-map",
+      "source_form": "dual_valence.dual_valence_target",
+      "target_form": "group_theory.group_action",
+      "semantic_id": "nomenclature.crosswalk.map-dv-target-action",
+      "domain": "dual_valence→group_theory",
+      "relation": "related_match",
+      "grade": "analogue",
+      "kernel": null,
+      "evidence_status": "candidate",
+      "confidence": 0.4,
+      "source_ids": [
+        "owner-doctrine-dual-valence-2026-11-03"
+      ],
+      "evidence_note": "A frame acting on an entity's readings resembles a group action G ↷ X: the actor (frame/house) moves the state, the underlying entity is the fixed carrier. Valence readings = points of the acted-on set.",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+        "locator": "mappings[].mapping_id=map-dv-target-action; status=candidate"
+      }
+    },
+    {
+      "mapping_id": "nomenclature-map-gt-group-monoid-adjacency",
+      "source_custom": "nomenclature-matrix",
+      "target_custom": "SKOS-concept-map",
+      "source_form": "group_theory.group",
+      "target_form": "haskell.monadic_bind",
+      "semantic_id": "nomenclature.crosswalk.map-gt-group-monoid-adjacency",
+      "domain": "group_theory→haskell",
+      "relation": "related_match",
+      "grade": "analogue",
+      "kernel": null,
+      "evidence_status": "candidate",
+      "confidence": 0.2,
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra",
+        "issue-320"
+      ],
+      "evidence_note": "MONOID ADJACENCY FLAG (not equivalence): a group is a monoid with inverses; Haskell's Monoid typeclass (like Semigroup/Monoid in FP generally) has NO inverse law, so Monoid ≠ group. No monoid concept is seeded yet; this mapping exists only to record the adjacency and block any exact_match claim. Target is the nearest seeded Haskell concept, used as an anchor, not a semantic peer.",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+        "locator": "mappings[].mapping_id=map-gt-group-monoid-adjacency; status=candidate"
+      }
+    },
+    {
+      "mapping_id": "nomenclature-map-gt-grp-morphism",
+      "source_custom": "nomenclature-matrix",
+      "target_custom": "SKOS-concept-map",
+      "source_form": "group_theory.category_of_groups",
+      "target_form": "category_theory.morphism",
+      "semantic_id": "nomenclature.crosswalk.map-gt-grp-morphism",
+      "domain": "group_theory→category_theory",
+      "relation": "related_match",
+      "grade": "analogue",
+      "kernel": null,
+      "evidence_status": "candidate",
+      "confidence": 0.5,
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra",
+        "issue-320"
+      ],
+      "evidence_note": "Grp is a category; its morphisms are group homomorphisms by definition. Links the category_of_groups concept to the seeded category_theory domain; no equivalence asserted beyond the definitional one.",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+        "locator": "mappings[].mapping_id=map-gt-grp-morphism; status=candidate"
+      }
+    },
+    {
+      "mapping_id": "nomenclature-map-gt-identity-morphism",
+      "source_custom": "nomenclature-matrix",
+      "target_custom": "SKOS-concept-map",
+      "source_form": "group_theory.identity_element",
+      "target_form": "category_theory.morphism",
+      "semantic_id": "nomenclature.crosswalk.map-gt-identity-morphism",
+      "domain": "group_theory→category_theory",
+      "relation": "related_match",
+      "grade": "analogue",
+      "kernel": null,
+      "evidence_status": "candidate",
+      "confidence": 0.45,
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra",
+        "issue-320"
+      ],
+      "evidence_note": "A group is a one-object category whose morphisms are its elements; the identity element e is its identity morphism (matrix table row 'Identity morphism/function': id_A, 1_A). Scope: the link holds for the categorical view only — e is an element, not an arrow between distinct objects.",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+        "locator": "mappings[].mapping_id=map-gt-identity-morphism; status=candidate"
+      }
+    },
+    {
+      "mapping_id": "nomenclature-map-gt-kernel-normal",
+      "source_custom": "nomenclature-matrix",
+      "target_custom": "SKOS-concept-map",
+      "source_form": "group_theory.kernel",
+      "target_form": "group_theory.normal_subgroup",
+      "semantic_id": "nomenclature.crosswalk.map-gt-kernel-normal",
+      "domain": "group_theory→group_theory",
+      "relation": "related_match",
+      "grade": "analogue",
+      "kernel": null,
+      "evidence_status": "candidate",
+      "confidence": 0.6,
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra",
+        "issue-320"
+      ],
+      "evidence_note": "ker φ is always a normal subgroup of the domain, and every normal subgroup is a kernel (of the quotient map). First isomorphism theorem: G/ker φ ≅ im φ. Operational rule (fleet notation spec): lossy maps MUST name their kernel.",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+        "locator": "mappings[].mapping_id=map-gt-kernel-normal; status=candidate"
+      }
+    },
+    {
+      "mapping_id": "nomenclature-map-gt-operation-composition",
+      "source_custom": "nomenclature-matrix",
+      "target_custom": "SKOS-concept-map",
+      "source_form": "group_theory.binary_operation",
+      "target_form": "category_theory.composition",
+      "semantic_id": "nomenclature.crosswalk.map-gt-operation-composition",
+      "domain": "group_theory→category_theory",
+      "relation": "related_match",
+      "grade": "analogue",
+      "kernel": null,
+      "evidence_status": "candidate",
+      "confidence": 0.5,
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra",
+        "issue-320"
+      ],
+      "evidence_note": "The group operation IS composition in the one-object-category view of a group, and in Grp composition of homomorphisms is the same operation one level up. Order/direction conventions per the matrix composition rows (g ∘ f applies f first). Related, not a label synonym.",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+        "locator": "mappings[].mapping_id=map-gt-operation-composition; status=candidate"
+      }
+    },
+    {
+      "mapping_id": "nomenclature-map-morphism-arrow",
+      "source_custom": "nomenclature-matrix",
+      "target_custom": "SKOS-concept-map",
+      "source_form": "category_theory.morphism",
+      "target_form": "category_theory.morphism",
+      "semantic_id": "nomenclature.crosswalk.map-morphism-arrow",
+      "domain": "category_theory→category_theory",
+      "relation": "same_concept_label",
+      "grade": "analogue",
+      "kernel": null,
+      "evidence_status": "candidate",
+      "confidence": 0.5,
+      "source_ids": [
+        "issue-320"
+      ],
+      "evidence_note": "Label-level candidate inherited from Issue #320; domain review required.",
+      "provenance": {
+        "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+        "locator": "mappings[].mapping_id=map-morphism-arrow; status=candidate"
+      }
+    }
+  ]
+}

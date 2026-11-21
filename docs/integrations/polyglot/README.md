@@ -26,9 +26,9 @@ Each record declares `schema_version`. Producers pin immutable source revisions 
 
 ## Mandatory public-surface integration
 
-The architecture requires DerpWiki as the mandatory Linguist language layer across public user interfaces and published knowledge surfaces. Completed integrations include the DerpWiki projection by default, with zero visitor opt-in. The separate Unicode challenge payload follows the existing publication-profile contract; voluntary CTF participation remains a distinct participant-level choice.
+Render DerpWiki as the mandatory Linguist language layer across public user interfaces and published knowledge surfaces. Apply the projection by default, with zero visitor opt-in. Keep the separate Unicode challenge payload on the existing publication-profile contract; CTF participation remains voluntary and task-specific.
 
-Z3π∅ notifications route to public user interfaces through the existing single-notification/dashboard pattern in `docs/ops/ACTIONS-MATRIX.md` and the classification, deduplication and receipt contract in `docs/ops/AUTOMATED-TELEMETRY-AUDIT.md`. Runtime delivery remains tracked in Phase 5 of the federation proposal.
+Route Z3π∅ notifications to public user interfaces through the existing single-notification/dashboard pattern in `docs/ops/ACTIONS-MATRIX.md` and the classification, deduplication and receipt contract in `docs/ops/AUTOMATED-TELEMETRY-AUDIT.md`. Track runtime delivery in Phase 5 of the federation proposal.
 
 ## Validation
 

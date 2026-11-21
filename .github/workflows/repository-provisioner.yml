@@ -31,11 +31,12 @@ permissions:
 
 jobs:
   provision:
-    name: Create and seed repository
+    name: Create repository
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+      GH_TOKEN: ${{ secrets.REPOSITORY_PROVISIONER_TOKEN }}
+      EXPECTED_OWNER: timerloggedout-spec
       REPO_NAME: ${{ inputs.repo_name }}
       REPO_DESCRIPTION: ${{ inputs.description }}
       REPO_VISIBILITY: ${{ inputs.visibility }}
@@ -46,7 +47,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          : "${GH_TOKEN:?Configure the OPERATOR_GITHUB_TOKEN repository secret}"
+          : "${GH_TOKEN:?Configure the REPOSITORY_PROVISIONER_TOKEN repository secret}"
           if [[ ! "${REPO_NAME}" =~ ^[a-z0-9]([a-z0-9-]{0,98}[a-z0-9])?$ ]]; then
             echo "::error::Use a 1-100 character lowercase repository slug with letters, numbers, and interior hyphens."
             exit 1
@@ -62,8 +63,8 @@ jobs:
           esac
 
           owner="$(gh api user --jq '.login')"
-          if [[ -z "${owner}" ]]; then
-            echo "::error::The provisioning token did not resolve to an account."
+          if [[ -z "${owner}" || "${owner,,}" != "${EXPECTED_OWNER,,}" ]]; then
+            echo "::error::Provisioning token identity must be ${EXPECTED_OWNER}; received ${owner:-empty}."
             exit 1
           fi
 
@@ -93,34 +94,6 @@ jobs:
           printf 'owner=%s\nname=%s\nurl=%s\nid=%s\ndefault_branch=%s\n' \
             "${owner}" "${REPO_NAME}" "${repo_url}" "${repo_id}" "${default_branch}" >> "${GITHUB_OUTPUT}"
 
-      - name: Seed repository through the Contents API
-        shell: bash
-        run: |
-          set -euo pipefail
-          created_at="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
-          content="$(cat <<EOF
-          # ${REPO_NAME}
-
-          ${REPO_DESCRIPTION}
-
-          ## Repository provisioning
-
-          - Created: ${created_at}
-          - Provisioner: `timerloggedout-spec/termux-monorepo/.github/workflows/repository-provisioner.yml`
-          - Visibility: ${REPO_VISIBILITY}
-          - Initial branch: ${{ steps.create.outputs.default_branch }}
-
-          This repository was initialized by the repository provisioner workflow.
-          EOF
-          )"
-          encoded="$(printf '%s' "${content}" | base64 -w 0)"
-
-          gh api --method PUT \
-            "/repos/${{ steps.create.outputs.owner }}/${{ steps.create.outputs.name }}/contents/PROVISIONING.md" \
-            -f "message=chore: seed repository provisioning record" \
-            -f "content=${encoded}" \
-            -f "branch=${{ steps.create.outputs.default_branch }}" >/dev/null
-
       - name: Publish provisioning receipt
         env:
           REPOSITORY_URL: ${{ steps.create.outputs.url }}
@@ -135,5 +108,5 @@ jobs:
             echo "- Repository ID: ${REPOSITORY_ID}"
             echo "- Visibility: ${REPO_VISIBILITY}"
             echo "- Default branch: ${DEFAULT_BRANCH}"
-            echo "- Seed: `PROVISIONING.md` via GitHub Contents API"
+            echo "- Initialization: GitHub auto_init (default README.md)"
           } >> "${GITHUB_STEP_SUMMARY}"

@@ -1,28 +1,23 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-21T13:49:48Z",
+ "generated_at": "2026-11-21T14:01:40Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 4,
-   "in_progress": 1,
+   "queued": 2,
+   "in_progress": 2,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "repo gate": 1,
-    "Orchestration Regression Guard": 1,
     "PR scope guard": 2
    }
   },
   "2": {
    "tier": 2,
-   "queued": 2,
-   "in_progress": 1,
-   "oldest_queued_at": "2026-11-21T13:48:20Z",
-   "by_workflow_queued": {
-    "pages build and deployment": 1,
-    "tribute-dashboard-deploy": 1
-   }
+   "queued": 0,
+   "in_progress": 2,
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "3": {
    "tier": 3,
@@ -33,23 +28,14 @@
   },
   "4": {
    "tier": 4,
-   "queued": 19,
-   "in_progress": 13,
+   "queued": 8,
+   "in_progress": 15,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "repo-tracking-collect": 1,
+    "lane events recorder": 1,
+    "telemetry-ingest": 1,
+    "Sweep Accountability": 1,
     "Quota Dispatch Tree": 1,
-    "Gemini review after peers": 1,
-    "Context Relationship + Lead/Lag Audit": 1,
-    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
-    "quota-usage-series-refresh": 1,
-    "hitl-control-plane-verify": 2,
-    "Agent Readability Source Contract": 1,
-    "quota-served-probe": 1,
-    "termux smoke": 1,
-    "que-cadence-kick": 1,
-    "lane events recorder": 2,
-    "PR evidence evaluation": 1,
     "Agent PR Jules Handoff": 1,
     "PR Change Effectiveness Ledger": 1,
     "Advisory GitHub Actions lint": 1,
@@ -58,8 +44,8 @@
   }
  },
  "totals": {
-  "queued": 25,
-  "in_progress": 15
+  "queued": 10,
+  "in_progress": 19
  },
  "wedged_ancient": [
   {
@@ -217,13 +203,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 5,
-   "2": 3,
+   "1": 4,
+   "2": 2,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 8,
-  "default_t4": 32,
+  "explicit_total": 6,
+  "default_t4": 23,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

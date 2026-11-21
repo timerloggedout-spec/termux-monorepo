@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-21T16:08:12Z)
+# Lane matrix status (2026-11-21T16:09:22Z)
 
-- Master: `c61ea10c8d2deddb0abac5861fde10280d1bab3e`
+- Master: `ccbf177d3e68b45e2ae112afdaf55265a5c591a4`
 - Open PRs: **503**
 - Oldest: #47 (108.02d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -23,25 +23,25 @@
 | PR | Days | Lane | Reasons | Title |
 |---:|-----:|------|---------|-------|
 | #1436 | 31.4 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): salvage operational Hindsight das |
-| #2702 | 20.99 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
+| #2702 | 21.0 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
 | #4069 | 18.49 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
-| #4621 | 17.8 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
+| #4621 | 17.81 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
 | #4898 | 17.15 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
 | #5034 | 15.05 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
-| #5722 | 0.95 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted routes and bind local Do |
-| #5723 | 0.95 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted review relay and record  |
-| #5724 | 0.95 | EXTRACT | state:unknown, minesweeper-title | fix(jules): replace hosted PR handoff with receipt |
+| #5722 | 0.96 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted routes and bind local Do |
+| #5723 | 0.96 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted review relay and record  |
+| #5724 | 0.96 | EXTRACT | state:unknown, minesweeper-title | fix(jules): replace hosted PR handoff with receipt |
 | #47 | 108.02 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
 | #81 | 105.76 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
 | #103 | 104.63 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
 | #527 | 67.34 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
 | #605 | 63.93 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
-| #684 | 61.9 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
+| #684 | 61.91 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
 | #769 | 59.36 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
 | #969 | 51.26 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
 | #990 | 50.4 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
 | #1020 | 49.14 | CANDIDATE | state:unknown | feat: close provider continuity and executable rou |
-| #1274 | 33.28 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
+| #1274 | 33.29 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
 | #1441 | 31.35 | CANDIDATE | state:unknown | feat(triage): reconcile official quota before disp |
 | #1469 | 31.13 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
 | #1470 | 31.12 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
@@ -54,8 +54,8 @@
 | #1557 | 29.63 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 28.55 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
 | #1616 | 28.54 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
-| #1617 | 28.53 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
-| #1626 | 28.41 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
+| #1617 | 28.54 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
+| #1626 | 28.42 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
 | #1645 | 27.65 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
 | #1650 | 27.58 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
 | #1694 | 25.61 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |

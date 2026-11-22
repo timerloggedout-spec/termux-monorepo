@@ -42,14 +42,17 @@ def inventory_entry(slot: Path) -> dict:
                 continue
             source = c / "SOURCE.txt"
             readme = c / "README.md"
+            source_preview = None
+            if source.is_file():
+                preview_lines = source.read_text(encoding="utf-8").strip().splitlines()
+                if preview_lines:
+                    source_preview = preview_lines[0]
             metadata_children.append(
                 {
                     "name": c.name,
                     "has_source": source.is_file(),
                     "has_readme": readme.is_file(),
-                    "source_preview": source.read_text(encoding="utf-8").strip().splitlines()[0]
-                    if source.is_file() and source.stat().st_size
-                    else None,
+                    "source_preview": source_preview,
                 }
             )
     return {

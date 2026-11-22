@@ -1,7 +1,7 @@
 {
   "schema_version": "classifier.graph-registry.v1",
   "registry_id": "termux-monorepo-classifier-graph-tournament",
-  "registry_version": "0.2.0",
+  "registry_version": "0.3.0",
   "catalog": {
     "path": "config/system_one_catalog.json",
     "schema": "system-one-catalog/1"
@@ -1037,6 +1037,442 @@
           "kind": "classifier",
           "role_id": "typed_decision",
           "candidate_id": "catalog.S1-04",
+          "depends_on": []
+        }
+      ]
+    },
+    {
+      "graph_id": "model-catalog-screen",
+      "graph_version": "0.1.0",
+      "competition_unit": "composition",
+      "status": "design_only",
+      "execution_mode": "parallel_screen",
+      "nodes": [
+        {
+          "node_id": "screen-s1-01",
+          "kind": "classifier",
+          "role_id": "typed_decision",
+          "candidate_id": "catalog.S1-01",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s1-02",
+          "kind": "classifier",
+          "role_id": "typed_decision",
+          "candidate_id": "catalog.S1-02",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s1-03",
+          "kind": "classifier",
+          "role_id": "typed_decision",
+          "candidate_id": "catalog.S1-03",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s1-04",
+          "kind": "classifier",
+          "role_id": "typed_decision",
+          "candidate_id": "catalog.S1-04",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s1-05",
+          "kind": "classifier",
+          "role_id": "option_scoring",
+          "candidate_id": "catalog.S1-05",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-01",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-01",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-02",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-02",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-03",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-03",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-04",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-04",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-05",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-05",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-06",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-06",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-07",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-07",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-08",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-08",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-09",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-09",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-10",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-10",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-11",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-11",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-12",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-12",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-13",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-13",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-14",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-14",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-15",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-15",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-16",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-16",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-17",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-17",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-18",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-18",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-19",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-19",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-20",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-20",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-21",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-21",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-22",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-22",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-23",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-23",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-24",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-24",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-25",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-25",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-26",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-26",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-27",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-27",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-01",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-01",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-02",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-02",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-03",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-03",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-04",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-04",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-05",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-05",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-06",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-06",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-07",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-07",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-08",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-08",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-09",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-09",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-10",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-10",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-11",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-11",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-12",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-12",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-13",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-13",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-14",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-14",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-15",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-15",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-16",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-16",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-17",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-17",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-18",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-18",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-19",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-19",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-20",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-20",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-21",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-21",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-22",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-22",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-23",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-23",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-24",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-24",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-25",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-25",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-26",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-26",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-27",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-27",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-28",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-28",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-29",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-29",
           "depends_on": []
         }
       ]

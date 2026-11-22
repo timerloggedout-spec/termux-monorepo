@@ -696,6 +696,34 @@ PR #1970 merged 2e99fadd).
   recording demonstrating your application no later than **Thursday,
   Nov. 19 at 12 p.m. PT**." Countdown now carries Nov 19 12:00 PT.
 
+### GitLab program-family watchlist — future editions only
+
+The following 2026 editions are closed. Keep the programs in the opportunity
+sweep as future-cycle watch targets; the next dates and registration paths are
+`NOT_ESTABLISHED`. These are three distinct programs, not one combined event.
+
+| Program | 2026 status | Verified window / result | Planning disposition |
+|---|---|---|---|
+| GitLab AI Hackathon — “You Orchestrate. AI Accelerates.” | CLOSED | Submissions Feb 9–Mar 25; judging Mar 30–Apr 17; winners announced Apr 22; $65,000 pool | Watch next edition; fit = GitLab Duo agent/flow that reacts to SDLC triggers and performs actions |
+| GitLab Transcend — “Life After Code” | CLOSED | Submissions Oct 5–27; judging/results timeline contains a rules-vs-connector discrepancy; $45,000 pool | Watch next edition; fit = post-code DevSecOps lifecycle automation |
+| GitLab Community Hackathon | CLOSED | Oct 6–12 contribution window; merge cutoff Nov 12 | Watch next edition; separate contribution/leaderboard format |
+
+**Source hierarchy:** `https://gitlab.com/gitlab-ai-hackathon` is the public root
+group. The supplied
+`https://gitlab.com/gitlab-ai-hackathon/gitlab-devsecops-flow-hackathon`
+resolves to a subgroup, observed empty on 2026-11-22. The sibling
+`/transcend` subgroup contains the October Transcend showcase workspaces;
+`/project-templates/participant-template` is the public agent/flow starter.
+The source map and evidence are in
+`docs/ops/GITLAB-AI-HACKATHON-OSINT.md` and
+`ops/challenge/osint/gitlab-sources.json`.
+
+**Registration:** no owner registration, GitLab group membership, Devpost
+registration, project creation, or submission is established by this
+watchlist. The February–March event's group-access form is historical and
+closed; a future edition requires a newly published official form/path and a
+fresh rules/eligibility read before any registration action.
+
 ## 5. Sweep sources
 
 AWS Builder Center hackathons listing; Devpost (AI/agent, Nov–Dec 2026);

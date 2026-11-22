@@ -490,7 +490,8 @@
         "canonical_cohort",
         "incumbent",
         "challengers",
-        "protocol"
+        "protocol",
+        "comparison_engine"
       ],
       "properties": {
         "schema": {
@@ -624,6 +625,33 @@
             },
             "owner_approval_for_production": {
               "const": true
+            }
+          }
+        },
+        "comparison_engine": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "implementation_id",
+            "version",
+            "source_ref",
+            "status"
+          ],
+          "properties": {
+            "implementation_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "version": {
+              "type": "string",
+              "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+            },
+            "source_ref": {
+              "type": "string",
+              "minLength": 1
+            },
+            "status": {
+              "const": "executable_component"
             }
           }
         }

@@ -131,6 +131,18 @@ class ClassifierGraphRegistryTests(unittest.TestCase):
         self.assertEqual(len(candidates), 56)
         self.assertTrue(all(item["roles"] == ["unclassified"] for item in candidates))
 
+    def test_local_mev_jev_kev_laya_roles_have_lateral_screen(self):
+        graph = next(item for item in self.registry["graphs"]
+                     if item["graph_id"] == "local-role-lateral-screen")
+        self.assertEqual(graph["status"], "design_only")
+        self.assertEqual(graph["execution_mode"], "parallel_screen")
+        self.assertEqual(len(graph["nodes"]), 4)
+        self.assertTrue(all(node["depends_on"] == [] for node in graph["nodes"]))
+        self.assertEqual({node["candidate_id"] for node in graph["nodes"]}, {
+            "local.deepcli.mev", "local.deepcli.jev",
+            "local.deepcli.kev", "local.deepcli.laya"
+        })
+
     def test_model_catalog_screen_is_complete_and_design_only(self):
         graph = next(item for item in self.registry["graphs"]
                      if item["graph_id"] == "model-catalog-screen")

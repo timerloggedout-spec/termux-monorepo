@@ -21,12 +21,28 @@ class ClassifierGraphRegistryTests(unittest.TestCase):
         cls.catalog = json.loads(
             (ROOT / "config/system_one_catalog.json").read_text(encoding="utf-8")
         )
+        cls.estate = json.loads(
+            (ROOT / "ops/classifiers/classifiers-feed.json").read_text(encoding="utf-8")
+        )
 
     def validate(self, registry):
-        return validate_registry(ROOT, registry, self.catalog)
+        return validate_registry(ROOT, registry, self.catalog, self.estate)
 
     def test_checked_in_registry_is_valid(self):
         self.assertEqual(self.validate(copy.deepcopy(self.registry)), [])
+
+    def test_classifier_estate_snapshot_matches_71_unit_feed(self):
+        registry = copy.deepcopy(self.registry)
+        self.assertEqual(registry["classifier_estate"]["unit_count"], 71)
+        self.assertEqual(len(self.estate["units"]), 71)
+        self.assertEqual(registry["classifier_estate"]["states"],
+                         {"live": 43, "dormant": 26, "dead": 2})
+
+    def test_classifier_estate_count_drift_is_rejected(self):
+        registry = copy.deepcopy(self.registry)
+        registry["classifier_estate"]["unit_count"] = 72
+        self.assertTrue(any("unit_count: snapshot count mismatch" in error
+                            for error in self.validate(registry)))
 
     def test_unknown_catalog_reference_is_rejected(self):
         registry = copy.deepcopy(self.registry)

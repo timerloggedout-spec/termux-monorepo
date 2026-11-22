@@ -362,7 +362,7 @@ Connector-verified event references:
 | Life After Code / GitLab Transcend (Oct 2026) | Oct 5 – Oct 27, 2026 | $45,000 | closed |
 | GitLab Community Hackathon (Oct 2026; next Jan 2027) | Oct 6–12, 2026 historical; **Jan 21–28, 2027 upcoming** | 200/150/100 store credits; 50 per qualifying merged MR | upcoming Jan 2027 |
 
-Keep these event identities, rule sets, timelines, and results separate. The October Community Hackathon edition recorded 76 prize winners and 636 merged MRs; the next event page countdown points to January 21–28, 2027. Its current rules version is 2026-10-v2.
+Keep these event identities, rule sets, timelines, and results separate. The October Community Hackathon edition recorded 76 prize winners and 636 merged MRs; the next event page countdown points to January 21–28, 2027. Its live rules page version is 2026-10-v2; the search-index copy returned 2026-10-v1. Preserve the version discrepancy.
 For GitLab AI Hackathon, the rules text and connector structured start instant
 differ; for Life After Code, structured judging/winner dates differ from the
 rules' expected dates. The dossier records both values and the source

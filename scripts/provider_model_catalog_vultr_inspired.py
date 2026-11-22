@@ -4,11 +4,11 @@ This module projects local JSON through a standard-library-only offline adapter.
 """
 from __future__ import annotations
 
-from decimal import Decimal, InvalidOperation
 import argparse
 import json
 import os
 import tempfile
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from typing import Any
 

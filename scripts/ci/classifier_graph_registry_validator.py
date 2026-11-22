@@ -121,6 +121,14 @@ def validate_registry(root: Path, registry: Any, catalog: Any, estate: Any) -> l
                 for role_id in candidate_roles:
                     if not isinstance(role_id, str) or role_id not in role_ids:
                         errors.append(f"{prefix}.roles: unknown role {role_id!r}")
+            operational_state = candidate.get("operational_state")
+            allowed_states = {
+                "dispatch_only_baseline", "blocked_paid_owner_gate",
+                "trial_candidate_composition_required", "evaluated_self_hosted",
+                "referenced_not_runnable", "trial_candidate_host_blocked",
+            }
+            if operational_state not in allowed_states:
+                errors.append(f"{prefix}.operational_state: unknown or missing state {operational_state!r}")
             kind = candidate.get("kind")
             if kind == "catalog":
                 catalog_id = candidate.get("catalog_entry_id")

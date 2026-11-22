@@ -18,7 +18,7 @@
 The public Antinuous product describes an autonomous research and compute environment combining research planning and agent delegation; parallel agent swarms; isolated computers and compute workers; scientific/engineering simulation and data-source access; research artifacts and source-linked results; iterative candidate evaluation; external agent access through MCP and A2A; and optional GPU execution/external compute account integration.
 
 **Evidence status:** P — company-published capability descriptions.  
-**Independent status:** this recon contains no independent validation evidence.  
+**Independent status:** independent validation evidence remains unestablished in this recon.  
 **Adaptation:** build equivalent capability contracts as modular providers; qualify vendor APIs through explicit adapter evidence.
 
 ## Commercial and performance claims
@@ -132,7 +132,7 @@ Sources:
 
 ### Jules lifecycle correction
 
-The user-supplied Jules workflow material is valuable for agent-team design, attribution, asynchronous task delegation, PR integration and run observation. The official Jules changelog states that Jules winds down on 2026-12-31 and became read-only after 2026-11-11. For this 2026-11-22 snapshot, treat Jules as a historical/limited read-only collaborator for session export, provenance reconstruction and workflow analysis. Record live write-execution eligibility from an observed adapter, not from the historic roster.
+The user-supplied Jules workflow material is valuable for agent-team design, attribution, asynchronous task delegation, PR integration and run observation. The official Jules changelog states that Jules winds down on 2026-12-31 and became read-only after 2026-11-11. For this 2026-11-22 snapshot, treat Jules as a historical/limited read-only collaborator for session export, provenance reconstruction and workflow analysis. Derive live write-execution eligibility from an observed adapter; preserve the historic roster as provenance.
 
 **Adaptation:** make every agent's availability and permissions time-bounded registry fields. Historical agent contributions remain measurable; live execution eligibility requires an observed, time-bounded adapter.
 

@@ -9,8 +9,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sys
+import urllib.parse
+import urllib.request
 from pathlib import Path
 from typing import Any
 
@@ -31,6 +34,49 @@ def merge_rules(defaults: dict[str, Any], overrides: dict[str, Any]) -> dict[str
     for kind in ("code", "test", "documentation", "portfolio"):
         merged[kind] = {**defaults.get(kind, {}), **overrides.get(kind, {})}
     return merged
+
+
+
+def validate_github_portfolio(url: str, config: dict[str, Any]) -> tuple[bool, str]:
+    parsed = urllib.parse.urlsplit(url.rstrip("/"))
+    parts = [part for part in parsed.path.split("/") if part]
+    if parsed.scheme != "https" or parsed.netloc != "github.com" or len(parts) != 2 or parsed.query or parsed.fragment:
+        return False, "Portfolio URL must identify a GitHub repository."
+    owner, repository = parts
+    repository = repository.removesuffix(".git")
+    if not re.fullmatch(r"[A-Za-z0-9_.-]+", owner) or not re.fullmatch(r"[A-Za-z0-9_.-]+", repository):
+        return False, "Portfolio URL contains an invalid repository identifier."
+
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "User-Agent": "termux-roadmap-completion-verifier",
+    }
+    token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+
+    def get_json(api_url: str) -> dict[str, Any]:
+        request = urllib.request.Request(api_url, headers=headers)
+        with urllib.request.urlopen(request, timeout=20) as response:
+            return json.loads(response.read().decode("utf-8"))
+
+    api_root = f"https://api.github.com/repos/{owner}/{repository}"
+    repository_data = get_json(api_root)
+    branch = repository_data.get("default_branch")
+    if not isinstance(branch, str) or not branch:
+        return False, "GitHub repository response omitted its default branch."
+    tree_url = f"{api_root}/git/trees/{urllib.parse.quote(branch, safe='')}?recursive=1"
+    tree_data = get_json(tree_url)
+    if tree_data.get("truncated"):
+        return False, "GitHub repository tree was truncated; portfolio verification requires a complete tree."
+    tree = tree_data.get("tree", [])
+    paths = {item.get("path") for item in tree if item.get("type") == "blob"}
+    required_files = config.get("required_files", [])
+    missing = [name for name in required_files if name not in paths]
+    file_count = len(paths)
+    minimum = int(config.get("min_files", 0))
+    ok = not missing and file_count >= minimum
+    return ok, f"GitHub portfolio {owner}/{repository}: files={file_count}; missing required files={missing}; minimum={minimum}."
 
 
 def validate(root: Path, roadmap: str, exercise: str) -> dict[str, Any]:
@@ -83,13 +129,17 @@ def validate(root: Path, roadmap: str, exercise: str) -> dict[str, Any]:
         kind_ok = True
         for index, record in enumerate(entries, start=1):
             raw_path = record.get("path")
+            if kind == "portfolio" and isinstance(record.get("url"), str):
+                try:
+                    remote_ok, remote_detail = validate_github_portfolio(record["url"], config)
+                except (OSError, ValueError, json.JSONDecodeError) as error:
+                    remote_ok, remote_detail = False, f"GitHub portfolio verification failed: {error}"
+                kind_results.append(remote_detail)
+                kind_ok = kind_ok and remote_ok
+                continue
             if not isinstance(raw_path, str) or not raw_path.strip():
-                if kind == "portfolio" and isinstance(record.get("url"), str) and record["url"].startswith("https://github.com/"):
-                    kind_results.append("GitHub portfolio URL recorded; remote contents require separate review.")
-                    kind_ok = False
-                else:
-                    kind_results.append("Evidence record requires a repository-relative path.")
-                    kind_ok = False
+                kind_results.append("Evidence record requires a repository-relative path or a verifiable GitHub repository URL.")
+                kind_ok = False
                 continue
             try:
                 path = repo_file(root, raw_path)

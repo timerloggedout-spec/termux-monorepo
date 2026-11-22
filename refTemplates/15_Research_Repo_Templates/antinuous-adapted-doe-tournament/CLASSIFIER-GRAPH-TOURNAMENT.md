@@ -76,6 +76,22 @@ The System One catalog is a separate inventory: 88 entries across 61
 model families, 16 adapters, 7 runtimes and 4 directories. Preserve the
 layer distinction when deriving candidate pools.
 
+| Operating group | Units | Live | Dormant | Dead |
+|---|---:|---:|---:|---:|
+| deepcli observatory | 3 | 3 | 0 | 0 |
+| ml/pipelines | 7 | 1 | 6 | 0 |
+| model selection / routing | 5 | 2 | 3 | 0 |
+| Delphi system | 9 | 5 | 4 | 0 |
+| repo gates & audits | 9 | 5 | 4 | 0 |
+| workflow triage / review | 14 | 7 | 5 | 2 |
+| intake classifiers | 6 | 6 | 0 | 0 |
+| repository observatory | 2 | 1 | 1 | 0 |
+| dashboard / feed classifiers | 4 | 3 | 1 | 0 |
+| provider substrate | 4 | 3 | 1 | 0 |
+| external surfaces | 6 | 6 | 0 | 0 |
+| post-recon steward builds | 2 | 1 | 1 | 0 |
+| **Total** | **71** | **43** | **26** | **2** |
+
 **Jev status is scope-dependent:**
 
 - Local `deepcli.observatory.jev` is part of the incumbent trial role set.

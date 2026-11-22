@@ -166,5 +166,46 @@ class ArchitectureDocumentationTests(unittest.TestCase):
                 architecture_docs.check_version_bump(root, "HEAD~1")
 
 
+class ArchitectureDocumentationWorkflowTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.workflow = (
+            ROOT / ".github/workflows/automation-docs-continuous-refresh.yml"
+        ).read_text(encoding="utf-8")
+        cls.pr_job, cls.trusted_job = cls.workflow.split(
+            "  refresh-trusted:", 1
+        )
+
+    def test_pull_request_validation_keeps_read_only_permissions(self) -> None:
+        self.assertIn("validate-pull-request:", self.pr_job)
+        self.assertIn("permissions:\\n      contents: read", self.pr_job)
+        self.assertIn("persist-credentials: false", self.pr_job)
+        self.assertIn(
+            "architecture_docs.py --write --check-version-from",
+            self.pr_job,
+        )
+        self.assertIn(
+            "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            self.pr_job,
+        )
+        self.assertNotIn("contents: write", self.pr_job)
+        self.assertNotIn("git push origin HEAD:master", self.pr_job)
+
+    def test_trusted_master_job_owns_generated_projection_writes(self) -> None:
+        self.assertIn("contents: write", self.trusted_job)
+        self.assertIn("architecture_docs.py --write", self.trusted_job)
+        self.assertIn(
+            "git add docs/ops/generated docs/architecture/generated",
+            self.trusted_job,
+        )
+        self.assertIn("git push origin HEAD:master", self.trusted_job)
+
+    def test_workflow_paths_include_architecture_sources(self) -> None:
+        self.assertIn("- 'architecture.md'", self.workflow)
+        self.assertIn("- 'docs/architecture/**/*.md'", self.workflow)
+        self.assertIn("- 'docs/architecture/**/*.mmd'", self.workflow)
+        self.assertIn("- 'docs/architecture/VERSION'", self.workflow)
+
+
 if __name__ == "__main__":
     unittest.main()

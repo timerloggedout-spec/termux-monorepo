@@ -1,10 +1,10 @@
-"""Trial orchestrator — runs Mev → Jev → Kev → Laya end-to-end.
+"""Local observatory trial baseline.
 
-1. produce(prompt) via N providers → artifacts
-2. critique(artifact, rubric) via judge (differ from producer)
-3. verify(artifact, reference) — token_f1 if reference supplied
-4. synthesize(artifacts, jevs, kevs) → ranked winner
-5. persist to Leaderboard + Hindsight (fanout)
+Mev, Jev, and Kev are independent role implementations whose evidence is
+reduced by Laya. The current runner evaluates candidate artifacts against
+the configured critic and verifier; candidate IDs preserve evidence identity
+when individual stages fail. This baseline is one tournament arm, not the
+required topology for the wider classifier capability graph.
 """
 from __future__ import annotations
 import asyncio, hashlib, json, os, time, urllib.request, urllib.error

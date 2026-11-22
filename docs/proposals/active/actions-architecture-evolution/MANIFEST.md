@@ -27,7 +27,7 @@ Unify the classification and lifecycle model for workflows, reusable workflows, 
 
 | ID | Role | Status | At | Notes |
 |---|---|---|---|---|
-| timerloggedout-spec | operator-authorizer | accepted | 2026-11-22 | A+B+C scope and Repo-Story future-candidate boundary confirmed |
+| timerloggedout-spec | operator-authorizer | accepted | 2026-11-22 | A+B+C scope; automated GitHub Pages publishing prioritized; existing Repo-Story concept retained as reference |
 | ChatGPT | author+executor | executing | 2026-11-22 | Design baseline and proposal itemization |
 
 ## Review log

@@ -68,9 +68,10 @@ Establish one repository-wide architecture entry that routes collaborators to ca
 
 ## Current implementation PR
 
-- PR #5770: https://github.com/timerloggedout-spec/termux-monorepo/pull/5770
+- Predecessor PR #5770: https://github.com/timerloggedout-spec/termux-monorepo/pull/5770 (superseded by the action-first successor branch).
+- Successor PR #5771: https://github.com/timerloggedout-spec/termux-monorepo/pull/5771
 - Branch: docs/architecture-versioning-automation-20261122-v2
-- Current status: open draft; exact-head validation and independent review pending.
+- Current status: open and ready for review; exact-head validation and independent review pending.
 
 ## Architecture versioning extension — REPO-ARCH-007
 

@@ -15,7 +15,7 @@ Compare two repository-owned catalogue versions:
 | Incumbent | 5.0.0 | `scripts/provider_model_catalog.py` | Existing multi-provider collector; live polling remains in its separately configured workflow/runtime |
 | VultrInspired | 1.0.0 | `scripts/provider_model_catalog_vultr_inspired.py` | Pure local projection over an incumbent v5 document; offline, standard library only |
 
-The Vultr Python and TypeScript repositories are equivalent upstream references. They inform schema, parser, cache, capability and fixture design. They are not our competing implementations, installed modules, runtime dependencies or execution targets. Their immutable revisions remain in DoE source-reference metadata.
+The Vultr Python and TypeScript repositories are equivalent upstream references for schema, parser, cache, capability and fixture design. Our competing implementations are Incumbent and VultrInspired; upstream revisions remain in DoE source-reference metadata.
 
 ## Incumbent contract
 
@@ -29,9 +29,9 @@ Known incumbent limitations include binary-float pricing classification, numeric
 
 The local implementation accepts an incumbent v5 document and emits `provider-model-catalog/vultr-inspired/v1`. The paired runner `scripts/provider_catalog_competition.py` writes the incumbent input unchanged, the VultrInspired projection and a SHA-256 manifest. Invoke it with `python3 -m scripts.provider_catalog_competition --input <incumbent-v5.json> --output-dir <catalogue-output-dir>`. It adds structured limits, input/output modalities, capability groups, exact decimal strings for string/integer price inputs, explicit unknown readiness, separate access/entitlement evidence, provenance, unknown-field preservation and indexed diagnostics for malformed rows.
 
-Float-origin prices are marked as precision-limited. The projection cannot reconstruct decimal text after an incumbent adapter has already converted a source value to binary float. Source-native exact-price capture belongs in a later adapter increment.
+Float-origin prices carry precision-limited diagnostics. Original decimal text is preserved when provider adapters capture it before binary-float conversion. Source-native exact-price capture is a later adapter increment.
 
-VultrInspired is additive and evaluation-only. It does not change incumbent collection, routing, model admission, quota policy, credential handling or inference.
+VultrInspired is additive and evaluation-only; incumbent collection, routing, model admission, quota policy, credential handling and inference retain their current behavior.
 
 ## Upstream references
 
@@ -40,7 +40,7 @@ VultrInspired is additive and evaluation-only. It does not change incumbent coll
 | [vultr/model-catalog-python](https://github.com/vultr/model-catalog-python) | `4a414ab26e1f596cb98b3974a7d12182bf62dab3` | Python normalization/cache/schema reference |
 | [vultr/model-catalog-typescript](https://github.com/vultr/model-catalog-typescript) | `6e55057cb718213937c4c118271f5a2ca1779d0d` | Equivalent TypeScript reference and parity evidence |
 
-Both upstream projects describe equivalent libraries and normalized contracts. Transfer their shared patterns once into our native architecture. Keep the upstream source pins for provenance; introduce no package import, submodule, fork, vendored runtime or upstream execution.
+Both upstream projects describe equivalent libraries and normalized contracts. Transfer their shared patterns once into our native architecture. Keep upstream source pins as provenance; use repository-owned code and the existing runtime for execution.
 
 ## Compute and network boundary
 
@@ -50,15 +50,15 @@ Both upstream projects describe equivalent libraries and normalized contracts. T
 | Vultr reference inspection | GitHub source metadata and documentation | Research complete |
 | Live catalogue refresh | Network access to an explicitly supported provider endpoint | Separate observation workflow |
 | Model inference | Authorized provider endpoint, credentials and quota | Disabled; outside scope |
-| Vultr compute provisioning | Vultr compute API/account access | Not used or configured |
+| Vultr compute provisioning | Vultr compute API/account access | Outside this integration boundary |
 
-No Vultr compute instance is provisioned or required. The local projection performs no HTTP request, credential lookup or inference call. Vultr promotional compute capacity and hackathon promo-code status have no bearing on this offline comparison.
+The local projection runs against supplied JSON with local CPU/RAM and standard-library file I/O. Vultr promotional compute capacity and hackathon promo-code status remain outside this offline comparison.
 
 ## DoE v2.0.0
 
-The registry compares Incumbent v5.0.0 with VultrInspired v1.0.0. The two Vultr repositories are source references, not experiment variants. Factors include catalogue variant, fixture family, record quality and price representation. Controls use identical incumbent v5 input rows and timestamps.
+The registry compares Incumbent v5.0.0 with VultrInspired v1.0.0. The two Vultr repositories remain in source-reference metadata, separately from the experiment variants. Factors include catalogue variant, fixture family, record quality and price representation. Controls use identical incumbent v5 input rows and timestamps.
 
-Responses measure semantic preservation, exact price visibility, modality/capability coverage, unknown-field retention, diagnostics, provenance, evidence-boundary preservation and resource footprint. Execution is offline deterministic; network, credentials and inference are disabled. Results remain planned with no artifacts until paired runs complete.
+Responses measure semantic preservation, exact price visibility, modality/capability coverage, unknown-field retention, diagnostics, provenance, evidence-boundary preservation and resource footprint. Execution is offline deterministic; network, credentials and inference are disabled. Results remain planned with an empty artifact list pending paired runs.
 
 ## Next implementation sequence
 
@@ -75,7 +75,7 @@ Each increment receives its own DoE version and remains evaluation-only until se
 - Catalog presence, credentials, entitlement, quota, readiness, health and inference success remain separate facts.
 - Missing readiness and entitlement remain unknown.
 - Provider-specific wire contracts remain behind existing adapters.
-- Catalog evaluation cannot activate providers, change routing weights, retry paid routes or issue inference calls.
+- Catalog evaluation remains observational; provider activation, routing weights, paid retries and inference each follow separate authorization gates.
 - Promotion requires separate review and same-commit validation.
 
 ## Related sources

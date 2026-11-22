@@ -1,0 +1,147 @@
+name: Roadmap Completion Evidence
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "roadmap-completions/roadmaps/**/exercises/**/evidence.json"
+      - "roadmap-completions/config/verification-rules.yaml"
+      - "roadmap-completions/scripts/verify-completion.py"
+  issues:
+    types: [opened, edited, labeled, reopened]
+  workflow_dispatch:
+    inputs:
+      roadmap:
+        description: Roadmap slug from verification-rules.yaml
+        required: true
+        type: string
+      exercise:
+        description: Exercise slug from verification-rules.yaml
+        required: true
+        type: string
+      issue_number:
+        description: Related issue number
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  verify:
+    if: github.event_name != 'issues' || github.event.action != 'labeled' || !startsWith(github.event.label.name, 'completion:')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install verifier dependency
+        run: python -m pip install PyYAML
+
+      - name: Resolve roadmap, exercise, and related issues
+        id: context
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_PATH: ${{ github.event_path }}
+          INPUT_ROADMAP: ${{ inputs.roadmap }}
+          INPUT_EXERCISE: ${{ inputs.exercise }}
+          INPUT_ISSUE_NUMBER: ${{ inputs.issue_number }}
+          REPOSITORY: ${{ github.repository }}
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          roadmap=""
+          exercise=""
+          issue_numbers=""
+
+          if [ "$EVENT_NAME" = "issues" ]; then
+            roadmap=$(jq -r '[.issue.labels[].name | select(startswith("roadmap:")) | sub("^roadmap:"; "")][0] // empty' "$EVENT_PATH")
+            exercise=$(jq -r '[.issue.labels[].name | select(startswith("exercise:")) | sub("^exercise:"; "")][0] // empty' "$EVENT_PATH")
+            issue_numbers=$(jq -r '.issue.number' "$EVENT_PATH")
+          elif [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            roadmap="$INPUT_ROADMAP"
+            exercise="$INPUT_EXERCISE"
+            issue_numbers="$INPUT_ISSUE_NUMBER"
+          else
+            changed=$(git diff --name-only "$BEFORE_SHA" "$AFTER_SHA" || true)
+            evidence_path=$(printf '%s\n' "$changed" | grep -E '^roadmap-completions/roadmaps/[^/]+/exercises/[^/]+/evidence\.json$' | head -n 1 || true)
+            if [ -n "$evidence_path" ]; then
+              roadmap=$(printf '%s' "$evidence_path" | cut -d/ -f3)
+              exercise=$(printf '%s' "$evidence_path" | cut -d/ -f5)
+              issue_numbers=$(gh issue list --repo "$REPOSITORY" --state open --label "roadmap:$roadmap" --label "exercise:$exercise" --json number --jq '.[].number')
+            fi
+          fi
+
+          if [ -z "$roadmap" ] || [ -z "$exercise" ]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "No roadmap/exercise labels or evidence path were supplied; add roadmap:<slug> and exercise:<slug> labels or dispatch with explicit inputs." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          {
+            echo "ready=true"
+            echo "roadmap=$roadmap"
+            echo "exercise=$exercise"
+            echo "issue_numbers<<EOF"
+            printf '%s\n' "$issue_numbers"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Verify completion evidence
+        id: verify
+        if: steps.context.outputs.ready == 'true'
+        env:
+          ROADMAP: ${{ steps.context.outputs.roadmap }}
+          EXERCISE: ${{ steps.context.outputs.exercise }}
+        run: |
+          set +e
+          python roadmap-completions/scripts/verify-completion.py \
+            --roadmap "$ROADMAP" --exercise "$EXERCISE" \
+            --json-output "$RUNNER_TEMP/roadmap-verification.json" \
+            > "$RUNNER_TEMP/roadmap-verification.stdout"
+          status=$?
+          cat "$RUNNER_TEMP/roadmap-verification.stdout" >> "$GITHUB_STEP_SUMMARY"
+          echo "passed=$([ "$status" -eq 0 ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Report verified evidence
+        if: steps.context.outputs.ready == 'true' && steps.verify.outputs.passed == 'true' && steps.context.outputs.issue_numbers != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBERS: ${{ steps.context.outputs.issue_numbers }}
+          ROADMAP: ${{ steps.context.outputs.roadmap }}
+          EXERCISE: ${{ steps.context.outputs.exercise }}
+        run: |
+          while IFS= read -r issue_number; do
+            [ -z "$issue_number" ] && continue
+            gh issue comment "$issue_number" --repo "$GITHUB_REPOSITORY" --body "Roadmap evidence verification passed for `$ROADMAP/$EXERCISE`. The verifier checked the configured evidence paths, code constraints, submitted test-result metadata, and documentation requirements. The workflow records evidence verification; badge publication and README updates remain a separate publication step."
+          done <<< "$ISSUE_NUMBERS"
+
+      - name: Report evidence requiring changes
+        if: steps.context.outputs.ready == 'true' && steps.verify.outputs.passed == 'false' && steps.context.outputs.issue_numbers != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBERS: ${{ steps.context.outputs.issue_numbers }}
+          ROADMAP: ${{ steps.context.outputs.roadmap }}
+          EXERCISE: ${{ steps.context.outputs.exercise }}
+        run: |
+          report=$(cat "$RUNNER_TEMP/roadmap-verification.stdout")
+          while IFS= read -r issue_number; do
+            [ -z "$issue_number" ] && continue
+            gh issue comment "$issue_number" --repo "$GITHUB_REPOSITORY" --body "Roadmap evidence verification needs updates for `$ROADMAP/$EXERCISE`. Review the workflow run summary for the exact checks and resubmit the evidence file."
+          done <<< "$ISSUE_NUMBERS"
+
+      - name: Enforce evidence result
+        if: steps.context.outputs.ready == 'true' && steps.verify.outputs.passed == 'false'
+        run: exit 1

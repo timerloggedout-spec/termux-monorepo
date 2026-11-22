@@ -70,6 +70,7 @@ async function load(){
     const comp=registry.implementation_competition||{};
     const challenger=(comp.challengers||[])[0]||{};
     const screen=(registry.graphs||[]).find(x=>x.graph_id==='model-catalog-screen')||{};
+    const lateral=(registry.graphs||[]).find(x=>x.graph_id==='local-role-lateral-screen')||{};
     $('tournament-version').textContent='Registry '+(registry.registry_version||'—');
     $('tournament-inventory').innerHTML=
       stat(models.length,'model candidates')+
@@ -77,6 +78,7 @@ async function load(){
       stat(unclassified,'awaiting qualification')+
       stat((registry.infrastructure||[]).length,'infrastructure references')+
       '<p>Model screen: <strong>'+esc(screen.status||'unregistered')+'</strong> · '+esc((screen.nodes||[]).length)+' candidate slots</p>'+
+      '<p>Local Mev/Jev/Kev/Laya lateral screen: <strong>'+esc(lateral.status||'unregistered')+'</strong> · '+esc((lateral.nodes||[]).length)+' independent role arms</p>'+
       '<p>Incumbent: <strong>'+esc((comp.incumbent||{}).implementation_id||'—')+'</strong> · '+esc((comp.incumbent||{}).version||'')+'</p>'+
       '<p>Challenger: <strong>'+esc(challenger.implementation_id||'—')+'</strong> · '+esc(challenger.status||'—')+'</p>'+
       '<p class="muted">Model candidates remain grouped by declared capability. Unclassified entries enter qualification before matched trials. Graph and tournament versions compete as separate experimental units.</p>'+

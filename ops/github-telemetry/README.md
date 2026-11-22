@@ -28,7 +28,9 @@ python -m ops.github_telemetry reconcile \
 
 ## Workflow
 
-`.github/workflows/github-telemetry-snapshot.yml` — daily 03:17 UTC + dispatch + bounded source-change wake. It refreshes `scripts/dashboards/actions_observations.json`, builds `apps/tribute-dashboard/data/workflow-discovery-feed.json` from the live workflow source catalog, and refreshes the existing telemetry feed/series.\n\nPublic view: `https://timerloggedout-spec.github.io/tribute/workflows.html` (nested `workflow_run` edges, reusable-workflow calls, job `needs`, schedules, inventory, and sampled run RED).
+`.github/workflows/github-telemetry-snapshot.yml` — daily 03:17 UTC + dispatch + bounded source-change wake. It refreshes `scripts/dashboards/actions_observations.json`, builds `apps/tribute-dashboard/data/workflow-discovery-feed.json` from the live workflow source catalog, and refreshes the existing telemetry feed/series.
+
+Public view: `https://timerloggedout-spec.github.io/tribute/workflows.html` (nested `workflow_run` edges, reusable-workflow calls, job `needs`, schedules, inventory, and sampled run RED).
 
 ## Docs
 

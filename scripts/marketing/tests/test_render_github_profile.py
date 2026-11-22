@@ -150,8 +150,9 @@ class GitHubProfileRendererTests(unittest.TestCase):
             self._write_fixture(
                 root,
                 [
-                    "| Latest | [Current Short](https://youtube.com/shorts/current123) | 0:08 | 2026-11-15 | Current update |\n",
-                    "| Archive | [Previous Short](https://youtube.com/shorts/previous123) | 0:08 | 2026-11-14 | Prior update |\n",
+                    "| Latest | [Channel update Short](https://youtube.com/shorts/current123) | 0:08 | 2026-11-14 | Current update |\n",
+                    "| Termux | [Latest Termux Short](https://youtube.com/shorts/latest123) | 0:08 | 2026-11-15 | Repository teaser |\n",
+                    "| Archive | [Previous Short](https://youtube.com/shorts/previous123) | 0:08 | 2026-11-13 | Prior update |\n",
                 ],
                 [{"source": "latest_short", "label": "Latest Short", "kind": "short"}],
             )
@@ -184,8 +185,8 @@ class GitHubProfileRendererTests(unittest.TestCase):
             self._write_fixture(
                 root,
                 [
-                    "| Archive | [StudySprint v0.4.0 demo](https://www.youtube.com/watch?v=WK9LMwpvHUk) | 2:55 | 2026-11-03 | Earlier release |\\n",
-                    "| Archive | [StudySprint v0.2.0 demo](https://www.youtube.com/watch?v=eFXyOYTpuvg) | 1:40 | 2026-10-31 | Earlier release |\\n",
+                    "| Archive | [StudySprint v0.4.0 demo](https://www.youtube.com/watch?v=WK9LMwpvHUk) | 2:55 | 2026-11-03 | Earlier release |\n",
+                    "| Archive | [StudySprint v0.2.0 demo](https://www.youtube.com/watch?v=eFXyOYTpuvg) | 1:40 | 2026-10-31 | Earlier release |\n",
                 ],
                 [{
                     "source": "challenge_submission",

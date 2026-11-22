@@ -118,7 +118,7 @@ Use small, interpretable families before searching arbitrary graphs:
 - **Static parallel ensemble:** fixed set of classifiers with a declared reducer.
 - **Capability-routed:** select a specialist from task features and capability evidence.
 - **Conditional cascade:** run a low-cost capability first; escalate when uncertainty or a declared failure predicate crosses a threshold.
-- **Independent verification:** producer and verifier are distinct; verifier sees the task contract and required reference, not hidden answers unavailable at runtime.
+- **Independent verification:** producer and verifier are distinct; verifier sees the task contract, required reference and runtime-available evidence.
 - **Committee / voting:** diverse classifiers return independently; a reducer resolves agreement, disagreement and abstention.
 - **Manager-delegated graph:** a manager decomposes the task, assigns specialists and integrates outputs.
 - **Adaptive graph:** a versioned policy chooses nodes/edges using past cohort evidence while retaining randomized exploration.
@@ -195,7 +195,7 @@ Each candidate stage record carries `candidate_id` and explicit `ok` state. Redu
 - TwinRouterBench targets step-level routing in long-horizon agent trajectories and combines static router iteration with end-to-end execution evaluation: https://arxiv.org/abs/2605.18859
 - Who Routes the Router analyzes task diversity, model-pool balance and evaluation methodology as major determinants of router conclusions: https://openreview.net/pdf?id=EEPostHMtF
 
-These are design and benchmark references, not evidence that their results transfer directly to this repository's 70+ classifier pool.
+These are design and benchmark references; transferability to this repository's 70+ classifier pool requires matched trials.
 
 
 ## 9. Canonical classifier inventory
@@ -217,7 +217,7 @@ third inventory, describing operating systems and workflow surfaces.
 These three inventories have different counting units and stay separate.
 
 `model-catalog-screen` is a 61-node, parallel, design-only graph. It
-defines the candidate screen boundary; it is not an execution claim.
+defines the candidate screen boundary; execution readiness remains a separate gate.
 A candidate enters a live cohort after capability mapping, source and
 checkpoint pinning, adapter verification, route authorization, and
 task-specific acceptance criteria.

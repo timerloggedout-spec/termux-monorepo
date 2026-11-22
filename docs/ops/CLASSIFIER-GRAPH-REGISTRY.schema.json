@@ -261,6 +261,14 @@
               "role_mapped_unverified",
               "unclassified"
             ]
+          },
+          "catalog_claim": {
+            "type": "string",
+            "minLength": 1
+          },
+          "catalog_source_url": {
+            "type": "string",
+            "format": "uri"
           }
         },
         "allOf": [
@@ -274,7 +282,9 @@
             },
             "then": {
               "required": [
-                "catalog_entry_id"
+                "catalog_entry_id",
+                "catalog_claim",
+                "catalog_source_url"
               ],
               "properties": {
                 "catalog_entry_id": {

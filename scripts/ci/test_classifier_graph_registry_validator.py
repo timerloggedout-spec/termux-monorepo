@@ -44,6 +44,45 @@ class ClassifierGraphRegistryTests(unittest.TestCase):
         self.assertTrue(any("unit_count: snapshot count mismatch" in error
                             for error in self.validate(registry)))
 
+    def test_all_model_catalog_entries_are_registered_as_candidates(self):
+        model_ids = {entry["id"] for entry in self.catalog["entries"]
+                     if entry["layer"] == "model"}
+        registered = {item["catalog_entry_id"] for item in self.registry["candidates"]
+                      if item["kind"] == "catalog"}
+        self.assertEqual(len(model_ids), 61)
+        self.assertEqual(registered, model_ids)
+
+    def test_non_model_catalog_entries_remain_infrastructure(self):
+        expected = {entry["id"] for entry in self.catalog["entries"]
+                    if entry["layer"] != "model"}
+        registered = {item["catalog_entry_id"] for item in self.registry["infrastructure"]}
+        self.assertEqual(len(expected), 27)
+        self.assertEqual(registered, expected)
+
+    def test_unclassified_models_remain_out_of_role_claims(self):
+        unclassified = [item for item in self.registry["candidates"]
+                        if item["qualification_state"] == "unclassified"]
+        self.assertGreaterEqual(len(unclassified), 1)
+        self.assertTrue(all(item["roles"] == ["unclassified"] for item in unclassified))
+
+    def test_implementation_competition_has_matched_cohort_gates(self):
+        competition = self.registry["implementation_competition"]
+        self.assertEqual(competition["canonical_cohort"], "manager.tournament.v1")
+        self.assertTrue(competition["protocol"]["matched_cohort_required"])
+        self.assertTrue(competition["protocol"]["held_out_required"])
+        self.assertTrue(competition["protocol"]["independent_evaluator_required"])
+        self.assertFalse(competition["challengers"][0]["execution_ready"])
+
+    def test_model_screen_covers_all_61_catalog_models(self):
+        graph = next(item for item in self.registry["graphs"]
+                     if item["graph_id"] == "model-catalog-screen")
+        candidate_ids = {node["candidate_id"] for node in graph["nodes"]}
+        model_candidate_ids = {item["candidate_id"] for item in self.registry["candidates"]
+                               if item["kind"] == "catalog"}
+        self.assertEqual(len(graph["nodes"]), 61)
+        self.assertEqual(candidate_ids, model_candidate_ids)
+        self.assertEqual(graph["status"], "design_only")
+
     def test_local_jev_is_dispatch_only_and_external_jev_is_paid_gated(self):
         registry = copy.deepcopy(self.registry)
         candidates = {item["candidate_id"]: item for item in registry["candidates"]}

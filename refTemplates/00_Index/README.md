@@ -9,6 +9,8 @@
 | 15_Research_Repo_Templates/ | Consolidated research scaffolds, including the Dicklesworthstone Flywheel stack profile |
 | 16_Org_Phased/ | Orgs + Enterprise phase gates |
 | 17_Papers/ | Cited research + implementation sources |
+| 18_Vector_Databases/ | Vector database engines, APIs, adapters, and benchmark references |
+| 19_Provider_Inference_Catalogs/ | Provider model-catalog SDKs, normalization and capability-schema references |
 | smods/ | **Live** custom-adapted gitlink lane + separately labeled inspiration-source register |
 
 ## Continuous evaluation
@@ -19,5 +21,6 @@
 - Inspiration register: smods/INSPIRATION-SOURCES.md (Notary, ShipProof, unresolved Transcend candidate; metadata-only)
 - Inventory script: scripts/ci/refTemplates_inventory.py
 - Workflow hooks: docs/ops/REFTEMPLATES-WORKFLOW-HOOKS.md
+- Provider inference catalog RECON: docs/ops/VULTR-INFERENCE-CATALOG-REFERENCE-RECON.md
 
 All slots are continuous repopulate / upgrade / score targets — not a one-shot dump. Live gitlinks require a real custom fork, immutable reviewed pin, compatibility evidence, and passing gates.

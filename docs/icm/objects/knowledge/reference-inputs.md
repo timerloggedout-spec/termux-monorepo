@@ -12,7 +12,7 @@
 
 The monorepo is the ICM workspace. Its own `docs/icm/` catalog, contracts, cards, process definitions, and maintenance Pipeline are the **operative** method. The shallow submodules under `refTemplates/smods/` are read-only **reference inputs**: they supply a form-selection skill, full conventions/examples, layered-routing precedent, filesystem-memory evidence, and an optional visual-review pattern. They do not run automatically, replace governance, or authorize code changes.
 
-| Reference input | Use in this repository | Do not treat as |
+| Reference input | Use in this repository | Excluded roles |
 |---|---|---|
 | `icm-architect_fork` | Form selection, map audit, templates, and walk-test method | Runtime agent or source-of-truth monorepo policy |
 | `interpretable-context-methodology_fork` | Full conventions, example workspaces, and workspace-builder patterns | A second live repository workspace |
@@ -20,6 +20,7 @@ The monorepo is the ICM workspace. Its own `docs/icm/` catalog, contracts, cards
 | `cost-of-remembering_fork` | Filesystem-memory vs long-context evidence (LongMemEval: ~parity accuracy, 97% fewer tokens, 95% lower cost) | Automatic harness execution, CI control plane, or committed API keys |
 | `icm-cctv_fork` | Optional visual review, stage-card mirroring, and human checkpoint patterns | A mandatory renderer, a deployment target, or the primary stage-output store |
 | `AuditEngine_fork` (staged adapt) | Psychometric / ethics-engine assessment patterns for LLMs | Live deploy or provider-key custody without Tier-4 authorization |
+| Vultr model-catalog Python + TypeScript | Metadata-first reference for provider catalog normalization, modality/capability records, exact pricing and cross-language fixtures; see `refTemplates/19_Provider_Inference_Catalogs/` | Universal multi-provider wire schema, runtime dependency, inference route or admission authority |
 
 ## Read when
 
@@ -38,3 +39,4 @@ Open this card when selecting a reference, updating a pinned fork, deciding whet
 [4] [`refTemplates/smods/cost-of-remembering_fork/README.md`](../../../../refTemplates/smods/cost-of-remembering_fork/README.md) (after submodule init) — LongMemEval harness and paper.
 [5] [`refTemplates/smods/icm-cctv_fork/README.md`](../../../../refTemplates/smods/icm-cctv_fork/README.md) defines the optional visual layer and file-based checkpoint loop.
 [6] Native card: [`cost-of-remembering.md`](cost-of-remembering.md).
+[7] Vultr provider catalog references: [`refTemplates/19_Provider_Inference_Catalogs/README.md`](../../../../refTemplates/19_Provider_Inference_Catalogs/README.md); source revisions and comparison are pinned there and in the [linked RECON](../../../../docs/ops/VULTR-INFERENCE-CATALOG-REFERENCE-RECON.md).

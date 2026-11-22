@@ -1,0 +1,128 @@
+{
+  "schema_version": "provider-catalog-doe/v1",
+  "registry_version": "1.0.0",
+  "experiment": {
+    "id": "DOE-VULTR-CATALOG-001",
+    "version": "1.0.0",
+    "title": "Cross-language provider model-catalog normalization comparison",
+    "status": "planned",
+    "purpose": "Compare the pinned Vultr Python and TypeScript catalog libraries against a shared, language-neutral set of model-catalog observations.",
+    "hypothesis": "Both implementations normalize equivalent source observations into semantically equivalent catalog records while preserving exact pricing, modalities, capability metadata, diagnostics, and cache provenance.",
+    "independent_variables": [
+      {
+        "id": "implementation",
+        "levels": [
+          "python",
+          "typescript"
+        ]
+      },
+      {
+        "id": "input_shape",
+        "levels": [
+          "valid-envelope",
+          "valid-bare-list",
+          "mixed-valid-invalid-entries",
+          "unknown-fields",
+          "nested-field-type-mismatch"
+        ]
+      },
+      {
+        "id": "cache_state",
+        "levels": [
+          "fresh-network",
+          "last-good-cache",
+          "stale-cache",
+          "cache-missing"
+        ]
+      },
+      {
+        "id": "capability_profile",
+        "levels": [
+          "chat",
+          "embedding",
+          "rerank",
+          "image",
+          "transcription",
+          "tool-use",
+          "structured-output",
+          "reasoning"
+        ]
+      }
+    ],
+    "controlled_variables": [
+      "Identical source payload bytes for paired Python and TypeScript trials",
+      "Identical model identifiers and source observation timestamp",
+      "Identical expected normalized field semantics",
+      "Pinned upstream source revisions recorded below",
+      "No provider credentials, inference calls, or runtime activation"
+    ],
+    "response_variables": [
+      "normalized-record-semantic-parity",
+      "exact-pricing-preservation",
+      "modality-and-capability-preservation",
+      "invalid-entry-isolation",
+      "unknown-field-retention",
+      "cache-source-classification",
+      "diagnostic-completeness",
+      "runtime-and-dependency-footprint"
+    ],
+    "acceptance_criteria": [
+      "Paired implementations produce equivalent canonical records for shared valid fixtures.",
+      "Pricing values preserve exact source decimal strings and units.",
+      "Unknown fields and unsupported capability values remain observable.",
+      "Malformed-entry behavior is measured and recorded per implementation.",
+      "Cache freshness and fallback source are explicit in outputs.",
+      "Each result references immutable fixture, implementation, and source revisions."
+    ],
+    "execution_policy": {
+      "fixture_mode": "offline-deterministic",
+      "network_mode": "separate-observation-only",
+      "inference_mode": "disabled",
+      "credentials": "none",
+      "result_status": "planned",
+      "result_artifacts": [],
+      "promotion": "separate-reviewed-change"
+    },
+    "variants": [
+      {
+        "variant_id": "DOE-VULTR-CATALOG-001-PY",
+        "version": "1.0.0",
+        "implementation": "python",
+        "source_revision": "4a414ab26e1f596cb98b3974a7d12182bf62dab3",
+        "source_metadata": "vultr-model-catalog-python/metadata.json",
+        "result_status": "planned"
+      },
+      {
+        "variant_id": "DOE-VULTR-CATALOG-001-TS",
+        "version": "1.0.0",
+        "implementation": "typescript",
+        "source_revision": "6e55057cb718213937c4c118271f5a2ca1779d0d",
+        "source_metadata": "vultr-model-catalog-typescript/metadata.json",
+        "result_status": "planned"
+      }
+    ],
+    "versioning": {
+      "version_scheme": "MAJOR.MINOR.PATCH",
+      "major": "Change to experiment design, response-variable definitions, or acceptance criteria.",
+      "minor": "Add a controlled factor, variant, fixture family, or response variable without changing prior definitions.",
+      "patch": "Clarify metadata or correct a non-semantic record while preserving the experiment contract.",
+      "immutable_run_key": "experiment_id + experiment_version + variant_id + variant_version + fixture_set_revision + source_revision",
+      "result_record_fields": [
+        "run_id",
+        "experiment_id",
+        "experiment_version",
+        "variant_id",
+        "variant_version",
+        "fixture_set_revision",
+        "source_revision",
+        "implementation_revision",
+        "environment",
+        "started_at",
+        "completed_at",
+        "result_status",
+        "measurements",
+        "artifact_refs"
+      ]
+    }
+  }
+}

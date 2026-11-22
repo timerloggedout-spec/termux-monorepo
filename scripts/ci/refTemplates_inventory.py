@@ -16,6 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 REF = ROOT / "refTemplates"
 SLOT_RE = re.compile(r"^(\d{2}|[0-9]+)_|^smods$")
+METADATA_CHILD_SLOTS = frozenset({"15_Research_Repo_Templates", "18_Vector_Databases", "19_Provider_Inference_Catalogs"})
 
 
 def slots() -> list[Path]:
@@ -30,28 +31,32 @@ def slots() -> list[Path]:
 
 def inventory_entry(slot: Path) -> dict:
     children = [c.name for c in sorted(slot.iterdir()) if c.is_dir() or c.suffix in {".md", ".txt"}]
-    research_children = []
-    if slot.name.startswith("15_"):
+    metadata_children = []
+    if slot.name in METADATA_CHILD_SLOTS:
         for c in sorted(slot.iterdir()):
             if not c.is_dir():
                 continue
             source = c / "SOURCE.txt"
             readme = c / "README.md"
-            research_children.append(
+            source_preview = None
+            if source.is_file():
+                preview_lines = source.read_text(encoding="utf-8").strip().splitlines()
+                if preview_lines:
+                    source_preview = preview_lines[0]
+            metadata_children.append(
                 {
                     "name": c.name,
                     "has_source": source.is_file(),
                     "has_readme": readme.is_file(),
-                    "source_preview": source.read_text(encoding="utf-8").strip().splitlines()[0]
-                    if source.is_file() and source.stat().st_size
-                    else None,
+                    "source_preview": source_preview,
                 }
             )
     return {
         "slot": slot.name,
         "path": str(slot.relative_to(ROOT)),
         "entries": children,
-        "research_children": research_children,
+        "research_children": metadata_children if slot.name == "15_Research_Repo_Templates" else [],
+        "metadata_children": metadata_children,
         "collected_at": datetime.now(UTC).isoformat(),
     }
 
@@ -59,8 +64,8 @@ def inventory_entry(slot: Path) -> dict:
 def validate(entries: list[dict]) -> list[str]:
     failures: list[str] = []
     for e in entries:
-        if e["slot"].startswith("15_"):
-            for rc in e.get("research_children", []):
+        if e["slot"] in METADATA_CHILD_SLOTS:
+            for rc in e.get("metadata_children", e.get("research_children", [])):
                 if not rc.get("has_source"):
                     failures.append(f"{e['slot']}/{rc['name']}: missing SOURCE.txt")
                 if not rc.get("has_readme"):

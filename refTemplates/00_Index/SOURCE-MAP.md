@@ -37,3 +37,12 @@ AuditEngine_fork, batteries_fork, content-agent-routing-promptbase_fork, cost-of
 Cited inspiration sources are catalogued separately in [smods/INSPIRATION-SOURCES.md](../smods/INSPIRATION-SOURCES.md). Notary, ShipProof, and the unresolved Transcend showcase candidate are metadata-only citations, not gitlinks or runtime dependencies.
 
 Pins intentional; no auto-advance without dual-gate green. New live pins require a real customized fork, immutable reviewed pin, compatibility evidence, and passing gates.
+
+## 19_Provider_Inference_Catalogs (metadata-first)
+
+| Slot | Preferred SOURCE | Inspected revision | License |
+|---|---|---|---|
+| vultr-model-catalog-python | https://github.com/vultr/model-catalog-python | 4a414ab26e1f596cb98b3974a7d12182bf62dab3 | MIT |
+| vultr-model-catalog-typescript | https://github.com/vultr/model-catalog-typescript | 6e55057cb718213937c4c118271f5a2ca1779d0d | MIT |
+
+Both entries are metadata-only SDK references. Their revisions, license evidence and adaptation notes live under `refTemplates/19_Provider_Inference_Catalogs/`; the DoE registry and comparative RECON pin their experiment variants and analysis.

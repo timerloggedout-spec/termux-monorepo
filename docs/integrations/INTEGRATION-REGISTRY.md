@@ -45,6 +45,7 @@
 | PromptLayer | P1 | Named candidate; no runtime proof in this change | Planned; observational only | Prompt registry/version lineage comparison hypothesis |
 | PostHog | P1 | Named candidate; no runtime proof in this change | Planned; observational only | Event analytics and experiment assignment comparison hypothesis |
 | Braintrust | P1 | Named candidate; no runtime proof in this change | Planned; observational only | Dataset/evaluation and scoring comparison hypothesis |
+| Puter Pool (owned fork) | P1 | Pinned source audit; README/package metadata and LICENSE disagree; account, quota, privacy and middleware remediation remain open | Candidate-only; native adapter and runtime eligibility remain unproven | Single-account, exact-model transport candidate with QUE/DoE correlation |
 
 The four CEEL entries are separate candidate participants, not claims of authenticated accounts or implemented adapters. Feature descriptions are hypotheses to verify against version-pinned official documentation and bounded tests.
 

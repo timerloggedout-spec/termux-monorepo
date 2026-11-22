@@ -49,3 +49,15 @@ The manual `diagnose_free_limits` input defaults to false. When explicitly selec
 Future smoke failures preserve only allowlisted 429 categories and header/reset-state indicators. Generic 429/rate-limit errors remain unknown; upstream capacity requires explicit provider evidence. Daily token and request limits are distinct. Error-body reads are bounded and no raw error text is logged or persisted. No retry loop, model switch, paid fallback, secret mutation, production admission change, or scheduled inference is introduced.
 
 Official semantics: [OpenRouter limits and read-only key metadata](https://openrouter.ai/docs/api_reference/limits) distinguish platform limits from upstream rate limiting; [error handling](https://openrouter.ai/docs/api_reference/errors-and-debugging) explains typed error metadata and optional `Retry-After`. A missing reset is not proof that waiting is sufficient, and deprecated key spending-limit fields are not a free-model request quota.
+
+
+## Puter Pool — candidate transport adapter (DPLC-010)
+
+The owned [Puter Pool fork](https://github.com/timerloggedout-spec/puter-pool_fork) is a candidate OpenAI-/Anthropic-compatible transport over the existing Puter provider family. It is an adapter reference, not a new provider family, account pool, quota manager or dispatch scheduler. Source audit, pinned commit, security/license findings, QUE/DoE correlation and acceptance gates live in [PUTER-POOL-INTEGRATION.md](../proposals/active/doe-agentic-logistics-control-plane/PUTER-POOL-INTEGRATION.md).
+
+**Existing pool/UI state, re-fetched 2026-11-22:**
+- `ops/quota/registry.json#g4f.puter` has unknown limit/window/reset and no authoritative numeric headroom.
+- `provider-quota-coverage.json` maps `g4f/Puter` to `g4f.puter` with `observation_method=manual_or_unknown`.
+- `quota.json` projects `status=unknown` with null usage, limit, reset and observation time.
+
+**Admission:** exact model + one authorized account scope + execution-environment availability + provider-authoritative no-cost entitlement/quota + accepted terms + data-class policy. Keep the row `UNKNOWN / DEFERRED` until every gate passes. The license mismatch and auth/privacy/process-lifecycle blockers remain open. PR #5788 is the current-master draft for deferred-admission recovery; its checks are pending, so the drain is not live. Issue #5195 remains deferred and unclaimed. #5160 pool/cadence implementation is complete through merged PR #5258; first live executor conversion remains unobserved.

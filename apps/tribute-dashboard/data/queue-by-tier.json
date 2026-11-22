@@ -1,21 +1,22 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-22T00:50:48Z",
+ "generated_at": "2026-11-22T01:04:47Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 2,
-   "in_progress": 2,
+   "queued": 6,
+   "in_progress": 0,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "PR scope guard": 2
+    "repo gate": 2,
+    "PR scope guard": 4
    }
   },
   "2": {
    "tier": 2,
    "queued": 0,
-   "in_progress": 2,
+   "in_progress": 1,
    "oldest_queued_at": null,
    "by_workflow_queued": {}
   },
@@ -28,20 +29,40 @@
   },
   "4": {
    "tier": 4,
-   "queued": 4,
-   "in_progress": 14,
+   "queued": 37,
+   "in_progress": 15,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "Agent PR Jules Handoff": 1,
+    "quota-analysis": 1,
+    "Agent Readability Source Contract": 1,
+    "que-cadence-kick": 1,
+    "quota-allocation-planner": 1,
+    "termux smoke": 2,
+    "DO Statement Style": 4,
+    "quota-served-probe": 1,
+    "graph-matrix-probe": 1,
+    "n8n SHE bridge": 1,
+    "lane events recorder": 4,
+    "PR production ledger": 2,
+    "Workflow Surface Policy": 1,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
+    "Sweep Accountability": 2,
+    "Repository development evaluation": 1,
+    "Agent PR Jules Handoff": 2,
+    "Context Relationship + Lead/Lag Audit": 2,
+    "Action Effectiveness Ledger": 2,
+    "Peer review orchestrator": 1,
+    "PR evidence evaluation": 1,
+    "Agent Throughput Evidence": 2,
+    "Reviewer metrics collect": 1,
     "PR Change Effectiveness Ledger": 1,
-    "Advisory GitHub Actions lint": 1,
-    "DO Statement Style": 1
+    "Advisory GitHub Actions lint": 1
    }
   }
  },
  "totals": {
-  "queued": 6,
-  "in_progress": 18
+  "queued": 43,
+  "in_progress": 16
  },
  "wedged_ancient": [
   {
@@ -199,13 +220,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 4,
-   "2": 2,
+   "1": 6,
+   "2": 1,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 6,
-  "default_t4": 18,
+  "explicit_total": 7,
+  "default_t4": 52,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

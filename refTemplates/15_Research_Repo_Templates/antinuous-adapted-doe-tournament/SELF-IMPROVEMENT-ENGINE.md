@@ -144,3 +144,23 @@ A failed experiment remains a useful observation. A timeout remains distinct fro
 - SHE / 3L0 / Moneyball remain downstream evidence and decision projections.
 
 SIE is a proposed integration architecture. This document records the target contract, not a claim that every subsystem is already implemented.
+
+## 11. Implemented registry alignment
+
+The classifier registry now provides the initial SIE control-plane
+inventory:
+
+- 61 model candidates and 27 infrastructure references, preserving all
+  88 catalog entries by declared layer.
+- Explicit `role_mapped`, `role_mapped_unverified` and
+  `unclassified` capability qualification states.
+- A 61-node design-only model screen.
+- An implementation competition record for the incumbent manager
+  tournament and the design-only SIE challenger.
+- Matched-cohort, held-out, independent-evaluator, immutable-receipt,
+  rollback and owner-approval gates.
+
+The next SIE implementation tranche qualifies candidates individually,
+builds candidate-specific execution bindings, and runs bounded screens.
+The full classifier estate remains a separate operating-surface inventory.
+

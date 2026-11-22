@@ -6,6 +6,11 @@ requests, reads no credentials, and makes no inference calls.
 from __future__ import annotations
 
 from decimal import Decimal, InvalidOperation
+import argparse
+import json
+import os
+import tempfile
+from pathlib import Path
 from typing import Any
 
 INPUT_SCHEMA = "provider-model-catalog/v5"
@@ -145,3 +150,37 @@ def normalize_incumbent(document: dict[str, Any]) -> dict[str, Any]:
             "inference_calls": 0,
         },
     }
+
+
+def main(argv: list[str] | None = None) -> int:
+    """Transform a supplied incumbent snapshot into a local VultrInspired file."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--input", required=True, type=Path, help="Incumbent v5 JSON document")
+    parser.add_argument("--output", required=True, type=Path, help="VultrInspired v1 output path")
+    args = parser.parse_args(argv)
+
+    with args.input.open("r", encoding="utf-8") as source_file:
+        incumbent = json.load(source_file)
+    projection = normalize_incumbent(incumbent)
+
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary_path = tempfile.mkstemp(
+        prefix=".vultr-inspired-", suffix=".tmp", dir=args.output.parent
+    )
+    try:
+        with os.fdopen(descriptor, "w", encoding="utf-8") as output_file:
+            json.dump(projection, output_file, indent=2, sort_keys=True)
+            output_file.write("\\n")
+            output_file.flush()
+            os.fsync(output_file.fileno())
+        os.replace(temporary_path, args.output)
+    finally:
+        if os.path.exists(temporary_path):
+            os.unlink(temporary_path)
+
+    print(f"catalogue={projection['catalogue']} version={projection['version']} models={len(projection['models'])} issues={len(projection['issues'])}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

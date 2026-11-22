@@ -1,0 +1,148 @@
+{
+  "schema": "classifier.tournament-experiment-plan.v1",
+  "plan_id": "classifier-capability-graph-and-manager-competition",
+  "version": "0.1.0",
+  "status": "design_only",
+  "execution_ready": false,
+  "canonical_cohort": {
+    "schema": "manager.tournament.v1",
+    "contract_path": "docs/ops/MANAGER-TOURNAMENT.schema.json"
+  },
+  "comparison_units": [
+    "classifier_capability",
+    "routing_policy",
+    "composition_graph",
+    "tournament_implementation"
+  ],
+  "phases": [
+    {
+      "phase_id": "inventory_qualification",
+      "status": "planned",
+      "objective": "Qualify the 61 model-layer catalog entries without treating catalog presence as proven capability.",
+      "cohort": "catalog_snapshot",
+      "admission_gates": [
+        "primary_source_verified",
+        "candidate_identity_pinned",
+        "license_and_usage_reviewed",
+        "capability_contract_declared",
+        "checkpoint_or_service_revision_pinned",
+        "adapter_smoke_passed",
+        "route_authorized"
+      ],
+      "exit_condition": "Every candidate is mapped to one or more evidence-backed capability contracts or remains explicitly unclassified."
+    },
+    {
+      "phase_id": "lateral_capability_screen",
+      "status": "planned",
+      "objective": "Compare candidate implementations laterally within the same capability contract.",
+      "cohort": "matched_task_cohort",
+      "admission_gates": [
+        "same_task_contract",
+        "same_input_snapshot",
+        "same_reference_and_rubric",
+        "independent_evaluator",
+        "budget_and_route_approved"
+      ],
+      "exit_condition": "Capability-specific performance and cost vectors have sample counts, uncertainty and provenance."
+    },
+    {
+      "phase_id": "graph_composition",
+      "status": "planned",
+      "objective": "Discover complementary routing and composition graphs from qualified capabilities.",
+      "cohort": "matched_task_cohort",
+      "admission_gates": [
+        "qualified_component_candidates",
+        "versioned_graph_hash",
+        "dependency_and_failure_contracts",
+        "isolated_execution_state"
+      ],
+      "exit_condition": "Graph arms have ablation evidence, interaction estimates and held-out results."
+    },
+    {
+      "phase_id": "tournament_implementation",
+      "status": "planned",
+      "objective": "Compare complete tournament implementation versions as first-class competitors.",
+      "cohort": "manager.tournament.v1",
+      "admission_gates": [
+        "incumbent_and_challenger_pinned",
+        "same_matched_cohort",
+        "same_resource_envelope",
+        "independent_evaluator",
+        "immutable_receipts"
+      ],
+      "exit_condition": "The challenger demonstrates robust improvement in validated outcome per total resource cost."
+    },
+    {
+      "phase_id": "promotion_and_canary",
+      "status": "planned",
+      "objective": "Promote a proven implementation through bounded canary with rollback lineage.",
+      "cohort": "held_out_then_canary",
+      "admission_gates": [
+        "held_out_pass",
+        "safety_and_security_pass",
+        "budget_pass",
+        "owner_approval",
+        "rollback_target_pinned"
+      ],
+      "exit_condition": "Canary acceptance is recorded or incumbent restored."
+    }
+  ],
+  "outcome_vector": [
+    "task_quality",
+    "acceptance_rate",
+    "grounding",
+    "calibration",
+    "reproducibility",
+    "latency_ms",
+    "compute_cost",
+    "inference_cost",
+    "human_effort",
+    "context_tokens",
+    "retry_count",
+    "integration_conflicts",
+    "policy_violations"
+  ],
+  "analysis": {
+    "hard_gates": [
+      "task_contract_valid",
+      "schema_valid",
+      "security_and_policy",
+      "provenance_complete",
+      "deterministic_checks",
+      "budget_feasible"
+    ],
+    "decision_order": [
+      "feasibility_filter",
+      "pareto_frontier",
+      "versioned_preference_profile"
+    ],
+    "uncertainty": [
+      "sample_count",
+      "confidence_interval",
+      "seed_variance",
+      "task_stratification"
+    ],
+    "missing_observation": "null",
+    "raw_objectives_preserved": true
+  },
+  "allocation": {
+    "initial_method": "blocked_randomized_matched_assignment",
+    "adaptive_methods": [
+      "thompson_sampling",
+      "bayesian_optimization"
+    ],
+    "adaptive_entry_gate": "stable_baseline_and_minimum_observation_count",
+    "exploration_share_required": true,
+    "resource_budget_required": true
+  },
+  "stopping": {
+    "stop_on": [
+      "safety_gate_failure",
+      "budget_exhausted",
+      "provenance_incomplete",
+      "stagnated",
+      "held_out_regression"
+    ],
+    "promotion_requires_human_approval": true
+  }
+}

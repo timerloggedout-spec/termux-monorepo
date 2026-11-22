@@ -322,6 +322,8 @@ without flattening its layers:
 | Runtime | 7 | Infrastructure references |
 | Directory | 4 | Infrastructure references |
 
+The 71-unit operating-estate feed remains a separate inventory. Its 12 source-defined groups are versioned in the registry with per-group state counts and checked against the feed rows.
+
 The 71-unit operating-estate feed remains a separate inventory.
 
 The registry adds `tournament.implementation-competition.v1` as a

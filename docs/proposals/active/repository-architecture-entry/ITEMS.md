@@ -11,3 +11,4 @@
 | REPO-ARCH-004 | Run repository gates and reconcile any failures before promotion. | `repo_gate.py`, `termux_smoke.py`, and required CI checks pass with recorded SHA. | Pending |
 | REPO-ARCH-005 | Add linked modular subsystem maps, paired Markdown / Mermaid views, and update existing Mermaid.ai root diagram in place. | Six detailed maps, six Mermaid sources, root links and stable diagram identity. | Implemented |
 | REPO-ARCH-006 | Audit snapshot freshness and dangling/siloed paths, including ArchWiz local data-flow manifest. | Source-backed gap report and timestamp/provenance requirements. | Implemented |
+| REPO-ARCH-007 | Establish semantic architecture versioning, deterministic source/render manifest, and automated diagram refresh through the existing documentation workflow. | SemVer gate and changelog validation; focused tests; source/render SHA-256 manifest; architecture flow SVGs; PR evidence artifact; trusted master refresh. | In progress |

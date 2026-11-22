@@ -372,7 +372,10 @@ the published rules as their own source record.
 The official event material links the GitLab Discord `#ai-hackathon`, the
 Devpost Discord, office hours, GitLab Duo Agent/Flow docs, prompt library, and
 the participant template. The October showcase onboarding issue points to
-`#transcend-hackathon` and confirms participant-level subgroup provisioning. The historical group-access form is closed with
+`#transcend-hackathon` and confirms one participant subgroup per participant.
+The parent group keeps observability disabled at group scope and secrets out
+of group-level settings; optional observability belongs inside participant
+subgroups. The historical group-access form is closed with
 the February–March event. A future cycle must supply a fresh official
 registration/access path before a registration plan advances.
 

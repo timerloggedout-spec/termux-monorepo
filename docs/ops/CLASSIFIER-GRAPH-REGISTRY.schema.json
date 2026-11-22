@@ -54,13 +54,14 @@
       "type": "array", "minItems": 1,
       "items": {
         "type": "object", "additionalProperties": false,
-        "required": ["candidate_id", "kind", "roles", "readiness", "adapter_status", "source_ref"],
+        "required": ["candidate_id", "kind", "roles", "readiness", "operational_state", "adapter_status", "source_ref"],
         "properties": {
           "candidate_id": {"type": "string", "minLength": 1},
           "kind": {"enum": ["local", "catalog"]},
           "catalog_entry_id": {"type": ["string", "null"]},
           "roles": {"type": "array", "minItems": 1, "items": {"type": "string"}},
           "readiness": {"enum": ["incumbent", "catalogued", "adapter_required", "trial_candidate", "evaluated"]},
+          "operational_state": {"enum": ["dispatch_only_baseline", "blocked_paid_owner_gate", "trial_candidate_composition_required", "evaluated_self_hosted", "referenced_not_runnable", "trial_candidate_host_blocked"]},
           "adapter_status": {"enum": ["native", "available", "partial", "required", "unverified"]},
           "source_ref": {"type": "string", "minLength": 1},
           "notes": {"type": "string"}

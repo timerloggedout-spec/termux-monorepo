@@ -3,7 +3,7 @@
 **Contract:** sie.control-plane.v1 (proposed)  
 **Role:** turn validated observations into controlled improvements to classifier capabilities, routing graphs and tournament implementations.
 
-SIE is the improvement controller inside the wider DoE Tournament operating system. It owns the evidence-to-change loop; it does not silently rewrite its own acceptance criteria or promote its own candidates.
+SIE is the improvement controller inside the wider DoE Tournament operating system. It owns the evidence-to-change loop, versions its acceptance criteria, and routes candidate promotion through independent owner approval.
 
 ## 1. Operating model
 
@@ -79,7 +79,7 @@ Use a conservative hybrid:
 - **Factorial screening:** test interactions across a small declared set of factors.
 - **Island evolution:** preserve several diverse candidate families; periodically exchange high-value components.
 - **Adaptive allocation:** use bandits/Bayesian methods only after a stable baseline and sufficient observations.
-- **Shadow evaluation:** replay historical or held-out inputs without affecting live decisions.
+- **Shadow evaluation:** replay historical or held-out inputs while preserving live decision state.
 - **Canary admission:** expose a promoted candidate to a small controlled slice before broad default routing.
 - **Rollback:** restore the last accepted implementation when canary constraints fail.
 

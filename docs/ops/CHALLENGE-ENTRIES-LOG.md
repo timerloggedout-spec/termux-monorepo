@@ -729,12 +729,13 @@ The source map and evidence are in
 October 2026 subgroup/project snapshots under
 `ops/challenge/osint/gitlab-transcend-october-2026-*-2026-11-22.ndjson`.
 
-**Registration:** C17 remains pre-registration. The official sequence is
-start onboarding → accept rules → choose an issue → obtain assignment →
-open an MR in the event window → get it merged within the 31-day post-event
-window. Owner onboarding, registration, issue assignment, and contribution
-state remain NOT_ESTABLISHED. The February–March AI Hackathon's group-access
-form is historical and closed.
+**Entry path:** C17 uses Contributor Platform rule acceptance and onboarding;
+Devpost registration is NOT_REQUIRED. The sequence is accept rules → start
+onboarding → choose an issue → obtain assignment → open an MR in the event
+window → get it merged within the 31-day post-event window. Owner onboarding,
+rule acceptance, issue assignment, and contribution state remain
+NOT_ESTABLISHED. The February–March AI Hackathon group-access request window
+is historical and closed.
 
 ## 5. Sweep sources
 

@@ -59,3 +59,19 @@ def test_legacy_research_children_field_remains_available(tmp_path, monkeypatch)
 
     assert entry["research_children"] == entry["metadata_children"]
     assert inventory.validate([entry]) == []
+
+def test_whitespace_only_source_file_has_empty_preview(tmp_path, monkeypatch):
+    root = tmp_path / "repo"
+    ref = root / "refTemplates"
+    slot = ref / "19_Provider_Inference_Catalogs"
+    child = slot / "vultr-model-catalog-python"
+    child.mkdir(parents=True)
+    (child / "README.md").write_text("reference\\n", encoding="utf-8")
+    (child / "SOURCE.txt").write_text("  \\n\\t\\n", encoding="utf-8")
+    monkeypatch.setattr(inventory, "ROOT", root)
+    monkeypatch.setattr(inventory, "REF", ref)
+
+    entry = inventory.inventory_entry(slot)
+
+    assert entry["metadata_children"][0]["source_preview"] is None
+    assert inventory.validate([entry]) == []

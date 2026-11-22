@@ -10,6 +10,7 @@ Root entry: [architecture.md](../../../architecture.md). Each module pairs a det
 | Context Relationship and Historical Corpus | [context-historical.md](context-historical.md) | [context-historical.mmd](context-historical.mmd) |
 | Dashboard, Snapshot and Surface Consumers | [dashboard-snapshots.md](dashboard-snapshots.md) | [dashboard-snapshots.mmd](dashboard-snapshots.mmd) |
 | Legacy Local Snapshot Pipeline — Gap Audit | [legacy-snapshot-audit.md](legacy-snapshot-audit.md) | [legacy-snapshot-audit.mmd](legacy-snapshot-audit.mmd) |
+| Architecture Governance and Versioning | [architecture-governance.md](architecture-governance.md) | [architecture-governance.mmd](architecture-governance.mmd) · [rendered SVG](../generated/flows/architecture-governance.svg) |
 
 Connection vocabulary: connected = source verified; dangling = missing verified producer or consumer; siloed = distinct product with no demonstrated join; contract-only = spec without runtime proof; optional = conditional consumer; stale = outside freshness bound; unknown = evidence unavailable.
 

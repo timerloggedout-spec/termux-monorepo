@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-22T08:15:58Z)
+# Lane matrix status (2026-11-22T08:16:44Z)
 
-- Master: `ac8ccbbb3b58af1d78b54955568b6714f13be855`
+- Master: `986f1793e8e9c1af19343f4f0f9b11d99cbf5173`
 - Open PRs: **509**
 - Oldest: #47 (108.69d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -49,14 +49,14 @@
 | #1513 | 31.0 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 31.0 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
 | #1516 | 31.0 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
-| #1531 | 30.98 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
+| #1531 | 30.99 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
 | #1537 | 30.97 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 30.3 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 29.22 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
 | #1616 | 29.21 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 29.21 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
 | #1626 | 29.09 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
-| #1645 | 28.32 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
+| #1645 | 28.33 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
 | #1650 | 28.25 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
 | #1694 | 26.28 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
 | #1734 | 25.87 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |

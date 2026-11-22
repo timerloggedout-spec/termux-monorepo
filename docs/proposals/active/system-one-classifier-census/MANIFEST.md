@@ -35,19 +35,24 @@ item (ITEMS.md) instead of remaining a chat-side reference.
   return choices, scores, or probabilities (Choice / Score / Noul)
   instead of open-ended text: 88 model families, adapters, runtimes,
   and directories, each with source URLs (CENSUS.md).
-- The fleet's observatory namesakes are ecosystem projects: **Jev** =
-  TypeSafe AI's hosted decision model; **Kev** = Jared Palmer's
-  open Qwen-based family (0.8B–27B, self-hosted, TypeSafe-compatible);
-  **Laya** = ConvAI Innovations' non-autoregressive encoder family
-  (open weights); **Mev** = two projects — a Laya fine-tune for
-  job–candidate matching and Mellow AI's Qwen3.5-4B LoRA. The owner's
-  lane descriptions (Laya encoder triage, Kev Qwen+LoRA pointer,
-  Jev hosted TypeSafe) describe these external projects; deepcli's
-  `observatory/` classes are local role implementations with the
-  same names, not deployments of them.
-- Evaluation machinery now exists: the observatory dispatch
-  (PR #1754/#1782/#1786) runs Mev→Jev→Kev→Laya trials end-to-end on
-  free routes. This proposal is the backlog those trials draw from.
+- The local observatory names are role labels, while the similarly
+  named catalog entries are independently maintained external
+  candidates. Keep four identities separate: role contract, local
+  implementation, external project/model, and protocol adapter.
+  Local Mev captures text-generation output; local Jev scores against
+  a rubric; local Kev performs exact/token-F1 reference comparison;
+  local Laya reduces aligned Jev/Kev evidence. External Jev, Kev, Laya
+  and both Mev entries retain their own model/service identity and
+  provenance. The names alone establish neither code lineage nor
+  capability equivalence.
+- The observatory dispatch provides a local baseline trial. External
+  System One-compatible services also have a distinct typed-decision
+  route through `decide(state, questions)`. That adapter does not
+  expose generic `ask(prompt)`, so typed-decision compatibility does
+  not make an external candidate a drop-in text producer or chat judge.
+  Compare these candidates through capability-specific adapters and
+  matched cohorts. This proposal supplies the external candidate
+  inventory for those comparisons.
 
 ## Workstreams
 
@@ -84,7 +89,7 @@ item (ITEMS.md) instead of remaining a chat-side reference.
 
 Executed under the owner's "Get them in our comparisons!" order with the
 free_only gate standing; records in TRIALS.md. Laya **evaluated** via a
-self-hosted simple-jev server calling the fleet dispatch's decide stage
+self-hosted simple-jev server calling the fleet's typed-decision stage
 (quality 0.7139 / grounding 0.7692 on the trial state); simple-jev
 **evaluated** as the serving adapter (its hosted demo refuses datacenter
 egress — 403 from both the sandbox and GitHub Actions, run 40517046438).

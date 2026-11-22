@@ -3,7 +3,7 @@
 **Class:** Research orchestration + reproducible experimentation + manager tournament  
 **Disposition:** Metadata-first reference and original adaptation specification  
 **Tier:** B — research candidate pending implementation evidence  
-**Version:** 0.3.0 · 2026-11-22
+**Version:** 0.4.0 · 2026-11-22
 
 ## Purpose
 
@@ -63,7 +63,7 @@ The canonical manager cohort schema remains authoritative. Proposed DoE design, 
 
 The monorepo remains authoritative for task identity, version lineage, evidence, acceptance and promotion. External research/compute systems remain optional adapters.
 
-The initial classifier graph registry registers four local role implementations and five catalog-backed namesake candidates. It preserves the 88-entry System One inventory as heterogeneous catalog layers rather than treating every entry as an interchangeable classifier. Separately, the classifier-estate feed records 71 operating units (43 live, 26 dormant, 2 dead) as of 2026-11-02; those units include pipelines, routing, gates and feed systems as well as classifier surfaces. The graph validator checks candidate-to-catalog references, estate snapshot counts, role compatibility, local source paths, unique node identity and DAG acyclicity. The typed-decision candidate screen remains design-only pending candidate-specific adapters and matched trials.
+The versioned classifier graph registry registers four local role implementations, all 61 model-layer candidates, and all 27 adapter/runtime/directory infrastructure references in the 88-entry System One catalog. Five model candidates retain the role mapping supported by the existing census; 56 remain explicitly unclassified pending capability qualification. A 61-node model screen is registered as design-only. Separately, the classifier-estate feed records 71 operating units (43 live, 26 dormant, 2 dead) as of 2026-11-02. The registry also records the incumbent tournament implementation and design-only SIE challenger under matched-cohort and held-out promotion gates. The validator checks inventory coverage, estate snapshot counts, role compatibility, local source paths, unique node identity, DAG acyclicity and implementation source references.
 
 ## Added operating-system references\n\n- OPERATING-SYSTEM.md — planes, competition units, lifecycle and promotion.\n- SELF-IMPROVEMENT-ENGINE.md — SIE subsystems and bounded improvement loop.\n- CLASSIFIER-GRAPH-TOURNAMENT.md — lateral classifier comparison, complementarity and graph composition.\n\nThe earlier trial implementation had a source-inspection risk: independently filtered artifact/Jev/Kev arrays could misalign after partial failures. The current branch adds stable candidate IDs, preserves per-candidate stage slots, checks identity at reduction, and excludes incomplete evidence triples. Regression tests have been added; CI execution remains pending.\n\n## Architectural decision
 
@@ -95,7 +95,7 @@ No external product owns canonical state. No single scalar score overrides corre
 
 ## Status and next evidence
 
-Reference research, operating-system contracts and the first versioned classifier registry are captured. The candidate-alignment repair and registry validator have regression tests committed; execution remains pending CI. Jules lifecycle is time-sensitive: official documentation says Jules became read-only after 2026-11-11 and is scheduled to wind down on 2026-12-31, so the operating system treats it as a historical/limited read-only collaborator for this snapshot rather than an assumed active write executor. Next steps: extend the registry across the complete classifier capability pool, implement candidate-specific typed-decision adapters, then run a small matched-cohort screen and graph-composition experiment.
+Reference research, operating-system contracts, full 88-entry catalog coverage and the tournament implementation competition contract are committed. Candidate alignment, inventory coverage and registry validation have regression tests committed; latest repo-gate result is tracked on the PR. Jules lifecycle is time-sensitive: official documentation says Jules became read-only after 2026-11-11 and is scheduled to wind down on 2026-12-31, so the operating system treats it as a historical/limited read-only collaborator for this snapshot rather than an assumed active write executor. Next steps: extend the registry across the complete classifier capability pool, implement candidate-specific typed-decision adapters, then run a small matched-cohort screen and graph-composition experiment.
 
 ## Provenance
 

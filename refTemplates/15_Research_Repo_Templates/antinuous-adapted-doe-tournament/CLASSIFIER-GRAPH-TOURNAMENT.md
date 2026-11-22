@@ -8,7 +8,7 @@
 
 The tournament's primary competitor is a **versioned implementation**: a manager policy, routing policy, graph topology, classifier selection, evaluator configuration and execution contract treated as one reproducible candidate.
 
-The System One catalog is the source inventory for the wider classifier work: the current catalog document reports 88 entries (61 model families, 16 adapters, 7 runtimes and 4 directories). The model and adapter entries form the relevant capability population; runtimes execute other entries and directories index them. The 70+ shorthand therefore refers to the broader classifier ecosystem, not 88 interchangeable classifiers. It is not a single serial chain and it is not the tournament leaderboard. A classifier can compete alone, serve a specialist node, participate in an ensemble, or be selected conditionally by a router.
+The System One catalog is the source inventory for the wider classifier work: the current catalog document reports 88 entries (61 model families, 16 adapters, 7 runtimes and 4 directories). The model and adapter entries form the relevant capability population; runtimes execute other entries and directories index them. The 70+ shorthand refers to the broader classifier ecosystem. This inventory describes capability and integration surfaces; the tournament leaderboard records measured cohort outcomes. A classifier can compete alone, serve a specialist node, participate in an ensemble, or be selected conditionally by a router.
 
 Compare three distinct levels:
 
@@ -29,7 +29,7 @@ Keep four identity layers distinct:
 | External candidate | Independently developed model/service/runtime | TypeSafe Jev, Jared Palmer Kev, ConvAI Laya, Mellow AI Mev |
 | Adapter | Protocol bridge | generic chat adapters; System One typed-decision adapter |
 
-The local names are labels for roles, not evidence of code/model lineage. The external projects are candidates for evaluation, and some already have a distinct integration route. The System One adapter is typed: it implements `decide(state, questions)`; its `ask(prompt)` method raises `NotImplementedError`. Therefore a TypeSafe-compatible endpoint can participate in the typed-decision lane, while it is not automatically a drop-in Mev text producer or Jev chat judge. The current `decide_check` path checks a trial result or a standalone state; a candidate-aligned verifier adapter remains a separate implementation task.
+The local names identify role contracts. External projects retain independent source identity and adapter evidence. The System One adapter implements `decide(state, questions)`; its `ask(prompt)` method raises `NotImplementedError`. TypeSafe-compatible endpoints enter the typed-decision lane, while Mev text production and Jev chat judging require separate adapters. The current `decide_check` path checks a trial result or a standalone state; a candidate-aligned verifier adapter remains a separate implementation task.
 
 The current local baseline responsibilities are:
 
@@ -37,10 +37,10 @@ The current local baseline responsibilities are:
 |---|---|---|
 | Mev | Captures output from a text-generation provider/model | Provider adapter and model identity determine actual capability |
 | Jev | Scores artifact text against a rubric using an independent LLM judge | Judge quality and rubric validity require separate measurement |
-| Kev | Compares artifact with a reference using exact or token-F1 | Lexical agreement is not semantic correctness |
-| Laya | Weighted reduction of aligned Jev/Kev evidence | Default 0.7/0.3 weights are a baseline preference, not a universal objective |
+| Kev | Compares artifact with a reference using exact or token-F1 | Lexical agreement measures surface similarity; semantic correctness requires task-specific evidence |
+| Laya | Weighted reduction of aligned Jev/Kev evidence | Default 0.7/0.3 weights define a baseline preference profile; task-specific objectives require preregistration |
 
-This role baseline is one tournament arm. It does not prescribe a mandatory serial chain for the wider classifier ecosystem. Model classifier capabilities as a directed acyclic graph with fan-out and fan-in. A producer can feed multiple independent classifiers; critics, verifiers and specialists can run concurrently; a router can select nodes conditionally; a merger consumes evidence joined by stable candidate identity.
+This role baseline is one tournament arm. The lateral role screen measures each role independently; composition experiments then test DAGs with fan-out and fan-in. Model classifier capabilities as a directed acyclic graph with fan-out and fan-in. A producer can feed multiple independent classifiers; critics, verifiers and specialists can run concurrently; a router can select nodes conditionally; a merger consumes evidence joined by stable candidate identity.
 
 ~~~mermaid
 flowchart TD
@@ -61,7 +61,7 @@ flowchart TD
   SIE --> ROUTER
 ~~~
 
-The graph is a plan, not a hardcoded sequence. The scheduler admits independent nodes concurrently and waits only at declared dependency edges. A treatment can compare the current local baseline, parallel fan-out, conditional cascade, voting ensemble, specialist delegation, or hybrid graph.
+The graph is a plan with declared dependency edges. The scheduler admits independent nodes concurrently and waits only at declared dependency edges. A treatment can compare the current local baseline, parallel fan-out, conditional cascade, voting ensemble, specialist delegation, or hybrid graph.
 
 ## 2A. Classifier estate and operational status
 
@@ -70,7 +70,7 @@ its 2026-11-02 snapshot: 43 live, 26 dormant and 2 dead. Its units span
 observatory, ML pipelines, model selection/routing, Delphi, repo gates,
 workflow review, intake, repository observatory, dashboards, provider
 substrate and external surfaces. This is the operating estate census;
-each row is a system/unit, not an interchangeable model candidate.
+each row is an operating unit; model candidates remain in the System One catalog.
 
 The System One catalog is a separate inventory: 88 entries across 61
 model families, 16 adapters, 7 runtimes and 4 directories. Preserve the
@@ -96,7 +96,7 @@ layer distinction when deriving candidate pools.
 
 - Local `deepcli.observatory.jev` is part of the incumbent trial role set.
   The estate feed calls the quartet live via dispatch; the Tier-1 recon
-  defines that as human-dispatched execution, with no standing trigger
+  defines that as human-dispatched execution, with human-dispatched execution; an always-on repository-LLM classifier trigger remains a future integration gate
   classifying repository LLM traffic.
 - External TypeSafe Jev (S1-01) is catalogued, while its hosted route is
   blocked-paid in the census trial record. The free-only gate prevented
@@ -146,7 +146,7 @@ A registry claim is a routing hint until a matched cohort validates it. Classifi
 3. Assign classifier and graph treatments within blocks using recorded randomization and seed.
 4. Keep a fixed incumbent/control arm and a held-out robustness cohort.
 5. Record every selected, skipped, unavailable and failed node with a reason.
-6. Join node outputs and evaluator records by stable `candidate_id` and `run_id`, never array position.
+6. Join node outputs and evaluator records by stable `candidate_id` and `run_id`; array position serves display ordering.
 7. Evaluate individual capability, graph composition and end-to-end integrated outcome separately.
 8. Preserve disagreements, abstentions, missing evidence and failed attempts as first-class observations.
 9. Promote only after feasibility, repeatability, held-out and operational gates pass.
@@ -157,7 +157,7 @@ Preserve per-classifier and per-graph observations:
 
 `correctness, coverage, calibration, precision, recall, F1, abstention, disagreement, robustness, latency, inference_cost, compute_cost, context_cost, retries, failures, conflicts, human_effort, provenance_confidence`
 
-Select metrics that match the classifier's actual contract. Missing values remain null. A single composite is a view, never the evidence record.
+Select metrics that match the classifier's actual contract. Missing values remain null. Preserve the raw evidence vector as the record; composite scores remain derived views.
 
 ## 6. Composition discovery
 
@@ -175,11 +175,11 @@ Avoid selecting ensembles solely because member classifiers have high standalone
 
 ## 7. Current code audit — verified baseline and current correction
 
-1. `trial.py` executes provider production, critique and reference verification in separate loops. This is the current local baseline runner, not a concurrent DAG scheduler.
+1. `trial.py` executes provider production, critique and reference verification in separate loops. This is the current local baseline runner; dependency-aware concurrent scheduling remains a separate implementation.
 2. The earlier implementation filtered the three evidence arrays independently before Laya's positional zip. The tournament branch now assigns candidate IDs, preserves one stage result per candidate, rejects mismatched identities and excludes incomplete evidence triples. Regression cases cover direct identity mismatch and a partial Jev failure in a multi-candidate trial.
-3. `kev.py` implements exact and token-F1 comparison. These are lexical reference checks, not a general semantic classifier evaluator.
-4. `laya.py` applies a weighted Jev/Kev scalar (default 0.7/0.3). This remains a baseline reducer, not a calibrated, uncertainty-aware Pareto decision engine.
-5. `leaderboard.py` stores role/task/provider/model aggregates and applies numeric defaults to absent observations. It remains a convenience ranking surface, not the canonical experiment evidence plane.
+3. `kev.py` implements exact and token-F1 comparison. These are lexical reference checks; semantic classification requires a task-specific evaluator.
+4. `laya.py` applies a weighted Jev/Kev scalar (default 0.7/0.3). This is a baseline reducer; calibrated uncertainty-aware Pareto decisions remain a separate component.
+5. `leaderboard.py` stores role/task/provider/model aggregates and applies numeric defaults to absent observations. It is a convenience ranking surface; the experiment ledger remains canonical.
 
 The candidate-identity correction is committed in this branch. Test execution remains pending CI. The next architecture step is a versioned capability graph manifest and scheduler, preserving the local baseline as an incumbent control.
 

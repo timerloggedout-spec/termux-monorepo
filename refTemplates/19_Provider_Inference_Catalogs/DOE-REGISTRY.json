@@ -89,7 +89,7 @@
       "Decimal strings and integer prices remain exact; binary floats are explicitly diagnosed as precision-limited input.",
       "Input/output modalities, capability descriptors and unknown source fields remain observable when supplied.",
       "Malformed individual records are isolated with indexed diagnostics while valid siblings remain available.",
-      "Unknown readiness, entitlement, quota and inference state remain unknown unless source evidence supplies a value.",
+      "Unknown catalog-active state, entitlement, quota and inference state remain unknown unless source evidence supplies a value.",
       "Execution is offline and produces zero provider requests, credential reads and inference calls."
     ],
     "execution_policy": {

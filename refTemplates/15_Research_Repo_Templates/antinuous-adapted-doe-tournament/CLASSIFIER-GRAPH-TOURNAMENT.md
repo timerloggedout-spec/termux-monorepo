@@ -18,20 +18,29 @@ Compare three distinct levels:
 
 Keep classifier identity, provider/model identity, execution identity and manager identity separate.
 
-## 2. Mev / Jev / Kev / Laya relationship
+## 2. Mev / Jev / Kev / Laya: role labels, local implementations, external candidates
 
-Repository source inspection establishes these current role contracts:
+Keep four identity layers distinct:
 
-| Role | Current module | Current responsibility |
+| Layer | Meaning | Examples |
 |---|---|---|
-| Mev | `deepcli/deepcli/observatory/mev.py` | producer; captures provider/model output |
-| Jev | `deepcli/deepcli/observatory/jev.py` | critic; rubric-based LLM judge; judge differs from producer |
-| Kev | `deepcli/deepcli/observatory/kev.py` | verifier; compares output against reference (currently exact/token-F1) |
-| Laya | `deepcli/deepcli/observatory/laya.py` | merger; weighted rank over Jev/Kev evidence |
+| Role contract | A capability slot | text generation, rubric critique, reference verification, evidence reduction |
+| Local implementation | Code implementing that role | `observatory/mev.py`, `jev.py`, `kev.py`, `laya.py` |
+| External candidate | Independently developed model/service/runtime | TypeSafe Jev, Jared Palmer Kev, ConvAI Laya, Mellow AI Mev |
+| Adapter | Protocol bridge | generic chat adapters; System One typed-decision adapter |
 
-These are useful **local functional roles** in the current trial implementation. The System One Catalog documents Mev, Jev, Kev and Laya as namesakes in the external ecosystem; the local deepcli classes implement producer/critic/verifier/merger roles and are not deployments of those named projects. Their names do not imply a mandatory serial pipeline for the broader classifier ecosystem.
+The local names are labels for roles, not evidence of code/model lineage. The external projects are candidates for evaluation, and some already have a distinct integration route. The System One adapter is typed: it implements `decide(state, questions)`; its `ask(prompt)` method raises `NotImplementedError`. Therefore a TypeSafe-compatible endpoint can participate in the typed-decision lane, while it is not automatically a drop-in Mev text producer or Jev chat judge. The current `decide_check` path checks a trial result or a standalone state; a candidate-aligned verifier adapter remains a separate implementation task.
 
-Model the capabilities as a directed acyclic graph with fan-out and fan-in. A producer can feed several independent classifiers; critics, verifiers and specialist classifiers can run in parallel; a router can select a subset; a merger can consume identity-aligned evidence; a judge can request another specialist only when an evidence gap justifies it.
+The current local baseline responsibilities are:
+
+| Local role | Current behavior | Limits to preserve in evaluation |
+|---|---|---|
+| Mev | Captures output from a text-generation provider/model | Provider adapter and model identity determine actual capability |
+| Jev | Scores artifact text against a rubric using an independent LLM judge | Judge quality and rubric validity require separate measurement |
+| Kev | Compares artifact with a reference using exact or token-F1 | Lexical agreement is not semantic correctness |
+| Laya | Weighted reduction of aligned Jev/Kev evidence | Default 0.7/0.3 weights are a baseline preference, not a universal objective |
+
+This role baseline is one tournament arm. It does not prescribe a mandatory serial chain for the wider classifier ecosystem. Model classifier capabilities as a directed acyclic graph with fan-out and fan-in. A producer can feed multiple independent classifiers; critics, verifiers and specialists can run concurrently; a router can select nodes conditionally; a merger consumes evidence joined by stable candidate identity.
 
 ~~~mermaid
 flowchart TD
@@ -52,7 +61,7 @@ flowchart TD
   SIE --> ROUTER
 ~~~
 
-The graph is a plan, not a hardcoded sequence. The scheduler admits independent nodes concurrently and waits only at declared dependency edges. A treatment can compare a serial baseline, parallel fan-out, conditional cascade, voting ensemble, specialist delegation, or hybrid graph.
+The graph is a plan, not a hardcoded sequence. The scheduler admits independent nodes concurrently and waits only at declared dependency edges. A treatment can compare the current local baseline, parallel fan-out, conditional cascade, voting ensemble, specialist delegation, or hybrid graph.
 
 ## 3. Candidate tournament arms
 
@@ -117,25 +126,19 @@ Discover strengths through a staged search:
 
 Avoid selecting ensembles solely because member classifiers have high standalone scores. Complementarity, calibration, routing mistakes and combination overhead determine whether the graph improves the result.
 
-## 7. Current code audit — evidence-backed issues
+## 7. Current code audit — verified baseline and current correction
 
-The existing `docs/ops/CLASSIFIER-TRIAL-DISPATCH.md` already records this known follow-up; source inspection confirms the code path described there:
+1. `trial.py` executes provider production, critique and reference verification in separate loops. This is the current local baseline runner, not a concurrent DAG scheduler.
+2. The earlier implementation filtered the three evidence arrays independently before Laya's positional zip. The tournament branch now assigns candidate IDs, preserves one stage result per candidate, rejects mismatched identities and excludes incomplete evidence triples. Regression cases cover direct identity mismatch and a partial Jev failure in a multi-candidate trial.
+3. `kev.py` implements exact and token-F1 comparison. These are lexical reference checks, not a general semantic classifier evaluator.
+4. `laya.py` applies a weighted Jev/Kev scalar (default 0.7/0.3). This remains a baseline reducer, not a calibrated, uncertainty-aware Pareto decision engine.
+5. `leaderboard.py` stores role/task/provider/model aggregates and applies numeric defaults to absent observations. It remains a convenience ranking surface, not the canonical experiment evidence plane.
 
-1. `trial.py` executes provider production in a sequential loop, then executes Jev and Kev loops sequentially. This is a valid baseline implementation, not a graph scheduler.
-2. `trial.py` independently filters successful artifacts, Jev records and Kev records before passing the three arrays to Laya. Laya uses `zip()`. A failed record in one list can shift positional correspondence and attach another candidate's evaluation to an artifact.
-3. `kev.py` currently implements exact and token-F1 comparison. These are lexical reference checks, not a general semantic classifier evaluator.
-4. `laya.py` currently applies a weighted Jev/Kev scalar (default 0.7/0.3). This is a baseline reducer, not a calibrated, uncertainty-aware Pareto decision engine.
-5. `leaderboard.py` stores role/task/provider/model aggregates and uses default numeric values for several absent observations. That behavior requires a migration/validation boundary before it serves as the canonical experiment evidence plane.
+The candidate-identity correction is committed in this branch. Test execution remains pending CI. The next architecture step is a versioned capability graph manifest and scheduler, preserving the local baseline as an incumbent control.
 
-This is an existing documented steward backlog item, not a newly discovered defect. Runtime regression coverage remains a prerequisite for the graph scheduler work.
+### Current evidence contract
 
-### Required repair before expanding graph search
-
-Introduce stable candidate records, for example:
-
-`candidate_id, producer_id, classifier_id, graph_node_id, run_id, attempt, output_ref, status`
-
-Attach every Jev/Kev/other evaluator record to the same `candidate_id`. Use explicit status values such as `completed`, `failed`, `skipped`, `timed_out`, `unavailable`, `not_applicable`. Preserve partial evidence and make reducers reject ambiguous joins. Keep the current Mev/Jev/Kev/Laya path as a baseline adapter during migration.
+Each candidate stage record carries `candidate_id` and explicit `ok` state. Reducers require equal-length vectors and matching IDs, preserve excluded candidate details, and rank only complete evidence triples. The graph-level contract extends this with `run_id`, `graph_node_id`, attempt, status, artifact reference and immutable implementation identity.
 
 ## 8. External routing references
 

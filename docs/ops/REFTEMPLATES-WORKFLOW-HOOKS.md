@@ -15,11 +15,13 @@
 ## Integrity checklist (for CI / scripts)
 
 1. Every slot under `15_Research_Repo_Templates/*` has `README.md` + `SOURCE.txt`
-2. Every `smods/*` path appears in `.gitmodules` with `shallow = true` when present
-3. Preferred SOURCE URLs are resolvable (HEAD or public)
-4. No hardcoded API keys in template metadata
+2. Every child under `19_Provider_Inference_Catalogs/*` has `README.md` + `SOURCE.txt` and pinned metadata
+3. Every `smods/*` path appears in `.gitmodules` with `shallow = true` when present
+4. Preferred SOURCE URLs are resolvable (HEAD or public)
+5. No hardcoded API keys in template metadata
 
 ## Follow-up implementation
 
-- Extend evidence-led inventory script to walk `15_*` and diff `smods` vs `.gitmodules`
-- Optional: thin GHA job on path `refTemplates/**` that asserts SOURCE.txt presence
+- Evidence-led inventory validates slot 15 research children and slot 19 provider-reference children.
+- Keep Vultr Python/TypeScript sources metadata-only; compare repository-owned Incumbent and VultrInspired catalogue variants.
+- Optional: thin GHA job on path `refTemplates/**` that asserts SOURCE.txt presence.

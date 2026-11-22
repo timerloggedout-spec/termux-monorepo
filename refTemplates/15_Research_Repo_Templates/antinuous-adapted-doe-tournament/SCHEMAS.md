@@ -347,3 +347,7 @@ promotion/canary. The plan remains `design_only` with
 four independent comparison units: classifier capability, routing policy,
 composition graph and tournament implementation.
 
+
+## Candidate admission report
+
+`scripts/ci/classifier_candidate_admission.py` emits the deterministic `classifier.candidate-admission-report.v1` view. It separates incumbent baselines, replication candidates, owner-gated candidates, serving-composition blockers, host/egress blockers, referenced-but-unrunnable entries and unclassified models. Admission is scoped to the same role and task contract; catalog presence alone grants no execution eligibility.

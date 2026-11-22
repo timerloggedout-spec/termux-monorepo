@@ -721,8 +721,9 @@ resolves to a subgroup, observed empty on 2026-11-22. The sibling
 `/transcend` subgroup contains the October Transcend showcase workspaces;
 `/project-templates/participant-template` is the public agent/flow starter.
 The source map and evidence are in
-`docs/ops/GITLAB-AI-HACKATHON-OSINT.md` and
-`ops/challenge/osint/gitlab-sources.json`.
+`docs/ops/GITLAB-AI-HACKATHON-OSINT.md`,
+`ops/challenge/osint/gitlab-sources.json`, and the dated 312-project snapshot
+`ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json`.
 
 **Registration:** C17 remains pre-registration. The official sequence is
 start onboarding → accept rules → choose an issue → obtain assignment →

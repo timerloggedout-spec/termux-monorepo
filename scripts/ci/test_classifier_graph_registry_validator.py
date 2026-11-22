@@ -83,6 +83,46 @@ class ClassifierGraphRegistryTests(unittest.TestCase):
         self.assertEqual(candidate_ids, model_candidate_ids)
         self.assertEqual(graph["status"], "design_only")
 
+    def test_full_model_inventory_and_infrastructure_coverage(self):
+        model_ids = {entry["id"] for entry in self.catalog["entries"]
+                     if entry["layer"] == "model"}
+        infrastructure_ids = {entry["id"] for entry in self.catalog["entries"]
+                               if entry["layer"] != "model"}
+        registered_models = {item["catalog_entry_id"] for item in self.registry["candidates"]
+                             if item["kind"] == "catalog"}
+        registered_infrastructure = {item["catalog_entry_id"]
+                                      for item in self.registry["infrastructure"]}
+        self.assertEqual(len(model_ids), 61)
+        self.assertEqual(len(infrastructure_ids), 27)
+        self.assertEqual(registered_models, model_ids)
+        self.assertEqual(registered_infrastructure, infrastructure_ids)
+
+    def test_unclassified_candidates_make_no_role_claim(self):
+        candidates = [item for item in self.registry["candidates"]
+                      if item["qualification_state"] == "unclassified"]
+        self.assertEqual(len(candidates), 56)
+        self.assertTrue(all(item["roles"] == ["unclassified"] for item in candidates))
+
+    def test_model_catalog_screen_is_complete_and_design_only(self):
+        graph = next(item for item in self.registry["graphs"]
+                     if item["graph_id"] == "model-catalog-screen")
+        self.assertEqual(graph["status"], "design_only")
+        self.assertEqual(len(graph["nodes"]), 61)
+        self.assertEqual({node["candidate_id"] for node in graph["nodes"]},
+                         {item["candidate_id"] for item in self.registry["candidates"]
+                          if item["kind"] == "catalog"})
+
+    def test_tournament_implementation_competition_is_gated(self):
+        competition = self.registry["implementation_competition"]
+        self.assertEqual(competition["schema"], "tournament.implementation-competition.v1")
+        self.assertEqual(competition["canonical_cohort"], "manager.tournament.v1")
+        self.assertEqual(competition["incumbent"]["status"], "incumbent")
+        self.assertFalse(competition["challengers"][0]["execution_ready"])
+        self.assertTrue(competition["protocol"]["matched_cohort_required"])
+        self.assertTrue(competition["protocol"]["held_out_required"])
+        self.assertTrue(competition["protocol"]["independent_evaluator_required"])
+        self.assertTrue(competition["protocol"]["rollback_target_required"])
+
     def test_local_jev_is_dispatch_only_and_external_jev_is_paid_gated(self):
         registry = copy.deepcopy(self.registry)
         candidates = {item["candidate_id"]: item for item in registry["candidates"]}

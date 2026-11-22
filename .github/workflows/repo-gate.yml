@@ -73,6 +73,10 @@ jobs:
           python3 scripts/ci/classifier_candidate_admission.py
           python3 -m unittest scripts/ci/test_classifier_candidate_admission.py -v
 
+      - name: Tournament implementation comparison contracts
+        run: |
+          python3 -m unittest deepcli/tests/test_implementation_competition.py -v
+
       - name: Native orchestration contracts
         run: |
           python3 scripts/ci/orchestration_contract_validator.py

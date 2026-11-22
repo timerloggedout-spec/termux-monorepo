@@ -91,6 +91,14 @@ class ImplementationCompetitionTests(unittest.TestCase):
         report = compare_implementations(receipts)
         self.assertEqual(report["recommendation"], "pareto_tradeoff_or_insufficient_evidence")
 
+    def test_duplicate_run_identity_is_rejected(self):
+        duplicate = self.receipts[0].copy()
+        duplicate["task_id"] = "other-task"
+        duplicate["implementation_role"] = "incumbent"
+        self.receipts.append(duplicate)
+        with self.assertRaisesRegex(ValueError, "duplicate run_id"):
+            compare_implementations(self.receipts)
+
     def test_promotion_always_requires_separate_authorization(self):
         report = compare_implementations(self.receipts)
         self.assertFalse(report["promotion_authorized"])

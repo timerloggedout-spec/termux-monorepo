@@ -81,7 +81,7 @@ def normalize_incumbent(document: dict[str, Any]) -> dict[str, Any]:
                     "field": str(price_key),
                 })
 
-        readiness = row.get("active") if isinstance(row.get("active"), bool) else None
+        catalogue_active = row.get("active") if isinstance(row.get("active"), bool) else None
         models.append({
             "provider": provider,
             "id": model_id,
@@ -111,7 +111,7 @@ def normalize_incumbent(document: dict[str, Any]) -> dict[str, Any]:
                 "supported_parameters": row.get("supported_parameters"),
             },
             "lifecycle": {
-                "readiness": readiness,
+                "catalogue_active": catalogue_active,
                 "created_at": row.get("created_at"),
                 "deprecated_at": row.get("deprecated_at"),
             },

@@ -5,6 +5,10 @@ judges, etc." The tracking system (`ops/challenge/coordinator.json` +
 Neon DB + opportunity ledger) covers all of it, **public sources only**,
 every fact sourced + `fetched_at`, gaps `NOT_ESTABLISHED`.
 
+## Devpost expansion
+
+The event-level lifecycle remains owned by this challenge OSINT lane. The global Devpost software directory is a separate discovery surface and requires its own adapter; the authenticated Devpost event connector does not expose general directory search. The proposed adapter boundary, BEFORE/DURING/AFTER lifecycle, directory schema, cadence, podium capture, and graph integration are specified in [`DEVPOST-OBSERVATORY-EXPANSION.md`](DEVPOST-OBSERVATORY-EXPANSION.md). That document is an architecture proposal; its proposed directory cadence is not configured until a workflow is deployed and observed.
+
 ## Surfaces
 
 - **EVENTS** — organizer intel (`events[].organizers[]`), rules/prize

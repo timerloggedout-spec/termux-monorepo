@@ -101,6 +101,7 @@ jobs:
         id: verify
         if: steps.context.outputs.ready == 'true'
         env:
+          GH_TOKEN: ${{ github.token }}
           ROADMAP: ${{ steps.context.outputs.roadmap }}
           EXERCISE: ${{ steps.context.outputs.exercise }}
         run: |

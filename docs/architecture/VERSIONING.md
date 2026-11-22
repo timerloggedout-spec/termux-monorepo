@@ -32,7 +32,7 @@ The change author proposes the level. Reviewers verify the classification agains
 1. Update the canonical domain source and its paired Mermaid source when a diagrammed relationship changes.
 2. Classify the semantic change as MAJOR, MINOR, or PATCH.
 3. Increase VERSION and add a matching top-of-file changelog entry in the same pull request whenever architecture sources change.
-4. Keep generated manifests and rendered assets out of manual edits.
+4. Generate manifests and rendered assets exclusively through the workflow.
 5. Run the architecture documentation tests, the version-delta gate, Mermaid rendering, and manifest validation.
 6. Review the generated manifest and rendered diagrams as derived evidence.
 7. Merge only after repository policy gates pass. The trusted master refresh then commits the generated projections.
@@ -51,7 +51,7 @@ The architecture refresh uses the Loopy six-step contract:
 5. Record commit, run, artifact, fingerprints, outcome, and remaining work.
 6. Repeat only when fresh feedback can change the next action; otherwise stop with a named terminal state.
 
-The loop's terminal states are success, clean no-op, blocked, approval-required, exhausted, and stagnated. Failed checks remain recorded observations and enter diagnosis before another attempt.
+The loop's terminal states are success, unchanged, blocked, approval-required, exhausted, and stagnated. Failed checks remain recorded observations and enter diagnosis before another attempt.
 
 ## Deterministic manifest
 
@@ -67,7 +67,7 @@ The generator writes docs/architecture/generated/architecture-manifest.json with
 - a source-set SHA-256 over ordered path/content pairs;
 - diagram source and rendered-asset paths and SHA-256 fingerprints.
 
-The manifest intentionally omits wall-clock timestamps and run-specific metadata. Identical source and render bytes produce identical manifest bytes. Git commit SHA, workflow run ID, and artifact identity remain available from the GitHub Actions execution record and uploaded validation artifact.
+The manifest contains deterministic source and render metadata. Git commit SHA, workflow run ID, artifact identity, and wall-clock timestamps remain in the GitHub Actions execution record and uploaded validation artifact. Identical source and render bytes produce identical manifest bytes.
 
 ## Automated lifecycle
 
@@ -77,7 +77,7 @@ The manifest intentionally omits wall-clock timestamps and run-specific metadata
 | Push to master | Re-render diagrams, regenerate and validate projections, commit changed generated files | Existing trusted refresh job |
 | Generated-only follow-up commit | Preserve source version; generated files remain projections | Bot writer under existing workflow permissions |
 
-The existing Automation Documentation Continuous Refresh workflow owns execution. The architecture pipeline adds no independent scheduler, credential, provider, or runtime dependency.
+The existing Automation Documentation Continuous Refresh workflow remains the single event-driven scheduler and generated-file writer. Existing credentials, providers, and runtime dependencies remain unchanged.
 
 ## Failure handling
 

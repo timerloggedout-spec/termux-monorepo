@@ -60,7 +60,7 @@
       "source_ref": "deepcli/deepcli/observatory/mev.py",
       "notes": "Local baseline producer implementation.",
       "operational_state": "dispatch_only_baseline",
-      "qualification_state": "qualified"
+      "qualification_state": "role_mapped"
     },
     {
       "candidate_id": "local.deepcli.jev",
@@ -74,7 +74,7 @@
       "source_ref": "deepcli/deepcli/observatory/jev.py",
       "notes": "Local baseline rubric critic; judge independence is an evaluation factor.",
       "operational_state": "dispatch_only_baseline",
-      "qualification_state": "qualified"
+      "qualification_state": "role_mapped"
     },
     {
       "candidate_id": "local.deepcli.kev",
@@ -88,7 +88,7 @@
       "source_ref": "deepcli/deepcli/observatory/kev.py",
       "notes": "Local baseline exact/token-F1 reference verifier.",
       "operational_state": "dispatch_only_baseline",
-      "qualification_state": "qualified"
+      "qualification_state": "role_mapped"
     },
     {
       "candidate_id": "local.deepcli.laya",
@@ -102,7 +102,7 @@
       "source_ref": "deepcli/deepcli/observatory/laya.py",
       "notes": "Local baseline reducer; current weighted scalar remains a baseline preference.",
       "operational_state": "dispatch_only_baseline",
-      "qualification_state": "qualified"
+      "qualification_state": "role_mapped"
     },
     {
       "candidate_id": "catalog.S1-01",
@@ -116,7 +116,7 @@
       "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#Blocked-paid-list",
       "notes": "TypeSafe AI Jev; evaluate in the typed-decision lane.",
       "operational_state": "blocked_paid_owner_gate",
-      "qualification_state": "qualified"
+      "qualification_state": "role_mapped_unverified"
     },
     {
       "candidate_id": "catalog.S1-02",
@@ -130,7 +130,7 @@
       "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#T1-KEV",
       "notes": "Jared Palmer Kev; TypeSafe-compatible serving is catalogued, candidate-specific trial evidence remains required.",
       "operational_state": "trial_candidate_composition_required",
-      "qualification_state": "qualified"
+      "qualification_state": "role_mapped_unverified"
     },
     {
       "candidate_id": "catalog.S1-03",
@@ -144,7 +144,7 @@
       "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#T1-LAYA",
       "notes": "ConvAI Laya decision encoder family; preserve exact checkpoint and serving provenance per trial.",
       "operational_state": "evaluated_self_hosted",
-      "qualification_state": "qualified"
+      "qualification_state": "role_mapped_unverified"
     },
     {
       "candidate_id": "catalog.S1-04",
@@ -158,7 +158,7 @@
       "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#T1-MEV",
       "notes": "Recruiting-domain Mev encoder/decision-head candidate; domain-specific evaluation required.",
       "operational_state": "referenced_not_runnable",
-      "qualification_state": "qualified"
+      "qualification_state": "role_mapped_unverified"
     },
     {
       "candidate_id": "catalog.S1-05",
@@ -172,7 +172,7 @@
       "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#T1-MEV",
       "notes": "Mellow AI mev option-selection model; protocol and adapter compatibility require validation.",
       "operational_state": "trial_candidate_host_blocked",
-      "qualification_state": "qualified"
+      "qualification_state": "role_mapped_unverified"
     },
     {
       "candidate_id": "catalog.S2-01",

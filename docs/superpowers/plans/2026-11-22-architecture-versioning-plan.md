@@ -144,6 +144,13 @@
 - [ ] Request an independent code review and resolve material findings.
 - [ ] Observe the trusted master refresh after promotion and verify the generated manifest and diagram assets on the resulting master SHA.
 
+
+## Cross-system follow-up observations
+
+- Context-relationship index on master: `latest_observed_at=2026-10-26`, `history_coverage.status=PARTIAL_CONTINUATION_REQUIRED`, `next_start_page=2`, and source SHA `dca947b88cbf10a8c9d6d52a0f1cc20f5c2fdd40`. Its seven specialized scopes cover GitHub automation, provider telemetry, experiment evidence, and related operational surfaces; architecture source paths remain a separate coverage addition. Keep graph publication with its dedicated workflow and register a CRG follow-up for `architecture.md`, `docs/architecture/**`, Mermaid source maps, VERSION/CHANGELOG, and derived-manifest provenance.
+- Trusted-writer audit: repository search identified additional master-writing workflows including `x-observatory.yml`, `cross-plane-graph.yml`, `graph-matrix-census.yml`, `repository-observatory.yml`, `context-relationship-reconcile.yml`, and quota refresh workflows. This PR hardens the architecture-docs writer; register a separate workflow-surface item to inventory master writers, enforce `refs/heads/master` for manual dispatch, and test branch/permission boundaries.
+- Termux MCP device preflight was unavailable in this session; the repository `termux smoke` Actions job supplies the execution-parity evidence for this change.
+
 ## Execution record
 
 - Branch: docs/architecture-versioning-automation-20261122-v3.

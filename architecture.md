@@ -286,7 +286,7 @@ SHE snapshots require source_sha, generated_at, coverage and corpus manifest SHA
 
 The current architecture release is [1.0.0](docs/architecture/VERSION). The [versioning contract](docs/architecture/VERSIONING.md) defines MAJOR / MINOR / PATCH classification, same-change changelog requirements, and the automated refresh lifecycle. [CHANGELOG.md](docs/architecture/CHANGELOG.md) records semantic releases.
 
-The generated architecture manifest at docs/architecture/generated/architecture-manifest.json binds the version to sorted canonical source paths, per-file SHA-256 fingerprints, a source-set digest, and diagram source/render digests. The manifest is deterministic and omits wall-clock metadata; Git commit, Actions run, and artifact identity remain in the execution record.
+The generated architecture manifest at docs/architecture/generated/architecture-manifest.json binds the version to sorted canonical source paths, per-file SHA-256 fingerprints, a source-set digest, and diagram source/render digests. The manifest carries deterministic source and render metadata; Git commit, Actions run, artifact identity, and timestamps remain in the execution record.
 
 Pull requests validate the version delta, test the generator, render architecture flow diagrams to SVG, render operational diagrams to PNG, and upload review evidence. The existing trusted master refresh commits changed generated projections after merge. Mermaid sources and domain documents remain authoritative; generated files remain projections.
 

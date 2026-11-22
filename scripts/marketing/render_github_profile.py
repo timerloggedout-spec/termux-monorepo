@@ -182,6 +182,14 @@ def render(root: Path, output: Path, as_of: dt.date | None = None) -> dict[str, 
         )
     offer = safe_offer(partner["offer"])
     offer_line = f"\n\n{html.escape(offer)}" if offer else ""
+    hackathon = next((v for v in featured if v["kind"] == "hackathon"), None)
+    if hackathon:
+        hackathon_summary = html.escape(hackathon.get("highlight", hackathon["purpose"]))
+        hackathon_line = f"**[{html.escape(hackathon['title'])}]({hackathon['url']})** — {hackathon_summary}"
+        if hackathon.get("related_url"):
+            hackathon_line += f" · [Build story]({hackathon['related_url']})"
+    else:
+        hackathon_line = "See the public video library for current demos."
     readme = f'''<p align="center"><img src="./assets/hero.svg" alt="Software built in the open with receipts" width="100%"></p>
 
 <p align="center">
@@ -203,7 +211,7 @@ def render(root: Path, output: Path, as_of: dt.date | None = None) -> dict[str, 
 
 ### Hackathon highlight
 
-{next((f"**[{v['title']}]({v['url']})** — {html.escape(v['purpose'])}" for v in featured if v["kind"] == "hackathon"), "See the public video library for current demos.")}
+{hackathon_line}
 
 ## Partner spotlight · {week_label}
 

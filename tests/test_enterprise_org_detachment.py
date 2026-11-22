@@ -74,5 +74,28 @@ class EnterpriseOrgDetachmentTests(unittest.TestCase):
         self.assertIn("integration_unverified:app_installations", findings)
 
 
+    def test_transfer_allows_destination_organization_identity(self):
+        before = snapshot()
+        after = snapshot("free")
+        after["organization"]["id"] = "999999999"
+        after["organization"]["repositories"][0]["full_name"] = "asastraneonexus/termux-monorepo_enterprise"
+        findings = compare_snapshots(before, after, "transferred", "asastraneonexus")
+        self.assertEqual(findings, [])
+
+    def test_transfer_flags_repository_owner_mismatch(self):
+        before = snapshot()
+        after = snapshot("free")
+        after["organization"]["id"] = "999999999"
+        after["organization"]["repositories"][0]["full_name"] = "unexpected-owner/termux-monorepo_enterprise"
+        findings = compare_snapshots(before, after, "transferred", "asastraneonexus")
+        self.assertTrue(any(item.startswith("repository_owner_path_mismatch:") for item in findings))
+
+    def test_detachment_requires_same_organization_identity(self):
+        after = snapshot("free")
+        after["organization"]["id"] = "999999999"
+        findings = compare_snapshots(snapshot(), after, "detached", "search-astute-ly")
+        self.assertIn("organization_id_changed", findings)
+
+
 if __name__ == "__main__":
     unittest.main()

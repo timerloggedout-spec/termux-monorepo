@@ -84,3 +84,46 @@ def test_full_trial_with_real_adapters_fake_transports(monkeypatch, tmp_path):
     assert record["artifacts"][0]["text"] == "hello world"
     assert record["jevs"][0]["scores"] == {"quality": 0.9}
     assert record["winner"]["provider"] == "gemini"
+
+
+def test_trial_partial_jev_failure_preserves_candidate_identity(monkeypatch, tmp_path):
+    import deepcli.observatory.leaderboard as lb_mod
+
+    monkeypatch.setattr(lb_mod, "_DEFAULT", tmp_path / "lb.json")
+    monkeypatch.setattr(trial, "_bank_config", lambda *args: {})
+    monkeypatch.setattr(trial, "_retain", lambda *args: 200)
+
+    async def critique_by_candidate(artifact, rubric, judge_provider, judge_model,
+                                    client_factory=None):
+        if artifact["provider"] == "gemini":
+            raise RuntimeError("simulated judge failure")
+        return {"scores": {"quality": 0.9}, "judge_model": judge_model}
+
+    monkeypatch.setattr(trial, "critique", critique_by_candidate)
+
+    def factory(provider, model):
+        if provider == "gemini":
+            adapter = GeminiAdapter(transport=_gemini_transport, api_key="test-key")
+        else:
+            adapter = OpenRouterAdapter(transport=_openrouter_transport, api_key="test-key")
+        adapter.model = model
+        return adapter
+
+    record = asyncio.run(trial.run_trial(
+        "hi",
+        [("gemini", "gemini-2.5-flash"), ("openrouter", "openrouter/free")],
+        {"quality": "0..1"},
+        ("openrouter", "openrouter/free"),
+        reference={"text": "hello world"},
+        client_factory=factory,
+    ))
+
+    assert record["run_id"]
+    assert [row["candidate_id"] for row in record["laya"]["ranked"]] == [
+        f'{record["run_id"]}-candidate-0001'
+    ]
+    assert record["winner"]["provider"] == "openrouter"
+    assert record["laya"]["excluded"][0]["candidate_id"] == (
+        f'{record["run_id"]}-candidate-0000'
+    )
+

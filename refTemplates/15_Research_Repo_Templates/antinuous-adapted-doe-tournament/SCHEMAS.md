@@ -200,6 +200,8 @@ The first checked-in registry uses `classifier.graph-registry.v1`:
 
 The registry separates role contracts, local implementations, catalog-backed candidates, and composition graphs. Catalog candidates refer to stable IDs in `config/system_one_catalog.json`; the registry keeps the catalog's heterogeneous layers intact. Local Mev/Jev/Kev/Laya roles are incumbent candidates. The similarly named external projects remain independent candidates with explicit adapter readiness. The typed-decision graph is design-only pending candidate-specific execution adapters and matched trials.
 
+The registry separately pins `ops/classifiers/classifiers-feed.json`, a 71-unit estate snapshot generated 2026-11-02: 43 live, 26 dormant and 2 dead. The estate includes systems, pipelines, routing, gates and feed surfaces; it is a broader operating inventory, not a set of 71 model candidates. The validator checks the pinned counts against the source rows and reports drift.
+
 The registry's canonical cohort reference is `manager.tournament.v1`. It does not create a second cohort identity.
 
 ## Classifier graph manifest (proposed)

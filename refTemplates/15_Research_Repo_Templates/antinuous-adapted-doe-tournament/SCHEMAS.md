@@ -200,7 +200,9 @@ The first checked-in registry uses `classifier.graph-registry.v1`:
 
 The registry separates role contracts, local implementations, catalog-backed candidates, and composition graphs. Catalog candidates refer to stable IDs in `config/system_one_catalog.json`; the registry keeps the catalog's heterogeneous layers intact. Local Mev/Jev/Kev/Laya roles are incumbent candidates. The similarly named external projects remain independent candidates with explicit adapter readiness. The typed-decision graph is design-only pending candidate-specific execution adapters and matched trials.
 
-The registry separately pins `ops/classifiers/classifiers-feed.json`, a 71-unit estate snapshot generated 2026-11-02: 43 live, 26 dormant and 2 dead. The estate includes systems, pipelines, routing, gates and feed surfaces; it is a broader operating inventory, not a set of 71 model candidates. The validator checks the pinned counts against the source rows and reports drift.
+The registry separately pins `ops/classifiers/classifiers-feed.json`, a 71-unit estate snapshot generated 2026-11-02: 43 live, 26 dormant and 2 dead. The estate spans systems, pipelines, routing, gates and feed surfaces; its units form a broader operating inventory than the model-candidate set. The validator checks pinned counts against source rows and reports drift.
+
+Each candidate records both `readiness` and `operational_state`. Example distinctions: the local Jev role is an incumbent used by dispatch; external TypeSafe Jev is catalogued while its hosted route remains paid-gated; external Laya has a self-hosted evaluation record; external Kev requires its compatible serving composition. See `docs/ops/SYSTEM-ONE-CATALOG.md` and the census `TRIALS.md` for evidence.
 
 The registry's canonical cohort reference is `manager.tournament.v1`. It does not create a second cohort identity.
 

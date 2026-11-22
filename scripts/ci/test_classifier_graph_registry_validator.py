@@ -140,6 +140,12 @@ class ClassifierGraphRegistryTests(unittest.TestCase):
                          {item["candidate_id"] for item in self.registry["candidates"]
                           if item["kind"] == "catalog"})
 
+    def test_matched_cohort_comparator_is_versioned_and_present(self):
+        comparator = self.registry["implementation_competition"]["comparison_engine"]
+        self.assertEqual(comparator["implementation_id"], "matched-cohort-comparator")
+        self.assertEqual(comparator["version"], "0.1.0")
+        self.assertTrue((ROOT / comparator["source_ref"]).is_file())
+
     def test_tournament_implementation_competition_is_gated(self):
         competition = self.registry["implementation_competition"]
         self.assertEqual(competition["schema"], "tournament.implementation-competition.v1")

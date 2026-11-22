@@ -170,7 +170,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         with os.fdopen(descriptor, "w", encoding="utf-8") as output_file:
             json.dump(projection, output_file, indent=2, sort_keys=True)
-            output_file.write("\\n")
+            output_file.write("\n")
             output_file.flush()
             os.fsync(output_file.fileno())
         os.replace(temporary_path, args.output)

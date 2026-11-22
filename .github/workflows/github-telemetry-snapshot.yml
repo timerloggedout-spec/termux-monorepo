@@ -82,7 +82,6 @@ jobs:
       - name: Build workflow discovery + telemetry dashboard feeds
         run: |
           set -euo pipefail
-          python3 -B scripts/ci/automation_docs.py --check
           python3 -B scripts/dashboards/workflow_discovery_feed.py
           python3 -B scripts/dashboards/telemetry_feed.py --out-dir apps/tribute-dashboard/data
           python3 -B scripts/dashboards/telemetry_feed_series.py

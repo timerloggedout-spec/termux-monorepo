@@ -1,34 +1,54 @@
-"""Laya — merger. Weighted rank across Mev/Jev/Kev, resolve ties by Kev.
+"""Laya — aligned evidence reducer for the local observatory role.
 
-Role contract: (artifacts[i], jevs[i], kevs[i], weights) ->
-{winner, ranked[], synthesis, provenance[]}
+Each candidate keeps one artifact, one critique, and one verification result.
+Candidate IDs preserve identity across partial stage failures.
 """
 from __future__ import annotations
-from typing import Any
 
 
-def _compose(a, j, k) -> float:
+def _compose(a, j, k, weights) -> float:
     jv = j.get("scores") or {}
     j_avg = sum(jv.values()) / len(jv) if jv else 0.0
     k_score = k.get("match_score", 0.0)
-    return 0.7 * j_avg + 0.3 * k_score
+    return weights["jev"] * j_avg + weights["kev"] * k_score
 
 
 def synthesize(artifacts: list[dict], jevs: list[dict], kevs: list[dict],
                weights: dict | None = None) -> dict:
+    """Rank only complete, identity-aligned candidate evidence triples."""
     weights = weights or {"jev": 0.7, "kev": 0.3}
+    if not (len(artifacts) == len(jevs) == len(kevs)):
+        raise ValueError("artifacts, jevs, and kevs must have equal lengths")
+
     scored = []
+    excluded = []
     for a, j, k in zip(artifacts, jevs, kevs):
+        ids = [x.get("candidate_id") for x in (a, j, k)]
+        present_ids = [value for value in ids if value is not None]
+        if present_ids and (len(present_ids) != 3 or len(set(present_ids)) != 1):
+            raise ValueError(f"candidate evidence identity mismatch: {ids}")
+        candidate_id = present_ids[0] if present_ids else None
+        if not all(x.get("ok", True) for x in (a, j, k)):
+            excluded.append({
+                "candidate_id": candidate_id,
+                "provider": a.get("provider"),
+                "model": a.get("model"),
+                "artifact_ok": a.get("ok", True),
+                "jev_ok": j.get("ok", True),
+                "kev_ok": k.get("ok", True),
+            })
+            continue
         jev_scores = j.get("scores") or {}
         j_avg = sum(jev_scores.values()) / len(jev_scores) if jev_scores else 0.0
         k_score = k.get("match_score", 0.0)
-        composite = weights["jev"] * j_avg + weights["kev"] * k_score
-        scored.append((composite, j_avg, k_score, a, j, k))
+        composite = _compose(a, j, k, weights)
+        scored.append((composite, j_avg, k_score, a, j, k, candidate_id))
 
     scored.sort(key=lambda x: (-x[0], -x[2]))
     ranked = []
-    for composite, j_avg, k_score, a, j, k in scored:
+    for composite, j_avg, k_score, a, j, k, candidate_id in scored:
         ranked.append({
+            "candidate_id": candidate_id,
             "provider": a.get("provider"),
             "model": a.get("model"),
             "composite": round(composite, 4),
@@ -42,11 +62,13 @@ def synthesize(artifacts: list[dict], jevs: list[dict], kevs: list[dict],
         "role": "laya",
         "winner": ranked[0] if ranked else None,
         "ranked": ranked,
+        "excluded": excluded,
         "synthesis": winner[3].get("text", "") if winner else "",
         "provenance": [
-            {"provider": a.get("provider"), "model": a.get("model"),
+            {"candidate_id": candidate_id,
+             "provider": a.get("provider"), "model": a.get("model"),
              "jev": j.get("judge_model"), "kev_ref": k.get("reference_id")}
-            for _, _, _, a, j, k in scored
+            for _, _, _, a, j, k, candidate_id in scored
         ],
         "weights": weights,
     }

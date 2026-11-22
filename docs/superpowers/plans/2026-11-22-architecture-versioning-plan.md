@@ -20,7 +20,7 @@
 ## Verification record
 
 - Local test-first check: the new test module initially failed because scripts/ci/architecture_docs.py was absent.
-- Local implementation check: 7 focused tests passed after the generator was implemented.
+- Local implementation check: 8 focused tests passed after the generator was implemented.
 - Local Python compilation: passed.
 - Repository Actions, Mermaid CLI, repository gate, Termux smoke, and trusted master refresh remain pending until the branch is pushed and the PR validation cohort completes.
 

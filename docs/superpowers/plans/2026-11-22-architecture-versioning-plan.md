@@ -160,7 +160,7 @@
 - Workspace adaptation: this session has GitHub connector access; the isolated remote feature branch is the working workspace. Local fixture tests provide unit evidence and GitHub Actions supplies integration evidence.
 - Loopy adaptation: use Observe → Choose → Act → Verify → Record → Repeat-or-stop. The supplied Loop Library specification provides the six-step workflow contract; published catalog matching remains an open discovery item, so this implementation uses the project-local loop.
 - Local verification: 16/16 architecture manifest and workflow tests passed; Python compilation passed.
-- PR #5770 and PR #5771 were superseded during the DO Statement Style audit. The v3 branch starts at the latest valid predecessor head 70cb4dae56e6d98598ab833ac9bfeffd87441daa; its merge base is master 697c0a43e57ea16c1503826d48a1f0d7f58c3fa6, and the eleven-commit master-side delta contains generated operational records with zero path overlap.
+- PR #5770 and PR #5771 were superseded during the DO Statement Style audit. The v3 branch starts at the latest valid predecessor head 70cb4dae56e6d98598ab833ac9bfeffd87441daa; its merge base is master 697c0a43e57ea16c1503826d48a1f0d7f58c3fa6, and the current five-commit master-side delta contains generated operational records with zero path overlap.
 - The initial combined status records Vercel daily deployment quota exhaustion; adaptive-wait classifies Vercel as an advisory signal. The successor branch uses imperative commit subjects to satisfy the repository style gate.
 - Successor PR #5772 is open and ready for review; GitHub PR metadata owns the live head SHA and mergeability state.
 - Pending evidence: exact PR-head Actions, independent review, generated artifact inspection, and trusted master refresh.

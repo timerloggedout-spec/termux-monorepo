@@ -1,20 +1,33 @@
 # DoE Tournament Contract
 
-**Contract ID:** doe.tournament.v1  
-**Status:** proposed reference contract  
-**Authority:** repository-owned; implementation mapping required.
+**Extension contract:** doe.design.v1  
+**Canonical cohort contract:** manager.tournament.v1  
+**Status:** proposed extension; existing schema remains authoritative.
+
+## 0. Authority and reuse
+
+The monorepo already defines:
+- docs/ops/MANAGER-TOURNAMENT.schema.json — strict manager.tournament.v1 cohort envelope.
+- docs/research/MANAGER-TOURNAMENT-CONTRACT.md — same-cohort manager comparison, judge hierarchy and anti-gaming rules.
+- deepcli/deepcli/observatory/doe.py — full factorial, Taguchi L9 and seeded random assignment.
+- deepcli/deepcli/observatory/trial.py and tournament.py — trial and campaign orchestration.
+- docs/ops/EVOLUTIONARY-REPLAY.md — deterministic replay and incumbent-preserving evolutionary policy screening.
+
+This document specifies the missing design-management layer: immutable experiment versions, factor-level definitions, treatment assignments, adaptive-allocation decisions and promotion lineage. It does not introduce a competing manager cohort schema.
 
 ## 1. Experiment preregistration
 
-Every tournament begins with an immutable preregistration record containing objective and decision question; hypothesis and null/alternative where statistically meaningful; task population and cohort inclusion criteria; factors, levels, controls and constraints; randomization/blocking/assignment method; outcome metrics and evaluator versions; sample-size rationale and stopping rule; resource budget and safety limits; promotion criteria and owner.
+Every tournament begins with an immutable design record containing objective and decision question; hypothesis and null/alternative where statistically meaningful; task population and cohort inclusion criteria; factors, levels, controls and constraints; randomization/blocking/assignment method; outcome metrics and evaluator versions; sample-size rationale and stopping rule; resource budget and safety limits; promotion criteria and owner.
 
 Changing the design creates a new experiment_version. Record deviations as events with reason and actor.
+
+The design record references a canonical manager.tournament.v1 record by tournament_id and cohort_id. It carries the task_contract_hash, environment_fingerprint, manager policy hashes, evaluation_contract and repository provenance from that canonical record.
 
 ## 2. Factor model
 
 | Factor | Example levels |
 |---|---|
-| Manager policy | sequential, hierarchical, market, swarm |
+| Manager policy | sequential, hierarchical, blackboard, hybrid |
 | Topology | DAG, blackboard, pipeline, hybrid |
 | Execution provider | local, Actions, MCP peer, container |
 | Model family | catalog snapshot entries |
@@ -35,6 +48,8 @@ Do not hardcode model IDs as architecture. Resolve eligible providers from a dat
 - Keep exploration and exploitation cohorts identifiable.
 - Prevent leakage of hidden evaluator answers into worker context.
 - Record all exclusions and incomplete assignments.
+
+Reuse the existing DoE functions where their semantics fit. Add a design method only when the current full-factorial, Taguchi L9 and seeded assignment helpers cannot express the preregistered design.
 
 ## 4. Outcome vector
 
@@ -80,7 +95,7 @@ experiment_id + experiment_version + tournament_id + cohort_id + treatment_id
 + task_id + run_id + run_attempt + head_sha
 ~~~
 
-Record provider/model/adapter/manager/agent identity separately. Store artifact names, media types, byte counts and SHA-256 digests. Raw prompts, completions, credentials and arbitrary tool payloads stay outside the canonical public evidence plane.
+The tournament_id/cohort_id must resolve to the canonical manager.tournament.v1 envelope. Record provider/model/adapter/manager/agent identity separately. Store artifact names, media types, byte counts and SHA-256 digests. Raw prompts, completions, credentials and arbitrary tool payloads stay outside the canonical public evidence plane.
 
 ## 9. Stopping rules
 

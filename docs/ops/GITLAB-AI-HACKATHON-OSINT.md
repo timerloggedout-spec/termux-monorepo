@@ -26,7 +26,7 @@ Treat these as separate events/programs. Their rules, dates, registration states
 
 - Devpost: [event](https://gitlab.devpost.com/) · [official rules](https://gitlab.devpost.com/rules) · [dates](https://gitlab.devpost.com/details/dates) · [resources](https://gitlab.devpost.com/resources) · [updates](https://gitlab.devpost.com/updates)
 - Submission window: **2026-02-09 10:00 ET – 2026-03-25 14:00 ET**.
-- Judging: **2026-03-30 – 2026-04-17**; winners announced **2026-04-22 14:00 ET**.
+- Judging: **2026-03-30 – 2026-04-17**; winners announced **2026-04-22 14:00 ET**. The rules give the judging window as 10:00 ET start / 17:00 ET end; the connector's structured dates differ on the start instant (15:45Z). Preserve this source discrepancy for a future raw-page reconciliation.
 - Current phase: **closed** (Devpost connector, fetched 2026-11-22).
 - Published prize pool: **$65,000**.
 - Devpost listing: 6,922 participants (directory/event listing observation).
@@ -43,8 +43,8 @@ The connector's prize catalogue totals $65,000. The official rules enumerate the
 - Devpost: [event](https://gitlab-transcend.devpost.com/) · [official rules](https://gitlab-transcend.devpost.com/rules).
 - Registration: **2026-09-29 10:00 UTC – 2026-10-27 13:00 UTC**.
 - Submissions: **2026-10-05 17:00 UTC – 2026-10-27 13:00 UTC**.
-- Judging: **2026-10-28 – 2026-11-16**.
-- Devpost connector reports winners announced **2026-11-18 17:00:41 UTC**; the rules text says “on or around November 16”. Preserve this as a source discrepancy and prefer the live event-date record for the observed announcement timestamp.
+- Judging: rules state **2026-10-28 10:00 UTC – 2026-11-14 17:00 UTC**; the connector's structured date record reports **2026-10-28 09:00 UTC – 2026-11-16 23:45 UTC**.
+- Devpost connector reports winners announced **2026-11-18 17:00:41 UTC**; the rules text says “on or around November 16”. Preserve both judging-window and winner-date differences as source discrepancies; do not silently normalize them.
 - Current phase: **closed** (fetched 2026-11-22).
 - Prize pool: **$45,000**.
 - Theme: agents and flows that automate post-code DevSecOps lifecycle stages, including review, security scanning, testing, compliance, deployment, and monitoring.

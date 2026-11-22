@@ -25,4 +25,6 @@ The reference is useful for:
 
 The pinned repositories inform the monorepo's provider catalog design. This slot records source identity and architectural evidence; package installation, upstream execution, custom forks, gitlinks, provider activation and inference remain separate decisions.
 
+DoE experiment design and immutable variant pins: [DOE-REGISTRY.json](DOE-REGISTRY.json). The current experiment is version `1.0.0`, status `planned`; Python and TypeScript variants are independently pinned, and the registry records controlled factors, response variables, acceptance criteria and immutable run keys. Execution results remain empty until reproducible runs are performed.
+
 Comparative analysis: [Vultr Inference Catalog Reference RECON](../../docs/ops/VULTR-INFERENCE-CATALOG-REFERENCE-RECON.md).

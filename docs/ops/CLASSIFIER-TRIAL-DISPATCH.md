@@ -94,8 +94,9 @@ APIs from Actions (runs 40504965897–40506393011). Established state:
 The candidate-alignment defect is corrected in the current tournament
 branch. `trial.run_trial` assigns a stable per-trial candidate ID and
 retains one result slot per candidate at each stage. `laya.synthesize`
-checks vector lengths and candidate identity, excludes incomplete
-evidence triples, and records excluded candidates. Regression coverage
+validates candidate ID sets and joins Jev/Kev evidence by ID independent
+of stage-array order, excludes incomplete evidence triples, and records
+excluded candidates. Regression coverage
 includes direct identity mismatch and a multi-candidate trial where the
 first Jev critique fails and the second candidate remains correctly
 ranked. Test execution is pending CI.

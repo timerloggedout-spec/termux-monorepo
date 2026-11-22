@@ -27,11 +27,12 @@ The supplied DevSecOps Flow URL resolved to an **empty subgroup** at the
 2026-11-22 observation; it is retained as a URL-addressed source node, not
 misclassified as a project.
 
-The 2026 GitLab AI Hackathon and October 2026 Life After Code / Transcend
-edition are closed. The October GitLab Community Hackathon edition is also
-closed. Future edition dates are `NOT_ESTABLISHED`; no owner registration,
-group membership, or submission is asserted. This URL inventory is a source
-register; the current weekly event watcher does not yet consume it.
+The February–March 2026 GitLab AI Hackathon and October 2026 Life After Code /
+Transcend edition are closed. The next GitLab Community Hackathon is published
+for **January 21–28, 2027 UTC** (candidate C17); owner onboarding, registration,
+issue assignment, and contribution state remain NOT_ESTABLISHED. This URL
+inventory is a source register; the current weekly event watcher does not yet
+consume it.
 
 ## Surfaces
 

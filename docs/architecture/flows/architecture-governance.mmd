@@ -1,0 +1,17 @@
+flowchart TD
+    A["Canonical architecture sources"] --> B["Classify semantic impact"]
+    B --> C["Bump VERSION and CHANGELOG in the pull request"]
+    C --> D["Pull-request validation"]
+    D --> E["Unit tests and version-delta gate"]
+    E --> F["Render Mermaid sources"]
+    F --> G["Generate deterministic source and render manifest"]
+    G --> H["Upload review evidence"]
+    H --> I["Merge after repository gates"]
+    I --> J["Trusted master refresh"]
+    J --> K["Commit generated manifest and diagram projections"]
+    K --> L["WAIT / WATCH / RE-FETCH / COMPARE"]
+    L --> A
+    E -->|failure| M["Classify evidence and repair"]
+    F -->|failure| M
+    G -->|drift| M
+    M --> D

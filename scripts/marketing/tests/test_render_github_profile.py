@@ -98,7 +98,9 @@ class GitHubProfileRendererTests(unittest.TestCase):
             self.assertTrue((output / "assets/hero.svg").exists())
             self.assertTrue((output / "assets/highlights.svg").exists())
             self.assertTrue((output / "assets/partner-spotlight.svg").exists())
-            self.assertIn("Referral links may be affiliate links.", (output / "README.md").read_text(encoding="utf-8"))
+            generated_readme = (output / "README.md").read_text(encoding="utf-8")
+            self.assertIn("Referral links may be affiliate links.", generated_readme)
+            self.assertIn("Hackathon highlight", generated_readme)
 
 
 if __name__ == "__main__":

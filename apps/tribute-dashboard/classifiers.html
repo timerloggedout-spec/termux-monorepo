@@ -24,8 +24,11 @@
 <h3>Units by state</h3><div id="chart-state"></div>
 <h3>Units by group</h3><div id="chart-group"></div></div></section>
 
-<section aria-labelledby="quartet-h"><div class="head"><h2 id="quartet-h">Observatory quartet</h2></div>
+<section aria-labelledby="quartet-h"><div class="head"><h2 id="quartet-h">Observatory role set</h2></div>
 <div class="card" id="quartet"><p class="muted">Loading feed…</p></div></section>
+
+<section aria-labelledby="tournament-h"><div class="head"><h2 id="tournament-h">Tournament inventory</h2><span class="note" id="tournament-version"></span></div>
+<div class="card" id="tournament-inventory"><p class="muted">Loading classifier graph registry…</p></div></section>
 
 <section aria-labelledby="units-h"><div class="head"><h2 id="units-h">All units</h2><span class="note" id="units-count"></span></div>
 <div class="card"><div class="table-wrap"><table class="units"><thead><tr><th>Unit</th><th>Group</th><th>State</th><th>Converged</th><th>Outputs</th></tr></thead><tbody id="units-body"><tr><td colspan="5" class="muted">Loading feed…</td></tr></tbody></table></div></div></section>
@@ -58,11 +61,35 @@ async function load(){
   const byGroup={};
   for(const u of (f.units||[]))byGroup[u.group_name||u.group]=(byGroup[u.group_name||u.group]||0)+1;
   $('chart-group').innerHTML=CK.bars(Object.entries(byGroup).map(([label,value])=>({label,value})).sort((a,b)=>b.value-a.value));
+  const registry=await getJSON(['https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/config/classifier_graph_registry.json?t='+bust]);
+  if(registry){
+    const candidates=registry.candidates||[];
+    const models=candidates.filter(x=>x.kind==='catalog');
+    const mapped=models.filter(x=>x.qualification_state!=='unclassified');
+    const unclassified=models.length-mapped.length;
+    const comp=registry.implementation_competition||{};
+    const challenger=(comp.challengers||[])[0]||{};
+    const screen=(registry.graphs||[]).find(x=>x.graph_id==='model-catalog-screen')||{};
+    $('tournament-version').textContent='Registry '+(registry.registry_version||'—');
+    $('tournament-inventory').innerHTML=
+      stat(models.length,'model candidates')+
+      stat(mapped.length,'role-mapped')+
+      stat(unclassified,'awaiting qualification')+
+      stat((registry.infrastructure||[]).length,'infrastructure references')+
+      '<p>Model screen: <strong>'+esc(screen.status||'unregistered')+'</strong> · '+esc((screen.nodes||[]).length)+' candidate slots</p>'+
+      '<p>Incumbent: <strong>'+esc((comp.incumbent||{}).implementation_id||'—')+'</strong> · '+esc((comp.incumbent||{}).version||'')+'</p>'+
+      '<p>Challenger: <strong>'+esc(challenger.implementation_id||'—')+'</strong> · '+esc(challenger.status||'—')+'</p>'+
+      '<p class="muted">Model candidates remain grouped by declared capability. Unclassified entries enter qualification before matched trials. Graph and tournament versions compete as separate experimental units.</p>'+
+      '<p><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/config/classifier_graph_registry.json">Registry</a> · <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/config/classifier_tournament_experiment_plan.json">Experiment plan</a> · <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/refTemplates/15_Research_Repo_Templates/antinuous-adapted-doe-tournament/CLASSIFIER-GRAPH-TOURNAMENT.md">Tournament protocol</a></p>';
+  }else{
+    $('tournament-inventory').innerHTML='<p class="muted">Tournament registry unavailable. The estate census remains available above.</p>';
+  }
   const q=f.observatory_quartet||{};
   const role=(t,b)=>'<div class="role"><div class="label">'+esc(t)+'</div><p>'+esc(b)+'</p></div>';
-  let qh=role('Mev — producer',q.mev)+role('Jev — judge',q.jev)+role('Kev — verifier',q.kev)+role('Laya — weighted merger',q.laya);
+  let qh=role('Mev — producer',q.mev)+role('Jev — judge',q.jev)+role('Kev — verifier',q.kev)+role('Laya — evidence reducer',q.laya);
+  qh+='<p class="muted">These are local role contracts in the incumbent trial. Compare candidate implementations laterally; evaluate graph compositions as separate tournament arms.</p>';
   const kv=(k,v)=>'<p class="muted"><strong>'+esc(k)+':</strong> '+esc(typeof v==='string'?v:JSON.stringify(v))+'</p>';
-  for(const k of ['home','pipeline','trial','leaderboard','dispatch','hindsight','coded_quirk','first_completed_trial'])if(q[k]!=null)qh+=kv(k,q[k]);
+  for(const k of ['home','trial','leaderboard','dispatch','hindsight','first_completed_trial'])if(q[k]!=null)qh+=kv(k,q[k]);
   const vr=q.variance_requirement||{};
   if(vr.owner_requirement||vr.variance_state){
     qh+='<div class="role"><div class="label">Variance requirement</div>'

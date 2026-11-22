@@ -193,6 +193,7 @@ class ArchitectureDocumentationWorkflowTests(unittest.TestCase):
 
     def test_trusted_master_job_owns_generated_projection_writes(self) -> None:
         self.assertIn("contents: write", self.trusted_job)
+        self.assertIn("if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'", self.trusted_job)
         self.assertIn("architecture_docs.py --write", self.trusted_job)
         self.assertIn(
             "git add docs/ops/generated docs/architecture/generated",

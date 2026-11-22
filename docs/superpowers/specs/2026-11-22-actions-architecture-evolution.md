@@ -4,7 +4,7 @@
 **Status:** proposal design baseline  
 **Proposal:** `actions-architecture-evolution`  
 **Baseline:** `master` @ `3f082e1306169f914a8fda2b444e83ddc608dfe0` (2026-11-22)  
-**Design decision:** A + B + C approved in conversation; Repo-Story reserved as a potential future extension.
+**Design decision:** A + B + C approved in conversation; automated GitHub Pages publishing is the highest-priority delivery lane. Repo-Story remains an existing concept and is outside this MVP.
 
 ## 1. Purpose
 
@@ -18,8 +18,8 @@ The programme uses existing owners: GitHub Actions for execution, the automation
 |---|---|---|
 | A — architecture | One typed automation architecture model with stable IDs and explicit lineage | Generated inventory remains a projection of source contracts |
 | B — evidence | Versioned DoE factors, AppID migration receipts, and BRR evidence contract | Each owner keeps its own canonical records |
-| C — display | Tribute dashboard MVP with a generated, read-only event feed | Feed has no execution, promotion, or identity authority |
-| Future candidate | Repo-Story narrative reconstruction and commit replay | Candidate only; excluded from MVP dependencies |
+| C — display + publication | Tribute display-feed MVP, automatically refreshed and published through our existing GitHub Pages pipeline | Feed has no execution, promotion, or identity authority; GitHub Pages is the primary production target |
+| Existing concept | Repo-Story remains an existing concept/reference in the architecture landscape | This programme does not create a replacement Repo-Story product or treat it as a new MVP dependency |
 
 ## 3. Classification model
 
@@ -164,9 +164,11 @@ Required integrity rules:
 
 The current source review identified these as code-level repair candidates. Runtime reproduction and current scheduled artifact verification remain separate evidence tasks.
 
-## 8. Tribute display-feed MVP
+## 8. GitHub Pages publishing + Tribute display-feed MVP
 
-### 8.1 Product shape
+### 8.1 Priority and product shape
+
+**P0 delivery priority: our GitHub Pages publishing path.** The feed and page ship through the repository's existing publishing workflows. The existing GitHub Pages publisher remains the deployment authority; this programme adds an automatically refreshed feed and a new Tribute surface inside its established artifact.
 
 Add an **Automation Architecture** surface to Tribute, using the existing dashboard chrome, CSS tokens, navigation conventions, responsive layout, and chartkit standard.
 
@@ -190,13 +192,19 @@ Feed event families:
 
 Each event displays timestamp, category, entity, lifecycle/status, source revision, evidence links, and freshness. Filters cover domain, entity type, lifecycle, AppID role, DoE campaign, and BRR disposition.
 
-### 8.2 Feed contract
+### 8.2 Programmatic refresh and publication chain
 
-Use the existing `dashboard-surface-feed/v1` envelope for the MVP:
+Reuse the established `surface-feeds-collect.yml` refresh pattern: scheduled collection, `workflow_dispatch`, and source-path push triggers; deterministic collector; stable refresh branch; refresh pull request; CI validation; merge through the normal repository gates.
 
-`{schema, surface, generated_at, sources, honesty_rules, data, gaps}`
+The architecture feed collector reads committed canonical catalog, migration, DoE, and BRR records. API-derived observations enter through stamped snapshots produced by their owning collectors. The feed collector and browser page remain network-free.
 
-The MVP feed path is `apps/tribute-dashboard/data/actions-architecture-feed.json`. The page consumes only this feed. A deterministic collector reads committed catalog, migration, DoE, and BRR records. Any API observation enters through an existing stamped snapshot/receipt path; the page and collector remain network-free.
+After the feed PR merges to `master`, `.github/workflows/tribute-dashboard-deploy.yml` publishes through the existing GitHub Pages process. Its `pages` job updates the monorepo `gh-pages` project hub + matrix artifact. Its `user-site` job mirrors the Tribute dashboard to `timerloggedout-spec.github.io` under `/tribute/` and the compatibility `/help-wanted/` route. The dashboard path trigger already covers `apps/tribute-dashboard/**`, including the new page and feed. GitHub Pages is the primary target; Vercel remains optional and outside the MVP critical path.
+
+End-to-end chain:
+
+`canonical source change → scheduled/source-triggered collector → refresh PR → CI + review → merge master → tribute-dashboard-deploy → GitHub Pages artifact → live URL/source-SHA verification`.
+
+The collector proposes updates by PR and never commits directly to `master`. The deployment workflow runs after merge and publishes the merged source revision. A successful workflow is followed by a live URL check against the deployed version manifest/source SHA.
 
 Feed entries carry stable `event_id`, `event_type`, `occurred_at`, `entity_ref`, `status`, `source_ref`, `source_sha`, `evidence_refs`, and `freshness`. The collector sorts deterministically and records missing sources in `gaps`.
 
@@ -215,24 +223,19 @@ Feed entries carry stable `event_id`, `event_type`, `occurred_at`, `entity_ref`,
 
 1. Feed validates against the shared dashboard envelope.
 2. Collector output is deterministic for a fixed source set.
-3. Each event resolves to a canonical source and source revision.
-4. Unknown/missing evidence produces an explicit gap.
-5. Page consumes only the feed; tests pin that boundary.
-6. Charts meet `DASHBOARD-CHART-STANDARD.md`.
-7. No credential values, prompt bodies, private traces, or session artifacts enter the feed.
-8. Tests cover schema validity, stable event IDs, sort order, unresolved refs, stale status, and empty-state rendering.
+3. Source-path changes and the scheduled cadence invoke the collector automatically; manual dispatch remains available.
+4. Collector emits a refresh PR only when feed content changes; repeated unchanged runs are clean no-ops.
+5. Each event resolves to a canonical source and source revision; unknown/missing evidence produces an explicit gap.
+6. Page consumes only the feed; tests pin that boundary.
+7. Merging the feed/page change to `master` automatically invokes the existing GitHub Pages publisher.
+8. The deployed `/tribute/` URL and compatibility `/help-wanted/` URL expose the expected manifest/source SHA; publication remains pending until live verification passes.
+9. Charts meet `DASHBOARD-CHART-STANDARD.md`.
+10. No credential values, prompt bodies, private traces, or session artifacts enter the feed.
+11. Tests cover schema validity, stable event IDs, sort order, unresolved refs, stale status, idempotent refresh, stale status, and empty-state rendering.
 
-## 9. Repo-Story — future candidate
+## 9. Existing Repo-Story concept boundary
 
-Repo-Story is a potential future C: a narrative and temporal reconstruction layer that explains how an automation entity evolved across commits, PRs, modularization epochs, and operational outcomes.
-
-Candidate responsibilities:
-- compose a human-readable lineage narrative from verified GitHub history;
-- link architecture epochs to exact commits and PRs;
-- replay state transitions from immutable receipts;
-- distinguish verified events from inferred narrative candidates.
-
-Repo-Story remains outside the MVP execution graph. The Context Relationship Index remains the metadata evidence substrate; Repo-Story may consume its verified references and temporal snapshots. The candidate receives a separate proposal/item and DoE admission before implementation.
+Repo-Story is an existing concept in the repository's broader architecture landscape, with its own historical concept artifacts and RepoStory pilot identity records. This programme records a cross-reference only. It does not re-scope, rebuild, promote, or productize Repo-Story. Any future implementation decision belongs to Repo-Story's own concept and governance path.
 
 ## 10. Delivery sequence
 
@@ -241,9 +244,10 @@ Repo-Story remains outside the MVP execution graph. The Context Relationship Ind
 | A1 | Typed architecture and lineage contract | Schema, validator, source crosswalk |
 | B1 | DoE matrix amendment and campaign design | Versioned dimensions 41–42; experiment design record |
 | B2 | AppID and BRR evidence crosswalk | Gate/evidence mapping; BRR regression fixtures |
-| C1 | Feed collector and contract tests | Deterministic JSON feed + tests |
-| C2 | Tribute page and chartkit integration | Feed-only UI + accessibility and freshness tests |
-| C3 | Operational observation | Current-SHA run/artifact receipts and review |
+| C1 (P0) | Programmatic collector and refresh PR | Scheduled + source-triggered collection, deterministic feed, clean no-op, refresh PR |
+| C2 (P0) | GitHub Pages publication path | Existing publisher deploys the merged feed/page; live URL and source-SHA verification |
+| C3 | Tribute page and chartkit integration | Feed-only UI + accessibility and freshness tests |
+| C4 | Operational observation | Current-SHA run/artifact receipts and review |
 
 ## 11. Source-of-truth boundaries
 

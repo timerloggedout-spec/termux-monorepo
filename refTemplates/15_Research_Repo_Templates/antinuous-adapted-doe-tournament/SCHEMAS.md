@@ -356,7 +356,6 @@ composition graph and tournament implementation.
 
 Each catalog-backed model candidate retains the catalog's exact `note`
 as `catalog_claim` and its exact `source_url` as
-`catalog_source_url`. These are source claims, not verified capability
-findings. The validator checks exact provenance alignment; qualification
+`catalog_source_url`. These are source claims; capability verification requires source review and matched trials. The validator checks exact provenance alignment; qualification
 work upgrades evidence state separately.
 

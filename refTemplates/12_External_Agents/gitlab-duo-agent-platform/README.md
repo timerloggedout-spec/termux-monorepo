@@ -2,7 +2,7 @@
 
 **Class:** External agent runtimes / agent-and-flow authoring patterns  
 **Source family:** GitLab AI Hackathon + GitLab Duo Agent Platform  
-**Disposition:** metadata-only reference; no gitlink, clone, or runtime dependency  
+**Disposition:** metadata-only reference; gitlink/clone/runtime dependency state: absent  
 **Related observatory record:** `docs/ops/GITLAB-AI-HACKATHON-OSINT.md`
 
 The public GitLab AI Hackathon participant template demonstrates the repository layout for custom GitLab Duo agents and flows. Its public project contains `agents/` and `flows/` directories, a license, and onboarding documentation.

@@ -95,4 +95,4 @@ Repository owner: timerloggedout-spec/termux-monorepo
 Research snapshot: 2026-11-22
 
 
-The canonical classifier inventory is `config/system_one_catalog.json` with its lifecycle and layer definitions documented in `docs/ops/SYSTEM-ONE-CATALOG.md`. Local Mev/Jev/Kev/Laya classes implement observatory roles; similarly named external projects are distinct catalog entries.
+The canonical classifier inventory is `config/system_one_catalog.json`, documented in `docs/ops/SYSTEM-ONE-CATALOG.md`. Keep role contract, local implementation, external candidate and protocol adapter as distinct identities. The System One adapter supports typed decisions; it is not a generic text-generation adapter.

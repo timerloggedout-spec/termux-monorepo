@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-22T16:24:06Z)
+# Lane matrix status (2026-11-22T16:27:58Z)
 
-- Master: `5908327a060fc650669c5002401c4fe6e67587f4`
+- Master: `b2d6cda38d36c354523d20455cf352f865f6bcf3`
 - Open PRs: **528**
 - Oldest: #47 (109.03d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -34,7 +34,7 @@
 | #47 | 109.03 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
 | #81 | 106.77 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
 | #103 | 105.64 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
-| #527 | 68.35 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
+| #527 | 68.36 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
 | #605 | 64.94 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
 | #684 | 62.92 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
 | #769 | 60.37 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
@@ -44,23 +44,23 @@
 | #1274 | 34.3 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
 | #1441 | 32.36 | CANDIDATE | state:unknown | feat(triage): reconcile official quota before disp |
 | #1469 | 32.14 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
-| #1470 | 32.13 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
-| #1495 | 31.58 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
+| #1470 | 32.14 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
+| #1495 | 31.59 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
 | #1513 | 31.34 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 31.34 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
-| #1516 | 31.33 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
-| #1531 | 31.32 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
+| #1516 | 31.34 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
+| #1531 | 31.33 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
 | #1537 | 31.31 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 30.64 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 29.56 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
 | #1616 | 29.55 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 29.55 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
 | #1626 | 29.43 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
-| #1645 | 28.66 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
+| #1645 | 28.67 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
 | #1650 | 28.59 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
 | #1694 | 26.62 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
-| #1734 | 26.21 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
+| #1734 | 26.22 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
 | #1735 | 26.21 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
-| #1966 | 25.47 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
+| #1966 | 25.48 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
 
 Writer only: does not merge. Dual-gate remains promote authority. HOLD/WAIT/OBSERVE are invalid parking. Age alone ≠ promote.

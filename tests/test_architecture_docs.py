@@ -160,6 +160,22 @@ class ArchitectureDocumentationTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "VERSION and CHANGELOG"):
                 architecture_docs.check_version_bump(root, "HEAD~1")
 
+    def test_version_check_requires_current_version_at_top_of_changelog(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.make_root(root)
+            self.init_git(root)
+            (root / "architecture.md").write_text("# Architecture update\\n", encoding="utf-8")
+            (root / "docs/architecture/VERSION").write_text("1.1.0\\n", encoding="utf-8")
+            (root / "docs/architecture/CHANGELOG.md").write_text(
+                "# Changelog\\n\\n## 1.0.0 \\u2014 2026-11-22\\n- Previous baseline.\\n\\n## 1.1.0 \\u2014 2026-11-22\\n- New architecture change.\\n",
+                encoding="utf-8",
+            )
+            subprocess.run(["git", "add", "."], cwd=root, check=True)
+            subprocess.run(["git", "commit", "-qm", "misordered changelog entry"], cwd=root, check=True)
+            with self.assertRaisesRegex(ValueError, "first version heading"):
+                architecture_docs.check_version_bump(root, "HEAD~1")
+
     def test_version_check_rejects_non_increasing_version(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

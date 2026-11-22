@@ -84,6 +84,8 @@ def test_full_trial_with_real_adapters_fake_transports(monkeypatch, tmp_path):
     assert record["artifacts"][0]["text"] == "hello world"
     assert record["jevs"][0]["scores"] == {"quality": 0.9}
     assert record["winner"]["provider"] == "gemini"
+
+
 def test_trial_partial_jev_failure_preserves_candidate_identity(monkeypatch, tmp_path):
     import deepcli.observatory.leaderboard as lb_mod
 

@@ -145,6 +145,7 @@ class ClassifierGraphRegistryTests(unittest.TestCase):
         self.assertEqual(comparator["implementation_id"], "matched-cohort-comparator")
         self.assertEqual(comparator["version"], "0.1.0")
         self.assertTrue((ROOT / comparator["source_ref"]).is_file())
+        self.assertTrue((ROOT / comparator["cli_source_ref"]).is_file())
 
     def test_tournament_implementation_competition_is_gated(self):
         competition = self.registry["implementation_competition"]

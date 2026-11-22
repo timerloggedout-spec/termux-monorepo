@@ -4,7 +4,7 @@
 
 Optimize **validated, reproducible outcomes per total resource cost** across competing manager policies and execution configurations.
 
-A treatment is a complete execution condition, not just a model name:
+A treatment captures the complete execution condition, including model, graph, tools, prompt, budget and environment:
 
 ~~~text
 treatment = manager_policy × topology × provider/model × prompt_version × toolset × environment × evaluator
@@ -52,7 +52,7 @@ Append-only canonical JSONL observations plus immutable manifests, artifact hash
 
 ### Evaluation plane
 
-Runs independent correctness, completeness, safety, integration and reproducibility evaluators. ATES/WTCV contributes execution-efficiency observations but does not decide quality.
+Runs independent correctness, completeness, safety, integration and reproducibility evaluators. ATES/WTCV contributes execution-efficiency observations; independent evaluators determine quality.
 
 ## 3. Viable architecture schemas with dynamic utility
 
@@ -68,14 +68,14 @@ Dynamic utility: prioritize by expected value, dependency criticality, uncertain
 
 Every state change is an event: experiment-created, treatment-assigned, task-claimed, execution-started, artifact-produced, evaluation-recorded, promotion-proposed, promotion-accepted. Materialized views are rebuilt from events.
 
-Dynamic utility: compute current state and ranking from event history without rewriting historical runs. Corrections append superseding events.
+Dynamic utility computes current state and ranking from event history. Corrections append superseding events while preserving immutable historical runs.
 
 ### C. Hierarchical manager/worker swarm
 **Best for:** heterogeneous tasks requiring specialist decomposition.
 
 A manager chooses sequencing and parallelism; planners decompose; specialists execute; critics/evaluators assess; integrators produce a final result. Roles and capabilities are explicit and provider-independent.
 
-Dynamic utility: manager policies are treatments in the tournament. Compare whole-team outcomes, not raw model rankings.
+Dynamic utility: manager policies are treatments in the tournament. Compare whole-team outcomes with task acceptance and resource costs; use raw model rankings as diagnostics.
 
 ### D. Blackboard / shared evidence workspace
 **Best for:** open research, discovery and multi-agent synthesis.
@@ -125,7 +125,7 @@ Dynamic utility: weights are versioned decision context; the raw objective vecto
 
 ## 4. Dynamic utility contract
 
-Do not use one opaque score as the system of record.
+Preserve the full objective vector and evidence ledger as the system of record; treat composite scores as derived views.
 
 Store a raw outcome vector:
 
@@ -150,7 +150,7 @@ score = wq·quality + wr·reproducibility + wi·integration
         - wt·time - wc·total_cost - wh·human_effort - wx·risk
 ~~~
 
-Weights are configuration, not truth. Keep each raw dimension and its provenance.
+Weights express a versioned preference profile; retain each raw dimension and its provenance.
 
 ## 5. Versioning and identity
 
@@ -178,7 +178,7 @@ DRAFT → PREREGISTERED → ADMITTED → ASSIGNED → RUNNING → OBSERVED
 
 Execution outcomes remain separate: SUCCEEDED, FAILED, CANCELLED, TIMED_OUT, INCOMPLETE, SKIPPED.
 
-A queued task is admitted, not executed. A successful process is executed, not necessarily accepted. A passing evaluation is validated for its declared scope, not automatically promoted.
+Track task admission, execution, acceptance, validation and promotion as distinct lifecycle states. Each state carries its own receipt and acceptance rule.
 
 ## 7. Termux-first deployment profile
 
@@ -192,7 +192,7 @@ A queued task is admitted, not executed. A successful process is executed, not n
 - Optional object storage for large artifacts; keep hashes and manifests local.
 - Offline operation with deferred sync and idempotent reconciliation.
 
-The core scheduler must work without cloud accounts, paid observability vendors or a permanently running server.
+The core scheduler runs locally with deterministic fixtures; optional cloud accounts, paid observability and persistent services extend the adapter layer.
 
 ## 8. Security and reliability
 
@@ -200,7 +200,7 @@ The core scheduler must work without cloud accounts, paid observability vendors 
 - Explicit per-task read/write sets.
 - Secret injection at runtime only.
 - Redact event attributes before persistence/export.
-- Treat fingerprints as pseudonyms, not anonymization.
+- Treat fingerprints as pseudonymous identifiers; apply repository privacy controls to the underlying data.
 - Lease fencing for stale workers.
 - Idempotency keys for dispatch and artifact publication.
 - Bounded retries with preserved attempt history.
@@ -233,7 +233,7 @@ Reuse existing manager.tournament.v1, DeepCLI DoE/trial/tournament and evolution
 
 The **Self-Improvement Engine (SIE)** owns the bounded evidence-to-improvement cycle: observe, diagnose, preregister a challenger, execute matched treatments, evaluate, compare, record and promote/hold/reject. See SELF-IMPROVEMENT-ENGINE.md and OPERATING-SYSTEM.md.
 
-The 70+ classifier population is a capability registry. Compare individual classifiers laterally, then measure conditional error overlap and complementary strengths. Candidate routes are DAGs, not a mandatory linear chain: fan-out independent classifiers, join evidence by stable candidate ID, evaluate, and route/escalate only when declared predicates require it. Mev/Jev/Kev/Laya remain the current functional-role baseline adapter, not the classifier system's fixed topology. See CLASSIFIER-GRAPH-TOURNAMENT.md.
+The 70+ classifier population is a capability registry. Compare individual classifiers laterally, then measure conditional error overlap and complementary strengths. Candidate routes are DAGs with fan-out independent classifiers, evidence joins by stable candidate ID, evaluation, and conditional routing/escalation through declared predicates. Mev/Jev/Kev/Laya remain the current functional-role baseline adapter, not the classifier system's fixed topology. See CLASSIFIER-GRAPH-TOURNAMENT.md.
 
 Tournament implementation versions compete as complete policies (manager + router + graph + scheduler + evaluator + evidence/promotion rules). Classifier and graph tournaments are component-level experiments and ablations inside that larger competition.
 

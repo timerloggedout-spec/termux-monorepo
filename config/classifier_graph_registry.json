@@ -255,5 +255,16 @@
       "calibration"
     ],
     "held_out_required": true
+  },
+  "classifier_estate": {
+    "path": "ops/classifiers/classifiers-feed.json",
+    "schema": "classifiers-feed/v1",
+    "snapshot_date": "2026-11-02",
+    "unit_count": 71,
+    "states": {
+      "live": 43,
+      "dormant": 26,
+      "dead": 2
+    }
   }
 }

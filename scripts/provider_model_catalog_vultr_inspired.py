@@ -1,7 +1,6 @@
 """Native Vultr-inspired projection over the incumbent provider catalog.
 
-This module is an offline adapter: it imports no upstream SDK, performs no HTTP
-requests, reads no credentials, and makes no inference calls.
+This module projects local JSON through a standard-library-only offline adapter.
 """
 from __future__ import annotations
 

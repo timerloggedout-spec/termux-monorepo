@@ -22,7 +22,7 @@ The organization bootstrap workflow is `.github/workflows/research-astute-organi
 
 - `schemas/research-source.schema.json`: source/document metadata.
 - `schemas/research-entity.schema.json`: graph entities and typed relationships.
-- `registry/collections.json`: collection definitions and ownership.
+- `registry/collections.json`: collection definitions and ownership.\n- `registry/providers.json`: seeded provider endpoints, authority classification, access requirements and source-specific rights constraints.
 - `docs/INGESTION.md`: ingestion lifecycle, provenance and storage accounting.
 
 ## Ingestion lifecycle

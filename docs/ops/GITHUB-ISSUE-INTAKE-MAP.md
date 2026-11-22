@@ -64,7 +64,7 @@ A template enters the QUE dispatch subset when it contains a `SWARM-DISPATCH-BEG
 | [`research-service.yml`](../../.github/ISSUE_TEMPLATE/research-service.yml) | `research`, `research:service` | Same `research-intake.yml` route | — | Deterministic service/repository seed intake |
 | [`reverse-engineering-taxonomy.yml`](../../.github/ISSUE_TEMPLATE/reverse-engineering-taxonomy.yml) | `re-taxonomy` | `re-taxonomy-intake.yml`: issues `opened`, `reopened`, `edited` | — | Parses and validates a taxonomy/toolkit proposal |
 | [`reverse-engineering-taxonomy-record.yml`](../../.github/ISSUE_TEMPLATE/reverse-engineering-taxonomy-record.yml) | `re-taxonomy` | Same `re-taxonomy-intake.yml` route | — | Parses the validated placement/evidence record |
-| [`roadmap-completion.md`](../../.github/ISSUE_TEMPLATE/roadmap-completion.md) | `roadmap`, `completion`, `enhancement`; add `roadmap:{slug}` and `exercise:{slug}` for a specific exercise | `roadmap-completion.yml`: issues `opened`, `edited`, `labeled`, `reopened`; push to matching `evidence.json`; manual dispatch | — | Validates the configured evidence file and posts a result to the matching issue; badge/README publication and closure remain explicit follow-up steps |
+| [`roadmap-completion.md`](../../.github/ISSUE_TEMPLATE/roadmap-completion.md) | `roadmap`, `completion`, `enhancement`; add `roadmap:{slug}` and `exercise:{slug}` for a specific exercise | `roadmap-completion.yml`: issues `opened`, `edited`, `labeled`, `reopened`; push to matching `evidence.json`; manual dispatch | — | Validates the configured evidence file, publishes the exercise badge, updates the README badge index, posts the result, and closes the matching issue after successful publication |
 | [`target-brief.yml`](../../.github/ISSUE_TEMPLATE/target-brief.yml) | `target-brief` | `target-intake.yml`: issues `opened`, `edited`, `reopened` | — | Validates scope/authorization and comments a taxonomy-mapped Foundry dispatch plan |
 
 The directory contains 15 templates. `.github/ISSUE_TEMPLATE/config.yml` is absent, so GitHub's default blank-issue behavior remains available.
@@ -104,7 +104,7 @@ These workflows subscribe to `issues: [labeled]` or `pull_request: [labeled]`. A
 | [`delphi-intake.yml`](../../.github/workflows/delphi-intake.yml) | Issue comments `created` with `<!-- request-delphi-intake -->`; manual dispatch | Creates a completed `delphi:rfp` issue from conversational intake |
 | [`research-intake.yml`](../../.github/workflows/research-intake.yml) | Issues `opened`, `reopened`, `edited`; marker comment | Deterministic research seed intake; its event subscription intentionally omits `labeled` |
 | [`roadmap-sync.yml`](../../.github/workflows/roadmap-sync.yml) | Monday schedule; manual dispatch | Syncs the `roadmaps/` tree; it is separate from the roadmap-completion issue form |
-| [`roadmap-completion.yml`](../../.github/workflows/roadmap-completion.yml) | Issues `opened`, `edited`, `labeled`, `reopened`; push to matching exercise `evidence.json`; manual dispatch | Runs `roadmap-completions/scripts/verify-completion.py`, summarizes evidence checks, and comments on matching open issues |
+| [`roadmap-completion.yml`](../../.github/workflows/roadmap-completion.yml) | Issues `opened`, `edited`, `labeled`, `reopened`; push to matching exercise `evidence.json`; manual dispatch | Runs the evidence verifier, publishes the exercise badge and README row, comments on the matching issue, and closes it after successful publication |
 | [`proposal-lifecycle.yml`](../../.github/workflows/proposal-lifecycle.yml) | PR/push paths under `docs/proposals/**` and `scripts/proposals/**`; manual dispatch | Validates the proposal registry and PR hygiene; it is separate from proposal issue intake |
 
 ### Deterministic label floor
@@ -129,7 +129,7 @@ The label pass reads the existing taxonomy and preserves every issue that alread
 
 1. **Project Task admission bypass.** `project-task.yml` declares a QUE dispatch block and `swarm-admission.yml` evaluates it. The current `project-task-dispatch.yml` also subscribes directly to issue `opened/reopened` events and queues after parser success. Its current input is the issue event rather than the `issue-admission` artifact. The direct path leaves an admission bypass; the Game Development route provides the artifact-gated comparison pattern.
 2. **Research trigger documentation drift.** `research-intake.yml` subscribes to `opened/reopened/edited` and marker comments. Its workflow header and older trigger prose previously described `labeled`; this map records the executable subscription and the accompanying documentation correction.
-3. **Roadmap completion automation.** `roadmap-completion.yml` now handles issue lifecycle events, matching evidence pushes, and manual dispatch. `verify-completion.py` checks configured evidence paths, code constraints, submitted test-result metadata, documentation requirements, and required local portfolio files. It posts a result to the matching issue. Badge generation, README publication, and automatic issue closure remain separate publication work; the template now describes this exact boundary.
+3. **Roadmap completion automation.** `roadmap-completion.yml` now handles issue lifecycle events, matching evidence pushes, and manual dispatch. `verify-completion.py` checks configured evidence paths, code constraints, submitted test-result metadata, documentation requirements, and required portfolio files from a local directory or GitHub repository tree. On success it generates the exercise SVG badge, updates the Roadmap Completion Badges section in `README.md`, comments on the matching issue, and closes that issue. The publication step writes to `master` only after evidence verification succeeds.
 4. **Gemini lifecycle history.** `gemini-dispatch.yml` is retired (2026-11-12). The `@gemini` classification in `issue-comment-router.yml` remains a placeholder; current issue categorization uses the deterministic label floor and the specialized routes above.
 
 ## 6. Discovery and maintenance
@@ -143,7 +143,7 @@ gh workflow list --repo timerloggedout-spec/termux-monorepo
 gh issue list --repo timerloggedout-spec/termux-monorepo --label research:provider --state all
 ```
 
-When adding or changing an issue form, update this map in the same change with its labels, event subscription, job guard, parser, admission status, and output. When adding a label trigger, record the exact event surface and any permission/feature gate. Preserve the distinction between `opened`, `edited`, `reopened`, and `labeled`; each represents a separate event contract. `issue-intake-coverage.yml` runs the source-backed coverage audit on template, workflow, and map changes; it requires every form, template label, and labeled-event workflow to appear in this map.
+When adding or changing an issue form, update this map in the same change with its labels, event subscription, job guard, parser, admission status, and output. When adding a label trigger, record the exact event surface and any permission/feature gate. Preserve the distinction between `opened`, `edited`, `reopened`, and `labeled`; each represents a separate event contract. `issue-intake-coverage.yml` runs the source-backed coverage audit on template, workflow, map, and roadmap verifier changes; it requires every form, template label, and labeled-event workflow to appear in this map and runs all intake/roadmap verifier tests.
 
 ## Source files
 
@@ -153,5 +153,5 @@ When adding or changing an issue form, update this map in the same change with i
 - Lifecycle: `.github/workflows/issue-lifecycle-triage.yml`, `scripts/issue_lifecycle/triage_labels.py`
 - Label commands: `.github/workflows/{agent-jules-on-issues,agent-ecc-tools-ops,mesh-request,doe-live1-audit,build-arm-census}.yml`
 - Observation: `.github/workflows/issue-observatory.yml`, `.github/workflows/issue-comment-router.yml`, `.github/workflows/sweep-accountability.yml`
-- Roadmap completion: `.github/workflows/roadmap-completion.yml`, `roadmap-completions/scripts/verify-completion.py`, `roadmap-completions/config/verification-rules.yaml`
-- Intake coverage guard: `.github/workflows/issue-intake-coverage.yml`, `scripts/ci/issue_intake_coverage.py`, `tests/test_issue_intake_coverage.py`
+- Roadmap completion: `.github/workflows/roadmap-completion.yml`, `roadmap-completions/scripts/verify-completion.py`, `roadmap-completions/scripts/publish-completion.py`, `roadmap-completions/config/verification-rules.yaml`
+- Intake coverage guard: `.github/workflows/issue-intake-coverage.yml`, `scripts/ci/issue_intake_coverage.py`, `tests/test_issue_intake_coverage.py`, `tests/test_roadmap_completion.py`, `tests/test_roadmap_completion_publisher.py`

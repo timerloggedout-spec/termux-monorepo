@@ -1,29 +1,151 @@
-# Architecture Versioning and Automated Refresh — Implementation Plan
+# Architecture Versioning and Automated Refresh Implementation Plan
 
-**Design:** [architecture versioning design](../specs/2026-11-22-architecture-versioning-design.md)  
-**Implementation branch:** docs/architecture-versioning-automation-20261122  
-**Base at branch creation:** f649cd9094c2bbc9e468f77c24edc022ac253e03  
-**Method:** test-first, small commits, existing workflow reuse, evidence-backed reconciliation
+> For agentic workers: use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox syntax for tracking.
 
-## Tasks
+**Goal:** Version architecture changes and automatically generate verifiable architecture manifests and diagram projections through the existing documentation workflow.
 
-1. Add focused tests for manifest determinism, source coverage, missing renders, stale output, SemVer, changelog, and required version bumps.
-2. Implement the deterministic manifest generator and version-delta gate.
-3. Establish the initial version and changelog, then document the semantic version policy.
-4. Add the architecture-governance Markdown map and Mermaid source.
-5. Extend the root architecture entry and both architecture navigation indexes.
-6. Extend the existing automation path classifier and its regression tests.
-7. Extend the existing continuous-refresh workflow for architecture flow SVGs, manifest validation, review artifacts, and trusted master refresh.
-8. Register the work under REPO-ARCH-007 and update proposal evidence.
-9. Run focused tests, syntax checks, repository gates, and PR Actions; WAIT, WATCH, RE-FETCH, and compare the final head and generated artifacts.
+**Architecture:** Canonical architecture documents and Mermaid sources remain authoritative. A focused Python generator fingerprints the source set and paired diagram renders. The existing Automation Documentation Continuous Refresh workflow validates pull requests and commits generated projections after trusted master pushes.
 
-## Verification record
+**Tech Stack:** Python 3.12, unittest, GitHub Actions, Mermaid CLI 11.4.2, Markdown, JSON, SHA-256.
 
-- Local test-first check: the new test module initially failed because scripts/ci/architecture_docs.py was absent.
-- Local implementation check: 9 focused tests passed after the generator was implemented.
-- Local Python compilation: passed.
-- Repository Actions, Mermaid CLI, repository gate, Termux smoke, and trusted master refresh remain pending until the branch is pushed and the PR validation cohort completes.
+**Spec:** docs/superpowers/specs/2026-11-22-architecture-versioning-design.md
 
-## Execution constraints
+## Global Constraints
 
-This session has GitHub connector access and no network-enabled local Git checkout. An isolated GitHub feature branch is used as the working branch. Repository Actions provide the authoritative integration environment and runtime evidence. The existing BRR inventory is read-only and remains the branch-reconciliation source; this plan does not mutate other branches.
+- Use stable MAJOR.MINOR.PATCH architecture versions; initial governed baseline is 1.0.0.
+- Semantic architecture source changes require VERSION and CHANGELOG updates in the same pull request.
+- Domain specifications and source code retain semantic authority; architecture.md is a navigation and synthesis entry.
+- Mermaid sources remain canonical; SVG and PNG files remain generated projections.
+- Reuse the existing Automation Documentation Continuous Refresh workflow and its trusted master writer.
+- Pull-request validation remains read-only and uploads generated evidence.
+- The manifest omits timestamps and run-specific metadata to preserve deterministic output.
+- BRR remains read-only; branch reconciliation and promotion follow repository governance.
+
+## Review Focus
+
+- Initial baseline where the base branch has no VERSION file: require exactly 1.0.0 and a changelog entry; covered by test_version_check_accepts_initial_1_0_0_baseline.
+- Invalid or non-increasing semantic versions: fail closed; covered by test_invalid_semver_is_rejected and test_version_check_rejects_non_increasing_version.
+- Architecture Mermaid source without a paired Markdown map: fail manifest generation; covered by test_manifest_rejects_unpaired_flow_source.
+- Missing or changed diagram render and stale manifest: fail validation; covered by test_manifest_rejects_missing_render and test_write_and_check_detect_stale_manifest.
+- Generated architecture files must classify as projections rather than canonical source changes; covered by test_architecture_sources_and_generated_manifest_are_classified.
+
+---
+
+### Task 1: Specify manifest and version-gate behavior
+
+**Files:**
+- Create: tests/test_architecture_docs.py
+- Modify: tests/test_automation_docs.py
+
+**Interfaces:**
+- Tests consume build_manifest(root), write_manifest(root), check_manifest(root), and check_version_bump(root, base_ref).
+- Tests consume automation_docs.classify_material_paths(values).
+
+- [x] Write the focused tests before implementation.
+- [x] Run the test module while the generator is absent; expected failure was the missing scripts/ci/architecture_docs.py module.
+- [x] Add cases for determinism, source coverage, render presence, paired flow mappings, stale manifests, SemVer, initial baseline, required bump, and generated-path classification.
+- [x] Run the fixture suite after implementation; 9 tests passed locally.
+- [x] Commit tests first: fe66ac4, 46f7b45, 063bd82, c44a40e.
+
+### Task 2: Implement deterministic manifest generator
+
+**Files:**
+- Create: scripts/ci/architecture_docs.py
+- Test: tests/test_architecture_docs.py
+
+**Interfaces:**
+- build_manifest(root: Path) -> dict[str, object]
+- manifest_text(root: Path) -> str
+- write_manifest(root: Path) -> None
+- check_manifest(root: Path) -> bool
+- check_version_bump(root: Path, base_ref: str) -> bool
+
+- [x] Implement stable SemVer parsing and source-set discovery.
+- [x] Include per-file and source-set SHA-256 fingerprints.
+- [x] Include architecture-flow SVG and operational-diagram PNG source/render fingerprints.
+- [x] Require paired Markdown mapping files for architecture flow Mermaid sources.
+- [x] Enforce same-change VERSION and CHANGELOG updates and a strictly increasing version.
+- [x] Run all 9 focused tests and Python compilation locally.
+- [x] Commit generator and pairing guard: 6ec573a, 6c266ae.
+
+### Task 3: Establish the version contract
+
+**Files:**
+- Create: docs/architecture/VERSION
+- Create: docs/architecture/VERSIONING.md
+- Create: docs/architecture/CHANGELOG.md
+
+- [x] Set the initial architecture version to 1.0.0.
+- [x] Define MAJOR, MINOR, and PATCH semantics.
+- [x] Define same-PR version/changelog requirements and the initial-baseline rule.
+- [x] Define deterministic manifest fields and the trusted refresh lifecycle.
+- [x] Commit the version contract: 0c2bd46, 7ce9bc0, eedd9fa, bb11260.
+
+### Task 4: Extend architecture maps and navigation
+
+**Files:**
+- Create: docs/architecture/flows/architecture-governance.md
+- Create: docs/architecture/flows/architecture-governance.mmd
+- Modify: architecture.md
+- Modify: docs/architecture/README.md
+- Modify: docs/architecture/flows/README.md
+- Modify: docs/ops/diagrams/repository-data-flow.mmd
+- Modify: docs/ops/diagrams/automation-overview.mmd
+
+- [x] Add the architecture versioning flow as a paired Markdown/Mermaid module.
+- [x] Apply the six-step Observe / Choose / Act / Verify / Record / Repeat-or-stop loop.
+- [x] Link the new module, current version, versioning contract, and generated manifest from architecture navigation.
+- [x] Add the documentation lane to the repository data-flow and automation overview diagrams.
+- [x] Commit map and index updates: a92dec6, cddfcf3, a8be8cb, f1bc612, 5e84d7b, 02a8d2e, 63a03f4, f5cea4d, 858f62a.
+
+### Task 5: Integrate existing automation
+
+**Files:**
+- Modify: scripts/ci/automation_docs.py
+- Modify: tests/test_automation_docs.py
+- Modify: .github/workflows/automation-docs-continuous-refresh.yml
+
+- [x] Classify architecture sources as material documentation and architecture/generated as generated-only.
+- [x] Add regression coverage for both classifications.
+- [x] Extend workflow path filters for architecture sources, version contract, generator, and tests.
+- [x] Run focused tests in both pull-request and trusted master jobs.
+- [x] Render architecture flow diagrams to SVG and retain operational PNG rendering.
+- [x] Validate version delta, generate/check manifest, and upload PR review artifacts.
+- [x] Refresh generated architecture projections through the existing trusted master job.
+- [x] Commit automation integration: 73092bd, 86df055, 18d1ab3, 7050597.
+
+### Task 6: Register proposal scope and evidence
+
+**Files:**
+- Modify: docs/proposals/active/repository-architecture-entry/ITEMS.md
+- Modify: docs/proposals/active/repository-architecture-entry/MANIFEST.md
+- Modify: docs/proposals/registry.yaml
+
+- [x] Register REPO-ARCH-007.
+- [x] Record the new implementation branch and versioning scope.
+- [x] Preserve the earlier proposal work items and pending validation gates.
+- [x] Commit proposal registration: fbf4a21, 25aba3a, 96d960c, f0687a3, b1564c7.
+
+### Task 7: Validate the exact branch and reconcile
+
+**Files:**
+- Review all changed files and generated artifacts.
+- Review: pull-request checks, workflow run, manifest, rendered SVG/PNG outputs.
+
+- [ ] Run the focused repository tests on the exact branch head in GitHub Actions.
+- [ ] Run repository gate, Markdown/workflow validation, CodeQL, and Termux smoke where the workflow matrix admits them.
+- [ ] Verify the architecture flow pair inventory and Mermaid rendering.
+- [ ] Inspect the generated manifest and uploaded artifact.
+- [ ] Re-fetch current master and branch heads; compare base/head ancestry and changed paths.
+- [ ] Request an independent code review and resolve material findings.
+- [ ] Observe the trusted master refresh after promotion and verify the generated manifest and diagram assets on the resulting master SHA.
+
+## Execution record
+
+- Branch: docs/architecture-versioning-automation-20261122.
+- Branch base at creation: f649cd9094c2bbc9e468f77c24edc022ac253e03.
+- BRR prior-art finding: the earlier architecture-entry branch was materially stale; compare evidence showed it 1,124 commits behind with two branch-only commits. The new branch was fast-forwarded to the then-current master before implementation.
+- Workspace adaptation: this session has GitHub connector access and no network-enabled local Git checkout. The isolated remote feature branch is the working workspace; local fixture tests provide unit evidence and GitHub Actions supplies integration evidence.
+- Loopy adaptation: use Observe → Choose → Act → Verify → Record → Repeat-or-stop. The supplied Loop Library specification has no concrete catalog host, so published-loop matching remains unverified; this is an unpublished project adaptation.
+- Local verification: 9/9 architecture manifest tests passed; Python compilation passed.
+- Pending evidence: exact PR-head Actions, independent review, generated artifact inspection, and trusted master refresh.

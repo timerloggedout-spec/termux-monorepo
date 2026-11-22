@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import html as html_lib
 import json
 import os
 import re
@@ -23,6 +24,7 @@ SELECTED_OPERATIONS_DOCS = (
     "docs/ops/SHE-INTEGRATION-FINDINGS.md",
     "docs/ops/INTEGRATION-GRAPH-MATRIX.md",
     "docs/ops/DEPLOYMENT-LANES.md",
+    "docs/ops/SITE-MAP.md",
     "docs/ops/SHE-DASHBOARD-ARCHITECTURE.mmd",
 )
 
@@ -115,6 +117,12 @@ def _mermaid_input(text: str) -> str:
 
 
 def _title(path: Path, text: str) -> str:
+    if path.suffix.lower() == ".svg":
+        match = re.search(r"<title[^>]*>(.*?)</title>", text, flags=re.IGNORECASE | re.DOTALL)
+        if match:
+            title = html_lib.unescape(re.sub(r"<[^>]+>", "", match.group(1))).strip()
+            if title:
+                return title
     for line in text.splitlines()[:30]:
         match = re.match(r"^#\s+(.+?)\s*#*$", line.strip())
         if match:
@@ -139,8 +147,8 @@ def build_portal(
     """Copy canonical sources and write a catalog with hashes and build identity."""
     root = root.resolve()
     output = (output or (root / "_site/architecture")).resolve()
-    if output == root:
-        raise ValueError("output must be a dedicated directory below or outside the repository root")
+    if output == root or (root / "docs") in output.parents or output == root / "docs":
+        raise ValueError("output must be a dedicated site directory outside the documentation source tree")
     output.mkdir(parents=True, exist_ok=True)
     _reset_generated_dirs(output)
 
@@ -155,7 +163,12 @@ def build_portal(
             "path": relative,
             "kind": kind,
             "title": _title(source, text) if text else source.stem.replace("-", " ").title(),
-            "summary": _plain_summary(text) if text else "Generated visual preview.",
+            "summary": (
+                _plain_summary(text) if kind == "document" else
+                "Editable Mermaid diagram source." if kind == "mermaid" else
+                "Imported SVG vector asset." if kind == "svg" else
+                "Generated visual preview."
+            ),
             "category": _category(relative),
             "bytes": len(data),
             "sha256": hashlib.sha256(data).hexdigest(),

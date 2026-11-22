@@ -57,7 +57,7 @@ The Transcend subgroup is related to the same GitLab AI Hackathon root but repre
 - Official event surface: [Contributor Platform hackathon](https://contributors.gitlab.com/hackathon) · [current rules](https://contributors.gitlab.com/docs/hackathon-rules) · [October announcement](https://forum.gitlab.com/t/our-next-gitlab-hackathon-starts-october-6th/135317).
 - October 2026 edition: **2026-10-06 – 2026-10-12 UTC**; qualifying MRs merged within 31 days (cutoff Nov 12). The current page reports 76 prize winners and 636 merged MRs for that edition.
 - **Next edition: January 21–28, 2027**. The page says the hackathon runs in UTC and displays a live countdown to January 21; page text supplies date-only boundaries; exact start/end clock times remain NOT_ESTABLISHED.
-- Reward model: first place 200 Contributor Success store credits; second 150; third 100; 50 credits for each participant with a qualifying merged MR. Cash award: NOT_ESTABLISHED.
+- Reward model: first place 200 Contributor Success store credits; second 150; third 100; 50 credits for each participant with a qualifying merged MR. Cash component: NONE_LISTED.
 - Current rules version: **2026-10-v2**. Requirements include maximum 20 MRs and 20 issues per day; issue assignment before MR; AI tools allowed with contributor review/testing responsibility; scripted/automated/programmatic labeling is prohibited; one typo-fix MR per project; and first-time-contributor quick-win restrictions.
 - This contribution/leaderboard program is distinct from the Devpost AI-agent competition. January 2027 is **upcoming**; the owner's onboarding/registration and issue assignment remain NOT_ESTABLISHED.
 
@@ -69,7 +69,7 @@ The official event page directs participants to the GitLab Community Discord `#a
 - [Devpost Discord](https://info.devpost.com/blog/join-the-devpost-discord).
 - Office-hours schedule: posted in the relevant GitLab Discord channels; individual session dates are NOT_ESTABLISHED in this public-source pass.
 - The [Participant Template README](https://gitlab.com/gitlab-ai-hackathon/project-templates/participant-template) links to a `work_items/1` onboarding item. The public item currently returns **Work item not found**; its instructions remain NOT_ESTABLISHED.
-- A representative [Transcend showcase workspace onboarding issue](https://gitlab.com/gitlab-ai-hackathon/transcend/27098937/-/work_items/1) directs the workspace owner to the Showcase Track guide, `#transcend-hackathon`, and office hours. Treat this as a sample workspace onboarding record, not a universal AI Hackathon registration workflow.
+- A representative [Transcend showcase workspace onboarding issue](https://gitlab.com/gitlab-ai-hackathon/transcend/27098937/-/work_items/1) directs the workspace owner to the Showcase Track guide, `#transcend-hackathon`, and office hours. This sample workspace onboarding record illustrates one Transcend workspace path; event-wide AI Hackathon registration remains governed by the official Devpost event page.
 - The public event page links an example participant issue at [participants/621485](https://gitlab.com/gitlab-ai-hackathon/participants/621485/-/issues/1).
 
 ## 4. Reusable technical references

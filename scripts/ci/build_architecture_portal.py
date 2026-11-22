@@ -106,6 +106,14 @@ def _plain_summary(text: str) -> str:
     return "Canonical repository architecture source."
 
 
+def _mermaid_input(text: str) -> str:
+    """Extract a fenced Mermaid block when a .mmd file also contains Markdown."""
+    match = re.search(r"```mermaid[ \\t]*\\r?\\n(.*?)```", text, flags=re.IGNORECASE | re.DOTALL)
+    if match:
+        return match.group(1).strip() + "\\n"
+    return text if text.endswith("\\n") else text + "\\n"
+
+
 def _title(path: Path, text: str) -> str:
     for line in text.splitlines()[:30]:
         match = re.match(r"^#\s+(.+?)\s*#*$", line.strip())
@@ -115,7 +123,7 @@ def _title(path: Path, text: str) -> str:
 
 
 def _reset_generated_dirs(output: Path) -> None:
-    for name in ("source", "assets/imported", "assets/previews", "assets/diagrams"):
+    for name in ("source", "render-inputs", "assets/imported", "assets/previews", "assets/diagrams"):
         target = output / name
         if target.exists():
             shutil.rmtree(target)
@@ -163,6 +171,11 @@ def build_portal(
             shutil.copy2(source, destination)
             record["site_path"] = site_path
             if kind == "mermaid":
+                render_input_path = f"render-inputs/{relative}"
+                render_input = output / render_input_path
+                render_input.parent.mkdir(parents=True, exist_ok=True)
+                render_input.write_text(_mermaid_input(text), encoding="utf-8")
+                record["render_input_path"] = render_input_path
                 record["render_path"] = f"assets/diagrams/{relative[:-4]}.svg"
         elif kind == "svg":
             asset_path = f"assets/imported/{relative}"
@@ -186,7 +199,7 @@ def build_portal(
         "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
         "source_ref": source_ref,
         "source_sha": source_sha,
-        "source_root": "architecture.md + docs/architecture + docs/ops architecture/SHE assets",
+        "source_root": "architecture.md + docs/architecture Markdown + docs/**/*.mmd + docs/**/*.svg + selected SHE docs + generated PNG",
         "item_count": len(items),
         "document_count": sum(item["kind"] == "document" for item in items),
         "diagram_count": sum(item["kind"] == "mermaid" for item in items),

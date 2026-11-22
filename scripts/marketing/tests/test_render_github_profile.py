@@ -85,7 +85,7 @@ class GitHubProfileRendererTests(unittest.TestCase):
                     "youtube_channel": "https://youtube.com/@example",
                     "video_library": "https://example.com/videos"
                 },
-                "sources": {"partners": "docs/PARTNERS.md", "videos": "docs/ops/PUBLIC-VIDEO-LIBRARY-2026-11-15.md"},
+                "sources": sources,
                 "featured_projects": [{"name": "Repo", "url": "https://github.com/example/repo", "description": "Project"}],
                 "featured_videos": [{"id": "abc123", "label": "Latest Short", "kind": "short"}],
                 "rotation": {"disclosure": "Referral links may be affiliate links."}
@@ -103,7 +103,7 @@ class GitHubProfileRendererTests(unittest.TestCase):
             self.assertIn("Hackathon highlight", generated_readme)
 
 
-    def _write_fixture(self, root, video_rows, featured_videos):
+    def _write_fixture(self, root, video_rows, featured_videos, challenge=None):
         (root / "marketing/github-profile").mkdir(parents=True)
         (root / "docs/ops").mkdir(parents=True)
         (root / "docs/PARTNERS.md").write_text(
@@ -122,6 +122,11 @@ class GitHubProfileRendererTests(unittest.TestCase):
             + "## Public placements\n"
         )
         (root / "docs/ops/PUBLIC-VIDEO-LIBRARY-2026-11-15.md").write_text(video_text, encoding="utf-8")
+        sources = {"partners": "docs/PARTNERS.md", "videos": "docs/ops/PUBLIC-VIDEO-LIBRARY-2026-11-15.md"}
+        if challenge is not None:
+            (root / "ops/challenge").mkdir(parents=True)
+            (root / "ops/challenge/coordinator.json").write_text(json.dumps(challenge), encoding="utf-8")
+            sources["challenge_provenance"] = "ops/challenge/coordinator.json"
         config = {
             "identity": {
                 "handle": "timerloggedout-spec",
@@ -159,26 +164,46 @@ class GitHubProfileRendererTests(unittest.TestCase):
             self.assertIn("https://youtube.com/shorts/current123", generated)
             self.assertNotIn("previous123", generated)
 
-    def test_hackathon_highlight_renders_submission_summary_and_build_story(self):
+    def test_hackathon_highlight_resolves_published_submission_from_coordinator(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
+            challenge = {
+                "events": [{
+                    "id": "D1",
+                    "name": "Strands SDK: Workshop to Ship",
+                    "host": "AWS Builder Center",
+                    "projects": [{"id": "studysprint", "name": "StudySprint"}],
+                    "submission": {
+                        "state": "SUBMITTED - PUBLISHED",
+                        "demo_url": "https://www.youtube.com/watch?v=WK9LMwpvHUk",
+                        "confirmation_ref": "https://builder.aws.com/project/example/studysprint"
+                    }
+                }]
+            }
             self._write_fixture(
                 root,
                 [
-                    "| Archive | [StudySprint v0.4.0 demo](https://www.youtube.com/watch?v=WK9LMwpvHUk) | 2:55 | 2026-11-03 | Earlier release |\n",
+                    "| Archive | [StudySprint v0.4.0 demo](https://www.youtube.com/watch?v=WK9LMwpvHUk) | 2:55 | 2026-11-03 | Earlier release |\\n",
+                    "| Archive | [StudySprint v0.2.0 demo](https://www.youtube.com/watch?v=eFXyOYTpuvg) | 1:40 | 2026-10-31 | Earlier release |\\n",
                 ],
                 [{
-                    "id": "WK9LMwpvHUk",
+                    "source": "challenge_submission",
+                    "event_id": "D1",
+                    "project_id": "studysprint",
                     "label": "StudySprint hackathon submission",
-                    "kind": "hackathon",
-                    "highlight": "Official AWS Builder Center D1 submission demo.",
-                    "related_url": "https://builder.aws.com/project/example/studysprint"
+                    "kind": "hackathon"
                 }],
+                challenge=challenge,
             )
             output = root / "out"
-            render(root, output, dt.date(2026, 11, 16))
+            try:
+                render(root, output, dt.date(2026, 11, 23))
+            except (KeyError, ValueError) as exc:
+                self.fail(f"renderer must resolve the published submission from coordinator data: {type(exc).__name__}: {exc}")
             generated = (output / "README.md").read_text(encoding="utf-8")
-            self.assertIn("Official AWS Builder Center D1 submission demo.", generated)
+            self.assertIn("WK9LMwpvHUk", generated)
+            self.assertNotIn("eFXyOYTpuvg", generated)
+            self.assertIn("AWS Builder Center", generated)
             self.assertIn("[Build story](https://builder.aws.com/project/example/studysprint)", generated)
 
     def test_weekly_spotlight_advances_one_partner_across_iso_year_boundaries(self):

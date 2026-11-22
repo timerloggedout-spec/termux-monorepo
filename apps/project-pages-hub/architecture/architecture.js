@@ -84,13 +84,14 @@
     }
     for (const [category, group] of [...categories.entries()].sort((a,b) => a[0].localeCompare(b[0]))) {
       const details = document.createElement("details");
-      details.open = Boolean(query);
+      const containsSelected = group.some(item => item.id === state.selected?.id);
+      details.open = Boolean(query) || containsSelected;
       const summary = document.createElement("summary");
       summary.textContent = category;
       details.append(summary);
       const nested = document.createElement("div");
       nested.className = "tree-folder";
-      renderNested(buildNested(group), nested, 0, Boolean(query));
+      renderNested(buildNested(group), nested, 0, Boolean(query) || containsSelected);
       details.append(nested);
       tree.append(details);
     }
@@ -189,6 +190,8 @@
     const imagePath = item.kind === "mermaid" ? item.render_path : item.asset_path;
     $("diagram-image").src = catalogUrl(imagePath);
     $("diagram-image").alt = item.title + " — " + kindNames[item.kind];
+    $("show-source").hidden = item.kind === "png";
+    $("show-rendered").textContent = item.kind === "png" ? "Preview" : "Rendered";
     $("diagram-caption").textContent = item.kind === "mermaid"
       ? "Generated SVG from the canonical Mermaid source. Open Source to inspect the editable .mmd file."
       : "Imported visual asset. The original file remains available from its canonical repository path.";

@@ -2,7 +2,7 @@
 
 **Snapshot:** 2026-11-22  
 **Research target:** https://antinuous.com/  
-**Disposition:** reference architecture candidate; no live account execution performed.
+**Disposition:** reference architecture candidate; this recon uses public sources and repository materials. Live account execution remains a separate validation gate.
 
 ## Evidence classes
 
@@ -11,31 +11,31 @@
 | P — primary | Official website, legal terms, pricing, official repository | Establish what the source says |
 | R — repository | Public GitHub repository, code or issue | Establish publicly visible code and project activity |
 | I — independent | Independent reproduction, third-party evidence | Validate claims outside source owner |
-| A — analysis | Architectural inference or proposed adaptation | Guide our design; never report as upstream fact |
+| A — analysis | Architectural inference or proposed adaptation | Guide our design; label architectural inference separately from upstream fact |
 
 ## Product capability claims
 
 The public Antinuous product describes an autonomous research and compute environment combining research planning and agent delegation; parallel agent swarms; isolated computers and compute workers; scientific/engineering simulation and data-source access; research artifacts and source-linked results; iterative candidate evaluation; external agent access through MCP and A2A; and optional GPU execution/external compute account integration.
 
 **Evidence status:** P — company-published capability descriptions.  
-**Independent status:** I — not established by this recon.  
-**Adaptation:** build equivalent capability contracts as modular providers; do not assume vendor API compatibility.
+**Independent status:** this recon contains no independent validation evidence.  
+**Adaptation:** build equivalent capability contracts as modular providers; qualify vendor APIs through explicit adapter evidence.
 
 ## Commercial and performance claims
 
 The website advertises a throughput/cost proposition and reports swarm/compute speedups and research completion statistics. Pricing is organized into subscription tiers with AI usage allowances and compute capabilities.
 
 **Evidence status:** P — company-reported marketing and pricing.  
-**Independent status:** I — no independent equal-budget, equal-quality reproduction established.  
+**Independent status:** equal-budget, equal-quality reproduction evidence remains unestablished.  
 **Tournament treatment:** retain claim text, capture date, workload definition, baseline, worker count, hardware, model, quality score, total cost and repetitions before comparison.
 
-A speedup without equal-quality acceptance and full resource accounting is not a productivity result.
+Report productivity after equal-quality acceptance and full resource accounting.
 
 ## Security and trust
 
 Official privacy and terms materials describe collection and processing of account data, prompts, files, research records and connected-account context; third-party processors; user ownership/license provisions; generated-output limitations; retention and liability provisions.
 
-The public material inspected did not establish independent audit evidence for SOC 2, penetration testing, tenant-isolation verification, encryption design, customer-managed keys or enterprise SLA.
+Independent audit evidence for SOC 2, penetration testing, tenant-isolation verification, encryption design, customer-managed keys and enterprise SLA remains an open verification gate in this recon.
 
 **Evidence status:** P — published policy/terms statements.  
 **Independent status:** I — technical controls remain unverified.  
@@ -45,7 +45,7 @@ The public material inspected did not establish independent audit evidence for S
 
 The user-provided GitHub repository search was reviewed. The public Antinuous organization includes Mojo-oriented repositories such as antinuous/mojo-flare, antinuous/mojo-json, antinuous/protomojo, antinuous/grpc-mojo, antinuous/mojo-http2, antinuous/mojo-net, antinuous/mojo-tls and antinuous/mojo-mozz.
 
-These repositories demonstrate a public Mojo software footprint. Their existence does not prove that any repository implements the Antinuous hosted research platform.
+These repositories demonstrate a public Mojo software footprint. These repositories demonstrate a public Mojo software footprint; hosted-platform implementation evidence remains a separate verification item.
 
 The exact-name issue search surfaced unrelated issue text containing “Antinuous”; identity and relevance checks are required before attributing an issue to the company or product.
 
@@ -87,11 +87,11 @@ Code inspection observations requiring targeted tests:
 
 - Full factorial has exponential combination growth.
 - Taguchi L9 is bounded to at most four factors with exactly three levels each.
-- mvt_shuffle samples with replacement; it does not guarantee balanced assignments.
+- mvt_shuffle samples with replacement; balanced assignment requires an explicit balancing method.
 - The current campaign/leaderboard path uses defaults for absent score, cost, latency and success fields. New adapters should preserve unknown values as null and validate evidence rather than silently treating absence as a successful zero-cost run.
-- Existing leaderboard aggregation is a baseline ranking mechanism, not a complete multi-objective Pareto or uncertainty-aware decision engine.
+- Existing leaderboard aggregation is a baseline ranking mechanism; complete multi-objective Pareto and uncertainty-aware decision logic belongs in a separate layer.
 
-These are source inspections, not test execution results. The PR has not yet run the repository test suite.
+These are source inspections. Repository test execution is tracked by PR CI.
 
 ## Claims requiring validation before adoption
 
@@ -134,7 +134,7 @@ Sources:
 
 The user-supplied Jules workflow material is valuable for agent-team design, attribution, asynchronous task delegation, PR integration and run observation. The official Jules changelog states that Jules winds down on 2026-12-31 and became read-only after 2026-11-11. For this 2026-11-22 snapshot, treat Jules as a historical/limited read-only collaborator for session export, provenance reconstruction and workflow analysis. Record live write-execution eligibility from an observed adapter, not from the historic roster.
 
-**Adaptation:** make every agent's availability and permissions time-bounded registry fields. Historical agent contributions remain measurable without implying current execution capability.
+**Adaptation:** make every agent's availability and permissions time-bounded registry fields. Historical agent contributions remain measurable; live execution eligibility requires an observed, time-bounded adapter.
 
 Source: https://jules.google/docs/changelog/
 
@@ -148,7 +148,7 @@ Source: https://jules.google/docs/changelog/
 
 **Adaptation:** compare individual classifier capability, routing policy, graph composition and full tournament implementation as separate units. Test complementarity and conditional error overlap; preserve matched cohorts, held-out evaluation, stable candidate identity and actual end-to-end task outcome.
 
-These references inform architecture and experiment design. Their benchmark results do not establish performance for the repository's 70+ classifier pool.
+These references inform architecture and experiment design. Their benchmark results provide comparative context; the repository's 70+ classifier pool requires its own matched trials.
 
 
 ## Classifier inventory authority

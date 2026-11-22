@@ -1,30 +1,43 @@
-name: Enterprise organization detachment verification
+name: Enterprise organization preservation verification
 
-run-name: "${{ inputs.phase }} preservation check: ${{ inputs.org_slug }}"
+run-name: "${{ inputs.phase }} ${{ inputs.mode }} preservation"
 
 on:
   workflow_dispatch:
     inputs:
       phase:
-        description: "Capture the pre-detachment baseline or verify the Free organization"
+        description: "Capture the source baseline or verify the preservation destination"
         required: true
         type: choice
         options:
           - baseline
           - verify
         default: baseline
-      org_slug:
-        description: "Organization being preserved"
+      mode:
+        description: "Direct organization detachment or repository transfer to a new Free organization"
+        required: true
+        type: choice
+        options:
+          - detached
+          - transferred
+        default: transferred
+      source_org:
+        description: "Organization named in the Enterprise deletion notice"
         required: true
         type: string
         default: search-astute-ly
+      target_org:
+        description: "Free destination organization; used by transferred verification"
+        required: true
+        type: string
+        default: asastraneonexus
       baseline_run_id:
         description: "Baseline Actions run ID; required for verify"
         required: false
         type: string
 
 concurrency:
-  group: enterprise-org-preservation-${{ inputs.org_slug }}
+  group: enterprise-org-preservation-${{ inputs.source_org }}
   cancel-in-progress: false
 
 permissions:
@@ -37,15 +50,17 @@ jobs:
     timeout-minutes: 20
     env:
       GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
-      ORG_SLUG: ${{ inputs.org_slug }}
+      SOURCE_ORG: ${{ inputs.source_org }}
+      TARGET_ORG: ${{ inputs.target_org }}
       PHASE: ${{ inputs.phase }}
+      MODE: ${{ inputs.mode }}
       BASELINE_RUN_ID: ${{ inputs.baseline_run_id }}
       CREDENTIAL_REF: ${{ secrets.ARCHWIZ_GITHUB_TOKEN != '' && 'ARCHWIZ_GITHUB_TOKEN' || secrets.OPERATOR_GITHUB_TOKEN != '' && 'OPERATOR_GITHUB_TOKEN' || secrets.OPERATOR_TOKEN != '' && 'OPERATOR_TOKEN' || 'UNAVAILABLE' }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Validate operator credential
+      - name: Validate operator credential and destination
         shell: bash
         run: |
           set -euo pipefail
@@ -56,6 +71,10 @@ jobs:
           actor="$(gh api user --jq '.login')"
           if [[ "$actor" != "timerloggedout-spec" ]]; then
             echo "::error::Expected timerloggedout-spec operator identity; received $actor."
+            exit 1
+          fi
+          if [[ "$MODE" == "transferred" && "$SOURCE_ORG" == "$TARGET_ORG" ]]; then
+            echo "::error::The transfer destination must differ from the source organization."
             exit 1
           fi
           echo "Credential reference: $CREDENTIAL_REF" >> "$GITHUB_STEP_SUMMARY"
@@ -79,7 +98,12 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p artifacts
-          args=(--org "$ORG_SLUG" --phase "$PHASE" --output artifacts/enterprise-org-state.json)
+          if [[ "$PHASE" == "baseline" || "$MODE" == "detached" ]]; then
+            org="$SOURCE_ORG"
+          else
+            org="$TARGET_ORG"
+          fi
+          args=(--org "$org" --phase "$PHASE" --mode "$MODE" --source-org "$SOURCE_ORG" --output artifacts/enterprise-org-state.json)
           if [[ "$PHASE" == "verify" ]]; then
             args+=(--baseline baseline/enterprise-org-state.json)
           fi

@@ -7,7 +7,7 @@
       "https://gitlab.com/gitlab-ai-hackathon/gitlab-devsecops-flow-hackathon"
     ],
     "method": "Public signed-out GitLab page observation, official Devpost connector reads, and official GitLab/Devpost documentation.",
-    "scope": "Source inventory only; the existing challenge watcher does not yet consume this registry."
+    "scope": "Source inventory; integration with the current challenge watcher is pending."
   },
   "sources": [
     {
@@ -25,7 +25,7 @@
       "kind": "gitlab_subgroup",
       "relation": "child_of:gitlab-ai-hackathon-root",
       "platform_id": "126794830",
-      "observation": "Subgroup page showed no child subgroups or projects at fetch time.",
+      "observation": "Observed child counts: subgroups 0; projects 0.",
       "coverage": "observed_empty",
       "fetched_at": "2026-11-22"
     },
@@ -156,7 +156,7 @@
       "url": "https://discord.com/invite/gitlab",
       "kind": "community_channel",
       "relation": "program:gitlab-ai-hackathon-2026",
-      "observation": "Official event materials direct participants to #ai-hackathon; channel messages were not collected in this pass.",
+      "observation": "Official event materials direct participants to #ai-hackathon; channel messages: uncollected in this pass.",
       "coverage": "invite_verified_channel_content_uncollected",
       "fetched_at": "2026-11-22"
     },
@@ -239,7 +239,7 @@
       "url": "https://discord.gg/gitlab",
       "kind": "community_channel",
       "relation": "event:gitlab-community-hackathon-2027-jan",
-      "observation": "Current Community Hackathon rules direct questions to #hackathon or #contribute; channel messages were not collected in this pass.",
+      "observation": "Current Community Hackathon rules direct questions to #hackathon or #contribute; channel messages: uncollected in this pass.",
       "coverage": "invite_verified_channel_content_uncollected",
       "fetched_at": "2026-11-22"
     }

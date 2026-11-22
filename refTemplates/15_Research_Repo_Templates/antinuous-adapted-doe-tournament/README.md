@@ -55,7 +55,7 @@ The canonical manager cohort schema remains authoritative. Proposed DoE design, 
 
 The monorepo remains authoritative for task identity, version lineage, evidence, acceptance and promotion. External research/compute systems remain optional adapters.
 
-## Added operating-system references\n\n- OPERATING-SYSTEM.md — planes, competition units, lifecycle and promotion.\n- SELF-IMPROVEMENT-ENGINE.md — SIE subsystems and bounded improvement loop.\n- CLASSIFIER-GRAPH-TOURNAMENT.md — lateral classifier comparison, complementarity and graph composition.\n\nThe current trial implementation has a source-inspection risk: independent filtering of artifact/Jev/Kev arrays followed by positional zip in Laya can misalign candidate evidence after partial failures. Stable candidate IDs and keyed joins are required before expanding classifier graph execution.\n\n## Architectural decision
+## Added operating-system references\n\n- OPERATING-SYSTEM.md — planes, competition units, lifecycle and promotion.\n- SELF-IMPROVEMENT-ENGINE.md — SIE subsystems and bounded improvement loop.\n- CLASSIFIER-GRAPH-TOURNAMENT.md — lateral classifier comparison, complementarity and graph composition.\n\nThe earlier trial implementation had a source-inspection risk: independently filtered artifact/Jev/Kev arrays could misalign after partial failures. The current branch adds stable candidate IDs, preserves per-candidate stage slots, checks identity at reduction, and excludes incomplete evidence triples. Regression tests have been added; CI execution remains pending.\n\n## Architectural decision
 
 Use a **hybrid control plane**:
 

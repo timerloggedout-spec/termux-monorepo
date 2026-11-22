@@ -69,6 +69,30 @@ Public repository describes explorer/optimizer populations, branch isolation, pa
 
 **Adaptation:** evolutionary manager-policy populations, lineage and controlled variation; retain independent task cohorts and avoid score leakage.
 
+## Termux MonoRepo implementation recon
+
+The branch was inspected against the existing repository contracts and code:
+
+| Surface | Source-derived finding | Adaptation boundary |
+|---|---|---|
+| Manager cohort | docs/ops/MANAGER-TOURNAMENT.schema.json defines strict manager.tournament.v1 with cohort, policy, task contract, environment, managers, evaluation contract and provenance | Keep this as canonical cohort envelope |
+| Tournament protocol | docs/research/MANAGER-TOURNAMENT-CONTRACT.md requires same cohort/tool inventory/environment/budget/acceptance and deterministic verification before LLM judges | Preserve this protocol |
+| DoE helpers | deepcli/deepcli/observatory/doe.py implements full factorial, Taguchi L9 and seeded random assignment | Reuse; test balance, design assumptions and factor limits |
+| Trial orchestration | deepcli/deepcli/observatory/trial.py runs producer, critic, verifier and synthesis roles | Treat as an existing experiment path; test independent judge and source-grounded evaluation |
+| Tournament campaign | deepcli/deepcli/observatory/tournament.py records trial outcomes and selects winners/losers | Extend carefully; inspect ranking semantics before using as promotion utility |
+| Leaderboard | deepcli/deepcli/observatory/leaderboard.py stores role/task/provider/model run aggregates | Preserve raw records and avoid treating its composite as universal utility |
+| Evolutionary replay | docs/ops/EVOLUTIONARY-REPLAY.md describes deterministic history replay and incumbent-preserving policy screening | Prefer offline replay before expensive live exploration |
+
+Code inspection observations requiring targeted tests:
+
+- Full factorial has exponential combination growth.
+- Taguchi L9 is bounded to at most four factors with exactly three levels each.
+- mvt_shuffle samples with replacement; it does not guarantee balanced assignments.
+- The current campaign/leaderboard path uses defaults for absent score, cost, latency and success fields. New adapters should preserve unknown values as null and validate evidence rather than silently treating absence as a successful zero-cost run.
+- Existing leaderboard aggregation is a baseline ranking mechanism, not a complete multi-objective Pareto or uncertainty-aware decision engine.
+
+These are source inspections, not test execution results. The PR has not yet run the repository test suite.
+
 ## Claims requiring validation before adoption
 
 | Claim or capability | Validation experiment |
@@ -88,6 +112,6 @@ Public repository describes explorer/optimizer populations, branch isolation, pa
 
 **Adopt as architecture inspiration; defer vendor dependency.**
 
-Antinuous is relevant as a reference for integrated research, orchestration, compute and artifacts. The monorepo's stronger differentiator is controlled, versioned DoE with canonical evidence and explicit manager-policy evolution.
+Antinuous is relevant as a reference for integrated research, orchestration, compute and artifacts. The monorepo already has a manager tournament schema, DoE helpers, trial/tournament orchestration and evolutionary replay. The adaptation should compose these existing systems and add only missing versioned design, treatment, allocation and evidence-linkage contracts.
 
 The useful product idea is adapted into an original architecture whose canonical contracts remain repository-owned.

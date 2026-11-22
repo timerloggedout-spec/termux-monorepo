@@ -200,7 +200,10 @@ def validate_registry(root: Path, registry: Any, catalog: Any, estate: Any) -> l
             indegree = {node_id: 0 for node_id in node_by_id}
             children = {node_id: [] for node_id in node_by_id}
             for node_id, node in node_by_id.items():
-                for dependency in node.get("depends_on", []):
+                dependencies = node.get("depends_on", [])
+                if not isinstance(dependencies, list):
+                    continue
+                for dependency in dependencies:
                     if isinstance(dependency, str) and dependency in node_by_id:
                         indegree[node_id] += 1
                         children[dependency].append(node_id)

@@ -11,7 +11,8 @@
   },
   "sources": {
     "partners": "docs/PARTNERS.md",
-    "videos": "docs/ops/PUBLIC-VIDEO-LIBRARY-2026-11-15.md"
+    "videos": "docs/ops/PUBLIC-VIDEO-LIBRARY-2026-11-15.md",
+    "challenge_provenance": "ops/challenge/coordinator.json"
   },
   "featured_projects": [
     {
@@ -21,8 +22,8 @@
     },
     {
       "name": "StudySprint",
-      "url": "https://timerloggedout-spec.github.io/studysprint/",
-      "description": "Product walkthroughs across Android, web and terminal surfaces."
+      "url": "https://github.com/timerloggedout-spec/studysprint",
+      "description": "AWS Builder challenge project with a public submission demo."
     },
     {
       "name": "Delphi Oracle",
@@ -32,23 +33,30 @@
   ],
   "featured_videos": [
     {
-      "id": "i0FusuYuRUs",
-      "label": "Latest Short",
+      "id": "DNREnvgjIv0",
+      "label": "Termux MonoRepo Short",
       "kind": "short"
     },
     {
-      "id": "N3HBRV4LOGQ",
-      "label": "Hackathon build",
-      "kind": "hackathon"
+      "id": "i0FusuYuRUs",
+      "label": "Channel update Short",
+      "kind": "short"
+    },
+    {
+      "id": "eFXyOYTpuvg",
+      "label": "Hackathon submission demo",
+      "kind": "hackathon",
+      "highlight": "The StudySprint demo used for the AWS Builder Center D1 challenge submission.",
+      "related_url": "https://builder.aws.com/content/3LRJhGucOZfz9ydzFax8sD2p5yB/studysprint-a-study-plan-you-can-trust-built-with-the-strands-agents-sdk"
     },
     {
       "id": "gUC3RqTZXCQ",
-      "label": "Product demo",
+      "label": "StudySprint 0.5.1 demo",
       "kind": "demo"
     },
     {
       "id": "AZSeqOI5H9M",
-      "label": "Evidence walkthrough",
+      "label": "Delphi Oracle walkthrough",
       "kind": "demo"
     }
   ],

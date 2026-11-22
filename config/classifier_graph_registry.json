@@ -116,7 +116,9 @@
       "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#Blocked-paid-list",
       "notes": "TypeSafe AI Jev; evaluate in the typed-decision lane.",
       "operational_state": "blocked_paid_owner_gate",
-      "qualification_state": "role_mapped_unverified"
+      "qualification_state": "role_mapped_unverified",
+      "catalog_claim": "Hosted native typed decision model (Choice/Score/Noul); OpenRouter lists 1.13/1.14",
+      "catalog_source_url": "https://typesafe.ai/blog/introducing-system-one-models-and-jev"
     },
     {
       "candidate_id": "catalog.S1-02",
@@ -130,7 +132,9 @@
       "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#T1-KEV",
       "notes": "Jared Palmer Kev; TypeSafe-compatible serving is catalogued, candidate-specific trial evidence remains required.",
       "operational_state": "trial_candidate_composition_required",
-      "qualification_state": "role_mapped_unverified"
+      "qualification_state": "role_mapped_unverified",
+      "catalog_claim": "Open Jev-like family on Qwen (0.8B/4B/9B/27B); self-hosted, TypeSafe-compatible serving",
+      "catalog_source_url": "https://github.com/jaredpalmer/kev"
     },
     {
       "candidate_id": "catalog.S1-03",
@@ -144,7 +148,9 @@
       "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#T1-LAYA",
       "notes": "ConvAI Laya decision encoder family; preserve exact checkpoint and serving provenance per trial.",
       "operational_state": "evaluated_self_hosted",
-      "qualification_state": "role_mapped_unverified"
+      "qualification_state": "role_mapped_unverified",
+      "catalog_claim": "Non-autoregressive encoder decision family; English + multilingual checkpoints; open weights",
+      "catalog_source_url": "https://github.com/NandhaKishorM/laya"
     },
     {
       "candidate_id": "catalog.S1-04",
@@ -158,7 +164,9 @@
       "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#T1-MEV",
       "notes": "Recruiting-domain Mev encoder/decision-head candidate; domain-specific evaluation required.",
       "operational_state": "referenced_not_runnable",
-      "qualification_state": "role_mapped_unverified"
+      "qualification_state": "role_mapped_unverified",
+      "catalog_claim": "~0.4B bidirectional encoder + decision head, fine-tuned from Laya for job-candidate matching",
+      "catalog_source_url": "https://x.com/i/article/2101962974898397246"
     },
     {
       "candidate_id": "catalog.S1-05",
@@ -172,7 +180,9 @@
       "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#T1-MEV",
       "notes": "Mellow AI mev option-selection model; protocol and adapter compatibility require validation.",
       "operational_state": "trial_candidate_host_blocked",
-      "qualification_state": "role_mapped_unverified"
+      "qualification_state": "role_mapped_unverified",
+      "catalog_claim": "Qwen3.5-4B LoRA selecting among 2-24 options; Apache-2.0; standard next-token head",
+      "catalog_source_url": "https://huggingface.co/stay-mellow-ai/mev"
     },
     {
       "candidate_id": "catalog.S2-01",
@@ -186,7 +196,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-01",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Decision family (Clef, Flash, omni); open-weight + hosted via Workers AI",
+      "catalog_source_url": "https://www.forbes.com/sites/ronschmelzer/2026/10/12/decisions-decisions-a-guide-to-the-new-wave-of-ai-decision-models-besides-jev/"
     },
     {
       "candidate_id": "catalog.S2-02",
@@ -200,7 +212,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-02",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Multimodal decision family; 27B + Flash; v1.1/v1.2; open weights + hosted",
+      "catalog_source_url": "https://openrouter.ai/rankings/decisions"
     },
     {
       "candidate_id": "catalog.S2-03",
@@ -214,7 +228,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-03",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Hosted d1/d1-ultra; open d1-3B, d1-omni-600M",
+      "catalog_source_url": "https://www.marktechpost.com/2026/10/17/20-jev-alternatives-the-decision-models-taking-on-typesafe-in-2026/"
     },
     {
       "candidate_id": "catalog.S2-04",
@@ -228,7 +244,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-04",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Typed predicates/choices/scores over text+images; hosted Decisions API",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S2-05",
@@ -242,7 +260,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-05",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Classification, agent routing, verification, workflow decisions; Foundry + OpenRouter",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S2-06",
@@ -256,7 +276,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-06",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Hosted Choice/Score/Noul; closed weights; TypeSafe-compatible endpoint",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S2-07",
@@ -270,7 +292,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-07",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Decisions over text, images, sampled video frames; hosted, closed",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S2-08",
@@ -284,7 +308,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-08",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Long-context classification/scoring/routing; hosted beta, 512K context reported",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S2-09",
@@ -298,7 +324,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-09",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Structured choices/scores/yes-no; hosted; free rate-limited OpenRouter route reported",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S2-10",
@@ -312,7 +340,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-10",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Enterprise decision family; OpenRouter v1.5/v2.0",
+      "catalog_source_url": "https://openrouter.ai/rankings/decisions"
     },
     {
       "candidate_id": "catalog.S2-11",
@@ -326,7 +356,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-11",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Behavior detection in AI traces (present/absent/not observable); specialized",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S2-12",
@@ -340,7 +372,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-12",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Audio-native decisions for live voice agents; API by request",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S2-13",
@@ -354,7 +388,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-13",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Hosted typed decisions over text+images; invite/recovery-key access",
+      "catalog_source_url": "https://api.djev.dev"
     },
     {
       "candidate_id": "catalog.S2-14",
@@ -368,7 +404,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-14",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Experimental Qwen 4B/0.8B decision fine-tunes + published training recipe",
+      "catalog_source_url": "https://github.com/togethercomputer/tev1"
     },
     {
       "candidate_id": "catalog.S2-15",
@@ -382,7 +420,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-15",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Qwen-based decision model, pointer head + LoRA; open weights/data/scripts",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S2-16",
@@ -396,7 +436,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-16",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Qwen3.5-9B LoRA on contrastively curated data; open model + recipe",
+      "catalog_source_url": "https://github.com/bespokelabsai/nimble"
     },
     {
       "candidate_id": "catalog.S2-17",
@@ -410,7 +452,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-17",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Encoder caller-defined classification/routing/scoring; Apache-2.0; CPU/GPU",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S2-18",
@@ -424,7 +468,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-18",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "3B/8B text+image decision models; open + hosted; GGUF builds reported",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S2-19",
@@ -438,7 +484,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-19",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Dense + MoE typed decision models with image support; CC BY-NC weights",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S2-20",
@@ -452,7 +500,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-20",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Decision models 0.6B-27B; multiple questions per forward pass; Apache-2.0",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S2-21",
@@ -466,7 +516,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-21",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Multimodal 0.8B/2B/4B decision models with calibration tooling",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S2-22",
@@ -480,7 +532,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-22",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Security triage: prompt injection, tool calls, code changes, alerts; Apache-2.0",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S2-23",
@@ -494,7 +548,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-23",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "9B Jev-like; reasoning training + pointer head + diffusion drafter",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S2-24",
@@ -508,7 +564,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-24",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Small EN/ZH typed decision encoder with confidence gating; Apache-2.0",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S2-25",
@@ -522,7 +580,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-25",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Video grounding + multiple-choice QA, shared video context; 4B + 35B-A3B",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S2-26",
@@ -536,7 +596,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-26",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Thai/English 0.8B typed decision model; Apache-2.0; pip + Ollama",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S2-27",
@@ -550,7 +612,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S2-27",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Decision model for EN B2B sales-call transcripts; Apache-2.0; specialized",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S3-01",
@@ -564,7 +628,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-01",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "System One models trained with a contrastive state-action objective",
+      "catalog_source_url": "https://github.com/Contrastive-LM/CLM"
     },
     {
       "candidate_id": "catalog.S3-02",
@@ -578,7 +644,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-02",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Qwen3.5-4B LoRA with zero-output-token decisions; compatible server",
+      "catalog_source_url": "https://huggingface.co/interfaze-ai/lev"
     },
     {
       "candidate_id": "catalog.S3-03",
@@ -592,7 +660,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-03",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Small ModernBERT non-autoregressive decision model; repo archived in index",
+      "catalog_source_url": "https://github.com/wfzyx/von"
     },
     {
       "candidate_id": "catalog.S3-04",
@@ -606,7 +676,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-04",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "0.6B parallel decision model; game demos + training pipeline",
+      "catalog_source_url": "https://github.com/TianyuCodings/NanoJev"
     },
     {
       "candidate_id": "catalog.S3-05",
@@ -620,7 +692,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-05",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "One-pass context+options scorer; explicitly not TypeSafe's architecture",
+      "catalog_source_url": "https://github.com/vinnylarouge/jevlike"
     },
     {
       "candidate_id": "catalog.S3-06",
@@ -634,7 +708,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-06",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Qwen/Gemma family, multiple sizes + vision variant; compatible endpoint",
+      "catalog_source_url": "https://www.marktechpost.com/2026/10/17/20-jev-alternatives-the-decision-models-taking-on-typesafe-in-2026/"
     },
     {
       "candidate_id": "catalog.S3-07",
@@ -648,7 +724,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-07",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Recursively developed decision models; selectable effort; vision variants",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S3-08",
@@ -662,7 +740,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-08",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Local 0.8B decision model; PyTorch/MLX; compatible + MCP servers, guard hook",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S3-09",
@@ -676,7 +756,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-09",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Small vision decision model for browser games; weights + browser demo",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S3-10",
@@ -690,7 +772,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-10",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Multimodal typed decision family 0.8B-27B; open weights reported",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S3-11",
@@ -704,7 +788,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-11",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Small CPU MiniCPM-derived model; directory documents Noul-only serving",
+      "catalog_source_url": "https://github.com/feder-cr/jev"
     },
     {
       "candidate_id": "catalog.S3-12",
@@ -718,7 +804,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-12",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Browser-action and target selection model; Apache-2.0 weights/data/recipe",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S3-13",
@@ -732,7 +820,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-13",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Vision-enabled Qwen 4B/9B decision models; noncommercial weights",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S3-14",
@@ -746,7 +836,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-14",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Distilled from Jev; combined decision + generation serving; Apache-2.0 reported",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S3-15",
@@ -760,7 +852,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-15",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Gemma-based 12B/E4B typed decision models; llama.cpp serving",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S3-16",
@@ -774,7 +868,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-16",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Qwen-based 2B/4B/9B family; Apache-2.0; CUDA + GGUF",
+      "catalog_source_url": "https://github.com/allebee/jevk5"
     },
     {
       "candidate_id": "catalog.S3-17",
@@ -788,7 +884,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-17",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "English/Turkish/German 4B decision models; GGUF + local serving",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S3-18",
@@ -802,7 +900,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-18",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Small decision model on a frozen Qwen backbone; local server; WebGPU build",
+      "catalog_source_url": "https://github.com/kshetrajna12/reflex"
     },
     {
       "candidate_id": "catalog.S3-19",
@@ -816,7 +916,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-19",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Photo comparison / record-checking decisions incl. unknown option; MLX + PyTorch",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S3-20",
@@ -830,7 +932,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-20",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Text/single-image decision model, prefill-only inference; Apache-2.0",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S3-21",
@@ -844,7 +948,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-21",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Text decisions incl. Choice/Score/Noul/multilabel; Apache-2.0",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S3-22",
@@ -858,7 +964,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-22",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Fully trained Qwen decoder; optional thinking; calibrated option probabilities",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S3-23",
@@ -872,7 +980,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-23",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Multimodal 0.8B/2B/4B System One models; code/data/demo; Apache-2.0",
+      "catalog_source_url": "https://github.com/Valen-Team/Valen"
     },
     {
       "candidate_id": "catalog.S3-24",
@@ -886,7 +996,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-24",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Trained single-pass decision model with calibration + serving; CC BY-NC weights",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
     },
     {
       "candidate_id": "catalog.S3-25",
@@ -900,7 +1012,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-25",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Trained decision-head adapters 2B/9B/27B; check code/weight licenses separately",
+      "catalog_source_url": "https://github.com/Zefan-Cai/Open-Jev"
     },
     {
       "candidate_id": "catalog.S3-26",
@@ -914,7 +1028,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-26",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "4B/27B single-pass decision models distilled from reasoning; academic",
+      "catalog_source_url": "https://www.marktechpost.com/2026/10/17/20-jev-alternatives-the-decision-models-taking-on-typesafe-in-2026/"
     },
     {
       "candidate_id": "catalog.S3-27",
@@ -928,7 +1044,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-27",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Small family with native + Jev-compatible endpoints; Apache-2.0 reported",
+      "catalog_source_url": "https://www.marktechpost.com/2026/10/17/20-jev-alternatives-the-decision-models-taking-on-typesafe-in-2026/"
     },
     {
       "candidate_id": "catalog.S3-28",
@@ -942,7 +1060,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-28",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Small candidate-head model for agent-state decisions",
+      "catalog_source_url": "https://github.com/malevrigns/agent-jev"
     },
     {
       "candidate_id": "catalog.S3-29",
@@ -956,7 +1076,9 @@
       "operational_state": "catalogued_unverified",
       "adapter_status": "unverified",
       "source_ref": "config/system_one_catalog.json#S3-29",
-      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "~151M non-autoregressive calibrated decision engine; experimental",
+      "catalog_source_url": "https://github.com/Heman10x-NGU/openJev-verdict-2.0"
     }
   ],
   "graphs": [

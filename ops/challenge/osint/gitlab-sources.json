@@ -130,8 +130,8 @@
       "url": "https://contributors.gitlab.com/hackathon",
       "kind": "community_hackathon",
       "relation": "program:gitlab-community-hackathon",
-      "observation": "October 2026 edition closed; next edition dates not established.",
-      "coverage": "observed",
+      "observation": "October 2026 edition closed (76 prize winners; 636 merged MRs); next edition published for January 21–28, 2027 UTC.",
+      "coverage": "observed_upcoming",
       "fetched_at": "2026-11-22"
     },
     {
@@ -139,7 +139,7 @@
       "url": "https://contributors.gitlab.com/docs/hackathon-rules",
       "kind": "official_rules",
       "relation": "program:gitlab-community-hackathon",
-      "observation": "Terms version 2026-10-v1.",
+      "observation": "Current terms version 2026-10-v2; issue/MR caps, assignment-before-MR, AI contribution responsibility, labeling restrictions, and scoring/merge-window rules observed.",
       "coverage": "observed",
       "fetched_at": "2026-11-22"
     },
@@ -206,6 +206,32 @@
       "kind": "technical_guide",
       "relation": "technology:gitlab-duo-agent-platform",
       "coverage": "linked_by_official_event_resources",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-community-hackathon-onboarding",
+      "url": "https://contributors.gitlab.com/#start",
+      "kind": "onboarding",
+      "relation": "event:gitlab-community-hackathon-2027-jan",
+      "observation": "Start onboarding; page says a personal onboarding issue is sent within five minutes.",
+      "coverage": "observed",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-community-hackathon-issue-finder",
+      "url": "https://contributors.gitlab.com/issues",
+      "kind": "issue_finder",
+      "relation": "event:gitlab-community-hackathon-2027-jan",
+      "observation": "Issue finder used to choose a quick-win issue and obtain assignment before opening an MR.",
+      "coverage": "observed",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-community-hackathon-contribution-points",
+      "url": "https://contributors.gitlab.com/docs/user-guide#contribution-points",
+      "kind": "scoring_documentation",
+      "relation": "event:gitlab-community-hackathon-2027-jan",
+      "coverage": "linked_by_official_event_page",
       "fetched_at": "2026-11-22"
     }
   ]

@@ -2,8 +2,7 @@
 
 The local observatory modules expose four role contracts: Mev (text
 generation), Jev (rubric critique), Kev (reference verification), and
-Laya (evidence reduction). These are local implementation labels, not
-the external projects catalogued under the same names. The current
+Laya (evidence reduction). These labels identify local implementation roles. External projects retain independent identities. The current
 dispatch composes these roles for one trial; the tournament's next
 evolution compares alternate implementations and graphs laterally.
 
@@ -39,7 +38,7 @@ Default routes are the Gemini free tier and OpenRouter free models
 (`openrouter/free` or any `*:free` model). Any other provider or a paid
 OpenRouter model makes the dispatch refuse before any call is made.
 `--allow-paid` / `free_only: false` is the explicit escape hatch and is
-owner-gated — Jev's paid use is never the default path.
+owner-gated — Jev's paid use requires explicit owner approval.
 
 ## Execution evidence (2026-10-27, steward verification runs)
 
@@ -49,18 +48,13 @@ APIs from Actions (runs 40504965897–40506393011). Established state:
 - **The wiring works.** Run 40505817467 produced a real producer
   artifact through the OpenRouter free router (2,119-byte trial record):
   Mev called the API, parsed the completion, and the trial proceeded to
-  the judge stage. The failures below are provider-side states, not
-  code defects — each is recorded in the run's annotations and trial
-  record.
-- **Gemini route: blocked on entitlement, not code.** The provisioned
+  the judge stage. The observed states below originate from provider-side conditions; the run records each in its annotations and trial record.
+- **Gemini route: blocked by entitlement; code path provisioned.** The provisioned
   GEMINI_API_KEY resolves and its model catalog is observed (see
   PROVIDER-FREE-INFERENCE.md), but generateContent returns HTTP 404 for
-  both gemini-2.5-flash and gemini-2.0-flash, and no account-specific
-  no-cost entitlement has been established. The fleet's own continuity
-  path is catalog-only for Gemini for the same reason. Do not treat the
-  Gemini adapter as verified until an entitlement is established and a
-  bounded smoke succeeds.
-- **OpenRouter specific `:free` model ids: not the verified path.**
+  both gemini-2.5-flash and gemini-2.0-flash, with account-specific no-cost entitlement evidence pending. The fleet's own continuity
+  path is catalog-only for Gemini for the same reason. Verify the Gemini adapter after entitlement evidence and a bounded smoke pass.
+- **OpenRouter specific `:free` model IDs: direct-call verification pending.**
   Direct chat calls to catalog ids (llama-3.3-70b:free, qwen3-coder:free,
   deepseek-r1:free) return HTTP 404. The fleet-verified path is the
   exact allowlisted model below, requested with provider-routing
@@ -70,8 +64,7 @@ APIs from Actions (runs 40504965897–40506393011). Established state:
   zero-price model, `liquid/lfm-2.5-2.6b:free`, authenticates with
   `is_free_tier: true` and verified zero pricing, but inference returns
   HTTP 429 — the same result as the fleet's production smoke
-  (run 39432211461). Whether the limit is account-wide, daily,
-  model-specific, or upstream capacity is not established.
+  (run 39432211461). The limit scope (account-wide, daily, model-specific or upstream capacity) remains under diagnosis.
 - **Defaults.** The workflow defaults are now producer =
   `openrouter:liquid/lfm-2.5-2.6b:free`, judge =
   `openrouter:openrouter/free`. Acceptance condition for the first
@@ -79,8 +72,7 @@ APIs from Actions (runs 40504965897–40506393011). Established state:
   no longer rate-limited, preceded by the provider-batch workflow's
   read-only `diagnose_free_limits` check (unblocked 2026-10-27 by
   PR #1780, which repaired the contracts gate; diagnose run
-  40508502147 completed successfully). Repeated inference retries
-  against a 429 are not authorized by this evidence.
+  40508502147 completed successfully). A 429 response routes through fresh diagnostics and owner-approved retry policy.
 - **First completed trial — acceptance condition met.** Run
   40509162104 (2026-10-27, after PR #1782 set the verified defaults)
   completed successfully: producer `liquid/lfm-2.5-2.6b:free`, judge
@@ -112,10 +104,7 @@ The rubric maps to Score questions with criteria ["0", "1"] — the
 server's interpolated score is the 0..1 field score — plus a Noul
 fabrication check. This is a separate typed-decision lane: the System
 One adapter implements decide(state, questions), while ask(prompt)
-raises NotImplementedError. These endpoints are therefore candidates
-for typed evaluation, rather than drop-in Mev generation or Jev chat
-critique adapters. Dispatch flags: `--decide` (verify the winning
+raises NotImplementedError. These endpoints are candidates for typed evaluation; Mev generation and Jev chat critique require dedicated adapters. Dispatch flags: `--decide` (verify the winning
 text after the trial; endpoint from `--decide-url` or the
 SYSTEMONE_BASE_URL env), `--decide-only` (run just the check on the
-prompt). Workflow inputs: `systemone_url`, `systemone_model`. Local
-servers need no credential; SYSTEMONE_API_KEY is optional.
+prompt). Workflow inputs: `systemone_url`, `systemone_model`. Local servers accept requests without a credential; SYSTEMONE_API_KEY remains optional.

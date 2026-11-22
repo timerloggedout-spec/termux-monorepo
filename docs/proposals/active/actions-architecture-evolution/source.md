@@ -2,14 +2,14 @@
 
 ## Request
 
-Operator direction: A+B+C; note Repo-Story as a potential future C; style display feed MVP.
+Operator direction: A+B+C; require programmatically automated updates; prioritize our own GitHub Pages publishing; Repo-Story is an existing concept; style display-feed MVP.
 
 ## Accepted design interpretation
 
 - A: establish the governing typed automation architecture and lineage model.
 - B: version the DoE factors and crosswalk AppID migration and BRR/QUE evidence.
-- C: produce a read-only Tribute display-feed MVP over the existing dashboard feed contract.
-- Repo-Story: reserve as a future candidate for narrative reconstruction and commit replay.
+- C: produce a read-only Tribute display-feed MVP, automatically refreshed and published through our existing GitHub Pages pipeline.
+- Repo-Story: preserve the existing concept as a reference; keep it outside this MVP.
 
 ## Baseline
 

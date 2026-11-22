@@ -23,7 +23,7 @@
 
 ## Review Focus
 
-- Initial baseline where the base branch has no VERSION file: require exactly 1.0.0 and a changelog entry; covered by test_version_check_accepts_initial_1_0_0_baseline.
+- Initial baseline where the base branch predates VERSION: require exactly 1.0.0 and a changelog entry; covered by test_version_check_accepts_initial_1_0_0_baseline.
 - Invalid or non-increasing semantic versions: fail closed; covered by test_invalid_semver_is_rejected and test_version_check_rejects_non_increasing_version.
 - Architecture Mermaid source without a paired Markdown map: fail manifest generation; covered by test_manifest_rejects_unpaired_flow_source.
 - Missing or changed diagram render and stale manifest: fail validation; covered by test_manifest_rejects_missing_render and test_write_and_check_detect_stale_manifest.
@@ -147,8 +147,8 @@
 - Branch base at creation: f649cd9094c2bbc9e468f77c24edc022ac253e03.
 - BRR prior-art finding: the earlier architecture-entry branch was materially stale; compare evidence showed it 1,124 commits behind with two branch-only commits. The new branch was fast-forwarded to the then-current master before implementation.
 - Workspace adaptation: this session has GitHub connector access and no network-enabled local Git checkout. The isolated remote feature branch is the working workspace; local fixture tests provide unit evidence and GitHub Actions supplies integration evidence.
-- Loopy adaptation: use Observe → Choose → Act → Verify → Record → Repeat-or-stop. The supplied Loop Library specification has no concrete catalog host, so published-loop matching remains unverified; this is an unpublished project adaptation.
+- Loopy adaptation: use Observe → Choose → Act → Verify → Record → Repeat-or-stop. The supplied Loop Library specification leaves the catalog host unspecified, so published-loop matching remains unverified; this is an unpublished project adaptation.
 - Local verification: 13/13 architecture manifest and workflow tests passed; Python compilation passed.
 - PR #5770 is open as a draft and GitHub reports mergeable=true. Current master e9581d93c891b8d8c4373a8dc462580ea6bb0d88 is five commits beyond the branch base; the master-side delta contains only generated lane-matrix and backup-relay records, with zero path overlap.
-- The initial combined status includes a Vercel daily deployment quota failure; adaptive-wait classifies Vercel as a non-gating signal. No PR-triggered Actions run was visible on the first immediate re-fetch.
+- The initial combined status records Vercel daily deployment quota exhaustion; adaptive-wait classifies Vercel as an advisory signal. The first immediate re-fetch showed PR-triggered Actions pending admission.
 - Pending evidence: exact PR-head Actions, independent review, generated artifact inspection, and trusted master refresh.

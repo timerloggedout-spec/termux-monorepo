@@ -18,7 +18,7 @@ Supply one immutable receipt per implementation and task. Each receipt includes:
 
 The comparator requires exact task-set equality, one cohort, one task contract, one environment fingerprint, one evaluator version, and unique run IDs. This strict environment match is for tournament implementation comparisons. Heterogeneous model candidates use capability-specific cohorts and environment blocks.
 
-Required hard gates: task contract, schema, security/policy, provenance, and deterministic checks. The comparator blocks a challenger recommendation when either arm fails a gate.
+Required hard gates: task contract, schema, security/policy, provenance, and deterministic checks. A hard-gate failure in either arm sets the recommendation to `blocked_by_hard_gate`.
 
 ## Outcome vector
 
@@ -34,12 +34,12 @@ python scripts/tournament/compare_implementations.py receipts.json --output comp
 
 The input file may contain a JSON array or an object with a `receipts` array. The report identifies incumbent and challenger, paired outcomes, hard-gate failures and a recommendation.
 
-Recommendations are human-review inputs. The comparator never changes the active implementation. Promotion requires held-out validation, owner approval and a pinned rollback target.
+Recommendations route to human review. Promotion uses held-out validation, owner approval and a pinned rollback target; the active implementation changes only through that separate promotion process.
 
 ## Boundaries
 
-- The comparator performs evidence reduction; it does not execute manager implementations.
-- It does not infer missing costs or scores.
-- It does not compare candidates across different task contracts or environments.
-- It does not convert model namesakes into equivalent roles.
-- A challenger recommendation remains separate from production promotion.
+- The comparator performs evidence reduction; execution remains with the selected manager implementation.
+- Missing costs and scores remain null.
+- Implementation arms share task contracts and environment fingerprints.
+- Model namesakes retain separate capability contracts.
+- Challenger recommendations route through held-out review and owner-approved promotion.

@@ -17,6 +17,9 @@
 | ENT-PRES-008 | Verify destination Free-plan compliance and repository integrity. | Free plan, public/private visibility review, repository IDs, branches, tags, releases, workflows, settings, and integrations reconcile. | Pending |
 | ENT-PRES-009 | Record final state and close the migration. | Final receipts, remaining risks, and source-account cleanup status are documented before 2026-12-03. | Pending |
 
+
+| ENT-PRES-010 | Publish a reusable Enterprise organization preservation skill. | Skill documents eligibility, baseline, direct removal, Free destination, dry-run/apply transfer, resource reconciliation, and WAIT/WATCH evidence. | Implemented |
+
 ## Execution order
 
 1. Merge the baseline and verification automation after repository gates pass.

@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-22T10:53:25Z)
+# Lane matrix status (2026-11-22T10:54:11Z)
 
-- Master: `fcdb2373ebdba99b953f9e7d37deb015b9299f24`
+- Master: `0962804814aeae5306fcf6626b707fbace6a7c61`
 - Open PRs: **516**
 - Oldest: #47 (108.8d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 

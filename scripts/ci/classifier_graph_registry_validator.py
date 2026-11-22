@@ -187,6 +187,12 @@ def validate_registry(root: Path, registry: Any, catalog: Any, estate: Any, plan
                     errors.append(f"{prefix}.catalog_entry_id: unknown catalog entry {catalog_id!r}")
                 elif catalog_by_id[catalog_id].get("layer") != "model":
                     errors.append(f"{prefix}.catalog_entry_id: model candidate must reference a model-layer catalog entry")
+                else:
+                    source_entry = catalog_by_id[catalog_id]
+                    if candidate.get("catalog_claim") != source_entry.get("note"):
+                        errors.append(f"{prefix}.catalog_claim: claim must match catalog source text")
+                    if candidate.get("catalog_source_url") != source_entry.get("source_url"):
+                        errors.append(f"{prefix}.catalog_source_url: source URL must match catalog entry")
             elif kind == "local":
                 source_ref = candidate.get("source_ref")
                 if not isinstance(source_ref, str) or not source_ref:

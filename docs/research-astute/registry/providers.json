@@ -178,6 +178,24 @@
       "credential_state": "public-read-routes",
       "artifact_policy": "Explicitly unaffiliated with SpaceX; supplemental reference only, retain third-party provenance and independently corroborate material claims.",
       "evidence_url": "https://github.com/r-spacex/SpaceX-API"
+    },
+    {
+      "id": "tesla-public-engineering",
+      "name": "Tesla public engineering and investor-relations surfaces",
+      "domain": "tesla-mobility-energy",
+      "authority": "official-primary",
+      "base_url": "https://ir.tesla.com/",
+      "access_mode": "public-web-and-filings",
+      "capabilities": [
+        "investor-filings",
+        "product-engineering-disclosures",
+        "manufacturing-overview",
+        "battery-engineering",
+        "impact-reports"
+      ],
+      "credential_state": "public-no-key",
+      "artifact_policy": "Use official Tesla and SEC-hosted documents as evidence leads. Record filing/report revision and publication date; distinguish company statements from independent validation; review copyright and document terms before retaining full artifacts.",
+      "evidence_url": "https://ir.tesla.com/"
     }
   ],
   "deferred_sources": [

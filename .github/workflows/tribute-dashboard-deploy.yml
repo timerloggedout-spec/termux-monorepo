@@ -149,7 +149,7 @@ jobs:
           printf '%s\n' '{"args":["--no-sandbox","--disable-setuid-sandbox"]}' > /tmp/puppeteer-config.json
           count=0
           while IFS= read -r -d '' src; do
-            relative="${src#./}"
+            relative="${src#_site/architecture/render-inputs/}"
             out="_site/architecture/assets/diagrams/${relative%.mmd}.svg"
             mkdir -p "$(dirname "$out")"
             echo "mmdc: $src -> $out"
@@ -157,7 +157,7 @@ jobs:
               -i "$src" -o "$out" -b transparent -s 2 \
               --puppeteerConfigFile /tmp/puppeteer-config.json
             count=$((count + 1))
-          done < <(find docs -type f -name '*.mmd' -print0)
+          done < <(find _site/architecture/render-inputs -type f -name '*.mmd' -print0)
           if [ "$count" -eq 0 ]; then
             echo "::error::Architecture Explorer has no Mermaid sources to render."
             exit 1

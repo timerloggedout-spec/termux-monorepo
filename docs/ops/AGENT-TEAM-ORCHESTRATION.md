@@ -31,7 +31,7 @@ Provider ecosystems are contributors to the ADE, but **contributor identity is n
 
 Required contributor coverage has two separate populations:
 
-**Agent / collaborator identities** — Gemini CLI, Jules, DeepSeek CI, Devin, CodeRabbit, Copilot, Tembo, Mistral Vibe, the manager/scout/orchestrator workflows, and the operator lane. These identities can review, implement, route, or coordinate only where their real invocation workflow exists. A provider API key is not an agent identity, and an agent's GitHub handle is not its model identity.
+**Agent / collaborator identities** — Gemini CLI, Jules (lifecycle-constrained), DeepSeek CI, Devin, CodeRabbit, Copilot, Tembo, Mistral Vibe, manager/scout/orchestrator workflows, and the operator lane. Each identity carries a time-bounded capability and execution-adapter state. A provider API key is distinct from an agent identity, and an agent's GitHub handle is distinct from its model identity.
 
 **Provider API and research-service lanes** — OpenRouter, FELO, Hugging Face, OmniRoute, Groq, Mistral API, Cerebras, NVIDIA NIM, Aion, LLM7, ModelScope, SiliconFlow, Kilo, OVHcloud, SambaNova, Cloudflare Workers AI, Cohere, and Ollama Cloud. The machine-readable contributor roster tracks these independently from agent roles. Z.ai remains a candidate with an unverified catalog contract, not a completed adapter. Firecrawl's fixed-URL keyless scrape is a public-research service, not an inference provider.
 
@@ -63,7 +63,7 @@ A direct `ready → Jules` path is prohibited because Jules is one bounded speci
 
 ### Specialists
 
-Gemini CLI, OpenRouter peers, OmniRoute, Jules, Felo models, and other agents are specialists. Jules is an escalation/specialist worker, not the default sink for every task.
+Gemini CLI, OpenRouter peers, OmniRoute, Jules historical sessions, Felo models, and other agents are specialist capability records. The official Jules changelog states that Jules became read-only after 2026-11-11 and is scheduled to wind down on 2026-12-31. As of this repository's 2026-11-22 research snapshot, Jules remains useful for historical attribution and exported-session analysis; new write execution requires a separately verified active path. The roster records lifecycle and adapter eligibility explicitly.
 
 ### Evidence collector
 
@@ -279,3 +279,10 @@ Accordingly, a future manager should ask the phase evaluator for readiness befor
 
 Do not create a competing `agentic-agile.yaml` or duplicate claim/idempotency protocol. Extend the phase engine when additional Agentic-Agile metadata is needed.
 
+
+
+## Self-improvement and classifier graph tournament
+
+The DoE Tournament operating system separates classifier capability, routing/graph composition and complete tournament implementation competitions. The 70+ classifier population is a lateral capability pool; Mev/Jev/Kev/Laya are current producer/critic/verifier/merger roles and a baseline adapter. Candidate graphs use parallel fan-out/fan-in and stable candidate-ID joins. SIE (Self-Improvement Engine) owns the bounded evidence-to-challenger cycle. See [research slot](../../refTemplates/15_Research_Repo_Templates/antinuous-adapted-doe-tournament/OPERATING-SYSTEM.md).
+
+Jules lifecycle source: https://jules.google/docs/changelog/ (read-only after 2026-11-11; wind-down 2026-12-31; checked 2026-11-22).

@@ -27,7 +27,7 @@ rules/resources pages, the GitLab Community Hackathon pages, and the official
 Discord/documentation links. The sibling snapshot is
 `ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json`; the October
 showcase snapshots contain 1,273 subgroups and 1,820 projects under
-`ops/challenge/osint/gitlab-transcend-october-2026-*-2026-11-22.ndjson`.
+`ops/challenge/osint/gitlab-transcend-october-2026-subgroups-2026-11-22.ndjson` and `ops/challenge/osint/gitlab-transcend-october-2026-projects-2026-11-22.ndjson`.
 The supplied DevSecOps Flow URL resolved to an **empty subgroup** at the
 2026-11-22 observation; retain it as a URL-addressed subgroup source.
 

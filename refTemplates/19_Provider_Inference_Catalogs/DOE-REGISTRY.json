@@ -158,28 +158,29 @@
         {
           "id": "dispatch-model-lane-bench",
           "path": "ops/challenge/desk-feed.json",
-          "sha256": "c4efc6b13ad28a8da5f60e7a8c3fa9ad8e2bf435",
-          "role": "registry-model-provider-bench-and-historical-endpoint-census"
+          "role": "registry-model-provider-bench-and-historical-endpoint-census",
+          "git_blob_sha1": "c4efc6b13ad28a8da5f60e7a8c3fa9ad8e2bf435"
         },
         {
           "id": "quota-service-registry",
           "path": "ops/quota/registry.json",
-          "sha256": "c063a286fb02ee5446e84ee370bd0b8e971ef6bc",
-          "role": "172-service-record-118-distinct-provider-keys"
+          "role": "172-service-record-118-distinct-provider-keys",
+          "git_blob_sha1": "c063a286fb02ee5446e84ee370bd0b8e971ef6bc"
         },
         {
           "id": "g4f-working-catalog",
           "path": "data/g4f-working/providers.json",
-          "sha256": "5c21ee071cc4de696ee8723bc451af581a73dd28",
-          "role": "60-provider-reference-catalog-and-reported-working-subset"
+          "role": "60-provider-reference-catalog-and-reported-working-subset",
+          "git_blob_sha1": "5c21ee071cc4de696ee8723bc451af581a73dd28"
         },
         {
           "id": "g4f-endpoint-universe",
           "path": "data/g4f-working/universe.json",
-          "sha256": "0347446c00ea5e5a68fba96f871680eaf80f5b96",
-          "role": "160-provider-9588-pair-enumerated-candidate-universe"
+          "role": "160-provider-9588-pair-enumerated-candidate-universe",
+          "git_blob_sha1": "0347446c00ea5e5a68fba96f871680eaf80f5b96"
         }
-      ]
+      ],
+      "hash_contract": "Repository source pins use Git blob SHA-1; each generated population manifest computes SHA-256 over exact source bytes."
     },
     "variants": [
       {

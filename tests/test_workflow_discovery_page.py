@@ -19,6 +19,8 @@ def test_workflow_discovery_page_is_feed_only_and_discoverable():
     assert 'id="reusable-edges"' in html
     assert 'id="schedule-rows"' in html
     assert 'id="activity-rows"' in html
+    assert "Job minutes" in html
+    assert "Summed job runtime" in html
     assert "public standard hosted-runner minutes are free" in html.lower()
     assert "workflows.html" in (APP / "site-nav.js").read_text(encoding="utf-8")
     assert "workflows.html" in (APP / "index.html").read_text(encoding="utf-8")

@@ -85,64 +85,89 @@ Promotion requires all of:
 
 Throughput, low nominal cost, classifier count and judge confidence alone cannot promote an implementation.
 
-## 7. Implemented registry slice and remaining gaps
+## 7. Implemented operating-system contracts
 
-The first versioned registry slice is now present:
-- `scripts/ci/classifier_candidate_admission.py` produces a deterministic admission report. Four local role baselines and the previously evaluated Laya route are eligible for role-matched baseline/replication trials; 56 unclassified model entries remain outside execution. TypeSafe Jev remains owner-paid gated, Kev requires serving composition, recruiting Mev lacks a runnable release, and Mellow mev remains host/egress blocked.
+### Inventory and identity
 
-- `config/classifier_graph_registry.json` registers the four local role implementations and five catalog-backed namesake candidates as distinct identities.
-- The registry now also records the classifier estate's 12 source-defined groups and each group's live/dormant/dead counts. The validator reconciles every group summary against the 71 source rows, keeping operating surfaces distinct from the 61 model candidates.
+- The System One catalog contains 88 entries: 61 model families, 16 adapters, 7 runtimes and 4 directories.
+- The classifier graph registry covers all 61 model entries and all 27 infrastructure entries by their declared catalog layer.
+- Five model candidates retain the role mapping supported by census/trial evidence. Fifty-six retain `unclassified` status pending source-backed capability qualification.
+- Every model candidate carries the catalog's exact claim text and source URL. Catalog claims and verified capability evidence remain separate fields.
+- The classifier operating estate contains 71 units across 12 source-defined groups: 43 live, 26 dormant and 2 dead in the 2026-11-02 feed snapshot. Group counts reconcile against all source rows. Estate units describe operating systems, pipelines, routing, gates, feeds and external surfaces.
+- The `model-catalog-screen` graph holds 61 model candidates as a parallel, design-only qualification arm.
 
-The registry points to the separate `ops/classifiers/classifiers-feed.json` snapshot: 71 estate units (43 live, 26 dormant, 2 dead) as of 2026-11-02. These units include heterogeneous classifier systems, pipelines, routing, review, gate and feed surfaces; they are not 71 interchangeable model candidates.
-- `docs/ops/CLASSIFIER-GRAPH-REGISTRY.schema.json` defines the registry contract.
-- `scripts/ci/classifier_graph_registry_validator.py` checks candidate/catalog references, role compatibility, local source paths, graph node identity, DAG acyclicity and the pinned classifier-estate census counts.
-- `scripts/ci/test_classifier_graph_registry_validator.py` covers valid input, unknown catalog entries, role mismatch, dependency cycles and duplicate node IDs.
-- The registry points to `manager.tournament.v1` for cohort identity. The typed-decision candidate screen is design-only until candidate-specific adapters and matched trials exist.
+### Candidate admission
 
-Run the offline validator from the repository root:
+`scripts/ci/classifier_candidate_admission.py` emits a deterministic
+`classifier.candidate-admission-report.v1` report. Four local role
+implementations qualify as incumbent baselines. The previously evaluated
+self-hosted Laya route qualifies for replication. External TypeSafe Jev
+requires owner approval for the paid route; external Kev requires its
+serving composition; recruiting Mev awaits a runnable release; Mellow mev
+awaits host/egress readiness. The remaining 56 model candidates await
+capability qualification.
+
+### Registry and experiment plan
+
+- Registry: `config/classifier_graph_registry.json`, version `0.7.0`.
+- Registry schema: `docs/ops/CLASSIFIER-GRAPH-REGISTRY.schema.json`.
+- Experiment plan: `config/classifier_tournament_experiment_plan.json`.
+- Experiment schema: `docs/ops/CLASSIFIER-TOURNAMENT-EXPERIMENT-PLAN.schema.json`.
+- Offline validation: `scripts/ci/classifier_graph_registry_validator.py`.
+- Admission tests: `scripts/ci/test_classifier_candidate_admission.py`.
+- Registry tests: `scripts/ci/test_classifier_graph_registry_validator.py`.
+
+The five experiment phases are inventory qualification, lateral capability
+screen, graph composition, tournament implementation comparison, and
+promotion/canary. The plan preserves four independent comparison units:
+classifier capability, routing policy, composition graph and tournament
+implementation. Its status remains `design_only` until candidate-specific
+admission gates pass.
+
+### Tournament implementation competition
+
+The registry pins the incumbent manager implementation against the SIE
+control-plane challenger under the canonical `manager.tournament.v1`
+cohort contract. The challenger remains design-only while its scheduler,
+receipt-ledger, evaluator and promotion-controller integrations mature.
+
+The executable comparison component is
+`deepcli.observatory.implementation_competition@0.2.0`, with CLI
+`scripts/tournament/compare_implementations.py`. It requires exact matched
+task IDs, cohort, task contract, environment fingerprint and evaluator
+version. It computes paired deltas, sample counts, missing metrics and
+approximate 95% intervals. Hard-gate failures block recommendations.
+Dominance requires interval-supported non-regression across all observed
+metrics and positive improvement on at least one. Recommendations route
+to human review; held-out validation, owner approval and rollback lineage
+remain separate promotion gates.
+
+Run the operating-system checks from the repository root:
 
 ```bash
 python scripts/ci/classifier_graph_registry_validator.py
+python scripts/ci/classifier_candidate_admission.py
 python -m unittest scripts/ci/test_classifier_graph_registry_validator.py
+python -m unittest scripts/ci/test_classifier_candidate_admission.py
+python -m unittest deepcli/tests/test_implementation_competition.py
 ```
 
-Remaining implementation gaps:
+## 8. Remaining implementation gates
 
-1. Reconcile the 71-unit classifier-estate feed with current Tier-1 steward records and preserve its separate state vocabulary. Expand model candidates from the verified model layer while retaining pipeline, routing, gate and infrastructure units as integration surfaces.
-2. Add immutable source revision, model/checkpoint digest, adapter version and capability evidence to each trial candidate.
-3. Implement graph execution adapters and dependency-aware scheduling; the current registry records topology and the local baseline still executes through its existing runner.
-4. Replace the scalar-only reducer with independent evaluator evidence, uncertainty-aware Pareto comparison and a versioned preference profile.
-5. Connect deterministic replay to matched-cohort challenger comparisons.
-6. Add canary/rollback receipts after offline evidence supports promotion.
-7. Preserve nulls for absent cost, latency, score and success observations in the leaderboard/evidence migration.
+1. Qualify the 56 unclassified models with primary-source review, task capability contracts, license/usage decisions, checkpoint or service revisions, and adapter smoke evidence.
+2. Pin immutable source revision, model/checkpoint digest, adapter version and route authorization on each admitted candidate.
+3. Implement candidate-specific execution adapters and dependency-aware graph scheduling.
+4. Connect independent evaluator ensembles and append-only run receipts to the existing leaderboard and replay paths.
+5. Run role-matched capability screens, graph ablations and matched manager-version cohorts with held-out tasks.
+6. Add canary and rollback receipts after offline evidence supports promotion.
 
-## 8. Source references
+## 9. Source references
 
 - Existing manager comparison: `docs/research/MANAGER-TOURNAMENT-CONTRACT.md`
-- Existing canonical cohort: `docs/ops/MANAGER-TOURNAMENT.schema.json`
-- Existing team optimization model: `docs/ops/AGENT-TEAM-ORCHESTRATION.md`
-- Existing throughput observations: `docs/ops/AGENT-THROUGHPUT-METRICS.md`
-- Existing replay/evolution: `docs/ops/EVOLUTIONARY-REPLAY.md`
+- Canonical cohort: `docs/ops/MANAGER-TOURNAMENT.schema.json`
+- Team optimization model: `docs/ops/AGENT-TEAM-ORCHESTRATION.md`
+- Throughput observations: `docs/ops/AGENT-THROUGHPUT-METRICS.md`
+- Replay/evolution: `docs/ops/EVOLUTIONARY-REPLAY.md`
 - Classifier and routing comparison: `CLASSIFIER-GRAPH-TOURNAMENT.md`
-- Self-improvement controller: `SELF-IMPROVEMENT-ENGINE.md`
-
-## 8. Full inventory and implementation competition
-
-The registry now covers the full System One catalog by layer:
-
-- 61 model-layer entries are registered as classifier candidates.
-- 56 remain `unclassified`; their catalog presence establishes an inventory identity, not a proven capability or runnable endpoint.
-- Five S1 candidates retain the narrower role mapping supported by the existing census and trial records.
-- 27 adapter, runtime and directory entries remain infrastructure references, outside model counts.
-- The separate classifier-estate feed retains its 71 operating units and live/dormant/dead state counts.
-
-The `model-catalog-screen` graph contains all 61 model candidates as a design-only parallel screening arm. Candidate admission requires a capability contract, execution adapter, source/checkpoint identity, permitted route and evidence plan. The graph is inventory-complete and execution-gated.
-
-Tournament implementation versioning is recorded separately from classifier and graph versioning in `implementation_competition`:
-
-- The incumbent pins the canonical `manager.tournament.v1` cohort contract and source components for trial execution, evidence reduction, leaderboard and replay.
-- The SIE control-plane challenger is `design_only`; its hypothesis and source document are versioned while execution readiness remains false.
-- Promotion compares complete implementation versions on matched cohorts, held-out tasks, independent evaluators and immutable receipts. Every promotion carries a rollback target and production approval gate.
-
-The competition unit is explicit: classifier capability, composition graph, routing policy or tournament implementation. Results across these populations remain separately attributable.
-
+- SIE controller: `SELF-IMPROVEMENT-ENGINE.md`
+- Matched implementation comparison: `docs/ops/TOURNAMENT-IMPLEMENTATION-COMPETITION.md`

@@ -124,7 +124,7 @@ def main():
     baseline = json.loads(args.baseline.read_text(encoding="utf-8"))
     baseline_org = baseline.get("organization", {})
     if baseline_org.get("login", "").casefold() != args.source_org.casefold():
-        print("Baseline organization does not match the requested source.", file=sys.stderr)
+        print("Baseline organization mismatch for the requested source.", file=sys.stderr)
         return 2
 
     try:
@@ -222,7 +222,7 @@ def main():
                 raise RuntimeError("Post-transfer reconciliation findings: " + "; ".join(findings))
             current_target_ids = {str(repo.get("id")) for repo in current["organization"]["repositories"]}
             if not expected_ids.issubset(current_target_ids):
-                raise RuntimeError("Destination repository ID set does not contain every baseline repository.")
+                raise RuntimeError("Destination repository ID set is missing baseline repository IDs.")
 
         receipt = {
             "schema": "github.enterprise-org-transfer.v1",

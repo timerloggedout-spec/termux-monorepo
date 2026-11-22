@@ -148,7 +148,7 @@ jobs:
           retention-days: 14
 
   refresh-trusted:
-    if: github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:

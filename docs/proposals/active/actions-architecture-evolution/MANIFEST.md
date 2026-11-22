@@ -21,7 +21,7 @@ gates_required: [proposal-lifecycle, repo-gate, termux-smoke]
 
 ## Summary
 
-Unify the classification and lifecycle model for workflows, reusable workflows, composite actions, skills, AppID identities, modularization epochs, DoE observations, and BRR/QUE receipts. Deliver a read-only Tribute display-feed MVP over the existing generated-feed contract. Repo-Story remains a future candidate.
+Unify the classification and lifecycle model for workflows, reusable workflows, composite actions, skills, AppID identities, modularization epochs, DoE observations, and BRR/QUE receipts. Deliver programmatically refreshed feeds and a read-only Tribute surface through our existing GitHub Pages publishing pipeline. Repo-Story remains an existing concept reference.
 
 ## Reviewers
 
@@ -44,6 +44,8 @@ Unify the classification and lifecycle model for workflows, reusable workflows, 
 - [ ] At least one non-author review recorded
 - [ ] Status → accepted before execution merges
 - [ ] PRs cite `Implements: <ITEM-ID>`
+- [ ] Automated refresh PR and no-change behavior verified
+- [ ] GitHub Pages publisher run and live source-SHA verification recorded
 - [ ] Gates green on merge
 - [ ] Closed + moved to `closed/` when terminal
 

@@ -15,6 +15,11 @@ def test_classifiers_page():
     assert "Compare candidate implementations laterally" in html
     assert "'home','pipeline','trial'" not in html
     assert "'coded_quirk'" not in html
+    assert "Tournament inventory" in html
+    assert "classifier_graph_registry.json" in html
+    assert "model candidates" in html
+    assert "awaiting qualification" in html
+    assert "Tournament protocol" in html
     assert "pct_breakdown" in html and "SHARES" in html
     assert "win_probability" not in html and "metrics_internal" not in html
 

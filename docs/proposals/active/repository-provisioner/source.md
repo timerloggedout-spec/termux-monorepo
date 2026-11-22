@@ -25,11 +25,11 @@ The provisioner supports two owner types:
 
 Both routes create one repository per manual dispatch, initialize the default branch with GitHub's `auto_init=true`, verify owner/name/ID/default branch, and publish a metadata-only receipt.
 
-The workflow creates repositories inside an existing organization. Organization creation itself remains a personal-account settings operation. The workflow does not transfer, delete, rename, configure secrets, add collaborators, or change branch protection.
+The workflow creates repositories inside an existing organization. Organization creation remains a personal-account settings operation. Route repository transfers, renames, secret configuration, collaborator changes, and branch protection through their dedicated workflows.
 
 ## Authority and security
 
 - Repository hard rules: `CLAUDE.md`.
 - Human-only credential/permission edges: `docs/proposals/AGENTIC-PERMISSIONS.md`.
 - Dual-gate policy: `docs/ARCHW1Z-GATE.md`.
-- The workflow consumes the pre-provisioned operator PAT secret chain; it does not create, rotate, display, or export credentials.
+- The workflow consumes the pre-provisioned operator PAT secret chain and keeps credential creation, rotation, display, and export in the dedicated credential-management process.

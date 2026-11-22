@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-22T13:39:58Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-22T14:37:24Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-22T13:39:58Z` (merged 150 · open 200) · lane-events(Neon) status=`error:HTTPError` count=`None` read_at=`2026-11-22T13:39:58Z`
+Sources: PR feed read_at=`2026-11-22T14:37:24Z` (merged 150 · open 200) · lane-events(Neon) status=`error:HTTPError` count=`None` read_at=`2026-11-22T14:37:24Z`
 
 Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknown=8
 
@@ -20,13 +20,13 @@ Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknow
 | desk | `ops` | Lane-events Neon ledger | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #5648 `c9648146400d` 2026-11-19T09:11:31Z | land/close PR #5769 — docs(observatory): intake Ksarith portfolio into DoE tournament planning |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| marketing | `marketing` | FB Pages MVT + challenge promo | in-flight | #5456 `dacd20c4c57c` 2026-11-15T13:42:20Z | land/close PR #5721 — Skills selective-promote: #5667 payload to master (QUE #5669) |
+| marketing | `marketing` | FB Pages MVT + challenge promo | in-flight | #5456 `dacd20c4c57c` 2026-11-15T13:42:20Z | land/close PR #5781 — feat(marketing): add GitHub profile marketing surface |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | opportunities | `challenge-entries` | Challenge OSINT + opportunity ledger | in-flight | #5558 `bca4313025b0` 2026-11-17T14:18:40Z | land/close PR #5758 — docs(ops): expand Devpost + GitLab challenge OSINT observatory |
 | providers | `providers` | Provider registry / catalog / availability | in-flight | NOT_ESTABLISHED | land/close PR #3916 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #5684 `79943221cc5f` 2026-11-20T06:23:04Z | land/close PR #3890 — chore(telemetry): refresh HindSight+Provenance ingest |
-| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #5729 `b9bf743250e5` 2026-11-20T20:14:58Z | land/close PR #5767 — feat(gitlab): register secondary mesh compute and quota ledger |
+| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #5729 `b9bf743250e5` 2026-11-20T20:14:58Z | land/close PR #5782 — docs(ops): map GitHub quota and Actions optimization plan |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #5359 `5e57dcd3d1e8` 2026-11-13T17:17:46Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | NOT_ESTABLISHED | land/close PR #5673 — C13 Covenant — draft package landing (QUE #5671) |

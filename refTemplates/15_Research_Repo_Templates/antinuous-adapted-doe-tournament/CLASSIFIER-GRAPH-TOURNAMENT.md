@@ -185,3 +185,40 @@ These are design and benchmark references, not evidence that their results trans
 ## 9. Canonical classifier inventory
 
 Use `config/system_one_catalog.json` (schema `system-one-catalog/1`) and `docs/ops/SYSTEM-ONE-CATALOG.md` as the existing inventory authority. The catalog document reports 88 entries: 61 model families, 16 adapters, 7 runtimes and 4 directories. Track lifecycle as referenced → catalogued → trial_candidate → evaluated, with firsthand evidence at each transition. Count each entry in exactly one layer. Treat directory entries as discovery aids, runtime entries as execution surfaces, adapters as techniques and model entries as model families. The trial quartet's local roles remain separate from same-named external projects.
+
+## 2B. Full catalog screening boundary
+
+The registry covers all 61 model-layer entries in `config/system_one_catalog.json`.
+It records five S1 candidates with the role mapping supported by the
+existing census/trial evidence. The remaining 56 are explicitly
+`unclassified`: their catalog records provide identity and source
+provenance, while task capability and runnable adapter remain open
+qualification work.
+
+The 27 adapter, runtime and directory entries are recorded in a separate
+infrastructure collection. The 71-unit classifier-estate feed remains a
+third inventory, describing operating systems and workflow surfaces.
+These three inventories have different counting units and stay separate.
+
+`model-catalog-screen` is a 61-node, parallel, design-only graph. It
+defines the candidate screen boundary; it is not an execution claim.
+A candidate enters a live cohort after capability mapping, source and
+checkpoint pinning, adapter verification, route authorization, and
+task-specific acceptance criteria.
+
+## 2C. Tournament implementation competition
+
+The registry also pins an incumbent implementation and SIE challenger:
+
+- Incumbent: `incumbent.termux-manager-tournament@1.0.0`, with explicit
+  source references for the canonical cohort contract, trial runner,
+  reducer, leaderboard and replay simulator.
+- Challenger: `challenger.sie-control-plane@0.1.0`, design-only and
+  linked to the SIE architecture hypothesis.
+
+Compare implementation versions as complete arms on the same
+`manager.tournament.v1` cohort. Require held-out tasks, independent
+evaluation, immutable run receipts, rollback lineage and owner approval
+for production promotion. Component ablations attribute gains after
+the complete-arm comparison.
+

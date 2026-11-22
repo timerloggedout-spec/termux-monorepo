@@ -150,7 +150,7 @@
 - Branch base at creation: 697c0a43e57ea16c1503826d48a1f0d7f58c3fa6.
 - BRR prior-art finding: the earlier architecture-entry branch was materially stale; compare evidence showed it 1,124 commits behind with two branch-only commits. The predecessor branch was fast-forwarded to its then-current master before implementation; the successor branch starts from the latest master.
 - Workspace adaptation: this session has GitHub connector access; the isolated remote feature branch is the working workspace. Local fixture tests provide unit evidence and GitHub Actions supplies integration evidence.
-- Loopy adaptation: use Observe → Choose → Act → Verify → Record → Repeat-or-stop. The supplied Loop Library specification leaves the catalog host unspecified, so published-loop matching remains unverified; this is an unpublished project adaptation.
+- Loopy adaptation: use Observe → Choose → Act → Verify → Record → Repeat-or-stop. The supplied Loop Library specification provides the six-step workflow contract; published catalog matching remains an open discovery item, so this implementation uses the project-local loop.
 - Local verification: 15/15 architecture manifest and workflow tests passed; Python compilation passed.
 - PR #5770 was superseded after the DO Statement Style audit identified non-imperative commit subjects. The successor branch starts at current master 697c0a43e57ea16c1503826d48a1f0d7f58c3fa6; the eleven-commit master-side delta contains generated operational records and has zero path overlap.
 - The initial combined status records Vercel daily deployment quota exhaustion; adaptive-wait classifies Vercel as an advisory signal. The successor branch uses imperative commit subjects to satisfy the repository style gate.

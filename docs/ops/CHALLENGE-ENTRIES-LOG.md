@@ -734,9 +734,11 @@ form is historical and closed.
 ## 5. Sweep sources
 
 AWS Builder Center hackathons listing; Devpost (AI/agent, Nov–Dec 2026);
-lablab.ai events; Builder.io hackathon page; Aha.io academy events;
-vendor developer-competition pages (Google, Microsoft, Anthropic,
-Hugging Face). Each sweep re-verifies deadlines from the official page
+GitLab AI Hackathon group + Transcend subgroup + Participant Template;
+GitLab Contributor Platform hackathon + rules + onboarding + issue finder;
+GitLab Community Discord; lablab.ai events; Builder.io hackathon page;
+Aha.io academy events; vendor developer-competition pages (Google,
+Microsoft, Anthropic, Hugging Face). Each sweep re-verifies deadlines from the official page
 before touching §3. **November watcher (owner, 2026-10-27):** through the
 fall season the sweep scopes November listings on every source, Aha.io
 included.

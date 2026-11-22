@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-22T16:19:05Z)
+# Lane matrix status (2026-11-22T16:19:46Z)
 
-- Master: `239888862bf7f427eb31c1b855a09552b71acd1d`
+- Master: `fbe28c6997433d6fce33aa2ae7303d21b84fbb87`
 - Open PRs: **527**
 - Oldest: #47 (109.02d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -39,11 +39,11 @@
 | #684 | 62.91 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
 | #769 | 60.36 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
 | #969 | 52.27 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
-| #990 | 51.4 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
+| #990 | 51.41 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
 | #1020 | 50.14 | CANDIDATE | state:unknown | feat: close provider continuity and executable rou |
 | #1274 | 34.29 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
-| #1441 | 32.35 | CANDIDATE | state:unknown | feat(triage): reconcile official quota before disp |
-| #1469 | 32.13 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
+| #1441 | 32.36 | CANDIDATE | state:unknown | feat(triage): reconcile official quota before disp |
+| #1469 | 32.14 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
 | #1470 | 32.13 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
 | #1495 | 31.58 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
 | #1513 | 31.34 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |

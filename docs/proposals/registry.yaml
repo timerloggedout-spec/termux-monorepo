@@ -1,5 +1,5 @@
 version: 1
-updated_at: '2026-11-21T00:00:00Z'
+updated_at: '2026-11-22T11:34:07.742Z'
 updated_by: ChatGPT
 proposals:
   - id: repository-architecture-entry
@@ -16,9 +16,12 @@ proposals:
         role: author+executor
         status: executing
     related_issues: []
-    related_prs: []
+    related_prs:
+      - 5744
+      - 5770
     related_branches:
       - docs/repository-architecture-entry-20261121-v2
+      - docs/architecture-versioning-automation-20261122-v2
     gates_required:
       - repo-gate
       - termux-smoke

@@ -64,7 +64,8 @@ def validate_registry(root: Path, registry: Any, catalog: Any, estate: Any, plan
     if not isinstance(plan, dict) or plan.get("schema") != "classifier.tournament-experiment-plan.v1":
         errors.append("experiment plan: expected classifier.tournament-experiment-plan.v1")
     else:
-        if plan.get("canonical_cohort", {}).get("schema") != "manager.tournament.v1":
+        plan_cohort = plan.get("canonical_cohort")
+        if not isinstance(plan_cohort, dict) or plan_cohort.get("schema") != "manager.tournament.v1":
             errors.append("experiment plan: canonical cohort must be manager.tournament.v1")
         if plan.get("execution_ready") is not False or plan.get("status") != "design_only":
             errors.append("experiment plan: execution remains design_only until qualification gates pass")
@@ -73,7 +74,8 @@ def validate_registry(root: Path, registry: Any, catalog: Any, estate: Any, plan
         if len(phase_ids) != len(phases) or not _unique(phase_ids) or len(phases) < 5:
             errors.append("experiment plan.phases: require five uniquely identified phases")
         expected_units = {"classifier_capability", "routing_policy", "composition_graph", "tournament_implementation"}
-        if set(plan.get("comparison_units", [])) != expected_units:
+        comparison_units = plan.get("comparison_units")
+        if not isinstance(comparison_units, list) or set(comparison_units) != expected_units:
             errors.append("experiment plan.comparison_units: all four comparison units are required")
         analysis = plan.get("analysis", {})
         if not isinstance(analysis, dict) or analysis.get("missing_observation") != "null" or analysis.get("raw_objectives_preserved") is not True:
@@ -98,6 +100,7 @@ def validate_registry(root: Path, registry: Any, catalog: Any, estate: Any, plan
         if not isinstance(entries, list):
             errors.append("catalog.entries: expected list")
             catalog_ids = set()
+            catalog_by_id = {}
         else:
             catalog_by_id = {
                 entry.get("id"): entry for entry in entries

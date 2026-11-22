@@ -75,6 +75,7 @@ The manifest contains deterministic source and render metadata. Git commit SHA, 
 |---|---|---|
 | Pull request | Run tests, validate the version bump, render Mermaid, generate and check the manifest, upload review artifacts | Read-only |
 | Push to master | Re-render diagrams, regenerate and validate projections, commit changed generated files | Existing trusted refresh job |
+| Manual dispatch | Execute the trusted refresh only when the selected ref is master | Master-ref guard in the trusted job |
 | Generated-only follow-up commit | Preserve source version; generated files remain projections | Bot writer under existing workflow permissions |
 
 The existing Automation Documentation Continuous Refresh workflow remains the single event-driven scheduler and generated-file writer. Existing credentials, providers, and runtime dependencies remain unchanged.

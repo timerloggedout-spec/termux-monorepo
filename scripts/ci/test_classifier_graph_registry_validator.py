@@ -143,7 +143,7 @@ class ClassifierGraphRegistryTests(unittest.TestCase):
     def test_matched_cohort_comparator_is_versioned_and_present(self):
         comparator = self.registry["implementation_competition"]["comparison_engine"]
         self.assertEqual(comparator["implementation_id"], "matched-cohort-comparator")
-        self.assertEqual(comparator["version"], "0.1.0")
+        self.assertEqual(comparator["version"], "0.2.0")
         self.assertTrue((ROOT / comparator["source_ref"]).is_file())
         self.assertTrue((ROOT / comparator["cli_source_ref"]).is_file())
 

@@ -46,6 +46,8 @@ The transfer path preserves repository contents, issues, pull requests, wikis, s
 - [x] Live repository inventory identifies all three affected repositories.
 - [x] The two enterprise monorepo snapshots are confirmed to share the same HEAD SHA.
 - [x] A read-only baseline/verification workflow and regression tests are implemented.
+- [x] A dry-run-first repository transfer workflow is implemented with exact apply confirmation.
+- [x] Repository provisioning supports authorized GitHub Free organization owners.
 - [ ] Confirm the available Enterprise organization-removal path.
 - [ ] Establish an independent Free destination if transfer is required.
 - [ ] Transfer all source repositories and verify stable repository IDs.

@@ -44,7 +44,7 @@
 - [x] Write the focused tests before implementation.
 - [x] Run the test module while the generator is absent; expected failure was the missing scripts/ci/architecture_docs.py module.
 - [x] Add cases for determinism, source coverage, render presence, paired flow mappings, stale manifests, SemVer, initial baseline, required bump, and generated-path classification.
-- [x] Run the fixture suite after implementation; 9 tests passed locally.
+- [x] Run the fixture suite after implementation; 10 tests passed locally.
 - [x] Commit tests first: fe66ac4, 46f7b45, 063bd82, c44a40e.
 
 ### Task 2: Implement deterministic manifest generator
@@ -147,5 +147,5 @@
 - BRR prior-art finding: the earlier architecture-entry branch was materially stale; compare evidence showed it 1,124 commits behind with two branch-only commits. The new branch was fast-forwarded to the then-current master before implementation.
 - Workspace adaptation: this session has GitHub connector access and no network-enabled local Git checkout. The isolated remote feature branch is the working workspace; local fixture tests provide unit evidence and GitHub Actions supplies integration evidence.
 - Loopy adaptation: use Observe → Choose → Act → Verify → Record → Repeat-or-stop. The supplied Loop Library specification has no concrete catalog host, so published-loop matching remains unverified; this is an unpublished project adaptation.
-- Local verification: 9/9 architecture manifest tests passed; Python compilation passed.
+- Local verification: 10/10 architecture manifest tests passed; Python compilation passed.
 - Pending evidence: exact PR-head Actions, independent review, generated artifact inspection, and trusted master refresh.

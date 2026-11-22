@@ -123,3 +123,6 @@ The canonical classifier inventory is `config/system_one_catalog.json`, document
 
 | scripts/ci/classifier_candidate_admission.py | deterministic evidence-aware candidate admission report |
 | scripts/ci/test_classifier_candidate_admission.py | admission gate regression tests |
+
+| deepcli/deepcli/observatory/implementation_competition.py | paired matched-cohort comparison of versioned tournament implementations |
+| deepcli/tests/test_implementation_competition.py | uncertainty, hard-gate and promotion-boundary tests |

@@ -27,7 +27,7 @@ Known incumbent limitations include binary-float pricing classification, numeric
 
 ## VultrInspired v1.0.0
 
-The local implementation accepts an incumbent v5 document and emits `provider-model-catalog/vultr-inspired/v1`. The paired runner `scripts/provider_catalog_competition.py` writes the incumbent input unchanged, the VultrInspired projection and a SHA-256 manifest. Invoke it with `python3 -m scripts.provider_catalog_competition --input <incumbent-v5.json> --output-dir <catalogue-output-dir>`. It adds structured limits, input/output modalities, capability groups, exact decimal strings for string/integer price inputs, explicit unknown readiness, separate access/entitlement evidence, top-level provider observations, cadence classes, source errors, provenance, unknown-field preservation and indexed diagnostics for malformed rows.
+The local implementation accepts an incumbent v5 document and emits `provider-model-catalog/vultr-inspired/v1`. The paired runner `scripts/provider_catalog_competition.py` writes the incumbent input unchanged, the VultrInspired projection and a SHA-256 manifest. Invoke it with `python3 -m scripts.provider_catalog_competition --input <incumbent-v5.json> --output-dir <catalogue-output-dir>`. It adds structured limits, input/output modalities, capability groups, exact decimal strings for string/integer price inputs, explicit unknown catalog-active state, separate access/entitlement evidence, top-level provider observations, cadence classes, source errors, provenance, unknown-field preservation and indexed diagnostics for malformed rows.
 
 Float-origin prices carry precision-limited diagnostics. Original decimal text is preserved when provider adapters capture it before binary-float conversion. Source-native exact-price capture is a later adapter increment.
 
@@ -73,7 +73,7 @@ Each increment receives its own DoE version and remains evaluation-only until se
 ## Invariants
 
 - Catalog presence, credentials, entitlement, quota, readiness, health and inference success remain separate facts.
-- Missing readiness and entitlement remain unknown.
+- Missing catalog-active state and entitlement remain unknown.
 - Provider-specific wire contracts remain behind existing adapters.
 - Catalog evaluation remains observational; provider activation, routing weights, paid retries and inference each follow separate authorization gates.
 - Promotion requires separate review and same-commit validation.

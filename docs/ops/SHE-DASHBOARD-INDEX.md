@@ -62,7 +62,7 @@ n8n is an adapter. It does not replace GitHub, Actions, SHE reducers, or the sna
 | Experiments | Researcher | experiment records |
 | Relationships | Researcher/Forensic | corpus + temporal snapshots |
 | Provenance | Forensic reviewer | exact evidence chain |
-| Architecture | All | .mmd source + generated assets |
+| Architecture | All | .mmd source + generated assets; [published Architecture Explorer](https://timerloggedout-spec.github.io/termux-monorepo/architecture/) |
 | Research | Researcher | explicitly classified research evidence |
 | Settings / Surface Health | Operator | build/snapshot/adapter state |
 

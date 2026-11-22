@@ -148,7 +148,7 @@
 - Branch: docs/architecture-versioning-automation-20261122.
 - Branch base at creation: f649cd9094c2bbc9e468f77c24edc022ac253e03.
 - BRR prior-art finding: the earlier architecture-entry branch was materially stale; compare evidence showed it 1,124 commits behind with two branch-only commits. The new branch was fast-forwarded to the then-current master before implementation.
-- Workspace adaptation: this session has GitHub connector access and no network-enabled local Git checkout. The isolated remote feature branch is the working workspace; local fixture tests provide unit evidence and GitHub Actions supplies integration evidence.
+- Workspace adaptation: this session has GitHub connector access; the isolated remote feature branch is the working workspace. Local fixture tests provide unit evidence and GitHub Actions supplies integration evidence.
 - Loopy adaptation: use Observe → Choose → Act → Verify → Record → Repeat-or-stop. The supplied Loop Library specification leaves the catalog host unspecified, so published-loop matching remains unverified; this is an unpublished project adaptation.
 - Local verification: 14/14 architecture manifest and workflow tests passed; Python compilation passed.
 - PR #5770 is open as a draft and GitHub reports mergeable=true. Current master e9581d93c891b8d8c4373a8dc462580ea6bb0d88 is five commits beyond the branch base; the master-side delta contains only generated lane-matrix and backup-relay records, with zero path overlap.

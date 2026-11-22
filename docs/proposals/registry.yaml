@@ -1,5 +1,5 @@
 version: 1
-updated_at: '2026-11-21T00:00:00Z'
+updated_at: '2026-11-22T13:40:46.899Z'
 updated_by: ChatGPT
 proposals:
   - id: repository-architecture-entry
@@ -1255,6 +1255,24 @@ proposals:
     gates_required:
       - proposal-lifecycle
       - repo-gate
+  - id: github-profile-marketing-surface
+    title: GitHub profile marketing surface — content projection, referral spotlight rotation, and custom displays
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/github-profile-marketing-surface/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_issues:
+      - 574
+    related_prs: []
+    related_branches:
+      - feat/github-profile-marketing-surface-20261122
+    gates_required:
+      - repo-gate
+      - termux-smoke
   - id: continuous-capability-evolution-lab
     title: "Continuous Capability Evolution Laboratory — event-driven FOSS discovery, DoE comparison, and benefit compounding"
     author: ChatGPT

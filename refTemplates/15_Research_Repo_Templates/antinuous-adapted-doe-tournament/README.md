@@ -118,3 +118,6 @@ Research snapshot: 2026-11-22
 
 
 The canonical classifier inventory is `config/system_one_catalog.json`, documented in `docs/ops/SYSTEM-ONE-CATALOG.md`. Keep role contract, local implementation, external candidate and protocol adapter as distinct identities. The System One adapter supports typed decisions; it is not a generic text-generation adapter.
+
+| scripts/ci/classifier_candidate_admission.py | deterministic evidence-aware candidate admission report |
+| scripts/ci/test_classifier_candidate_admission.py | admission gate regression tests |

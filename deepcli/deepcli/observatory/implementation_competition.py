@@ -29,6 +29,7 @@ METRIC_DIRECTIONS = {
 REQUIRED_RECEIPT_FIELDS = (
     "implementation_id",
     "implementation_version",
+    "competition_role",
     "cohort_id",
     "task_id",
     "task_contract_hash",
@@ -61,6 +62,7 @@ def _validate_receipts(receipts: list[dict[str, Any]]) -> dict[str, Any]:
     contracts = set()
     evaluators = set()
     cohorts = set()
+    roles_by_implementation: dict[tuple[str, str], str] = {}
     for index, receipt in enumerate(receipts):
         if not isinstance(receipt, dict):
             raise ValueError(f"receipt[{index}] must be an object")
@@ -71,6 +73,12 @@ def _validate_receipts(receipts: list[dict[str, Any]]) -> dict[str, Any]:
         task_id = receipt["task_id"]
         if not all(isinstance(value, str) and value for value in (*implementation, task_id)):
             raise ValueError(f"receipt[{index}] has an empty implementation or task identity")
+        role = receipt["competition_role"]
+        if role not in {"incumbent", "challenger"}:
+            raise ValueError(f"receipt[{index}] competition_role must be incumbent or challenger")
+        if implementation in roles_by_implementation and roles_by_implementation[implementation] != role:
+            raise ValueError(f"implementation {implementation[0]} has inconsistent competition roles")
+        roles_by_implementation[implementation] = role
         if task_id in grouped[implementation]:
             raise ValueError(f"duplicate receipt for {implementation[0]} task {task_id}")
         if not isinstance(receipt["metrics"], dict) or not isinstance(receipt["hard_gates"], dict):
@@ -84,13 +92,16 @@ def _validate_receipts(receipts: list[dict[str, Any]]) -> dict[str, Any]:
         raise ValueError("exactly two implementation versions are required")
     if len(cohorts) != 1 or len(contracts) != 1 or len(fingerprints) != 1 or len(evaluators) != 1:
         raise ValueError("implementations require the same cohort, task contract, environment and evaluator")
-    implementations = list(grouped.items())
-    left_tasks, right_tasks = set(implementations[0][1]), set(implementations[1][1])
+    if set(roles_by_implementation.values()) != {"incumbent", "challenger"}:
+        raise ValueError("receipts must identify one incumbent and one challenger")
+    role_keys = {role: key for key, role in roles_by_implementation.items()}
+    incumbent_key, challenger_key = role_keys["incumbent"], role_keys["challenger"]
+    left_tasks, right_tasks = set(grouped[incumbent_key]), set(grouped[challenger_key])
     if left_tasks != right_tasks:
         raise ValueError("implementations must cover the same matched task IDs")
     return {
         "grouped": grouped,
-        "implementations": [key for key, _ in implementations],
+        "implementations": [incumbent_key, challenger_key],
         "task_ids": sorted(left_tasks),
         "cohort_id": next(iter(cohorts)),
         "task_contract_hash": next(iter(contracts)),
@@ -169,11 +180,13 @@ def compare_implementations(receipts: list[dict[str, Any]]) -> dict[str, Any]:
         if summary["sample_count"] > 0
     }
     candidate_dominates = bool(comparable) and all(
-        summary["improvement_mean"] >= 0 for summary in comparable.values()
-    ) and any(summary["improvement_mean"] > 0 for summary in comparable.values())
+        summary["ci95"] is not None and summary["ci95"][0] >= 0
+        for summary in comparable.values()
+    ) and any(summary["ci95"][0] > 0 for summary in comparable.values())
     incumbent_dominates = bool(comparable) and all(
-        summary["improvement_mean"] <= 0 for summary in comparable.values()
-    ) and any(summary["improvement_mean"] < 0 for summary in comparable.values())
+        summary["ci95"] is not None and summary["ci95"][1] <= 0
+        for summary in comparable.values()
+    ) and any(summary["ci95"][1] < 0 for summary in comparable.values())
     if incumbent_failures or challenger_failures:
         recommendation = "blocked_by_hard_gate"
     elif candidate_dominates:

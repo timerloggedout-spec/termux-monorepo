@@ -58,13 +58,19 @@ Establish one repository-wide architecture entry that routes collaborators to ca
 ## Architecture v2 — linked modules and snapshot audit
 
 - Flow index: docs/architecture/flows/README.md
-- Six detailed Markdown maps and six paired Mermaid sources are linked from root architecture.md.
+- Seven detailed Markdown maps and seven paired Mermaid sources are linked from root architecture.md.
 - Mermaid.ai project: https://mermaid.ai/app/projects/affbc609-b2b7-420c-af5b-ca0ccb74fe14
 - Existing root diagram document ID updated in place: 080c5454-1215-40a8-afb5-7ef30e42dfcb
 - Focused Mermaid.ai saves reached the account diagram limit; all six editable sources are committed in the repository.
 - archwiz/DATA_FLOW_MANIFEST.md is a zero-byte tracked blob at observed master SHA 5135731c389c6b1b8ed8332b3415a60f8163c2a1. Generator writes to $HOME/archwiz/DATA_FLOW_MANIFEST.md and omits source SHA / tree SHA / input digest.
 - Actual local generated_at: unknown; it is not inferred from audit date.
 
+
+## Current implementation PR
+
+- PR #5770: https://github.com/timerloggedout-spec/termux-monorepo/pull/5770
+- Branch: docs/architecture-versioning-automation-20261122
+- Current status: open draft; exact-head validation and independent review pending.
 
 ## Architecture versioning extension — REPO-ARCH-007
 

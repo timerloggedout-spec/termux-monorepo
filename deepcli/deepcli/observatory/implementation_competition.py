@@ -186,11 +186,15 @@ def compare_implementations(receipts: list[dict[str, Any]]) -> dict[str, Any]:
         metric: summary for metric, summary in metrics.items()
         if summary["sample_count"] > 0
     }
-    candidate_dominates = bool(comparable) and all(
+    unobserved_metrics = [
+        metric for metric, summary in metrics.items()
+        if summary["sample_count"] == 0
+    ]
+    candidate_dominates = bool(comparable) and not unobserved_metrics and all(
         summary["ci95"] is not None and summary["ci95"][0] >= 0
         for summary in comparable.values()
     ) and any(summary["ci95"][0] > 0 for summary in comparable.values())
-    incumbent_dominates = bool(comparable) and all(
+    incumbent_dominates = bool(comparable) and not unobserved_metrics and all(
         summary["ci95"] is not None and summary["ci95"][1] <= 0
         for summary in comparable.values()
     ) and any(summary["ci95"][1] < 0 for summary in comparable.values())
@@ -215,6 +219,7 @@ def compare_implementations(receipts: list[dict[str, Any]]) -> dict[str, Any]:
         "challenger": {"implementation_id": challenger_key[0],
                        "version": challenger_key[1], "hard_gate_failures": challenger_failures},
         "metrics": metrics,
+        "unobserved_metrics": unobserved_metrics,
         "recommendation": recommendation,
         "promotion_authorized": False,
         "promotion_gate": ["held_out_validation", "owner_approval", "rollback_target"],

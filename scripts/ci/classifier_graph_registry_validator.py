@@ -14,8 +14,11 @@ from pathlib import Path
 from typing import Any
 
 
-def _unique(values: list[str]) -> bool:
-    return len(values) == len(set(values))
+def _unique(values: list[Any]) -> bool:
+    try:
+        return len(values) == len(set(values))
+    except TypeError:
+        return False
 
 
 def validate_registry(root: Path, registry: Any, catalog: Any) -> list[str]:
@@ -86,7 +89,7 @@ def validate_registry(root: Path, registry: Any, catalog: Any) -> list[str]:
                 errors.append(f"{prefix}.roles: expected non-empty list")
             else:
                 for role_id in candidate_roles:
-                    if role_id not in role_ids:
+                    if not isinstance(role_id, str) or role_id not in role_ids:
                         errors.append(f"{prefix}.roles: unknown role {role_id!r}")
             kind = candidate.get("kind")
             if kind == "catalog":
@@ -136,11 +139,11 @@ def validate_registry(root: Path, registry: Any, catalog: Any) -> list[str]:
                     continue
                 node_by_id[node_id] = node
                 role_id = node.get("role_id")
-                if role_id not in role_ids:
+                if not isinstance(role_id, str) or role_id not in role_ids:
                     errors.append(f"{node_prefix}.role_id: unknown role {role_id!r}")
                 candidate_id = node.get("candidate_id")
                 if candidate_id is not None:
-                    candidate = candidate_by_id.get(candidate_id)
+                    candidate = candidate_by_id.get(candidate_id) if isinstance(candidate_id, str) else None
                     if candidate is None:
                         errors.append(f"{node_prefix}.candidate_id: unknown candidate {candidate_id!r}")
                     elif role_id not in candidate.get("roles", []):
@@ -153,14 +156,14 @@ def validate_registry(root: Path, registry: Any, catalog: Any) -> list[str]:
                 if not _unique(dependencies):
                     errors.append(f"{prefix}.nodes[{node_id}].depends_on: duplicate dependency")
                 for dependency in dependencies:
-                    if dependency not in node_by_id:
+                    if not isinstance(dependency, str) or dependency not in node_by_id:
                         errors.append(f"{prefix}.nodes[{node_id}].depends_on: unknown node {dependency!r}")
             # Kahn's algorithm: reject cycles while preserving the declared DAG.
             indegree = {node_id: 0 for node_id in node_by_id}
             children = {node_id: [] for node_id in node_by_id}
             for node_id, node in node_by_id.items():
                 for dependency in node.get("depends_on", []):
-                    if dependency in node_by_id:
+                    if isinstance(dependency, str) and dependency in node_by_id:
                         indegree[node_id] += 1
                         children[dependency].append(node_id)
             ready = [node_id for node_id, degree in indegree.items() if degree == 0]

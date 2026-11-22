@@ -158,4 +158,4 @@
 
 
 - Successor delivery branch: docs/architecture-versioning-automation-20261122-v2, created from current master and rebuilt with imperative commit subjects.
-- Predecessor PR #5770 is retained for provenance and will close after successor PR creation.
+- Predecessor PR #5770 is closed as superseded and retained in the proposal registry for provenance.

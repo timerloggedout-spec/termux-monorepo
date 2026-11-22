@@ -20,6 +20,8 @@ This is an architectural reference. It is not an implementation claim, an Antinu
 - ARCHITECTURE.md — adapted system architecture and dynamic-utility patterns.
 - DOE-TOURNAMENT-CONTRACT.md — versioned experiment and tournament contract.
 - SCHEMAS.md — canonical data model and runtime registry contracts.
+- config/classifier_tournament_experiment_plan.json — staged qualification, capability, graph and manager-version experiment plan.
+- docs/ops/CLASSIFIER-TOURNAMENT-EXPERIMENT-PLAN.schema.json — experiment-plan schema.
 - OPERATING-SYSTEM.md — planes, competition units, lifecycle and promotion.
 - SELF-IMPROVEMENT-ENGINE.md — SIE subsystems and bounded improvement loop.
 - CLASSIFIER-GRAPH-TOURNAMENT.md — lateral classifier comparison, complementarity and graph composition.
@@ -38,9 +40,11 @@ The monorepo already contains meaningful DoE/tournament primitives. This referen
 | deepcli/deepcli/observatory/leaderboard.py | persistent role/task/provider/model records |
 | config/system_one_catalog.json | heterogeneous external model, adapter, runtime and directory inventory |
 | ops/classifiers/classifiers-feed.json | separate 71-unit classifier estate snapshot (43 live, 26 dormant, 2 dead; generated 2026-11-02) |
-| config/classifier_graph_registry.json | versioned local/external candidate identities and graph arms |
+| config/classifier_graph_registry.json | versioned local/external candidate identities and graph arms (61 model candidates; 27 infrastructure references) |
+| config/classifier_tournament_experiment_plan.json | staged, design-only matched-cohort experiment plan |
 | docs/ops/CLASSIFIER-GRAPH-REGISTRY.schema.json | runtime registry schema |
-| scripts/ci/classifier_graph_registry_validator.py | catalog, role, source-path and DAG validator |
+| scripts/ci/classifier_graph_registry_validator.py | full catalog coverage, role, source-path, DAG and experiment-plan validator |
+| docs/ops/CLASSIFIER-TOURNAMENT-EXPERIMENT-PLAN.schema.json | staged experiment-plan schema |
 | scripts/agent_evolution/replay_simulator.py | deterministic replay and incumbent-preserving policy evolution |
 | docs/ops/EVOLUTIONARY-REPLAY.md | replay-to-online-validation contract |
 | she/evaluation | tournament reducers and policy evaluation |
@@ -65,7 +69,15 @@ The monorepo remains authoritative for task identity, version lineage, evidence,
 
 The versioned classifier graph registry registers four local role implementations, all 61 model-layer candidates, and all 27 adapter/runtime/directory infrastructure references in the 88-entry System One catalog. Five model candidates retain the role mapping supported by the existing census; 56 remain explicitly unclassified pending capability qualification. A 61-node model screen is registered as design-only. Separately, the classifier-estate feed records 71 operating units (43 live, 26 dormant, 2 dead) as of 2026-11-02. The registry also records the incumbent tournament implementation and design-only SIE challenger under matched-cohort and held-out promotion gates. The validator checks inventory coverage, estate snapshot counts, role compatibility, local source paths, unique node identity, DAG acyclicity and implementation source references.
 
-## Added operating-system references\n\n- OPERATING-SYSTEM.md — planes, competition units, lifecycle and promotion.\n- SELF-IMPROVEMENT-ENGINE.md — SIE subsystems and bounded improvement loop.\n- CLASSIFIER-GRAPH-TOURNAMENT.md — lateral classifier comparison, complementarity and graph composition.\n\nThe earlier trial implementation had a source-inspection risk: independently filtered artifact/Jev/Kev arrays could misalign after partial failures. The current branch adds stable candidate IDs, preserves per-candidate stage slots, checks identity at reduction, and excludes incomplete evidence triples. Regression tests have been added; CI execution remains pending.\n\n## Architectural decision
+## Added operating-system references
+
+- OPERATING-SYSTEM.md — planes, competition units, lifecycle and promotion.
+- SELF-IMPROVEMENT-ENGINE.md — SIE subsystems and bounded improvement loop.
+- CLASSIFIER-GRAPH-TOURNAMENT.md — lateral classifier comparison, complementarity and graph composition.
+
+The earlier trial implementation had a source-inspection risk: independently filtered artifact/Jev/Kev arrays could misalign after partial failures. The current branch adds stable candidate IDs, preserves per-candidate stage slots, checks identity at reduction, and excludes incomplete evidence triples. Regression tests have been added; CI execution remains pending.
+
+## Architectural decision
 
 Use a **hybrid control plane**:
 

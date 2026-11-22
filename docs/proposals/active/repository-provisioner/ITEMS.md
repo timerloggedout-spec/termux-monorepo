@@ -52,7 +52,7 @@
 - Organization-owned creation requires the configured operator PAT and active organization-owner membership.
 - The destination organization must report GitHub Free.
 - The workflow creates one repository per successful dispatch.
-- The workflow does not transfer, delete, rename, clone templates, configure secrets, add collaborators, or change branch protection.
+- Keep repository creation focused on one new repository per dispatch; route transfers, renames, secret configuration, collaborator changes, and branch protection through their dedicated workflows.
 
 ### Acceptance
 

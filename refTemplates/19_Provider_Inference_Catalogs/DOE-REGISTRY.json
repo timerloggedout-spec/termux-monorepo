@@ -1,112 +1,133 @@
 {
   "schema_version": "provider-catalog-doe/v1",
-  "registry_version": "1.0.0",
+  "registry_version": "2.0.0",
   "experiment": {
     "id": "DOE-VULTR-CATALOG-001",
-    "version": "1.0.0",
-    "title": "Cross-language provider model-catalog normalization comparison",
+    "version": "2.0.0",
+    "title": "Incumbent versus native VultrInspired provider catalog",
     "status": "planned",
-    "purpose": "Compare the pinned Vultr Python and TypeScript catalog libraries against a shared, language-neutral set of model-catalog observations.",
-    "hypothesis": "Both implementations normalize equivalent source observations into semantically equivalent catalog records while preserving exact pricing, modalities, capability metadata, diagnostics, and cache provenance.",
+    "purpose": "Compare the repository's incumbent provider-model-catalog/v5 with the repository-native VultrInspired projection using identical deterministic fixtures.",
+    "hypothesis": "VultrInspired improves loss-aware metadata, exact decimal visibility, modality/capability representation, malformed-row diagnostics and provenance while preserving incumbent access and entitlement evidence.",
+    "source_references": [
+      {
+        "id": "vultr-python-reference",
+        "url": "https://github.com/vultr/model-catalog-python",
+        "revision": "4a414ab26e1f596cb98b3974a7d12182bf62dab3",
+        "role": "design-pattern-and-schema-reference",
+        "execution": "reference-only"
+      },
+      {
+        "id": "vultr-typescript-reference",
+        "url": "https://github.com/vultr/model-catalog-typescript",
+        "revision": "6e55057cb718213937c4c118271f5a2ca1779d0d",
+        "role": "design-pattern-and-schema-reference",
+        "execution": "reference-only"
+      }
+    ],
     "independent_variables": [
       {
-        "id": "implementation",
+        "id": "catalogue_variant",
         "levels": [
-          "python",
-          "typescript"
+          "incumbent-v5",
+          "vultr-inspired-v1"
         ]
       },
       {
-        "id": "input_shape",
+        "id": "fixture_family",
         "levels": [
-          "valid-envelope",
-          "valid-bare-list",
-          "mixed-valid-invalid-entries",
-          "unknown-fields",
-          "nested-field-type-mismatch"
-        ]
-      },
-      {
-        "id": "cache_state",
-        "levels": [
-          "fresh-network",
-          "last-good-cache",
-          "stale-cache",
-          "cache-missing"
-        ]
-      },
-      {
-        "id": "capability_profile",
-        "levels": [
-          "chat",
-          "embedding",
-          "rerank",
-          "image",
-          "transcription",
+          "text-chat",
+          "multimodal",
           "tool-use",
           "structured-output",
-          "reasoning"
+          "reasoning",
+          "embedding",
+          "rerank",
+          "image-audio-video"
+        ]
+      },
+      {
+        "id": "record_quality",
+        "levels": [
+          "complete",
+          "unknown-fields",
+          "missing-optional-fields",
+          "malformed-row",
+          "invalid-pricing"
+        ]
+      },
+      {
+        "id": "source_precision",
+        "levels": [
+          "decimal-string",
+          "integer",
+          "binary-float",
+          "missing"
         ]
       }
     ],
     "controlled_variables": [
-      "Identical source payload bytes for paired Python and TypeScript trials",
-      "Identical model identifiers and source observation timestamp",
-      "Identical expected normalized field semantics",
-      "Pinned upstream source revisions recorded below",
-      "No provider credentials, inference calls, or runtime activation"
+      "Identical incumbent v5 input document and byte-identical model rows for paired catalogue trials",
+      "Identical provider identifiers, model identifiers and observation timestamps",
+      "Identical fixture-set revision and expected semantic facts",
+      "Pinned incumbent source and VultrInspired implementation revisions",
+      "Offline deterministic execution with no provider credentials, network requests, inference calls or runtime activation"
     ],
     "response_variables": [
-      "normalized-record-semantic-parity",
-      "exact-pricing-preservation",
-      "modality-and-capability-preservation",
-      "invalid-entry-isolation",
+      "canonical-record-semantic-preservation",
+      "exact-decimal-pricing-retention",
+      "input-output-modality-and-capability-coverage",
       "unknown-field-retention",
-      "cache-source-classification",
-      "diagnostic-completeness",
+      "malformed-row-isolation-and-diagnostic-quality",
+      "provenance-and-freshness-completeness",
+      "access-entitlement-quota-evidence-preservation",
       "runtime-and-dependency-footprint"
     ],
     "acceptance_criteria": [
-      "Paired implementations produce equivalent canonical records for shared valid fixtures.",
-      "Pricing values preserve exact source decimal strings and units.",
-      "Unknown fields and unsupported capability values remain observable.",
-      "Malformed-entry behavior is measured and recorded per implementation.",
-      "Cache freshness and fallback source are explicit in outputs.",
-      "Each result references immutable fixture, implementation, and source revisions."
+      "Incumbent v5 output remains the baseline and retains its existing provider/access/quota semantics.",
+      "VultrInspired is a repository-native adapter with its own versioned output schema and no upstream SDK dependency.",
+      "Paired fixtures retain provider/model identity, context/output limits, pricing classifications and access evidence.",
+      "Decimal strings and integer prices remain exact; binary floats are explicitly diagnosed as precision-limited input.",
+      "Input/output modalities, capability descriptors and unknown source fields remain observable when supplied.",
+      "Malformed individual records are isolated with indexed diagnostics while valid siblings remain available.",
+      "Unknown readiness, entitlement, quota and inference state remain unknown unless source evidence supplies a value.",
+      "Execution is offline and produces zero provider requests, credential reads and inference calls."
     ],
     "execution_policy": {
       "fixture_mode": "offline-deterministic",
-      "network_mode": "separate-observation-only",
+      "network_mode": "disabled",
       "inference_mode": "disabled",
       "credentials": "none",
+      "compute": "existing-local-python-runtime",
       "result_status": "planned",
       "result_artifacts": [],
       "promotion": "separate-reviewed-change"
     },
     "variants": [
       {
-        "variant_id": "DOE-VULTR-CATALOG-001-PY",
-        "version": "1.0.0",
-        "implementation": "python",
-        "source_revision": "4a414ab26e1f596cb98b3974a7d12182bf62dab3",
-        "source_metadata": "vultr-model-catalog-python/metadata.json",
+        "variant_id": "DOE-VULTR-CATALOG-001-INCUMBENT",
+        "version": "5.0.0",
+        "catalogue": "Incumbent",
+        "schema": "provider-model-catalog/v5",
+        "implementation_path": "scripts/provider_model_catalog.py",
+        "source_revision": "master-base:bb3d58265f8c4908de8967fc00c79ed72f647b56",
         "result_status": "planned"
       },
       {
-        "variant_id": "DOE-VULTR-CATALOG-001-TS",
+        "variant_id": "DOE-VULTR-CATALOG-001-VULTR-INSPIRED",
         "version": "1.0.0",
-        "implementation": "typescript",
-        "source_revision": "6e55057cb718213937c4c118271f5a2ca1779d0d",
-        "source_metadata": "vultr-model-catalog-typescript/metadata.json",
+        "catalogue": "VultrInspired",
+        "schema": "provider-model-catalog/vultr-inspired/v1",
+        "implementation_path": "scripts/provider_model_catalog_vultr_inspired.py",
+        "source_revision": "branch:feat/provider-catalog-vultr-inspired-v1-20261122",
         "result_status": "planned"
       }
     ],
     "versioning": {
       "version_scheme": "MAJOR.MINOR.PATCH",
-      "major": "Change to experiment design, response-variable definitions, or acceptance criteria.",
-      "minor": "Add a controlled factor, variant, fixture family, or response variable without changing prior definitions.",
+      "major": "Change to experiment design, response-variable definitions, variant semantics or acceptance criteria.",
+      "minor": "Add a controlled factor, fixture family, catalogue variant or response variable without changing prior definitions.",
       "patch": "Clarify metadata or correct a non-semantic record while preserving the experiment contract.",
-      "immutable_run_key": "experiment_id + experiment_version + variant_id + variant_version + fixture_set_revision + source_revision",
+      "immutable_run_key": "experiment_id + experiment_version + variant_id + variant_version + fixture_set_revision + source_revision + implementation_revision",
       "result_record_fields": [
         "run_id",
         "experiment_id",

@@ -299,13 +299,18 @@ def check_version_bump(
             )
 
     changelog = (root / CHANGELOG_PATH).read_text(encoding="utf-8")
-    heading = (
-        rf"^##\s+\[{re.escape(current)}\](?:\s|$)"
-        rf"|^##\s+{re.escape(current)}(?:\s|$)"
+    headings = re.findall(
+        r"^##\s+(?:\[(\d+\.\d+\.\d+)\]|(\d+\.\d+\.\d+))(?:\s|$)",
+        changelog,
+        re.MULTILINE,
     )
-    if not re.search(heading, changelog, re.MULTILINE):
+    first_heading = next(
+        (bracketed or plain for bracketed, plain in headings),
+        None,
+    )
+    if first_heading != current:
         raise ValueError(
-            f"CHANGELOG.md requires a heading for architecture version {current}"
+            f"CHANGELOG.md requires {current} as its first version heading"
         )
 
     print(

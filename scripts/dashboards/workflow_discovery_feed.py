@@ -149,6 +149,9 @@ def load_job_observations(raw_root: Path) -> dict[str, Any] | None:
     job_dir = raw_root / "actions-jobs" / stamp
     if not job_dir.is_dir():
         return None
+    job_files = sorted(job_dir.glob("jobs-*.json"))
+    if not job_files:
+        return None
 
     run_paths: dict[int, str] = {}
     for run in runs:
@@ -161,7 +164,7 @@ def load_job_observations(raw_root: Path) -> dict[str, Any] | None:
             run_paths[run_id] = str(workflow_path)
 
     by_workflow: dict[str, dict[str, Any]] = {}
-    for job_file in sorted(job_dir.glob("jobs-*.json")):
+    for job_file in job_files:
         wrapper = _read_json(job_file)
         meta = wrapper.get("meta") or {}
         try:

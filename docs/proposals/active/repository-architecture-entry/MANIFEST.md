@@ -37,7 +37,7 @@ Establish one repository-wide architecture entry that routes collaborators to ca
 - [ ] Repository gate and Termux smoke pass on the same head.
 - [ ] Required PR checks complete and the merged master head is re-fetched.
 - [x] Initial SemVer baseline, versioning contract, changelog, and architecture-governance map added.
-- [x] Deterministic manifest generator and fifteen focused tests pass in the local fixture suite.
+- [x] Deterministic manifest generator and sixteen focused tests pass in the local fixture suite.
 - [ ] Existing workflow renders architecture flow SVGs, validates the manifest, uploads PR evidence, and refreshes trusted master projections.
 
 ## Evidence
@@ -82,5 +82,7 @@ Establish one repository-wide architecture entry that routes collaborators to ca
 - Initial version: 1.0.0
 - Manifest generator: scripts/ci/architecture_docs.py
 - Architecture flow: docs/architecture/flows/architecture-governance.md and architecture-governance.mmd
-- Focused test-first sequence: missing generator produced the expected initial failure; implementation then passed 15 focused tests locally.
+- Focused test-first sequence: missing generator produced the expected initial failure; implementation then passed 16 focused tests locally.
 - PR validation, trusted master refresh, and final master re-fetch remain pending runtime evidence.
+- Contributor verification commands are documented in VERSIONING.md; source and render SHA-256 values are independently asserted by tests.
+- Cross-system follow-up: the context-relationship index remains partial and architecture paths remain a separate scope addition; a repository-wide master-writer audit is registered as follow-up scope in the implementation plan.

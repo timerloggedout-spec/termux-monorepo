@@ -19,7 +19,10 @@ This is an architectural reference. It is not an implementation claim, an Antinu
 - RESEARCH-RECON.md — claim/evidence ledger and confidence.
 - ARCHITECTURE.md — adapted system architecture and dynamic-utility patterns.
 - DOE-TOURNAMENT-CONTRACT.md — versioned experiment and tournament contract.
-- SCHEMAS.md — canonical data model and illustrative YAML/JSON structures.
+- SCHEMAS.md — canonical data model and runtime registry contracts.
+- OPERATING-SYSTEM.md — planes, competition units, lifecycle and promotion.
+- SELF-IMPROVEMENT-ENGINE.md — SIE subsystems and bounded improvement loop.
+- CLASSIFIER-GRAPH-TOURNAMENT.md — lateral classifier comparison, complementarity and graph composition.
 
 ## Existing implementation surfaces discovered
 
@@ -33,6 +36,10 @@ The monorepo already contains meaningful DoE/tournament primitives. This referen
 | deepcli/deepcli/observatory/trial.py | current local Mev producer, Jev critic, Kev verifier and Laya merger role baseline |
 | deepcli/deepcli/observatory/tournament.py | campaign selection and leaderboard integration |
 | deepcli/deepcli/observatory/leaderboard.py | persistent role/task/provider/model records |
+| config/system_one_catalog.json | heterogeneous external model, adapter, runtime and directory inventory |
+| config/classifier_graph_registry.json | versioned local/external candidate identities and graph arms |
+| docs/ops/CLASSIFIER-GRAPH-REGISTRY.schema.json | runtime registry schema |
+| scripts/ci/classifier_graph_registry_validator.py | catalog, role, source-path and DAG validator |
 | scripts/agent_evolution/replay_simulator.py | deterministic replay and incumbent-preserving policy evolution |
 | docs/ops/EVOLUTIONARY-REPLAY.md | replay-to-online-validation contract |
 | she/evaluation | tournament reducers and policy evaluation |
@@ -54,6 +61,8 @@ The canonical manager cohort schema remains authoritative. Proposed DoE design, 
 | SHE / 3L0 / Moneyball | downstream reduction and decision support |
 
 The monorepo remains authoritative for task identity, version lineage, evidence, acceptance and promotion. External research/compute systems remain optional adapters.
+
+The initial classifier graph registry registers four local role implementations and five catalog-backed namesake candidates. It preserves the 88-entry System One inventory as heterogeneous catalog layers rather than treating every entry as an interchangeable classifier. The graph validator checks candidate-to-catalog references, role compatibility, local source paths, unique node identity and DAG acyclicity. The typed-decision candidate screen remains design-only pending candidate-specific adapters and matched trials.
 
 ## Added operating-system references\n\n- OPERATING-SYSTEM.md — planes, competition units, lifecycle and promotion.\n- SELF-IMPROVEMENT-ENGINE.md — SIE subsystems and bounded improvement loop.\n- CLASSIFIER-GRAPH-TOURNAMENT.md — lateral classifier comparison, complementarity and graph composition.\n\nThe earlier trial implementation had a source-inspection risk: independently filtered artifact/Jev/Kev arrays could misalign after partial failures. The current branch adds stable candidate IDs, preserves per-candidate stage slots, checks identity at reduction, and excludes incomplete evidence triples. Regression tests have been added; CI execution remains pending.\n\n## Architectural decision
 
@@ -85,7 +94,7 @@ No external product owns canonical state. No single scalar score overrides corre
 
 ## Status and next evidence
 
-Reference research and operating-system contracts are captured. Existing DoE and tournament code has been inspected; this PR has not executed its test suite. Jules lifecycle is time-sensitive: official documentation says Jules became read-only after 2026-11-11 and is scheduled to wind down on 2026-12-31, so the operating system treats it as a historical/limited read-only collaborator for this snapshot rather than an assumed active write executor. Next steps: map the proposed design/treatment manifest to manager.tournament.v1, add validators only for genuine gaps, then run a small matched-cohort tournament before expanding adapters or UI.
+Reference research, operating-system contracts and the first versioned classifier registry are captured. The candidate-alignment repair and registry validator have regression tests committed; execution remains pending CI. Jules lifecycle is time-sensitive: official documentation says Jules became read-only after 2026-11-11 and is scheduled to wind down on 2026-12-31, so the operating system treats it as a historical/limited read-only collaborator for this snapshot rather than an assumed active write executor. Next steps: extend the registry across the complete classifier capability pool, implement candidate-specific typed-decision adapters, then run a small matched-cohort screen and graph-composition experiment.
 
 ## Provenance
 

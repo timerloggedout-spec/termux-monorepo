@@ -104,7 +104,7 @@ These workflows subscribe to `issues: [labeled]` or `pull_request: [labeled]`. A
 | [`delphi-intake.yml`](../../.github/workflows/delphi-intake.yml) | Issue comments `created` with `<!-- request-delphi-intake -->`; manual dispatch | Creates a completed `delphi:rfp` issue from conversational intake |
 | [`research-intake.yml`](../../.github/workflows/research-intake.yml) | Issues `opened`, `reopened`, `edited`; marker comment | Deterministic research seed intake; its event subscription intentionally omits `labeled` |
 | [`roadmap-sync.yml`](../../.github/workflows/roadmap-sync.yml) | Monday schedule; manual dispatch | Syncs the `roadmaps/` tree; it is separate from the roadmap-completion issue form |
-| [`roadmap-completion.yml`](../../.github/workflows/roadmap-completion.yml) | Issues `opened`, `edited`, `labeled`, `reopened`; push to matching exercise `evidence.json`; manual dispatch | Runs `roadmap-completions/scripts/verify-completion.py`, summarizes evidence checks, and comments on matching open issues |
+| [`roadmap-completion.yml`](../../.github/workflows/roadmap-completion.yml) | Issues `opened`, `edited`, `labeled`, `reopened`; push to matching exercise `evidence.json`; manual dispatch | Runs the evidence verifier, publishes the exercise badge and README row, comments on the matching issue, and closes it after successful publication |
 | [`proposal-lifecycle.yml`](../../.github/workflows/proposal-lifecycle.yml) | PR/push paths under `docs/proposals/**` and `scripts/proposals/**`; manual dispatch | Validates the proposal registry and PR hygiene; it is separate from proposal issue intake |
 
 ### Deterministic label floor
@@ -154,4 +154,4 @@ When adding or changing an issue form, update this map in the same change with i
 - Label commands: `.github/workflows/{agent-jules-on-issues,agent-ecc-tools-ops,mesh-request,doe-live1-audit,build-arm-census}.yml`
 - Observation: `.github/workflows/issue-observatory.yml`, `.github/workflows/issue-comment-router.yml`, `.github/workflows/sweep-accountability.yml`
 - Roadmap completion: `.github/workflows/roadmap-completion.yml`, `roadmap-completions/scripts/verify-completion.py`, `roadmap-completions/scripts/publish-completion.py`, `roadmap-completions/config/verification-rules.yaml`
-- Intake coverage guard: `.github/workflows/issue-intake-coverage.yml`, `scripts/ci/issue_intake_coverage.py`, `tests/test_issue_intake_coverage.py`
+- Intake coverage guard: `.github/workflows/issue-intake-coverage.yml`, `scripts/ci/issue_intake_coverage.py`, `tests/test_issue_intake_coverage.py`, `tests/test_roadmap_completion.py`, `tests/test_roadmap_completion_publisher.py`

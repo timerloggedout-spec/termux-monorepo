@@ -12,7 +12,8 @@ The supplied URLs identify GitLab group hierarchy:
 
 - [GitLab AI Hackathon](https://gitlab.com/gitlab-ai-hackathon) is the public root group.
 - [GitLab DevSecOps Flow Hackathon](https://gitlab.com/gitlab-ai-hackathon/gitlab-devsecops-flow-hackathon) resolves to a **subgroup** rather than a project. Its public subgroup page showed **zero child projects and zero child subgroups** at observation time. The root group listing associates it with group ID `126794830`.
-- [Transcend](https://gitlab.com/gitlab-ai-hackathon/transcend) is a separate subgroup under the root. Its subgroup API returned **312 public project workspaces across four pages** and zero child subgroups at observation time. The dated metadata snapshot is `ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json`.
+- [Transcend](https://gitlab.com/gitlab-ai-hackathon/transcend) is a sibling subgroup created 2026-05-18; it is active (archived=false), with **312 public projects and zero child subgroups**. Project descriptions reference Transcend showcase workspaces, while exact event-cycle mapping remains `NOT_ESTABLISHED`. Its dated metadata snapshot is `ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json`.
+- [Transcend October 2026](https://gitlab.com/groups/gitlab-ai-hackathon/transcend-october-2026) is a separate archived subgroup (group ID `142538134`). It contains **1,273 participant subgroups and 1,820 public archived projects**. The owner-published group boundary keeps observability disabled at group scope and keeps secrets out of group-level settings. Dated subgroup and project indexes are `ops/challenge/osint/gitlab-transcend-october-2026-subgroups-2026-11-22.ndjson` and `ops/challenge/osint/gitlab-transcend-october-2026-projects-2026-11-22.ndjson`.
 - [Project Templates](https://gitlab.com/gitlab-ai-hackathon/project-templates) is another subgroup. It contains the public [Participant Template](https://gitlab.com/gitlab-ai-hackathon/project-templates/participant-template) project (project ID `77423853`), with `agents/`, `flows/`, `LICENSE`, and `README.md`.
 
 ### Transcend workspace catalog snapshot
@@ -50,6 +51,7 @@ The connector's prize catalogue totals $65,000. The official rules enumerate the
 - Registration: **2026-09-29 10:00 UTC – 2026-10-27 13:00 UTC**.
 - Submissions: **2026-10-05 17:00 UTC – 2026-10-27 13:00 UTC**.
 - Judging: rules state **2026-10-28 10:00 UTC – 2026-11-14 17:00 UTC**; the connector's structured date record reports **2026-10-28 09:00 UTC – 2026-11-16 23:45 UTC**.
+- Devpost page displays **3,313 participants**. The October showcase group is `transcend-october-2026` (1,273 child subgroups / 1,820 public archived projects); the sibling `transcend` group has 312 active public projects with event-cycle mapping `NOT_ESTABLISHED`.
 - Devpost connector reports winners announced **2026-11-18 17:00:41 UTC**; the rules text says “on or around November 16”. Preserve both judging-window and winner-date values as source discrepancies; retain each source's timestamped value.
 - Current phase: **closed** (fetched 2026-11-22).
 - Prize pool: **$45,000**.
@@ -75,7 +77,7 @@ The official event page directs participants to the GitLab Community Discord `#a
 - [Devpost Discord](https://info.devpost.com/blog/join-the-devpost-discord).
 - Office-hours schedule: posted in the relevant GitLab Discord channels; individual session dates are NOT_ESTABLISHED in this public-source pass.
 - The [Participant Template README](https://gitlab.com/gitlab-ai-hackathon/project-templates/participant-template) links to a `work_items/1` onboarding item. The public item is currently **unavailable**; its instructions remain NOT_ESTABLISHED.
-- A representative [Transcend showcase workspace onboarding issue](https://gitlab.com/gitlab-ai-hackathon/transcend/27098937/-/work_items/1) directs the workspace owner to the Showcase Track guide, `#transcend-hackathon`, and office hours. This sample workspace onboarding record illustrates one Transcend workspace path; event-wide AI Hackathon registration remains governed by the official Devpost event page.
+- An [October 2026 Transcend workspace onboarding issue](https://gitlab.com/gitlab-ai-hackathon/transcend-october-2026/621485/showcase/-/work_items/1) confirms participant subgroup/project provisioning and directs contributors to the Transcend guide, `#transcend-hackathon`, and office hours. The issue describes optional observability within each participant subgroup; the parent group's published boundary keeps observability disabled at group scope and keeps secrets out of group-level settings. The sample workspace and parent group are archived/read-only.
 - The public event page links an example participant issue at [participants/621485](https://gitlab.com/gitlab-ai-hackathon/participants/621485/-/issues/1).
 
 ## 4. Reusable technical references

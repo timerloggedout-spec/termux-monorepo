@@ -133,6 +133,7 @@
 - Review: pull-request checks, workflow run, manifest, rendered SVG/PNG outputs.
 
 - [x] Add workflow contract tests for PR read-only permissions, trusted master write authority, immutable artifact action, and architecture path filters.
+- [x] Restrict workflow_dispatch and trusted generated-file writes to refs/heads/master; add a regression assertion for the branch guard.
 - [ ] Run the focused repository tests on the exact branch head in GitHub Actions.
 - [ ] Run repository gate, Markdown/workflow validation, CodeQL, and Termux smoke where the workflow matrix admits them.
 - [ ] Verify the architecture flow pair inventory and Mermaid rendering.

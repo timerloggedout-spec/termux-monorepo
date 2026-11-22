@@ -2518,7 +2518,7 @@
    "host": "GitLab Community",
    "platform": "GitLab Contributor Platform",
    "official_url": "https://contributors.gitlab.com/hackathon",
-   "status": "upcoming — official page displays January 21–28, 2027; owner registration status: NOT_ESTABLISHED",
+   "status": "upcoming — official page displays January 21–28, 2027 UTC; owner rule acceptance/onboarding/issue assignment status: NOT_ESTABLISHED; Devpost registration: NOT_REQUIRED",
    "dates": {
     "window": "2027-01-21 through 2027-01-28 (UTC; official page displays dates without an explicit clock time)",
     "merge_window": "Qualifying merge requests must merge within 31 days after the hackathon ends.",
@@ -2532,22 +2532,28 @@
    },
    "fit_angle": "Open-source contribution program for code, documentation, translation, UX, issues, and other public GitLab contributions. Repo fit is contribution-led rather than a GitLab AI-agent competition; choose an eligible gitlab-org, gitlab-com, gitlab-community, or components project.",
    "gates": [
-    "Accept the official hackathon rules.",
-    "Start Contributor Platform onboarding; a personal onboarding issue is sent to the participant.",
-    "Get assigned to an issue before opening a merge request.",
-    "Open the merge request during the seven-day event window and have it merged within 31 days after the event ends.",
-    "Apply the daily maximums: 20 merge requests and 20 issues.",
-    "AI tools are allowed; each contribution remains the contributor's responsibility and must be reviewed and tested locally.",
-    "Scripted and automated labeling is prohibited; first-time-contributor quick-win issues are reserved for contributors without a previously merged GitLab MR."
+    "Accept the current Contributor Platform hackathon rules for contributions to count toward leaderboard points.",
+    "Start onboarding; the platform sends a personal onboarding issue to the contributor's email within five minutes.",
+    "Set up the development environment and choose a quick-win issue.",
+    "Obtain issue assignment before opening the merge request.",
+    "Open the merge request during the seven-day event window and obtain maintainer merge within 31 days after event end.",
+    "At least one qualifying merged MR is required for leaderboard points; other contributions during the event window can also earn points.",
+    "Apply daily maximums: 20 merge requests and 20 issues.",
+    "AI tools are allowed; the contributor owns the work and reviews/tests it locally.",
+    "Scripted, automated, or programmatic labeling is prohibited; apply labels manually with sufficient context.",
+    "Limit typo-fix contributions to one MR per project.",
+    "Quick-win first-time-contributor issues are reserved for accounts without a merged MR in any GitLab project."
    ],
-   "screen": "UPCOMING / WATCHLIST (2026-11-22): event dates are published; official rules and reward model are available. Owner onboarding, issue assignment, registration, contribution, and submission state: NOT_ESTABLISHED.",
-   "submission_mechanics": "Start onboarding at https://contributors.gitlab.com/#start; choose an issue from https://contributors.gitlab.com/issues; obtain assignment before opening an MR; open the MR during Jan 21–28, 2027 UTC; merge within 31 days after the event ends. Non-code contributions during the event can also earn points under the published caps and review rules.",
+   "screen": "UPCOMING / WATCHLIST (2026-11-22): Jan 21–28, 2027 UTC is published. Live rules page version 2026-10-v2; search-index copy showed 2026-10-v1. Owner onboarding, rule acceptance, issue assignment, contribution, and submission status: NOT_ESTABLISHED. Devpost registration: NOT_REQUIRED.",
+   "submission_mechanics": "Contributor Platform entry path: accept rules → start onboarding → receive personal issue by email → set up environment → choose quick-win issue → obtain assignment → open MR during Jan 21–28, 2027 UTC → obtain maintainer merge within 31 days. Non-code contributions during the event can also earn points under published caps. Devpost registration: NOT_REQUIRED.",
    "moniker": null,
    "source_urls": [
+    "https://contributors.gitlab.com/hackathon-events",
     "https://contributors.gitlab.com/hackathon",
     "https://contributors.gitlab.com/docs/hackathon-rules",
-    "https://contributors.gitlab.com/#start",
-    "https://contributors.gitlab.com/issues"
+    "https://contributors.gitlab.com/start",
+    "https://contributors.gitlab.com/issues",
+    "https://forum.gitlab.com/t/our-next-gitlab-hackathon-starts-october-6th/135317"
    ],
    "fetched_at": "2026-11-22"
   }

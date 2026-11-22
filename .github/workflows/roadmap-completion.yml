@@ -32,7 +32,7 @@ concurrency:
 
 jobs:
   verify:
-    if: github.event_name != 'issues' || github.event.action != 'labeled' || !startsWith(github.event.label.name, 'completion:')
+    if: (github.event_name != 'issues' || github.event.issue.state == 'open') && (github.event_name != 'issues' || github.event.action != 'labeled' || !startsWith(github.event.label.name, 'completion:'))
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

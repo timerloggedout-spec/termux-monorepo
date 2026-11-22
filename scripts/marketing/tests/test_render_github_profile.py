@@ -107,19 +107,19 @@ class GitHubProfileRendererTests(unittest.TestCase):
         (root / "marketing/github-profile").mkdir(parents=True)
         (root / "docs/ops").mkdir(parents=True)
         (root / "docs/PARTNERS.md").write_text(
-            "## 1. Active lanes\\n"
-            "| Partner | Category | Offer | Link | Badge | Owner |\\n"
-            "|---|---|---|---|---|---|\\n"
-            "| Alpha | AI tools | 10 credits | https://alpha.example/ref | badge | owner |\\n"
-            "## 1b. Code lanes\\n",
+            "## 1. Active lanes\n"
+            "| Partner | Category | Offer | Link | Badge | Owner |\n"
+            "|---|---|---|---|---|---|\n"
+            "| Alpha | AI tools | 10 credits | https://alpha.example/ref | badge | owner |\n"
+            "## 1b. Code lanes\n",
             encoding="utf-8",
         )
         video_text = (
-            "## Curated public assets\\n"
-            "| Group | Video | Duration | Published | Purpose |\\n"
-            "|---|---|---:|---|---|\\n"
+            "## Curated public assets\n"
+            "| Group | Video | Duration | Published | Purpose |\n"
+            "|---|---|---:|---|---|\n"
             + "".join(video_rows)
-            + "## Public placements\\n"
+            + "## Public placements\n"
         )
         (root / "docs/ops/PUBLIC-VIDEO-LIBRARY-2026-11-15.md").write_text(video_text, encoding="utf-8")
         config = {
@@ -145,8 +145,8 @@ class GitHubProfileRendererTests(unittest.TestCase):
             self._write_fixture(
                 root,
                 [
-                    "| Latest | [Current Short](https://youtube.com/shorts/current123) | 0:08 | 2026-11-15 | Current update |\\n",
-                    "| Archive | [Previous Short](https://youtube.com/shorts/previous123) | 0:08 | 2026-11-14 | Prior update |\\n",
+                    "| Latest | [Current Short](https://youtube.com/shorts/current123) | 0:08 | 2026-11-15 | Current update |\n",
+                    "| Archive | [Previous Short](https://youtube.com/shorts/previous123) | 0:08 | 2026-11-14 | Prior update |\n",
                 ],
                 [{"source": "latest", "label": "Latest Short", "kind": "short"}],
             )
@@ -165,7 +165,7 @@ class GitHubProfileRendererTests(unittest.TestCase):
             self._write_fixture(
                 root,
                 [
-                    "| Archive | [StudySprint v0.4.0 demo](https://www.youtube.com/watch?v=WK9LMwpvHUk) | 2:55 | 2026-11-03 | Earlier release |\\n",
+                    "| Archive | [StudySprint v0.4.0 demo](https://www.youtube.com/watch?v=WK9LMwpvHUk) | 2:55 | 2026-11-03 | Earlier release |\n",
                 ],
                 [{
                     "id": "WK9LMwpvHUk",

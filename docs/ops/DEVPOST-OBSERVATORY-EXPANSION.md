@@ -345,6 +345,11 @@ privacy-minimized index is stored at
   `participant-template` project (project ID 77423853), with `agents/`,
   `flows/`, `LICENSE`, and `README.md`.
 - `gitlab-profile` — public README points to the Devpost event.
+- `participants-test-lee` (2 projects), `participants-test-mattias` (24
+  projects), and `test` (1 project) — participant-test and CI-component
+  subgroups.
+- Direct support projects: `ci` (participant CI configuration) and
+  `security-policies` (pipeline policy project).
 
 Connector-verified event references:
 

@@ -16,11 +16,23 @@ The supplied URLs identify GitLab group hierarchy:
 - [Transcend October 2026](https://gitlab.com/groups/gitlab-ai-hackathon/transcend-october-2026) is a separate archived subgroup (group ID `142538134`). It contains **1,273 participant subgroups and 1,820 public archived projects**. The owner-published group boundary keeps observability disabled at group scope and keeps secrets out of group-level settings. Dated subgroup and project indexes are `ops/challenge/osint/gitlab-transcend-october-2026-subgroups-2026-11-22.ndjson` and `ops/challenge/osint/gitlab-transcend-october-2026-projects-2026-11-22.ndjson`.
 - [Project Templates](https://gitlab.com/gitlab-ai-hackathon/project-templates) is another subgroup. It contains the public [Participant Template](https://gitlab.com/gitlab-ai-hackathon/project-templates/participant-template) project (project ID `77423853`), with `agents/`, `flows/`, `LICENSE`, and `README.md`.
 
+### Other first-level root-group children
+
+The root group listing showed **seven subgroups and three direct projects**:
+
+- `participants-test-lee` — subgroup with 2 child projects.
+- `participants-test-mattias` — subgroup with 24 child projects.
+- `test` — subgroup with one CI component test project.
+- `transcend-october-2026` — archived October 2026 showcase subgroup with 1,273 child participant subgroups and 1,820 public archived projects.
+- Direct project `ci` (ID `77418162`) — contains `agents/`, `.gitlab-ci.yml`, `LICENSE`, and `README.md`; its README describes CI configuration for participant projects, enforced by the Security Policies project.
+- Direct project `gitlab-profile` — README points participants to the Devpost GitLab AI Hackathon page.
+- Direct project `security-policies` (ID `77418381`) — contains `.gitlab/security-policies`, `LICENSE`, and `README.md`.
+
+The participant-test groups and shared CI/security-policy projects remain distinct from both Transcend project catalogs.
+
 ### Sibling Transcend subgroup catalog snapshot — event cycle NOT_ESTABLISHED
 
 The public GitLab REST API returned **312 unique public projects** across four pages (100 + 100 + 100 + 12); the subgroup API returned zero child subgroups. The group was created 2026-05-18 and remains active. Project descriptions reference Transcend showcase workspaces, while exact event-cycle mapping remains NOT_ESTABLISHED. The dated snapshot stores project ID, namespace path, project URL, README URL, creation/activity timestamps, star count, visibility, archive state, and default branch. Contributor/member identities are excluded.
-
-- [GitLab Profile README](https://gitlab.com/gitlab-ai-hackathon/gitlab-profile/-/blob/main/README.md) points participants to the Devpost GitLab AI Hackathon page.
 
 Snapshot: `ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json`. Treat it as a dated observation; refresh through bounded pagination and retain each dated snapshot for change analysis.
 

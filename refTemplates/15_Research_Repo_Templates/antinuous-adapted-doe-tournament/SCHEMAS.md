@@ -309,3 +309,25 @@ Allowed node/evaluation statuses: `completed`, `failed`, `skipped`, `timed_out`,
   "rollback_target": "tournament-hybrid-graph@0.1.0"
 }
 ~~~
+
+## Complete catalog and implementation competition
+
+`classifier.graph-registry.v1` now covers the 88-entry System One catalog
+without flattening its layers:
+
+| Layer | Count | Registry treatment |
+|---|---:|---|
+| Model | 61 | Candidate records; 56 explicitly unclassified pending capability qualification |
+| Adapter | 16 | Infrastructure references |
+| Runtime | 7 | Infrastructure references |
+| Directory | 4 | Infrastructure references |
+
+The 71-unit operating-estate feed remains a separate inventory.
+
+The registry adds `tournament.implementation-competition.v1` as a
+supplemental section. It records the incumbent implementation's component
+source references, the design-only SIE challenger, and mandatory matched
+cohort, held-out, independent-evaluator, receipt, rollback and owner
+approval gates. `manager.tournament.v1` remains the canonical cohort
+identity.
+

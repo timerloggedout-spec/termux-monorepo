@@ -43,6 +43,9 @@ CONTROL_PLANE_EXTRAS = (
 )
 
 MATERIAL_PREFIXES = (
+    "architecture.md",
+    "docs/architecture/",
+    "docs/ops/SHE-DASHBOARD-ARCHITECTURE.mmd",
     ".github/workflows/",
     ".github/actions/",
     "scripts/model_router.py",
@@ -58,7 +61,10 @@ MATERIAL_PREFIXES = (
     "docs/proposals/active/rate-limit-rotation/",
     "ops/n8n/",
 )
-GENERATED_PREFIX = "docs/ops/generated/"
+GENERATED_PREFIXES = (
+    "docs/ops/generated/",
+    "docs/architecture/generated/",
+)
 
 
 @dataclass(frozen=True)
@@ -91,9 +97,14 @@ def classify_material_paths(values: Iterable[str]) -> dict[str, object]:
     material = [
         value
         for value in normalized
-        if any(value == prefix or value.startswith(prefix) for prefix in MATERIAL_PREFIXES)
+        if not any(value.startswith(prefix) for prefix in GENERATED_PREFIXES)
+        and any(value == prefix or value.startswith(prefix) for prefix in MATERIAL_PREFIXES)
     ]
-    generated = [value for value in normalized if value.startswith(GENERATED_PREFIX)]
+    generated = [
+        value
+        for value in normalized
+        if any(value.startswith(prefix) for prefix in GENERATED_PREFIXES)
+    ]
     high_impact = [
         value
         for value in material

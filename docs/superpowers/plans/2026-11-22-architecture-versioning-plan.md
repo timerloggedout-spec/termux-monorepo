@@ -25,6 +25,7 @@
 
 - Initial baseline where the base branch predates VERSION: require exactly 1.0.0 and a changelog entry; covered by test_version_check_accepts_initial_1_0_0_baseline.
 - Invalid or non-increasing semantic versions: fail closed; covered by test_invalid_semver_is_rejected and test_version_check_rejects_non_increasing_version.
+- Changelog ordering: require the current version as the first release heading; covered by test_version_check_requires_current_version_at_top_of_changelog.
 - Architecture Mermaid source without a paired Markdown map: fail manifest generation; covered by test_manifest_rejects_unpaired_flow_source.
 - Missing or changed diagram render and stale manifest: fail validation; covered by test_manifest_rejects_missing_render and test_write_and_check_detect_stale_manifest.
 - Generated architecture files must classify as projections rather than canonical source changes; covered by test_architecture_sources_and_generated_manifest_are_classified.
@@ -150,7 +151,7 @@
 - BRR prior-art finding: the earlier architecture-entry branch was materially stale; compare evidence showed it 1,124 commits behind with two branch-only commits. The predecessor branch was fast-forwarded to its then-current master before implementation; the successor branch starts from the latest master.
 - Workspace adaptation: this session has GitHub connector access; the isolated remote feature branch is the working workspace. Local fixture tests provide unit evidence and GitHub Actions supplies integration evidence.
 - Loopy adaptation: use Observe → Choose → Act → Verify → Record → Repeat-or-stop. The supplied Loop Library specification leaves the catalog host unspecified, so published-loop matching remains unverified; this is an unpublished project adaptation.
-- Local verification: 14/14 architecture manifest and workflow tests passed; Python compilation passed.
+- Local verification: 15/15 architecture manifest and workflow tests passed; Python compilation passed.
 - PR #5770 was superseded after the DO Statement Style audit identified non-imperative commit subjects. The successor branch starts at current master 697c0a43e57ea16c1503826d48a1f0d7f58c3fa6; the eleven-commit master-side delta contains generated operational records and has zero path overlap.
 - The initial combined status records Vercel daily deployment quota exhaustion; adaptive-wait classifies Vercel as an advisory signal. The successor branch uses imperative commit subjects to satisfy the repository style gate.
 - Successor PR #5771 is open and ready for review; GitHub PR metadata owns the live head SHA and mergeability state.

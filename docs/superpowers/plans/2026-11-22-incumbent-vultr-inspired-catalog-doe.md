@@ -11,6 +11,7 @@
 - [x] Add structured modality/capability/lifecycle fields and unknown-field preservation.
 - [x] Isolate malformed rows and diagnose non-exact numeric pricing values.
 - [x] Declare zero network, credential and inference side effects.
+- [x] Add a CLI that transforms a supplied v5 snapshot into an atomically written local v1 catalogue.
 
 ## Task 2 — version the experiment
 
@@ -22,7 +23,7 @@
 ## Task 3 — regression coverage
 
 - [x] Add tests for exact decimal strings, integer prices, float precision diagnostics and unknown fields.
-- [x] Add malformed-row isolation and schema rejection tests.
+- [x] Add malformed-row isolation, schema rejection and CLI output tests.
 - [x] Add registry and metadata inventory regression coverage.
 - [ ] Run focused tests and strict refTemplates inventory validation on the final head.
 - [ ] Run same-head repository gate and Termux smoke.

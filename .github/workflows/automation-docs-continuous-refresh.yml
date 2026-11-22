@@ -7,6 +7,14 @@ on:
     branches: [master]
     paths:
       - 'scripts/ci/automation_docs.py'
+      - 'architecture.md'
+      - 'docs/architecture/**/*.md'
+      - 'docs/architecture/**/*.mmd'
+      - 'docs/architecture/VERSION'
+      - 'docs/ops/SHE-DASHBOARD-ARCHITECTURE.mmd'
+      - 'scripts/ci/architecture_docs.py'
+      - 'tests/test_architecture_docs.py'
+      - 'tests/test_automation_docs.py'
       - '.github/workflows/**'
       - '.github/actions/**'
       - 'scripts/model_router.py'
@@ -21,6 +29,14 @@ on:
     types: [opened, synchronize, reopened]
     paths:
       - 'scripts/ci/automation_docs.py'
+      - 'architecture.md'
+      - 'docs/architecture/**/*.md'
+      - 'docs/architecture/**/*.mmd'
+      - 'docs/architecture/VERSION'
+      - 'docs/ops/SHE-DASHBOARD-ARCHITECTURE.mmd'
+      - 'scripts/ci/architecture_docs.py'
+      - 'tests/test_architecture_docs.py'
+      - 'tests/test_automation_docs.py'
       - '.github/workflows/**'
       - '.github/actions/**'
       - 'scripts/model_router.py'
@@ -63,6 +79,11 @@ jobs:
         with:
           node-version: "20"
         timeout-minutes: 5
+      - name: Test architecture documentation contracts
+        timeout-minutes: 5
+        run: |
+          python3 -m unittest discover -s tests -p 'test_architecture_docs.py' -v
+          python3 -m unittest discover -s tests -p 'test_automation_docs.py' -v
       - name: Render Mermaid decision trees (mmdc)
         timeout-minutes: 10
         run: |
@@ -84,15 +105,50 @@ jobs:
           else
             echo "Rendered $count diagram(s)."
           fi
+      - name: Render architecture flow modules (SVG)
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          mkdir -p docs/architecture/generated/flows
+          printf '%s\n' '{"args":["--no-sandbox","--disable-setuid-sandbox"]}' > /tmp/puppeteer-config.json
+          MMDC="npx --yes @mermaid-js/mermaid-cli@11.4.2"
+          count=0
+          for src in docs/architecture/flows/*.mmd; do
+            [ -f "$src" ] || continue
+            stem=$(basename "$src" .mmd)
+            out="docs/architecture/generated/flows/${stem}.svg"
+            echo "mmdc: $src -> $out"
+            $MMDC -i "$src" -o "$out" -b transparent -s 2 --puppeteerConfigFile /tmp/puppeteer-config.json
+            count=$((count + 1))
+          done
+          test "$count" -gt 0
+          echo "Rendered $count architecture flow diagram(s)."
+      - name: Validate architecture version and generate manifest
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          git fetch origin "+refs/heads/${{ github.event.pull_request.base.ref }}:refs/remotes/origin/${{ github.event.pull_request.base.ref }}"
+          python3 scripts/ci/architecture_docs.py --write --check-version-from "origin/${{ github.event.pull_request.base.ref }}"
+          python3 scripts/ci/architecture_docs.py --check
+          git diff --check
       - name: Regenerate automation catalog in workspace
         timeout-minutes: 5
         run: python3 scripts/ci/automation_docs.py --write
       - name: Validate generated catalog
         timeout-minutes: 5
         run: python3 scripts/ci/automation_docs.py --check
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: architecture-docs-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            docs/architecture/generated/architecture-manifest.json
+            docs/architecture/generated/flows/*.svg
+            docs/ops/generated/*.png
+          if-no-files-found: error
+          retention-days: 14
 
   refresh-trusted:
-    if: github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -112,6 +168,11 @@ jobs:
         with:
           node-version: "20"
         timeout-minutes: 5
+      - name: Test architecture documentation contracts
+        timeout-minutes: 5
+        run: |
+          python3 -m unittest discover -s tests -p 'test_architecture_docs.py' -v
+          python3 -m unittest discover -s tests -p 'test_automation_docs.py' -v
       - name: Render Mermaid decision trees (mmdc)
         timeout-minutes: 10
         run: |
@@ -133,24 +194,45 @@ jobs:
           else
             echo "Rendered $count diagram(s)."
           fi
+      - name: Render architecture flow modules (SVG)
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          mkdir -p docs/architecture/generated/flows
+          printf '%s\n' '{"args":["--no-sandbox","--disable-setuid-sandbox"]}' > /tmp/puppeteer-config.json
+          MMDC="npx --yes @mermaid-js/mermaid-cli@11.4.2"
+          count=0
+          for src in docs/architecture/flows/*.mmd; do
+            [ -f "$src" ] || continue
+            stem=$(basename "$src" .mmd)
+            out="docs/architecture/generated/flows/${stem}.svg"
+            echo "mmdc: $src -> $out"
+            $MMDC -i "$src" -o "$out" -b transparent -s 2 --puppeteerConfigFile /tmp/puppeteer-config.json
+            count=$((count + 1))
+          done
+          test "$count" -gt 0
+          echo "Rendered $count architecture flow diagram(s)."
       - name: Regenerate automation catalog
         timeout-minutes: 5
         run: python3 scripts/ci/automation_docs.py --write
       - name: Validate generated catalog + diagram assets
         timeout-minutes: 5
         run: python3 scripts/ci/automation_docs.py --check
+      - name: Validate architecture manifest
+        timeout-minutes: 5
+        run: python3 scripts/ci/architecture_docs.py --write && python3 scripts/ci/architecture_docs.py --check
       - name: Commit generated automation documentation + renders
         timeout-minutes: 5
         run: |
           set -euo pipefail
-          if git diff --quiet -- docs/ops/generated; then
+          if git diff --quiet -- docs/ops/generated docs/architecture/generated; then
             echo 'Automation documentation and diagram renders already current.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add docs/ops/generated
-          git commit -m 'docs(ops): refresh generated automation catalog + mmdc renders'
+          git add docs/ops/generated docs/architecture/generated
+          git commit -m 'docs(architecture): refresh generated architecture assets'
           git fetch origin master
           git rebase origin/master
           for attempt in 1 2 3; do

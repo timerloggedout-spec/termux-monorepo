@@ -6,7 +6,7 @@
 
 ## Context
 
-The repository already has a root architecture entry, paired Markdown/Mermaid flow modules, an operational Mermaid-to-PNG refresh lane, and an Automation Documentation Continuous Refresh workflow. The architecture flow sources under docs/architecture/flows/ are outside the existing operational diagram inventory. The current generated asset catalog also lacks one release identity for the architecture source set.
+The repository already has a root architecture entry, paired Markdown/Mermaid flow modules, an operational Mermaid-to-PNG refresh lane, and an Automation Documentation Continuous Refresh workflow. The architecture flow sources under docs/architecture/flows/ are outside the existing operational diagram inventory. The generated asset catalog needs one release identity for the architecture source set.
 
 ## Decisions
 

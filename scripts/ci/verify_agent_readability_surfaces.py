@@ -72,7 +72,7 @@ require(not re.search(r'<meta[^>]+http-equiv=["\']refresh', hub, re.I), "project
 
 workflow = (ROOT / ".github/workflows/tribute-dashboard-deploy.yml").read_text(encoding="utf-8")
 for statement in (
-    "cp apps/project-pages-hub/index.md _site/index.md",
+    "cp apps/project-pages-hub/index.md _site/index.md",\n    "cp -a apps/project-pages-hub/architecture/. _site/architecture/",\n    "build_architecture_portal.py",\n    "--verify-rendered",
     "cp apps/tribute-dashboard/matrix.md _site/matrix.md",
     "cp apps/tribute-dashboard/matrix.md _user_site/matrix/index.md",
     "main-landing-studysprint-link",
@@ -87,4 +87,4 @@ if errors:
         print(f" - {error}")
     sys.exit(1)
 
-print("Agent readability source contract: PASS (Tribute, Matrix, project hub; HTML/Markdown parity and deployment copies)")
+print("Agent readability source contract: PASS (Tribute, Matrix, project hub, Architecture Explorer; HTML/Markdown parity and deployment copies)")

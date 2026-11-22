@@ -15,7 +15,7 @@ description: Enable and publish GitHub Pages for termux-monorepo help-wanted das
 |-----|------|
 | `https://timerloggedout-spec.github.io/` | **Marketing / referrals** (CellCog invitation) |
 | `https://timerloggedout-spec.github.io/help-wanted/` | **Ops dashboard** (canonical KPI UI) |
-| `https://timerloggedout-spec.github.io/termux-monorepo/` | **Project hub** (thin links — never dashboard twin) |
+| `https://timerloggedout-spec.github.io/termux-monorepo/` | **Project hub** (thin links — never dashboard twin) |\n| `https://timerloggedout-spec.github.io/termux-monorepo/architecture/` | **Architecture Explorer** (read-only docs, Mermaid, SVG and provenance) |
 | `https://termux-monorepo.vercel.app` | Preview portal WIP |
 
 Cross-nav: Marketing ↔ Ops dashboard ↔ Monorepo ↔ Preview.
@@ -25,7 +25,7 @@ Cross-nav: Marketing ↔ Ops dashboard ↔ Monorepo ↔ Preview.
 ## Deploy
 
 Workflow `tribute-dashboard-deploy.yml`:
-- `gh-pages` ← `apps/project-pages-hub/` only
+- `gh-pages` ← `apps/project-pages-hub/` (project hub + nested Architecture Explorer route)
 - user site `/tribute/` ← `apps/tribute-dashboard/` (compatibility alias: `/help-wanted/`)
 
 Agent-Identity: Grok (Administrator)

@@ -27,6 +27,7 @@ The pull-request job remains read-only and uploads generated review evidence. Af
 - The Python generator owns the JSON manifest.
 - Mermaid CLI owns rendered SVG and PNG projections.
 - Git history and Actions run/artifact metadata own execution provenance.
+- The trusted generated-file writer executes only for refs/heads/master.
 - Canonical sources retain authority; generated projections serve as reviewable outputs.
 
 ## Verification

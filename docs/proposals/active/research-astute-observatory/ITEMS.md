@@ -10,7 +10,7 @@
 | RAO-006 | Define ingestion, provenance, access and storage lifecycle | done | docs/research-astute/INGESTION.md |
 | RAO-007 | Register proposal in proposal lifecycle registry | executing | Validate registry gate on PR |
 | RAO-008 | Add schema validation and deterministic documentation generator | queued | Implement tests and generator |
-| RAO-009 | Add source adapters: GitHub/FOSS, patents, papers, NASA and SpaceX/Tesla public surfaces | queued | Provider-specific adapters with rate limits and citations |
-| RAO-010 | Add artifact object storage and graph backend adapters | queued | Select backend from current infrastructure inventory |
-| RAO-011 | Add collection-level generated docs and storage manifests | queued | Human + machine parity |
-| RAO-012 | Add Research Astute native monorepo and standalone workflow migration | queued | Future domain-owned execution phase |
+| RAO-009 | Seed provider registry with source authority, API access and rights constraints | done | docs/research-astute/registry/providers.json; automated WIPO PATENTSCOPE access explicitly disabled by source terms |\n| RAO-010 | Add source adapters: GitHub/FOSS, patents, papers, NASA and SpaceX/Tesla public surfaces | queued | Provider-specific adapters with rate limits and citations |
+| RAO-011 | Add artifact object storage and graph backend adapters | queued | Select backend from current infrastructure inventory |
+| RAO-012 | Add collection-level generated docs and storage manifests | queued | Human + machine parity |
+| RAO-013 | Add Research Astute native monorepo and standalone workflow migration | queued | Future domain-owned execution phase |

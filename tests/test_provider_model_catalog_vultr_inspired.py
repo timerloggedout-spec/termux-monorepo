@@ -9,6 +9,9 @@ def _incumbent(models):
         "schema": "provider-model-catalog/v5",
         "observed_at": "2026-11-21T00:00:00Z",
         "providers": ["fixture"],
+        "provider_observations": {"fixture": {"status": "observed"}},
+        "cadence_classes": ["daily", "unknown"],
+        "errors": [{"provider": "fixture", "error": "timeout"}],
         "models": models,
     }
 
@@ -40,6 +43,10 @@ def test_vultr_inspired_projection_preserves_exact_prices_and_evidence():
     assert model["lifecycle"]["readiness"] is True
     assert model["extensions"]["future_field"] == {"preserve": True}
     assert model["incumbent_record"]["provider"] == "fixture"
+    assert result["provider_observations"]["fixture"]["status"] == "observed"
+    assert result["cadence_classes"] == ["daily", "unknown"]
+    assert result["source_errors"] == [{"provider": "fixture", "error": "timeout"}]
+    assert result["incumbent_document"]["schema"] == "provider-model-catalog/v5"
 
 
 def test_vultr_inspired_projection_isolates_invalid_rows_and_marks_float_prices():

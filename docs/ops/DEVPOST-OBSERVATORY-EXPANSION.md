@@ -332,7 +332,10 @@ The Challenge OSINT lane now has a GitLab source-family dossier:
 `ops/challenge/osint/gitlab-sources.json`. This is a cross-venue source set, separate from the Devpost global
 software-directory adapter.
 
-The public GitLab hierarchy was observed 2026-11-22:
+The public GitLab hierarchy was observed 2026-11-22. The Transcend subgroup API
+returned **312 unique public project workspaces across four pages**; a dated,
+privacy-minimized index is stored at
+`ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json`:
 
 - `gitlab-ai-hackathon` — public root group.
 - `gitlab-devsecops-flow-hackathon` — child subgroup; its page showed zero

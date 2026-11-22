@@ -225,3 +225,10 @@ External billing references:
 - https://docs.github.com/en/actions/how-tos/monitor-workflows/view-job-execution-time
 
 **Promotion rule:** this document is a plan-only change. Schedule changes, workflow disablement, concurrency changes, and runner migrations require a measured cost ranking, cadence-owner approval, regression coverage, and a rollback path.
+
+
+## 12. Verified workflow inventory update (2026-11-22)
+
+A live read of the repository's default branch, `master`, enumerated `.github/workflows/` and found **326 workflow definition files** with `.yml` or `.yaml` extensions (327 directory entries including the non-workflow entry). This replaces the historical 158-workflow planning baseline for current inventory sizing. The operator's “approximately 400” is directionally close, while the directly verified count is 326 as of this inspection.
+
+This count measures workflow definition files in this repository. It does not measure active workflows, enabled schedules, executions, jobs, or billable minutes. The 1,555-minute figure remains operator-reported; the live repository file count does not attribute that usage to this repository. Next measurement: classify all 326 definitions by trigger, enabled state, schedule cadence, runner class, concurrency, and observed 30-day run/job duration, then rank by verified billable minutes and minutes per accepted outcome.

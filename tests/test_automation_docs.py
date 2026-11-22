@@ -43,6 +43,30 @@ class AutomationDocumentationTests(unittest.TestCase):
         unrelated = automation_docs.classify_material_paths(["README.md"])
         self.assertEqual(unrelated["status"], "no diagram impact")
 
+    def test_architecture_sources_and_generated_manifest_are_classified(self) -> None:
+        sources = automation_docs.classify_material_paths(
+            [
+                "architecture.md",
+                "docs/architecture/flows/agent-orchestration.mmd",
+                "docs/ops/SHE-DASHBOARD-ARCHITECTURE.mmd",
+            ]
+        )
+        self.assertEqual(sources["status"], "documentation update required")
+        self.assertEqual(
+            sources["material_paths"],
+            [
+                "architecture.md",
+                "docs/architecture/flows/agent-orchestration.mmd",
+                "docs/ops/SHE-DASHBOARD-ARCHITECTURE.mmd",
+            ],
+        )
+
+        generated = automation_docs.classify_material_paths(
+            ["docs/architecture/generated/architecture-manifest.json"]
+        )
+        self.assertEqual(generated["status"], "generated-documentation-only")
+        self.assertEqual(generated["material_paths"], [])
+
     def test_classifier_rejects_unsafe_repository_paths(self) -> None:
         with self.assertRaises(ValueError):
             automation_docs.classify_material_paths(["../outside.yml"])

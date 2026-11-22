@@ -254,6 +254,31 @@ class TestLaya(unittest.TestCase):
         self.assertEqual(out["ranked"], [])
         self.assertEqual(out["synthesis"], "")
 
+    def test_partial_stage_failure_keeps_candidate_alignment(self):
+        arts = [
+            {"candidate_id": "a", "provider": "first", "model": "m", "text": "A", "ok": True},
+            {"candidate_id": "b", "provider": "second", "model": "m", "text": "B", "ok": True},
+        ]
+        js = [
+            {"candidate_id": "a", "scores": {}, "ok": False},
+            {"candidate_id": "b", "scores": {"quality": 0.9}, "ok": True},
+        ]
+        ks = [
+            {"candidate_id": "a", "match_score": 1.0, "ok": True},
+            {"candidate_id": "b", "match_score": 1.0, "ok": True},
+        ]
+        out = laya.synthesize(arts, js, ks)
+        self.assertEqual([row["candidate_id"] for row in out["ranked"]], ["b"])
+        self.assertEqual(out["winner"]["provider"], "second")
+        self.assertEqual(out["excluded"][0]["candidate_id"], "a")
+
+    def test_candidate_id_mismatch_raises(self):
+        arts = [{"candidate_id": "a", "provider": "p", "model": "m", "text": "A"}]
+        js = [{"candidate_id": "b", "scores": {"quality": 1.0}}]
+        ks = [{"candidate_id": "a", "match_score": 1.0}]
+        with self.assertRaisesRegex(ValueError, "identity mismatch"):
+            laya.synthesize(arts, js, ks)
+
     def test_custom_weights(self):
         arts = [self._art("a", "A")]
         js = [{"scores": {"x": 1.0}}]

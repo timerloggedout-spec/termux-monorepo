@@ -266,7 +266,7 @@ The organizer's winner article reports 600+ submissions and seven prize-winning 
 | Honourable Mention | — | ContextSeal | Mehmet Aydoğan |
 | Honourable Mention | — | RippleProof | Muhammad Hassaan Javed |
 
-This is an official-result taxonomy with award tiers and tracks; it supplies no numeric 1–7 ranking. The article distinguishes Grand Prize, track challenge winners, and honorable mentions. Store the published award tier and track as separate fields; numeric podium rank remains null until the organizer explicitly publishes one.
+This is an official-result taxonomy with award tiers and tracks. The article distinguishes Grand Prize, track challenge winners, and honorable mentions; numeric 1–7 rank: NOT_ESTABLISHED. Store the published award tier and track as separate fields; numeric podium rank remains null until the organizer explicitly publishes one.
 
 The article describes evidence-gated agent execution, lineage-based root-cause analysis, human review, write-back verification, safe migrations, and writing incident resolution back to the catalog. It also reports 100+ open-source pull requests across DataHub repositories, skills, connectors, and documentation. Treat these as reference-pattern observations; apply them to individual winners when evidence supports the link.
 

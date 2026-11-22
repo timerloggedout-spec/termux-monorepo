@@ -1,0 +1,6996 @@
+{
+  "schema": "workflow-discovery-feed/v1",
+  "surface": "actions-workflow-discovery",
+  "generated_at": "2026-11-22T15:55:40.840Z",
+  "sources": {
+    "catalog": "docs/ops/generated/automation-workflow-catalog.json",
+    "catalog_fingerprint": "23ae77cd6b37509da07e787d0d76cf16e0474680635e9099db677e5bfdacf0b9",
+    "observations": "scripts/dashboards/actions_observations.json",
+    "observations_read_at": "2026-10-30T07:47:29Z",
+    "sampling": {
+      "route": "pat_helper",
+      "calls_made": 3,
+      "per_page": 100,
+      "pages_sampled": [
+        1,
+        50,
+        100
+      ],
+      "sampling": "stride",
+      "runs_fetched": 300,
+      "api_total_count_display": 40000
+    },
+    "workflow_source": ".github/workflows/",
+    "topology_scan_state": "pending_first_live_collector"
+  },
+  "summary": {
+    "workflow_definitions": 326,
+    "observed_workflows": 45,
+    "unobserved_workflows": 281,
+    "scheduled_workflows": 81,
+    "sampled_runs": 300,
+    "sampled_workflows": 45,
+    "workflow_run_edges": null,
+    "reusable_workflow_edges": null,
+    "job_dependency_edges": null,
+    "nested_edges": null,
+    "observation_age_hours": 560.14,
+    "observation_state": "stale"
+  },
+  "distributions": {
+    "triggers": {
+      "schedule": 81,
+      "workflow_dispatch": 273,
+      "issue_comment": 25,
+      "pull_request": 85,
+      "pull_request_target": 10,
+      "push": 99,
+      "issues": 19,
+      "pull_request_review": 7,
+      "pull_request_review_comment": 6,
+      "workflow_run": 22,
+      "repository_dispatch": 14,
+      "workflow_call": 7,
+      "discussion": 1,
+      "discussion_comment": 1,
+      "create": 1
+    },
+    "domains": {
+      "agentic-development": 284,
+      "validation-security": 11,
+      "peer-provider-review": 14,
+      "governance-relationships": 9,
+      "reconciliation-publishing": 8
+    },
+    "authorities": {
+      "bounded-state-write": 50,
+      "read-only-or-advisory": 176,
+      "writer": 97,
+      "advisory-publisher": 3
+    }
+  },
+  "workflows": [
+    {
+      "path": ".github/workflows/ace-watch.yml",
+      "name": "ace-watch",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "23 7 1 * *"
+      ],
+      "jobs": [
+        "watch"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/action-effectiveness-ledger.yml",
+      "name": "Action Effectiveness Ledger",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "issue_comment",
+        "pull_request",
+        "pull_request_target",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "ledger"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 12,
+        "concluded": 12,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 7.3381,
+        "duration_s": {
+          "n": 12,
+          "median": 1,
+          "p95": 201,
+          "mean": 30.92
+        },
+        "duration_excluded": 0,
+        "events": {
+          "issue_comment": 9,
+          "pull_request_target": 1,
+          "pull_request": 2
+        },
+        "latest": {
+          "id": 41022221792,
+          "created_at": "2026-10-30T07:47:13Z",
+          "conclusion": "skipped",
+          "status": "completed",
+          "event": "issue_comment",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221792"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/actionlint-advisory.yml",
+      "name": "Advisory GitHub Actions lint",
+      "domain": "validation-security",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "actionlint"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 2,
+        "concluded": 2,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 1.223,
+        "duration_s": {
+          "n": 2,
+          "median": 66,
+          "p95": 66,
+          "mean": 55
+        },
+        "duration_excluded": 0,
+        "events": {
+          "pull_request": 2
+        },
+        "latest": {
+          "id": 41016770075,
+          "created_at": "2026-10-30T06:53:45Z",
+          "conclusion": "success",
+          "status": "completed",
+          "event": "pull_request",
+          "head_sha": "c90009f464f9a5be39685faa4a7af84d3b46e925",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41016770075"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/actions-queue-reaper.yml",
+      "name": "Actinns queue reaper",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "reap"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/actions-run-watcher.yml",
+      "name": "Actions Run Watcher — incident notification",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "observe-completion"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/adaptive-wait-evidence-skill.yml",
+      "name": "adaptive wait evidence skill contract",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push"
+      ],
+      "schedules": [],
+      "jobs": [
+        "contract"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/admin-desk-vercel.yml",
+      "name": "admin-desk-vercel",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "admin-desk"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/agent-continuous-ops.yml",
+      "name": "Continuous agent ops",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "sweep"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/agent-ecc-tools-ops.yml",
+      "name": "ECC Tools demand-driven ops",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "issue_comment",
+        "issues",
+        "pull_request"
+      ],
+      "schedules": [],
+      "jobs": [
+        "acknowledge-ecc-pr",
+        "issue-commands",
+        "pr-harness-audit",
+        "pr-operator-command"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 9,
+        "concluded": 7,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 5.5036,
+        "duration_s": {
+          "n": 7,
+          "median": 11,
+          "p95": 91,
+          "mean": 30
+        },
+        "duration_excluded": 0,
+        "events": {
+          "issue_comment": 9
+        },
+        "latest": {
+          "id": 41022221867,
+          "created_at": "2026-10-30T07:47:13Z",
+          "conclusion": null,
+          "status": "pending",
+          "event": "issue_comment",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221867"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/agent-feedback-linear-sync.yml",
+      "name": "Agent feedback → Linear subtasks",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "pull_request_review",
+        "pull_request_review_comment"
+      ],
+      "schedules": [],
+      "jobs": [
+        "sync-linear"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/agent-jules-on-issues.yml",
+      "name": "Jules on Issues (label / @jules)",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "issue_comment",
+        "issues"
+      ],
+      "schedules": [],
+      "jobs": [
+        "event-received",
+        "jules-on-label",
+        "jules-on-mention"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 8,
+        "concluded": 7,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 4.8921,
+        "duration_s": {
+          "n": 7,
+          "median": 1,
+          "p95": 1,
+          "mean": 1
+        },
+        "duration_excluded": 0,
+        "events": {
+          "issue_comment": 8
+        },
+        "latest": {
+          "id": 41022221718,
+          "created_at": "2026-10-30T07:47:13Z",
+          "conclusion": null,
+          "status": "in_progress",
+          "event": "issue_comment",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221718"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/agent-mvt-experiment.yml",
+      "name": "Agent MVT experiment loop",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "experiment"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/agent-pr-jules-handoff.yml",
+      "name": "Agent PR Jules Handoff",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "issue_comment",
+        "pull_request"
+      ],
+      "schedules": [],
+      "jobs": [
+        "handoff",
+        "mutation"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 10,
+        "concluded": 9,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 6.1151,
+        "duration_s": {
+          "n": 9,
+          "median": 2,
+          "p95": 8,
+          "mean": 3.44
+        },
+        "duration_excluded": 0,
+        "events": {
+          "issue_comment": 9,
+          "pull_request": 1
+        },
+        "latest": {
+          "id": 41022221876,
+          "created_at": "2026-10-30T07:47:13Z",
+          "conclusion": null,
+          "status": "in_progress",
+          "event": "issue_comment",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221876"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/agent-quality-lane.yml",
+      "name": "Agent Quality Lane",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "quality"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/agent-readability-source-contract.yml",
+      "name": "Agent Readability Source Contract",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push"
+      ],
+      "schedules": [],
+      "jobs": [
+        "contract"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/agent-review-auto-jules.yml",
+      "name": "Agent review → auto Jules",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "issue_comment",
+        "pull_request_review",
+        "pull_request_review_comment"
+      ],
+      "schedules": [],
+      "jobs": [
+        "detect-bot-feedback",
+        "invoke-jules-api"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 10,
+        "concluded": 9,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 6.1151,
+        "duration_s": {
+          "n": 9,
+          "median": 2,
+          "p95": 26,
+          "mean": 4.89
+        },
+        "duration_excluded": 0,
+        "events": {
+          "issue_comment": 10
+        },
+        "latest": {
+          "id": 41022221796,
+          "created_at": "2026-10-30T07:47:13Z",
+          "conclusion": null,
+          "status": "in_progress",
+          "event": "issue_comment",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221796"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/agent-runtime-stall-watch.yml",
+      "name": "Agent Runtime Stall Watch",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "watch"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/agent-substrate-eval.yml",
+      "name": "agent-substrate-eval",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "eval"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/agent-throughput-evidence.yml",
+      "name": "Agent Throughput Evidence",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_run"
+      ],
+      "schedules": [],
+      "jobs": [
+        "emit"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 20,
+        "concluded": 19,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 12.2302,
+        "duration_s": {
+          "n": 19,
+          "median": 1,
+          "p95": 11,
+          "mean": 3.21
+        },
+        "duration_excluded": 0,
+        "events": {
+          "workflow_run": 20
+        },
+        "latest": {
+          "id": 41022205788,
+          "created_at": "2026-10-30T07:47:04Z",
+          "conclusion": null,
+          "status": "in_progress",
+          "event": "workflow_run",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022205788"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/agentic-auth-canary.yml",
+      "name": "Agentic Auth Canary",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "17 */6 * * *"
+      ],
+      "jobs": [
+        "check"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/agentic-repository-operations-report.lock.yml",
+      "name": "Read-Only Repository Operations Report",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "22 2 * * 1"
+      ],
+      "jobs": [
+        "activation",
+        "agent",
+        "conclusion",
+        "detection",
+        "safe_outputs"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/ai-studio-delphi-trigger.yml",
+      "name": "ai-studio-delphi-trigger",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "repository_dispatch",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "gate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/allocation-verification-probe.yml",
+      "name": "allocation-verification-probe",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "probe"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/apk-release-finalize.yml",
+      "name": "apk-release-finalize",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "finalize"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/apk-release.yml",
+      "name": "apk-release",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "release"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/apk-xref-exec.yml",
+      "name": "apk-xref exec",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "exec"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/apk-xref-intake.yml",
+      "name": "apk-xref intake",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "issues"
+      ],
+      "schedules": [],
+      "jobs": [
+        "intake"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/appid-control-plane-inventory.yml",
+      "name": "appid-control-plane-inventory",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "load"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/archwiz-dangle.yml",
+      "name": "archwiz dangle check",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "repository_dispatch",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "dangle"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/archwiz-markov-trellis-lab.yml",
+      "name": "ArchWiz Markov Trellis Lab",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push"
+      ],
+      "schedules": [],
+      "jobs": [
+        "deterministic-model"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/archwiz-repo-index.yml",
+      "name": "archwiz repo index",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "build"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/ates-orchestrator-benchmark.yml",
+      "name": "ATES Orchestrator Benchmark",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push"
+      ],
+      "schedules": [],
+      "jobs": [
+        "mvt"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/ates-phase-b-run-receipt.yml",
+      "name": "ATES Phase B Run Receipt",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_run"
+      ],
+      "schedules": [],
+      "jobs": [
+        "emit-receipt"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/audit-cycle.yml",
+      "name": "Audit Cycle — Single PR Feed-Forward",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "issue_comment",
+        "pull_request"
+      ],
+      "schedules": [],
+      "jobs": [
+        "audit"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 11,
+        "concluded": 9,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 6.7266,
+        "duration_s": {
+          "n": 9,
+          "median": 4,
+          "p95": 71,
+          "mean": 19.44
+        },
+        "duration_excluded": 0,
+        "events": {
+          "issue_comment": 9,
+          "pull_request": 2
+        },
+        "latest": {
+          "id": 41022221644,
+          "created_at": "2026-10-30T07:47:13Z",
+          "conclusion": null,
+          "status": "pending",
+          "event": "issue_comment",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221644"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/automation-docs-continuous-refresh.yml",
+      "name": "Automation Documentation Continuous Refresh",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "refresh-trusted",
+        "validate-pull-request"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 1,
+        "concluded": 1,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 0.6115,
+        "duration_s": {
+          "n": 1,
+          "median": 88,
+          "p95": 88,
+          "mean": 88
+        },
+        "duration_excluded": 0,
+        "events": {
+          "pull_request": 1
+        },
+        "latest": {
+          "id": 41012401333,
+          "created_at": "2026-10-30T06:09:07Z",
+          "conclusion": "success",
+          "status": "completed",
+          "event": "pull_request",
+          "head_sha": "880fa421536f36772e07a25079f599e0b9c63266",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41012401333"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/bifrost-006-smoke.yml",
+      "name": "BIFROST-006 benchmark smoke",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "smoke"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/brain-rust.yml",
+      "name": "Root Brain Rust core",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "rust"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/branch-reconciliation.yml",
+      "name": "Branch reconciliation inventory",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push"
+      ],
+      "schedules": [],
+      "jobs": [
+        "inventory"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/briefing-evidence-heartbeat.yml",
+      "name": "Briefing Evidence Heartbeat",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "17 15 * * *"
+      ],
+      "jobs": [
+        "validate-and-package"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/briefing-registry-validation.yml",
+      "name": "Briefing Registry Validation",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "validate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/bucket-headroom-watch.yml",
+      "name": "bucket-headroom-watch",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "*/10 * * * *"
+      ],
+      "jobs": [
+        "watch"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/build-arm-census.yml",
+      "name": "🧭 Build Arm Census (",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "census",
+        "live-build"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/build-dispatch.yml",
+      "name": "🔀 Build Dispatch (multi-arm)",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "issue_comment",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "build"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/cadence-lead-lag.yml",
+      "name": "Cadence Lead/Lag",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "classify"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/cadence-provider-onboarding.yml",
+      "name": "Cadence provider onboarding",
+      "domain": "peer-provider-review",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "23 6 * * 3"
+      ],
+      "jobs": [
+        "onboarding"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/cellcog-engineering-health.yml",
+      "name": "Engineering health (script)",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "snapshot"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/cellcog-review.yml",
+      "name": "CellCog review",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "issue_comment",
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "cellcog-review"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 11,
+        "concluded": 10,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 6.7266,
+        "duration_s": {
+          "n": 10,
+          "median": 2,
+          "p95": 43,
+          "mean": 5.9
+        },
+        "duration_excluded": 0,
+        "events": {
+          "issue_comment": 9,
+          "pull_request": 2
+        },
+        "latest": {
+          "id": 41022221759,
+          "created_at": "2026-10-30T07:47:13Z",
+          "conclusion": null,
+          "status": "queued",
+          "event": "issue_comment",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221759"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/cert-coderoad-host.yml",
+      "name": "cert-coderoad-host",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "coderoad"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/cert-coderoad-image.yml",
+      "name": "cert-coderoad-image",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "build"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/cert-coderoad.yml",
+      "name": "cert-coderoad",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "coderoad"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/cert-project.yml",
+      "name": "cert-project",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "build"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/cert-unit.yml",
+      "name": "Cert unit (Route A)",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "unit"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/certification-validation.yml",
+      "name": "Validate Certification Requirements",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "dashboard",
+        "notify",
+        "validate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/challenge-countdowns-feed-collect.yml",
+      "name": "challenge-countdowns-feed-collect",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "23 7 * * 2"
+      ],
+      "jobs": [
+        "collect"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/challenge-countdowns-refresh.yml",
+      "name": "challenge-countdowns-refresh",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "6 16 * * 1"
+      ],
+      "jobs": [
+        "refresh"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/challenge-osint-watch.yml",
+      "name": "challenge-osint-watch",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "17 8 * * 3"
+      ],
+      "jobs": [
+        "watch"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/challenge-participant-mirror.yml",
+      "name": "challenge-participant-mirror",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "mirror"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/ci-sweep.yml",
+      "name": "Cnntinunus CI Sweep",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "sweep"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/classifier-trial-dispatch.yml",
+      "name": "classifier-trial-dispatch",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "trial"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/clf-lab-bootstrap.yml",
+      "name": "clf-lab-bootstrap",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "bootstrap"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/codeql-advisory.yml",
+      "name": "Advisory CodeQL analysis",
+      "domain": "validation-security",
+      "authority": "advisory-publisher",
+      "triggers": [
+        "pull_request",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "23 3 * * 1"
+      ],
+      "jobs": [
+        "analyze"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/codespace-create.yml",
+      "name": "Codespace create (dispatch)",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "run"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/codespace-start.yml",
+      "name": "Codespace start (dispatch)",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "start"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/comment-quality-sweep.yml",
+      "name": "comment-quality-sweep",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "17 7 * * 3"
+      ],
+      "jobs": [
+        "sweep"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/commit-diff-watcher.yml",
+      "name": "🛡️ Direct Master Empty-Commit Watcher",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "push"
+      ],
+      "schedules": [],
+      "jobs": [
+        "watch"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/commit-replay-index.yml",
+      "name": "commit-replay-index",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "41 5 * * 3"
+      ],
+      "jobs": [
+        "index"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/context-backfill-contract.yml",
+      "name": "Context backfill contract",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push"
+      ],
+      "schedules": [],
+      "jobs": [
+        "validate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/context-relationship-audit.yml",
+      "name": "Context Relationship + Lead/Lag Audit",
+      "domain": "governance-relationships",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "issue_comment",
+        "issues",
+        "pull_request",
+        "pull_request_review",
+        "pull_request_review_comment",
+        "push",
+        "workflow_dispatch",
+        "workflow_run"
+      ],
+      "schedules": [],
+      "jobs": [
+        "index"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 14,
+        "concluded": 10,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 8.5611,
+        "duration_s": {
+          "n": 10,
+          "median": 4,
+          "p95": 172,
+          "mean": 23.8
+        },
+        "duration_excluded": 0,
+        "events": {
+          "issue_comment": 10,
+          "workflow_run": 3,
+          "pull_request": 1
+        },
+        "latest": {
+          "id": 41022221654,
+          "created_at": "2026-10-30T07:47:13Z",
+          "conclusion": null,
+          "status": "pending",
+          "event": "issue_comment",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221654"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/context-relationship-backfill-watcher.yml",
+      "name": "context relationship backfill watcher",
+      "domain": "governance-relationships",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_run"
+      ],
+      "schedules": [],
+      "jobs": [
+        "observe"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/context-relationship-backfill.yml",
+      "name": "context relationship historical backfill",
+      "domain": "governance-relationships",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "backfill"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/context-relationship-linear-freshness.yml",
+      "name": "context relationship Linear freshness",
+      "domain": "governance-relationships",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "23 6 * * *"
+      ],
+      "jobs": [
+        "compare"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/context-relationship-publish.yml",
+      "name": "context relationship index publisher",
+      "domain": "governance-relationships",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "publish"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/context-relationship-reconcile.yml",
+      "name": "context relationship reconciliation",
+      "domain": "governance-relationships",
+      "authority": "writer",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "17 6 * * 1"
+      ],
+      "jobs": [
+        "reconcile"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/context-relationship-validate.yml",
+      "name": "context relationship validation",
+      "domain": "governance-relationships",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "rust-accelerator",
+        "validate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/continuous-evaluation.yml",
+      "name": "Continuous Team Evaluation",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "discover",
+        "experiment"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/continuous-improve.yml",
+      "name": "continuous-improve",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "0 */8 * * *"
+      ],
+      "jobs": [
+        "dispatch"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/credential-family-probe.yml",
+      "name": "Credential family probe",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "probe"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/credential-inventory-validation.yml",
+      "name": "Credential Inventory Validation",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "validate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/cross-plane-graph.yml",
+      "name": "cross-plane graph",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "47 6 * * 3"
+      ],
+      "jobs": [
+        "link"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/debate-hygiene.yml",
+      "name": "debate-hygiene",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "pull_request",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "0 15 * * 1"
+      ],
+      "jobs": [
+        "matrix-toc"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/deepagent-task.yml",
+      "name": "deepagent-task",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "dispatch"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/deepcli-agent-bridge.yml",
+      "name": "DeepCLI Agent Bridge Smoke",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "bridge-smoke"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/deepseek-ci.yml",
+      "name": "DeepSeek CI – Agentic Automation",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "issue_comment",
+        "pull_request",
+        "pull_request_review_comment",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "deepseek-agent"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 10,
+        "concluded": 10,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 6.1151,
+        "duration_s": {
+          "n": 10,
+          "median": 1,
+          "p95": 43,
+          "mean": 7.8
+        },
+        "duration_excluded": 0,
+        "events": {
+          "issue_comment": 9,
+          "pull_request": 1
+        },
+        "latest": {
+          "id": 41022221728,
+          "created_at": "2026-10-30T07:47:13Z",
+          "conclusion": "skipped",
+          "status": "completed",
+          "event": "issue_comment",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221728"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/deepseek-secret-probe.yml",
+      "name": "deepseek-secret-probe",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "probe"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/deepseek-termux-agent.yml",
+      "name": "DeepSeek Termux Agent",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "issue_comment",
+        "issues",
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "agent"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 10,
+        "concluded": 10,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 6.1151,
+        "duration_s": {
+          "n": 10,
+          "median": 1,
+          "p95": 8,
+          "mean": 2.4
+        },
+        "duration_excluded": 0,
+        "events": {
+          "issue_comment": 10
+        },
+        "latest": {
+          "id": 41022221686,
+          "created_at": "2026-10-30T07:47:13Z",
+          "conclusion": "skipped",
+          "status": "completed",
+          "event": "issue_comment",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221686"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/deepwiki-import-harvest.yml",
+      "name": "DeepWiki.com import harvest (ICM)",
+      "domain": "reconciliation-publishing",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "harvest"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/delphi-cycle.yml",
+      "name": "delphi-cycle",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "delphi-cycle"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/delphi-gate.yml",
+      "name": "delphi-gate",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "issue_comment",
+        "issues",
+        "push",
+        "repository_dispatch",
+        "schedule",
+        "workflow_dispatch",
+        "workflow_run"
+      ],
+      "schedules": [
+        "23 * * * *"
+      ],
+      "jobs": [
+        "gate"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 8,
+        "concluded": 7,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 4.8921,
+        "duration_s": {
+          "n": 7,
+          "median": 1,
+          "p95": 10,
+          "mean": 2.43
+        },
+        "duration_excluded": 0,
+        "events": {
+          "issue_comment": 8
+        },
+        "latest": {
+          "id": 41022221692,
+          "created_at": "2026-10-30T07:47:13Z",
+          "conclusion": null,
+          "status": "in_progress",
+          "event": "issue_comment",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221692"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/delphi-generate.yml",
+      "name": "delphi-generate",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "generate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/delphi-intake.yml",
+      "name": "Delphi conversational intake",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "issue_comment",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "intake"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 8,
+        "concluded": 7,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 4.8921,
+        "duration_s": {
+          "n": 7,
+          "median": 1,
+          "p95": 2,
+          "mean": 1.29
+        },
+        "duration_excluded": 0,
+        "events": {
+          "issue_comment": 8
+        },
+        "latest": {
+          "id": 41022221793,
+          "created_at": "2026-10-30T07:47:13Z",
+          "conclusion": null,
+          "status": "in_progress",
+          "event": "issue_comment",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221793"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/delphi-ledger-feed-collect.yml",
+      "name": "delphi-ledger-feed-collect",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch",
+        "workflow_run"
+      ],
+      "schedules": [
+        "47 6 * * 2"
+      ],
+      "jobs": [
+        "collect"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 3,
+        "concluded": 2,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 1.8345,
+        "duration_s": {
+          "n": 2,
+          "median": 32,
+          "p95": 32,
+          "mean": 23
+        },
+        "duration_excluded": 0,
+        "events": {
+          "workflow_run": 3
+        },
+        "latest": {
+          "id": 41022184776,
+          "created_at": "2026-10-30T07:46:52Z",
+          "conclusion": null,
+          "status": "in_progress",
+          "event": "workflow_run",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022184776"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/delphi-oracle-mvp.yml",
+      "name": "Delphi Oracle offline MVP",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "offline-mvp"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/delphi-participant-cycle.yml",
+      "name": "delphi-participant-cycle",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "37 * * * *"
+      ],
+      "jobs": [
+        "cycle"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/delphi-rfp-feed-collect.yml",
+      "name": "delphi-rfp-feed-collect",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch",
+        "workflow_run"
+      ],
+      "schedules": [
+        "37 6 * * 2"
+      ],
+      "jobs": [
+        "collect"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 3,
+        "concluded": 3,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 1.8345,
+        "duration_s": {
+          "n": 3,
+          "median": 20,
+          "p95": 28,
+          "mean": 22.67
+        },
+        "duration_excluded": 0,
+        "events": {
+          "workflow_run": 3
+        },
+        "latest": {
+          "id": 41022184778,
+          "created_at": "2026-10-30T07:46:52Z",
+          "conclusion": "success",
+          "status": "completed",
+          "event": "workflow_run",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022184778"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/delphi-signal-bridge.yml",
+      "name": "delphi-signal-bridge",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "push",
+        "workflow_run"
+      ],
+      "schedules": [],
+      "jobs": [
+        "emit",
+        "outcome",
+        "radar"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 3,
+        "concluded": 3,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 1.8345,
+        "duration_s": {
+          "n": 3,
+          "median": 1,
+          "p95": 1,
+          "mean": 1
+        },
+        "duration_excluded": 0,
+        "events": {
+          "workflow_run": 3
+        },
+        "latest": {
+          "id": 41022184940,
+          "created_at": "2026-10-30T07:46:52Z",
+          "conclusion": "skipped",
+          "status": "completed",
+          "event": "workflow_run",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022184940"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/delphi-signal.yml",
+      "name": "delphi-signal",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_call"
+      ],
+      "schedules": [],
+      "jobs": [
+        "signal"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/delphi-tribute-ingest.yml",
+      "name": "delphi-tribute-ingest",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch",
+        "workflow_run"
+      ],
+      "schedules": [],
+      "jobs": [
+        "collect",
+        "signal"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/dependency-phase-dispatch.yml",
+      "name": "Dependency Phase Dispatch",
+      "domain": "validation-security",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "repository_dispatch",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "dispatch"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/dependency-phase-evaluate.yml",
+      "name": "Dependency Phase Evaluate",
+      "domain": "validation-security",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "push",
+        "repository_dispatch",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "23 5 * * *"
+      ],
+      "jobs": [
+        "evaluate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/dependency-phase-project-sync.yml",
+      "name": "Dependency Phase Project Sync",
+      "domain": "validation-security",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "reconcile"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/dependency-phase-validate.yml",
+      "name": "Dependency Phase Validate",
+      "domain": "validation-security",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "validate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/dependency-review-advisory.yml",
+      "name": "Advisory dependency review",
+      "domain": "validation-security",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request"
+      ],
+      "schedules": [],
+      "jobs": [
+        "dependency-review"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/deploy-hindsight.yml",
+      "name": "Deploy Hindsight on Fly.io",
+      "domain": "agentic-development",
+      "authority": "advisory-publisher",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "fly"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/development-performance-contract.yml",
+      "name": "Development performance contracts",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "validate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/device-queue-enqueue.yml",
+      "name": "Device Queue Enqueue",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "enqueue"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/device-queue-install.yml",
+      "name": "Device Queue Install",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "install"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/dispatch-executor.yml",
+      "name": "⚙️ Dispatch Executor (admitted -> claim + fire)",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "*/15 * * * *"
+      ],
+      "jobs": [
+        "execute"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/dispatch-stamp-fanout.yml",
+      "name": "Dispatch stamp fan-out",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "fanout"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/dispatch-tree-feed-collect.yml",
+      "name": "dispatch-tree-feed-collect",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "7 7 * * *"
+      ],
+      "jobs": [
+        "collect"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/dispatch-watchdog.yml",
+      "name": "dispatch-watchdog",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "*/15 * * * *"
+      ],
+      "jobs": [
+        "sweep"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/do-statement-style.yml",
+      "name": "DO Statement Style",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "discussion",
+        "discussion_comment",
+        "issue_comment",
+        "issues",
+        "pull_request",
+        "pull_request_review_comment",
+        "push"
+      ],
+      "schedules": [],
+      "jobs": [
+        "action-first-language"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/docs-branch-index.yml",
+      "name": "docs-branch-index",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "15 6 * * *"
+      ],
+      "jobs": [
+        "refresh"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/doe-bf1-compare.yml",
+      "name": "doe-bf1-compare",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "37 6 * * 1"
+      ],
+      "jobs": [
+        "compare"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/doe-cb1-acceptance.yml",
+      "name": "DoE cb-1 acceptance",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "acceptance"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/doe-cmp1-census.yml",
+      "name": "doe-cmp1-census",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "41 5 1 * *"
+      ],
+      "jobs": [
+        "census"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/doe-live1-audit.yml",
+      "name": "DoE live-1 ledger audit",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "issues",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "audit"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/doe-live3-autodispatch.yml",
+      "name": "DoE live-3 auto-dispatch",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "dispatch"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/doe-nc1-continuous-log.yml",
+      "name": "doe-nc1-continuous-log",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "41 1,7,13,19 * * *"
+      ],
+      "jobs": [
+        "log"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/doe-nc1-eval.yml",
+      "name": "doe-nc1-eval",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "evaluate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/doe-phrase-dispatch.yml",
+      "name": "DoE phrase dispatch (live-3)",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "dispatch"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/doe-util1-audit.yml",
+      "name": "doe-util1-audit",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "23 6 * * 1"
+      ],
+      "jobs": [
+        "audit"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/domain-composition-matrix.yml",
+      "name": "Domain Composition Matrix",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push"
+      ],
+      "schedules": [],
+      "jobs": [
+        "validate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/egm-review-dispatch.yml",
+      "name": "egm-review-dispatch",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "issues",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "*/30 * * * *"
+      ],
+      "jobs": [
+        "intake",
+        "sweep"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/evolutionary-replay.yml",
+      "name": "Evolutionary Replay Tests",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push"
+      ],
+      "schedules": [],
+      "jobs": [
+        "unit"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/facade-smoke.yml",
+      "name": "facade smoke",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "smoke"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/fix-on-failure.yml",
+      "name": "Fix-on-Failure Agent",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "workflow_dispatch",
+        "workflow_run"
+      ],
+      "schedules": [],
+      "jobs": [
+        "fix"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 4,
+        "concluded": 4,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 2.446,
+        "duration_s": {
+          "n": 4,
+          "median": 2,
+          "p95": 11,
+          "mean": 3.75
+        },
+        "duration_excluded": 0,
+        "events": {
+          "workflow_run": 4
+        },
+        "latest": {
+          "id": 41022200249,
+          "created_at": "2026-10-30T07:47:01Z",
+          "conclusion": "skipped",
+          "status": "completed",
+          "event": "workflow_run",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022200249"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/fly-diag.yml",
+      "name": "Fly Diag",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "diag"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/fly-fast-diag.yml",
+      "name": "Fly Fast Diag",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "diag"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/fly-hindsight-config.yml",
+      "name": "Fly Hindsight Config",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "config"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/fly-ssh-diag.yml",
+      "name": "Fly SSH Diag",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [],
+      "schedules": [],
+      "jobs": [
+        "diag"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/flywheel-validate.yml",
+      "name": "Flywheel adapter validation",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "core-loop"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/foresight-contracts.yml",
+      "name": "Foresight Contract Validation",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "validate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/foresight-evidence-spine.yml",
+      "name": "Foresight Evidence Spine",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push"
+      ],
+      "schedules": [],
+      "jobs": [
+        "test"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/fork-sync-audit.yml",
+      "name": "fork sync audit",
+      "domain": "reconciliation-publishing",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "47 6 * * 1"
+      ],
+      "jobs": [
+        "report"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/foss-registry-quality.yml",
+      "name": "FOSS Foresight Registry Quality",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "validate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/free-tier-value-board-contract.yml",
+      "name": "Free-Tier Use Value Board Contract",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push"
+      ],
+      "schedules": [],
+      "jobs": [
+        "contract"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/g07-profile-watch.yml",
+      "name": "g07-profile-watch",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "11 16 * * *"
+      ],
+      "jobs": [
+        "watch"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/g4f-inference-smoke.yml",
+      "name": "g4f inference smoke",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "smoke"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/game-development-dispatch.yml",
+      "name": "game-development-dispatch",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "workflow_run"
+      ],
+      "schedules": [],
+      "jobs": [
+        "intake"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/gemini-after-peers.yml",
+      "name": "Gemini review after peers",
+      "domain": "peer-provider-review",
+      "authority": "writer",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "second-pass"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 1,
+        "concluded": 0,
+        "failures": 0,
+        "failure_rate": null,
+        "sample_rate_per_hour": 0.6115,
+        "duration_s": {
+          "n": 0,
+          "median": null,
+          "p95": null,
+          "mean": null
+        },
+        "duration_excluded": 0,
+        "events": {
+          "workflow_dispatch": 1
+        },
+        "latest": {
+          "id": 41022189164,
+          "created_at": "2026-10-30T07:46:54Z",
+          "conclusion": null,
+          "status": "in_progress",
+          "event": "workflow_dispatch",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022189164"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/gemini-dispatch.yml",
+      "name": "DEPRECATED — Gemini Dispatch retired",
+      "domain": "peer-provider-review",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "retired"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 8,
+        "concluded": 8,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 4.8921,
+        "duration_s": {
+          "n": 8,
+          "median": 2,
+          "p95": 8,
+          "mean": 3
+        },
+        "duration_excluded": 0,
+        "events": {
+          "issue_comment": 8
+        },
+        "latest": {
+          "id": 41022221761,
+          "created_at": "2026-10-30T07:47:13Z",
+          "conclusion": "skipped",
+          "status": "completed",
+          "event": "issue_comment",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221761"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/gemini-interactions-smoke.yml",
+      "name": "Gemini Interactions API Smoke",
+      "domain": "peer-provider-review",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "smoke"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/gemini-invoke.yml",
+      "name": "▶️ Invoke (Gemini PRIMARY → peer Omni ↔ OpenRouter secondary)",
+      "domain": "peer-provider-review",
+      "authority": "writer",
+      "triggers": [
+        "workflow_call"
+      ],
+      "schedules": [],
+      "jobs": [
+        "invoke"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/gemini-review.yml",
+      "name": "🔍 Optimized Multi-Provider PR Review",
+      "domain": "peer-provider-review",
+      "authority": "writer",
+      "triggers": [
+        "workflow_call"
+      ],
+      "schedules": [],
+      "jobs": [
+        "review"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/gemini-triage.yml",
+      "name": "🏷️ Issue Triage (Gemini PRIMARY → peer Omni ↔ OpenRouter secondary)",
+      "domain": "peer-provider-review",
+      "authority": "writer",
+      "triggers": [
+        "workflow_call"
+      ],
+      "schedules": [],
+      "jobs": [
+        "triage"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/github-app-capability-probe.yml",
+      "name": "GitHub App Capability Probe",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "probe"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/github-app-collector-mint-probe.yml",
+      "name": "GitHub App Collector Mint Probe",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "probe"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/github-app-telemetry.yml",
+      "name": "GitHub App fleet telemetry",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "pull_request",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "17 * * * *"
+      ],
+      "jobs": [
+        "collector-census",
+        "validate"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 1,
+        "concluded": 1,
+        "failures": 1,
+        "failure_rate": 1,
+        "sample_rate_per_hour": 0.6115,
+        "duration_s": {
+          "n": 1,
+          "median": 32,
+          "p95": 32,
+          "mean": 32
+        },
+        "duration_excluded": 0,
+        "events": {
+          "pull_request": 1
+        },
+        "latest": {
+          "id": 41012401365,
+          "created_at": "2026-10-30T06:09:07Z",
+          "conclusion": "failure",
+          "status": "completed",
+          "event": "pull_request",
+          "head_sha": "880fa421536f36772e07a25079f599e0b9c63266",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41012401365"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/github-telemetry-snapshot.yml",
+      "name": "github-telemetry-snapshot",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "17 3 * * *"
+      ],
+      "jobs": [
+        "snapshot"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/gitlab-governed-reconciliation.yml",
+      "name": "GitLab governed reconciliation",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "reconcile"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/governed-pr-auto-merge-readiness.yml",
+      "name": "Governed PR Auto-Merge Readiness",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "pull_request",
+        "pull_request_review",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "evaluate",
+        "request-review"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/grafana-mcp-smoke.yml",
+      "name": "Grafana MCP Smoke",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_call",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "grafana-authentication"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/graph-matrix-census.yml",
+      "name": "graph-matrix-census",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "census"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/graph-matrix-probe.yml",
+      "name": "graph-matrix-probe",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "push"
+      ],
+      "schedules": [],
+      "jobs": [
+        "probe"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/gravitee-selfhost.yml",
+      "name": "gravitee selfhost",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "17 5 * * 1"
+      ],
+      "jobs": [
+        "selfhost"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/hark-enqueue-on-failure.yml",
+      "name": "hark enqueue on failure",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "workflow_run"
+      ],
+      "schedules": [],
+      "jobs": [
+        "enqueue",
+        "prep"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 4,
+        "concluded": 3,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 2.446,
+        "duration_s": {
+          "n": 3,
+          "median": 1,
+          "p95": 9,
+          "mean": 3.67
+        },
+        "duration_excluded": 0,
+        "events": {
+          "workflow_run": 4
+        },
+        "latest": {
+          "id": 41022216434,
+          "created_at": "2026-10-30T07:47:10Z",
+          "conclusion": null,
+          "status": "in_progress",
+          "event": "workflow_run",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022216434"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/hark-enqueue.yml",
+      "name": "hark-enqueue",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "workflow_call",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "enqueue"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/hark-vm-backup-bootstrap.yml",
+      "name": "hark-vm-backup-bootstrap",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "bootstrap"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/hark-vm-backup-publicize.yml",
+      "name": "hark-vm-backup-publicize",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "publicize"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/hex-moneyball-evidence.yml",
+      "name": "Hex Moneyball Evidence",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "sanitize-and-publish"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/historical-evaluation-correlation.yml",
+      "name": "Historical Evaluation Correlation",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "correlate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/hitl-control-plane-verify.yml",
+      "name": "hitl-control-plane-verify",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push"
+      ],
+      "schedules": [],
+      "jobs": [
+        "contract"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/hub-job-validate.yml",
+      "name": "hub job validation",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "validate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/hub-result-audit.yml",
+      "name": "hub result audit",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "audit"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/hygiene-sweep.yml",
+      "name": "hygiene-sweep",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "sweep"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/inference-availability-ledger.yml",
+      "name": "Inference availability ledger",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "23 13 * * *"
+      ],
+      "jobs": [
+        "measure"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/integration-mesh-poll.yml",
+      "name": "integration mesh poll",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "41 */6 * * *"
+      ],
+      "jobs": [
+        "poll"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/integration-portfolio.yml",
+      "name": "Integration portfolio validation",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "validate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/ios-termux-contribute.yml",
+      "name": "iOS-Termux Contribute",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "contribute"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/issue-comment-router.yml",
+      "name": "Issue Comment Router — modular fan-out reduction",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "issue_comment"
+      ],
+      "schedules": [],
+      "jobs": [
+        "route"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 8,
+        "concluded": 7,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 4.8921,
+        "duration_s": {
+          "n": 7,
+          "median": 11,
+          "p95": 69,
+          "mean": 17.29
+        },
+        "duration_excluded": 0,
+        "events": {
+          "issue_comment": 8
+        },
+        "latest": {
+          "id": 41022221656,
+          "created_at": "2026-10-30T07:47:13Z",
+          "conclusion": null,
+          "status": "queued",
+          "event": "issue_comment",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221656"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/issue-lifecycle-triage.yml",
+      "name": "Issue Lifecycle Triage (deterministic label pass)",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "issues",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "17 7 * * 2"
+      ],
+      "jobs": [
+        "triage-labels"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/issue-observatory.yml",
+      "name": "Issue Observatory — similarity, refinement, lifecycle evidence",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "issues",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "observe"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/koyeb-hindsight-deploy.yml",
+      "name": "Hindsight Deploy (Koyeb)",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "deploy"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/lane-events-recorder.yml",
+      "name": "lane events recorder",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_run"
+      ],
+      "schedules": [],
+      "jobs": [
+        "record"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 7,
+        "concluded": 6,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 4.2806,
+        "duration_s": {
+          "n": 6,
+          "median": 1,
+          "p95": 89,
+          "mean": 15.83
+        },
+        "duration_excluded": 0,
+        "events": {
+          "workflow_run": 7
+        },
+        "latest": {
+          "id": 41022222879,
+          "created_at": "2026-10-30T07:47:14Z",
+          "conclusion": null,
+          "status": "queued",
+          "event": "workflow_run",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022222879"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/latency-probe.yml",
+      "name": "latency-probe",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "probe"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/linguist-panel-feed-collect.yml",
+      "name": "linguist-panel-feed-collect",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "53 6 * * 2"
+      ],
+      "jobs": [
+        "collect"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/matrice-search.yml",
+      "name": "matrice-search",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "matrice"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/merge-promotion-queue-v2.yml",
+      "name": "Merge Promotion Queue v2",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "inventory"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/merge-promotion-queue-v3.yml",
+      "name": "Merge Promotion Queue v3",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch",
+        "workflow_run"
+      ],
+      "schedules": [],
+      "jobs": [
+        "inventory"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 3,
+        "concluded": 3,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 1.8345,
+        "duration_s": {
+          "n": 3,
+          "median": 1,
+          "p95": 1,
+          "mean": 1
+        },
+        "duration_excluded": 0,
+        "events": {
+          "workflow_run": 3
+        },
+        "latest": {
+          "id": 41016772426,
+          "created_at": "2026-10-30T06:53:46Z",
+          "conclusion": "skipped",
+          "status": "completed",
+          "event": "workflow_run",
+          "head_sha": "5ea244659ddfe2d01faa55ddd1163035a404ad5b",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41016772426"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/merge-promotion-queue.yml",
+      "name": "Merge Promotion Queue",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "inventory"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/merge-promotion-steward.yml",
+      "name": "Merge Promotion Steward",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "promote",
+        "refresh-catalog"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/mesh-request.yml",
+      "name": "mesh-request",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "issues",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "intake"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/mesh-tailnet-probe.yml",
+      "name": "mesh-tailnet-probe",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "17 */2 * * *"
+      ],
+      "jobs": [
+        "probe"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/mesh-upstash-heartbeat.yml",
+      "name": "Mesh Upstash Heartbeat",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "17 9 * * *"
+      ],
+      "jobs": [
+        "enqueue-on-failure",
+        "heartbeat"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/ml-pipelines-keepalive.yml",
+      "name": "ml pipelines keep-alive",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "unittest"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/ml-pr-lane-classify.yml",
+      "name": "ml PR lane classify",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "37 5 * * *"
+      ],
+      "jobs": [
+        "classify"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/moneyball-compare.yml",
+      "name": "moneyball compare",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "compare"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/mosaic-brain.yml",
+      "name": "MOSAIC Brain Rust specialist",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "rust"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/n8n-she-bridge.yml",
+      "name": "n8n SHE bridge",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_run"
+      ],
+      "schedules": [],
+      "jobs": [
+        "emit"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 4,
+        "concluded": 3,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 2.446,
+        "duration_s": {
+          "n": 3,
+          "median": 10,
+          "p95": 89,
+          "mean": 33.33
+        },
+        "duration_excluded": 0,
+        "events": {
+          "workflow_run": 4
+        },
+        "latest": {
+          "id": 41022216324,
+          "created_at": "2026-10-30T07:47:10Z",
+          "conclusion": null,
+          "status": "pending",
+          "event": "workflow_run",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022216324"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/nomenclature-matrix.yml",
+      "name": "Nomenclature Equivalency Matrix",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "validate"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 2,
+        "concluded": 2,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 1.223,
+        "duration_s": {
+          "n": 2,
+          "median": 38,
+          "p95": 38,
+          "mean": 36
+        },
+        "duration_excluded": 0,
+        "events": {
+          "push": 2
+        },
+        "latest": {
+          "id": 41016802044,
+          "created_at": "2026-10-30T06:54:04Z",
+          "conclusion": "success",
+          "status": "completed",
+          "event": "push",
+          "head_sha": "aa3e470cd7ab94b8de5257be837471f46d97555c",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41016802044"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/nse023-oracle.yml",
+      "name": "nse023-oracle",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "oracle",
+        "oracle-mathlib"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/observer-poller-scheduled.yml",
+      "name": "Observer Poller Scheduled",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "*/20 * * * *"
+      ],
+      "jobs": [
+        "poll"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/openrouter-bracket-snapshot.yml",
+      "name": "openrouter-bracket-snapshot",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "*/15 * * * *"
+      ],
+      "jobs": [
+        "snapshot"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/openrouter-free-catalog-sync.yml",
+      "name": "OpenRouter free catalog snapshot",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "17 12 * * *"
+      ],
+      "jobs": [
+        "poll"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/openrouter-free-counter-batch-probe.yml",
+      "name": "openrouter-free-counter-batch-probe",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "probe"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/openrouter-free-counter-large-probe.yml",
+      "name": "openrouter-free-counter-large-probe",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "probe"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/openrouter-free-counter-probe.yml",
+      "name": "openrouter-free-counter-probe",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "probe"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/openrouter-paid-value-probe.yml",
+      "name": "openrouter-paid-value-probe",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "probe"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/operations-cadence-audit.yml",
+      "name": "Operations Cadence Audit",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "13 0 1 * *"
+      ],
+      "jobs": [
+        "audit"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/operator-matrix-generate.yml",
+      "name": "Operator Matrix Generate",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "pull_request",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "41 6 * * *"
+      ],
+      "jobs": [
+        "generate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/operator-variable-provision.yml",
+      "name": "Operator Variable Provision",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "issue_comment",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "provision"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 9,
+        "concluded": 9,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 5.5036,
+        "duration_s": {
+          "n": 9,
+          "median": 1,
+          "p95": 11,
+          "mean": 2.33
+        },
+        "duration_excluded": 0,
+        "events": {
+          "issue_comment": 9
+        },
+        "latest": {
+          "id": 41022221658,
+          "created_at": "2026-10-30T07:47:13Z",
+          "conclusion": "skipped",
+          "status": "completed",
+          "event": "issue_comment",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221658"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/operator-wake.yml",
+      "name": "Operator wake",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "issue_comment",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "operate"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 9,
+        "concluded": 8,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 5.5036,
+        "duration_s": {
+          "n": 8,
+          "median": 1,
+          "p95": 11,
+          "mean": 2.38
+        },
+        "duration_excluded": 0,
+        "events": {
+          "issue_comment": 9
+        },
+        "latest": {
+          "id": 41022221927,
+          "created_at": "2026-10-30T07:47:13Z",
+          "conclusion": null,
+          "status": "queued",
+          "event": "issue_comment",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221927"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/opportunity-cycle.yml",
+      "name": "opportunity-cycle",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "17 1,7,13,19 * * *"
+      ],
+      "jobs": [
+        "cycle"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/ops-gitlink-lego-fork.yml",
+      "name": "ops-gitlink-lego-fork",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "gitlink"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/ops-lane-matrix-sweep.yml",
+      "name": "Lane matrix event-driven inventory",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "pull_request",
+        "pull_request_target",
+        "push"
+      ],
+      "schedules": [],
+      "jobs": [
+        "sweep",
+        "validate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/oracle-panel-feed-collect.yml",
+      "name": "oracle-panel-feed-collect",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "23 6 * * 2"
+      ],
+      "jobs": [
+        "collect"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/orchestration-regression-guard.yml",
+      "name": "Orchestration Regression Guard",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "guard"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/owner-records-vercel.yml",
+      "name": "owner-records-vercel",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "owner-records"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/ox-alpha-smoke.yml",
+      "name": "Model live canary",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "issue_comment",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "canary"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 9,
+        "concluded": 9,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 5.5036,
+        "duration_s": {
+          "n": 9,
+          "median": 1,
+          "p95": 11,
+          "mean": 3.22
+        },
+        "duration_excluded": 0,
+        "events": {
+          "issue_comment": 9
+        },
+        "latest": {
+          "id": 41022221531,
+          "created_at": "2026-10-30T07:47:13Z",
+          "conclusion": "skipped",
+          "status": "completed",
+          "event": "issue_comment",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221531"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/peer-review-orchestrator.yml",
+      "name": "Peer review orchestrator",
+      "domain": "peer-provider-review",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "issue_comment",
+        "pull_request_review",
+        "pull_request_target"
+      ],
+      "schedules": [],
+      "jobs": [
+        "collect-peer-responses"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 12,
+        "concluded": 11,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 7.3381,
+        "duration_s": {
+          "n": 11,
+          "median": 1,
+          "p95": 118,
+          "mean": 30.45
+        },
+        "duration_excluded": 0,
+        "events": {
+          "issue_comment": 9,
+          "pull_request_target": 1,
+          "pull_request": 2
+        },
+        "latest": {
+          "id": 41022221570,
+          "created_at": "2026-10-30T07:47:13Z",
+          "conclusion": null,
+          "status": "in_progress",
+          "event": "issue_comment",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221570"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/phantom-secrets-audit.yml",
+      "name": "Phantom secrets audit",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "issue_comment",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "23 6 * * 3"
+      ],
+      "jobs": [
+        "audit"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 9,
+        "concluded": 8,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 5.5036,
+        "duration_s": {
+          "n": 8,
+          "median": 1,
+          "p95": 11,
+          "mean": 2.38
+        },
+        "duration_excluded": 0,
+        "events": {
+          "issue_comment": 9
+        },
+        "latest": {
+          "id": 41022221572,
+          "created_at": "2026-10-30T07:47:13Z",
+          "conclusion": null,
+          "status": "in_progress",
+          "event": "issue_comment",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221572"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/pin-cor-ae-submodules.yml",
+      "name": "pin-cor-ae-submodules",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "pin"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/pinecone-knowledge.yml",
+      "name": "Pinecone knowledge sync",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "37 5 1 * *"
+      ],
+      "jobs": [
+        "pinecone"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/platform201-support-response-check.yml",
+      "name": "platform201-support-response-check",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "17 13 * * *"
+      ],
+      "jobs": [
+        "nudge"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/podium-crawl.yml",
+      "name": "podium-crawl",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "23 7 * * *"
+      ],
+      "jobs": [
+        "crawl"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/pr-change-effectiveness-ledger.yml",
+      "name": "PR Change Effectiveness Ledger",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "pull_request",
+        "pull_request_target",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "ledger"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 2,
+        "concluded": 2,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 1.223,
+        "duration_s": {
+          "n": 2,
+          "median": 29,
+          "p95": 29,
+          "mean": 18
+        },
+        "duration_excluded": 0,
+        "events": {
+          "pull_request_target": 1,
+          "pull_request": 1
+        },
+        "latest": {
+          "id": 41016798915,
+          "created_at": "2026-10-30T06:54:02Z",
+          "conclusion": "cancelled",
+          "status": "completed",
+          "event": "pull_request_target",
+          "head_sha": "bf8941e3f38c415f024a0f9941de1254fb920724",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41016798915"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/pr-evidence-evaluation.yml",
+      "name": "PR evidence evaluation",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "issue_comment",
+        "pull_request",
+        "pull_request_review",
+        "pull_request_review_comment",
+        "pull_request_target",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "evaluate"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 11,
+        "concluded": 10,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 6.7266,
+        "duration_s": {
+          "n": 10,
+          "median": 2,
+          "p95": 28,
+          "mean": 5.2
+        },
+        "duration_excluded": 0,
+        "events": {
+          "issue_comment": 9,
+          "pull_request_target": 1,
+          "pull_request": 1
+        },
+        "latest": {
+          "id": 41022221636,
+          "created_at": "2026-10-30T07:47:13Z",
+          "conclusion": null,
+          "status": "in_progress",
+          "event": "issue_comment",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221636"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/pr-production-ledger.yml",
+      "name": "PR production ledger",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "issue_comment",
+        "pull_request",
+        "pull_request_review",
+        "pull_request_target"
+      ],
+      "schedules": [],
+      "jobs": [
+        "ledger"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 10,
+        "concluded": 9,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 6.1151,
+        "duration_s": {
+          "n": 9,
+          "median": 9,
+          "p95": 60,
+          "mean": 22.22
+        },
+        "duration_excluded": 0,
+        "events": {
+          "issue_comment": 9,
+          "pull_request_target": 1
+        },
+        "latest": {
+          "id": 41022221789,
+          "created_at": "2026-10-30T07:47:13Z",
+          "conclusion": null,
+          "status": "queued",
+          "event": "issue_comment",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221789"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/pr-scope-guard.yml",
+      "name": "PR scope guard",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "pull_request",
+        "pull_request_target"
+      ],
+      "schedules": [],
+      "jobs": [
+        "guard"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 2,
+        "concluded": 2,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 1.223,
+        "duration_s": {
+          "n": 2,
+          "median": 109,
+          "p95": 109,
+          "mean": 101.5
+        },
+        "duration_excluded": 0,
+        "events": {
+          "pull_request_target": 1,
+          "pull_request": 1
+        },
+        "latest": {
+          "id": 41016798873,
+          "created_at": "2026-10-30T06:54:02Z",
+          "conclusion": "success",
+          "status": "completed",
+          "event": "pull_request_target",
+          "head_sha": "bf8941e3f38c415f024a0f9941de1254fb920724",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41016798873"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/project-task-dispatch.yml",
+      "name": "project-task-dispatch",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "issues"
+      ],
+      "schedules": [],
+      "jobs": [
+        "intake"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/proposal-lifecycle.yml",
+      "name": "proposal-lifecycle",
+      "domain": "governance-relationships",
+      "authority": "writer",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "validate-registry",
+        "vote-hygiene"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/proposals-feed-collect.yml",
+      "name": "proposals-feed-collect",
+      "domain": "governance-relationships",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "collect"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/provenance-export-ingest.yml",
+      "name": "Provenance export ingest",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_call",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "ingest"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/provider-availability.yml",
+      "name": "Prnvider availability cnntinuity",
+      "domain": "peer-provider-review",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "probe"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/provider-batch.yml",
+      "name": "Provider batch production contracts",
+      "domain": "peer-provider-review",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "contracts",
+        "contracts_diagnostics",
+        "diagnose",
+        "observe",
+        "operational_providers",
+        "private_openrouter_quota"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/provider-command-dispatch.yml",
+      "name": "Provider command dispatch",
+      "domain": "peer-provider-review",
+      "authority": "writer",
+      "triggers": [
+        "repository_dispatch",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "dispatch",
+        "stamp"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/provider-invoke.yml",
+      "name": "Provider invoke (inference batch)",
+      "domain": "peer-provider-review",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "invoke",
+        "stamp"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/provider-recon-compound.yml",
+      "name": "Provider research compounding",
+      "domain": "peer-provider-review",
+      "authority": "writer",
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch",
+        "workflow_run"
+      ],
+      "schedules": [],
+      "jobs": [
+        "collect",
+        "contracts",
+        "publish"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/provision-secrets.yml",
+      "name": "Provision secrets (secret-to-secret)",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "provision"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/publish-wiki.yml",
+      "name": "Publish wiki",
+      "domain": "reconciliation-publishing",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "publish-wiki"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/qdesk-self-repair.yml",
+      "name": "qdesk self-repair",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "schedule"
+      ],
+      "schedules": [
+        "41 */3 * * *"
+      ],
+      "jobs": [
+        "loop"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/que-cadence-kick.yml",
+      "name": "que-cadence-kick",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "*/5 * * * *"
+      ],
+      "jobs": [
+        "kick"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/que-feed-collect.yml",
+      "name": "que-feed-collect",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "*/10 * * * *"
+      ],
+      "jobs": [
+        "collect"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/queue-pitcrew.yml",
+      "name": "Queue pit crew",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "7,22,37,52 * * * *"
+      ],
+      "jobs": [
+        "pass"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/quota-allocation-planner.yml",
+      "name": "quota-allocation-planner",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "47 8 * * 3"
+      ],
+      "jobs": [
+        "plan"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/quota-analysis.yml",
+      "name": "quota-analysis",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "analyze"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/quota-dispatch-tree.yml",
+      "name": "Quota Dispatch Tree",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "issue_comment",
+        "pull_request_target",
+        "schedule",
+        "workflow_run"
+      ],
+      "schedules": [
+        "*/30 * * * *"
+      ],
+      "jobs": [
+        "complete-force-request",
+        "decide",
+        "dispatch"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/quota-event-audit.yml",
+      "name": "quota-event-audit",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "audit-gate",
+        "sync-twin"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/quota-pages-visual.yml",
+      "name": "quota-pages-visual",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "screenshots"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/quota-readings-promote.yml",
+      "name": "quota-readings-promote",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "promote"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/quota-served-probe.yml",
+      "name": "quota-served-probe",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "probe"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/quota-usage-series-refresh.yml",
+      "name": "quota-usage-series-refresh",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "refresh"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/quota-vultr-usage.yml",
+      "name": "quota-vultr-usage",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "collect"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/ratatui-tokio-dashboard.yml",
+      "name": "Ratatui Tokio dashboard",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "rust"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/re-taxonomy-intake.yml",
+      "name": "re-taxonomy intake",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "issues"
+      ],
+      "schedules": [],
+      "jobs": [
+        "intake"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/readme-extractor-image.yml",
+      "name": "readme-extractor-image",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "image"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/receiver-process.yml",
+      "name": "receiver-process",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "repository_dispatch",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "process"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/recon-intel-discovery.yml",
+      "name": "RECON INTEL discovery",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "pull_request",
+        "pull_request_target",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "discover",
+        "select-targets"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 1,
+        "concluded": 1,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 0.6115,
+        "duration_s": {
+          "n": 1,
+          "median": 7,
+          "p95": 7,
+          "mean": 7
+        },
+        "duration_excluded": 0,
+        "events": {
+          "pull_request_target": 1
+        },
+        "latest": {
+          "id": 41016798910,
+          "created_at": "2026-10-30T06:54:02Z",
+          "conclusion": "cancelled",
+          "status": "completed",
+          "event": "pull_request_target",
+          "head_sha": "bf8941e3f38c415f024a0f9941de1254fb920724",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41016798910"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/recon-intel-reconcile.yml",
+      "name": "RECON INTEL reconciliation apply",
+      "domain": "reconciliation-publishing",
+      "authority": "writer",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "reconcile"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/reconcile-devin-wiki-access.yml",
+      "name": "Reconcile Devin Wiki access",
+      "domain": "reconciliation-publishing",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "create",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "41 5 * * *"
+      ],
+      "jobs": [
+        "index-created-branch",
+        "reconcile"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/reconcile-repository-surface.yml",
+      "name": "Reconcile repository surface",
+      "domain": "reconciliation-publishing",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "23 5 * * *"
+      ],
+      "jobs": [
+        "reconcile"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/reconciliation-engine.yml",
+      "name": "Production Reconciliation Engine",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "recon"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/refTemplates-eval.yml",
+      "name": "refTemplates continuous eval",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "17 6 * * *"
+      ],
+      "jobs": [
+        "inventory-score"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/referral-pool-watch.yml",
+      "name": "referral-pool-watch",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "41 8 * * 2"
+      ],
+      "jobs": [
+        "watch"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/referral-rotation.yml",
+      "name": "referral-rotation",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "rotate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/registration-monikers.yml",
+      "name": "Registration monikers",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "41 6 * * 2"
+      ],
+      "jobs": [
+        "registry"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/remote-gamut-evaluation.yml",
+      "name": "Remote GAMUT evaluation",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "evaluate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/remote-knowledge-fabric.yml",
+      "name": "Remote knowledge fabric",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "inventory"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/repo-gate.yml",
+      "name": "repo gate",
+      "domain": "validation-security",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "gate"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 2,
+        "concluded": 2,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 1.223,
+        "duration_s": {
+          "n": 2,
+          "median": 171,
+          "p95": 171,
+          "mean": 101
+        },
+        "duration_excluded": 0,
+        "events": {
+          "pull_request": 2
+        },
+        "latest": {
+          "id": 41016770078,
+          "created_at": "2026-10-30T06:53:45Z",
+          "conclusion": "success",
+          "status": "completed",
+          "event": "pull_request",
+          "head_sha": "c90009f464f9a5be39685faa4a7af84d3b46e925",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41016770078"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/repo-tracking-collect.yml",
+      "name": "repo-tracking-collect",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "pull_request_target",
+        "push",
+        "schedule",
+        "workflow_run"
+      ],
+      "schedules": [
+        "23 7 * * *"
+      ],
+      "jobs": [
+        "collect"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/repository-development-evaluation.yml",
+      "name": "Repository development evaluation",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "collect"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 1,
+        "concluded": 1,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 0.6115,
+        "duration_s": {
+          "n": 1,
+          "median": 55,
+          "p95": 55,
+          "mean": 55
+        },
+        "duration_excluded": 0,
+        "events": {
+          "pull_request": 1
+        },
+        "latest": {
+          "id": 41016770076,
+          "created_at": "2026-10-30T06:53:45Z",
+          "conclusion": "success",
+          "status": "completed",
+          "event": "pull_request",
+          "head_sha": "c90009f464f9a5be39685faa4a7af84d3b46e925",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41016770076"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/repository-observatory.yml",
+      "name": "repository observatory",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "17 4 * * *"
+      ],
+      "jobs": [
+        "index"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/repository-provisioner.yml",
+      "name": "Repository Provisioner",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "provision"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/research-intake.yml",
+      "name": "research intake",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "issue_comment",
+        "issues"
+      ],
+      "schedules": [],
+      "jobs": [
+        "intake"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 9,
+        "concluded": 9,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 5.5036,
+        "duration_s": {
+          "n": 9,
+          "median": 1,
+          "p95": 2,
+          "mean": 1.11
+        },
+        "duration_excluded": 0,
+        "events": {
+          "issue_comment": 9
+        },
+        "latest": {
+          "id": 41022221679,
+          "created_at": "2026-10-30T07:47:13Z",
+          "conclusion": "skipped",
+          "status": "completed",
+          "event": "issue_comment",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221679"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/research-registry.yml",
+      "name": "research-registry",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push"
+      ],
+      "schedules": [],
+      "jobs": [
+        "validate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/reviewer-metrics-collect.yml",
+      "name": "Reviewer metrics collect",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch",
+        "workflow_run"
+      ],
+      "schedules": [
+        "17 5 * * 1"
+      ],
+      "jobs": [
+        "collect"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 4,
+        "concluded": 2,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 2.446,
+        "duration_s": {
+          "n": 2,
+          "median": 26,
+          "p95": 26,
+          "mean": 17.5
+        },
+        "duration_excluded": 0,
+        "events": {
+          "workflow_run": 4
+        },
+        "latest": {
+          "id": 41022205841,
+          "created_at": "2026-10-30T07:47:04Z",
+          "conclusion": null,
+          "status": "pending",
+          "event": "workflow_run",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022205841"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/rindig-provenance-audit.yml",
+      "name": "RinDig Provenance Audit",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "47 5 * * 1"
+      ],
+      "jobs": [
+        "provenance"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/rindig-source-inventory.yml",
+      "name": "RinDig Source Inventory",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "17 5 * * 1"
+      ],
+      "jobs": [
+        "inventory"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/roadmap-sync.yml",
+      "name": "Sync Developer Roadmap",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "0 0 * * 1"
+      ],
+      "jobs": [
+        "notify",
+        "sync"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/scorecard-advisory.yml",
+      "name": "Advisory OpenSSF Scorecard",
+      "domain": "validation-security",
+      "authority": "advisory-publisher",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "41 3 * * 1"
+      ],
+      "jobs": [
+        "scorecard",
+        "verify-scorecard-image"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/self-integrate.yml",
+      "name": "DeepSeek Self-Integrate",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "integrate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/shared-observer-poller.yml",
+      "name": "Shared Observer Poller",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "*/15 * * * *"
+      ],
+      "jobs": [
+        "poll"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/she-skill-clobber-heal.yml",
+      "name": "SHE skill clobber heal",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "detect",
+        "heal"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/skill-quality-lane.yml",
+      "name": "Skill Quality Lane",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "evaluate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/studysprint-apk-smoke.yml",
+      "name": "studysprint-apk-smoke",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "smoke"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/studysprint-apk.yml",
+      "name": "studysprint-apk",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "build-apk"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/studysprint-strands-proof.yml",
+      "name": "studysprint-strands-proof",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "proof"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/submodule-integrity.yml",
+      "name": "submodule integrity",
+      "domain": "validation-security",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "validate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/surface-feeds-collect.yml",
+      "name": "surface-feeds-collect",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "41 6 * * 3"
+      ],
+      "jobs": [
+        "collect"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/swarm-admission.yml",
+      "name": "swarm-admission",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "issues"
+      ],
+      "schedules": [],
+      "jobs": [
+        "admit"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/swe-reference-evaluation.yml",
+      "name": "SWE reference evaluation",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "evaluate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/sweep-accountability.yml",
+      "name": "Sweep Accountability",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "issue_comment",
+        "issues",
+        "pull_request",
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "17 2 * * *"
+      ],
+      "jobs": [
+        "sweep"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 13,
+        "concluded": 12,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 7.9496,
+        "duration_s": {
+          "n": 12,
+          "median": 1,
+          "p95": 36,
+          "mean": 6.75
+        },
+        "duration_excluded": 0,
+        "events": {
+          "issue_comment": 9,
+          "push": 3,
+          "pull_request": 1
+        },
+        "latest": {
+          "id": 41022221588,
+          "created_at": "2026-10-30T07:47:13Z",
+          "conclusion": null,
+          "status": "in_progress",
+          "event": "issue_comment",
+          "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221588"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/tailscale-bridge-probe.yml",
+      "name": "tailscale-bridge-probe",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "probe"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/target-intake.yml",
+      "name": "target intake",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "issues"
+      ],
+      "schedules": [],
+      "jobs": [
+        "intake"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/team-mvt.yml",
+      "name": "Team MVT — simultaneous provider lanes",
+      "domain": "peer-provider-review",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "issues",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "evaluate",
+        "lane"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/telemetry-ingest.yml",
+      "name": "telemetry-ingest",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "23 7 * * 3"
+      ],
+      "jobs": [
+        "ingest"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/temporal-engagement.yml",
+      "name": "temporal-engagement",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "engagement"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/temporal-self-host-smoke.yml",
+      "name": "Temporal self-host smoke",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "live-smoke",
+        "structural"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/termux-bridge-connect.yml",
+      "name": "Termux bridge connectivity",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "health"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/termux-remote-exec.yml",
+      "name": "Termux remote exec (Hark lane)",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "exec"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/termux-smoke.yml",
+      "name": "termux smoke",
+      "domain": "validation-security",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "smoke"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 1,
+        "concluded": 1,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 0.6115,
+        "duration_s": {
+          "n": 1,
+          "median": 17,
+          "p95": 17,
+          "mean": 17
+        },
+        "duration_excluded": 0,
+        "events": {
+          "pull_request": 1
+        },
+        "latest": {
+          "id": 41012401206,
+          "created_at": "2026-10-30T06:09:07Z",
+          "conclusion": "success",
+          "status": "completed",
+          "event": "pull_request",
+          "head_sha": "880fa421536f36772e07a25079f599e0b9c63266",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41012401206"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/tier1-engine-proof.yml",
+      "name": "tier1 engine proof",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "proof"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/tinyfish-osint.yml",
+      "name": "tinyfish osint",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "collect"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/traffic-feed-collect.yml",
+      "name": "traffic-feed-collect",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "23 9 * * 2"
+      ],
+      "jobs": [
+        "collect"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/tribute-auction.yml",
+      "name": "tribute-auction",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch",
+        "workflow_run"
+      ],
+      "schedules": [],
+      "jobs": [
+        "delphi-emit",
+        "shadow",
+        "signals",
+        "test"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/tribute-audit-staleness.yml",
+      "name": "tribute-audit-staleness",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "41 */2 * * *"
+      ],
+      "jobs": [
+        "check"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/tribute-dashboard-deploy.yml",
+      "name": "tribute-dashboard-deploy",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "enable-pages",
+        "pages",
+        "user-site",
+        "vercel"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/tribute-dashboard-preview.yml",
+      "name": "Tribute Dashboard Preview",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "publish-preview"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/tribute-diff-gate.yml",
+      "name": "tribute diff gate",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "repository_dispatch",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "verify"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/tribute-execute.yml",
+      "name": "tribute execute",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "repository_dispatch",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "budget",
+        "claim",
+        "contribute",
+        "fail_closed",
+        "patch-zero-72"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/tribute-followup.yml",
+      "name": "tribute-followup",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "repository_dispatch",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "poll"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/tribute-llm-assist.yml",
+      "name": "tribute-llm-assist",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "repository_dispatch",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "assist"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/tribute-outcome-slo.yml",
+      "name": "tribute-outcome-slo",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch",
+        "workflow_run"
+      ],
+      "schedules": [],
+      "jobs": [
+        "gate",
+        "test"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/tribute-participation.yml",
+      "name": "tribute-participation",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "repository_dispatch",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "23 7 * * *"
+      ],
+      "jobs": [
+        "participate"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/tribute-rerequest.yml",
+      "name": "tribute-rerequest",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "rerequest"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/tribute-scout.yml",
+      "name": "tribute scout",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "repository_dispatch",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "scout"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/tribute-status-refresh.yml",
+      "name": "tribute-status-refresh",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "repository_dispatch",
+        "workflow_dispatch",
+        "workflow_run"
+      ],
+      "schedules": [],
+      "jobs": [
+        "refresh"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/tribute-system1.yml",
+      "name": "tribute-system1",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "delphi-emit",
+        "delphi-state",
+        "eval",
+        "route"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/tribute-telemetry-tests.yml",
+      "name": "Tribute telemetry regression suite",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "regression"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/tribute-vercel-prod.yml",
+      "name": "tribute-vercel-prod",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "promote"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/tunnel-canary.yml",
+      "name": "Tunnel Canary",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "ping"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/v2-gitlab-probe.yml",
+      "name": "v2-gitlab-probe",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [],
+      "schedules": [],
+      "jobs": [
+        "probe"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/v2-snapshot-pull.yml",
+      "name": "v2-snapshot-pull",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [],
+      "schedules": [],
+      "jobs": [
+        "pull"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/vantage-cost-report.yml",
+      "name": "Vantage cost report",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "report"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/venue-execution.yml",
+      "name": "🏟️ Venue Execution (QUE",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "execute"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/vercel-batch-deploy.yml",
+      "name": "vercel-batch-deploy",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "batch"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/vercel-delphic-probe.yml",
+      "name": "vercel-delphic-probe",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "probe"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/vercel-delphic-unlink.yml",
+      "name": "vercel-delphic-unlink",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "unlink"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/vercel-git-unlink.yml",
+      "name": "vercel-git-unlink",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "unlink"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/vercel-ignore-guard.yml",
+      "name": "vercel-ignore-guard",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "17 4 * * 2"
+      ],
+      "jobs": [
+        "guard"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/vercel-project-rename.yml",
+      "name": "vercel-project-rename",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "rename"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/vercel-quota-probe.yml",
+      "name": "vercel-quota-probe",
+      "domain": "agentic-development",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "probe"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/video-render.yml",
+      "name": "video-render",
+      "domain": "agentic-development",
+      "authority": "bounded-state-write",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "schedules": [],
+      "jobs": [
+        "render"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/workflow-surface-evidence.yml",
+      "name": "Workflow Surface Evidence",
+      "domain": "reconciliation-publishing",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request"
+      ],
+      "schedules": [],
+      "jobs": [
+        "produce",
+        "verify"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    },
+    {
+      "path": ".github/workflows/workflow-surface-policy.yml",
+      "name": "Workflow Surface Policy",
+      "domain": "reconciliation-publishing",
+      "authority": "read-only-or-advisory",
+      "triggers": [
+        "pull_request"
+      ],
+      "schedules": [],
+      "jobs": [
+        "automation-documentation",
+        "route",
+        "verify"
+      ],
+      "run_observation": {
+        "state": "observed",
+        "runs": 1,
+        "concluded": 1,
+        "failures": 0,
+        "failure_rate": 0,
+        "sample_rate_per_hour": 0.6115,
+        "duration_s": {
+          "n": 1,
+          "median": 44,
+          "p95": 44,
+          "mean": 44
+        },
+        "duration_excluded": 0,
+        "events": {
+          "pull_request": 1
+        },
+        "latest": {
+          "id": 41012401353,
+          "created_at": "2026-10-30T06:09:07Z",
+          "conclusion": "success",
+          "status": "completed",
+          "event": "pull_request",
+          "head_sha": "880fa421536f36772e07a25079f599e0b9c63266",
+          "run_attempt": 1,
+          "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41012401353"
+        }
+      }
+    },
+    {
+      "path": ".github/workflows/x-observatory.yml",
+      "name": "x observatory",
+      "domain": "agentic-development",
+      "authority": "writer",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "schedules": [
+        "23 5 * * 3"
+      ],
+      "jobs": [
+        "index"
+      ],
+      "run_observation": {
+        "state": "unobserved"
+      }
+    }
+  ],
+  "edges": [],
+  "job_dependencies": [],
+  "unresolved_references": [],
+  "gaps": [
+    "Bootstrap snapshot uses the last committed Actions sample; refresh is scheduled by the existing daily collector.",
+    "Nested workflow_run, reusable-workflow, and job-needs edges are UNKNOWN until the first live source scan completes.",
+    "Workflow count comes from the generated catalog snapshot and will refresh with the collector."
+  ],
+  "honesty_rules": [
+    "Workflow definition count is distinct from enabled workflows, observed workflows, runs, jobs, and billed minutes.",
+    "Run observations are a bounded API sample with page and call bounds preserved in sources.sampling.",
+    "Public standard hosted-runner minutes are free; runtime values are operational measurements, not private-repository billing attribution.",
+    "A missing run observation is UNKNOWN, not zero.",
+    "Nested edges are parsed from workflow source text; unresolved and ambiguous names remain visible."
+  ]
+}

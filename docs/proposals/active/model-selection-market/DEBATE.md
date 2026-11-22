@@ -63,3 +63,14 @@ The user's direct continuation request authorizes extending the existing quota s
 The previously merged MSM-018 dashboard is now published through [run 39576915984](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39576915984), source `09d59cc767e522e1f70a0c4a9aeb594027389699` (quota assets unchanged from merge `7c5e0c2b`). The UI, evidence helper and coverage JSON returned HTTP 200 and matched source bytes; the latter still honestly reported 20 families, two model-service mappings and 26 service resources. This is publication evidence for that revision, not for the unmerged MSM-019 additions. Vercel was not requested and its job was skipped.
 
 The [collaborator capability map](../../../ops/PROVIDER-COLLABORATOR-CAPABILITY-MAP.md) links role/moniker declarations, concrete workflow/tool/context bindings and bounded GitHub provenance. Shared account commits do not identify an underlying model. Rubric Delphi outputs remain rubric-only, not independent provider ballots. No proposal-wide acceptance, formal review or human consensus is claimed by this implementation record. Current-head gates, technical review and deployment outcomes belong in the implementation PR and [status](../../../ops/PROVIDER-QUOTA-UPGRADE-STATUS.md).
+
+
+## MSM-025 — Incumbent versus VultrInspired catalogue
+
+The owner clarified the architecture: Vultr's Python and TypeScript repositories are equivalent references used to inform our schemas, normalization, cache and capability design. Their parity guides one native adaptation; their source revisions remain pinned as design provenance.
+
+The competing catalogue variants are repository-owned: **Incumbent v5.0.0** at `scripts/provider_model_catalog.py`, and **VultrInspired v1.0.0** at `scripts/provider_model_catalog_vultr_inspired.py`. The native projection consumes incumbent v5 documents and emits a versioned richer projection. It uses the existing Python runtime and offline fixtures, with zero network requests, credential lookups or inference calls. Live catalog refresh and inference remain separate provider integrations; Vultr compute and promotional capacity are outside scope.
+
+DoE `DOE-VULTR-CATALOG-001` is versioned at v2.0.0. Its two variants are Incumbent and VultrInspired; Vultr Python and TypeScript commits are separate source references. The initial projection preserves incumbent records and access evidence, structures limits/modalities/capabilities/lifecycle/provenance, retains unknown fields, isolates malformed rows and diagnoses binary-float pricing. It cannot reconstruct decimal text already lost by incumbent float conversion. Source-native exact-price capture and broader modality fixtures remain follow-on work.
+
+Runtime activation, provider admission, routing weights, credentials, quota policy, live inference and schedules remain unchanged. Promotion requires separate review and same-head validation.

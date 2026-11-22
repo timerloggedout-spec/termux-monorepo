@@ -222,6 +222,21 @@ A candidate enters a live cohort after capability mapping, source and
 checkpoint pinning, adapter verification, route authorization, and
 task-specific acceptance criteria.
 
+## 2D. Lateral local-role screen
+
+The registry holds two distinct local-role views:
+
+| Graph | Purpose | Execution mode | State |
+|---|---|---|---|
+| `local-role-baseline` | Existing incumbent composition and dependency structure | `sequential_baseline` | `incumbent` |
+| `local-role-lateral-screen` | Measure Mev, Jev, Kev and Laya individually under role-specific task contracts | `parallel_screen` | `design_only` |
+
+The lateral screen gives each local role an independent arm. It measures
+individual strengths before composition experiments test complementarity,
+handoffs, routing choices and interaction effects. The four role names
+describe separate capability contracts; their arrangement in the incumbent
+graph is one tested composition.
+
 ## 2C. Tournament implementation competition
 
 The registry also pins an incumbent implementation and SIE challenger:

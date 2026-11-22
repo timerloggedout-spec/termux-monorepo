@@ -215,6 +215,7 @@ This is a navigation taxonomy of major ownership zones, not a recursive inventor
 | Integration mesh | [docs/integrations/README.md](docs/integrations/README.md) |
 | Provider capabilities | [provider-capabilities.md](docs/schemas/provider-capabilities.md) |
 | ICM map | [docs/icm/CLAUDE.md](docs/icm/CLAUDE.md) |
+| GitHub issue forms and label triggers | [GITHUB-ISSUE-INTAKE-MAP.md](docs/ops/GITHUB-ISSUE-INTAKE-MAP.md) |
 
 ## 6. Change-impact routing
 
@@ -226,6 +227,7 @@ This is a navigation taxonomy of major ownership zones, not a recursive inventor
 | Evidence / telemetry | EPS, ATES, CRG, or event-store contract for the owning stream | provenance, idempotency, schema, reducer fixtures |
 | Dashboard / snapshot | SHE or Tribute contract and feed producer | snapshot provenance, source SHA, schema, consumer tests |
 | ICM / navigation | ICM maintenance guide + owning card | link integrity, scope, source ownership |
+| Issue forms / label triggers | [GitHub issue intake map](docs/ops/GITHUB-ISSUE-INTAKE-MAP.md) | template labels, event subscriptions, job guards, QUE admission, downstream artifact/queue evidence |
 | Governance / promotion | root CLAUDE + proposal process + permissions | proposal status, repo gate, Termux smoke, required CI |
 
 ## 7. Maintenance and freshness

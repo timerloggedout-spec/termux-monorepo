@@ -1,5 +1,8 @@
 # Issue Lifecycle — termux-monorepo
 
+> **Current routing entry:** [`GITHUB-ISSUE-INTAKE-MAP.md`](GITHUB-ISSUE-INTAKE-MAP.md) records the verified template/event/label wiring as of 2026-11-22. This document preserves its dated census and historical lifecycle decisions. In particular, `gemini-dispatch.yml` retired on 2026-11-12; use the current workflow map for live routes.
+
+
 Owner lane: `[MUSEai]@{role:{issue-lifecycle}}` — categorization, triage,
 tracking-while-implemented, revision, and close-as-fixed, plus the telemetry
 that automates each step.
@@ -87,21 +90,17 @@ Most-applied on open issues today: `enhancement` 78, `priority` 56,
 
 **The chain (verified from workflow sources on master):**
 
-1. `gemini-dispatch.yml` fires on `issues: [opened, reopened]`, sets
-   `command = triage`, and calls the reusable workflow
-   `gemini-triage.yml` (`workflow_call` only — it has **0 runs of its own**;
-   `gemini-dispatch.yml` is its sole caller, code-search verified).
-2. `gemini-triage.yml` routes Gemini PRIMARY → peer Omni ↔ OpenRouter
-   secondary and posts **one triage comment**: a classification, suggested
-   labels, a priority, and a Jules recommendation.
-3. Specialized intakes run in parallel where their label applies:
-   `target-intake.yml` posts the Foundry dispatch plan (36 runs all-time:
-   20 success / 16 skipped); `delphi-intake.yml` / the Delphi gate handle
-   `delphi:rfp`; `issue-comment-router.yml` (8,401 runs) classifies comments
-   for `@jules` / `@gemini` / ledger routes — its route steps are
-   placeholder echoes, no consumer workflow depends on its outputs.
+**Historical baseline (2026-10-27):** the Gemini dispatch chain described in the original census routed issue-open events through `gemini-triage.yml` and posted advisory classification comments. That route is retained below as historical evidence.
 
-**What triage does NOT do (the central gap, G1/G2):**
+**Current status (2026-11-22):**
+
+1. `gemini-dispatch.yml` is retired (2026-11-12); the current file supports only a retirement notice through manual dispatch.
+2. `issue-lifecycle-triage.yml` handles issue `opened/reopened`, a Tuesday 07:17 UTC sweep, and manual dispatch. Its deterministic label pass touches unlabelled open issues only and uses the title-prefix rules in `scripts/issue_lifecycle/triage_labels.py`.
+3. Specialized intakes are independent event routes: `target-intake.yml`, `delphi-gate.yml`, `research-intake.yml`, `apk-xref-intake.yml`, `re-taxonomy-intake.yml`, `egm-review-dispatch.yml`, and the task/QUE routes. Their exact event subscriptions and label guards are in the [current intake map](GITHUB-ISSUE-INTAKE-MAP.md).
+4. `issue-observatory.yml` is an observer for issue lifecycle events; its output is an artifact, not a routing or label mutation.
+
+
+**Historical Gemini triage gap (2026-10-27; retained for the record):**
 
 - **No step in `gemini-triage.yml` applies labels.** Suggested labels live
   and die in the comment. On #1794 the suggestion was `` `target:hark`,

@@ -1,9 +1,8 @@
 # Issue Templates Trigger the Swarm Fleet
 
-Owner contract (2026-11-03): **a filing IS a dispatch** — declared
-at the template, never interpreted downstream — and it reaches the
-swarm only **through QUE admission**. Today's treadmill was
-unadmitted fan-out; template triggers must never spawn raw.
+Owner contract (2026-11-03): a filing enters the QUE dispatch subset when its template declares a `SWARM-DISPATCH` block. The block is interpreted by admission machinery before the intended swarm route. Specialized issue-intake forms remain separate direct event routes.
+
+The full template, label, event, and downstream-route registry lives in [`GITHUB-ISSUE-INTAKE-MAP.md`](GITHUB-ISSUE-INTAKE-MAP.md).
 
 This document is the contract of record. Machinery:
 `.github/workflows/swarm-admission.yml` (the route) +
@@ -73,40 +72,40 @@ measurement-plane transition (enqueued → admitted/deferred) in
 comment form until the QUE Tranche-1 plane store lands, at which
 point the same fields emit as plane events.
 
-## Exhibits — the partial instances this generalizes
+## Relationship to the full issue-intake map
 
-Filed as exhibits, not parallel-built:
+This document defines the QUE admission subset. The complete 15-form inventory, label-added triggers, lifecycle floor, and observer workflows live in [`GITHUB-ISSUE-INTAKE-MAP.md`](GITHUB-ISSUE-INTAKE-MAP.md).
 
-- **project-task** (#3577, PR #4076): the form + intake workflow
-  validate and receipt filings; selection/execution happens in the
-  dispatch machinery. **The proof conversion** (below) adds the
-  block + admission in front of this existing route — the RFP/task
-  batches that routed by hand now route by contract.
-- **delphi-rfp**: filings wake the Delphi gate by event
-  (`delphi-intake.yml`). Converts by adding the block; its gate
-  becomes the route.
-- **help-wanted intake** (3L0 tribute lane) and the **claim system**
-  (`dispatch-claimed` labels + lease/watchdog machinery): the
-  claim IS an admission-shaped act performed by hand today; the
-  block + route formalize the same shape at filing time.
+## Current dispatch-block coverage
 
-## Conversion checklist (remaining templates)
+| Template | Block lane | Tier | Route | Observed downstream contract |
+|---|---|---:|---|---|
+| `project-task.yml` | `swarm-dispatch` | 3 | `project-task-dispatch.yml` | Admission evaluates the block; the direct issue-event route remains active and creates the bypass described below |
+| `game-development-task.yml` | `game-development` | 3 | `game-development-dispatch.yml` | The route consumes the `issue-admission` artifact and requires a matching `decision: admitted` |
 
-Each lane converts its own form by adding the block — the router is
-generic and needs no change:
+The remaining 13 templates use specialized direct intake or manual lifecycle handling. Their event contracts and labels are catalogued in the intake map.
 
-`apk-cross-reference` · `apk-cross-reference-findings` · `bug` ·
-`data-ingestion` · `delphi-rfp` · `egm-review` · `proposal` ·
-`research-provider` · `research-service` ·
-`reverse-engineering-taxonomy` ·
-`reverse-engineering-taxonomy-record` · `target-brief` · `game-development-task`.
+## Admission and downstream route alignment
 
-A template without a block is simply not a dispatch: filings under
-it get no stamp and no route (unchanged behavior).
+### Project Task
 
-## Game Development route (ATF-16)\n\n`.github/ISSUE_TEMPLATE/game-development-task.yml` declares `issue-dispatch/v1` with lane `game-development`, tier 3 and route `game-development-dispatch.yml`. The dedicated route is triggered by the completed `swarm-admission` workflow and consumes its one-run `issue-admission` artifact. It parses and queues only when the artifact identifies this template and records `decision: admitted`; deferred, unmatched or failed admission runs never queue. A deferred or missing admission decision never becomes an executable task. The form supplies the canonical `Entry`, `Task / spec`, `Scope`, and `Done-evidence` headings consumed by `scripts/dispatch/project_task.py`; it does not select a provider.\n\nThe existing Target Brief / Web Adapter Foundry route and the Reverse Engineering APK/taxonomy intake families remain separate.\n\n## Proof (2026-11-03)
+`project-task.yml` declares `issue-dispatch/v1`, lane `swarm-dispatch`, tier 3, and route `project-task-dispatch.yml`. `swarm-admission.yml` evaluates the block on issue `opened/reopened`.
 
-`project-task.yml` converted end-to-end: block added, evaluator
-tests 6/6 (local, disclosed interim), admission workflow live on
-master; the proof filing and its admission run are stamped on the
-filing itself and reported to the owner through main.
+**Verified divergence:** `project-task-dispatch.yml` also subscribes directly to issue `opened/reopened` events. Its job guard matches the `project-task` label, `[task]` title prefix, or `Task / spec` body heading, then parses and queues on success. This direct path uses the issue event as its input rather than the `issue-admission` artifact. The declared admission gate therefore has a bypass path. Treat end-to-end QUE enforcement as pending until the route consumes the admission receipt, following the Game Development pattern.
+
+### Game Development
+
+`game-development-task.yml` declares `issue-dispatch/v1`, lane `game-development`, tier 3, and route `game-development-dispatch.yml`. The downstream workflow runs after `swarm-admission` completes, downloads the `issue-admission` artifact, and proceeds only when the artifact identifies this template and records `decision: admitted`. It then parses the canonical `Entry`, `Task / spec`, `Scope`, and `Done-evidence` headings before queueing.
+
+### Specialized direct-intake families
+
+- **Delphi RFP:** `delphi-gate.yml` uses the `delphi:rfp` label and issue/comment events; conversational intake is `delphi-intake.yml`.
+- **Target Brief:** `target-intake.yml` validates scope and authorization on issue `opened/edited/reopened`.
+- **Research, APK cross-reference, and RE taxonomy:** each has a deterministic parser and an event subscription documented in the intake map.
+- **Data Ingestion:** the form remains on the challenge-entries hand-triage route while its dedicated intake workflow is pending.
+
+These routes remain valid issue-intake mechanisms; they become QUE dispatches only after their templates declare and pass the dispatch-block contract.
+
+## Proof (2026-11-03)
+
+`project-task.yml` carries the dispatch block and the admission evaluator is live on master. The direct issue-event route remains active alongside admission; the end-to-end enforcement gap is recorded above and in the intake map.

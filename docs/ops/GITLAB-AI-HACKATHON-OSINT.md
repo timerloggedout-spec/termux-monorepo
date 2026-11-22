@@ -4,7 +4,7 @@
 **Owning lane:** challenge-entries / Challenge OSINT  
 **Disposition:** historical event family + future-cycle watchlist  
 **Access boundary:** public, signed-out pages and the connected Devpost event connector  
-**Owner registration/submission:** NOT_ESTABLISHED; this dossier records public-source observations only
+**Owner account/onboarding state:** NOT_ESTABLISHED; this dossier records public-source observations only. Community Hackathon Devpost registration: NOT_REQUIRED.
 
 ## 1. Source interpretation
 
@@ -72,7 +72,7 @@ Keep the archived `transcend-october-2026` workspace corpus as the October 2026 
 
 ## 3. Discord and onboarding sources
 
-The official event page directs participants to the GitLab Community Discord `#ai-hackathon`, requests access to the GitLab AI Hackathon group, and links custom-agent/custom-flow tutorials plus the prompt library. It states that group access requests closed on **2026-03-25 09:00 ET**. The event resource page links the Devpost Discord for team formation and states that office-hours scheduling is posted in Discord.
+The official event page directs participants to the GitLab Community Discord `#ai-hackathon`, requests access to the GitLab AI Hackathon group, and links custom-agent/custom-flow tutorials plus the prompt library. Discord message content remains UNCOLLECTED; the invite and channel references are indexed. It states that group access requests closed on **2026-03-25 09:00 ET**. The event resource page links the Devpost Discord for team formation and states that office-hours scheduling is posted in Discord.
 
 - [GitLab Discord invite](https://discord.com/invite/gitlab) — `#ai-hackathon` for the Devpost AI Hackathon; current Community Hackathon rules direct questions to `#hackathon` or `#contribute`; Transcend sample workspaces use `#transcend-hackathon`.
 - [Devpost Discord](https://info.devpost.com/blog/join-the-devpost-discord).
@@ -96,13 +96,13 @@ The reusable template is recorded metadata-first under `refTemplates/12_External
 
 ## 5. Observatory and registration disposition
 
-1. Keep the root group, supplied DevSecOps Flow subgroup, Transcend subgroup, Project Templates subgroup, and Participant Template as distinct URL-addressed source nodes.
+1. Keep the root group, supplied DevSecOps Flow subgroup, sibling Transcend subgroup, archived Transcend October 2026 subgroup, Project Templates subgroup, and Participant Template as distinct URL-addressed source nodes.
 2. Keep the three competition programs above as distinct event records/watch targets.
 3. Record the supplied subgroup's empty state with its observation time. Recheck its child listing on future source sweeps.
 4. Use public project pages, official Devpost pages, official announcements, and public GitLab group/project pages for competitor/project OSINT. Store URL + fetch timestamp + coverage state for every populated fact.
 5. Treat official event placement, directory position, displayed engagement, and internal analytical ranking as separate dimensions.
 6. Keep participant/persona collection public-source-only. External participants remain observation-only; recruitment is for our own team.
-7. Registration, account access, group membership, project creation, and submission are separate states. Owner registration, group membership, project creation, and submission: **NOT_ESTABLISHED**.
+7. Registration, account access, group membership, project creation, and submission are separate states. Owner onboarding, rule acceptance, group membership, project creation, and submission: **NOT_ESTABLISHED**; Community Hackathon Devpost registration: **NOT_REQUIRED**.
 8. The February–March 2026 GitLab AI Hackathon and October 2026 Life After Code / Transcend edition are closed; their next-cycle dates are **NOT_ESTABLISHED**. The GitLab Community Hackathon has a published upcoming edition for **January 21–28, 2027** and is added as candidate **C17**. Owner onboarding, rule acceptance, issue assignment, and contribution state: **NOT_ESTABLISHED**; Devpost registration: **NOT_REQUIRED**.
 
 Machine-readable URL/source inventory: [`ops/challenge/osint/gitlab-sources.json`](../../ops/challenge/osint/gitlab-sources.json).

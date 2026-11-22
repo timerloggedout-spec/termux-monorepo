@@ -14,6 +14,12 @@ The supplied URLs identify GitLab group hierarchy:
 - [GitLab DevSecOps Flow Hackathon](https://gitlab.com/gitlab-ai-hackathon/gitlab-devsecops-flow-hackathon) resolves to a **subgroup** rather than a project. Its public subgroup page showed **zero child projects and zero child subgroups** at observation time. The root group listing associates it with group ID `126794830`.
 - [Transcend](https://gitlab.com/gitlab-ai-hackathon/transcend) is a separate subgroup under the root. Its subgroup API returned **312 public project workspaces across four pages** and zero child subgroups at observation time. The dated metadata snapshot is `ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json`.
 - [Project Templates](https://gitlab.com/gitlab-ai-hackathon/project-templates) is another subgroup. It contains the public [Participant Template](https://gitlab.com/gitlab-ai-hackathon/project-templates/participant-template) project (project ID `77423853`), with `agents/`, `flows/`, `LICENSE`, and `README.md`.
+
+### Transcend workspace catalog snapshot
+
+The public GitLab REST API returned **312 unique public projects** across four pages (100 + 100 + 100 + 12); the subgroup API returned zero child subgroups. The dated snapshot stores project ID, namespace path, project URL, README URL, creation/activity timestamps, star count, visibility, archive state, and default branch. Contributor/member identities are excluded.
+
+Snapshot: `ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json`. Treat it as a dated observation; refresh through bounded pagination and retain each dated snapshot for change analysis.
 - [GitLab Profile README](https://gitlab.com/gitlab-ai-hackathon/gitlab-profile/-/blob/main/README.md) points participants to the Devpost GitLab AI Hackathon page.
 
 The supplied DevSecOps Flow URL is therefore retained as a first-class **group/subgroup source**. Its timestamped empty child listing records the observed public state; future subgroup activity and any challenge specification remain unassessed.

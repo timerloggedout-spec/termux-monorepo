@@ -21,6 +21,8 @@ class RoadmapCompletionVerifierTests(unittest.TestCase):
         exercise = root / "roadmap-completions/roadmaps/demo/exercises/intro"
         exercise.mkdir(parents=True)
         (root / "roadmap-completions/config/verification-rules.yaml").write_text(
+            "scoring:\n"
+            "  weights: {code: 40, test: 30, documentation: 10, portfolio: 10, deployment: 10}\n"
             "defaults:\n"
             "  code: {required: true, min_size: 10, patterns: ['def run'], extensions: ['.py']}\n"
             "  test: {required: true, min_coverage: 80, passing: true}\n"
@@ -66,7 +68,9 @@ class RoadmapCompletionVerifierTests(unittest.TestCase):
             self.make_fixture(root)
             result = self.run_verifier(root)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-            self.assertTrue(json.loads(result.stdout)["ok"])
+            report = json.loads(result.stdout)
+            self.assertTrue(report["ok"])
+            self.assertEqual(report["score"], 80)
 
     def test_insufficient_coverage_fails(self):
         with tempfile.TemporaryDirectory() as directory:

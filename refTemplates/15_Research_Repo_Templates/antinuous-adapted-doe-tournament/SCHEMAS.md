@@ -313,7 +313,7 @@ Allowed node/evaluation statuses: `completed`, `failed`, `skipped`, `timed_out`,
 ## Complete catalog and implementation competition
 
 `classifier.graph-registry.v1` now covers the 88-entry System One catalog
-without flattening its layers:
+while preserving each declared layer:
 
 | Layer | Count | Registry treatment |
 |---|---:|---|

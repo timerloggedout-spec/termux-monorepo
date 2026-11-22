@@ -58,6 +58,22 @@ def validate_registry(root: Path, registry: Any, catalog: Any, estate: Any, plan
                 for state, count in actual_states.items():
                     if headlines.get(state) != count:
                         errors.append(f"classifier estate.headlines.{state}: mismatch with unit rows")
+            actual_groups: dict[str, dict[str, int]] = {}
+            for unit in units:
+                if not isinstance(unit, dict) or not isinstance(unit.get("group_name"), str):
+                    continue
+                name = unit["group_name"]
+                actual_groups.setdefault(name, {"units": 0, "live": 0, "dormant": 0, "dead": 0})
+                actual_groups[name]["units"] += 1
+                state = unit.get("state")
+                if state in {"live", "dormant", "dead"}:
+                    actual_groups[name][state] += 1
+            expected_groups = {
+                item.get("group_name"): {key: item.get(key) for key in ("units", "live", "dormant", "dead")}
+                for item in estate_ref.get("groups", []) if isinstance(item, dict)
+            }
+            if actual_groups != expected_groups:
+                errors.append("classifier estate.groups: group counts mismatch with source rows")
         if estate.get("generated_at") != estate_ref.get("snapshot_date"):
             errors.append("classifier estate.snapshot_date: generated_at mismatch")
 

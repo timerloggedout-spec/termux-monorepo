@@ -63,6 +63,7 @@ def test_legacy_research_children_field_remains_available(tmp_path, monkeypatch)
     assert entry["research_children"] == entry["metadata_children"]
     assert inventory.validate([entry]) == []
 
+
 def test_whitespace_only_source_file_has_empty_preview(tmp_path, monkeypatch):
     root = tmp_path / "repo"
     ref = root / "refTemplates"
@@ -79,7 +80,8 @@ def test_whitespace_only_source_file_has_empty_preview(tmp_path, monkeypatch):
     assert entry["metadata_children"][0]["source_preview"] is None
     assert inventory.validate([entry]) == []
 
-def test_provider_catalog_doe_registry_pins_versioned_variants():
+
+def test_provider_catalog_doe_registry_compares_native_variants_and_pins_references():
     root = Path(__file__).resolve().parents[1]
     registry_path = (
         root
@@ -92,12 +94,18 @@ def test_provider_catalog_doe_registry_pins_versioned_variants():
     variants = experiment["variants"]
 
     assert experiment["id"] == "DOE-VULTR-CATALOG-001"
-    assert experiment["version"] == "1.0.0"
+    assert experiment["version"] == "2.0.0"
     assert experiment["status"] == "planned"
-    assert {variant["implementation"] for variant in variants} == {
-        "python",
-        "typescript",
+    assert {variant["catalogue"] for variant in variants} == {
+        "Incumbent",
+        "VultrInspired",
     }
-    assert len({variant["source_revision"] for variant in variants}) == 2
-    assert all(variant["version"] == "1.0.0" for variant in variants)
+    assert {variant["version"] for variant in variants} == {"5.0.0", "1.0.0"}
+    assert {source["revision"] for source in experiment["source_references"]} == {
+        "4a414ab26e1f596cb98b3974a7d12182bf62dab3",
+        "6e55057cb718213937c4c118271f5a2ca1779d0d",
+    }
+    assert experiment["execution_policy"]["network_mode"] == "disabled"
+    assert experiment["execution_policy"]["credentials"] == "none"
+    assert experiment["execution_policy"]["inference_mode"] == "disabled"
     assert experiment["execution_policy"]["result_artifacts"] == []

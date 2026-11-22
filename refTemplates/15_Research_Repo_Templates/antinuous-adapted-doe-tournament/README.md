@@ -30,7 +30,7 @@ The monorepo already contains meaningful DoE/tournament primitives. This referen
 | docs/ops/MANAGER-TOURNAMENT.schema.json | canonical manager.tournament.v1 cohort schema |
 | docs/research/MANAGER-TOURNAMENT-CONTRACT.md | same-cohort manager comparison protocol |
 | deepcli/deepcli/observatory/doe.py | full factorial, Taguchi L9 and seeded randomized assignment |
-| deepcli/deepcli/observatory/trial.py | current Mev producer, Jev critic, Kev verifier and Laya merger baseline |
+| deepcli/deepcli/observatory/trial.py | current local Mev producer, Jev critic, Kev verifier and Laya merger role baseline |
 | deepcli/deepcli/observatory/tournament.py | campaign selection and leaderboard integration |
 | deepcli/deepcli/observatory/leaderboard.py | persistent role/task/provider/model records |
 | scripts/agent_evolution/replay_simulator.py | deterministic replay and incumbent-preserving policy evolution |
@@ -93,3 +93,6 @@ Upstream product: https://antinuous.com/
 Upstream public GitHub organization: https://github.com/antinuous  
 Repository owner: timerloggedout-spec/termux-monorepo  
 Research snapshot: 2026-11-22
+
+
+The canonical classifier inventory is `config/system_one_catalog.json` with its lifecycle and layer definitions documented in `docs/ops/SYSTEM-ONE-CATALOG.md`. Local Mev/Jev/Kev/Laya classes implement observatory roles; similarly named external projects are distinct catalog entries.

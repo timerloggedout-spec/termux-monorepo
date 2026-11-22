@@ -19,6 +19,9 @@ class IssueIntakeCoverageTests(unittest.TestCase):
             (root / ".github/ISSUE_TEMPLATE").mkdir(parents=True)
             (root / ".github/workflows").mkdir(parents=True)
             (root / "docs/ops").mkdir(parents=True)
+            (root / ".github/ISSUE_TEMPLATE/config.yml").write_text(
+                "blank_issues_enabled: true\n", encoding="utf-8"
+            )
             (root / ".github/ISSUE_TEMPLATE/example.yml").write_text(
                 "name: Example\nlabels: example, task\n", encoding="utf-8"
             )

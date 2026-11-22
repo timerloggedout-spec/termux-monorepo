@@ -21,8 +21,9 @@ watch disposition are recorded in
 The machine-readable URL inventory is
 `ops/challenge/osint/gitlab-sources.json`. It records the supplied root group
 and DevSecOps Flow subgroup, the Transcend and Project Templates subgroups,
-the Participant Template project, Devpost event/rules/resources pages, the
-GitLab Community Hackathon pages, and the official Discord/documentation links.
+the Participant Template project, the 312-project Transcend catalog snapshot,
+Devpost event/gallery/participants/rules/resources pages, the GitLab Community
+Hackathon pages, and the official Discord/documentation links.
 The supplied DevSecOps Flow URL resolved to an **empty subgroup** at the
 2026-11-22 observation; retain it as a URL-addressed subgroup source.
 

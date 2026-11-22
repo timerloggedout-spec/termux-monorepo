@@ -1,7 +1,7 @@
 # Cross-repo publish: serialize the mirror commit so GitHub Pages deployment completes before landing navigation is promoted.
 name: tribute-dashboard-deploy
 
-# marketing (/) ≠ Tribute (/tribute/) ≠ legacy alias (/help-wanted/) ≠ Matrix (/matrix/) ≠ project hub (/termux-monorepo/)
+# marketing (/) ≠ Tribute (/tribute/) ≠ legacy alias (/help-wanted/) ≠ Matrix (/matrix/) ≠ project hub (/termux-monorepo/) ≠ Architecture Explorer (/termux-monorepo/architecture/)
 
 on:
   push:
@@ -30,6 +30,8 @@ on:
       - "docs/ops/SHE-DASHBOARD-*"
       - "docs/ops/SHE-INTEGRATION-FINDINGS.md"
       - "docs/ops/INTEGRATION-GRAPH-MATRIX.md"
+      - "docs/ops/DEPLOYMENT-LANES.md"
+      - "docs/ops/SITE-MAP.md"
       - "scripts/ci/build_architecture_portal.py"
       - "tests/test_build_architecture_portal.py"
       - ".github/workflows/tribute-dashboard-deploy.yml"
@@ -187,7 +189,7 @@ jobs:
           force_orphan: true
           user_name: github-actions[bot]
           user_email: github-actions[bot]@users.noreply.github.com
-          commit_message: "deploy(project-hub+matrix): ${{ github.sha }}"
+          commit_message: "deploy(project-hub+architecture+matrix): ${{ github.sha }}"
 
   user-site:
     name: mirror-user-github-io

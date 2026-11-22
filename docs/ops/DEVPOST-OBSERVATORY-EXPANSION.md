@@ -248,7 +248,23 @@ Observed connector evidence:
 
 The public rules describe a two-stage process: baseline viability followed by equally weighted substantive criteria. They also state that judges may change and may not all be listed individually. Therefore the model must preserve the distinction between the public page's named judge list and the complete adjudication panel, which may remain unknown.
 
-The organizer's winner article reports 600+ submissions and seven prize-winning projects. It highlights Project Blackbox as Grand Prize and Hindsight as a challenge winner, and describes evidence-gated agent execution, lineage-based root-cause analysis, human review, and writing incident resolution back to the catalog. These are reference-pattern observations, not assumptions about every winner.
+The public event page listed these eight judges/affiliations at fetch time: Aman Gairola (Engineering Manager, Pinterest); Maggie Hays (Founding Product Manager, DataHub); Alyssa Lee (Chief of Staff, DataHub); Adrian Machado (Software Engineer, DataHub); Tim Bossenmaier (Data Architect, Cloudflight); Mike Burke (Senior Developer); Nick Adams (DataHub); and Wenjia You (Member of Technical Program Staff, OpenAI). Store these as the **publicly listed panel snapshot**, with the page URL and fetched_at. Preserve the event-rules caveat that the complete/final panel may differ or include unnamed judges.
+
+The organizer's winner article reports 600+ submissions and seven prize-winning projects. Its published result order/categories are:
+
+| Official result | Track / distinction | Project | Publicly named builder(s) |
+|---|---|---|---|
+| Grand Prize | Overall | Project Blackbox | Alex Velazquez |
+| Challenge Winner | Agents that do real work | Hindsight | Germán Massello |
+| Challenge Winner | Metadata-aware code generation | Schema-Drift Auto-Repair Agent | Yadnesh Salvi |
+| Challenge Winner | Production ML | Culprit | Jonathan Andrei |
+| Challenge Winner | Open and wildcard | Paracelsus | Lutfiya Miller; Chris Müller |
+| Honourable Mention | — | ContextSeal | Mehmet Aydoğan |
+| Honourable Mention | — | RippleProof | Muhammad Hassaan Javed |
+
+This is an official-result taxonomy, not a numeric 1–7 score ranking: the article distinguishes Grand Prize, track challenge winners, and honorable mentions. Store the published award tier and track as separate fields; numeric podium rank remains null unless the organizer explicitly publishes one.
+
+The article describes evidence-gated agent execution, lineage-based root-cause analysis, human review, write-back verification, safe migrations, and writing incident resolution back to the catalog. It also reports 100+ open-source pull requests across DataHub repositories, skills, connectors, and documentation. These are reference-pattern observations, not assumptions about every winner.
 
 Sources:
 - Event: https://datahub.devpost.com/
@@ -267,6 +283,8 @@ The authenticated Devpost connector returned one published project:
 - UGREEN event connector status is `judging` / `pre_winners_announced`.
 
 The connector also returned three connected events: UGREEN (registered + submitted; judging), Cloud9 x JetBrains (registered; submissions open), and Learn AR with SPECS (registered; submissions open). These are account-scoped facts, not global Devpost directory coverage.
+
+For UGREEN, the connector reports submissions closed at 2026-11-16T07:45:00Z, judging from 2026-11-16T08:00:00Z through 2026-12-06T01:00:00Z, and winners announced at 2026-12-06T10:00:00Z (Pacific Time / connector UTC instants). Current phase: `judging`, fetched 2026-11-22T08:09:43Z. This gives the lifecycle watcher a live account-linked event with a published project and a future result transition.
 
 Use these observations as a validation cohort for the BEFORE/DURING/AFTER state model. Refresh event dates and announcements before deadline-sensitive actions; preserve the connector's current status and fetch timestamp.
 

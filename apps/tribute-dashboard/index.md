@@ -35,7 +35,7 @@ The dashboard loads generated status and evidence feeds at runtime. If a feed is
 - [Quota](https://timerloggedout-spec.github.io/tribute/quota.html)
 - [Desk](https://timerloggedout-spec.github.io/tribute/desk.html)
 - [3L0](https://timerloggedout-spec.github.io/tribute/3l0.html)
-- [ATES](https://timerloggedout-spec.github.io/tribute/ates.html)
+- [ATES](https://timerloggedout-spec.github.io/tribute/ates.html)\n- [Workflow Discovery](https://timerloggedout-spec.github.io/tribute/workflows.html)
 
 ## Operating principle
 

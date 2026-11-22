@@ -248,12 +248,14 @@
     },
     {
       "id": "gitlab-transcend-project-catalog",
-      "url": "https://gitlab.com/api/v4/groups/132494471/projects?include_subgroups=true&per_page=100&page={1..4}",
+      "url": "https://gitlab.com/api/v4/groups/132494471/projects?include_subgroups=true&per_page=100",
       "kind": "group_project_catalog",
       "relation": "child_projects_of:gitlab-transcend-subgroup",
       "observation": "Four public API pages returned 312 unique public projects; metadata snapshot stored at ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json.",
       "coverage": "full_listing",
-      "fetched_at": "2026-11-22"
+      "fetched_at": "2026-11-22",
+      "pages": 4,
+      "page_size": 100
     },
     {
       "id": "gitlab-transcend-sample-work-item",

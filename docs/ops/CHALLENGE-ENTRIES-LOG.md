@@ -724,8 +724,10 @@ NOT_ESTABLISHED. The archived `/transcend-october-2026` subgroup contains
 `/project-templates/participant-template` project is the public agent/flow starter.
 The source map and evidence are in
 `docs/ops/GITLAB-AI-HACKATHON-OSINT.md`,
-`ops/challenge/osint/gitlab-sources.json`, and the dated 312-project snapshot
-`ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json`.
+`ops/challenge/osint/gitlab-sources.json`, the 312-project sibling snapshot
+`ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json`, and the
+October 2026 subgroup/project snapshots under
+`ops/challenge/osint/gitlab-transcend-october-2026-*-2026-11-22.ndjson`.
 
 **Registration:** C17 remains pre-registration. The official sequence is
 start onboarding → accept rules → choose an issue → obtain assignment →

@@ -85,15 +85,32 @@ Promotion requires all of:
 
 Throughput, low nominal cost, classifier count and judge confidence alone cannot promote an implementation.
 
-## 7. Current gaps to close
+## 7. Implemented registry slice and remaining gaps
 
-1. Add stable candidate IDs and evaluator joins to the current Mev/Jev/Kev/Laya trial path.
-2. Preserve nulls for absent cost, latency, score and success observations.
-3. Add classifier capability registry with schema/version/evidence metadata.
-4. Add graph manifest and DAG scheduler adapter.
-5. Add independent evaluator ensemble and Pareto reducer.
-6. Connect deterministic replay to matched-cohort challenger comparisons.
-7. Add canary/rollback receipts after offline evidence supports promotion.
+The first versioned registry slice is now present:
+
+- `config/classifier_graph_registry.json` registers the four local role implementations and five catalog-backed namesake candidates as distinct identities.
+- `docs/ops/CLASSIFIER-GRAPH-REGISTRY.schema.json` defines the registry contract.
+- `scripts/ci/classifier_graph_registry_validator.py` checks candidate/catalog references, role compatibility, local source paths, graph node identity and DAG acyclicity.
+- `scripts/ci/test_classifier_graph_registry_validator.py` covers valid input, unknown catalog entries, role mismatch, dependency cycles and duplicate node IDs.
+- The registry points to `manager.tournament.v1` for cohort identity. The typed-decision candidate screen is design-only until candidate-specific adapters and matched trials exist.
+
+Run the offline validator from the repository root:
+
+```bash
+python scripts/ci/classifier_graph_registry_validator.py
+python -m unittest scripts/ci/test_classifier_graph_registry_validator.py
+```
+
+Remaining implementation gaps:
+
+1. Extend the candidate registry from the initial namesake set to the complete heterogeneous classifier inventory, preserving model/adapter/runtime/directory layer distinctions.
+2. Add immutable source revision, model/checkpoint digest, adapter version and capability evidence to each trial candidate.
+3. Implement graph execution adapters and dependency-aware scheduling; the current registry records topology and the local baseline still executes through its existing runner.
+4. Replace the scalar-only reducer with independent evaluator evidence, uncertainty-aware Pareto comparison and a versioned preference profile.
+5. Connect deterministic replay to matched-cohort challenger comparisons.
+6. Add canary/rollback receipts after offline evidence supports promotion.
+7. Preserve nulls for absent cost, latency, score and success observations in the leaderboard/evidence migration.
 
 ## 8. Source references
 

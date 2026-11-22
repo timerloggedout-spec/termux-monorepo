@@ -189,6 +189,19 @@ evidence:
 - Every promotion links to a tournament version and exact candidate evidence set.
 
 
+## Runtime classifier registry
+
+The first checked-in registry uses `classifier.graph-registry.v1`:
+
+- Registry data: `config/classifier_graph_registry.json`
+- JSON Schema: `docs/ops/CLASSIFIER-GRAPH-REGISTRY.schema.json`
+- Offline validator: `scripts/ci/classifier_graph_registry_validator.py`
+- Validator tests: `scripts/ci/test_classifier_graph_registry_validator.py`
+
+The registry separates role contracts, local implementations, catalog-backed candidates, and composition graphs. Catalog candidates refer to stable IDs in `config/system_one_catalog.json`; the registry keeps the catalog's heterogeneous layers intact. Local Mev/Jev/Kev/Laya roles are incumbent candidates. The similarly named external projects remain independent candidates with explicit adapter readiness. The typed-decision graph is design-only pending candidate-specific execution adapters and matched trials.
+
+The registry's canonical cohort reference is `manager.tournament.v1`. It does not create a second cohort identity.
+
 ## Classifier graph manifest (proposed)
 
 ~~~yaml

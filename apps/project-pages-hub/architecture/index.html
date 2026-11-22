@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Architecture Explorer · Termux Monorepo</title>
+<meta name="description" content="Explore the termux-monorepo architecture through linked documentation, editable Mermaid sources, imported SVG diagrams, generated visual assets, and source provenance.">
+<link rel="canonical" href="https://timerloggedout-spec.github.io/termux-monorepo/architecture/">
+<link rel="alternate" type="text/markdown" href="./index.md">
+<link rel="describedby" href="/llms.txt">
+<meta property="og:title" content="Architecture Explorer · Termux Monorepo">
+<meta property="og:description" content="A source-linked, expandable architecture and diagram library for the termux-monorepo.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://timerloggedout-spec.github.io/termux-monorepo/architecture/">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Architecture Explorer · Termux Monorepo","headline":"Architecture Explorer","description":"A source-linked architecture and diagram library for the termux-monorepo.","url":"https://timerloggedout-spec.github.io/termux-monorepo/architecture/","dateModified":"2026-11-22"}</script>
+<link rel="stylesheet" href="./architecture.css">
+<script defer src="https://cdn.jsdelivr.net/npm/marked@15.0.7/marked.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+<script defer src="./architecture.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<header class="topbar">
+  <a class="brand" href="/termux-monorepo/" aria-label="Termux Monorepo project hub">TM<span>/</span>Architecture</a>
+  <nav aria-label="Primary navigation">
+    <a href="/termux-monorepo/">Project hub</a>
+    <a href="https://github.com/timerloggedout-spec/termux-monorepo">Repository</a>
+    <a href="https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/architecture">Architecture sources</a>
+    <a href="https://github.com/timerloggedout-spec/termux-monorepo/actions">Build evidence</a>
+  </nav>
+  <button class="mobile-nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="sidebar">Browse</button>
+</header>
+<main id="main-content">
+  <section class="hero">
+    <div>
+      <p class="eyebrow">Repository architecture · source-linked explorer</p>
+      <h1>Architecture <span>Explorer</span></h1>
+      <p class="lede">Navigate system maps, inspect editable Mermaid sources, view imported SVG assets, and follow every document back to its canonical repository path.</p>
+    </div>
+    <div class="hero-meta">
+      <span class="status-dot" aria-hidden="true"></span>
+      <span id="build-state">Loading source catalog…</span>
+      <a href="./index.md">Markdown index</a>
+    </div>
+  </section>
+  <section class="metrics" aria-label="Catalog summary">
+    <article class="metric"><span>Documents</span><strong id="metric-docs">—</strong></article>
+    <article class="metric"><span>Mermaid sources</span><strong id="metric-mermaid">—</strong></article>
+    <article class="metric"><span>Imported SVG</span><strong id="metric-svg">—</strong></article>
+    <article class="metric"><span>Catalog items</span><strong id="metric-total">—</strong></article>
+  </section>
+  <div class="explorer-layout">
+    <aside class="sidebar" id="sidebar" aria-label="Architecture navigation">
+      <div class="sidebar-heading">
+        <div><p class="eyebrow">Browse</p><h2>Source library</h2></div>
+        <button class="icon-button close-sidebar" id="close-sidebar" type="button" aria-label="Close navigation">×</button>
+      </div>
+      <label class="search-label" for="search">Search architecture</label>
+      <input id="search" class="search-input" type="search" placeholder="Title, path, topic…" autocomplete="off">
+      <div class="filter-row">
+        <label class="sr-only" for="kind-filter">Filter by file type</label>
+        <select id="kind-filter">
+          <option value="all">All types</option>
+          <option value="document">Markdown</option>
+          <option value="mermaid">Mermaid</option>
+          <option value="svg">SVG</option>
+          <option value="png">PNG preview</option>
+        </select>
+        <button class="text-button" id="expand-all" type="button">Expand all</button>
+      </div>
+      <nav id="tree" class="tree" aria-label="Architecture source tree">
+        <p class="empty-state">Loading source index…</p>
+      </nav>
+      <p class="sidebar-foot">Canonical files remain in Git. This tree is a generated navigation projection.</p>
+    </aside>
+    <div class="sidebar-scrim" id="sidebar-scrim"></div>
+    <section class="workspace" aria-label="Selected architecture source">
+      <div class="workspace-header">
+        <div class="breadcrumbs"><a href="/termux-monorepo/">Project hub</a><span>/</span><span>Architecture</span></div>
+        <div class="workspace-title-row">
+          <div><p class="eyebrow" id="selected-category">Select a source</p><h2 id="selected-title">Architecture library</h2></div>
+          <span class="file-kind" id="selected-kind">CATALOG</span>
+        </div>
+        <p class="selected-summary" id="selected-summary">Choose a document or diagram from the navigation tree.</p>
+      </div>
+      <div class="viewer-toolbar" id="viewer-toolbar" hidden>
+        <div class="toolbar-group">
+          <button class="tool-button" id="zoom-out" type="button" aria-label="Zoom out">−</button>
+          <output id="zoom-level" for="zoom-out zoom-in">100%</output>
+          <button class="tool-button" id="zoom-in" type="button" aria-label="Zoom in">+</button>
+          <button class="tool-button" id="fit-view" type="button">Fit</button>
+        </div>
+        <div class="toolbar-group">
+          <button class="tool-button active" id="show-rendered" type="button">Rendered</button>
+          <button class="tool-button" id="show-source" type="button">Source</button>
+          <button class="tool-button" id="fullscreen" type="button">Fullscreen</button>
+        </div>
+      </div>
+      <div class="content-frame" id="content-frame">
+        <div id="document-view" class="document-view">
+          <div class="empty-state large">Architecture documentation will appear here.</div>
+        </div>
+        <div id="diagram-view" class="diagram-view" hidden>
+          <div class="diagram-stage" id="diagram-stage">
+            <div class="diagram-canvas" id="diagram-canvas">
+              <img id="diagram-image" alt="" draggable="false">
+            </div>
+          </div>
+          <pre id="source-view" class="source-view" hidden><code id="source-code"></code></pre>
+          <div id="diagram-caption" class="diagram-caption"></div>
+        </div>
+      </div>
+      <section class="provenance" aria-labelledby="provenance-title">
+        <div class="provenance-heading"><h3 id="provenance-title">Source provenance</h3><span id="provenance-ref" class="file-kind">—</span></div>
+        <dl class="provenance-grid">
+          <div><dt>Repository path</dt><dd id="prov-path">—</dd></div>
+          <div><dt>Source SHA-256</dt><dd id="prov-hash" class="hash">—</dd></div>
+          <div><dt>Source ref</dt><dd id="prov-ref">—</dd></div>
+          <div><dt>File size</dt><dd id="prov-size">—</dd></div>
+          <div><dt>Catalog built</dt><dd id="prov-built">—</dd></div>
+          <div><dt>Repository source</dt><dd><a id="prov-link" href="https://github.com/timerloggedout-spec/termux-monorepo">Open canonical file ↗</a></dd></div>
+        </dl>
+      </section>
+      <p class="live-status" id="live-status" role="status" aria-live="polite"></p>
+    </section>
+    <aside class="details-rail" aria-label="Architecture catalog details">
+      <p class="eyebrow">Catalog identity</p>
+      <h2>Build receipt</h2>
+      <dl class="receipt-list">
+        <div><dt>Source SHA</dt><dd id="catalog-sha">Loading…</dd></div>
+        <div><dt>Source ref</dt><dd id="catalog-ref">—</dd></div>
+        <div><dt>Generated at</dt><dd id="catalog-time">—</dd></div>
+        <div><dt>Schema</dt><dd id="catalog-schema">—</dd></div>
+      </dl>
+      <div class="boundary-note"><strong>Authority boundary</strong><p>Repository files are canonical. This site is a read-only projection. Generated SVG and PNG files are presentation outputs; Mermaid and Markdown sources remain editable authority.</p></div>
+      <a class="source-link" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/architecture.md">Open root architecture ↗</a>
+    </aside>
+  </div>
+  <footer>
+    <span>Termux Monorepo · Architecture Explorer</span>
+    <span><a href="/termux-monorepo/">Project hub</a> · <a href="https://github.com/timerloggedout-spec/termux-monorepo">GitHub source</a> · <a href="/llms.txt">Agent index</a> · <a href="https://timerloggedout-spec.github.io/glossary.md">Glossary</a></span>
+  </footer>
+</main>
+</body>
+</html>

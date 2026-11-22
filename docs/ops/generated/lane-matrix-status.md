@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-22T16:17:52Z)
+# Lane matrix status (2026-11-22T16:19:05Z)
 
-- Master: `43e3207ee96e37e7e76496574666a7f27d5e16ad`
+- Master: `239888862bf7f427eb31c1b855a09552b71acd1d`
 - Open PRs: **527**
 - Oldest: #47 (109.02d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -46,12 +46,12 @@
 | #1469 | 32.13 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
 | #1470 | 32.13 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
 | #1495 | 31.58 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
-| #1513 | 31.33 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
+| #1513 | 31.34 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 31.33 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
 | #1516 | 31.33 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
 | #1531 | 31.32 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
 | #1537 | 31.3 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
-| #1557 | 30.63 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
+| #1557 | 30.64 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 29.55 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
 | #1616 | 29.55 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 29.54 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |

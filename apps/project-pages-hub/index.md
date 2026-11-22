@@ -12,7 +12,7 @@ last_updated: 2026-11-18
 
 - [Marketing and referrals](https://timerloggedout-spec.github.io/)
 - [Tribute operations dashboard](https://timerloggedout-spec.github.io/tribute/)
-- [Brain Operations dashboard](https://timerloggedout-spec.github.io/termux-monorepo/brain-ops/) — live CI health, performance and specialist coverage
+- [Architecture Explorer](https://timerloggedout-spec.github.io/termux-monorepo/architecture/) — nested architecture docs, Mermaid sources, imported SVGs, and provenance\n- [Brain Operations dashboard](https://timerloggedout-spec.github.io/termux-monorepo/brain-ops/) — live CI health, performance and specialist coverage
 - [LANE-MATRIX live board](https://timerloggedout-spec.github.io/matrix/)
 - [Termux Monorepo source repository](https://github.com/timerloggedout-spec/termux-monorepo)
 - [Vercel preview portal](https://termux-monorepo.vercel.app/)

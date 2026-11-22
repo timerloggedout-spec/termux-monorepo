@@ -1,0 +1,192 @@
+{
+  "schema_version": "1.0",
+  "registry_kind": "research-provider-seeds",
+  "authority": "ResearchAstute",
+  "policy": "Provider registry is discovery configuration, not blanket authorization to retrieve, retain, or redistribute artifacts.",
+  "providers": [
+    {
+      "id": "nasa-ntrs",
+      "name": "NASA Technical Reports Server API",
+      "domain": "nasa-missions",
+      "authority": "official-primary",
+      "base_url": "https://ntrs.nasa.gov/api/openapi/",
+      "access_mode": "public-api",
+      "capabilities": [
+        "search",
+        "metadata",
+        "citations",
+        "authorized-document-download"
+      ],
+      "credential_state": "verify-per-endpoint",
+      "artifact_policy": "Record NASA distribution, copyright and export-control metadata before artifact retention.",
+      "evidence_url": "https://ntrs.nasa.gov/api/openapi/"
+    },
+    {
+      "id": "nasa-open-apis",
+      "name": "NASA Open APIs",
+      "domain": "nasa-missions",
+      "authority": "official-primary",
+      "base_url": "https://api.nasa.gov/",
+      "access_mode": "public-api",
+      "capabilities": [
+        "discovery",
+        "metadata",
+        "selected-data"
+      ],
+      "credential_state": "API-key-recommended-for-sustained-use",
+      "artifact_policy": "Use service-specific terms and rate limits; API catalog coverage is not exhaustive.",
+      "evidence_url": "https://api.nasa.gov/"
+    },
+    {
+      "id": "openalex",
+      "name": "OpenAlex",
+      "domain": "foss-research",
+      "authority": "scholarly-metadata-provider",
+      "base_url": "https://api.openalex.org/",
+      "access_mode": "public-api",
+      "capabilities": [
+        "works",
+        "authors",
+        "sources",
+        "institutions",
+        "topics",
+        "citation-graph"
+      ],
+      "credential_state": "no-key-required-basic-access",
+      "artifact_policy": "Metadata graph provider; resolve full text separately and honor work-level rights.",
+      "evidence_url": "https://help.openalex.org/api/"
+    },
+    {
+      "id": "crossref",
+      "name": "Crossref REST API",
+      "domain": "foss-research",
+      "authority": "scholarly-registration-metadata",
+      "base_url": "https://api.crossref.org/",
+      "access_mode": "public-api",
+      "capabilities": [
+        "works",
+        "journals",
+        "funders",
+        "licenses",
+        "updates",
+        "identifiers"
+      ],
+      "credential_state": "no-signup-required; polite-pool-mailto-recommended",
+      "artifact_policy": "Metadata is generally reusable; abstracts and linked full text may carry separate copyright.",
+      "evidence_url": "https://www.production.crossref.org/documentation/retrieve-metadata/rest-api/"
+    },
+    {
+      "id": "arxiv-api",
+      "name": "arXiv public API",
+      "domain": "foss-research",
+      "authority": "repository-primary",
+      "base_url": "https://export.arxiv.org/api/query",
+      "access_mode": "public-api",
+      "capabilities": [
+        "preprint-search",
+        "metadata",
+        "abstracts",
+        "record-links"
+      ],
+      "credential_state": "no-key",
+      "artifact_policy": "Treat metadata/API terms separately from e-print copyright; redistribution of e-prints requires rights-holder permission. Apply API rate limits.",
+      "evidence_url": "https://info.arxiv.org/help/api/index.html"
+    },
+    {
+      "id": "epo-ops",
+      "name": "European Patent Office Open Patent Services",
+      "domain": "aerospace-energy-patents",
+      "authority": "official-primary",
+      "base_url": "https://ops.epo.org/",
+      "access_mode": "credentialed-api",
+      "capabilities": [
+        "bibliographic-data",
+        "worldwide-legal-status",
+        "full-text",
+        "images"
+      ],
+      "credential_state": "registration-and-oauth-required",
+      "artifact_policy": "Respect OPS terms, quotas and field-level rights; store credential state separately from source records.",
+      "evidence_url": "https://developers.epo.org/"
+    },
+    {
+      "id": "wipo-patentscope",
+      "name": "WIPO PATENTSCOPE",
+      "domain": "aerospace-energy-patents",
+      "authority": "official-primary",
+      "base_url": "https://patentscope.wipo.int/",
+      "access_mode": "public-web-manual-only",
+      "capabilities": [
+        "manual-search",
+        "permalink",
+        "metadata-reference"
+      ],
+      "credential_state": "no-automated-adapter-authorized",
+      "artifact_policy": "WIPO terms prohibit automated queries, scraping and bulk acquisition/download/storage. Use manual discovery/permalinks or separately licensed WIPO data products only.",
+      "evidence_url": "https://www.wipo.int/en/web/patentscope/data/terms_patentscope"
+    },
+    {
+      "id": "github-rest",
+      "name": "GitHub REST API",
+      "domain": "foss-research",
+      "authority": "platform-primary",
+      "base_url": "https://api.github.com/",
+      "access_mode": "public-api",
+      "capabilities": [
+        "repository-metadata",
+        "topics",
+        "releases",
+        "commits",
+        "license-detection",
+        "repository-search"
+      ],
+      "credential_state": "public-unauthenticated-or-token",
+      "artifact_policy": "Clone/archive source only when repository license and terms permit; preserve owner, repo ID, commit SHA, license and retrieval time.",
+      "evidence_url": "https://docs.github.com/en/rest/repos/repos"
+    },
+    {
+      "id": "spacex-publications",
+      "name": "SpaceX public publications site API",
+      "domain": "space-systems",
+      "authority": "publisher-hosted-public-surface",
+      "base_url": "https://spacex.relayto.com/api/site/v1",
+      "access_mode": "public-read-api",
+      "capabilities": [
+        "site-search",
+        "published-pages",
+        "documents"
+      ],
+      "credential_state": "public-no-key-per-provider-docs",
+      "artifact_policy": "Read-only discovery seed; verify source URLs, copyright, publisher context and any site terms before downloading or retaining files.",
+      "evidence_url": "https://spacex.relayto.com/developers"
+    },
+    {
+      "id": "r-spacex-community-api",
+      "name": "r/SpaceX community API",
+      "domain": "space-systems",
+      "authority": "community-third-party",
+      "base_url": "https://api.spacexdata.com/",
+      "access_mode": "public-api",
+      "capabilities": [
+        "launches",
+        "rockets",
+        "capsules",
+        "cores",
+        "starlink",
+        "launchpads"
+      ],
+      "credential_state": "public-read-routes",
+      "artifact_policy": "Explicitly unaffiliated with SpaceX; supplemental reference only, retain third-party provenance and independently corroborate material claims.",
+      "evidence_url": "https://github.com/r-spacex/SpaceX-API"
+    }
+  ],
+  "deferred_sources": [
+    {
+      "id": "uspto-odp",
+      "name": "USPTO Open Data Portal",
+      "domain": "aerospace-energy-patents",
+      "state": "adapter-discovery-pending",
+      "reason": "Confirm current official API contract, key requirements, retention terms and bulk data interfaces before enabling ingestion."
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Nested discovery map and continuous operational statistics for the 326 GitHub Actions workflow definitions in termux-monorepo.">
+<title>Workflow Discovery · Actions Fleet</title>
+<link rel="canonical" href="https://timerloggedout-spec.github.io/tribute/workflows.html">
+<link rel="stylesheet" href="./dashboard.css">
+<script src="./site-nav.js" defer></script>
+<style>
+.wf-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem}
+.wf-card{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:.85rem}
+.wf-card strong{display:block;font-size:1.55rem;color:var(--gold);font-variant-numeric:tabular-nums}
+.wf-card small,.wf-muted{color:var(--muted)}
+.wf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:.8rem}
+.wf-list{display:grid;gap:.45rem}.wf-edge{padding:.6rem;border:1px solid var(--line);border-radius:8px;background:#0b1118;overflow-wrap:anywhere}
+.wf-edge small{display:block;color:var(--muted);margin-top:.2rem}
+.wf-table{width:100%;border-collapse:collapse;font-size:.86rem}.wf-table th,.wf-table td{padding:.55rem;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}.wf-table th{color:var(--gold);position:sticky;top:0;background:#0b1118}
+.wf-pill{display:inline-block;padding:.12rem .45rem;border:1px solid var(--line);border-radius:99px;font-size:.75rem;margin:.12rem}
+.wf-bad{color:#ffb6a8}.wf-good{color:#9fe0b3}
+@media(max-width:650px){.wf-table{font-size:.75rem}.wf-table th,.wf-table td{padding:.35rem}}
+</style>
+</head>
+<body>
+<header><div class="hero"><div><div class="eyebrow">Operations intelligence · nested discovery</div><h1>Workflow <span class="gold">Discovery</span></h1><p class="lede">A source-derived map of workflow definitions, trigger relationships, reusable workflows, schedules, and observed Actions activity. This page is a read-only projection of repository evidence.</p></div><div class="fresh" aria-live="polite"><strong id="freshness">Loading feed…</strong><small id="generated">Awaiting generated snapshot.</small></div></div></header>
+<main id="main-content">
+<p class="muted" id="status">Loading the committed workflow discovery feed.</p>
+<section aria-labelledby="overview"><div class="head"><h2 id="overview">Fleet overview</h2><span class="note">Definitions · observations · topology</span></div><div class="wf-kpis" id="kpis"></div></section>
+<section aria-labelledby="triggers"><div class="head"><h2 id="triggers">Trigger and domain distribution</h2><span class="note">Catalog-derived counts</span></div><div class="wf-grid"><article class="card"><h3>Triggers</h3><div id="trigger-mix" class="wf-list"></div></article><article class="card"><h3>Workflow domains</h3><div id="domain-mix" class="wf-list"></div></article></div></section>
+<section aria-labelledby="nested"><div class="head"><h2 id="nested">Nested workflow discovery</h2><span class="note">Declared source relationships</span></div><div class="wf-grid"><article class="card"><h3>Workflow completion → downstream</h3><div id="workflow-run-edges" class="wf-list"></div></article><article class="card"><h3>Reusable workflow calls</h3><div id="reusable-edges" class="wf-list"></div></article></div><article class="card" style="margin-top:.8rem"><h3>Unresolved or ambiguous references</h3><div id="unresolved" class="wf-list"></div></article></section>
+<section aria-labelledby="schedules"><div class="head"><h2 id="schedules">Schedule inventory</h2><span class="note">Cron expressions from workflow source</span></div><div class="card table-wrap"><table class="wf-table"><thead><tr><th>Workflow</th><th>Domain</th><th>Cadence expression</th></tr></thead><tbody id="schedule-rows"></tbody></table></div></section>
+<section aria-labelledby="activity"><div class="head"><h2 id="activity">Observed workflow activity</h2><span class="note">Bounded Actions API sample</span></div><p class="wf-muted" id="sample-note"></p><div class="card table-wrap"><table class="wf-table"><thead><tr><th>Workflow</th><th>Runs</th><th>Failures</th><th>Failure rate</th><th>Median runtime</th><th>p95 runtime</th><th>Latest run</th></tr></thead><tbody id="activity-rows"></tbody></table></div></section>
+<section aria-labelledby="jobs"><div class="head"><h2 id="jobs">Job dependency sample</h2><span class="note">Within-workflow needs edges</span></div><div id="job-edges" class="wf-list"></div></section>
+<section aria-labelledby="gaps"><div class="head"><h2 id="gaps">Coverage and evidence gaps</h2></div><div class="card"><div id="gaps-list" class="wf-list"></div><p class="wf-muted">Workflow definition count ≠ enabled workflows ≠ observed workflows ≠ runs ≠ jobs ≠ billed minutes. Public standard hosted-runner minutes are free; displayed runtime is an operational measurement, not private-repository billing attribution.</p></div></section>
+<section aria-labelledby="sources"><div class="head"><h2 id="sources">Evidence sources</h2></div><div class="links"><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/generated/automation-workflow-catalog.json">Workflow catalog</a><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/scripts/dashboards/actions_observations.json">Actions observation snapshot</a><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions">Workflow runs</a><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/GITHUB-OBSERVABILITY.md">Observability contract</a><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/DOE-FAMILY.md">DoE family</a></div></section>
+</main>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const esc=value=>String(value==null?"—":value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+const n=value=>value==null?"—":Number(value).toLocaleString();
+const pct=value=>value==null?"—":(Number(value)*100).toFixed(1)+"%";
+const seconds=value=>value==null?"—":Number(value).toFixed(1)+" s";
+function card(value,label){return '<div class="wf-card"><strong>'+esc(n(value))+'</strong><small>'+esc(label)+'</small></div>'}
+function bars(target,values){const entries=Object.entries(values||{}).sort((a,b)=>b[1]-a[1]);$(target).innerHTML=entries.length?entries.map(([k,v])=>'<div class="wf-edge"><strong>'+esc(k)+'</strong><small>'+esc(n(v))+' definitions</small></div>').join(""):'<p class="wf-muted">No observations in this feed.</p>'}
+function edgeList(target,edges,lookup){$(target).innerHTML=edges.length?edges.map(e=>'<div class="wf-edge"><strong>'+esc(lookup.get(e.from)||e.from)+'</strong> → <strong>'+esc(lookup.get(e.to)||e.to)+'</strong><small>'+esc(e.kind)+'</small></div>').join(""):'<p class="wf-muted">No declared edges found.</p>'}
+async function load(){
+ try{
+  const response=await fetch("./data/workflow-discovery-feed.json");
+  if(!response.ok)throw new Error("HTTP "+response.status);
+  const feed=await response.json(),s=feed.summary||{},dist=feed.distributions||{},rows=feed.workflows||[];
+  const lookup=new Map(rows.map(w=>[w.path,w.name]));
+  $("freshness").textContent=s.observation_state==="fresh"?"Observation fresh":"Observation stale / unknown";
+  $("generated").textContent="Feed "+(feed.generated_at||"—")+" · Actions read "+(feed.sources?.observations_read_at||"—");
+  $("status").textContent="Schema "+(feed.schema||"—")+" · source fingerprint "+(feed.sources?.catalog_fingerprint||"—");
+  $("kpis").innerHTML=card(s.workflow_definitions,"Workflow definitions")+card(s.observed_workflows,"Workflows with run observations")+card(s.scheduled_workflows,"Scheduled definitions")+card(s.nested_edges,"Nested workflow edges")+card(s.sampled_runs,"Sampled run records")+card(s.job_dependency_edges,"Job dependency edges");
+  bars("trigger-mix",dist.triggers);bars("domain-mix",dist.domains);
+  edgeList("workflow-run-edges",(feed.edges||[]).filter(e=>e.kind==="workflow_run"),lookup);
+  edgeList("reusable-edges",(feed.edges||[]).filter(e=>e.kind==="reusable_workflow"),lookup);
+  const unresolved=feed.unresolved_references||[];
+  $("unresolved").innerHTML=unresolved.length?unresolved.map(e=>'<div class="wf-edge"><strong>'+esc(e.reference)+'</strong><small>'+esc(e.kind)+' · '+esc(e.state)+' · source '+esc(e.source)+'</small></div>').join(""):'<p class="wf-muted">All discovered nested references resolve uniquely.</p>';
+  const scheduled=rows.filter(w=>(w.schedules||[]).length);
+  $("schedule-rows").innerHTML=scheduled.length?scheduled.map(w=>'<tr><td>'+esc(w.name)+'</td><td>'+esc(w.domain)+'</td><td>'+w.schedules.map(esc).join("<br>")+'</td></tr>').join(""):'<tr><td colspan="3">No scheduled workflows found in the catalog.</td></tr>';
+  $("sample-note").textContent="Sampled "+n(s.sampled_runs)+" runs across "+n(s.sampled_workflows)+" workflows · observer age "+n(s.observation_age_hours)+" hours · sample bounds "+JSON.stringify(feed.sources?.sampling||{});
+  const active=rows.filter(w=>w.run_observation?.state==="observed").sort((a,b)=>(b.run_observation.runs||0)-(a.run_observation.runs||0));
+  $("activity-rows").innerHTML=active.length?active.map(w=>{const o=w.run_observation||{},d=o.duration_s||{},lat=o.latest||{};return '<tr><td>'+esc(w.name)+'</td><td>'+n(o.runs)+'</td><td>'+n(o.failures)+'</td><td>'+pct(o.failure_rate)+'</td><td>'+seconds(d.median)+'</td><td>'+seconds(d.p95)+'</td><td>'+(lat.html_url?'<a href="'+esc(lat.html_url)+'">'+esc(lat.created_at||"run")+'</a>':esc(lat.created_at||"—"))+'</td></tr>'}).join(""):'<tr><td colspan="7">No workflow run observations are available.</td></tr>';
+  const jobs=feed.job_dependencies||[];
+  $("job-edges").innerHTML=jobs.length?jobs.slice(0,100).map(e=>'<div class="wf-edge">'+esc(e.workflow)+' · '+esc(e.from_job)+' → '+esc(e.to_job)+' <small>'+esc(e.state)+'</small></div>').join(""):'<p class="wf-muted">No job dependency edges found.</p>';
+  const gaps=feed.gaps||[];
+  $("gaps-list").innerHTML=gaps.length?gaps.map(g=>'<div class="wf-edge wf-bad">'+esc(g)+'</div>').join(""):'<div class="wf-edge wf-good">No feed coverage gaps recorded.</div>';
+ }catch(error){
+  $("freshness").textContent="Feed unavailable — UNVERIFIED";
+  $("generated").textContent=String(error);
+  $("status").textContent="Feed unavailable; nothing is shown rather than anything guessed.";
+  for(const id of ["kpis","trigger-mix","domain-mix","workflow-run-edges","reusable-edges","unresolved","schedule-rows","activity-rows","job-edges","gaps-list"]){$(id).innerHTML='<p class="wf-muted">Feed unavailable.</p>'}
+ }
+}
+load();
+</script>
+</body>
+</html>

@@ -4,8 +4,9 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
+import json
 
-from scripts.dashboards.workflow_discovery_feed import build_feed
+from scripts.dashboards.workflow_discovery_feed import build_feed, load_job_observations
 
 
 class WorkflowDiscoveryFeedTests(unittest.TestCase):
@@ -55,8 +56,22 @@ class WorkflowDiscoveryFeedTests(unittest.TestCase):
                     }
                 },
             }
+            job_data = {
+                "by_workflow": {
+                    ".github/workflows/upstream.yml": {
+                        "state": "observed", "runs_with_job_data": 2,
+                        "job_count": 3, "jobs_with_duration": 3,
+                        "job_failures": 1, "job_runtime_minutes": 2.5,
+                    }
+                },
+                "source": "ops/github-telemetry/raw/actions-jobs/test",
+                "run_snapshot": "ops/github-telemetry/raw/actions-runs/test.json",
+                "run_count": 2, "workflow_count": 1, "job_count": 3,
+                "jobs_with_duration": 3, "job_failures": 1,
+                "job_runtime_minutes": 2.5,
+            }
             feed = build_feed(
-                catalog, observations, workflow_root=root,
+                catalog, observations, workflow_root=root, job_data=job_data,
                 generated_at="2026-11-22T00:00:00Z",
             )
             self.assertEqual(feed["summary"]["workflow_definitions"], 3)
@@ -78,7 +93,38 @@ class WorkflowDiscoveryFeedTests(unittest.TestCase):
             )
             observed = feed["workflows"][2]["run_observation"]
             self.assertEqual(observed["failure_rate"], 0.5)
+            self.assertEqual(feed["workflows"][2]["job_observation"]["job_runtime_minutes"], 2.5)
+            self.assertEqual(feed["summary"]["job_runtime_minutes"], 2.5)
             self.assertEqual(feed["summary"]["observation_state"], "fresh")
+
+
+    def test_raw_job_snapshot_yields_operational_job_minutes(self):
+        with TemporaryDirectory(dir=Path(__file__).resolve().parents[1]) as tmp:
+            raw = Path(tmp) / "raw"
+            run_dir = raw / "actions-runs"
+            job_dir = raw / "actions-jobs" / "20261122T000000Z"
+            run_dir.mkdir(parents=True)
+            job_dir.mkdir(parents=True)
+            (run_dir / "runs-20261122T000000Z.json").write_text(json.dumps({
+                "data": {"workflow_runs": [
+                    {"id": 99, "path": ".github/workflows/a.yml"}
+                ]}
+            }), encoding="utf-8")
+            (job_dir / "jobs-99.json").write_text(json.dumps({
+                "meta": {"run_id": 99},
+                "data": {"jobs": [
+                    {"id": 1, "started_at": "2026-11-22T00:00:00Z",
+                     "completed_at": "2026-11-22T00:01:00Z", "conclusion": "success"},
+                    {"id": 2, "started_at": "2026-11-22T00:01:00Z",
+                     "completed_at": "2026-11-22T00:03:00Z", "conclusion": "failure"},
+                ]}
+            }), encoding="utf-8")
+            result = load_job_observations(raw)
+            self.assertEqual(result["job_count"], 2)
+            self.assertEqual(result["jobs_with_duration"], 2)
+            self.assertEqual(result["job_failures"], 1)
+            self.assertEqual(result["job_runtime_minutes"], 3.0)
+            self.assertEqual(result["by_workflow"][".github/workflows/a.yml"]["runs_with_job_data"], 1)
 
     def test_unresolved_reference_and_stale_observation_are_explicit(self):
         with TemporaryDirectory() as tmp:

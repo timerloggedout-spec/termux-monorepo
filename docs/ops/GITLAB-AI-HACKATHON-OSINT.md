@@ -52,20 +52,20 @@ The connector's prize catalogue totals $65,000. The official rules enumerate the
 
 The Transcend subgroup is related to the same GitLab AI Hackathon root but represents a distinct event program and workspace collection. Do not merge it into the February–March event record.
 
-### 2.3 GitLab Community Hackathon — October 2026 edition
+### 2.3 GitLab Community Hackathon — October 2026 history + January 2027 upcoming edition
 
-- Official event surface: [Contributor Platform hackathon](https://contributors.gitlab.com/hackathon) · [rules](https://contributors.gitlab.com/docs/hackathon-rules) · [event announcement](https://forum.gitlab.com/t/our-next-gitlab-hackathon-starts-october-6th/135317).
-- Event window: **2026-10-06 – 2026-10-12 UTC**.
-- Merge window: qualifying merge requests had to be merged by **2026-11-12**.
-- This is a contribution/leaderboard program with swag-credit rewards, not the Devpost AI-agent competition.
-- The published rules include daily issue/MR caps, assignment-before-MR, contributor-owned AI work, one typo-fix MR per project, and first-time-contributor restrictions for the reserved quick-win label.
-- Current edition: **closed**. Next edition dates: **NOT_ESTABLISHED**.
+- Official event surface: [Contributor Platform hackathon](https://contributors.gitlab.com/hackathon) · [current rules](https://contributors.gitlab.com/docs/hackathon-rules) · [October announcement](https://forum.gitlab.com/t/our-next-gitlab-hackathon-starts-october-6th/135317).
+- October 2026 edition: **2026-10-06 – 2026-10-12 UTC**; qualifying MRs merged within 31 days (cutoff Nov 12). The current page reports 76 prize winners and 636 merged MRs for that edition.
+- **Next edition: January 21–28, 2027**. The page says the hackathon runs in UTC and displays a live countdown to January 21; exact start/end clock times are not separately stated in the page text.
+- Reward model: first place 200 Contributor Success store credits; second 150; third 100; 50 credits for each participant with a qualifying merged MR. No cash prize is listed.
+- Current rules version: **2026-10-v2**. Requirements include no more than 20 MRs and 20 issues per day; issue assignment before MR; AI tools allowed with contributor review/testing responsibility; no scripted/automated/programmatic labeling; one typo-fix MR per project; and first-time-contributor quick-win restrictions.
+- This is a contribution/leaderboard program, not the Devpost AI-agent competition. January 2027 is **upcoming**; the owner's onboarding/registration and issue assignment remain NOT_ESTABLISHED.
 
 ## 3. Discord and onboarding sources
 
 The official event materials direct participants to the GitLab Community Discord and the `#ai-hackathon` channel for technical help, team formation, office hours, and announcements. The Devpost event resources also link the Devpost Discord for team formation.
 
-- [GitLab Discord invite](https://discord.com/invite/gitlab) — `#ai-hackathon`.
+- [GitLab Discord invite](https://discord.com/invite/gitlab) — `#ai-hackathon` for the Devpost AI Hackathon; current Community Hackathon rules direct questions to `#hackathon` or `#contribute`.
 - [Devpost Discord](https://info.devpost.com/blog/join-the-devpost-discord).
 - Office-hours schedule is posted in the GitLab Discord; individual session dates are NOT_ESTABLISHED in this public-source pass.
 - The initial AI Hackathon access-request form was [https://forms.gle/EeCH2WWUewK3eGmVA](https://forms.gle/EeCH2WWUewK3eGmVA). The Devpost event page stated access requests stopped on **2026-03-25 09:00 ET**. Treat this form as historical evidence; verify a new official form before any future registration.
@@ -93,7 +93,7 @@ The reusable template is recorded metadata-first under `refTemplates/12_External
 5. Treat official event placement, directory position, displayed engagement, and internal analytical ranking as separate dimensions.
 6. Keep participant/persona collection public-source-only. External participants remain observation-only; recruitment is for our own team.
 7. Registration, account access, group membership, project creation, and submission are separate states. This dossier records **none** of those owner actions as completed.
-8. The three 2026 editions are closed. The next GitLab AI Hackathon, Transcend edition, and Community Hackathon dates are **NOT_ESTABLISHED** as of 2026-11-22. Retain them as future-cycle watch targets, not open registrations.
+8. The February–March 2026 GitLab AI Hackathon and October 2026 Life After Code / Transcend edition are closed; their next-cycle dates are **NOT_ESTABLISHED**. The GitLab Community Hackathon has a published upcoming edition for **January 21–28, 2027** and is added as candidate **C17**. Owner onboarding, registration, issue assignment, and contribution state remain **NOT_ESTABLISHED**.
 
 Machine-readable URL/source inventory: [`ops/challenge/osint/gitlab-sources.json`](../../ops/challenge/osint/gitlab-sources.json).
 

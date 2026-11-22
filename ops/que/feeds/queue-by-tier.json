@@ -1,16 +1,14 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-22T06:17:17Z",
+ "generated_at": "2026-11-22T06:52:09Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 4,
-   "in_progress": 0,
+   "queued": 2,
+   "in_progress": 2,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "repo gate": 1,
-    "Orchestration Regression Guard": 1,
     "PR scope guard": 2
    }
   },
@@ -18,7 +16,7 @@
    "tier": 2,
    "queued": 1,
    "in_progress": 1,
-   "oldest_queued_at": "2026-11-22T06:16:19Z",
+   "oldest_queued_at": "2026-11-22T06:51:45Z",
    "by_workflow_queued": {
     "tribute-dashboard-deploy": 1
    }
@@ -26,34 +24,30 @@
   "3": {
    "tier": 3,
    "queued": 0,
-   "in_progress": 0,
+   "in_progress": 1,
    "oldest_queued_at": null,
    "by_workflow_queued": {}
   },
   "4": {
    "tier": 4,
-   "queued": 13,
-   "in_progress": 22,
+   "queued": 21,
+   "in_progress": 31,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
+    "Context Relationship + Lead/Lag Audit": 8,
     "n8n SHE bridge": 1,
-    "Agent Throughput Evidence": 1,
-    "lane events recorder": 1,
-    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
-    "Foresight Evidence Spine": 1,
-    "quota-allocation-planner": 1,
-    "hitl-control-plane-verify": 1,
-    "quota-served-probe": 1,
-    "DO Statement Style": 2,
+    "Issue Comment Router \u2014 modular fan-out reduction": 7,
+    "delphi-rfp-feed-collect": 1,
     "Agent PR Jules Handoff": 1,
     "PR Change Effectiveness Ledger": 1,
-    "Advisory GitHub Actions lint": 1
+    "Advisory GitHub Actions lint": 1,
+    "DO Statement Style": 1
    }
   }
  },
  "totals": {
-  "queued": 18,
-  "in_progress": 23
+  "queued": 24,
+  "in_progress": 35
  },
  "wedged_ancient": [
   {
@@ -213,11 +207,11 @@
   "explicit": {
    "1": 4,
    "2": 2,
-   "3": 0,
+   "3": 1,
    "4": 0
   },
-  "explicit_total": 6,
-  "default_t4": 35,
+  "explicit_total": 7,
+  "default_t4": 52,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

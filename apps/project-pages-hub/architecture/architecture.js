@@ -150,7 +150,7 @@
         continue;
       }
       const resolved = new URL(href, "https://repo.local/" + item.path);
-      const repoPath = decodeURIComponent(resolved.pathname.replace(/^\\/+/, ""));
+      const repoPath = decodeURIComponent(resolved.pathname.replace(/^\/+/, ""));
       const related = state.catalog.items.find(candidate => candidate.path === repoPath);
       if (related) {
         link.href = "#source-" + encodeURIComponent(related.id);

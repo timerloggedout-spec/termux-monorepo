@@ -95,6 +95,23 @@ class ArchitectureDocumentationTests(unittest.TestCase):
         subprocess.run(["git", "add", "."], cwd=root, check=True)
         subprocess.run(["git", "commit", "-qm", "baseline"], cwd=root, check=True)
 
+    def test_version_check_accepts_initial_1_0_0_baseline(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.make_root(root)
+            (root / "docs/architecture/VERSION").unlink()
+            (root / "docs/architecture/CHANGELOG.md").unlink()
+            self.init_git(root)
+            (root / "architecture.md").write_text("# Initial governed architecture\\n", encoding="utf-8")
+            (root / "docs/architecture/VERSION").write_text("1.0.0\\n", encoding="utf-8")
+            (root / "docs/architecture/CHANGELOG.md").write_text(
+                "# Changelog\\n\\n## 1.0.0 \\u2014 2026-11-22\\n- Initial baseline.\\n",
+                encoding="utf-8",
+            )
+            subprocess.run(["git", "add", "."], cwd=root, check=True)
+            subprocess.run(["git", "commit", "-qm", "initial architecture baseline"], cwd=root, check=True)
+            self.assertTrue(architecture_docs.check_version_bump(root, "HEAD~1"))
+
     def test_version_check_requires_bump_and_changelog(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

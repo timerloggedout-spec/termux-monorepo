@@ -3,7 +3,7 @@ name: research intake
 # Issue triggers for the research pipeline (docs/ops/RESEARCH-TRIGGERS.md).
 # Filing a research template issue IS the trigger (target-intake / delphi-intake
 # precedent: event trigger, no cron). Events:
-#   issues opened/labeled/reopened with label research, research:provider or
+#   issues opened/reopened/edited with label research, research:provider or
 #     research:service -> parse the form body into the seed/starter record
 #     for the pipeline the kind routes to, comment it back on the issue.
 #   issue_comment created containing '<!-- request-research -->' plus

@@ -101,8 +101,11 @@ def test_trial_partial_jev_failure_preserves_candidate_identity(monkeypatch, tmp
 
     def factory(provider, model):
         if provider == "gemini":
-            return GeminiAdapter(transport=_gemini_transport, api_key="test-key")
-        return OpenRouterAdapter(transport=_openrouter_transport, api_key="test-key")
+            adapter = GeminiAdapter(transport=_gemini_transport, api_key="test-key")
+        else:
+            adapter = OpenRouterAdapter(transport=_openrouter_transport, api_key="test-key")
+        adapter.model = model
+        return adapter
 
     record = asyncio.run(trial.run_trial(
         "hi",
@@ -113,9 +116,12 @@ def test_trial_partial_jev_failure_preserves_candidate_identity(monkeypatch, tmp
         client_factory=factory,
     ))
 
+    assert record["run_id"]
     assert [row["candidate_id"] for row in record["laya"]["ranked"]] == [
-        "candidate-0001"
+        f'{record["run_id"]}-candidate-0001'
     ]
     assert record["winner"]["provider"] == "openrouter"
-    assert record["laya"]["excluded"][0]["candidate_id"] == "candidate-0000"
+    assert record["laya"]["excluded"][0]["candidate_id"] == (
+        f'{record["run_id"]}-candidate-0000'
+    )
 

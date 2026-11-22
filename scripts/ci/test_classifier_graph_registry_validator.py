@@ -44,6 +44,19 @@ class ClassifierGraphRegistryTests(unittest.TestCase):
         self.assertTrue(any("unit_count: snapshot count mismatch" in error
                             for error in self.validate(registry)))
 
+    def test_local_jev_is_dispatch_only_and_external_jev_is_paid_gated(self):
+        registry = copy.deepcopy(self.registry)
+        candidates = {item["candidate_id"]: item for item in registry["candidates"]}
+        self.assertEqual(candidates["local.deepcli.jev"]["operational_state"],
+                         "dispatch_only_baseline")
+        self.assertEqual(candidates["catalog.S1-01"]["operational_state"],
+                         "blocked_paid_owner_gate")
+
+    def test_missing_operational_state_is_rejected(self):
+        registry = copy.deepcopy(self.registry)
+        registry["candidates"][0].pop("operational_state")
+        self.assertTrue(any("operational_state" in error for error in self.validate(registry)))
+
     def test_unknown_catalog_reference_is_rejected(self):
         registry = copy.deepcopy(self.registry)
         candidate = next(item for item in registry["candidates"] if item["kind"] == "catalog")

@@ -6,7 +6,7 @@
 **Owner:** ChatGPT — documentation implementation  
 **Operator authorization:** accepted for the bounded documentation change  
 **Canonical output:** repository root `architecture.md`  
-**Implementation branch:** `docs/repository-architecture-entry-20261121-v2`
+**Implementation branch:** `docs/architecture-versioning-automation-20261122-v2`
 
 ## Objective
 
@@ -18,6 +18,7 @@ Establish one repository-wide architecture entry that routes collaborators to ca
 - Mermaid data-flow source under `docs/ops/diagrams/`.
 - Entry-point links in root `CLAUDE.md`, root `README.md`, `docs/icm/CLAUDE.md`, and `docs/architecture/README.md`.
 - Proposal registry and work-item record.
+- Semantic architecture versioning, deterministic source/render manifest, and automated architecture diagram refresh through the existing workflow.
 
 ## Authority and boundaries
 
@@ -35,6 +36,9 @@ Establish one repository-wide architecture entry that routes collaborators to ca
 - [ ] Proposal registry validator passes with the manifest and work items present.
 - [ ] Repository gate and Termux smoke pass on the same head.
 - [ ] Required PR checks complete and the merged master head is re-fetched.
+- [x] Initial SemVer baseline, versioning contract, changelog, and architecture-governance map added.
+- [x] Deterministic manifest generator and fourteen focused tests pass in the local fixture suite.
+- [ ] Existing workflow renders architecture flow SVGs, validates the manifest, uploads PR evidence, and refreshes trusted master projections.
 
 ## Evidence
 
@@ -54,9 +58,27 @@ Establish one repository-wide architecture entry that routes collaborators to ca
 ## Architecture v2 — linked modules and snapshot audit
 
 - Flow index: docs/architecture/flows/README.md
-- Six detailed Markdown maps and six paired Mermaid sources are linked from root architecture.md.
+- Seven detailed Markdown maps and seven paired Mermaid sources are linked from root architecture.md.
 - Mermaid.ai project: https://mermaid.ai/app/projects/affbc609-b2b7-420c-af5b-ca0ccb74fe14
 - Existing root diagram document ID updated in place: 080c5454-1215-40a8-afb5-7ef30e42dfcb
 - Focused Mermaid.ai saves reached the account diagram limit; all six editable sources are committed in the repository.
 - archwiz/DATA_FLOW_MANIFEST.md is a zero-byte tracked blob at observed master SHA 5135731c389c6b1b8ed8332b3415a60f8163c2a1. Generator writes to $HOME/archwiz/DATA_FLOW_MANIFEST.md and omits source SHA / tree SHA / input digest.
 - Actual local generated_at: unknown; it is not inferred from audit date.
+
+
+## Current implementation PR
+
+- PR #5770: https://github.com/timerloggedout-spec/termux-monorepo/pull/5770
+- Branch: docs/architecture-versioning-automation-20261122-v2
+- Current status: open draft; exact-head validation and independent review pending.
+
+## Architecture versioning extension — REPO-ARCH-007
+
+- Design: docs/superpowers/specs/2026-11-22-architecture-versioning-design.md
+- Implementation plan: docs/superpowers/plans/2026-11-22-architecture-versioning-plan.md
+- Version contract: docs/architecture/VERSIONING.md
+- Initial version: 1.0.0
+- Manifest generator: scripts/ci/architecture_docs.py
+- Architecture flow: docs/architecture/flows/architecture-governance.md and architecture-governance.mmd
+- Focused test-first sequence: missing generator produced the expected initial failure; implementation then passed 14 focused tests locally.
+- PR validation, trusted master refresh, and final master re-fetch remain pending runtime evidence.

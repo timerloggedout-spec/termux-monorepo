@@ -66,8 +66,8 @@ def test_whitespace_only_source_file_has_empty_preview(tmp_path, monkeypatch):
     slot = ref / "19_Provider_Inference_Catalogs"
     child = slot / "vultr-model-catalog-python"
     child.mkdir(parents=True)
-    (child / "README.md").write_text("reference\\n", encoding="utf-8")
-    (child / "SOURCE.txt").write_text("  \\n\\t\\n", encoding="utf-8")
+    (child / "README.md").write_text("reference\n", encoding="utf-8")
+    (child / "SOURCE.txt").write_text("  \n\t\n", encoding="utf-8")
     monkeypatch.setattr(inventory, "ROOT", root)
     monkeypatch.setattr(inventory, "REF", ref)
 

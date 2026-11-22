@@ -98,6 +98,8 @@ Use randomized blocks and factorial designs for controlled factors. Use fraction
 
 Dynamic utility: estimate main effects and selected interactions, then allocate follow-up experiments to high uncertainty/impact regions.
 
+The repository already has full-factorial, Taguchi L9 and seeded randomized assignment helpers in deepcli/deepcli/observatory/doe.py. Reuse and extend those implementations after checking design assumptions and tests.
+
 ### G. Sequential Bayesian optimization / multi-armed bandit
 **Best for:** adaptive allocation after a stable baseline and sufficient observations.
 
@@ -111,6 +113,8 @@ Dynamic utility: allocate additional trials where expected information gain or e
 Each candidate has immutable parent lineage and a policy version. Mutation/crossover creates new candidates; islands maintain diversity; periodic migration shares strong candidates. Selection uses validated outcomes and Pareto dominance.
 
 Dynamic utility: select by constrained multi-objective fitness, diversity and novelty rather than one noisy scalar. Preserve eliminated candidates and failure evidence.
+
+The repository already documents deterministic replay and incumbent-preserving evolutionary policy screening in docs/ops/EVOLUTIONARY-REPLAY.md. Extend that history-first design before adding live evolutionary execution.
 
 ### I. Constraint-based utility / Pareto decision layer
 **Best for:** balancing correctness, quality, latency, cost, context and operational risk.
@@ -152,19 +156,17 @@ Weights are configuration, not truth. Keep each raw dimension and its provenance
 
 Use separate immutable identifiers:
 
-- experiment_id: stable logical experiment.
-- experiment_version: immutable DoE plan revision.
-- tournament_id: competition instance.
-- cohort_id: matched task cohort.
-- treatment_id: factor-level combination.
-- manager_policy_id + manager_policy_version.
-- task_id + task_version.
+- experiment_id + experiment_version for the DoE design.
+- tournament_id + cohort_id for the canonical manager.tournament.v1 comparison.
+- treatment_id for factor-level combination.
+- manager_id + policy_hash and manager policy version.
+- task_id + task version.
 - run_id + run_attempt.
 - evaluator_id + evaluator_version.
 - environment_fingerprint.
 - artifact_digest.
 
-A changed prompt, topology, factor assignment, evaluator, environment or acceptance rule creates a new version. Historical records remain immutable.
+A changed prompt, topology, factor assignment, evaluator, environment or acceptance rule creates a new version. Historical records remain immutable. The canonical manager cohort schema remains the identity anchor; DoE design records extend it.
 
 ## 6. Execution lifecycle
 
@@ -208,19 +210,20 @@ The core scheduler must work without cloud accounts, paid observability vendors 
 
 ## 9. Implementation sequence
 
-1. Map existing tournament and DoE modules; retain current SSOTs.
-2. Add versioned experiment/treatment manifest schema.
-3. Add SQLite event ledger and JSONL export adapter.
-4. Add deterministic local runner and matched cohort fixture.
-5. Add manager policy adapter and lease/write-set contract.
-6. Add independent quality evaluator and Pareto reducer.
-7. Add randomized/factorial assignment and preregistration.
-8. Add sequential allocation after baseline evidence exists.
-9. Add optional Actions, MCP/A2A, container and telemetry adapters.
-10. Add dashboard projections only after canonical receipts and reducers stabilize.
+1. Map existing manager tournament schema, DoE helpers, trial/tournament pipeline and replay simulator; retain current SSOTs.
+2. Define a supplemental versioned experiment-design manifest that references manager.tournament.v1.
+3. Add validators only for missing fields/invariants; avoid duplicate cohort schemas.
+4. Connect design assignments to the existing DoE helpers.
+5. Add deterministic local runner fixtures and matched cohorts.
+6. Extend manager policy adapter and lease/write-set contract.
+7. Add independent quality evaluator and Pareto reducer.
+8. Add randomized/factorial assignment and preregistration.
+9. Add sequential allocation after baseline evidence exists.
+10. Add optional Actions, MCP/A2A, container and telemetry adapters.
+11. Add dashboard projections only after canonical receipts and reducers stabilize.
 
 ## 10. Decision
 
 Adopt the hybrid: event-sourced ledger + versioned DAG + manager/worker policies + actor leases + blackboard evidence + DoE planner + Pareto utility. Add bandit/Bayesian/evolutionary allocation as policy modules behind stable contracts.
 
-This gives dynamic utility without surrendering reproducibility or canonical authority.
+Reuse existing manager.tournament.v1, DeepCLI DoE/trial/tournament and evolutionary replay implementations. This gives dynamic utility without creating a parallel source of truth.

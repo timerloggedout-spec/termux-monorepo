@@ -7,10 +7,19 @@ from scripts.ci import refTemplates_inventory as inventory
 
 
 @pytest.mark.parametrize(
-    "slot_name",
-    ["15_Research_Repo_Templates", "19_Provider_Inference_Catalogs"],
+    ("slot_name", "expected"),
+    [
+        ("15_Research_Repo_Templates", ["15_Research_Repo_Templates/reference: missing SOURCE.txt"]),
+        (
+            "19_Provider_Inference_Catalogs",
+            [
+                "19_Provider_Inference_Catalogs/reference: missing SOURCE.txt",
+                "19_Provider_Inference_Catalogs/reference: missing metadata.json",
+            ],
+        ),
+    ],
 )
-def test_metadata_reference_slots_require_source_and_readme(tmp_path, monkeypatch, slot_name):
+def test_metadata_reference_slots_require_source_and_readme(tmp_path, monkeypatch, slot_name, expected):
     root = tmp_path / "repo"
     ref = root / "refTemplates"
     slot = ref / slot_name
@@ -22,7 +31,7 @@ def test_metadata_reference_slots_require_source_and_readme(tmp_path, monkeypatc
 
     entry = inventory.inventory_entry(slot)
 
-    assert inventory.validate([entry]) == [f"{slot_name}/reference: missing SOURCE.txt"]
+    assert inventory.validate([entry]) == expected
 
 
 def test_complete_provider_inference_reference_passes(tmp_path, monkeypatch):
@@ -35,6 +44,7 @@ def test_complete_provider_inference_reference_passes(tmp_path, monkeypatch):
     (child / "SOURCE.txt").write_text(
         "https://github.com/vultr/model-catalog-typescript\n", encoding="utf-8"
     )
+    (child / "metadata.json").write_text("{}\n", encoding="utf-8")
     monkeypatch.setattr(inventory, "ROOT", root)
     monkeypatch.setattr(inventory, "REF", ref)
 
@@ -61,6 +71,7 @@ def test_legacy_research_children_field_remains_available(tmp_path, monkeypatch)
             "name": "jogyo",
             "has_source": True,
             "has_readme": True,
+            "has_metadata": False,
             "source_preview": "https://example.test",
         }
     ]
@@ -75,6 +86,7 @@ def test_whitespace_only_source_file_has_empty_preview(tmp_path, monkeypatch):
     child.mkdir(parents=True)
     (child / "README.md").write_text("reference\n", encoding="utf-8")
     (child / "SOURCE.txt").write_text("  \n\t\n", encoding="utf-8")
+    (child / "metadata.json").write_text("{}\n", encoding="utf-8")
     monkeypatch.setattr(inventory, "ROOT", root)
     monkeypatch.setattr(inventory, "REF", ref)
 

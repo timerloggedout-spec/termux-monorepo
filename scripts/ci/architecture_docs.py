@@ -85,6 +85,17 @@ def _flow_diagrams(root: Path) -> list[Path]:
     )
 
 
+def _validate_flow_pairs(root: Path, diagrams: list[Path]) -> None:
+    for source in diagrams:
+        mapping = source.with_suffix(".md")
+        if not mapping.is_file():
+            raise ValueError(
+                f"missing paired architecture flow mapping for "
+                f"{source.relative_to(root).as_posix()}: "
+                f"{mapping.relative_to(root).as_posix()}"
+            )
+
+
 def build_manifest(root: Path = ROOT) -> dict[str, object]:
     version, _ = _read_version(root)
     sources: list[dict[str, str]] = []
@@ -114,13 +125,16 @@ def build_manifest(root: Path = ROOT) -> dict[str, object]:
             "sha256": digest,
         })
 
+    flow_sources = _flow_diagrams(root)
+    _validate_flow_pairs(root, flow_sources)
+
     diagrams: list[dict[str, str]] = []
     render_pairs = [
         (
             source,
             root / FLOW_RENDER_DIR / f"{source.stem}.svg",
         )
-        for source in _flow_diagrams(root)
+        for source in flow_sources
     ]
 
     ops_directory = root / OPS_DIAGRAM_DIR

@@ -38,7 +38,7 @@ The change author proposes the level. Reviewers verify the classification agains
 7. Merge only after repository policy gates pass. The trusted master refresh then commits the generated projections.
 8. WAIT → WATCH → RE-FETCH the resulting master commit and confirm the manifest and renders match the merged sources.
 
-The CI version gate compares the pull-request head with its base ref. Semantic source changes require both VERSION and CHANGELOG.md in that same change, and the new version must be greater than the base version. The first governed baseline starts at 1.0.0.
+The CI version gate compares the pull-request head with its base ref. Semantic source changes require both VERSION and CHANGELOG.md in that same change. A version-file-only change also triggers the gate, which requires the matching changelog entry and a version greater than the base version. The first governed baseline starts at 1.0.0.
 
 ## Bounded feedback loop
 

@@ -329,8 +329,8 @@ Acceptance gates:
 
 The Challenge OSINT lane now has a GitLab source-family dossier:
 [`GITLAB-AI-HACKATHON-OSINT.md`](GITLAB-AI-HACKATHON-OSINT.md), backed by
-`ops/challenge/osint/gitlab-sources.json`. This is a cross-venue source set,
-not an extension of the Devpost global software-directory adapter.
+`ops/challenge/osint/gitlab-sources.json`. This is a cross-venue source set, separate from the Devpost global
+software-directory adapter.
 
 The public GitLab hierarchy was observed 2026-11-22:
 
@@ -364,10 +364,10 @@ the participant template. The historical group-access form is closed with
 the February–March event. A future cycle must supply a fresh official
 registration/access path before a registration plan advances.
 
-The supplied DevSecOps Flow subgroup is a useful source target, but its
-observed empty state does not establish a challenge brief, active project, or
-owner entry. Keep the next editions as future-cycle watch targets with dates
-`NOT_ESTABLISHED`. No registration, group membership, or submission is
-claimed. The new source registry is currently an inventory only; the weekly
+The supplied DevSecOps Flow subgroup is a useful source target; its observed
+empty state leaves challenge brief, active project, and owner-entry state
+NOT_ESTABLISHED. Keep the AI Hackathon and Transcend next editions as
+future-cycle watch targets with dates `NOT_ESTABLISHED`. Owner registration,
+group membership, and submission state: NOT_ESTABLISHED. The new source registry is currently an inventory only; the weekly
 Challenge OSINT watcher and Devpost directory adapter remain unchanged until
 their own integration work is implemented and observed.

@@ -68,6 +68,8 @@ class ArchitecturePortalBuilderTests(unittest.TestCase):
 
             svg = by_path["docs/architecture/flows/imported.svg"]
             self.assertEqual(svg["kind"], "svg")
+            self.assertEqual(svg["title"], "Imported")
+            self.assertEqual(svg["summary"], "Imported SVG vector asset.")
             self.assertTrue((output / svg["asset_path"]).is_file())
             self.assertEqual(catalog["source_sha"], "abc123")
             self.assertTrue(catalog["generated_at"].endswith("Z"))

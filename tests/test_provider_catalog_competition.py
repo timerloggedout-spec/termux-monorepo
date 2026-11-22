@@ -11,7 +11,7 @@ def test_populate_writes_both_catalogues_from_one_v5_snapshot(tmp_path):
     output = tmp_path / "catalogues"
     source_bytes = (
         b'{"schema":"provider-model-catalog/v5","observed_at":"2026-11-21T00:00:00Z",'
-        b'"providers":["fixture"],"models":[{"provider":"fixture","id":"model-a",'
+        b'"providers":["fixture"],"provider_observations":{"fixture":{"status":"observed"}},"models":[{"provider":"fixture","id":"model-a",'
         b'"pricing":{"prompt":"0.0001"}}]}'
     )
     source.write_bytes(source_bytes)

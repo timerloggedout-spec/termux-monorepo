@@ -1,61 +1,54 @@
-# System One Catalog — Tier-1 classifier map
+# System One Catalog — classifier and decision-system map
 
-The fleet's map of the **System One** ecosystem: typed decision models
-that take application state plus caller-defined questions and return
-choices, scores, or probabilities (Choice / Score / Noul) instead of
-open-ended text. This is the external landscape the Tier 1 classifier
-lane operates in; the fleet's own quartet (deepcli `observatory/`:
-Mev/Jev/Kev/Laya roles) is the local implementation surface.
+This catalog describes external System One-compatible decision models and their serving ecosystem. The local `deepcli.observatory` modules use Mev/Jev/Kev/Laya as **role labels**. The external projects with overlapping names are independently authored models, runtimes, or services. The shared labels create a naming collision; they do not establish shared code, weights, ownership, or equivalent behavior.
 
-- Machine-readable catalog: `config/system_one_catalog.json`
-  (schema `system-one-catalog/1`) — 88 entries, each with layer,
-  developer, note, source URL, and fleet state.
-- Proposal of record: `docs/proposals/active/system-one-classifier-census/`
-  (registered PR #1806) — CENSUS.md preserves the source inventory
-  (Perplexity research, as of 2026-10-21); ITEMS.md tracks every row.
+## Four identity layers
 
-## Layer discipline
+| Layer | Identity | Example | What it means |
+|---|---|---|---|
+| Local role | A capability slot in a workflow | producer, critic, verifier, merger | A contract that can be implemented by multiple candidates |
+| Local implementation | Repository code implementing a role | `observatory/mev.py`, `jev.py`, `kev.py`, `laya.py` | The current DeepCLI baseline implementation |
+| External candidate | Independently maintained model or service | TypeSafe Jev, Jared Palmer Kev, ConvAI Laya, Mellow AI Mev | A candidate to discover, adapt, route to, and evaluate |
+| Integration adapter | Protocol bridge to a candidate | `llm/adapters/systemone.py` | A transport/protocol integration; it does not imply role equivalence |
 
-Entries are counted once, in exactly one layer:
+The tournament records these layers separately. Every candidate receives a stable candidate ID, a source/project identity, a version or immutable revision, an adapter identity, a capability declaration, and an evidence record.
 
-| Layer | Count | Meaning |
-|---|---|---|
-| model | 61 | Trained model families (hosted, open-weight, or both) |
-| adapter | 16 | Inference techniques / serving adapters over existing models |
-| runtime | 7 | Ports, servers, and studios that run other entries |
-| directory | 4 | Indexes and rankings; never counted as models |
+## Catalog inventory
 
-## Fleet state vocabulary
+- Machine-readable catalog: `config/system_one_catalog.json`, schema `system-one-catalog/1`.
+- Census source: `docs/proposals/active/system-one-classifier-census/`.
+- The catalog currently reports 88 entries across four inventory layers: 61 model families, 16 adapters, 7 runtimes, and 4 directories. These are heterogeneous inventory entries, not 88 interchangeable classifiers.
+- Fleet states: `referenced` → `catalogued` → `trial_candidate` → `evaluated`. Each transition requires its own evidence.
 
-`referenced` (in the census only) → `catalogued` (in the JSON catalog)
-→ `trial_candidate` (a free or self-hosted route is identified) →
-`evaluated` (an observatory trial record exists). Promotion requires
-firsthand verification at each step; directory-level evidence never
-promotes an entry by itself.
+## Name-collision register
 
-## Namesakes
+| Local role label | Local implementation contract | External name match in the catalog | Evidence-backed distinction |
+|---|---|---|---|
+| Mev | `mev.produce`: calls a text-generation adapter and captures response, tokens, latency, and cost | S1-04 Mev (recruiting); S1-05 mev (Mellow AI) | Two separate external entries. The local producer role is neither model. |
+| Jev | `jev.critique`: sends artifact text and rubric to an LLM judge and parses rubric scores | S1-01 Jev (TypeSafe AI) | The local critic uses a generic chat adapter. TypeSafe Jev is a typed decision model/service. |
+| Kev | `kev.verify`: computes exact/token-F1 comparison against a supplied reference | S1-02 Kev (Jared Palmer) | The local verifier is deterministic token/exact matching. External Kev is a learned decision-model family with a serving stack. |
+| Laya | `laya.synthesize`: weighted rank of aligned artifact/Jev/Kev evidence | S1-03 Laya (ConvAI Innovations) | The local merger is a weighted reducer. External Laya is an encoder decision family. |
 
-The observatory role names are ecosystem projects: **Jev** — TypeSafe
-AI (hosted, paid; owner-gated); **Kev** — Jared Palmer's open Qwen
-family (self-hosted, TypeSafe-compatible); **Laya** — ConvAI
-Innovations' encoder family (open weights); **Mev** — two projects
-(a Laya fine-tune for recruiting; Mellow AI's Qwen3.5-4B LoRA).
-deepcli's classes implement the roles locally; they are not
-deployments of these projects.
+**Important correction to the integration story:** `llm/adapters/systemone.py` implements typed `decide(state, questions)`. Its `ask(prompt)` method deliberately raises `NotImplementedError`. Therefore System One-compatible servers can enter the dedicated decision/evaluation lane through `observatory/decide.py`; the adapter is not a generic text-generation adapter and does not make an external server a drop-in Mev producer or Jev chat judge. The current `decide_check` path is a post-trial check of a text (or a decide-only check), not yet a candidate-ID-aligned per-artifact Kev replacement or an interchangeable Laya merger.
 
-## Evaluation route
+## Evaluation lanes
 
-Counterpart evaluation runs through the observatory dispatch
-(`docs/ops/CLASSIFIER-TRIAL-DISPATCH.md`): the `deepcli.llm` System One
-adapter speaks the TypeSafe-compatible decision API, so any
-compatible server (Kev, simple-jev, Ollaya, LocalJev, jev-style, …)
-can be evaluated as a producer or judge endpoint. Hosted/paid models
-stay out of trials until the owner allows a paid route.
+1. **Generation lane:** text-producing models through Mev-compatible `ask(prompt)` adapters.
+2. **Critique lane:** independent judges through Jev-compatible `ask(prompt)` adapters, with producer/judge independence recorded.
+3. **Reference-verification lane:** deterministic and learned verifiers through an explicit verifier contract. The current local Kev is token-F1/exact; external decision models require an adapter that maps their typed output to the same versioned evidence schema.
+4. **Typed-decision lane:** System One-compatible candidates through `decide(state, questions)`. Record model ID, endpoint/runtime, question schema, raw answers, calibration/evidence, latency, and provenance.
+5. **Composition lane:** candidate graphs that combine these capabilities. Compare graph behavior against matched cohorts, rather than assuming similarly named components are equivalent.
 
-## Infrastructure options (W3)
+## External candidates and infrastructure
 
-Runtimes and adapters tracked as options, not model counts: Ollaya
-(local server for Laya/Kev/Von/Decider/Nimble), simple-jev (endpoints
-from open models, incl. a Laya backend), laya.cpp / Laya-MLX /
-Laya-CoreML (Laya ports), sys1 (Rust/Candle server), classifier.dev
-(shared Jev/Laya/Kev interface).
+The catalog and census preserve project attribution, source URLs, model/runtime/adapter layers, and fleet state. Examples include TypeSafe Jev, Jared Palmer Kev, ConvAI Laya, the two Mev entries, simple-jev, Ollaya, laya.cpp, sys1, and classifier.dev. Treat source descriptions and reported capabilities as discovery evidence; promote candidates only after a pinned artifact, reproducible setup, protocol check, and matched trial.
+
+## Tournament requirements
+
+- Assign each local role implementation and external project a distinct immutable identity.
+- Track name aliases as metadata; never use a display name as a unique key.
+- Compare candidates on capability-specific task cohorts and retain raw outputs.
+- Compare compositions separately from individual candidates.
+- Distinguish protocol compatibility from semantic equivalence.
+- Preserve unavailable, failed, and unmeasured evidence as explicit states.
+- Keep source revision, model revision, runtime, adapter, prompt/rubric, and environment hashes in each trial receipt.

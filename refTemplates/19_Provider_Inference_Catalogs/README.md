@@ -9,7 +9,7 @@ This slot contains two different asset classes: local competing catalogues and e
 | Incumbent | 5.0.0 | [scripts/provider_model_catalog.py](../../../scripts/provider_model_catalog.py) | Existing multi-provider collector and v5 evidence contract |
 | VultrInspired | 1.0.0 | [scripts/provider_model_catalog_vultr_inspired.py](../../../scripts/provider_model_catalog_vultr_inspired.py) | Native loss-aware offline projection over incumbent v5 records |
 
-VultrInspired uses the existing local Python runtime and standard library. It requires no credentials, makes zero network requests and makes zero inference calls. It is an evaluation candidate, not a runtime replacement or routing authority. Run it against a supplied incumbent snapshot with `python3 -m scripts.provider_model_catalog_vultr_inspired --input /path/to/incumbent-v5.json --output /path/to/vultr-inspired-v1.json`.
+VultrInspired uses the existing local Python runtime and standard library. It requires no credentials, makes zero network requests and makes zero inference calls. It is an evaluation candidate, not a runtime replacement or routing authority. Populate both catalogue files from one supplied v5 snapshot with `python3 -m scripts.provider_catalog_competition --input /path/to/incumbent-v5.json --output-dir /path/to/catalogues`; the runner writes `incumbent-v5.json`, `vultr-inspired-v1.json` and a digest-bound `manifest.json`.
 
 ## Upstream design references
 

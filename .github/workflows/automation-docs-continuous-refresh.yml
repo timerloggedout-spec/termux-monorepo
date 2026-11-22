@@ -149,6 +149,7 @@ jobs:
 
   refresh-trusted:
     if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
+    # Manual dispatch and scheduled refreshes share the master-only writer boundary.
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:

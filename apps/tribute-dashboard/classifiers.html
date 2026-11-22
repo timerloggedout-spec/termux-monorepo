@@ -24,7 +24,7 @@
 <h3>Units by state</h3><div id="chart-state"></div>
 <h3>Units by group</h3><div id="chart-group"></div></div></section>
 
-<section aria-labelledby="quartet-h"><div class="head"><h2 id="quartet-h">Observatory quartet</h2></div>
+<section aria-labelledby="quartet-h"><div class="head"><h2 id="quartet-h">Observatory role set</h2></div>
 <div class="card" id="quartet"><p class="muted">Loading feed…</p></div></section>
 
 <section aria-labelledby="units-h"><div class="head"><h2 id="units-h">All units</h2><span class="note" id="units-count"></span></div>
@@ -60,9 +60,10 @@ async function load(){
   $('chart-group').innerHTML=CK.bars(Object.entries(byGroup).map(([label,value])=>({label,value})).sort((a,b)=>b.value-a.value));
   const q=f.observatory_quartet||{};
   const role=(t,b)=>'<div class="role"><div class="label">'+esc(t)+'</div><p>'+esc(b)+'</p></div>';
-  let qh=role('Mev — producer',q.mev)+role('Jev — judge',q.jev)+role('Kev — verifier',q.kev)+role('Laya — weighted merger',q.laya);
+  let qh=role('Mev — producer',q.mev)+role('Jev — judge',q.jev)+role('Kev — verifier',q.kev)+role('Laya — evidence reducer',q.laya);
+  qh+='<p class="muted">These are local role contracts in the incumbent trial. Compare candidate implementations laterally; evaluate graph compositions as separate tournament arms.</p>';
   const kv=(k,v)=>'<p class="muted"><strong>'+esc(k)+':</strong> '+esc(typeof v==='string'?v:JSON.stringify(v))+'</p>';
-  for(const k of ['home','pipeline','trial','leaderboard','dispatch','hindsight','coded_quirk','first_completed_trial'])if(q[k]!=null)qh+=kv(k,q[k]);
+  for(const k of ['home','trial','leaderboard','dispatch','hindsight','coded_quirk','first_completed_trial'])if(q[k]!=null)qh+=kv(k,q[k]);
   const vr=q.variance_requirement||{};
   if(vr.owner_requirement||vr.variance_state){
     qh+='<div class="role"><div class="label">Variance requirement</div>'

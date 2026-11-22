@@ -261,6 +261,10 @@ def validate_registry(root: Path, registry: Any, catalog: Any, estate: Any, plan
     else:
         if implementation.get("canonical_cohort") != "manager.tournament.v1":
             errors.append("registry.implementation_competition.canonical_cohort: expected manager.tournament.v1")
+        comparator = implementation.get("comparison_engine", {})
+        comparator_source = comparator.get("source_ref") if isinstance(comparator, dict) else None
+        if not isinstance(comparator_source, str) or not (root / comparator_source).is_file():
+            errors.append(f"registry.implementation_competition.comparison_engine: missing source {comparator_source!r}")
         incumbent = implementation.get("incumbent", {})
         components = incumbent.get("components", []) if isinstance(incumbent, dict) else []
         if not components:

@@ -42,7 +42,7 @@ SIE compares and improves four separate populations:
 3. **Composition graphs** — which capabilities run together, in parallel, conditionally or sequentially.
 4. **Tournament implementations** — the manager, scheduler, evaluator, evidence and promotion machinery itself.
 
-The fourth population is the central tournament objective requested here. The other three populations are inputs and levers. A better classifier score alone does not prove a better tournament implementation.
+The fourth population is the central tournament objective requested here. The other three populations are inputs and levers. A stronger classifier score must translate into validated integrated tournament outcomes.
 
 ## 4. Versioned implementation competition
 
@@ -98,7 +98,7 @@ Use hard gates first:
 
 Then compare the feasible set with Pareto dominance. Use a versioned preference profile only to choose among non-dominated candidates. Keep raw measures and uncertainty available for later re-scoring.
 
-SIE optimizes **validated integrated outcome per total resource cost**. Total cost includes compute, inference, wall time, context, human effort, retries, conflicts and integration overhead. Nominally free calls are not automatically efficient.
+SIE optimizes **validated integrated outcome per total resource cost**. Total cost includes compute, inference, wall time, context, human effort, retries, conflicts and integration overhead. Measure nominally free calls against wall time, context, retries, conflicts and human effort.
 
 ## 7. Bounded feedback loop
 
@@ -115,7 +115,7 @@ Each iteration executes:
 
 Terminal states: `promoted`, `held`, `rejected`, `clean_noop`, `blocked`, `approval_required`, `budget_exhausted`, `stagnated`, `failed`.
 
-A failed experiment remains a useful observation. A timeout remains distinct from a provider error. A route that was selected but never invoked earns no performance credit.
+A failed experiment remains a useful observation. A timeout remains distinct from a provider error. Credit route performance from recorded invocation and accepted results.
 
 ## 8. Improvement safeguards
 
@@ -143,7 +143,7 @@ A failed experiment remains a useful observation. A timeout remains distinct fro
 - `scripts/agent_evolution/replay_simulator.py` and `docs/ops/EVOLUTIONARY-REPLAY.md` provide the existing deterministic evolution/replay foundation.
 - SHE / 3L0 / Moneyball remain downstream evidence and decision projections.
 
-SIE is a proposed integration architecture. This document records the target contract, not a claim that every subsystem is already implemented.
+SIE is a proposed integration architecture. This document records the target contract; implementation status is tracked by registry and CI evidence.
 
 ## 11. Implemented registry alignment
 

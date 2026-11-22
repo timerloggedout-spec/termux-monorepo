@@ -16,12 +16,13 @@ The supplied URLs identify GitLab group hierarchy:
 - [Transcend October 2026](https://gitlab.com/groups/gitlab-ai-hackathon/transcend-october-2026) is a separate archived subgroup (group ID `142538134`). It contains **1,273 participant subgroups and 1,820 public archived projects**. The owner-published group boundary keeps observability disabled at group scope and keeps secrets out of group-level settings. Dated subgroup and project indexes are `ops/challenge/osint/gitlab-transcend-october-2026-subgroups-2026-11-22.ndjson` and `ops/challenge/osint/gitlab-transcend-october-2026-projects-2026-11-22.ndjson`.
 - [Project Templates](https://gitlab.com/gitlab-ai-hackathon/project-templates) is another subgroup. It contains the public [Participant Template](https://gitlab.com/gitlab-ai-hackathon/project-templates/participant-template) project (project ID `77423853`), with `agents/`, `flows/`, `LICENSE`, and `README.md`.
 
-### Transcend workspace catalog snapshot
+### Sibling Transcend subgroup catalog snapshot — event cycle NOT_ESTABLISHED
 
-The public GitLab REST API returned **312 unique public projects** across four pages (100 + 100 + 100 + 12); the subgroup API returned zero child subgroups. The dated snapshot stores project ID, namespace path, project URL, README URL, creation/activity timestamps, star count, visibility, archive state, and default branch. Contributor/member identities are excluded.
+The public GitLab REST API returned **312 unique public projects** across four pages (100 + 100 + 100 + 12); the subgroup API returned zero child subgroups. The group was created 2026-05-18 and remains active. Project descriptions reference Transcend showcase workspaces, while exact event-cycle mapping remains NOT_ESTABLISHED. The dated snapshot stores project ID, namespace path, project URL, README URL, creation/activity timestamps, star count, visibility, archive state, and default branch. Contributor/member identities are excluded.
+
+- [GitLab Profile README](https://gitlab.com/gitlab-ai-hackathon/gitlab-profile/-/blob/main/README.md) points participants to the Devpost GitLab AI Hackathon page.
 
 Snapshot: `ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json`. Treat it as a dated observation; refresh through bounded pagination and retain each dated snapshot for change analysis.
-- [GitLab Profile README](https://gitlab.com/gitlab-ai-hackathon/gitlab-profile/-/blob/main/README.md) points participants to the Devpost GitLab AI Hackathon page.
 
 The supplied DevSecOps Flow URL is therefore retained as a first-class **group/subgroup source**. Its timestamped empty child listing records the observed public state; future subgroup activity and any challenge specification remain unassessed.
 
@@ -58,7 +59,7 @@ The connector's prize catalogue totals $65,000. The official rules enumerate the
 - Theme: agents and flows that automate post-code DevSecOps lifecycle stages, including review, security scanning, testing, compliance, deployment, and monitoring.
 - Judging criteria: Technological Implementation, Design, Potential Impact, Innovation / Idea, and Presentation.
 
-The Transcend subgroup is related to the same GitLab AI Hackathon root but represents a distinct event program and workspace collection. Keep it separate from the February–March event record.
+Keep the archived `transcend-october-2026` workspace corpus as the October 2026 event source. Keep the active sibling `transcend` catalog as a separate 312-project source with event-cycle mapping NOT_ESTABLISHED.
 
 ### 2.3 GitLab Community Hackathon — October 2026 history + January 2027 upcoming edition
 
@@ -76,6 +77,7 @@ The official event page directs participants to the GitLab Community Discord `#a
 - [GitLab Discord invite](https://discord.com/invite/gitlab) — `#ai-hackathon` for the Devpost AI Hackathon; current Community Hackathon rules direct questions to `#hackathon` or `#contribute`; Transcend sample workspaces use `#transcend-hackathon`.
 - [Devpost Discord](https://info.devpost.com/blog/join-the-devpost-discord).
 - Office-hours schedule: posted in the relevant GitLab Discord channels; individual session dates are NOT_ESTABLISHED in this public-source pass.
+- For the Community Hackathon, the official forum announcement states **Devpost registration: NOT_REQUIRED**. Entry uses Contributor Platform rule acceptance and onboarding at [contributors.gitlab.com/start](https://contributors.gitlab.com/start).
 - The [Participant Template README](https://gitlab.com/gitlab-ai-hackathon/project-templates/participant-template) links to a `work_items/1` onboarding item. The public item is currently **unavailable**; its instructions remain NOT_ESTABLISHED.
 - An [October 2026 Transcend workspace onboarding issue](https://gitlab.com/gitlab-ai-hackathon/transcend-october-2026/621485/showcase/-/work_items/1) confirms participant subgroup/project provisioning and directs contributors to the Transcend guide, `#transcend-hackathon`, and office hours. The issue describes optional observability within each participant subgroup; the parent group's published boundary keeps observability disabled at group scope and keeps secrets out of group-level settings. The sample workspace and parent group are archived/read-only.
 - The public event page links an example participant issue at [participants/621485](https://gitlab.com/gitlab-ai-hackathon/participants/621485/-/issues/1).
@@ -100,8 +102,8 @@ The reusable template is recorded metadata-first under `refTemplates/12_External
 4. Use public project pages, official Devpost pages, official announcements, and public GitLab group/project pages for competitor/project OSINT. Store URL + fetch timestamp + coverage state for every populated fact.
 5. Treat official event placement, directory position, displayed engagement, and internal analytical ranking as separate dimensions.
 6. Keep participant/persona collection public-source-only. External participants remain observation-only; recruitment is for our own team.
-7. Registration, account access, group membership, project creation, and submission are separate states. This dossier records **none** of those owner actions as completed.
-8. The February–March 2026 GitLab AI Hackathon and October 2026 Life After Code / Transcend edition are closed; their next-cycle dates are **NOT_ESTABLISHED**. The GitLab Community Hackathon has a published upcoming edition for **January 21–28, 2027** and is added as candidate **C17**. Owner onboarding, registration, issue assignment, and contribution state remain **NOT_ESTABLISHED**.
+7. Registration, account access, group membership, project creation, and submission are separate states. Owner registration, group membership, project creation, and submission: **NOT_ESTABLISHED**.
+8. The February–March 2026 GitLab AI Hackathon and October 2026 Life After Code / Transcend edition are closed; their next-cycle dates are **NOT_ESTABLISHED**. The GitLab Community Hackathon has a published upcoming edition for **January 21–28, 2027** and is added as candidate **C17**. Owner onboarding, rule acceptance, issue assignment, and contribution state: **NOT_ESTABLISHED**; Devpost registration: **NOT_REQUIRED**.
 
 Machine-readable URL/source inventory: [`ops/challenge/osint/gitlab-sources.json`](../../ops/challenge/osint/gitlab-sources.json).
 

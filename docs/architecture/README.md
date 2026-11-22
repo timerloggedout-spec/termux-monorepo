@@ -10,7 +10,7 @@
 
 Start with the repository-wide [`architecture.md`](../../architecture.md) for the system taxonomy, directory map, and consolidated data-flow view. This index remains the authority for canonical architecture specs by domain.
 
-Architecture release identity and refresh rules live in [VERSIONING.md](VERSIONING.md), [VERSION](VERSION), and [CHANGELOG.md](CHANGELOG.md). The generated [architecture manifest](generated/architecture-manifest.json) records source and diagram fingerprints; generated files remain projections of their canonical sources.
+Architecture release identity and refresh rules live in [VERSIONING.md](VERSIONING.md), [VERSION](VERSION), and [CHANGELOG.md](CHANGELOG.md). The generated architecture manifest at generated/architecture-manifest.json records source and diagram fingerprints; generated files remain projections of their canonical sources.
 
 ## How this surface is organized
 

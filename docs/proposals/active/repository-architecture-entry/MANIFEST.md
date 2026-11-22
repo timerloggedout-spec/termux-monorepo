@@ -37,7 +37,7 @@ Establish one repository-wide architecture entry that routes collaborators to ca
 - [ ] Repository gate and Termux smoke pass on the same head.
 - [ ] Required PR checks complete and the merged master head is re-fetched.
 - [x] Initial SemVer baseline, versioning contract, changelog, and architecture-governance map added.
-- [x] Deterministic manifest generator and sixteen focused tests pass in the local fixture suite.
+- [x] Deterministic manifest generator and seventeen focused tests pass in the local fixture suite.
 - [ ] Existing workflow renders architecture flow SVGs, validates the manifest, uploads PR evidence, and refreshes trusted master projections.
 
 ## Evidence

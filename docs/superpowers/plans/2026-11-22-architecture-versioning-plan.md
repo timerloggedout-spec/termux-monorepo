@@ -153,7 +153,7 @@
 - Local verification: 14/14 architecture manifest and workflow tests passed; Python compilation passed.
 - PR #5770 was superseded after the DO Statement Style audit identified non-imperative commit subjects. The successor branch starts at current master 697c0a43e57ea16c1503826d48a1f0d7f58c3fa6; the eleven-commit master-side delta contains generated operational records and has zero path overlap.
 - The initial combined status records Vercel daily deployment quota exhaustion; adaptive-wait classifies Vercel as an advisory signal. The successor branch uses imperative commit subjects to satisfy the repository style gate.
-- Successor PR #5771 is open and ready for review at head bf0ca392da3c68ef3b1446b3c348923ec33c1e04; mergeability calculation and Actions admission are pending.
+- Successor PR #5771 is open and ready for review; GitHub PR metadata owns the live head SHA and mergeability state.
 - Pending evidence: exact PR-head Actions, independent review, generated artifact inspection, and trusted master refresh.
 
 

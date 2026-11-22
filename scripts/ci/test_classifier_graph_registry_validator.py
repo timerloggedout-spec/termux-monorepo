@@ -117,6 +117,14 @@ class ClassifierGraphRegistryTests(unittest.TestCase):
             self.assertEqual(candidate["catalog_claim"], source["note"])
             self.assertEqual(candidate["catalog_source_url"], source["source_url"])
 
+    def test_duplicate_classifier_estate_groups_are_rejected(self):
+        registry = copy.deepcopy(self.registry)
+        registry["classifier_estate"]["groups"].append(
+            copy.deepcopy(registry["classifier_estate"]["groups"][0])
+        )
+        errors = validate_registry(ROOT, registry, self.catalog, self.estate, self.plan)
+        self.assertTrue(any("unique group names" in error for error in errors))
+
     def test_unclassified_candidates_make_no_role_claim(self):
         candidates = [item for item in self.registry["candidates"]
                       if item["qualification_state"] == "unclassified"]

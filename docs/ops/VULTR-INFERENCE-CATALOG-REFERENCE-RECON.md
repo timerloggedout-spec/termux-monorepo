@@ -105,6 +105,10 @@ A precision detail: the core collector retains provider pricing objects for seve
 
 A resilience detail: the collector writes its normalized output atomically. The current output document stores the normalized view; a complete raw provider response remains unavailable for later re-normalization. Its provider-level error list also needs a normalized per-model issue collection.
 
+## DoE versioning
+
+The comparative design is versioned in `refTemplates/19_Provider_Inference_Catalogs/DOE-REGISTRY.json` as `DOE-VULTR-CATALOG-001` version `1.0.0`. Python and TypeScript are separate immutable variants with their own upstream commit pins. The registry specifies independent variables, controlled variables, response variables, acceptance criteria, execution policy and an immutable run key. Its status remains `planned`; result artifacts and measurements are populated only by reproducible paired runs. Design changes increment the experiment version, and each run binds its exact fixture-set and implementation revisions.
+
 ## 4. What to adopt — prioritized recommendations
 
 ### P0 — preserve exact pricing and provenance

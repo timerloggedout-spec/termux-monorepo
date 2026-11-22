@@ -8,9 +8,9 @@
 
 ## 1. Decision
 
-Register the eight-repository Ksarith portfolio as a versioned external architecture and method candidate set for Observatory, planning, and DoE.
+Register the eight-repository Ksarith portfolio as external architecture/method intake candidates for Observatory planning. Reuse the canonical manager.tournament.v1 cohort envelope and EXPERIMENT.schema.json run records. Map classifier-like capabilities and graph compositions into the draft tournament architecture only where their contracts fit. Keep the eight intake IDs in this document until a canonical registry extension is approved.
 
-Use the existing Observatory, DoE, manager-tournament, Workflow Contract (WFC), Ballet Coordinator, Pit Crew, SHE, and 3L0 surfaces as the integration chassis. Add candidate treatments, factors, evidence adapters, and evaluation protocols to those surfaces.
+Use the existing Observatory, DoE, Workflow Contract (WFC), Ballet Coordinator, Pit Crew, SHE, and 3L0 surfaces as the integration chassis. The DoE family requires a committed design record plus run evidence for campaign admission; this document records design candidates, not admitted campaigns.
 
 Treat three competition units as separate:
 
@@ -112,7 +112,7 @@ Use the existing versioned tournament surfaces in this order:
 - [#5529 — Ballet Coordinator](https://github.com/timerloggedout-spec/termux-monorepo/pull/5529): sequential, parallel and adaptive strategy/capacity treatments and existing DoE bridge.
 - [#5531 — Pit Crew DoE oversight tournaments](https://github.com/timerloggedout-spec/termux-monorepo/pull/5531): architecture seed registry and existing oversight tournament method.
 
-The PRs above were observed open on 2026-11-22; their branch and CI state require a fresh read at execution time. Treat their described contents as PR-scoped proposals until the corresponding changes are promoted.
+The PRs above were observed open on 2026-11-22; their branch and CI state require a fresh read at execution time. In particular, #5761 is a draft PR with mergeable=false at the latest check; its classifier.graph-registry.v1 and doe.design.v1 material is branch-scoped proposal, not a master contract. The canonical master contracts verified for this intake are manager.tournament.v1, EXPERIMENT.schema.json, and the DoE Family admission rules.
 
 ## 5. Proposed candidate registry
 
@@ -129,7 +129,7 @@ Use stable IDs with immutable versions and parent lineage:
 | KS-ASTROID-RESILIENCE | 0.1.0 | F6 | Astroid-miner resilience and resource-planning concepts |
 | KS-VIBE-EVIDENCE | 0.1.0 | F7 | VibesSandbox evidence-staging practices |
 
-These are intake identifiers, not claims of implemented adapters. A registry entry records source repository, source SHA, source path, source license evidence, owner/authority, method version, task-family eligibility, factor definitions, outcome schema, hard constraints, dependencies, evidence links, parent IDs, and maturity state.
+These are intake identifiers, not claims of implemented adapters or entries in the classifier graph registry. The draft classifier.graph-registry.v1 candidate schema is limited to kind: local|catalog and role-bound classifier candidates; the eight repositories are method/workflow sources and do not fit that schema wholesale. Keep capability IDs, graph IDs, and complete implementation IDs as separate namespaces. Any future candidate record must pin source repository/SHA/path, resolved rights, owner/authority, method version, task-family eligibility, factor definitions, outcome schema, hard constraints, dependencies, evidence links, parent IDs, and maturity state.
 
 ## 6. DoE protocol
 
@@ -142,8 +142,8 @@ These are intake identifiers, not claims of implemented adapters. A registry ent
 
 ### Proposed screening sequence
 1. **Intake verification:** re-fetch each source at its recorded SHA; inspect canonical docs, code, tests, license, and current maturity.
-2. **Design registration:** create candidate records and factors with DESIGN_ONLY status.
-3. **Contract mapping:** map source concepts to existing Observatory, WFC, DoE, ATES, SHE, MoneyBall/3L0 and evidence schemas.
+2. **Design registration:** register a design candidate with immutable experiment/version identity and declared factors, controls, outcomes, assignment, budget, stopping rule, and owner. A design-only candidate remains outside the admitted DoE family until a run receipt exists.
+3. **Contract mapping:** use manager.tournament.v1 for the cohort envelope and EXPERIMENT.schema.json for one executed-run record. Pin baseline_sha, candidate_sha, suite, treatment.manager_policy_id, treatment.arm, status, provenance, confidence, and evidence refs. Use treatment.instance only for actual configured provider/model/prompt/tools/role/moniker/context identity; source-repository identity belongs in candidate/design provenance, not fabricated model-instance fields. The proposed doe.design.v1 extension and classifier graph registry in #5761 remain branch-scoped until promotion.
 4. **Adapter feasibility:** implement one minimal read-only or offline adapter per family; record unsupported features as gaps.
 5. **Measurement calibration:** validate rubrics and deterministic reducers against fixed fixtures.
 6. **Blocked family screening:** compare each eligible family against the incumbent control on matched task cohorts.
@@ -191,7 +191,7 @@ Quality and safety are gates; throughput and cost are optimization dimensions af
 
 ## 9. Open questions
 
-1. Which of the eight source repositories have a license suitable for code-level reuse, and what attribution/notice obligations apply?
+1. Which of the six repositories without located primary license files have explicit licensing terms elsewhere, and what attribution/notice obligations apply before any code or substantial text reuse?
 2. Which Ksarith-derived methods already have local Observatory equivalents, and should they enter as comparison treatments, adapters, or documentation-only references?
 3. Which task families have sufficiently stable ground truth for the first matched cohort?
 4. Which independent evaluator instances can satisfy the AuditBot/Parlay independence construction?
@@ -205,12 +205,50 @@ Quality and safety are gates; throughput and cost are optimization dimensions af
 - [x] Capture source HEAD revisions and inspect repository entry documents.
 - [x] Identify source-specific maturity and authority boundaries.
 - [x] Map methods into existing Observatory and DoE surfaces.
-- [ ] Verify licenses and attribution obligations.
-- [ ] Reconcile all eight candidates against current canonical local registries.
-- [ ] Register candidate IDs in the canonical tournament registry.
+- [ ] Resolve primary license evidence and attribution obligations for the six unresolved repositories.
+- [x] Reconcile candidate types against canonical local contracts and identify schema fit boundaries.
+- [ ] Approve a typed intake extension or explicit existing-registry mapping before inserting candidate IDs into any canonical registry.
 - [ ] Add family factors and outcome schemas to the existing DoE design.
 - [ ] Build offline/read-only adapters and fixture tests.
 - [ ] Run matched-cohort screening, replication and holdout.
 - [ ] Record independent recommendation and separate promotion decision.
 
 **Current disposition:** intake and planning proposal only. The eight candidates are registered here as design references; runtime adapters, tournament execution, comparative results, and promotion remain pending.
+
+## 11. Canonical contract reconciliation (verified 2026-11-22)
+
+The current master contracts and the #5761 draft have distinct authority:
+
+| Contract | Verified role | Ksarith mapping |
+|---|---|---|
+| docs/ops/MANAGER-TOURNAMENT.schema.json — manager.tournament.v1 | Canonical cohort envelope: task-contract hash, environment fingerprint, manager IDs/policy hashes, evaluation contract and repository provenance | Use for matched manager/workflow cohorts. A manager entry represents an actual policy candidate with a stable policy hash. |
+| docs/ops/corpus/EXPERIMENT.schema.json — schema version 1.0 | Canonical per-run MVT/DoE record; one dispatched/executed run = one observation | Record each treatment arm/run with baseline and candidate SHAs, suite, treatment ID/arm, outcome/status, confidence and evidence references. |
+| docs/ops/DOE-FAMILY.md | DoE family membership and lifecycle authority | Candidate proposals remain outside the family until a committed design record and run evidence exist. |
+| docs/ops/MVT-DOE-ATES-SEPARATION.md | Surface ownership; cross-surface references are citations | Keep candidate/design metadata, run records, and execution evidence in their owning surfaces; use references across surfaces. |
+| classifier.graph-registry.v1 in draft PR #5761 | Proposed classifier-role and composition registry; not yet a master contract | Use only for candidates that implement a declared classifier role and satisfy its schema. Do not force whole repositories into classifier candidate entries. |
+| doe.design.v1 in draft PR #5761 | Proposed immutable design-management extension | Use as a design reference; promote through its own review and validation before relying on it as canonical. |
+
+**Competition placement rule:** capability treatments enter the role/capability comparison only when they expose a stable role contract; graph treatments enter the composition tournament only when node/edge contracts and evidence joins are defined; complete workflow implementations enter the manager tournament as versioned policy candidates under a fixed cohort. The existing CMP-2 register item remains the explicit decision point for whether a new competition receives a dedicated lane or folds into an existing tournament. This intake recommends a shared candidate portfolio and staged comparison first; a dedicated lane requires a distinct task population, outcome contract, or execution boundary.
+
+## 12. License evidence snapshot
+
+Primary repository license files were checked at intake. Two repositories expose affirmative MIT evidence; six remain unresolved from the inspected root license paths and README statements.
+
+| Repository | Evidence observed | Intake status |
+|---|---|---|
+| idea-generator-2 | Root LICENSE states MIT; README also states MIT | MIT evidence located |
+| Parlay | LICENSE.md states MIT; README says Parlay and LazarusForge are MIT-licensed | Parlay MIT evidence located; LazarusForge primary license remains unresolved |
+| LazarusForge | Root LICENSE, LICENSE.md, LICENSE.txt, COPYING, and NOTICE.md not located; README has no license statement | UNRESOLVED |
+| Astroid-miner | Inspected root license paths absent; README has no license statement | UNRESOLVED |
+| VibesSandbox | Inspected root license paths absent; README has no license statement | UNRESOLVED |
+| CogitoEngine | Inspected root license paths absent; README has no license statement | UNRESOLVED |
+| AuditBot | Inspected root license paths absent; README has no license statement | UNRESOLVED |
+| AcquisitionsAnalysis | Inspected root license paths absent; README has no license statement | UNRESOLVED |
+
+A 404 for a root license path is evidence that the path was unavailable, not proof that no license exists anywhere in the repository or that the work is public domain. The Parlay README statement about LazarusForge is a secondary assertion; primary license evidence remains required. Until resolved, reuse only repository links and concise factual summaries independently authored for this intake. Avoid copying source code, substantial prose, or derived assets from unresolved repositories.
+
+## 13. Lane decision and next executable slice
+
+**Current decision:** shared portfolio intake; no dedicated Ksarith tournament lane is created by this document. Keep the eight IDs as design references. The first executable slice should select one role-compatible treatment family, freeze the incumbent and candidate contracts, and create a preregistered design plus a matched, read-only/offline fixture cohort. The first run emits canonical EXPERIMENT.schema.json records. Campaign admission and any promotion follow the existing DoE Family and operator gates.
+
+**Next design decision:** resolve CMP-2 using the source/license findings, local-equivalence map, task-family stability, and whether a candidate requires a distinct execution boundary. A lane is a routing/ownership decision; a tournament arm is an experimental treatment. Keep those concepts separate.

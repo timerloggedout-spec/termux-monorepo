@@ -8,7 +8,7 @@
 
 The tournament's primary competitor is a **versioned implementation**: a manager policy, routing policy, graph topology, classifier selection, evaluator configuration and execution contract treated as one reproducible candidate.
 
-The 70+ classifier population is a capability pool. It is not a single serial chain and it is not the tournament leaderboard. A classifier can compete alone, serve a specialist node, participate in an ensemble, or be selected conditionally by a router.
+The System One catalog is the source inventory for the wider classifier work: the current catalog document reports 88 entries (61 model families, 16 adapters, 7 runtimes and 4 directories). The model and adapter entries form the relevant capability population; runtimes execute other entries and directories index them. The 70+ shorthand therefore refers to the broader classifier ecosystem, not 88 interchangeable classifiers. It is not a single serial chain and it is not the tournament leaderboard. A classifier can compete alone, serve a specialist node, participate in an ensemble, or be selected conditionally by a router.
 
 Compare three distinct levels:
 
@@ -29,7 +29,7 @@ Repository source inspection establishes these current role contracts:
 | Kev | `deepcli/deepcli/observatory/kev.py` | verifier; compares output against reference (currently exact/token-F1) |
 | Laya | `deepcli/deepcli/observatory/laya.py` | merger; weighted rank over Jev/Kev evidence |
 
-These are useful **functional roles** and a current trial implementation. Their names do not imply a mandatory serial pipeline for the 70+ classifier system.
+These are useful **local functional roles** in the current trial implementation. The System One Catalog documents Mev, Jev, Kev and Laya as namesakes in the external ecosystem; the local deepcli classes implement producer/critic/verifier/merger roles and are not deployments of those named projects. Their names do not imply a mandatory serial pipeline for the broader classifier ecosystem.
 
 Model the capabilities as a directed acyclic graph with fan-out and fan-in. A producer can feed several independent classifiers; critics, verifiers and specialist classifiers can run in parallel; a router can select a subset; a merger can consume identity-aligned evidence; a judge can request another specialist only when an evidence gap justifies it.
 
@@ -119,7 +119,7 @@ Avoid selecting ensembles solely because member classifiers have high standalone
 
 ## 7. Current code audit — evidence-backed issues
 
-Source inspection of the current branch found:
+The existing `docs/ops/CLASSIFIER-TRIAL-DISPATCH.md` already records this known follow-up; source inspection confirms the code path described there:
 
 1. `trial.py` executes provider production in a sequential loop, then executes Jev and Kev loops sequentially. This is a valid baseline implementation, not a graph scheduler.
 2. `trial.py` independently filters successful artifacts, Jev records and Kev records before passing the three arrays to Laya. Laya uses `zip()`. A failed record in one list can shift positional correspondence and attach another candidate's evaluation to an artifact.
@@ -127,7 +127,7 @@ Source inspection of the current branch found:
 4. `laya.py` currently applies a weighted Jev/Kev scalar (default 0.7/0.3). This is a baseline reducer, not a calibrated, uncertainty-aware Pareto decision engine.
 5. `leaderboard.py` stores role/task/provider/model aggregates and uses default numeric values for several absent observations. That behavior requires a migration/validation boundary before it serves as the canonical experiment evidence plane.
 
-These are source-inspection findings. Runtime tests and production behavior remain to be established by the CI and matched-cohort run.
+This is an existing documented steward backlog item, not a newly discovered defect. Runtime regression coverage remains a prerequisite for the graph scheduler work.
 
 ### Required repair before expanding graph search
 
@@ -146,3 +146,8 @@ Attach every Jev/Kev/other evaluator record to the same `candidate_id`. Use expl
 - Who Routes the Router analyzes task diversity, model-pool balance and evaluation methodology as major determinants of router conclusions: https://openreview.net/pdf?id=EEPostHMtF
 
 These are design and benchmark references, not evidence that their results transfer directly to this repository's 70+ classifier pool.
+
+
+## 9. Canonical classifier inventory
+
+Use `config/system_one_catalog.json` (schema `system-one-catalog/1`) and `docs/ops/SYSTEM-ONE-CATALOG.md` as the existing inventory authority. The catalog document reports 88 entries: 61 model families, 16 adapters, 7 runtimes and 4 directories. Track lifecycle as referenced → catalogued → trial_candidate → evaluated, with firsthand evidence at each transition. Count each entry in exactly one layer. Treat directory entries as discovery aids, runtime entries as execution surfaces, adapters as techniques and model entries as model families. The trial quartet's local roles remain separate from same-named external projects.

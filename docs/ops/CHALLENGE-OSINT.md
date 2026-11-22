@@ -24,15 +24,14 @@ and DevSecOps Flow subgroup, the Transcend and Project Templates subgroups,
 the Participant Template project, Devpost event/rules/resources pages, the
 GitLab Community Hackathon pages, and the official Discord/documentation links.
 The supplied DevSecOps Flow URL resolved to an **empty subgroup** at the
-2026-11-22 observation; it is retained as a URL-addressed source node, not
-misclassified as a project.
+2026-11-22 observation; retain it as a URL-addressed subgroup source.
 
 The February–March 2026 GitLab AI Hackathon and October 2026 Life After Code /
 Transcend edition are closed. The next GitLab Community Hackathon is published
 for **January 21–28, 2027 UTC** (candidate C17); owner onboarding, registration,
-issue assignment, and contribution state remain NOT_ESTABLISHED. This URL
-inventory is a source register; the current weekly event watcher does not yet
-consume it.
+issue assignment, and contribution state: NOT_ESTABLISHED. This URL inventory
+is a source register; integration with the current weekly event watcher is
+pending.
 
 ## Surfaces
 

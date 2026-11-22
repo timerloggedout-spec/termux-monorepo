@@ -5,8 +5,6 @@ on:
     branches: [master]
     paths:
       - "roadmap-completions/roadmaps/**/exercises/**/evidence.json"
-      - "roadmap-completions/config/verification-rules.yaml"
-      - "roadmap-completions/scripts/verify-completion.py"
   issues:
     types: [opened, edited, labeled, reopened]
   workflow_dispatch:
@@ -38,6 +36,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           persist-credentials: false
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -136,7 +135,6 @@ jobs:
           ROADMAP: ${{ steps.context.outputs.roadmap }}
           EXERCISE: ${{ steps.context.outputs.exercise }}
         run: |
-          report=$(cat "$RUNNER_TEMP/roadmap-verification.stdout")
           while IFS= read -r issue_number; do
             [ -z "$issue_number" ] && continue
             gh issue comment "$issue_number" --repo "$GITHUB_REPOSITORY" --body "Roadmap evidence verification needs updates for `$ROADMAP/$EXERCISE`. Review the workflow run summary for the exact checks and resubmit the evidence file."

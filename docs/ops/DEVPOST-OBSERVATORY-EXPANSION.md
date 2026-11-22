@@ -332,10 +332,13 @@ The Challenge OSINT lane now has a GitLab source-family dossier:
 `ops/challenge/osint/gitlab-sources.json`. This is a cross-venue source set, separate from the Devpost global
 software-directory adapter.
 
-The public GitLab hierarchy was observed 2026-11-22. The Transcend subgroup API
-returned **312 unique public project workspaces across four pages**; a dated,
-privacy-minimized index is stored at
-`ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json`:
+The public GitLab hierarchy was observed 2026-11-22. The sibling `transcend` subgroup API returned **312 public projects**; its
+exact event-cycle mapping remains `NOT_ESTABLISHED`. The explicitly archived
+`transcend-october-2026` subgroup returned **1,273 child subgroups and 1,820
+public archived projects**. Dated, privacy-minimized indexes are stored at
+`ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json`,
+`ops/challenge/osint/gitlab-transcend-october-2026-subgroups-2026-11-22.ndjson`,
+and `ops/challenge/osint/gitlab-transcend-october-2026-projects-2026-11-22.ndjson`:
 
 - `gitlab-ai-hackathon` — public root group.
 - `gitlab-devsecops-flow-hackathon` — child subgroup; its page showed zero
@@ -346,8 +349,8 @@ privacy-minimized index is stored at
   `flows/`, `LICENSE`, and `README.md`.
 - `gitlab-profile` — public README points to the Devpost event.
 - `participants-test-lee` (2 projects), `participants-test-mattias` (24
-  projects), and `test` (1 project) — participant-test and CI-component
-  subgroups.
+  projects), `test` (1 project), and `transcend-october-2026` (archived; 1,273
+  participant subgroups / 1,820 public archived projects).
 - Direct support projects: `ci` (participant CI configuration) and
   `security-policies` (pipeline policy project).
 
@@ -374,7 +377,8 @@ registration/access path before a registration plan advances.
 
 The supplied DevSecOps Flow subgroup is a useful source target; its observed
 empty state leaves challenge brief, active project, and owner-entry state
-NOT_ESTABLISHED. Keep the AI Hackathon and Transcend next editions as
+NOT_ESTABLISHED. The sibling `transcend` group remains a separate 312-project
+source with event-cycle mapping NOT_ESTABLISHED. Keep the AI Hackathon and Transcend next editions as
 future-cycle watch targets with dates `NOT_ESTABLISHED`. Owner registration,
 group membership, and submission state: NOT_ESTABLISHED. The new source registry is currently an inventory only; the weekly
 Challenge OSINT watcher and Devpost directory adapter remain unchanged until

@@ -276,8 +276,26 @@ class TestLaya(unittest.TestCase):
         arts = [{"candidate_id": "a", "provider": "p", "model": "m", "text": "A"}]
         js = [{"candidate_id": "b", "scores": {"quality": 1.0}}]
         ks = [{"candidate_id": "a", "match_score": 1.0}]
-        with self.assertRaisesRegex(ValueError, "identity mismatch"):
+        with self.assertRaisesRegex(ValueError, "candidate ID sets differ"):
             laya.synthesize(arts, js, ks)
+
+    def test_evidence_is_joined_by_candidate_id_not_position(self):
+        arts = [
+            {"candidate_id": "a", "provider": "first", "model": "m", "text": "A"},
+            {"candidate_id": "b", "provider": "second", "model": "m", "text": "B"},
+        ]
+        # Reverse Jev order deliberately: the higher score belongs to candidate a.
+        js = [
+            {"candidate_id": "b", "scores": {"quality": 0.1}},
+            {"candidate_id": "a", "scores": {"quality": 0.9}},
+        ]
+        ks = [
+            {"candidate_id": "a", "match_score": 1.0},
+            {"candidate_id": "b", "match_score": 0.0},
+        ]
+        out = laya.synthesize(arts, js, ks)
+        self.assertEqual(out["winner"]["candidate_id"], "a")
+        self.assertEqual(out["winner"]["provider"], "first")
 
     def test_custom_weights(self):
         arts = [self._art("a", "A")]

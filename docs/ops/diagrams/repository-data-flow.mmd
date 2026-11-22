@@ -45,7 +45,19 @@ flowchart TB
     EMPTY -. no verified consumer .-> CRG
   end
   P -. approved work .-> G
+  subgraph ARCH["7 · Architecture documentation and generated evidence"]
+    ASRC["architecture.md + docs/architecture/**"] --> AV["VERSION + CHANGELOG"]
+    AV --> ACI["Architecture docs CI / version gate"]
+    ACI --> AR["Mermaid SVG / PNG render"]
+    AR --> AM["Deterministic manifest / SHA-256"]
+    AM --> ART["PR review artifact"]
+    AM --> PROJ["Generated manifest + diagram projections"]
+  end
+  P -. approved architecture change .-> ASRC
+  G --> ACI
   classDef gap fill:#fff0f0,stroke:#c62828,color:#5d1111,stroke-width:2px
   classDef optional fill:#fff7e0,stroke:#b06000,color:#4a2c00,stroke-dasharray:5 5
+  classDef docs fill:#e8f5e9,stroke:#2e7d32,color:#173b1a
   class EMPTY,LOCAL gap
+  class AM,PROJ docs
   class HEX,PAGES,MB optional

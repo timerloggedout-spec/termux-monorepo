@@ -110,7 +110,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p docs/architecture/generated/flows
-          printf '%s\\n' '{"args":["--no-sandbox","--disable-setuid-sandbox"]}' > /tmp/puppeteer-config.json
+          printf '%s\n' '{"args":["--no-sandbox","--disable-setuid-sandbox"]}' > /tmp/puppeteer-config.json
           MMDC="npx --yes @mermaid-js/mermaid-cli@11.4.2"
           count=0
           for src in docs/architecture/flows/*.mmd; do
@@ -127,7 +127,7 @@ jobs:
         timeout-minutes: 5
         run: |
           set -euo pipefail
-          git fetch origin "${{ github.event.pull_request.base.ref }}"
+          git fetch origin "+refs/heads/${{ github.event.pull_request.base.ref }}:refs/remotes/origin/${{ github.event.pull_request.base.ref }}"
           python3 scripts/ci/architecture_docs.py --write --check-version-from "origin/${{ github.event.pull_request.base.ref }}"
           python3 scripts/ci/architecture_docs.py --check
           git diff --check
@@ -199,7 +199,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p docs/architecture/generated/flows
-          printf '%s\\n' '{"args":["--no-sandbox","--disable-setuid-sandbox"]}' > /tmp/puppeteer-config.json
+          printf '%s\n' '{"args":["--no-sandbox","--disable-setuid-sandbox"]}' > /tmp/puppeteer-config.json
           MMDC="npx --yes @mermaid-js/mermaid-cli@11.4.2"
           count=0
           for src in docs/architecture/flows/*.mmd; do

@@ -26,6 +26,10 @@ permissions:
   contents: write
   issues: write
 
+concurrency:
+  group: roadmap-completion-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   verify:
     if: github.event_name != 'issues' || github.event.action != 'labeled' || !startsWith(github.event.label.name, 'completion:')

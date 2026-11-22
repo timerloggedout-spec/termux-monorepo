@@ -15,9 +15,9 @@ Extend the existing Challenge OSINT and Observatory system with two distinct Dev
 1. **Devpost event adapter** — event pages, rules, schedules, prizes, criteria, announcements, galleries, participants, judges, and results.
 2. **Devpost software-directory adapter** — global project discovery across Staff Picks, Popular, Trending, hackathon collections, search/filter results, and supported advanced-search queries.
 
-Keep these adapters separate. The authenticated Devpost connector supplies event and account-scoped capabilities; it does not expose a general global software-directory search. The directory therefore requires its own public-page observation adapter.
+Keep these adapters separate. The authenticated Devpost connector supplies event and account-scoped capabilities; global software-directory discovery belongs to a dedicated public-page observation adapter.
 
-The existing challenge coordinator remains the canonical event record. The directory adapter owns its own candidate/observation index. Cross-plane graph imports both read-only and derives links; it does not become another source of truth.
+The existing challenge coordinator remains the canonical event record. The directory adapter owns its candidate/observation index. Cross-plane graph imports both read-only and derives links while preserving each source plane's ownership.
 
 ## 2. Existing capability inventory
 
@@ -31,7 +31,7 @@ The repository already provides the bulk of the lifecycle model:
 - `scripts/graph/cross_plane_link.py` imports the challenge plane read-only into the cross-plane graph.
 - `docs/ops/CHALLENGE-ENTRIES-LOG.md` records registrations separately from submissions and requires evidence for each claim.
 
-This proposal adds source coverage and discovery; it does not recreate those capabilities.
+This proposal adds source coverage and discovery on top of those capabilities.
 
 ## 3. Source boundary
 
@@ -51,7 +51,7 @@ Use the Devpost Hackathons connector for its supported event/account operations:
 
 Use these responses as structured event evidence. Record the connector fetch timestamp and completeness status with every observation.
 
-Connector boundary: these actions do not provide a general search interface for all projects in the global Devpost software directory.
+Connector boundary: these actions cover event/account data. Global Devpost software-directory search belongs to the public-page adapter.
 
 ### 3.2 Public software-directory adapter
 
@@ -65,7 +65,7 @@ Observe the public directory at `https://devpost.com/software/` and its public l
 - documented advanced search operators;
 - visible technology tags and category facets.
 
-The adapter discovers candidates and records listing context. It does not infer official competition placement from directory position, likes, comments, or popularity labels.
+The adapter discovers candidates and records listing context. Official competition placement comes from organizer result sources; directory position, likes, comments, and popularity labels remain independent signals.
 
 Collection method order:
 
@@ -73,7 +73,7 @@ Collection method order:
 2. public HTML page observation using a bounded, terms-compliant fetch;
 3. browser observation for dynamic pages that require normal page interaction.
 
-Respect site terms, robots directives, rate limits, and access boundaries. Use public signed-out content only. Record blocked, unavailable, or incomplete surfaces explicitly; do not bypass login walls, anti-bot controls, or access restrictions.
+Respect site terms, robots directives, rate limits, and access boundaries. Use public signed-out content. Record blocked, unavailable, or incomplete surfaces explicitly; route access-restricted pages through an authorized source path.
 
 ### 3.3 Other public evidence
 
@@ -109,7 +109,7 @@ Observe:
 - our own project publication/submission state and public artifact changes;
 - event phase transitions and deadline proximity.
 
-Keep event-page snapshots append-only and record deltas with old/new hashes and source timestamps. A failed or blocked fetch creates an observation-gap record; it does not imply that the page or event remained unchanged.
+Keep event-page snapshots append-only and record deltas with old/new hashes and source timestamps. A failed or blocked fetch creates an observation-gap record; page/event change state remains unknown until a successful observation.
 
 ### AFTER — results, podium, judges, and learning
 
@@ -129,7 +129,7 @@ Preserve the distinction between:
 - **engagement** — likes, comments, views, or other displayed counters;
 - **our analytical ranking** — an internal, versioned comparison with explicit methodology.
 
-A directory ranking never overwrites an official event result. A judge list remains partial when judges are unnamed or unlisted. Published scores are captured only when the source actually discloses them.
+Keep directory ranking, official event results, judge coverage, and published scores as separate fields. Represent unnamed judges as partial coverage and record scores from disclosed source material.
 
 ## 5. Data and identity contract
 
@@ -165,7 +165,7 @@ Suggested record shape:
 }
 ```
 
-The example is a shape illustration, not a populated observation. Preserve missing fields as null/empty with an explicit coverage state; never infer team identity, event placement, judge identity, or technology use from a project title.
+The example illustrates schema shape. Preserve missing fields as null/empty with explicit coverage; require direct evidence for team identity, event placement, judge identity, and technology use.
 
 Stable identity rules:
 
@@ -197,11 +197,11 @@ Proposed evidence-backed links:
 - judge `--judges-->` event;
 - project/participant `--placed_in-->` event result (new typed edge, only after schema review).
 
-The graph importer reads directory records and event records; it does not mutate either. Add edge types and plane enums through the graph schema, validator, deterministic builder, and regression tests in one coherent change. Retain the current privacy rules: public links only, explicit identity evidence only, no name-matching joins, and no internal MoneyBall metrics in public graph projections.
+The graph importer reads directory and event records and preserves both source planes as read-only. Add edge types and plane enums through the graph schema, validator, deterministic builder, and regression tests in one coherent change. Apply privacy rules: public links, explicit identity evidence, identity joins grounded in verified identifiers, and internal MoneyBall metrics excluded from public graph projections.
 
 ## 7. Observation cadence
 
-The following cadence is proposed; it is not configured by this document.
+The following cadence is proposed; workflow configuration requires a separate implementation and observed run.
 
 | Frequency / trigger | Observation | Purpose |
 |---|---|---|
@@ -213,7 +213,7 @@ The following cadence is proposed; it is not configured by this document.
 | After results | Winner/project/judge capture and result verification | Build podium and longitudinal evidence |
 | Monthly | Reference-template reassessment | Retire, promote, or expand candidates |
 
-Keep the existing weekly challenge OSINT watcher as the event-page baseline. Add directory discovery as a sibling workflow with its own concurrency group, source state, and refresh PR. Keep the discovery sweep bounded and idempotent. Daily checks apply to tracked active events; they do not imply daily full-catalog crawling.
+Keep the existing weekly challenge OSINT watcher as the event-page baseline. Add directory discovery as a sibling workflow with its own concurrency group, source state, and refresh PR. Keep the discovery sweep bounded and idempotent. Daily checks apply to tracked active events; full-catalog crawling follows a separate bounded discovery cadence.
 
 ## 8. Reference-template and MoneyBall output
 
@@ -233,7 +233,7 @@ Promoted reference projects should carry:
 - observed open-source contribution;
 - source snapshot IDs and fetch timestamps.
 
-Keep raw observations separate from interpretation. Candidate promotion/retirement is a versioned decision with evidence. Directory popularity is a discovery feature, never a proxy for engineering quality or competition outcome.
+Keep raw observations separate from interpretation. Candidate promotion/retirement is a versioned decision with evidence. Treat directory popularity as a discovery feature; evaluate engineering quality and competition outcomes through separate evidence.
 
 ## 9. DataHub reference case — connector-verified 2026-11-22
 
@@ -250,7 +250,7 @@ Observed connector evidence:
 - The event page exposed eight judge names and affiliations through its public judges section.
 - The connector returned eight announcements, including the winner announcement and a September 4 schedule update moving the announcement to September 10.
 
-The public rules describe a two-stage process: baseline viability followed by equally weighted substantive criteria. They also state that judges may change and may not all be listed individually. Therefore the model must preserve the distinction between the public page's named judge list and the complete adjudication panel, which may remain unknown.
+The public rules describe a two-stage process: baseline viability followed by equally weighted substantive criteria. The rules allow judge rosters to change and may omit individual names. Preserve the distinction between the public page's named judge list and the complete adjudication panel, which can remain unknown.
 
 The public event page listed these eight judges/affiliations at fetch time: Aman Gairola (Engineering Manager, Pinterest); Maggie Hays (Founding Product Manager, DataHub); Alyssa Lee (Chief of Staff, DataHub); Adrian Machado (Software Engineer, DataHub); Tim Bossenmaier (Data Architect, Cloudflight); Mike Burke (Senior Developer); Nick Adams (DataHub); and Wenjia You (Member of Technical Program Staff, OpenAI). Store these as the **publicly listed panel snapshot**, with the page URL and fetched_at. Preserve the event-rules caveat that the complete/final panel may differ or include unnamed judges.
 
@@ -266,9 +266,9 @@ The organizer's winner article reports 600+ submissions and seven prize-winning 
 | Honourable Mention | — | ContextSeal | Mehmet Aydoğan |
 | Honourable Mention | — | RippleProof | Muhammad Hassaan Javed |
 
-This is an official-result taxonomy, not a numeric 1–7 score ranking: the article distinguishes Grand Prize, track challenge winners, and honorable mentions. Store the published award tier and track as separate fields; numeric podium rank remains null unless the organizer explicitly publishes one.
+This is an official-result taxonomy with award tiers and tracks; it supplies no numeric 1–7 ranking. The article distinguishes Grand Prize, track challenge winners, and honorable mentions. Store the published award tier and track as separate fields; numeric podium rank remains null until the organizer explicitly publishes one.
 
-The article describes evidence-gated agent execution, lineage-based root-cause analysis, human review, write-back verification, safe migrations, and writing incident resolution back to the catalog. It also reports 100+ open-source pull requests across DataHub repositories, skills, connectors, and documentation. These are reference-pattern observations, not assumptions about every winner.
+The article describes evidence-gated agent execution, lineage-based root-cause analysis, human review, write-back verification, safe migrations, and writing incident resolution back to the catalog. It also reports 100+ open-source pull requests across DataHub repositories, skills, connectors, and documentation. Treat these as reference-pattern observations; apply them to individual winners when evidence supports the link.
 
 Sources:
 - Event: https://datahub.devpost.com/
@@ -286,7 +286,7 @@ The authenticated Devpost connector returned one published project:
 - Project details identify the repository folder `entries/c12-receipts-vault`, the proposal PDF, skill package ZIP, and package manifest.
 - UGREEN event connector status is `judging` / `pre_winners_announced`.
 
-The connector also returned three connected events: UGREEN (registered + submitted; judging), Cloud9 x JetBrains (registered; submissions open), and Learn AR with SPECS (registered; submissions open). These are account-scoped facts, not global Devpost directory coverage.
+The connector also returned three connected events: UGREEN (registered + submitted; judging), Cloud9 x JetBrains (registered; submissions open), and Learn AR with SPECS (registered; submissions open). These facts are account-scoped; global Devpost directory coverage remains separate.
 
 For UGREEN, the connector reports submissions closed at 2026-11-16T07:45:00Z, judging from 2026-11-16T08:00:00Z through 2026-12-06T01:00:00Z, and winners announced at 2026-12-06T10:00:00Z (Pacific Time / connector UTC instants). Current phase: `judging`, fetched 2026-11-22T08:09:43Z. This gives the lifecycle watcher a live account-linked event with a published project and a future result transition.
 
@@ -301,7 +301,7 @@ Use these observations as a validation cohort for the BEFORE/DURING/AFTER state 
 5. **Event lifecycle enrichment** — connect Devpost connector observations to existing coordinator event records; populate BEFORE/DURING/AFTER coverage.
 6. **Podium capture** — capture official result placements and public judge records with source-level confidence.
 7. **Graph extension** — add Devpost entities/edges through schema + builder + tests.
-8. **SHE/MoneyBall projections** — compare reference patterns and longitudinal outcomes using raw evidence, never directory position as a quality score.
+8. **SHE/MoneyBall projections** — compare reference patterns and longitudinal outcomes using raw evidence; evaluate directory position separately from quality.
 
 Acceptance gates:
 

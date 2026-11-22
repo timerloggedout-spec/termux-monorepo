@@ -183,7 +183,7 @@ evidence:
 - Event timestamps are timezone-aware UTC.
 - Artifact digest is verified before acceptance.
 - Raw prompt/completion/tool payloads are excluded from exported receipts.
-- A manager cannot judge its own treatment as the sole acceptance authority.
+- Independent evaluators provide acceptance authority; manager self-scores remain separate observations.
 - Provider identity and GitHub actor identity remain distinct.
 - Every score links to evaluator version and source evidence.
 - Every promotion links to a tournament version and exact candidate evidence set.
@@ -204,7 +204,7 @@ The registry separately pins `ops/classifiers/classifiers-feed.json`, a 71-unit 
 
 Each candidate records both `readiness` and `operational_state`. Example distinctions: the local Jev role is an incumbent used by dispatch; external TypeSafe Jev is catalogued while its hosted route remains paid-gated; external Laya has a self-hosted evaluation record; external Kev requires its compatible serving composition. See `docs/ops/SYSTEM-ONE-CATALOG.md` and the census `TRIALS.md` for evidence.
 
-The registry's canonical cohort reference is `manager.tournament.v1`. It does not create a second cohort identity.
+The registry's canonical cohort reference is `manager.tournament.v1`. It reuses `manager.tournament.v1` as the sole cohort identity.
 
 ## Classifier graph manifest (proposed)
 
@@ -289,7 +289,7 @@ evaluation:
 }
 ~~~
 
-Allowed node/evaluation statuses: `completed`, `failed`, `skipped`, `timed_out`, `unavailable`, `not_applicable`. Reducers join records by `candidate_id + run_id + run_attempt + graph_node_id`; array position carries no identity. Metrics absent from an observation remain null.
+Allowed node/evaluation statuses: `completed`, `failed`, `skipped`, `timed_out`, `unavailable`, `not_applicable`. Reducers join records by `candidate_id + run_id + run_attempt + graph_node_id`; Use stable IDs for joins; array position serves display ordering. Metrics absent from an observation remain null.
 
 ## SIE iteration receipt (proposed)
 
@@ -352,7 +352,7 @@ composition graph and tournament implementation.
 
 ## Candidate admission report
 
-`scripts/ci/classifier_candidate_admission.py` emits the deterministic `classifier.candidate-admission-report.v1` view. It separates incumbent baselines, replication candidates, owner-gated candidates, serving-composition blockers, host/egress blockers, referenced-but-unrunnable entries and unclassified models. Admission is scoped to the same role and task contract; catalog presence alone grants no execution eligibility.
+`scripts/ci/classifier_candidate_admission.py` emits the deterministic `classifier.candidate-admission-report.v1` view. It separates incumbent baselines, replication candidates, owner-gated candidates, serving-composition blockers, host/egress blockers, referenced-but-unrunnable entries and unclassified models. Admission is scoped to the same role and task contract; Candidate execution requires separate capability and adapter evidence.
 
 Each catalog-backed model candidate retains the catalog's exact `note`
 as `catalog_claim` and its exact `source_url` as

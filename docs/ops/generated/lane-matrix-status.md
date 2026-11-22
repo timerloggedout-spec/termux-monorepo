@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-22T09:15:16Z)
+# Lane matrix status (2026-11-22T09:16:00Z)
 
-- Master: `460b846cfa9f178b25d98578babbdbd9bbe3b75a`
+- Master: `dfb5af69d0dceea320825248e7a12e857b411829`
 - Open PRs: **510**
 - Oldest: #47 (108.73d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -34,7 +34,7 @@
 | #47 | 108.73 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
 | #81 | 106.47 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
 | #103 | 105.34 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
-| #527 | 68.05 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
+| #527 | 68.06 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
 | #605 | 64.64 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
 | #684 | 62.62 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
 | #769 | 60.07 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
@@ -44,8 +44,8 @@
 | #1274 | 34.0 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
 | #1441 | 32.06 | CANDIDATE | state:unknown | feat(triage): reconcile official quota before disp |
 | #1469 | 31.84 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
-| #1470 | 31.83 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
-| #1495 | 31.28 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
+| #1470 | 31.84 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
+| #1495 | 31.29 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
 | #1513 | 31.04 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 31.04 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
 | #1516 | 31.04 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
@@ -59,7 +59,7 @@
 | #1645 | 28.37 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
 | #1650 | 28.29 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
 | #1694 | 26.32 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
-| #1734 | 25.91 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
+| #1734 | 25.92 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
 | #1735 | 25.91 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
 | #1966 | 25.18 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
 

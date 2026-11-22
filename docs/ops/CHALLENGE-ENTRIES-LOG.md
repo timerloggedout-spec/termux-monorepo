@@ -156,7 +156,7 @@ free-tier / mesh-resiliency engineering (device pull queue, quota systems);
 | C10 | Agentware — Hackathon Raptors | Build **Nov 27–30, 2026**; submissions close Dec 7, 18:00 UTC (organizer page, checked 2026-10-30) | Autonomous agent; **new code only** in the 72h window (pre-window code disqualifies) | Free; Discord | I1 △ — repo-maintenance agent framing; 72h new-code constraint = rebuild, not reuse |
 | C11 | AMD AI League — AMD × lablab.ai. **REGISTERED 2026-10-30 (see R6) — state Approved.** | League Sep 1 – **Dec 1, 2026**; submission deadline **Dec 1, 2026, 11:00 AM PST**; final Match ends Nov 14 (official event page, read 2026-10-30) | **Individual participation only** (no teams). Points league: Onboarding (300 pts: AMD sign-up, claim $100 GPU credits, first Academy course, complete AMD profile, join lablab Discord — **required for Match participation**, join AMD Discord) ∘ Academy course milestones (5 courses = League-podium eligibility gate) ∘ 6 Matches (Match 4 LIVE: Intelligent Web Information Retrieval, 1,800 pts; Match 5: AI-Powered Code Repository Repair, 2,100 pts; Match 6 Nov 10–14, 2,400 pts; closed Matches stay open for points only) ∘ per-Match project submitted via event page (solo-team create ⇒ Submit Project) | Free; lablab account + AMD SSO (live); no card at any step (verified at join) | Prizes: League podium $2,500/$1,500/$1,000 (gate: ≥5 Academy courses) · per Match $500 cash / $250 GPU credits / $100 GPU credits top-50 · Referral Leaders $1,000/$600/$400 · ROCm Certified Associate credential. Fit: Match 4 = web-retrieval agent (fleet web-RE surface); Match 5 = repo-repair multi-agent. **Candidate, unassigned — packet decision = Manager** |
 
-| C17 | GitLab Community Hackathon — January 2027 (Contributor Platform) | **Jan 21–28, 2027 UTC**; qualifying MRs merge within 31 days after event end | Start Contributor Platform onboarding; accept rules; choose an eligible GitLab issue; get assigned BEFORE opening an MR; open MR during the seven-day event; maintainer merge within 31 days. AI allowed with review/testing responsibility; 20 MRs + 20 issues/day caps; scripted labeling prohibited. | Free; store credits (200 / 150 / 100 for top three; 50 per qualifying merged MR). Cash component: NONE_LISTED. | Contribution-lane fit; code/docs/translation/issue work. Owner onboarding, registration, issue assignment, and contribution state: NOT_ESTABLISHED. See C17 in coordinator candidate_events. |
+| C17 | GitLab Community Hackathon — January 2027 (Contributor Platform) | **Jan 21–28, 2027 UTC**; qualifying MRs merge within 31 days after event end | Accept Contributor Platform rules; start onboarding; choose an eligible GitLab issue; get assigned BEFORE opening an MR; open MR during the seven-day event; maintainer merge within 31 days. AI allowed with review/testing responsibility; 20 MRs + 20 issues/day caps; scripted labeling prohibited. | Free; store credits (200 / 150 / 100 for top three; 50 per qualifying merged MR). Cash component: NONE_LISTED. | Contribution-lane fit; code/docs/translation/issue work. Owner onboarding, rule acceptance, issue assignment, and contribution state: NOT_ESTABLISHED; Devpost registration: NOT_REQUIRED. See C17 in coordinator candidate_events. |
 
 ### Idea bank (unassigned concepts)
 
@@ -718,8 +718,10 @@ Current rules version is 2026-10-v2.
 group. The supplied
 `https://gitlab.com/gitlab-ai-hackathon/gitlab-devsecops-flow-hackathon`
 resolves to a subgroup, observed empty on 2026-11-22. The sibling
-`/transcend` subgroup contains the October Transcend showcase workspaces;
-`/project-templates/participant-template` is the public agent/flow starter.
+`/transcend` subgroup has 312 public projects with event-cycle mapping
+NOT_ESTABLISHED. The archived `/transcend-october-2026` subgroup contains
+1,273 child subgroups and 1,820 public archived projects. The
+`/project-templates/participant-template` project is the public agent/flow starter.
 The source map and evidence are in
 `docs/ops/GITLAB-AI-HACKATHON-OSINT.md`,
 `ops/challenge/osint/gitlab-sources.json`, and the dated 312-project snapshot

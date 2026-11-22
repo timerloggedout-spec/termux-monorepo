@@ -20,6 +20,7 @@ class ArchitecturePortalBuilderTests(unittest.TestCase):
             "docs/architecture/README.md": "# Architecture Index\n\nDomain index.\n",
             "docs/architecture/flows/execution-session.md": "# Execution and Session\n\nFlow notes.\n",
             "docs/architecture/flows/execution-session.mmd": "flowchart LR\n A-->B\n",
+            "docs/architecture/flows/fenced.mmd": "```mermaid\nflowchart TD\n A-->B\n```\n\nA Markdown-wrapped Mermaid source.\n",
             "docs/architecture/flows/imported.svg": "<svg xmlns=\"http://www.w3.org/2000/svg\"><title>Imported</title></svg>\n",
             "docs/ops/diagrams/repository-data-flow.mmd": "flowchart TB\n A-->C\n",
             "docs/ops/generated/legacy.svg": "<svg xmlns=\"http://www.w3.org/2000/svg\"><title>Legacy</title></svg>\n",
@@ -46,6 +47,7 @@ class ArchitecturePortalBuilderTests(unittest.TestCase):
 
             self.assertIn("architecture.md", by_path)
             self.assertIn("docs/architecture/flows/execution-session.mmd", by_path)
+            self.assertIn("docs/architecture/flows/fenced.mmd", by_path)
             self.assertIn("docs/architecture/flows/imported.svg", by_path)
             self.assertIn("docs/ops/diagrams/repository-data-flow.mmd", by_path)
             self.assertIn("docs/agentic/dependency-phases.mmd", by_path)
@@ -56,6 +58,10 @@ class ArchitecturePortalBuilderTests(unittest.TestCase):
             diagram = by_path["docs/architecture/flows/execution-session.mmd"]
             self.assertEqual(diagram["kind"], "mermaid")
             self.assertEqual(diagram["render_path"], "assets/diagrams/docs/architecture/flows/execution-session.svg")
+            fenced = by_path["docs/architecture/flows/fenced.mmd"]
+            render_input = output / fenced["render_input_path"]
+            self.assertIn("flowchart TD", render_input.read_text(encoding="utf-8"))
+            self.assertNotIn("```", render_input.read_text(encoding="utf-8"))
             self.assertEqual(diagram["source_ref"], "master")
             self.assertEqual(len(diagram["sha256"]), 64)
             self.assertTrue((output / diagram["site_path"]).is_file())
@@ -88,7 +94,7 @@ class ArchitecturePortalBuilderTests(unittest.TestCase):
             portal.build_portal(root, output, "master", "abc123")
 
             missing = portal.verify_rendered(output)
-            self.assertEqual(len(missing), 3)
+            self.assertEqual(len(missing), 4)
             for item in json.loads((output / "catalog.json").read_text())["items"]:
                 if item["kind"] == "mermaid":
                     render = output / item["render_path"]

@@ -3,6 +3,16 @@ name: github-telemetry-snapshot
 on:
   schedule:
     - cron: "17 3 * * *"
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/dashboards/actions_observe.py'
+      - 'scripts/dashboards/workflow_discovery_feed.py'
+      - 'docs/ops/generated/automation-workflow-catalog.json'
+      - 'apps/tribute-dashboard/workflows.html'
+      - 'apps/tribute-dashboard/site-nav.js'
+      - 'apps/tribute-dashboard/sitemap.xml'
+      - '.github/workflows/github-telemetry-snapshot.yml'
   workflow_dispatch:
     inputs:
       max_runs:
@@ -59,6 +69,25 @@ jobs:
           if [ "${{ inputs.with_stats || false }}" = "true" ]; then ARGS+=(--with-stats); fi
           python -m ops.github_telemetry collect "${ARGS[@]}" || echo "collect finished with warnings"
 
+      - name: Collect bounded Actions run sample for dashboard
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 -B scripts/dashboards/actions_observe.py \
+            --pages 1,2,3 --per-page 100 --via-env-token \
+            --out scripts/dashboards/actions_observations.json
+
+      - name: Build workflow discovery + telemetry dashboard feeds
+        run: |
+          set -euo pipefail
+          python3 -B scripts/ci/automation_docs.py --check
+          python3 -B scripts/dashboards/workflow_discovery_feed.py
+          python3 -B scripts/dashboards/telemetry_feed.py --out-dir apps/tribute-dashboard/data
+          python3 -B scripts/dashboards/telemetry_feed_series.py
+          python3 -B -m unittest discover -s tests -p 'test_workflow_discovery_*.py' -v
+
       - name: Reduce jobs → reconstructed performance JSON
         run: |
           set -euo pipefail
@@ -94,6 +123,10 @@ jobs:
         run: |
           set -euo pipefail
           git add docs/ops/generated/actions-performance-reconstructed-*.json 2>/dev/null || true
+          git add apps/tribute-dashboard/data/workflow-discovery-feed.json 2>/dev/null || true
+          git add apps/tribute-dashboard/data/telemetry-feed.json 2>/dev/null || true
+          git add apps/tribute-dashboard/data/telemetry-feed-series.jsonl 2>/dev/null || true
+          git add scripts/dashboards/actions_observations.json 2>/dev/null || true
           git add ops/github-telemetry/raw 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No telemetry delta to commit."

@@ -54,6 +54,14 @@ class ArchitectureDocumentationTests(unittest.TestCase):
             self.assertEqual(len(first["source_set_sha256"]), 64)
             self.assertEqual(len(first["diagrams"]), 2)
 
+    def test_manifest_rejects_unpaired_flow_source(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.make_root(root)
+            (root / "docs/architecture/flows/sample.md").unlink()
+            with self.assertRaisesRegex(ValueError, "missing paired architecture flow mapping"):
+                architecture_docs.build_manifest(root)
+
     def test_manifest_rejects_missing_render(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

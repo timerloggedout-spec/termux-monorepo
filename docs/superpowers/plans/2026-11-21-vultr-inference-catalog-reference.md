@@ -96,17 +96,20 @@
 
 - [x] Run the focused inventory tests in the isolated source-mirror harness: 5 passed.
 - [x] Run `python3 scripts/ci/refTemplates_inventory.py --strict` in the isolated source-mirror harness: 3 slots validated, 0 failures.
-- [ ] Run `python3 scripts/ci/repo_gate.py`.
-- [ ] Run `python3 scripts/ci/termux_smoke.py`.
-- [x] Re-fetch all 18 changed paths and compare the final branch against current `master`: ahead of current `master`, 0 commits behind; final head recorded separately.
-- [ ] Open a PR citing `Implements: MSM-025`.
-- [ ] Inspect repo-gate, Termux smoke, proposal validation and any review findings on the same immutable head SHA.
-- [x] Preserve the isolated branch for review; promotion follows repository gates. PR creation awaits an explicit request.
+- [x] GitHub repo gate passed on PR head `9787c614ccb84b02d61134564d22fb52cdef4f0a`.
+- [x] GitHub Termux smoke passed on PR head `9787c614ccb84b02d61134564d22fb52cdef4f0a`.
+- [x] Re-fetch all 18 changed paths and record the branch comparison with immutable refs. At 2026-11-21 19:14 PST, branch `docs/vultr-inference-catalog-reference-20261121-reconciled` at `9787c614ccb84b02d61134564d22fb52cdef4f0a` compared with `master` at `2a0acc836650e0d03932c71b64ecd9f2e574be4c`: 32 commits ahead, 612 behind. This observation predates the review-fix commits; refresh it against the final review-fix head before promotion.
+- [x] Open draft PR #5754 citing `Implements: MSM-025` after the explicit PR request.
+- [x] Inspect repo-gate, Termux smoke, proposal lifecycle, PR evidence and review findings on the recorded head SHA.
+- [x] Preserve the isolated branch for review; promotion follows repository gates and independent review.
 
 
 ### Environment and external-check observations
 
 - The Termux MCP `get_device_info` action is unavailable in this session; Android device pressure and the Termux home checkout remain unobserved.
 - GitHub connector writes used an isolated feature branch based on the current `master` tip. The local source-mirror harness passed five focused tests and strict inventory validation across three synthetic slots.
-- Full repository `repo_gate.py` and `termux_smoke.py` remain pending a repository-native run. An intermediate commit returned a Vercel build-rate-limit status; the final head currently exposes an empty combined-status set; the earlier preview-capacity observation belongs to its own SHA.
-- The Termux stewardship skill reserves PR creation for an explicit PR request; this task prepared the branch and records the PR gate as pending.
+- GitHub repo gate and Termux smoke both passed on PR head `9787c614ccb84b02d61134564d22fb52cdef4f0a`; proposal lifecycle, PR evidence evaluation and refTemplates continuous evaluation also passed on that review cycle.
+- CodeRabbit requested changes in four inline threads; the source-preview edge case was also identified in its review summary. Remediation is tracked in the review-fix commits.
+- DO Statement Style failed because five earlier branch commit subjects lacked imperative action verbs. The style job validates commit history, so a new well-formed subject alone cannot repair those existing subjects without rewriting branch history.
+- Advisory CodeQL jobs for Python, JavaScript/TypeScript and Actions reached analysis but failed while publishing because the GitHub App installation API rate limit was exceeded; the workflow marked each job as a configuration error. The workflow declares this CodeQL run advisory and outside the required merge-check set.
+- Vercel preview status is non-gating under repository policy. Termux MCP `get_device_info` remains unavailable, so Android device health remains unobserved.

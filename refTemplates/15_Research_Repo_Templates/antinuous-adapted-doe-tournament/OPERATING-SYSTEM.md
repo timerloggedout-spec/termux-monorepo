@@ -91,7 +91,9 @@ The first versioned registry slice is now present:
 - `scripts/ci/classifier_candidate_admission.py` produces a deterministic admission report. Four local role baselines and the previously evaluated Laya route are eligible for role-matched baseline/replication trials; 56 unclassified model entries remain outside execution. TypeSafe Jev remains owner-paid gated, Kev requires serving composition, recruiting Mev lacks a runnable release, and Mellow mev remains host/egress blocked.
 
 - `config/classifier_graph_registry.json` registers the four local role implementations and five catalog-backed namesake candidates as distinct identities.
-- The registry points to the separate `ops/classifiers/classifiers-feed.json` snapshot: 71 estate units (43 live, 26 dormant, 2 dead) as of 2026-11-02. These units include heterogeneous classifier systems, pipelines, routing, review, gate and feed surfaces; they are not 71 interchangeable model candidates.
+- The registry now also records the classifier estate's 12 source-defined groups and each group's live/dormant/dead counts. The validator reconciles every group summary against the 71 source rows, keeping operating surfaces distinct from the 61 model candidates.
+
+The registry points to the separate `ops/classifiers/classifiers-feed.json` snapshot: 71 estate units (43 live, 26 dormant, 2 dead) as of 2026-11-02. These units include heterogeneous classifier systems, pipelines, routing, review, gate and feed surfaces; they are not 71 interchangeable model candidates.
 - `docs/ops/CLASSIFIER-GRAPH-REGISTRY.schema.json` defines the registry contract.
 - `scripts/ci/classifier_graph_registry_validator.py` checks candidate/catalog references, role compatibility, local source paths, graph node identity, DAG acyclicity and the pinned classifier-estate census counts.
 - `scripts/ci/test_classifier_graph_registry_validator.py` covers valid input, unknown catalog entries, role mismatch, dependency cycles and duplicate node IDs.

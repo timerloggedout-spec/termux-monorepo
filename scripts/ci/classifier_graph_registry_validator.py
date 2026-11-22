@@ -93,7 +93,7 @@ def validate_registry(root: Path, registry: Any, catalog: Any, estate: Any) -> l
             errors.append("registry.roles: each role requires role_id")
         if not _unique(role_values):
             errors.append("registry.roles: duplicate role_id")
-        role_ids = set(role_values)
+        role_ids = {value for value in role_values if isinstance(value, str) and value}
 
     candidates = registry.get("candidates")
     if not isinstance(candidates, list) or not candidates:
@@ -127,7 +127,7 @@ def validate_registry(root: Path, registry: Any, catalog: Any, estate: Any) -> l
                 "trial_candidate_composition_required", "evaluated_self_hosted",
                 "referenced_not_runnable", "trial_candidate_host_blocked",
             }
-            if operational_state not in allowed_states:
+            if not isinstance(operational_state, str) or operational_state not in allowed_states:
                 errors.append(f"{prefix}.operational_state: unknown or missing state {operational_state!r}")
             kind = candidate.get("kind")
             if kind == "catalog":

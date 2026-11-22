@@ -1,0 +1,44 @@
+name: Issue Intake Coverage
+
+on:
+  pull_request:
+    paths:
+      - ".github/ISSUE_TEMPLATE/**"
+      - ".github/workflows/**"
+      - "docs/ops/GITHUB-ISSUE-INTAKE-MAP.md"
+      - "scripts/ci/issue_intake_coverage.py"
+      - "tests/test_issue_intake_coverage.py"
+  push:
+    branches: [master]
+    paths:
+      - ".github/ISSUE_TEMPLATE/**"
+      - ".github/workflows/**"
+      - "docs/ops/GITHUB-ISSUE-INTAKE-MAP.md"
+      - "scripts/ci/issue_intake_coverage.py"
+      - "tests/test_issue_intake_coverage.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  coverage:
+    name: Verify issue forms and label triggers are discoverably mapped
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run coverage tests
+        run: python3 -m unittest tests.test_issue_intake_coverage
+
+      - name: Audit repository coverage
+        run: python3 scripts/ci/issue_intake_coverage.py --check

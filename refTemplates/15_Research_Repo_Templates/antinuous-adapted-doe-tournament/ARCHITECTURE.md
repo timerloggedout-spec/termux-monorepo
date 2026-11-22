@@ -227,3 +227,16 @@ The core scheduler must work without cloud accounts, paid observability vendors 
 Adopt the hybrid: event-sourced ledger + versioned DAG + manager/worker policies + actor leases + blackboard evidence + DoE planner + Pareto utility. Add bandit/Bayesian/evolutionary allocation as policy modules behind stable contracts.
 
 Reuse existing manager.tournament.v1, DeepCLI DoE/trial/tournament and evolutionary replay implementations. This gives dynamic utility without creating a parallel source of truth.
+
+
+## 11. SIE and classifier graph operating system
+
+The **Self-Improvement Engine (SIE)** owns the bounded evidence-to-improvement cycle: observe, diagnose, preregister a challenger, execute matched treatments, evaluate, compare, record and promote/hold/reject. See SELF-IMPROVEMENT-ENGINE.md and OPERATING-SYSTEM.md.
+
+The 70+ classifier population is a capability registry. Compare individual classifiers laterally, then measure conditional error overlap and complementary strengths. Candidate routes are DAGs, not a mandatory linear chain: fan-out independent classifiers, join evidence by stable candidate ID, evaluate, and route/escalate only when declared predicates require it. Mev/Jev/Kev/Laya remain the current functional-role baseline adapter, not the classifier system's fixed topology. See CLASSIFIER-GRAPH-TOURNAMENT.md.
+
+Tournament implementation versions compete as complete policies (manager + router + graph + scheduler + evaluator + evidence/promotion rules). Classifier and graph tournaments are component-level experiments and ablations inside that larger competition.
+
+## 12. Current implementation audit
+
+Source inspection found that trial.py executes producer, critic and verifier loops sequentially. It independently filters successful artifact/Jev/Kev lists, while Laya joins them with positional zip; partial failures can therefore shift candidate alignment. The next implementation slice should introduce stable candidate IDs and keyed joins, explicit node status, and partial-evidence retention before parallel graph scheduling. This is a source-inspection finding; runtime test confirmation remains pending.

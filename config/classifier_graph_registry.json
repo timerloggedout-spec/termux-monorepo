@@ -53,7 +53,8 @@
       "readiness": "incumbent",
       "adapter_status": "native",
       "source_ref": "deepcli/deepcli/observatory/mev.py",
-      "notes": "Local baseline producer implementation."
+      "notes": "Local baseline producer implementation.",
+      "operational_state": "dispatch_only_baseline"
     },
     {
       "candidate_id": "local.deepcli.jev",
@@ -65,7 +66,8 @@
       "readiness": "incumbent",
       "adapter_status": "native",
       "source_ref": "deepcli/deepcli/observatory/jev.py",
-      "notes": "Local baseline rubric critic; judge independence is an evaluation factor."
+      "notes": "Local baseline rubric critic; judge independence is an evaluation factor.",
+      "operational_state": "dispatch_only_baseline"
     },
     {
       "candidate_id": "local.deepcli.kev",
@@ -77,7 +79,8 @@
       "readiness": "incumbent",
       "adapter_status": "native",
       "source_ref": "deepcli/deepcli/observatory/kev.py",
-      "notes": "Local baseline exact/token-F1 reference verifier."
+      "notes": "Local baseline exact/token-F1 reference verifier.",
+      "operational_state": "dispatch_only_baseline"
     },
     {
       "candidate_id": "local.deepcli.laya",
@@ -89,7 +92,8 @@
       "readiness": "incumbent",
       "adapter_status": "native",
       "source_ref": "deepcli/deepcli/observatory/laya.py",
-      "notes": "Local baseline reducer; current weighted scalar remains a baseline preference."
+      "notes": "Local baseline reducer; current weighted scalar remains a baseline preference.",
+      "operational_state": "dispatch_only_baseline"
     },
     {
       "candidate_id": "catalog.S1-01",
@@ -99,9 +103,10 @@
         "typed_decision"
       ],
       "readiness": "catalogued",
-      "adapter_status": "available",
-      "source_ref": "config/system_one_catalog.json#S1-01",
-      "notes": "TypeSafe AI Jev; evaluate in the typed-decision lane."
+      "adapter_status": "partial",
+      "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#Blocked-paid-list",
+      "notes": "TypeSafe AI Jev; evaluate in the typed-decision lane.",
+      "operational_state": "blocked_paid_owner_gate"
     },
     {
       "candidate_id": "catalog.S1-02",
@@ -111,9 +116,10 @@
         "typed_decision"
       ],
       "readiness": "trial_candidate",
-      "adapter_status": "available",
-      "source_ref": "config/system_one_catalog.json#S1-02",
-      "notes": "Jared Palmer Kev; TypeSafe-compatible serving is catalogued, candidate-specific trial evidence remains required."
+      "adapter_status": "required",
+      "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#T1-KEV",
+      "notes": "Jared Palmer Kev; TypeSafe-compatible serving is catalogued, candidate-specific trial evidence remains required.",
+      "operational_state": "trial_candidate_composition_required"
     },
     {
       "candidate_id": "catalog.S1-03",
@@ -124,8 +130,9 @@
       ],
       "readiness": "evaluated",
       "adapter_status": "available",
-      "source_ref": "config/system_one_catalog.json#S1-03",
-      "notes": "ConvAI Laya decision encoder family; preserve exact checkpoint and serving provenance per trial."
+      "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#T1-LAYA",
+      "notes": "ConvAI Laya decision encoder family; preserve exact checkpoint and serving provenance per trial.",
+      "operational_state": "evaluated_self_hosted"
     },
     {
       "candidate_id": "catalog.S1-04",
@@ -136,8 +143,9 @@
       ],
       "readiness": "catalogued",
       "adapter_status": "required",
-      "source_ref": "config/system_one_catalog.json#S1-04",
-      "notes": "Recruiting-domain Mev encoder/decision-head candidate; domain-specific evaluation required."
+      "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#T1-MEV",
+      "notes": "Recruiting-domain Mev encoder/decision-head candidate; domain-specific evaluation required.",
+      "operational_state": "referenced_not_runnable"
     },
     {
       "candidate_id": "catalog.S1-05",
@@ -148,8 +156,9 @@
       ],
       "readiness": "trial_candidate",
       "adapter_status": "required",
-      "source_ref": "config/system_one_catalog.json#S1-05",
-      "notes": "Mellow AI mev option-selection model; protocol and adapter compatibility require validation."
+      "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#T1-MEV",
+      "notes": "Mellow AI mev option-selection model; protocol and adapter compatibility require validation.",
+      "operational_state": "trial_candidate_host_blocked"
     }
   ],
   "graphs": [

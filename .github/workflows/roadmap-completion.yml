@@ -23,7 +23,7 @@ on:
         type: string
 
 permissions:
-  contents: read
+  contents: write
   issues: write
 
 jobs:
@@ -35,7 +35,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          persist-credentials: false
+          persist-credentials: true
           fetch-depth: 0
 
       - name: Set up Python
@@ -115,6 +115,30 @@ jobs:
           echo "passed=$([ "$status" -eq 0 ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
           exit 0
 
+      - name: Publish badge and README entry
+        if: steps.context.outputs.ready == 'true' && steps.verify.outputs.passed == 'true'
+        env:
+          ROADMAP: ${{ steps.context.outputs.roadmap }}
+          EXERCISE: ${{ steps.context.outputs.exercise }}
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_REF" != "refs/heads/master" ]; then
+            echo "Publish requires the master branch; current ref is $GITHUB_REF" >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          score=$(jq -r '.score' "$RUNNER_TEMP/roadmap-verification.json")
+          python roadmap-completions/scripts/publish-completion.py \
+            --roadmap "$ROADMAP" --exercise "$EXERCISE" --score "$score"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md "roadmap-completions/badges/$ROADMAP/$EXERCISE.svg"
+          if git diff --cached --quiet; then
+            echo "Badge and README publication already match the verified result." >> "$GITHUB_STEP_SUMMARY"
+          else
+            git commit -m "docs: publish roadmap completion badge" -m "Implements: REPO-ARCH-008"
+            git push origin HEAD:master
+          fi
+
       - name: Report verified evidence
         if: steps.context.outputs.ready == 'true' && steps.verify.outputs.passed == 'true' && steps.context.outputs.issue_numbers != ''
         env:
@@ -125,8 +149,9 @@ jobs:
         run: |
           while IFS= read -r issue_number; do
             [ -z "$issue_number" ] && continue
-            body=$(printf 'Roadmap evidence verification passed for %s/%s. The verifier checked configured evidence paths, code constraints, submitted test-result metadata, and documentation requirements. Badge publication and README updates remain separate publication steps.' "$ROADMAP" "$EXERCISE")
+            body=$(printf 'Roadmap evidence verification passed for %s/%s. The workflow published the badge and updated README.md.' "$ROADMAP" "$EXERCISE")
             gh issue comment "$issue_number" --repo "$GITHUB_REPOSITORY" --body "$body"
+            gh issue close "$issue_number" --repo "$GITHUB_REPOSITORY" --reason completed
           done <<< "$ISSUE_NUMBERS"
 
       - name: Report evidence requiring changes

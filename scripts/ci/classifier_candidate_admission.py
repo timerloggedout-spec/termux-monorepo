@@ -42,6 +42,8 @@ def build_report(registry: dict[str, Any], catalog: dict[str, Any]) -> dict[str,
             "operational_state": candidate.get("operational_state"),
             "disposition": disposition,
             "eligible_for_role_matched_trial": eligible,
+            "catalog_claim": candidate.get("catalog_claim"),
+            "catalog_source_url": candidate.get("catalog_source_url"),
             "source_ref": candidate.get("source_ref"),
         })
     counts: dict[str, int] = {}

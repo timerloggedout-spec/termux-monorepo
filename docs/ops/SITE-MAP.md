@@ -10,7 +10,7 @@ https://timerloggedout-spec.github.io/tribute/     OPS DASHBOARD (canonical UI)
 https://timerloggedout-spec.github.io/tribute/icm-cctv.html  ICM CCTV (static card board)
   sitemap → /help-wanted/sitemap.xml
   robots → /help-wanted/robots.txt
-https://timerloggedout-spec.github.io/termux-monorepo/  PROJECT HUB (thin)
+https://timerloggedout-spec.github.io/termux-monorepo/  PROJECT HUB (thin)\nhttps://timerloggedout-spec.github.io/termux-monorepo/architecture/  ARCHITECTURE EXPLORER (read-only)
 https://tribute-oversight-8w13bl125-timerloggedout-5184s-projects.vercel.app/
   VERIFIED VERCEL DEPLOYMENT (current observed production deployment)
   not canonical: Vercel deployment hostnames are ephemeral
@@ -32,7 +32,7 @@ https://github.com/timerloggedout-spec/termux-monorepo SOURCE
 |------|----|-----|
 | Marketing | `/tribute/` | Public ops transparency / operator entry |
 | Marketing | Vercel portal | Product demo |
-| `/termux-monorepo/` | `/tribute/` | Project Pages is hub, not product twin |
+| `/termux-monorepo/` | `/termux-monorepo/architecture/` | Architecture and diagram navigation |\n| `/termux-monorepo/` | `/tribute/` | Project Pages is hub, not product twin |
 | Dashboard | `/tribute/icm-cctv.html` | Static ICM card review and human checkpoints |
 | Dashboard | `/tribute/sitemap.xml` | Machine-readable public discovery |
 | Dashboard | `/help-wanted/robots.txt` | Crawler policy |

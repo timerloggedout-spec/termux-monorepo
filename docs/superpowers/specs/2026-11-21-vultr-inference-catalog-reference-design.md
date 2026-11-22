@@ -1,68 +1,46 @@
-# Vultr Inference Catalog Reference — Design
+# Provider Catalog Competition — Design v2
 
-**Date:** 2026-11-21  
-**Status:** scoped design for MSM-025  
-**Owner surface:** `timerloggedout-spec/termux-monorepo`
+**Date:** 2026-11-22  
+**Proposal:** MSM-025  
+**DoE:** DOE-VULTR-CATALOG-001 v2.0.0
 
 ## Goal
 
-Register Vultr's Python and TypeScript model-catalog repositories as pinned, metadata-only references and derive an evidence-backed improvement specification for the monorepo's existing provider Inference catalogue.
+Build and compare two repository-owned catalogue variants: the incumbent multi-provider `provider-model-catalog/v5` and a native `VultrInspired` projection. Use the pinned Vultr Python and TypeScript repositories as equivalent design references only.
 
-## Evidence and source identity
+## Architecture
 
-| Reference | Default branch | Inspected commit | License |
-|---|---|---|---|
-| [vultr/model-catalog-python](https://github.com/vultr/model-catalog-python) | `main` | `4a414ab26e1f596cb98b3974a7d12182bf62dab3` | MIT; verified from `LICENSE` |
-| [vultr/model-catalog-typescript](https://github.com/vultr/model-catalog-typescript) | `main` | `6e55057cb718213937c4c118271f5a2ca1779d0d` | MIT; verified from `LICENSE` |
+- Incumbent v5 remains the source collector and current evidence contract.
+- VultrInspired v1 is implemented in `scripts/provider_model_catalog_vultr_inspired.py` as a pure offline projection over incumbent v5 documents.
+- Vultr Python and TypeScript pins live in reference metadata and the DoE `source_references` list. They are not installed, imported, executed, forked or vendored.
+- The projection preserves the incumbent record and adds structured limits, modalities, capability groups, pricing provenance, lifecycle, access evidence, extensions and per-row diagnostics.
+- Provider-specific wire protocols remain in their existing adapter modules.
 
-The repositories describe matching Python and TypeScript libraries for Vultr Inference's public `GET /v1/models` endpoint. Their shared input is an OpenRouter Provider Model Document 2.4. The Python project targets Python 3.11+; the TypeScript project targets Node 20+ or Bun. Both declare zero runtime dependencies and share normalized fixtures.
+## Compute and side-effect contract
 
-## Current monorepo baseline
+Local fixture comparison uses the repository's existing Python runtime and ordinary local CPU/RAM. The projection performs zero HTTP requests, zero credential lookups and zero inference calls. Live catalogue observation remains a separate authorized workflow. Inference remains a separate provider integration. Vultr compute provisioning and promotional capacity are outside scope.
 
-The canonical collector is `scripts/provider_model_catalog.py`, schema `provider-model-catalog/v5`. It already separates provider catalog observations, pricing classification, access classification, documented entitlements, credential presence, quota evidence and inference outcomes. Provider-specific wire adapters live in `scripts/provider_catalog_protocols.py` and `scripts/provider_extension_catalogs.py`.
+## DoE design
 
-The current normalized model record emphasizes provider/model identity, pricing, access evidence, cadence, context length, output limit, selected capabilities, active state and source label. The collector records provider observation time, selected response headers, credential environment-variable name, contract-source classification and quota-manager status. The existing catalog is multi-provider and policy-aware; Vultr's libraries are single-provider SDKs for one documented model-document shape.
+Experiment `DOE-VULTR-CATALOG-001` version `2.0.0` compares `Incumbent` v5.0.0 with `VultrInspired` v1.0.0. Factors cover catalogue variant, fixture family, record quality and price representation. Paired trials use identical incumbent v5 input documents, model rows and timestamps.
 
-## Design decisions
+Responses measure semantic preservation, exact decimal visibility, modality/capability coverage, unknown-field retention, malformed-row diagnostics, provenance, evidence-boundary preservation and resource footprint. The Python and TypeScript upstream projects are immutable design references, not variants.
 
-1. Register both repositories under `refTemplates/19_Provider_Inference_Catalogs/`. Slot 18 is reserved by the active Vector Databases reference work in PR #5753.
-2. Pin each reference to the inspected full commit SHA and record the verified MIT license.
-3. Keep the references metadata-only: record source identity, pins and licenses. Route any submodule, fork, package dependency, installer, runtime call, inference request, secret mapping, schedule or routing/admission change through its own authorization.
-4. Preserve provider-specific adapters and the existing v5 evidence distinctions. Use Vultr's document as an adapter-specific schema reference within the provider-neutral contract.
-5. Record the comparison in `docs/ops/VULTR-INFERENCE-CATALOG-REFERENCE-RECON.md`.
-6. Extend the existing refTemplates inventory contract to validate metadata child directories for the managed reference slots, including slots 18 and 19.
-7. Keep any v6 catalog schema or runtime normalization implementation as a separately scoped follow-on.
+## Invariants
 
-## Lessons to evaluate
+- Catalog presence, pricing, access, entitlement, quota, readiness, health and inference success remain separate evidence classes.
+- Missing readiness or entitlement remains unknown.
+- The incumbent remains authoritative until a separately reviewed promotion.
+- VultrInspired v1 cannot activate providers, alter routing, mutate quotas or call inference.
+- Each design change increments the DoE version; each run binds source, fixture and implementation revisions.
 
-- Lossless input/output modality records with source descriptors and per-modality limits.
-- Exact decimal pricing strings and explicit units, including request, cached-input, cache-write and reasoning prices.
-- Tool, structured-output, streaming, reasoning-effort and parameter descriptors.
-- Model lifecycle and deprecation metadata.
-- Per-entry issues and tolerant parsing for malformed individual records.
-- Raw-payload cache with endpoint identity and fetch timestamp; visible `network`, `cache` and `stale-cache` source states.
-- Shared language-neutral golden fixtures for cross-language normalization parity.
-- Model-kind predicates that distinguish chat, agent, embedding, rerank, image, audio, video and decision models.
+## Acceptance
 
-## Adaptation constraints
+- Unit tests prove deterministic offline projection, exact string/integer price preservation, float precision diagnostics, unknown-field preservation and malformed-row isolation.
+- Registry tests prove the two local variants and separate immutable upstream reference pins.
+- Paired fixture runs publish measurements and artifact references only after reproducible execution.
+- Same-head repo gate, Termux smoke and independent review govern promotion.
 
-- Preserve unknown values as unknown; record evidence source and freshness.
-- Keep catalog presence, credential state, entitlement, quota, health and inference success as separate facts.
-- Keep provider-specific wire payloads behind adapters and normalize into a versioned monorepo contract.
-- A model-list response establishes catalog reachability; inference health requires separate evidence.
-- Preserve exact source and observation provenance for every imported capability and price.
-- Translate Vultr's provider-specific assumptions into explicit monorepo policy. For example, the reference library defaults missing `is_ready` to true; the monorepo's admission evidence must retain unknown where readiness is unreported.
+## Deferred
 
-## Acceptance criteria
-
-- Both reference repositories appear in the new refTemplates slot with exact source URLs, immutable commit pins and MIT license evidence.
-- The top-level refTemplates index, source map, ICM reference-input card and workflow integrity guidance point to the new slot.
-- The inventory validator enforces `README.md` and `SOURCE.txt` for reference child directories in slots 15, 18 and 19.
-- Focused inventory tests pass.
-- The comparative RECON distinguishes source facts, current monorepo facts and recommendations.
-- Repo gate and Termux smoke run on the final PR head; workflow results are inspected on that same SHA.
-- Runtime catalog behavior, credentials, inference, quotas, provider admission and routing remain unchanged.
-
-## Deferred work
-
-A provider-model-catalog v6 schema proposal may follow with a compatibility matrix and migration plan. Its implementation requires a separate accepted item, test-first design, v5 compatibility analysis, and explicit evidence requirements.
+Source-native provider adapters that retain exact decimal strings before incumbent float conversion; richer modality/capability extraction; raw payload snapshots and cache freshness; full fixture families and model-kind predicates.

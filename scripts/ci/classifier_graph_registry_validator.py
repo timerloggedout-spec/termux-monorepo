@@ -21,7 +21,7 @@ def _unique(values: list[Any]) -> bool:
         return False
 
 
-def validate_registry(root: Path, registry: Any, catalog: Any, estate: Any) -> list[str]:
+def validate_registry(root: Path, registry: Any, catalog: Any, estate: Any, plan: Any) -> list[str]:
     errors: list[str] = []
     if not isinstance(registry, dict):
         return ["registry: expected JSON object"]
@@ -60,6 +60,28 @@ def validate_registry(root: Path, registry: Any, catalog: Any, estate: Any) -> l
                         errors.append(f"classifier estate.headlines.{state}: mismatch with unit rows")
         if estate.get("generated_at") != estate_ref.get("snapshot_date"):
             errors.append("classifier estate.snapshot_date: generated_at mismatch")
+
+    if not isinstance(plan, dict) or plan.get("schema") != "classifier.tournament-experiment-plan.v1":
+        errors.append("experiment plan: expected classifier.tournament-experiment-plan.v1")
+    else:
+        if plan.get("canonical_cohort", {}).get("schema") != "manager.tournament.v1":
+            errors.append("experiment plan: canonical cohort must be manager.tournament.v1")
+        if plan.get("execution_ready") is not False or plan.get("status") != "design_only":
+            errors.append("experiment plan: execution remains design_only until qualification gates pass")
+        phases = plan.get("phases", [])
+        phase_ids = [phase.get("phase_id") for phase in phases if isinstance(phase, dict)]
+        if len(phase_ids) != len(phases) or not _unique(phase_ids) or len(phases) < 5:
+            errors.append("experiment plan.phases: require five uniquely identified phases")
+        expected_units = {"classifier_capability", "routing_policy", "composition_graph", "tournament_implementation"}
+        if set(plan.get("comparison_units", [])) != expected_units:
+            errors.append("experiment plan.comparison_units: all four comparison units are required")
+        analysis = plan.get("analysis", {})
+        if not isinstance(analysis, dict) or analysis.get("missing_observation") != "null" or analysis.get("raw_objectives_preserved") is not True:
+            errors.append("experiment plan.analysis: preserve null observations and raw objective vectors")
+        if not isinstance(plan.get("allocation"), dict) or plan["allocation"].get("resource_budget_required") is not True:
+            errors.append("experiment plan.allocation: explicit resource budget required")
+        if not isinstance(plan.get("stopping"), dict) or plan["stopping"].get("promotion_requires_human_approval") is not True:
+            errors.append("experiment plan.stopping: production promotion requires human approval")
 
     cohort = registry.get("canonical_cohort")
     if not isinstance(cohort, dict) or cohort.get("schema") != "manager.tournament.v1":
@@ -339,10 +361,12 @@ def main() -> int:
         catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
         estate_path = root / registry["classifier_estate"]["path"]
         estate = json.loads(estate_path.read_text(encoding="utf-8"))
+        plan_path = root / "config/classifier_tournament_experiment_plan.json"
+        plan = json.loads(plan_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError, KeyError, TypeError) as exc:
         print(f"input error: {exc}", file=sys.stderr)
         return 2
-    errors = validate_registry(root, registry, catalog, estate)
+    errors = validate_registry(root, registry, catalog, estate, plan)
     if errors:
         for error in errors:
             print(f"FAIL: {error}", file=sys.stderr)

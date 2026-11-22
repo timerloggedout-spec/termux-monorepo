@@ -4,7 +4,7 @@
 
 | Surface | How refTemplates participates |
 |---------|------------------------------|
-| Dual-gate | All metadata + gitlink changes on this PR ride dual-gate; no special path |
+| Dual-gate | All metadata + gitlink changes on this PR ride the existing dual-gate |
 | evidence-led-monorepo-ops | Inventory `refTemplates/00_Index/SOURCE-MAP.md` + `smods/` vs `.gitmodules` |
 | adaptive-wait | Submodule sparse-checkout / integrity jobs stay behind dual gates |
 | help-wanted / tribute | Research-template work claimable like other lanes |
@@ -18,7 +18,7 @@
 2. Every child under `19_Provider_Inference_Catalogs/*` has `README.md` + `SOURCE.txt` and pinned metadata
 3. Every `smods/*` path appears in `.gitmodules` with `shallow = true` when present
 4. Preferred SOURCE URLs are resolvable (HEAD or public)
-5. No hardcoded API keys in template metadata
+5. Template metadata uses named secret references and contains zero API-key values
 
 ## Follow-up implementation
 

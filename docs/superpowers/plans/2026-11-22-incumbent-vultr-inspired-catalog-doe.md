@@ -7,7 +7,7 @@
 ## Task 1 — establish the native competitor
 
 - [x] Add `scripts/provider_model_catalog_vultr_inspired.py` with a pure offline projection from incumbent v5.
-- [x] Preserve identity, limits, source pricing values, access evidence and source provenance.
+- [x] Preserve identity, limits, source pricing values, provider observations, cadence classes, source errors, access evidence and source provenance.
 - [x] Add structured modality/capability/lifecycle fields and unknown-field preservation.
 - [x] Isolate malformed rows and diagnose non-exact numeric pricing values.
 - [x] Declare zero network, credential and inference side effects.

@@ -1,30 +1,41 @@
 # Provider Inference Catalog References
 
-Metadata-first reference pair for provider model-catalog ingestion and cross-language normalization.
+This slot contains two different asset classes:
 
-| Reference | Language/runtime | Pinned source |
+1. **Local competing catalogues:** `Incumbent` (existing provider-model-catalog/v5) and `VultrInspired` (our native offline projection).
+2. **Upstream design references:** pinned Vultr Python and TypeScript projects. They are equivalent reference implementations, not two catalogue variants in our experiment.
+
+## Local catalogue implementations
+
+| Catalogue | Version | Implementation | Role |
+|---|---:|---|---|
+| Incumbent | 5.0.0 | [scripts/provider_model_catalog.py](../../../scripts/provider_model_catalog.py) | Existing multi-provider collector and v5 evidence contract |
+| VultrInspired | 1.0.0 | [scripts/provider_model_catalog_vultr_inspired.py](../../../scripts/provider_model_catalog_vultr_inspired.py) | Native loss-aware projection over incumbent v5 records |
+
+VultrInspired currently runs as a pure local Python transformation over an incumbent v5 document. It uses the standard library, requires no credentials, makes zero network requests and makes zero inference calls. It is an evaluation candidate, not a runtime replacement or routing authority.
+
+## Upstream design references
+
+| Reference | Pinned source | Intended use |
 |---|---|---|
-| [vultr-model-catalog-python](vultr-model-catalog-python/README.md) | Python 3.11+ | [4a414ab](https://github.com/vultr/model-catalog-python/tree/4a414ab26e1f596cb98b3974a7d12182bf62dab3) |
-| [vultr-model-catalog-typescript](vultr-model-catalog-typescript/README.md) | Node 20+ / Bun | [6e55057](https://github.com/vultr/model-catalog-typescript/tree/6e55057cb718213937c4c118271f5a2ca1779d0d) |
+| [vultr-model-catalog-python](vultr-model-catalog-python/README.md) | [4a414ab](https://github.com/vultr/model-catalog-python/tree/4a414ab26e1f596cb98b3974a7d12182bf62dab3) | Schema, normalization, parser and cache design reference |
+| [vultr-model-catalog-typescript](vultr-model-catalog-typescript/README.md) | [6e55057](https://github.com/vultr/model-catalog-typescript/tree/6e55057cb718213937c4c118271f5a2ca1779d0d) | Equivalent cross-language design reference |
 
-## Shared architecture
+The upstream projects expose equivalent patterns over Vultr's public `GET /v1/models` catalog. Their parity is a reason to consolidate their lessons into one local adaptation, rather than execute both or treat them as competing implementations.
 
-Both libraries consume Vultr Inference's public `GET /v1/models` endpoint and normalize its OpenRouter Provider Model Document 2.4 entries into equivalent catalog records. They share language-neutral fixtures and normalized outputs.
+Transferable patterns include exact decimal pricing, modality-aware input/output descriptors, tools and structured-output metadata, reasoning and parameter descriptors, per-record diagnostics, unknown-field preservation, source/freshness provenance, and shared fixtures.
 
-The reference is useful for:
-- lossless input/output modality records;
-- exact decimal pricing strings and explicit pricing units;
-- tool, structured-output, streaming and reasoning metadata;
-- per-entry parser issues and forward-compatible unknown fields;
-- raw-payload cache with freshness/source classification;
-- Python/TypeScript semantic parity fixtures.
+## Compute and provider boundary
 
-## Disposition
+- Local comparison: existing Python runtime; offline fixture input.
+- Live catalogue observation: a separately authorized provider endpoint and network path.
+- Inference: a separately configured and authorized inference provider.
+- Vultr compute provisioning, Vultr credentials, Vultr inference and promotional capacity: outside this integration.
 
-**Research-only · metadata-only · MIT-licensed upstreams.**
+A catalog record proves only the source fact represented by that record. Readiness, account entitlement, quota, health and successful inference remain separate evidence.
 
-The pinned repositories inform the monorepo's provider catalog design. This slot records source identity and architectural evidence; package installation, upstream execution, custom forks, gitlinks, provider activation and inference remain separate decisions.
+## DoE
 
-DoE experiment design and immutable variant pins: [DOE-REGISTRY.json](DOE-REGISTRY.json). The current experiment is version `1.0.0`, status `planned`; Python and TypeScript variants are independently pinned, and the registry records controlled factors, response variables, acceptance criteria and immutable run keys. Execution results remain empty until reproducible runs are performed.
+[DOE-REGISTRY.json](DOE-REGISTRY.json) records `DOE-VULTR-CATALOG-001` version `2.0.0`, comparing Incumbent v5 with VultrInspired v1.0.0. The two Vultr repositories remain pinned under `source_references`, not as experiment variants. Status is `planned`; result artifacts remain empty until deterministic paired runs are executed and recorded.
 
 Comparative analysis: [Vultr Inference Catalog Reference RECON](../../docs/ops/VULTR-INFERENCE-CATALOG-REFERENCE-RECON.md).

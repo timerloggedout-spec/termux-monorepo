@@ -164,3 +164,23 @@ The next SIE implementation tranche qualifies candidates individually,
 builds candidate-specific execution bindings, and runs bounded screens.
 The full classifier estate remains a separate operating-surface inventory.
 
+
+## 12. Executable matched-implementation comparator
+
+`deepcli/deepcli/observatory/implementation_competition.py` adds a
+stdlib-only comparison engine for exactly two versioned implementations.
+It joins immutable receipts by task ID and requires the same cohort,
+task contract, environment fingerprint and evaluator version.
+
+The reducer reports per-metric paired deltas, sample counts, missing-value
+preservation and approximate 95% intervals. Hard-gate failures block a
+challenger recommendation. Dominance requires interval-supported
+non-regression across every comparable metric and positive improvement
+on at least one. A challenger recommendation routes to human review;
+the module leaves promotion as a separate owner-approved operation.
+
+Tests live in `deepcli/tests/test_implementation_competition.py` and
+run in the repository gate. This is an executable comparison component;
+the complete SIE control plane remains a design-only challenger pending
+scheduler, receipt-ledger, evaluator and promotion-controller integration.
+

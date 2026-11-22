@@ -358,8 +358,8 @@ Keep these event identities, rule sets, timelines, and results separate. The Oct
 For GitLab AI Hackathon, the rules text and connector structured start instant
 differ; for Life After Code, structured judging/winner dates differ from the
 rules' expected dates. The dossier records both values and the source
-discrepancies. A live connector timestamp is an observation, not a rewrite of
-the published rules.
+discrepancies. Preserve live connector timestamps as observations and retain
+the published rules as their own source record.
 
 The official event material links the GitLab Discord `#ai-hackathon`, the
 Devpost Discord, office hours, GitLab Duo Agent/Flow docs, prompt library, and

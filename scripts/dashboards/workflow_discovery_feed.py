@@ -9,12 +9,15 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 CATALOG = ROOT / "docs/ops/generated/automation-workflow-catalog.json"
 OBSERVATIONS = ROOT / "scripts/dashboards/actions_observations.json"
 OUTPUT = ROOT / "apps/tribute-dashboard/data/workflow-discovery-feed.json"
@@ -267,7 +270,7 @@ def build_feed(
         "surface": "actions-workflow-discovery",
         "generated_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "sources": {
-            "catalog": "docs/ops/generated/automation-workflow-catalog.json",
+            "catalog": "live source scan via scripts/ci/automation_docs.py::build_catalog",
             "catalog_fingerprint": catalog.get("source_fingerprint"),
             "observations": "scripts/dashboards/actions_observations.json",
             "observations_read_at": (observations or {}).get("read_at"),
@@ -311,13 +314,17 @@ def build_feed(
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--catalog", type=Path, default=CATALOG)
+    parser.add_argument("--catalog", type=Path, help="optional committed catalog snapshot; default scans live workflow sources")
     parser.add_argument("--observations", type=Path, default=OBSERVATIONS)
     parser.add_argument("--out", type=Path, default=OUTPUT)
     parser.add_argument("--workflow-root", type=Path, default=ROOT / ".github/workflows")
     args = parser.parse_args()
 
-    catalog = _read_json(args.catalog)
+    if args.catalog:
+        catalog = _read_json(args.catalog)
+    else:
+        from scripts.ci.automation_docs import build_catalog
+        catalog = build_catalog(ROOT)
     observations = _read_json(args.observations) if args.observations.is_file() else None
     feed = build_feed(catalog, observations, workflow_root=args.workflow_root)
     args.out.parent.mkdir(parents=True, exist_ok=True)

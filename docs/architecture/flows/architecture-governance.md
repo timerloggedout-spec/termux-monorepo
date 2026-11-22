@@ -11,13 +11,14 @@ This module connects semantic architecture changes to versioned source history a
 
 ## Flow
 
-1. A contributor changes an authoritative architecture document or editable Mermaid source.
-2. The contributor classifies the semantic impact and updates docs/architecture/VERSION plus CHANGELOG.md in the same pull request.
-3. Pull-request validation compares the branch with its base, runs focused unit tests, renders the architecture flow diagrams to SVG, renders operational diagrams to PNG, and generates the manifest.
-4. The manifest binds the architecture version to ordered source paths, per-file SHA-256 values, a source-set digest, and diagram render digests.
-5. The pull request receives generated evidence for review. The validation job remains read-only.
-6. The trusted master refresh regenerates the same projections after merge and commits only changed generated assets.
-7. The operator loop waits for completion, watches the run, re-fetches the master head, and compares the resulting manifest and diagram fingerprints with the merged sources.
+1. **Observe** — Read the current branch/base SHA, canonical architecture sources, version, manifest, and existing diagram fingerprints.
+2. **Choose** — Select the bounded source/diagram scope and classify the semantic change as MAJOR, MINOR, or PATCH.
+3. **Act** — Update canonical documents and paired Mermaid sources; bump VERSION and add the matching CHANGELOG entry in the same pull request.
+4. **Verify** — Run focused tests and the base-diff version gate; render architecture flows to SVG and operational diagrams to PNG; generate and check the deterministic manifest.
+5. **Record** — Preserve the commit SHA, architecture version, source-set digest, workflow run, artifact identity, outcome, and remaining work in Git and Actions evidence.
+6. **Repeat or stop** — Re-read fresh state only when new feedback can change the next action. Stop with success, clean no-op, blocked, approval-required, exhausted, or stagnated as appropriate.
+
+The pull-request job remains read-only and uploads generated review evidence. After merge, the trusted master refresh commits changed generated projections. The next cycle observes the resulting master head and confirms the manifest and renders match the merged sources.
 
 ## Authority boundaries
 

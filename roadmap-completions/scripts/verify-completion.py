@@ -31,7 +31,7 @@ def repo_file(root: Path, value: str) -> Path:
 
 def merge_rules(defaults: dict[str, Any], overrides: dict[str, Any]) -> dict[str, dict[str, Any]]:
     merged: dict[str, dict[str, Any]] = {}
-    for kind in ("code", "test", "documentation", "portfolio"):
+    for kind in ("code", "test", "documentation", "portfolio", "deployment"):
         merged[kind] = {**defaults.get(kind, {}), **overrides.get(kind, {})}
     return merged
 
@@ -112,23 +112,35 @@ def validate(root: Path, roadmap: str, exercise: str) -> dict[str, Any]:
     merged = merge_rules(rules_doc.get("defaults", {}), exercise_rules.get("rules", {}))
     checks: list[dict[str, Any]] = []
 
-    def add_check(name: str, ok: bool, detail: str) -> None:
-        checks.append({"name": name, "passed": bool(ok), "detail": detail})
+    def add_check(name: str, ok: bool, detail: str, required: bool) -> None:
+        checks.append({"name": name, "passed": bool(ok), "required": required, "detail": detail})
 
     for kind, config in merged.items():
         required = bool(config.get("required", False))
         entries = by_type.get(kind, [])
         if required and not entries:
-            add_check(kind, False, "Required evidence record is missing.")
+            add_check(kind, False, "Required evidence record is missing.", True)
             continue
         if not entries:
-            add_check(kind, True, "Optional evidence omitted.")
+            add_check(kind, False, "Optional evidence omitted.", False)
             continue
 
         kind_results: list[str] = []
         kind_ok = True
         for index, record in enumerate(entries, start=1):
             raw_path = record.get("path")
+            if kind == "deployment":
+                deployment_url = record.get("url")
+                deployment_path = record.get("path")
+                valid = isinstance(deployment_url, str) and deployment_url.startswith("https://")
+                if isinstance(deployment_path, str) and deployment_path.strip():
+                    try:
+                        valid = valid or repo_file(root, deployment_path).exists()
+                    except (ValueError, OSError):
+                        valid = False
+                kind_results.append("Deployment evidence URL/path recorded." if valid else "Deployment evidence requires an HTTPS URL or repository path.")
+                kind_ok = kind_ok and valid
+                continue
             if kind == "portfolio" and isinstance(record.get("url"), str):
                 try:
                     remote_ok, remote_detail = validate_github_portfolio(record["url"], config)
@@ -199,12 +211,18 @@ def validate(root: Path, roadmap: str, exercise: str) -> dict[str, Any]:
                 )
                 kind_ok = kind_ok and valid
 
-        add_check(kind, kind_ok, " ".join(kind_results))
+        add_check(kind, kind_ok, " ".join(kind_results), required)
 
-    passed = sum(1 for check in checks if check["passed"])
-    score = round((passed / len(checks)) * 100) if checks else 0
+    weights = rules_doc.get("scoring", {}).get("weights", {})
+    total_weight = sum(int(weights.get(kind, 0)) for kind in merged)
+    earned_weight = sum(
+        int(weights.get(check["name"], 0))
+        for check in checks
+        if check["passed"]
+    )
+    score = round((earned_weight / total_weight) * 100) if total_weight else 0
     return {
-        "ok": all(check["passed"] for check in checks),
+        "ok": all(check["passed"] or not check["required"] for check in checks),
         "roadmap": roadmap,
         "exercise": exercise,
         "score": score,

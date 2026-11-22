@@ -83,7 +83,7 @@ Promotion requires all of:
 - Pareto/utility comparison supports the candidate under the current preference profile;
 - rollback target and canary plan exist.
 
-Throughput, low nominal cost, classifier count and judge confidence alone cannot promote an implementation.
+Promotion weighs throughput, nominal cost, classifier count and judge confidence alongside correctness, acceptance, reproducibility and safety gates.
 
 ## 7. Implemented operating-system contracts
 

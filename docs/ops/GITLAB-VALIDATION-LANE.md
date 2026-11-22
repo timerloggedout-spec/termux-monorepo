@@ -74,3 +74,42 @@ normal GitHub review/promotion path.
 See [the governed reconciliation contract](GITHUB-GITLAB-GOVERNED-RECONCILIATION.md),
 [GitLab workflow rules](https://docs.gitlab.com/ci/yaml/workflow/), and
 [GitLab CI Lint](https://docs.gitlab.com/api/lint/).
+
+## Compute and storage quota ledger
+
+The existing validation job is a bounded **secondary compute lane**, separate
+from the GitLab mirror/webhook redundancy path and separate from GitHub's
+canonical promotion authority.
+
+| Resource | GitLab.com Free published entitlement | Ledger record | Current account state |
+|---|---:|---|---|
+| Instance-runner compute | 400 compute minutes per top-level namespace per month | `gitlab.ci.compute_minutes` in `ops/quota/registry.json` | Namespace tier, cost factor, used and remaining minutes **UNKNOWN** |
+| Repository + Git LFS | 10 GiB per project | `gitlab.project.repository_lfs_storage` in `ops/quota/registry.json`; storage plane also appears in `ops/free-storage/free-storage-registry.json` | Project tier and current repository/LFS usage **UNKNOWN** |
+
+The compute quota is aggregated at the top-level namespace. Job compute is
+calculated from running duration multiplied by the runner/project cost factor;
+parallel jobs can consume more compute than the pipeline's wall-clock time.
+The documented monthly allocation resets on the first day of each calendar
+month. Project runners are outside the instance-runner compute quota; the
+current project runner class remains unverified.
+
+The [GitLab Namespaces API](https://docs.gitlab.com/api/namespaces/) documents `GET /api/v4/namespaces/:id` with
+`ci_minutes_usage` fields for eligible top-level groups when the caller has
+the Owner role. The namespace ID, Owner access, and a live usage observation
+remain unverified. Account usage remains unobserved; development performed zero account requests.
+
+The registry records an **80% planning factor** (320 minutes/month against the
+published 400-minute Free entitlement). This is an advisory planning ceiling; runtime reservation and monthly
+enforcement remain unimplemented. The existing ten-minute job
+timeout bounds one job; monthly spend control requires a separate
+account-level guard. The allocation ledger keeps
+both GitLab resources explicitly held outside focus pools until namespace
+plan, live usage, runner class, and an owner-approved allocation are verified.
+The public dashboard therefore reports the entitlement with unknown account
+consumption rather than manufacturing remaining quota.
+
+The lane remains gated by `TERMUX_GITLAB_CI_ENABLED=true`. Keep that variable
+unset until the existing GitLab project and namespace are verified, a live
+quota reading is captured, and the expected runner class is confirmed. This
+keeps the compute backend ready for controlled activation while preserving
+the current zero-admission posture.

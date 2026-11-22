@@ -45,6 +45,16 @@
       "id": "agentrouter.models",
       "date": "2026-11-05",
       "reason": "Catalog-only provider metadata. The registry row represents authenticated model-catalog visibility, not a quota entitlement or consumable balance; no account quota/reset source is documented. Excluded from quota allocation until a separate authoritative quota service is established."
+    },
+    {
+      "id": "gitlab.ci.compute_minutes",
+      "date": "2026-11-22",
+      "reason": "Registered documented GitLab.com Free compute entitlement. Hold outside allocation pools until the existing GitLab project namespace tier, Owner-visible usage, runner cost factor and actual account allowance are verified. The validation lane remains opt-in; monthly spend share and reservation remain unallocated pending owner approval."
+    },
+    {
+      "id": "gitlab.project.repository_lfs_storage",
+      "date": "2026-11-22",
+      "reason": "Registered documented GitLab.com Free per-project repository/LFS storage entitlement. Hold outside allocation pools until the existing mirror project's tier and live repository/LFS usage are verified; storage is also catalogued in ops/free-storage/free-storage-registry.json."
     }
   ],
   "pools": [

@@ -53,7 +53,7 @@ a $200/60-day trial and 3 free static sites; same correction for Railway
 | Supabase | Registry record only; Jules lane open; Muse custom connector pending vault keys | `supabase.free` — limit `null`, "mixed", no live reading, **no numbers at all** | **Gap** — vendor free plan (widely documented: 500 MB Postgres, 1 GB storage, 5 GB egress, projects pause after ~1 week inactivity) is NOT in our registry; revalidate on vendor page before recording |
 | Turso / Upstash / Grafana Cloud | Registry records | `turso.free`, `upstash.free` — limits `null` "mixed"; `grafana.cloud_free` 10,000 samples/s | **Recorded, un-detailed** — same treatment as Supabase: numbers or an explicit "unpublished" note, not blanks |
 | Replit | Muse connector connected; apps lane | No registry record | **Live (Muse side)** — free plan exists; not a backend the mesh depends on |
-| GitLab | Mirror webhook (repo redundancy lane) | — | **Degraded** — last response 400; repair is mesh item I2 and §4 of the resiliency proposal |
+| GitLab | Repo redundancy mirror + opt-in CI validation lane | 400 compute minutes/month (GitLab.com Free namespace); 10 GiB repository + LFS storage/project | **CI lane implemented but gated**; namespace plan and usage unknown. Mirror webhook remains degraded; last recorded response 429 (2026-11-02), mirror health unverified |
 
 ## 2. The unclaimed always-free core (extension — new recon)
 
@@ -254,3 +254,17 @@ Already known / unchanged: Render free · Vercel Hobby · Cloudflare Workers (sh
 - The body's card-required characterization of AWS (§2.1 / §2.3) is **STALE for the NEW signup flow**: Builder ID + social sign-in → Free plan (incl. Bedrock + Lambda, $200 credits, no payment for most).
 - The **ADVANCED flow remains a card wall** (owner-confirmed).
 - The owner is testing the new flow; its outcome carries his stamp, not this doc's.
+
+
+## Addendum 2026-11-22 — GitLab compute registration
+
+GitLab's existing validation lane is now indexed as a secondary compute
+backend, separate from the mirror/webhook transport. The Free-tier compute
+and repository/LFS storage entitlements are registered as
+`gitlab.ci.compute_minutes` and
+`gitlab.project.repository_lfs_storage` in `ops/quota/registry.json`.
+The corresponding allocation entries remain explicitly held until the
+existing project namespace tier, live usage, runner class, and storage
+consumption are verified. The documented 400-minute entitlement is a public plan figure; the
+account balance remains unknown. The lane remains opt-in; GitLab project
+settings, runners, credentials, and pipeline activation retain their existing state.

@@ -26,6 +26,8 @@ variables:
 
 quality-gates:
   stage: validate
+  # Serialize the single GitLab compute lane across overlapping pipelines.
+  resource_group: termux-mesh-validation
   script:
     # Fetch a read-only public baseline, not code to execute or a write token.
     - git fetch --no-tags https://github.com/timerloggedout-spec/termux-monorepo.git +refs/heads/master:refs/remotes/canonical/master

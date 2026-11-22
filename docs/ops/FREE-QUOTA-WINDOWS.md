@@ -28,6 +28,8 @@ FELO is one provider among peers. Every cadence class above is a first-class fre
 | OmniRoute | catalog $0 | catalog | only when poll classifies free | `OMNI_API_KEY` + `/v1/models` |
 | Gemini | soft budgets | hourly/daily | rotation YAML + quota-gate | `gemini-quota-gate` skip vs proceed |
 | GitHub Actions | public repo minutes | monthly | platform entitlement | Actions usage API; not a model route |
+| GitLab CI | GitLab.com Free instance-runner compute | monthly | 400 compute minutes per top-level namespace; plan/account scope unverified | Namespaces API `ci_minutes_usage` (top-level group Owner); live reader unconfigured |
+| GitLab storage | GitLab.com Free project repository + LFS | per-project cap | 10 GiB per project; continuous accumulation | GitLab Usage quotas > Storage; live reader unconfigured |
 
 Do **not** hardcode remaining credits. Do **not** substitute a paid model when a free lane is empty.
 

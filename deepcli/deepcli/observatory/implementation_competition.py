@@ -1,8 +1,8 @@
 """Matched-cohort comparison for versioned tournament implementations.
 
 This module compares immutable run receipts. It preserves missing observations,
-reports paired uncertainty, and returns a human-review recommendation. It
-never promotes or changes the active implementation.
+reports paired uncertainty, and returns a human-review recommendation.
+Promotion remains a separate owner-approved operation.
 """
 from __future__ import annotations
 

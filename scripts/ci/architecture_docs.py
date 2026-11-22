@@ -233,7 +233,11 @@ def _base_file(root: Path, base_ref: str, path: Path) -> str | None:
 
 
 def _is_architecture_source(path: str) -> bool:
-    if path == "architecture.md" or path == SHE_DIAGRAM.as_posix():
+    if path in {
+        "architecture.md",
+        SHE_DIAGRAM.as_posix(),
+        VERSION_PATH.as_posix(),
+    }:
         return True
     if (
         path.startswith("docs/architecture/")

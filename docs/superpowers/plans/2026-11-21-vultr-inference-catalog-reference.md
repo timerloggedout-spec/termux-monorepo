@@ -98,7 +98,7 @@
 - [x] Run `python3 scripts/ci/refTemplates_inventory.py --strict` in the isolated source-mirror harness: 3 slots validated, 0 failures.
 - [x] GitHub repo gate passed on PR head `9787c614ccb84b02d61134564d22fb52cdef4f0a`.
 - [x] GitHub Termux smoke passed on PR head `9787c614ccb84b02d61134564d22fb52cdef4f0a`.
-- [x] Re-fetch all 18 changed paths and record the branch comparison with immutable refs. The clean reconstruction starts from current master `bb3d58265f8c4908de8967fc00c79ed72f647b56` and records the implementation as one imperative commit. The branch comparison is 1 commit ahead and 0 behind at creation; re-fetch current master before promotion.
+- [x] Re-fetch all 19 changed paths and record the branch comparison with immutable refs. The clean reconstruction starts from current master `bb3d58265f8c4908de8967fc00c79ed72f647b56` and records the implementation as one imperative commit. The branch comparison is 1 commit ahead and 0 behind at creation; re-fetch current master before promotion.
 - [x] Open draft PR #5754 citing `Implements: MSM-025` after the explicit PR request.
 - [x] Inspect repo-gate, Termux smoke, proposal lifecycle, PR evidence and review findings on the recorded head SHA.
 - [x] Preserve the isolated branch for review; promotion follows repository gates and independent review.
@@ -109,7 +109,7 @@
 - The Termux MCP `get_device_info` action is unavailable in this session; Android device pressure and the Termux home checkout remain unobserved.
 - GitHub connector writes used an isolated feature branch based on the current `master` tip. The local source-mirror harness passed five focused tests and strict inventory validation across three synthetic slots.
 - GitHub repo gate and Termux smoke both passed on PR head `9787c614ccb84b02d61134564d22fb52cdef4f0a`; proposal lifecycle, PR evidence evaluation and refTemplates continuous evaluation also passed on that review cycle.
-- CodeRabbit requested changes in four inline threads; the source-preview edge case was also identified in its review summary. Remediation is tracked in the review-fix commits.
-- DO Statement Style failed because five earlier branch commit subjects lacked imperative action verbs. The style job validates commit history, so a new well-formed subject alone cannot repair those existing subjects without rewriting branch history.
+- Historical review of superseded PR #5754 identified four inline findings and one source-preview edge case. The replacement branch incorporates those remediations; the four prior review threads were resolved before PR #5754 was closed.
+- The original branch's DO Statement Style failure came from historical commit subjects. This replacement branch is a single imperative commit from current master; fresh style-gate evidence on the replacement head is pending.
 - Advisory CodeQL jobs for Python, JavaScript/TypeScript and Actions reached analysis but failed while publishing because the GitHub App installation API rate limit was exceeded; the workflow marked each job as a configuration error. The workflow declares this CodeQL run advisory and outside the required merge-check set.
 - Vercel preview status is non-gating under repository policy. Termux MCP `get_device_info` remains unavailable, so Android device health remains unobserved.

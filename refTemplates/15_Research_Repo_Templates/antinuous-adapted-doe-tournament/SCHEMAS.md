@@ -187,3 +187,108 @@ evidence:
 - Provider identity and GitHub actor identity remain distinct.
 - Every score links to evaluator version and source evidence.
 - Every promotion links to a tournament version and exact candidate evidence set.
+
+
+## Classifier graph manifest (proposed)
+
+~~~yaml
+schema: classifier.graph-tournament.v1
+implementation_id: tournament-hybrid-graph
+implementation_version: 0.1.0
+parent_implementation_id: tournament-incumbent
+parent_implementation_version: 1.2.0
+canonical_cohort:
+  schema: manager.tournament.v1
+  tournament_id: tournament-2026-11-22-001
+  cohort_id: matched-code-tasks-q4
+catalog:
+  snapshot_digest: sha256:REPLACE_WITH_REAL_DIGEST
+  classifier_versions:
+    - classifier_id: syntax-intent
+      version: 2.0.0
+      implementation_digest: sha256:REPLACE_WITH_REAL_DIGEST
+graph:
+  graph_id: capability-routed-verification
+  graph_version: 1.0.0
+  nodes:
+    - node_id: route
+      kind: router
+      policy_id: capability-router
+      policy_version: 1.0.0
+    - node_id: classify-a
+      kind: classifier
+      classifier_id: syntax-intent
+      classifier_version: 2.0.0
+      depends_on: [route]
+    - node_id: verify
+      kind: verifier
+      verifier_id: independent-evidence-check
+      verifier_version: 1.0.0
+      depends_on: [classify-a]
+    - node_id: merge
+      kind: reducer
+      reducer_id: pareto-evidence-merge
+      reducer_version: 1.0.0
+      depends_on: [classify-a, verify]
+  execution:
+    concurrency: dependency_and_capacity_bounded
+    retry_policy: bounded_diagnostic
+    missing_evidence: preserve_status
+evaluation:
+  evaluator_id: classifier-graph-evaluator
+  evaluator_version: 1.0.0
+  held_out_cohort_id: matched-code-tasks-heldout
+~~~
+
+## Candidate evaluation envelope (proposed)
+
+~~~json
+{
+  "schema": "classifier.candidate-evaluation.v1",
+  "candidate_id": "candidate-00017",
+  "run_id": "run-00017",
+  "run_attempt": 1,
+  "graph_node_id": "classify-a",
+  "classifier_id": "syntax-intent",
+  "classifier_version": "2.0.0",
+  "status": "completed",
+  "output_ref": "sha256:...",
+  "evaluators": [
+    {
+      "evaluator_id": "independent-evidence-check",
+      "evaluator_version": "1.0.0",
+      "status": "completed",
+      "metrics": {
+        "precision": null,
+        "recall": null,
+        "calibration_error": null
+      }
+    }
+  ],
+  "provenance": {
+    "head_sha": "full-git-commit-sha",
+    "environment_fingerprint": "sha256:..."
+  }
+}
+~~~
+
+Allowed node/evaluation statuses: `completed`, `failed`, `skipped`, `timed_out`, `unavailable`, `not_applicable`. Reducers join records by `candidate_id + run_id + run_attempt + graph_node_id`; array position carries no identity. Metrics absent from an observation remain null.
+
+## SIE iteration receipt (proposed)
+
+~~~json
+{
+  "schema": "sie.iteration-receipt.v1",
+  "iteration_id": "sie-00042",
+  "incumbent_implementation": "tournament-hybrid-graph@0.1.0",
+  "challenger_implementation": "tournament-hybrid-graph@0.2.0",
+  "hypothesis_id": "hypothesis-00042",
+  "experiment_id": "doe-manager-policy-screen",
+  "experiment_version": "1.0.0",
+  "evidence_window_digest": "sha256:...",
+  "decision": "held",
+  "decision_policy_version": "sie-promotion@1.0.0",
+  "reason_codes": ["held_out_evidence_pending"],
+  "rollback_target": "tournament-hybrid-graph@0.1.0"
+}
+~~~

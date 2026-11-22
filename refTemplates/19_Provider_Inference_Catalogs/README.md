@@ -18,8 +18,8 @@ The incumbent collector remains the existing networked observation path. Within 
 
 ```bash
 python3 scripts/provider_model_catalog.py --output /tmp/model-catalog/catalog.json
-python3 -m scripts.provider_catalog_competition \\
-  --input /tmp/model-catalog/catalog.json \\
+python3 -m scripts.provider_catalog_competition \
+  --input /tmp/model-catalog/catalog.json \
   --output-dir /tmp/model-catalog/competition
 ```
 

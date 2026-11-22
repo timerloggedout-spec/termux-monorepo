@@ -98,7 +98,7 @@
 - [x] Run `python3 scripts/ci/refTemplates_inventory.py --strict` in the isolated source-mirror harness: 3 slots validated, 0 failures.
 - [x] GitHub repo gate passed on PR head `9787c614ccb84b02d61134564d22fb52cdef4f0a`.
 - [x] GitHub Termux smoke passed on PR head `9787c614ccb84b02d61134564d22fb52cdef4f0a`.
-- [x] Re-fetch all 18 changed paths and record the branch comparison with immutable refs. At 2026-11-21 19:14 PST, branch `docs/vultr-inference-catalog-reference-20261121-reconciled` at `9787c614ccb84b02d61134564d22fb52cdef4f0a` compared with `master` at `2a0acc836650e0d03932c71b64ecd9f2e574be4c`: 32 commits ahead, 612 behind. This observation predates the review-fix commits; refresh it against the final review-fix head before promotion.
+- [x] Re-fetch all 18 changed paths and record the branch comparison with immutable refs. At 2026-11-21 19:16 PST, branch `docs/vultr-inference-catalog-reference-20261121-reconciled` at `d7f8edec9f44071d68faef6f14ea04ee15365490` compared with `master` at `ea16661b19da73797d731c6dea074d5155ad9b0c`: 37 commits ahead, 614 behind. This observation predates the subsequent plan-evidence update; GitHub reports the PR mergeability state as false, so base synchronization and a fresh comparison remain promotion blockers.
 - [x] Open draft PR #5754 citing `Implements: MSM-025` after the explicit PR request.
 - [x] Inspect repo-gate, Termux smoke, proposal lifecycle, PR evidence and review findings on the recorded head SHA.
 - [x] Preserve the isolated branch for review; promotion follows repository gates and independent review.

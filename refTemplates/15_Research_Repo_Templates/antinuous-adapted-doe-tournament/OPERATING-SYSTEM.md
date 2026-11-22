@@ -122,3 +122,24 @@ Remaining implementation gaps:
 - Existing replay/evolution: `docs/ops/EVOLUTIONARY-REPLAY.md`
 - Classifier and routing comparison: `CLASSIFIER-GRAPH-TOURNAMENT.md`
 - Self-improvement controller: `SELF-IMPROVEMENT-ENGINE.md`
+
+## 8. Full inventory and implementation competition
+
+The registry now covers the full System One catalog by layer:
+
+- 61 model-layer entries are registered as classifier candidates.
+- 56 remain `unclassified`; their catalog presence establishes an inventory identity, not a proven capability or runnable endpoint.
+- Five S1 candidates retain the narrower role mapping supported by the existing census and trial records.
+- 27 adapter, runtime and directory entries remain infrastructure references, outside model counts.
+- The separate classifier-estate feed retains its 71 operating units and live/dormant/dead state counts.
+
+The `model-catalog-screen` graph contains all 61 model candidates as a design-only parallel screening arm. Candidate admission requires a capability contract, execution adapter, source/checkpoint identity, permitted route and evidence plan. The graph is inventory-complete and execution-gated.
+
+Tournament implementation versioning is recorded separately from classifier and graph versioning in `implementation_competition`:
+
+- The incumbent pins the canonical `manager.tournament.v1` cohort contract and source components for trial execution, evidence reduction, leaderboard and replay.
+- The SIE control-plane challenger is `design_only`; its hypothesis and source document are versioned while execution readiness remains false.
+- Promotion compares complete implementation versions on matched cohorts, held-out tasks, independent evaluators and immutable receipts. Every promotion carries a rollback target and production approval gate.
+
+The competition unit is explicit: classifier capability, composition graph, routing policy or tournament implementation. Results across these populations remain separately attributable.
+

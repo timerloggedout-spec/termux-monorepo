@@ -27,8 +27,9 @@ sets) or `null` — never inferred, never reconstructed from plausibility.
 
 `candidate_events[]` holds discovered opportunities before they are
 graduated into the canonical `events[]` lane. These records support
-screening, planning, and source-backed registration preparation; they do
-not imply registration, group membership, project creation, or submission.
+screening, planning, and source-backed registration preparation. Registration,
+group membership, project creation, and submission remain independent states
+with their own evidence.
 
 | field | meaning |
 |---|---|
@@ -44,8 +45,8 @@ not imply registration, group membership, project creation, or submission.
 | `source_urls[]`, `fetched_at` | source provenance and freshness |
 
 Candidate records may carry additional program-specific evidence fields
-(e.g. institution-gap or rescreen data). Keep the original source facts
-separate from fit analysis. Graduate a candidate into `events[]` only
+(e.g. institution-gap or rescreen data). Keep source facts
+distinct from fit analysis. Graduate a candidate into `events[]` only
 when the Challenge Management Manager admits it to the managed event
 slate; registration and submission remain independent states.
 

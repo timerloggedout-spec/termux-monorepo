@@ -4,7 +4,7 @@
   "title": "Versioned Classifier Graph Tournament Registry",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "registry_id", "registry_version", "catalog", "canonical_cohort", "roles", "candidates", "graphs", "evaluation"],
+  "required": ["schema_version", "registry_id", "registry_version", "catalog", "classifier_estate", "canonical_cohort", "roles", "candidates", "graphs", "evaluation"],
   "properties": {
     "schema_version": {"const": "classifier.graph-registry.v1"},
     "registry_id": {"type": "string", "minLength": 1},
@@ -13,6 +13,25 @@
       "type": "object", "additionalProperties": false,
       "required": ["path", "schema"],
       "properties": {"path": {"const": "config/system_one_catalog.json"}, "schema": {"const": "system-one-catalog/1"}}
+    },
+    "classifier_estate": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "schema", "snapshot_date", "unit_count", "states"],
+      "properties": {
+        "path": {"const": "ops/classifiers/classifiers-feed.json"},
+        "schema": {"const": "classifiers-feed/v1"},
+        "snapshot_date": {"type": "string", "format": "date"},
+        "unit_count": {"type": "integer", "minimum": 1},
+        "states": {
+          "type": "object", "additionalProperties": false,
+          "required": ["live", "dormant", "dead"],
+          "properties": {
+            "live": {"type": "integer", "minimum": 0},
+            "dormant": {"type": "integer", "minimum": 0},
+            "dead": {"type": "integer", "minimum": 0}
+          }
+        }
+      }
     },
     "canonical_cohort": {
       "type": "object", "additionalProperties": false,

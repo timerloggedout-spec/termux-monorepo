@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-22T09:55:25Z)
+# Lane matrix status (2026-11-22T09:57:57Z)
 
-- Master: `9f75e7019eee885f400129f73db2e8b30fb8446d`
+- Master: `ed9c056f9050b10e33e3406017bd2f0d4006e765`
 - Open PRs: **511**
 - Oldest: #47 (108.76d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -14,8 +14,8 @@
 | Age bucket | Count |
 |------------|------:|
 | ancient | 27 |
-| fresh | 101 |
-| mid | 243 |
+| fresh | 100 |
+| mid | 244 |
 | stale | 140 |
 
 ## Tip lanes (EXTRACT / CANDIDATE / NEED_EVIDENCE first)
@@ -48,19 +48,19 @@
 | #1495 | 31.31 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
 | #1513 | 31.07 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 31.07 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
-| #1516 | 31.06 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
-| #1531 | 31.05 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
+| #1516 | 31.07 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
+| #1531 | 31.06 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
 | #1537 | 31.04 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 30.37 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 29.29 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
 | #1616 | 29.28 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 29.28 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
 | #1626 | 29.16 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
-| #1645 | 28.39 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
+| #1645 | 28.4 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
 | #1650 | 28.32 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
 | #1694 | 26.35 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
 | #1734 | 25.94 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
 | #1735 | 25.94 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
-| #1966 | 25.2 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
+| #1966 | 25.21 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
 
 Writer only: does not merge. Dual-gate remains promote authority. HOLD/WAIT/OBSERVE are invalid parking. Age alone ≠ promote.

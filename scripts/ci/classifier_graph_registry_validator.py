@@ -349,8 +349,9 @@ def main() -> int:
         return 1
     print(
         f"PASS: {registry['registry_id']}@{registry['registry_version']} — "
-        f"{len(registry['candidates'])} candidates, {len(registry['graphs'])} graphs, "
-        f"{len(estate['units'])} classifier-estate units, {len(catalog['entries'])} catalog entries"
+        f"{len(registry['candidates'])} candidates, {len(registry['infrastructure'])} infrastructure refs, "
+        f"{len(registry['graphs'])} graphs, {len(estate['units'])} classifier-estate units, "
+        f"{len(catalog['entries'])} catalog entries"
     )
     return 0
 

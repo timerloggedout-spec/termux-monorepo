@@ -4,6 +4,13 @@ on:
   schedule:
     - cron: "17 9 * * 1"
   workflow_dispatch:
+  pull_request:
+    paths:
+      - "docs/PARTNERS.md"
+      - "docs/ops/PUBLIC-VIDEO-LIBRARY-*.md"
+      - "marketing/github-profile/profile.json"
+      - "scripts/marketing/**"
+      - ".github/workflows/github-profile-refresh.yml"
   push:
     branches: [master]
     paths:
@@ -40,12 +47,13 @@ jobs:
           grep -q 'Partner links may be referral or affiliate links' marketing/github-profile/generated/README.md
           git diff --check
       - name: Open refresh PR when projection changes
+        if: github.event_name != 'pull_request'
         env:
           GH_TOKEN: ${{ github.token }}
           RUN_ID: ${{ github.run_id }}
         run: |
           set -euo pipefail
-          if git diff --quiet -- marketing/github-profile/generated; then
+          if [ -z "$(git status --porcelain -- marketing/github-profile/generated)" ]; then
             echo 'Profile projection is current.'
             exit 0
           fi

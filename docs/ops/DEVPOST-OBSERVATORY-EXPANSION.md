@@ -323,3 +323,51 @@ Acceptance gates:
 - Inferring judge identities or undisclosed scoring.
 - Replacing the existing Challenge OSINT watcher, coordinator, Neon mirror, or cross-plane graph.
 - Claiming a proposed cadence is active before its workflow is deployed and observed.
+
+
+## 13. GitLab AI Hackathon source family — connector + public hierarchy reference
+
+The Challenge OSINT lane now has a GitLab source-family dossier:
+[`GITLAB-AI-HACKATHON-OSINT.md`](GITLAB-AI-HACKATHON-OSINT.md), backed by
+`ops/challenge/osint/gitlab-sources.json`. This is a cross-venue source set,
+not an extension of the Devpost global software-directory adapter.
+
+The public GitLab hierarchy was observed 2026-11-22:
+
+- `gitlab-ai-hackathon` — public root group.
+- `gitlab-devsecops-flow-hackathon` — child subgroup; its page showed zero
+  child projects and zero child subgroups at fetch time.
+- `transcend` — distinct child subgroup; public listing showed 312 items.
+- `project-templates` — child subgroup containing the public
+  `participant-template` project (project ID 77423853), with `agents/`,
+  `flows/`, `LICENSE`, and `README.md`.
+- `gitlab-profile` — public README points to the Devpost event.
+
+Connector-verified event references:
+
+| Program | Submission window | Prize pool | Observed phase |
+|---|---|---:|---|
+| GitLab AI Hackathon (Feb–Mar 2026) | Feb 9 – Mar 25, 2026 | $65,000 | closed |
+| Life After Code / GitLab Transcend (Oct 2026) | Oct 5 – Oct 27, 2026 | $45,000 | closed |
+| GitLab Community Hackathon (Oct 2026) | Oct 6 – Oct 12, 2026 | swag-credit program | closed |
+
+Keep these event identities, rule sets, timelines, and results separate.
+For GitLab AI Hackathon, the rules text and connector structured start instant
+differ; for Life After Code, structured judging/winner dates differ from the
+rules' expected dates. The dossier records both values and the source
+discrepancies. A live connector timestamp is an observation, not a rewrite of
+the published rules.
+
+The official event material links the GitLab Discord `#ai-hackathon`, the
+Devpost Discord, office hours, GitLab Duo Agent/Flow docs, prompt library, and
+the participant template. The historical group-access form is closed with
+the February–March event. A future cycle must supply a fresh official
+registration/access path before a registration plan advances.
+
+The supplied DevSecOps Flow subgroup is a useful source target, but its
+observed empty state does not establish a challenge brief, active project, or
+owner entry. Keep the next editions as future-cycle watch targets with dates
+`NOT_ESTABLISHED`. No registration, group membership, or submission is
+claimed. The new source registry is currently an inventory only; the weekly
+Challenge OSINT watcher and Devpost directory adapter remain unchanged until
+their own integration work is implemented and observed.

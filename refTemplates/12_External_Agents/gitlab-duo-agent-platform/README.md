@@ -18,4 +18,5 @@ Treat hackathon-specific access, forms, dates, prize tiers, and eligibility as e
 
 **Primary project:** [Participant Template](https://gitlab.com/gitlab-ai-hackathon/project-templates/participant-template)  
 **Official documentation:** [Agents](https://docs.gitlab.com/user/duo_agent_platform/agents/) · [Flows](https://docs.gitlab.com/user/duo_agent_platform/flows/)  
+**OSINT project catalog:** `ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json` (312 public workspaces, dated snapshot)  
 **Source list:** `SOURCE.txt`

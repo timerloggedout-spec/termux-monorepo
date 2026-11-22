@@ -127,6 +127,17 @@ class ArchitectureDocumentationTests(unittest.TestCase):
             subprocess.run(["git", "commit", "-qm", "architecture version bump"], cwd=root, check=True)
             self.assertTrue(architecture_docs.check_version_bump(root, "HEAD~1"))
 
+    def test_version_file_change_requires_matching_changelog(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.make_root(root)
+            self.init_git(root)
+            (root / "docs/architecture/VERSION").write_text("1.1.0\\n", encoding="utf-8")
+            subprocess.run(["git", "add", "."], cwd=root, check=True)
+            subprocess.run(["git", "commit", "-qm", "version-only change"], cwd=root, check=True)
+            with self.assertRaisesRegex(ValueError, "VERSION and CHANGELOG"):
+                architecture_docs.check_version_bump(root, "HEAD~1")
+
     def test_version_check_rejects_missing_bump(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

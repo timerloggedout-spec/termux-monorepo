@@ -140,6 +140,17 @@ def normalize_incumbent(document: dict[str, Any]) -> dict[str, Any]:
         "source_version": INPUT_SCHEMA,
         "observed_at": document.get("observed_at"),
         "providers": list(document.get("providers", [])) if isinstance(document.get("providers"), list) else [],
+        "provider_observations": dict(document.get("provider_observations", {}))
+        if isinstance(document.get("provider_observations"), dict) else {},
+        "cadence_classes": list(document.get("cadence_classes", []))
+        if isinstance(document.get("cadence_classes"), list) else [],
+        "source_errors": list(document.get("errors", []))
+        if isinstance(document.get("errors"), list) else [],
+        "source_extensions": {
+            key: value for key, value in document.items()
+            if key not in {"schema", "observed_at", "providers", "provider_observations", "cadence_classes", "models", "errors"}
+        },
+        "incumbent_document": dict(document),
         "models": models,
         "issues": issues,
         "execution": {

@@ -8,6 +8,10 @@ on:
       - "docs/ops/GITHUB-ISSUE-INTAKE-MAP.md"
       - "scripts/ci/issue_intake_coverage.py"
       - "tests/test_issue_intake_coverage.py"
+      - "roadmap-completions/scripts/**"
+      - "roadmap-completions/config/verification-rules.yaml"
+      - "tests/test_roadmap_completion.py"
+      - "tests/test_roadmap_completion_publisher.py"
   push:
     branches: [master]
     paths:
@@ -37,8 +41,11 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Run coverage tests
-        run: python3 -m unittest tests.test_issue_intake_coverage
+      - name: Install roadmap verification dependency
+        run: python3 -m pip install PyYAML
+
+      - name: Run coverage and roadmap tests
+        run: python3 -m unittest tests.test_issue_intake_coverage tests.test_roadmap_completion tests.test_roadmap_completion_publisher
 
       - name: Audit repository coverage
         run: python3 scripts/ci/issue_intake_coverage.py --check

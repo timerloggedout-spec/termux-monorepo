@@ -16,7 +16,7 @@
 ## Task 2 — version the experiment
 
 - [x] Register Incumbent v5.0.0 and VultrInspired v1.0.0 as the local variants.
-- [x] Pin Vultr Python and TypeScript under source references, not as variants.
+- [x] Pin Vultr Python and TypeScript under source references; keep local catalogue variants repository-owned.
 - [x] Define paired controls, factors, response variables, acceptance criteria and immutable run keys.
 - [x] Set network and inference modes to disabled; retain planned status and empty result artifacts.
 

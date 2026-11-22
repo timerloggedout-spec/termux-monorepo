@@ -1,6 +1,9 @@
-from scripts.ci import refTemplates_inventory as inventory
+import json
+from pathlib import Path
 
 import pytest
+
+from scripts.ci import refTemplates_inventory as inventory
 
 
 @pytest.mark.parametrize(
@@ -75,3 +78,26 @@ def test_whitespace_only_source_file_has_empty_preview(tmp_path, monkeypatch):
 
     assert entry["metadata_children"][0]["source_preview"] is None
     assert inventory.validate([entry]) == []
+
+def test_provider_catalog_doe_registry_pins_versioned_variants():
+    root = Path(__file__).resolve().parents[1]
+    registry_path = (
+        root
+        / "refTemplates"
+        / "19_Provider_Inference_Catalogs"
+        / "DOE-REGISTRY.json"
+    )
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    experiment = registry["experiment"]
+    variants = experiment["variants"]
+
+    assert experiment["id"] == "DOE-VULTR-CATALOG-001"
+    assert experiment["version"] == "1.0.0"
+    assert experiment["status"] == "planned"
+    assert {variant["implementation"] for variant in variants} == {
+        "python",
+        "typescript",
+    }
+    assert len({variant["source_revision"] for variant in variants}) == 2
+    assert all(variant["version"] == "1.0.0" for variant in variants)
+    assert experiment["execution_policy"]["result_artifacts"] == []

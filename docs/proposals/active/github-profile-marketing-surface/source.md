@@ -24,7 +24,8 @@ Unverified offer claims are omitted from the spotlight. The partner name, catego
 ## Content model
 
 - Latest Short: selected from the canonical video library.
-- Hackathon highlight: explicitly tagged by video ID in profile.json; title and URL are resolved from the canonical video library.
+- Hackathon highlight: explicitly tagged by video ID in profile.json; title and URL are resolved from the canonical video library, with submission provenance cross-checked against ops/challenge/coordinator.json and docs/ops/CHALLENGE-ENTRIES-LOG.md.
+- StudySprint's v0.2.0 demo (eFXyOYTpuvg) is the recorded D1 submission video; the earlier Strands SDK demo is superseded for submission purposes.
 - Product/demo highlights: selected from the same video library.
 - Featured projects: link to existing public project and landing surfaces.
 - Custom displays: static SVGs generated from the profile data; no scripts, remote execution or live telemetry claims.

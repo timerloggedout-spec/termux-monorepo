@@ -2,6 +2,8 @@
 
 **Status:** living navigation and architecture entry  
 **Owner/lane:** Repository Architecture / ICM  
+**Architecture version:** [1.0.0](docs/architecture/VERSION)  
+**Version policy:** [docs/architecture/VERSIONING.md](docs/architecture/VERSIONING.md)  
 **Canonical for:** repository-wide architecture navigation, system taxonomy, and directory orientation  
 **Source-of-truth rule:** domain specifications, source code, schemas, workflow definitions, and runtime evidence own their facts. This file routes readers to those sources; it does not supersede them.
 
@@ -32,6 +34,7 @@
 - [6. Change-impact routing](#6-change-impact-routing)
 - [7. Maintenance and freshness](#7-maintenance-and-freshness)
 - [8. Linked modular flow maps](#8-linked-modular-flow-maps)
+- [9. Architecture versioning and generated evidence](#9-architecture-versioning-and-generated-evidence)
 
 ## 1. Reading protocol
 
@@ -238,7 +241,7 @@ This is a navigation taxonomy of major ownership zones, not a recursive inventor
 - Label proposed, optional, historical, inferred, and partially verified edges explicitly.
 - Run link checks, `git diff --check`, `python3 scripts/ci/repo_gate.py`, and `python3 scripts/ci/termux_smoke.py` through the authorized project lane; record each result with the commit SHA.
 
-**Freshness:** initial consolidation from repository documentation and selected implementation paths, 2026-11-21. Revalidate dynamic directory inventories and runtime integrations against the live tree before treating them as exhaustive.
+**Freshness:** architecture baseline 1.0.0 established 2026-11-22; initial consolidation from repository documentation and selected implementation paths, 2026-11-21. Revalidate dynamic directory inventories and runtime integrations against the live tree before treating them as exhaustive.
 
 
 ## 8. Linked modular flow maps
@@ -272,3 +275,22 @@ The root map is the system index. Follow each plane into its paired detailed Mar
 ### Snapshot freshness and legacy inventory gap
 
 SHE snapshots require source_sha, generated_at, coverage and corpus manifest SHA. The legacy ArchWiz data-flow manifest generator emits a local wall-clock Generated field, but its tracked output is zero bytes, its script writes to an absolute home-directory path, and it omits source SHA, tree SHA and input digest. Its generated timestamp proves execution time only, not input freshness. No verified consumer connects this inventory to CRG, SHE or EPS. See the [legacy snapshot gap audit](docs/architecture/flows/legacy-snapshot-audit.md). The actual local generated_at is unknown; audit date 2026-11-21 is not a substitute.
+
+### Architecture Governance and Versioning
+
+[Detailed mapping](docs/architecture/flows/architecture-governance.md) · [Mermaid source](docs/architecture/flows/architecture-governance.mmd) · Generated SVG: docs/architecture/generated/flows/architecture-governance.svg (created by the trusted master refresh)
+
+
+
+## 9. Architecture versioning and generated evidence
+
+The current architecture release is [1.0.0](docs/architecture/VERSION). The [versioning contract](docs/architecture/VERSIONING.md) defines MAJOR / MINOR / PATCH classification, same-change changelog requirements, and the automated refresh lifecycle. [CHANGELOG.md](docs/architecture/CHANGELOG.md) records semantic releases.
+
+The generated architecture manifest at docs/architecture/generated/architecture-manifest.json binds the version to sorted canonical source paths, per-file SHA-256 fingerprints, a source-set digest, and diagram source/render digests. The manifest carries deterministic source and render metadata; Git commit, Actions run, artifact identity, and timestamps remain in the execution record.
+
+Pull requests validate the version delta, test the generator, render architecture flow diagrams to SVG, render operational diagrams to PNG, and upload review evidence. The existing trusted master refresh commits changed generated projections after merge. Mermaid sources and domain documents remain authoritative; generated files remain projections.
+
+Run the generator locally with:
+
+    python3 scripts/ci/architecture_docs.py --write
+    python3 scripts/ci/architecture_docs.py --check

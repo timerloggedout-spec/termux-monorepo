@@ -4,10 +4,13 @@
 **Owner/lane:** Infrastructure Architecture (organization | documentation | specification)
 **Canonical for:** where the canonical architecture spec for each domain lives
 **Last verified:** 2026-10-28, against the live master tree at `9fd23dc2` (docs/ = 2,439 files; docs/ops root = 288 Markdown files; docs/ops/generated = 1,583 files; docs/architecture = 13 Markdown + 3 Mermaid + 1 JSON receipt)
+**Snapshot note:** the counts above remain the 2026-10-28 inventory snapshot; architecture lifecycle artifacts introduced with version 1.0.0 are indexed below and await a full inventory recount.
 
 ## Entry point
 
 Start with the repository-wide [`architecture.md`](../../architecture.md) for the system taxonomy, directory map, and consolidated data-flow view. This index remains the authority for canonical architecture specs by domain.
+
+Architecture release identity and refresh rules live in [VERSIONING.md](VERSIONING.md), [VERSION](VERSION), and [CHANGELOG.md](CHANGELOG.md). The generated architecture manifest at generated/architecture-manifest.json records source and diagram fingerprints; generated files remain projections of their canonical sources.
 
 ## How this surface is organized
 
@@ -20,6 +23,10 @@ Start with the repository-wide [`architecture.md`](../../architecture.md) for th
 
 | Document | Class | Status (per its own text) | Scope |
 |---|---|---|---|
+| [VERSIONING.md](VERSIONING.md) | Canonical release contract | Current | SemVer policy, same-change version/changelog gate, deterministic manifest and automated refresh lifecycle |
+| [CHANGELOG.md](CHANGELOG.md) | Release history | Current | Semantic architecture version history, starting at 1.0.0 |
+| [VERSION](VERSION) | Release metadata | Current | Current architecture version identifier |
+| [flows/README.md](flows/README.md) | Architecture module index | Current | Seven paired Markdown/Mermaid flow modules and generated SVG projection paths |
 | [AGENT-EVALUATION-FRAMEWORK.md](AGENT-EVALUATION-FRAMEWORK.md) | Canonical spec | Stated (2026-10-28 backfill): canonical spec | The measurement layer: evaluation units for agents, managers, prompts, tools, orchestration policies, providers/models (the MVT/DoE measurement home) |
 | [AGENT-SELECTION-BLIND-EVALUATION.md](AGENT-SELECTION-BLIND-EVALUATION.md) | Companion spec | Stated (2026-10-28 backfill): canonical companion spec, implemented as a skill | Double-blind-style evaluation layer separating treatment identity from evaluation identity, inside the framework above |
 | [TOOL-DEFINITION-QUALITY-SCORE.md](TOOL-DEFINITION-QUALITY-SCORE.md) | Integration spec | Stated: integrated as an evaluation/observability provider lane | Tool-definition quality as a signal inside the Agent Evaluation Framework; explicitly not a router policy or leaderboard metric |

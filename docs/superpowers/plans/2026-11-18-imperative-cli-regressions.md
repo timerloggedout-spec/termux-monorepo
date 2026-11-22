@@ -129,3 +129,29 @@ The existing side tests therefore detect that mutation; the new cases cover the
 complementary mainline path. Temporary mutation lives outside git and is removed.
 No production defect claim: the unchanged checker rejects both paths correctly.
 Required local gates and current committed-SHA GitHub results are separate receipts.
+
+## Review-ready evidence — 2026-11-22
+
+AR-33 moves to `in_review`: implementation and behavioral evidence are complete,
+not integrated. Preserve the previous failed attempts and pending observations as
+historical records rather than rewriting them as successes.
+
+Verified live head `5e9984983f43b85ff04d1ac1717d3a2627ede859`:
+
+- [Repository gate SUCCESS](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/44884232437/job/136785920221).
+- [Termux smoke SUCCESS](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/44884232176/job/136785918346).
+- No inline review roots with that original commit SHA at initial fetch.
+- Prior committed-tree evidence: 25 style cases, 89 combined tests and 90 subtests
+  PASS; production checker unchanged by the final ancestry-test contributions.
+
+Related #5496 remains open at `99334c4817ebcf78c8953b07b603ed7d7cf0646c`.
+Its [repository gate](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/44046954431/job/133914916513)
+and [smoke](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/44046954242/job/133914914017)
+are SUCCESS. Smoke appears on the second page of 117 check runs; a first-page
+absence is not a missing-gate diagnosis.
+
+Maintainer critique: further tests without a new finding would add churn; record
+the verified disposition instead. Adversarial critique: green jobs do not grant
+authority or establish integration. Both owner-authored PRs remain unmerged;
+#5543 remains open until integration. This documentation follow-up requires its
+own local gates and new-head GitHub observation, separate from the SHAs above.

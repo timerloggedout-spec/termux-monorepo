@@ -43,6 +43,28 @@ The tournament records these layers separately. Every candidate receives a stabl
 
 The catalog and census preserve project attribution, source URLs, model/runtime/adapter layers, and fleet state. Examples include TypeSafe Jev, Jared Palmer Kev, ConvAI Laya, the two Mev entries, simple-jev, Ollaya, laya.cpp, sys1, and classifier.dev. Treat source descriptions and reported capabilities as discovery evidence; promote candidates only after a pinned artifact, reproducible setup, protocol check, and matched trial.
 
+## Operational status: local Jev versus external Jev
+
+"Active" requires a scope. The classifier-estate feed snapshot (generated
+2026-11-02) marks the local observatory quartet live via dispatch. The
+Tier-1 recon says the quartet is dispatch-only: a human starts a trial;
+there is no standing trigger classifying repository LLM traffic.
+
+| Candidate | Recorded state | Operational meaning |
+|---|---|---|
+| Local `deepcli.observatory.jev` | Incumbent role implementation; dispatch-only baseline | The local rubric critic participates when a trial is dispatched. It is not a continuously running classifier service. |
+| External TypeSafe Jev (S1-01) | Catalogued in the machine catalog; blocked-paid in census trial records | The hosted route was not executed under the standing `free_only` gate. A paid-route owner decision is required before a trial. |
+| External ConvAI Laya (S1-03) | Evaluated | Self-hosted simple-jev trial returned quality 0.7139 and grounding 0.7692 on the recorded trial state. These are trial-specific observations, not a general ranking. |
+| External Jared Palmer Kev (S1-02) | Trial candidate | Checkpoints are PEFT LoRA adapters plus a classification head; a faithful trial requires the compatible serving stack or a deliberate composition shim. |
+| External recruiting Mev (S1-04) | Referenced / not runnable | The census record identifies no runnable release. |
+| External Mellow AI mev (S1-05) | Trial candidate / host blocked | A full model exists; the recorded local attempt was constrained by download egress and host memory. |
+
+The detailed run evidence and paid-route gate live in
+`docs/proposals/active/system-one-classifier-census/TRIALS.md`. The
+candidate registry stores operational state separately from catalog
+readiness, so "catalogued", "available adapter", "dispatch active" and
+"evaluated" remain distinct facts.
+
 ## Tournament requirements
 
 - Assign each local role implementation and external project a distinct immutable identity.

@@ -149,9 +149,20 @@
         if (/^https?:/i.test(href || "")) { link.target = "_blank"; link.rel = "noopener noreferrer"; }
         continue;
       }
-      link.href = new URL(href, rootUrl + "/blob/" + item.source_ref + "/" + item.path).href;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
+      const resolved = new URL(href, "https://repo.local/" + item.path);
+      const repoPath = decodeURIComponent(resolved.pathname.replace(/^\\/+/, ""));
+      const related = state.catalog.items.find(candidate => candidate.path === repoPath);
+      if (related) {
+        link.href = "#source-" + encodeURIComponent(related.id);
+        link.addEventListener("click", event => {
+          event.preventDefault();
+          selectItem(related);
+        });
+      } else {
+        link.href = new URL(href, rootUrl + "/blob/" + item.source_ref + "/" + item.path).href;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+      }
     }
     for (const img of container.querySelectorAll("img[src]")) {
       const src = img.getAttribute("src");

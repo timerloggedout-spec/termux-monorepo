@@ -70,7 +70,7 @@
       "Identical provider identifiers, model identifiers and observation timestamps",
       "Identical fixture-set revision and expected semantic facts",
       "Pinned incumbent source and VultrInspired implementation revisions",
-      "Offline deterministic execution with no provider credentials, network requests, inference calls or runtime activation"
+      "Offline deterministic execution; provider credentials absent; network and inference disabled; runtime activation deferred"
     ],
     "response_variables": [
       "canonical-record-semantic-preservation",
@@ -84,7 +84,7 @@
     ],
     "acceptance_criteria": [
       "Incumbent v5 output remains the baseline and retains its existing provider/access/quota semantics.",
-      "VultrInspired is a repository-native adapter with its own versioned output schema and no upstream SDK dependency.",
+      "VultrInspired is a repository-native adapter with its own versioned output schema and standard-library-only execution.",
       "Paired fixtures retain provider/model identity, context/output limits, pricing classifications and access evidence.",
       "Decimal strings and integer prices remain exact; binary floats are explicitly diagnosed as precision-limited input.",
       "Input/output modalities, capability descriptors and unknown source fields remain observable when supplied.",

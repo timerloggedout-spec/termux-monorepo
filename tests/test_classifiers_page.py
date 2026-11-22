@@ -20,6 +20,8 @@ def test_classifiers_page():
     assert "model candidates" in html
     assert "awaiting qualification" in html
     assert "Tournament protocol" in html
+    assert "Matched implementation comparator" in html
+    assert "implementation_competition.py" in html
     assert "pct_breakdown" in html and "SHARES" in html
     assert "win_probability" not in html and "metrics_internal" not in html
 

@@ -11,6 +11,8 @@
 
 | MOS-007 | P0 | executing | Implement the root Brain's domain-neutral, versioned specialist extension contract; implement the pure MOSAIC crate and adapter under `archwiz/mosaic_brain/`; register root Brain/MOSAIC scopes and ICM navigation; compose it from the existing host only after host ownership is verified. | `termux-brain` exports a validated typed extension contract; MOSAIC implements it through a one-way path dependency; run/cycle/attempt identity is preserved; contract/domain mismatches fail closed; evidence and recommendation rules are deterministic and tested; CRG scopes and ICM cards are present; generated graph publication remains with the publisher; no root-to-MOSAIC dependency or duplicate registry; host runtime routing remains a separately verified follow-on. |
 
+| CCEL-007 | P1 | executing | Extend the existing Actions observability pipeline into a nested workflow-discovery and continuous operations dashboard; feed measured workflow-run/job statistics into the existing DoE optimization loop. | Reuse the existing automation catalog, Actions observer, telemetry feed, and Tribute Pages publisher; discover workflow_run and reusable-workflow edges from source; publish a versioned read-only feed and dedicated Pages view; refresh from the existing daily/dispatch collector; tests cover edge resolution, metric provenance, stale/missing data, and page-feed isolation; no parallel scheduler or duplicate telemetry store; experiments remain separately preregistered and evidence-gated. |
+
 ## Validation
 
 - python3 scripts/integrations/validate_capability_graph.py

@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-22T08:11:53Z)
+# Lane matrix status (2026-11-22T08:12:49Z)
 
-- Master: `f754edcb68eb5a4ab7ae2a02fcf5075cf1648b56`
+- Master: `400caf42530ba895d8be9a212bdc011334d7b34c`
 - Open PRs: **509**
 - Oldest: #47 (108.69d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -26,7 +26,7 @@
 | #2702 | 21.66 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
 | #4069 | 19.16 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
 | #4621 | 18.47 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
-| #4898 | 17.81 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
+| #4898 | 17.82 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
 | #5034 | 15.72 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
 | #5722 | 1.62 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted routes and bind local Do |
 | #5723 | 1.62 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted review relay and record  |
@@ -37,10 +37,10 @@
 | #527 | 68.01 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
 | #605 | 64.6 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
 | #684 | 62.57 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
-| #769 | 60.02 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
+| #769 | 60.03 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
 | #969 | 51.93 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
 | #990 | 51.07 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
-| #1020 | 49.8 | CANDIDATE | state:unknown | feat: close provider continuity and executable rou |
+| #1020 | 49.81 | CANDIDATE | state:unknown | feat: close provider continuity and executable rou |
 | #1274 | 33.95 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
 | #1441 | 32.02 | CANDIDATE | state:unknown | feat(triage): reconcile official quota before disp |
 | #1469 | 31.8 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
@@ -52,7 +52,7 @@
 | #1531 | 30.98 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
 | #1537 | 30.97 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 30.3 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
-| #1614 | 29.21 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
+| #1614 | 29.22 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
 | #1616 | 29.21 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 29.2 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
 | #1626 | 29.08 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |

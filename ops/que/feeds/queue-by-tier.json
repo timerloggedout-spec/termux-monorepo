@@ -1,15 +1,14 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-22T00:04:51Z",
+ "generated_at": "2026-11-22T00:50:48Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 3,
-   "in_progress": 1,
+   "queued": 2,
+   "in_progress": 2,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "repo gate": 1,
     "PR scope guard": 2
    }
   },
@@ -29,12 +28,10 @@
   },
   "4": {
    "tier": 4,
-   "queued": 6,
-   "in_progress": 16,
+   "queued": 4,
+   "in_progress": 14,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "termux smoke": 1,
-    "que-cadence-kick": 1,
     "Agent PR Jules Handoff": 1,
     "PR Change Effectiveness Ledger": 1,
     "Advisory GitHub Actions lint": 1,
@@ -43,8 +40,8 @@
   }
  },
  "totals": {
-  "queued": 9,
-  "in_progress": 19
+  "queued": 6,
+  "in_progress": 18
  },
  "wedged_ancient": [
   {
@@ -208,7 +205,7 @@
    "4": 0
   },
   "explicit_total": 6,
-  "default_t4": 22,
+  "default_t4": 18,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

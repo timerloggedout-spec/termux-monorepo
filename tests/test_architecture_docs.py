@@ -81,6 +81,17 @@ class ArchitectureDocumentationTests(unittest.TestCase):
                 any(path.startswith("docs/architecture/generated/") for path in source_paths)
             )
 
+    def test_source_set_hash_changes_when_canonical_source_changes(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.make_root(root)
+            initial = architecture_docs.build_manifest(root)["source_set_sha256"]
+            (root / "architecture.md").write_text(
+                "# Updated architecture\\n", encoding="utf-8"
+            )
+            updated = architecture_docs.build_manifest(root)["source_set_sha256"]
+            self.assertNotEqual(initial, updated)
+
     def test_manifest_rejects_unpaired_flow_source(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

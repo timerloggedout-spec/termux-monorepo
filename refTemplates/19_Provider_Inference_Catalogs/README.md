@@ -11,6 +11,20 @@ This slot contains two different asset classes: local competing catalogues and e
 
 VultrInspired uses the existing local Python runtime and standard library. Its execution profile is zero credentials, zero network requests and zero inference calls. It serves as an evaluation candidate, with runtime replacement and routing authority governed separately. Populate both catalogue files from one supplied v5 snapshot with `python3 -m scripts.provider_catalog_competition --input /path/to/incumbent-v5.json --output-dir /path/to/catalogues`; the runner writes `incumbent-v5.json`, `vultr-inspired-v1.json` and a digest-bound `manifest.json`.
 
+
+### Input snapshot acquisition
+
+The incumbent collector remains the existing networked observation path. Within its authorized workflow, it writes the v5 snapshot using its existing provider endpoints and configured environment credentials:
+
+```bash
+python3 scripts/provider_model_catalog.py --output /tmp/model-catalog/catalog.json
+python3 -m scripts.provider_catalog_competition \\
+  --input /tmp/model-catalog/catalog.json \\
+  --output-dir /tmp/model-catalog/competition
+```
+
+The first command performs the incumbent provider observations. The second command performs the paired catalogue population locally from the resulting JSON snapshot. The Vultr reference repositories and Vultr compute API remain outside both execution paths.
+
 ## Upstream design references
 
 | Reference | Pinned source | Intended use |

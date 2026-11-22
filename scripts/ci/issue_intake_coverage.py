@@ -60,7 +60,7 @@ def audit(root: Path = ROOT) -> list[str]:
     template_dir = root / TEMPLATE_DIR
     templates = sorted(
         path for path in template_dir.iterdir()
-        if path.is_file() and path.suffix.lower() in {".yml", ".yaml", ".md"}
+        if path.is_file() and path.name.lower() != "config.yml" and path.suffix.lower() in {".yml", ".yaml", ".md"}
     )
     map_file = root / MAP_PATH
     if not map_file.is_file():

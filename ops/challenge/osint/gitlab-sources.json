@@ -15,7 +15,7 @@
       "url": "https://gitlab.com/gitlab-ai-hackathon",
       "kind": "gitlab_group",
       "relation": "root_group",
-      "observation": "Public group page; child subgroup/project navigation visible.",
+      "observation": "Public root group ID 121124982; first-level inventory includes six subgroups and three direct projects, with child counts captured in this source registry.",
       "coverage": "observed",
       "fetched_at": "2026-11-22",
       "platform_id": "121124982"
@@ -332,6 +332,69 @@
       "kind": "interactive_tutorial",
       "relation": "technology:gitlab-duo-agent-platform",
       "coverage": "linked_by_official_event_page",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-participants-test-lee",
+      "url": "https://gitlab.com/gitlab-ai-hackathon/participants-test-lee",
+      "kind": "gitlab_subgroup",
+      "relation": "child_of:gitlab-ai-hackathon-root",
+      "platform_id": "123069139",
+      "observation": "Public subgroup with 2 child projects; classified as participant-test workspace.",
+      "coverage": "observed_count",
+      "project_count": 2,
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-participants-test-mattias",
+      "url": "https://gitlab.com/gitlab-ai-hackathon/participants-test-mattias",
+      "kind": "gitlab_subgroup",
+      "relation": "child_of:gitlab-ai-hackathon-root",
+      "platform_id": "123068969",
+      "observation": "Public subgroup with 24 child projects; classified as participant-test workspace.",
+      "coverage": "observed_count",
+      "project_count": 24,
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-test-subgroup",
+      "url": "https://gitlab.com/gitlab-ai-hackathon/test",
+      "kind": "gitlab_subgroup",
+      "relation": "child_of:gitlab-ai-hackathon-root",
+      "platform_id": "122493198",
+      "observation": "Public subgroup with one CI component test project.",
+      "coverage": "observed_count",
+      "project_count": 1,
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-ci-project",
+      "url": "https://gitlab.com/gitlab-ai-hackathon/ci",
+      "kind": "gitlab_project",
+      "relation": "child_of:gitlab-ai-hackathon-root",
+      "platform_id": "77418162",
+      "observation": "Public CI project; contains agents/, .gitlab-ci.yml, LICENSE, README.md. README states the CI configuration applies to participant projects and is enforced by the Security Policies project.",
+      "coverage": "observed",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-security-policies-project",
+      "url": "https://gitlab.com/gitlab-ai-hackathon/security-policies",
+      "kind": "gitlab_project",
+      "relation": "child_of:gitlab-ai-hackathon-root",
+      "platform_id": "77418381",
+      "observation": "Public project containing .gitlab/security-policies, LICENSE, and README.md.",
+      "coverage": "observed",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-ci-component-test-project",
+      "url": "https://gitlab.com/gitlab-ai-hackathon/test/ci-component-test",
+      "kind": "gitlab_project",
+      "relation": "child_of:gitlab-test-subgroup",
+      "platform_id": "77782807",
+      "observation": "Public CI component test project in the root group's Test subgroup.",
+      "coverage": "observed",
       "fetched_at": "2026-11-22"
     }
   ]

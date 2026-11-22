@@ -1,0 +1,89 @@
+name: Research Astute organization bootstrap
+
+run-name: "Research Astute collection bootstrap"
+
+on:
+  workflow_dispatch:
+    inputs:
+      provision_missing:
+        description: "Create missing private research collection repositories"
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: research-astute-organization-bootstrap
+  cancel-in-progress: false
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ secrets.RESEARCH_ASTUTE_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || github.token }}
+      TARGET_ORG: ResearchAstute
+      PROVISION_MISSING: ${{ inputs.provision_missing }}
+    steps:
+      - name: Verify organization access
+        shell: bash
+        run: |
+          set -euo pipefail
+          : "${GH_TOKEN:?Configure a GitHub Actions credential with ResearchAstute repository administration access}"
+          gh api "/orgs/${TARGET_ORG}" --jq '"Organization: " + .login'
+          gh api "/orgs/${TARGET_ORG}/repos?per_page=100" --paginate --jq '.[].name' > /tmp/existing-repos.txt
+          printf 'Existing repositories visible: %s\n' "$(wc -l < /tmp/existing-repos.txt)"
+
+      - name: Provision approved research collections
+        if: inputs.provision_missing
+        shell: bash
+        run: |
+          set -euo pipefail
+          declare -A descriptions=(
+            [research-astute-space-systems]="Space systems research: SpaceX, launch systems, propulsion, spacecraft, reuse and orbital infrastructure."
+            [research-astute-nasa-missions]="NASA missions, scientific publications, technical reports, mission datasets and open research."
+            [research-astute-tesla-mobility-energy]="Tesla, electric mobility, batteries, energy storage, robotics and manufacturing research."
+            [research-astute-aerospace-energy-patents]="Aerospace and energy patent metadata, claims, citations, families and authorized source artifacts."
+            [research-astute-foss-research]="FOSS repositories, research software, benchmarks, datasets and reproducible scientific tooling."
+          )
+          for name in "${!descriptions[@]}"; do
+            if gh api "/repos/${TARGET_ORG}/${name}" >/dev/null 2>&1; then
+              echo "Exists: ${TARGET_ORG}/${name}"
+              continue
+            fi
+            payload="$(jq -n --arg name "$name" --arg description "${descriptions[$name]}" '{
+              name: $name,
+              description: $description,
+              private: true,
+              auto_init: true,
+              has_issues: true,
+              has_projects: false,
+              has_wiki: false
+            }')"
+            created="$(gh api --method POST "/orgs/${TARGET_ORG}/repos" --input - <<<"$payload")"
+            owner="$(jq -r '.owner.login // empty' <<<"$created")"
+            actual_name="$(jq -r '.name // empty' <<<"$created")"
+            url="$(jq -r '.html_url // empty' <<<"$created")"
+            if [[ "${owner,,}" != "${TARGET_ORG,,}" || "$actual_name" != "$name" || -z "$url" ]]; then
+              echo "::error::GitHub returned repository metadata outside the approved organization/name."
+              exit 1
+            fi
+            echo "Created: $url"
+          done
+
+      - name: Publish bootstrap receipt
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## Research Astute organization bootstrap"
+            echo
+            echo "- Domain authority: ${TARGET_ORG}"
+            echo "- Provision missing repositories: ${PROVISION_MISSING}"
+            echo "- Repository visibility: private"
+            echo "- Collections: space-systems, nasa-missions, tesla-mobility-energy, aerospace-energy-patents, foss-research"
+            echo "- Credential: configured Actions secret; secret value withheld"
+            echo "- Creation endpoint: POST /orgs/${TARGET_ORG}/repos"
+          } >> "$GITHUB_STEP_SUMMARY"

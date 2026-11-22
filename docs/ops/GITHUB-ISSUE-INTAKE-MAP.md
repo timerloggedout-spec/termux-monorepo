@@ -99,6 +99,7 @@ These workflows subscribe to `issues: [labeled]` or `pull_request: [labeled]`. A
 | [`swarm-admission.yml`](../../.github/workflows/swarm-admission.yml) | Issues `opened`, `reopened` | Scans issue templates for dispatch blocks; stamps `swarm-admitted` or `deferred-by-tier` |
 | [`issue-lifecycle-triage.yml`](../../.github/workflows/issue-lifecycle-triage.yml) | Issues `opened`, `reopened`; Tuesday 07:17 UTC; manual dispatch | Deterministic label floor for unlabelled open issues only |
 | [`issue-observatory.yml`](../../.github/workflows/issue-observatory.yml) | Issues `opened`, `edited`, `labeled`, `unlabeled`, `closed`, `reopened`; manual dispatch | Read-only relationship/similarity observation and artifact publication |
+| [`sweep-accountability.yml`](../../.github/workflows/sweep-accountability.yml) | Issues `opened`, `edited`, `closed`, `reopened`, `labeled`, `unlabeled`, `assigned`, `unassigned`; PR lifecycle; push/schedule/manual; issue comments | Accountability census and receipt ledger; non-master refs skip receipt pushes |
 | [`issue-comment-router.yml`](../../.github/workflows/issue-comment-router.yml) | Issue comments `created` | Classifies `@jules`, `@gemini`, and `Implements:`; route steps are placeholder echoes |
 | [`delphi-intake.yml`](../../.github/workflows/delphi-intake.yml) | Issue comments `created` with `<!-- request-delphi-intake -->`; manual dispatch | Creates a completed `delphi:rfp` issue from conversational intake |
 | [`research-intake.yml`](../../.github/workflows/research-intake.yml) | Issues `opened`, `reopened`, `edited`; marker comment | Deterministic research seed intake; its event subscription intentionally omits `labeled` |
@@ -151,6 +152,6 @@ When adding or changing an issue form, update this map in the same change with i
 - Intake: `.github/workflows/{apk-xref-intake,re-taxonomy-intake,research-intake,target-intake,project-task-dispatch,game-development-dispatch,egm-review-dispatch,delphi-gate,delphi-intake}.yml`
 - Lifecycle: `.github/workflows/issue-lifecycle-triage.yml`, `scripts/issue_lifecycle/triage_labels.py`
 - Label commands: `.github/workflows/{agent-jules-on-issues,agent-ecc-tools-ops,mesh-request,doe-live1-audit,build-arm-census}.yml`
-- Observation: `.github/workflows/issue-observatory.yml`, `.github/workflows/issue-comment-router.yml`
+- Observation: `.github/workflows/issue-observatory.yml`, `.github/workflows/issue-comment-router.yml`, `.github/workflows/sweep-accountability.yml`
 - Roadmap completion: `.github/workflows/roadmap-completion.yml`, `roadmap-completions/scripts/verify-completion.py`, `roadmap-completions/config/verification-rules.yaml`
 - Intake coverage guard: `.github/workflows/issue-intake-coverage.yml`, `scripts/ci/issue_intake_coverage.py`, `tests/test_issue_intake_coverage.py`

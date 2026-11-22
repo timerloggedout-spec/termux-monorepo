@@ -94,7 +94,7 @@ Throughput, low nominal cost, classifier count and judge confidence alone cannot
 - Five model candidates retain the role mapping supported by census/trial evidence. Fifty-six retain `unclassified` status pending source-backed capability qualification.
 - Every model candidate carries the catalog's exact claim text and source URL. Catalog claims and verified capability evidence remain separate fields.
 - The classifier operating estate contains 71 units across 12 source-defined groups: 43 live, 26 dormant and 2 dead in the 2026-11-02 feed snapshot. Group counts reconcile against all source rows. Estate units describe operating systems, pipelines, routing, gates, feeds and external surfaces.
-- The `model-catalog-screen` graph holds 61 model candidates as a parallel, design-only qualification arm.
+- The `model-catalog-screen` graph holds 61 model candidates as a parallel, design-only qualification arm. The `local-role-lateral-screen` holds Mev, Jev, Kev and Laya as four independent design-only arms; `local-role-baseline` preserves the current incumbent composition as a separate graph.
 
 ### Candidate admission
 

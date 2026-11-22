@@ -136,7 +136,8 @@
       "relation": "program:gitlab-community-hackathon",
       "observation": "October 2026 edition closed (76 prize winners; 636 merged MRs); next edition published for January 21–28, 2027 UTC.",
       "coverage": "observed_upcoming",
-      "fetched_at": "2026-11-22"
+      "fetched_at": "2026-11-22",
+      "entry_mode": "Contributor Platform rule acceptance + onboarding; Devpost registration NOT_REQUIRED."
     },
     {
       "id": "gitlab-community-hackathon-rules",
@@ -145,7 +146,8 @@
       "relation": "program:gitlab-community-hackathon",
       "observation": "Live public rules page returned terms version 2026-10-v2; search-index copy returned 2026-10-v1. Preserve version discrepancy; live page was fetched 2026-11-22.",
       "coverage": "observed",
-      "fetched_at": "2026-11-22"
+      "fetched_at": "2026-11-22",
+      "version_discrepancy": "Live public page 2026-10-v2; search-index copy 2026-10-v1."
     },
     {
       "id": "gitlab-community-hackathon-forum",
@@ -421,7 +423,7 @@
       "created_at": "2026-09-17T09:11:36.776Z",
       "child_subgroup_count": 1273,
       "child_project_count": 1820,
-      "observation": "Archived October 2026 showcase group. Owner-published boundary: keep observability disabled at group scope and keep secrets out of group-level settings. Participant onboarding allows optional observability within each participant subgroup.",
+      "observation": "Archived October 2026 showcase group. Owner states one participant subgroup is provisioned per participant. Group boundary: observability stays disabled at parent-group scope; secrets stay out of group-level settings. Participant onboarding describes optional observability within each participant subgroup.",
       "coverage": "full_listing",
       "fetched_at": "2026-11-22"
     },
@@ -436,7 +438,11 @@
       "pages": 19,
       "project_count": 1820,
       "snapshot_path": "ops/challenge/osint/gitlab-transcend-october-2026-projects-2026-11-22.ndjson",
-      "fetched_at": "2026-11-22"
+      "fetched_at": "2026-11-22",
+      "archived_count": 1820,
+      "visibility_counts": {
+        "public": 1820
+      }
     },
     {
       "id": "gitlab-transcend-october-2026-subgroup-catalog",
@@ -449,7 +455,11 @@
       "pages": 13,
       "subgroup_count": 1273,
       "snapshot_path": "ops/challenge/osint/gitlab-transcend-october-2026-subgroups-2026-11-22.ndjson",
-      "fetched_at": "2026-11-22"
+      "fetched_at": "2026-11-22",
+      "archived_count": 1273,
+      "visibility_counts": {
+        "public": 1273
+      }
     },
     {
       "id": "gitlab-transcend-october-2026-sample-work-item",

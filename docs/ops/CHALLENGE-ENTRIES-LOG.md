@@ -727,7 +727,8 @@ The source map and evidence are in
 `ops/challenge/osint/gitlab-sources.json`, the 312-project sibling snapshot
 `ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json`, and the
 October 2026 subgroup/project snapshots under
-`ops/challenge/osint/gitlab-transcend-october-2026-*-2026-11-22.ndjson`.
+`ops/challenge/osint/gitlab-transcend-october-2026-subgroups-2026-11-22.ndjson` and
+`ops/challenge/osint/gitlab-transcend-october-2026-projects-2026-11-22.ndjson`.
 
 **Entry path:** C17 uses Contributor Platform rule acceptance and onboarding;
 Devpost registration is NOT_REQUIRED. The sequence is accept rules → start

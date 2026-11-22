@@ -1,7 +1,7 @@
 {
   "schema_version": "classifier.graph-registry.v1",
   "registry_id": "termux-monorepo-classifier-graph-tournament",
-  "registry_version": "0.1.0",
+  "registry_version": "0.2.0",
   "catalog": {
     "path": "config/system_one_catalog.json",
     "schema": "system-one-catalog/1"
@@ -40,6 +40,11 @@
       "role_id": "evidence_reduction",
       "capability": "Join evidence by candidate identity and produce a versioned decision",
       "contract_version": "1.0.0"
+    },
+    {
+      "role_id": "unclassified",
+      "capability": "Catalogued model whose task capability and execution contract await qualification",
+      "contract_version": "1.0.0"
     }
   ],
   "candidates": [
@@ -54,7 +59,8 @@
       "adapter_status": "native",
       "source_ref": "deepcli/deepcli/observatory/mev.py",
       "notes": "Local baseline producer implementation.",
-      "operational_state": "dispatch_only_baseline"
+      "operational_state": "dispatch_only_baseline",
+      "qualification_state": "qualified"
     },
     {
       "candidate_id": "local.deepcli.jev",
@@ -67,7 +73,8 @@
       "adapter_status": "native",
       "source_ref": "deepcli/deepcli/observatory/jev.py",
       "notes": "Local baseline rubric critic; judge independence is an evaluation factor.",
-      "operational_state": "dispatch_only_baseline"
+      "operational_state": "dispatch_only_baseline",
+      "qualification_state": "qualified"
     },
     {
       "candidate_id": "local.deepcli.kev",
@@ -80,7 +87,8 @@
       "adapter_status": "native",
       "source_ref": "deepcli/deepcli/observatory/kev.py",
       "notes": "Local baseline exact/token-F1 reference verifier.",
-      "operational_state": "dispatch_only_baseline"
+      "operational_state": "dispatch_only_baseline",
+      "qualification_state": "qualified"
     },
     {
       "candidate_id": "local.deepcli.laya",
@@ -93,7 +101,8 @@
       "adapter_status": "native",
       "source_ref": "deepcli/deepcli/observatory/laya.py",
       "notes": "Local baseline reducer; current weighted scalar remains a baseline preference.",
-      "operational_state": "dispatch_only_baseline"
+      "operational_state": "dispatch_only_baseline",
+      "qualification_state": "qualified"
     },
     {
       "candidate_id": "catalog.S1-01",
@@ -106,7 +115,8 @@
       "adapter_status": "partial",
       "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#Blocked-paid-list",
       "notes": "TypeSafe AI Jev; evaluate in the typed-decision lane.",
-      "operational_state": "blocked_paid_owner_gate"
+      "operational_state": "blocked_paid_owner_gate",
+      "qualification_state": "qualified"
     },
     {
       "candidate_id": "catalog.S1-02",
@@ -119,7 +129,8 @@
       "adapter_status": "required",
       "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#T1-KEV",
       "notes": "Jared Palmer Kev; TypeSafe-compatible serving is catalogued, candidate-specific trial evidence remains required.",
-      "operational_state": "trial_candidate_composition_required"
+      "operational_state": "trial_candidate_composition_required",
+      "qualification_state": "qualified"
     },
     {
       "candidate_id": "catalog.S1-03",
@@ -132,7 +143,8 @@
       "adapter_status": "available",
       "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#T1-LAYA",
       "notes": "ConvAI Laya decision encoder family; preserve exact checkpoint and serving provenance per trial.",
-      "operational_state": "evaluated_self_hosted"
+      "operational_state": "evaluated_self_hosted",
+      "qualification_state": "qualified"
     },
     {
       "candidate_id": "catalog.S1-04",
@@ -145,7 +157,8 @@
       "adapter_status": "required",
       "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#T1-MEV",
       "notes": "Recruiting-domain Mev encoder/decision-head candidate; domain-specific evaluation required.",
-      "operational_state": "referenced_not_runnable"
+      "operational_state": "referenced_not_runnable",
+      "qualification_state": "qualified"
     },
     {
       "candidate_id": "catalog.S1-05",
@@ -158,7 +171,792 @@
       "adapter_status": "required",
       "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#T1-MEV",
       "notes": "Mellow AI mev option-selection model; protocol and adapter compatibility require validation.",
-      "operational_state": "trial_candidate_host_blocked"
+      "operational_state": "trial_candidate_host_blocked",
+      "qualification_state": "qualified"
+    },
+    {
+      "candidate_id": "catalog.S2-01",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-01",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-01",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-02",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-02",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-02",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-03",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-03",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-03",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-04",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-04",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-04",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-05",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-05",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-05",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-06",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-06",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-06",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-07",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-07",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-07",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-08",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-08",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-08",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-09",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-09",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-09",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-10",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-10",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-10",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-11",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-11",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-11",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-12",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-12",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-12",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-13",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-13",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-13",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-14",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-14",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-14",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-15",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-15",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-15",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-16",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-16",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-16",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-17",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-17",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-17",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-18",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-18",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-18",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-19",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-19",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-19",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-20",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-20",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-20",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-21",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-21",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-21",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-22",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-22",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-22",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-23",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-23",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-23",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-24",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-24",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-24",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-25",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-25",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-25",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-26",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-26",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-26",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S2-27",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-27",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-27",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-01",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-01",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-01",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-02",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-02",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-02",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-03",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-03",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-03",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-04",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-04",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-04",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-05",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-05",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-05",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-06",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-06",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-06",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-07",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-07",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-07",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-08",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-08",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-08",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-09",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-09",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-09",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-10",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-10",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-10",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-11",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-11",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-11",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-12",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-12",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-12",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-13",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-13",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-13",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-14",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-14",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-14",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-15",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-15",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-15",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-16",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-16",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-16",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-17",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-17",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-17",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-18",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-18",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-18",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-19",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-19",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-19",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-20",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-20",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-20",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-21",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-21",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-21",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-22",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-22",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-22",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-23",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-23",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-23",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-24",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-24",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-24",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-25",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-25",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-25",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-26",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-26",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-26",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-27",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-27",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-27",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-28",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-28",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-28",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
+    },
+    {
+      "candidate_id": "catalog.S3-29",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-29",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-29",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission."
     }
   ],
   "graphs": [
@@ -274,6 +1072,251 @@
       "live": 43,
       "dormant": 26,
       "dead": 2
+    }
+  },
+  "infrastructure": [
+    {
+      "catalog_entry_id": "S4-01",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-01",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-02",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-02",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-03",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-03",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-04",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-04",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-05",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-05",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-06",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-06",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-07",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-07",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-08",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-08",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-09",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-09",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-10",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-10",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-11",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-11",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-12",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-12",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-13",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-13",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-14",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-14",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-15",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-15",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-16",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-16",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S5-01",
+      "layer": "runtime",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S5-01",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S5-02",
+      "layer": "runtime",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S5-02",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S5-03",
+      "layer": "runtime",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S5-03",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S5-04",
+      "layer": "runtime",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S5-04",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S5-05",
+      "layer": "runtime",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S5-05",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S5-06",
+      "layer": "runtime",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S5-06",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S5-07",
+      "layer": "runtime",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S5-07",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S5-08",
+      "layer": "directory",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S5-08",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S5-09",
+      "layer": "directory",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S5-09",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S5-10",
+      "layer": "directory",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S5-10",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S5-11",
+      "layer": "directory",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S5-11",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    }
+  ],
+  "implementation_competition": {
+    "schema": "tournament.implementation-competition.v1",
+    "canonical_cohort": "manager.tournament.v1",
+    "incumbent": {
+      "implementation_id": "incumbent.termux-manager-tournament",
+      "version": "1.0.0",
+      "status": "incumbent",
+      "components": [
+        {
+          "component_id": "cohort_contract",
+          "version": "manager.tournament.v1",
+          "source_ref": "docs/ops/MANAGER-TOURNAMENT.schema.json"
+        },
+        {
+          "component_id": "trial_runner",
+          "version": "repository-baseline",
+          "source_ref": "deepcli/deepcli/observatory/trial.py"
+        },
+        {
+          "component_id": "evidence_reducer",
+          "version": "repository-baseline",
+          "source_ref": "deepcli/deepcli/observatory/laya.py"
+        },
+        {
+          "component_id": "leaderboard",
+          "version": "repository-baseline",
+          "source_ref": "deepcli/deepcli/observatory/leaderboard.py"
+        },
+        {
+          "component_id": "evolution_replay",
+          "version": "repository-baseline",
+          "source_ref": "scripts/agent_evolution/replay_simulator.py"
+        }
+      ]
+    },
+    "challengers": [
+      {
+        "implementation_id": "challenger.sie-control-plane",
+        "version": "0.1.0",
+        "status": "design_only",
+        "source_ref": "refTemplates/15_Research_Repo_Templates/antinuous-adapted-doe-tournament/SELF-IMPROVEMENT-ENGINE.md",
+        "hypothesis": "An explicit registry, matched-cohort scheduler, evidence ledger and independent promotion controller improve validated outcome per total resource cost.",
+        "execution_ready": false
+      }
+    ],
+    "protocol": {
+      "matched_cohort_required": true,
+      "held_out_required": true,
+      "independent_evaluator_required": true,
+      "immutable_receipts_required": true,
+      "rollback_target_required": true,
+      "owner_approval_for_production": true
     }
   }
 }

@@ -162,6 +162,56 @@ def normalize_incumbent(document: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+
+def normalize_population(document: dict[str, Any]) -> dict[str, Any]:
+    """Project the complete source-preserving candidate pool into VultrInspired v2."""
+    if not isinstance(document, dict) or document.get("schema") != "provider-model-population/v1":
+        raise ValueError("unsupported_population_schema")
+    source_models = document.get("model_candidates")
+    if not isinstance(source_models, list):
+        raise ValueError("invalid_population_models")
+    models: list[dict[str, Any]] = []
+    issues: list[dict[str, Any]] = []
+    for index, row in enumerate(source_models):
+        if not isinstance(row, dict):
+            issues.append({"index": index, "code": "invalid_candidate_record"})
+            continue
+        provider, model_id = row.get("provider_id"), row.get("model_id")
+        if not isinstance(provider, str) or not provider or not isinstance(model_id, str) or not model_id:
+            issues.append({"index": index, "code": "missing_candidate_identity"})
+            continue
+        details = row.get("source_details") if isinstance(row.get("source_details"), list) else []
+        modalities = sorted({item["modality"] for item in details
+                             if isinstance(item, dict) and isinstance(item.get("modality"), str)})
+        models.append({
+            "provider": provider, "id": model_id,
+            "identity": {"candidate_id": row.get("candidate_id"), "source_provider_id": provider},
+            "evidence": {"sources": list(row.get("sources", [])),
+                         "classes": list(row.get("evidence_classes", [])), "details": details},
+            "modalities": {"observed": modalities, "input": [], "output": []},
+            "pricing": {"classification": "unknown", "exact_decimal_strings": {}},
+            "access": {"classification": "unknown", "entitlement": "unknown", "quota": "unknown"},
+            "lifecycle": {"catalogue_active": None, "runtime_eligible": False, "inference_admitted": False},
+            "provenance": {"population_schema": "provider-model-population/v1",
+                           "source_population_version": document.get("population_version")},
+            "extensions": {key: value for key, value in row.items()
+                           if key not in {"candidate_id", "provider_id", "model_id", "sources",
+                                          "evidence_classes", "source_details", "runtime_eligible",
+                                          "inference_admitted"}},
+            "incumbent_candidate": dict(row),
+        })
+    return {
+        "schema": "provider-model-catalog/vultr-inspired-pool/v1",
+        "catalogue": "VultrInspired", "version": "2.0.0",
+        "source_catalogue": "Incumbent", "source_version": document.get("population_version"),
+        "source_benchmarks": dict(document.get("source_benchmarks", {})),
+        "pool_counts": dict(document.get("pool_counts", {})),
+        "providers": list(document.get("provider_candidates", [])),
+        "models": models, "issues": issues, "source_population": dict(document),
+        "execution": {"mode": "offline_population_projection", "network_requests": 0,
+                      "credentials_required": False, "inference_calls": 0},
+    }
+
 def main(argv: list[str] | None = None) -> int:
     """Transform a supplied incumbent snapshot into a local VultrInspired file."""
     parser = argparse.ArgumentParser(description=__doc__)

@@ -1,20 +1,32 @@
 # Provider Inference Catalog References
 
-This slot contains two different asset classes: local competing catalogues and equivalent upstream design references.
+This slot tracks the repository-owned catalogue variants, the full provider/model candidate population, and equivalent upstream design references.
 
 ## Local catalogue implementations
 
 | Catalogue | Version | Implementation | Role |
 |---|---:|---|---|
-| Incumbent | 5.0.0 | [scripts/provider_model_catalog.py](../../scripts/provider_model_catalog.py) | Existing multi-provider collector and v5 evidence contract |
-| VultrInspired | 1.0.0 | [scripts/provider_model_catalog_vultr_inspired.py](../../scripts/provider_model_catalog_vultr_inspired.py) | Native loss-aware offline projection over incumbent v5 records |
+| Incumbent | 6.0.0 | `scripts/provider_catalog_population.py` + existing v5 observation collector | Full-pool source-preserving baseline; v5 is one observation layer |
+| VultrInspired | 2.0.0 | `scripts/provider_model_catalog_vultr_inspired.py` | Native loss-aware projection over the complete population |
 
-VultrInspired uses the existing local Python runtime and standard library. Its execution profile is zero credentials, zero network requests and zero inference calls. It serves as an evaluation candidate, with runtime replacement and routing authority governed separately. Populate both catalogue files from one supplied v5 snapshot with `python3 -m scripts.provider_catalog_competition --input /path/to/incumbent-v5.json --output-dir /path/to/catalogues`; the runner writes `incumbent-v5.json`, `vultr-inspired-v1.json` and a digest-bound `manifest.json`.
+VultrInspired uses the existing local Python runtime and standard library. Population compilation and projection perform zero network requests, credential reads and inference calls. The full pool comes from canonical repository registries and g4f datasets; the live adapter roster does not define the population boundary.
 
+## Full-pool population and tournament seeding
 
-### Input snapshot acquisition
+See [Full Provider/Model Pool Population](../../docs/ops/PROVIDER-CATALOG-POPULATION.md).
 
-The incumbent collector remains the existing networked observation path. Within its authorized workflow, it writes the v5 snapshot using its existing provider endpoints and configured environment credentials:
+```bash
+python3 scripts/provider_catalog_population.py --output-dir /tmp/provider-population
+python3 -m scripts.provider_catalog_competition \
+  --population-input /tmp/provider-population/population-v1.json \
+  --output-dir /tmp/provider-tournament
+```
+
+The first command reconciles the 172-record/118-provider service registry, the 91-record/89-provider model-lane bench, the 60-provider g4f working catalog and the 160-provider/9,588-pair g4f universe. The second emits both full-pool variants and a digest-bound manifest.
+
+## Incumbent v5 observation layer
+
+The incumbent collector remains the existing networked observation path. Within its separately authorized workflow, it writes a v5 snapshot using configured provider endpoints and environment credentials:
 
 ```bash
 python3 scripts/provider_model_catalog.py --output /tmp/model-catalog/catalog.json
@@ -23,7 +35,7 @@ python3 -m scripts.provider_catalog_competition \
   --output-dir /tmp/model-catalog/competition
 ```
 
-The first command performs the incumbent provider observations. The second command performs the paired catalogue population locally from the resulting JSON snapshot. The Vultr reference repositories and Vultr compute API remain outside both execution paths.
+This legacy paired projection remains available for focused v5 regression comparisons. It does not replace full-pool population or tournament seeding.
 
 ## Upstream design references
 
@@ -32,21 +44,17 @@ The first command performs the incumbent provider observations. The second comma
 | [vultr-model-catalog-python](vultr-model-catalog-python/README.md) | [4a414ab](https://github.com/vultr/model-catalog-python/tree/4a414ab26e1f596cb98b3974a7d12182bf62dab3) | Schema, normalization, parser and cache design reference |
 | [vultr-model-catalog-typescript](vultr-model-catalog-typescript/README.md) | [6e55057](https://github.com/vultr/model-catalog-typescript/tree/6e55057cb718213937c4c118271f5a2ca1779d0d) | Equivalent cross-language design reference |
 
-The upstream projects describe equivalent patterns over Vultr's public model-list catalog. Their parity supports one local adaptation; the pinned projects remain provenance references.
-
-Transferable patterns include exact decimal pricing, modality-aware input/output descriptors, tool and structured-output metadata, reasoning and parameter descriptors, per-record diagnostics, unknown-field preservation, source/freshness provenance and shared fixtures.
+The upstream projects describe equivalent patterns over Vultr's public model-list catalog. Their parity supports one local adaptation; the pinned projects remain provenance references. Transferable patterns include exact decimal pricing, modality-aware descriptors, tool and structured-output metadata, reasoning and parameter descriptors, per-record diagnostics, unknown-field preservation, source/freshness provenance and shared fixtures.
 
 ## Compute and provider boundary
 
-- Local comparison: existing Python runtime; offline fixture input.
-- Live catalogue observation: a separately authorized provider endpoint and network path.
-- Inference: a separately configured and authorized inference provider.
-- Vultr compute provisioning, Vultr credentials, Vultr inference and promotional capacity: outside this integration.
+- Local population and comparison: existing Python runtime; deterministic file I/O.
+- Live catalogue observation: separately authorized provider endpoints and network path.
+- Inference: separately configured provider, task-specific admission, entitlement and quota.
+- Vultr compute provisioning, credentials, inference and promotional capacity: outside this integration.
 
-Catalog presence, readiness, account entitlement, quota, health and successful inference remain separate evidence classes.
+Candidate presence, reported working entries, catalog observations, readiness, entitlement, quota, health and successful inference remain distinct evidence classes.
 
 ## DoE
 
-[DOE-REGISTRY.json](DOE-REGISTRY.json) records `DOE-VULTR-CATALOG-001` version `2.0.0`, comparing Incumbent v5 with VultrInspired v1.0.0. The two Vultr repositories are pinned under `source_references`, separately from experiment variants. Status is `planned`; result artifacts remain empty pending deterministic paired runs.
-
-Comparative analysis: [Vultr Inference Catalog Reference RECON](../../docs/ops/VULTR-INFERENCE-CATALOG-REFERENCE-RECON.md).
+[DOE-REGISTRY.json](DOE-REGISTRY.json) records `DOE-VULTR-CATALOG-001` version `3.0.0`. It compares Incumbent v6.0.0 with VultrInspired v2.0.0 over the full candidate pool. The 7,341 historical Actions-verified endpoint floor and 9,588 enumerated g4f candidate pairs remain separate populations. Status is `planned`; result artifacts remain empty pending reproducible paired runs and task receipts.

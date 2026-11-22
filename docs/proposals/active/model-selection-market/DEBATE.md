@@ -74,3 +74,12 @@ The competing catalogue variants are repository-owned: **Incumbent v5.0.0** at `
 DoE `DOE-VULTR-CATALOG-001` is versioned at v2.0.0. Its two variants are Incumbent and VultrInspired; Vultr Python and TypeScript commits are separate source references. The initial projection preserves incumbent records and access evidence, structures limits/modalities/capabilities/lifecycle/provenance, retains unknown fields, isolates malformed rows and diagnoses binary-float pricing. It cannot reconstruct decimal text already lost by incumbent float conversion. Source-native exact-price capture and broader modality fixtures remain follow-on work.
 
 Runtime activation, provider admission, routing weights, credentials, quota policy, live inference and schedules remain unchanged. Promotion requires separate review and same-head validation.
+
+
+## MSM-025 — full-pool scope correction (DoE v3.0.0)
+
+The v2 prototype used the v5 live catalog collector as its only input. That collector is one observation adapter; it does not define the provider/model universe.
+
+The full incumbent pool includes 172 quota/service records across 118 provider keys, 91 model-lane records across 89 providers, a 60-provider g4f working catalog with 4,241 distinct provider/model pairs, and a 160-provider g4f universe with 9,588 enumerated pairs (5,347 upstream-only, 1,156 fork-only, 3,085 overlap). The repository also records a separate historical 7,341 Actions-verified endpoint floor dated 2026-11-01. These denominators remain distinct and evidence-qualified.
+
+DoE v3.0.0 compares Incumbent v6.0.0 with VultrInspired v2.0.0 over a single source-hash-bound full-pool population. Every enumerated pair enters the tournament candidate population with provenance; runtime eligibility and inference admission remain separate gates. The existing v5 collector remains a live observation source within the larger pool.

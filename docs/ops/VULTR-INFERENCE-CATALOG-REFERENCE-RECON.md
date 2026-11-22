@@ -1,8 +1,9 @@
-# Provider Catalog Competition: Incumbent vs VultrInspired
+# Provider Catalog Competition: Full Provider/Model Pool
 
 **Date:** 2026-11-22  
 **Proposal item:** MSM-025  
-**DoE:** DOE-VULTR-CATALOG-001 v2.0.0  
+**DoE:** DOE-VULTR-CATALOG-001 v3.0.0
+**Current full-pool design:** Incumbent v6.0.0 vs VultrInspired v2.0.0; v2.0.0 design below is retained as prototype history.  
 **Disposition:** native adaptation prototype + pinned upstream design references  
 **Runtime state:** Incumbent remains authoritative; VultrInspired is offline evaluation-only.
 
@@ -84,3 +85,31 @@ Each increment receives its own DoE version and remains evaluation-only until se
 - [Provider batch implementation](PROVIDER-BATCH-IMPLEMENTATION.md)
 - [Provider routing governance](../icm/objects/knowledge/provider-routing.md)
 - [Catalogue reference slot and DoE registry](../../refTemplates/19_Provider_Inference_Catalogs/README.md)
+
+
+## V3 — complete provider/model pool and tournament population
+
+The v2 prototype above compared one live adapter snapshot. That snapshot is one observation layer, not the full incumbent pool. The v3 population compiler reconciles these separate repository sources:
+
+| Source | Current source count | Evidence class |
+|---|---:|---|
+| `ops/quota/registry.json` | 172 service records / 118 distinct provider keys | All-lane service registry |
+| `ops/challenge/desk-feed.json` | 91 model records / 89 distinct model-lane providers | Registry model-provider bench |
+| `data/g4f-working/providers.json` | 60 providers / 4,242 raw rows / 4,241 distinct pairs | Reference catalog; 100 reported working entries across 15 providers |
+| `data/g4f-working/universe.json` | 160 providers / 9,588 pairs | Enumeration: 5,347 upstream-only, 1,156 fork-only, 3,085 overlap |
+| Actions endpoint census | 7,341 provider×model endpoints | Historical verified floor dated 2026-11-01 |
+
+The 7,341 Actions-based verified floor and 9,588 enumerated pairs remain separate. The compiler records both with source hashes, keeps provider identities source-scoped, and seeds every candidate with provenance. Enumeration and reported working entries remain candidate evidence; they do not establish current availability, runtime eligibility, entitlement, quota or inference admission.
+
+Build the full pool and both catalogue variants:
+
+```bash
+python3 scripts/provider_catalog_population.py --output-dir /tmp/provider-population
+python3 -m scripts.provider_catalog_competition \
+  --population-input /tmp/provider-population/population-v1.json \
+  --output-dir /tmp/provider-tournament
+```
+
+The incumbent representation preserves the complete population input. VultrInspired v2 projects every candidate into a structured, loss-aware representation while preserving the original candidate and evidence details. Both variants share one source-hash-bound population manifest. Task-specific tournament execution remains behind the existing manager, provider router, exact-model admission, entitlement/quota and evaluator controls. The current implementation seeds the tournament pool; it does not claim that 9,588 candidates have been live-tested.
+
+The 16-endpoint v5 collector is retained as a live-observation adapter. Its roster is not the provider universe and its invocation is not the complete population build.

@@ -12,7 +12,7 @@
 
 The monorepo is the ICM workspace. Its own `docs/icm/` catalog, contracts, cards, process definitions, and maintenance Pipeline are the **operative** method. The shallow submodules under `refTemplates/smods/` are read-only **reference inputs**: they supply a form-selection skill, full conventions/examples, layered-routing precedent, filesystem-memory evidence, and an optional visual-review pattern. Separately, metadata-first entries under `refTemplates/19_Provider_Inference_Catalogs/` pin upstream SDK source identity and architecture evidence; they are source records with their own review path. These references inform method selection while governance retains change authority.
 
-| Reference input | Use in this repository | Boundary |
+| Reference input | Use in this repository | Excluded roles (reference does not provide) |
 |---|---|---|
 | `icm-architect_fork` | Form selection, map audit, templates, and walk-test method | Runtime agent or source-of-truth monorepo policy |
 | `interpretable-context-methodology_fork` | Full conventions, example workspaces, and workspace-builder patterns | A second live repository workspace |

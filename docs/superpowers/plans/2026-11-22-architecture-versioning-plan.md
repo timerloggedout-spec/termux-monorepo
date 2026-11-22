@@ -134,6 +134,7 @@
 
 - [x] Add workflow contract tests for PR read-only permissions, trusted master write authority, immutable artifact action, and architecture path filters.
 - [x] Restrict workflow_dispatch and trusted generated-file writes to refs/heads/master; add a regression assertion for the branch guard.
+- [x] Prove generated-only projection refreshes preserve the architecture version.
 - [ ] Run the focused repository tests on the exact branch head in GitHub Actions.
 - [ ] Run repository gate, Markdown/workflow validation, CodeQL, and Termux smoke where the workflow matrix admits them.
 - [ ] Verify the architecture flow pair inventory and Mermaid rendering.
@@ -149,7 +150,7 @@
 - BRR prior-art finding: the earlier architecture-entry branch was materially stale; compare evidence showed it 1,124 commits behind with two branch-only commits. The new branch was fast-forwarded to the then-current master before implementation.
 - Workspace adaptation: this session has GitHub connector access and no network-enabled local Git checkout. The isolated remote feature branch is the working workspace; local fixture tests provide unit evidence and GitHub Actions supplies integration evidence.
 - Loopy adaptation: use Observe → Choose → Act → Verify → Record → Repeat-or-stop. The supplied Loop Library specification leaves the catalog host unspecified, so published-loop matching remains unverified; this is an unpublished project adaptation.
-- Local verification: 13/13 architecture manifest and workflow tests passed; Python compilation passed.
+- Local verification: 14/14 architecture manifest and workflow tests passed; Python compilation passed.
 - PR #5770 is open as a draft and GitHub reports mergeable=true. Current master e9581d93c891b8d8c4373a8dc462580ea6bb0d88 is five commits beyond the branch base; the master-side delta contains only generated lane-matrix and backup-relay records, with zero path overlap.
 - The initial combined status records Vercel daily deployment quota exhaustion; adaptive-wait classifies Vercel as an advisory signal. The first immediate re-fetch showed PR-triggered Actions pending admission.
 - Pending evidence: exact PR-head Actions, independent review, generated artifact inspection, and trusted master refresh.

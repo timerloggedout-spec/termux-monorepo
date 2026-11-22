@@ -3,7 +3,7 @@
 **Class:** Research orchestration + reproducible experimentation + manager tournament  
 **Disposition:** Metadata-first reference and original adaptation specification  
 **Tier:** B — research candidate pending implementation evidence  
-**Version:** 0.4.0 · 2026-11-22
+**Version:** 0.5.0 · 2026-11-22
 
 ## Purpose
 

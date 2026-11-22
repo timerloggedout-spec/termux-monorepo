@@ -108,6 +108,15 @@ class ClassifierGraphRegistryTests(unittest.TestCase):
         self.assertEqual(sum(group["dormant"] for group in groups), 26)
         self.assertEqual(sum(group["dead"] for group in groups), 2)
 
+    def test_model_candidate_claims_match_catalog_provenance(self):
+        entries = {item["id"]: item for item in self.catalog["entries"]}
+        for candidate in self.registry["candidates"]:
+            if candidate["kind"] != "catalog":
+                continue
+            source = entries[candidate["catalog_entry_id"]]
+            self.assertEqual(candidate["catalog_claim"], source["note"])
+            self.assertEqual(candidate["catalog_source_url"], source["source_url"])
+
     def test_unclassified_candidates_make_no_role_claim(self):
         candidates = [item for item in self.registry["candidates"]
                       if item["qualification_state"] == "unclassified"]

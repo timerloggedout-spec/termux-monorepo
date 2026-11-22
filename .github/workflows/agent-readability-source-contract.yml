@@ -5,6 +5,14 @@ on:
     paths:
       - "apps/tribute-dashboard/**"
       - "apps/project-pages-hub/**"
+      - "architecture.md"
+      - "docs/architecture/**"
+      - "docs/**/*.mmd"
+      - "docs/**/*.svg"
+      - "docs/ops/generated/*.png"
+      - "docs/ops/SHE-DASHBOARD-*"
+      - "scripts/ci/build_architecture_portal.py"
+      - "tests/test_build_architecture_portal.py"
       - "scripts/ci/verify_agent_readability_surfaces.py"
       - ".github/workflows/tribute-dashboard-deploy.yml"
       - ".github/workflows/agent-readability-source-contract.yml"
@@ -35,5 +43,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Test Architecture Explorer source inventory
+        run: python3 -m unittest discover -s tests -p test_build_architecture_portal.py -v
+      - name: Validate Architecture Explorer JavaScript syntax
+        run: node --check apps/project-pages-hub/architecture/architecture.js
       - name: Validate HTML, Markdown, and deployment copy contracts
         run: python3 scripts/ci/verify_agent_readability_surfaces.py

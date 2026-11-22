@@ -52,7 +52,7 @@ APIs from Actions (runs 40504965897–40506393011). Established state:
 - **Gemini route: blocked by entitlement; code path provisioned.** The provisioned
   GEMINI_API_KEY resolves and its model catalog is observed (see
   PROVIDER-FREE-INFERENCE.md), but generateContent returns HTTP 404 for
-  both gemini-2.5-flash and gemini-2.0-flash, with account-specific no-cost entitlement evidence pending. The fleet's own continuity
+  both gemini-2.5-flash and gemini-2.0-flash, with account-specific free-tier entitlement evidence pending. The fleet's own continuity
   path is catalog-only for Gemini for the same reason. Verify the Gemini adapter after entitlement evidence and a bounded smoke pass.
 - **OpenRouter specific `:free` model IDs: direct-call verification pending.**
   Direct chat calls to catalog ids (llama-3.3-70b:free, qwen3-coder:free,
@@ -68,8 +68,7 @@ APIs from Actions (runs 40504965897–40506393011). Established state:
 - **Defaults.** The workflow defaults are now producer =
   `openrouter:liquid/lfm-2.5-2.6b:free`, judge =
   `openrouter:openrouter/free`. Acceptance condition for the first
-  completed trial: a dispatch at a time when the allowlisted route is
-  no longer rate-limited, preceded by the provider-batch workflow's
+  completed trial: a dispatch after the allowlisted route clears its rate limit, preceded by the provider-batch workflow's
   read-only `diagnose_free_limits` check (unblocked 2026-10-27 by
   PR #1780, which repaired the contracts gate; diagnose run
   40508502147 completed successfully). A 429 response routes through fresh diagnostics and owner-approved retry policy.
@@ -107,4 +106,4 @@ One adapter implements decide(state, questions), while ask(prompt)
 raises NotImplementedError. These endpoints are candidates for typed evaluation; Mev generation and Jev chat critique require dedicated adapters. Dispatch flags: `--decide` (verify the winning
 text after the trial; endpoint from `--decide-url` or the
 SYSTEMONE_BASE_URL env), `--decide-only` (run just the check on the
-prompt). Workflow inputs: `systemone_url`, `systemone_model`. Local servers accept requests without a credential; SYSTEMONE_API_KEY remains optional.
+prompt). Workflow inputs: `systemone_url`, `systemone_model`. Local servers support credential-optional requests; SYSTEMONE_API_KEY remains optional.

@@ -21,7 +21,7 @@ def _unique(values: list[Any]) -> bool:
         return False
 
 
-def validate_registry(root: Path, registry: Any, catalog: Any) -> list[str]:
+def validate_registry(root: Path, registry: Any, catalog: Any, estate: Any) -> list[str]:
     errors: list[str] = []
     if not isinstance(registry, dict):
         return ["registry: expected JSON object"]
@@ -30,6 +30,36 @@ def validate_registry(root: Path, registry: Any, catalog: Any) -> list[str]:
     for field in ("registry_id", "registry_version"):
         if not isinstance(registry.get(field), str) or not registry[field].strip():
             errors.append(f"registry.{field}: expected non-empty string")
+
+    estate_ref = registry.get("classifier_estate")
+    if not isinstance(estate_ref, dict):
+        errors.append("registry.classifier_estate: expected snapshot reference")
+    elif not isinstance(estate, dict) or estate.get("schema") != estate_ref.get("schema"):
+        errors.append("classifier estate: snapshot schema mismatch")
+    else:
+        units = estate.get("units")
+        headlines = estate.get("headlines")
+        expected_states = estate_ref.get("states", {})
+        if not isinstance(units, list):
+            errors.append("classifier estate.units: expected list")
+        else:
+            unit_ids = [unit.get("id") for unit in units if isinstance(unit, dict)]
+            if len(unit_ids) != len(units) or not _unique(unit_ids):
+                errors.append("classifier estate.units: missing or duplicate unit IDs")
+            if len(units) != estate_ref.get("unit_count"):
+                errors.append("classifier estate.unit_count: snapshot count mismatch")
+            actual_states = {
+                state: sum(1 for unit in units if isinstance(unit, dict) and unit.get("state") == state)
+                for state in ("live", "dormant", "dead")
+            }
+            if actual_states != expected_states:
+                errors.append(f"classifier estate.states: expected {expected_states}, observed {actual_states}")
+            if isinstance(headlines, dict):
+                for state, count in actual_states.items():
+                    if headlines.get(state) != count:
+                        errors.append(f"classifier estate.headlines.{state}: mismatch with unit rows")
+        if estate.get("generated_at") != estate_ref.get("snapshot_date"):
+            errors.append("classifier estate.snapshot_date: generated_at mismatch")
 
     cohort = registry.get("canonical_cohort")
     if not isinstance(cohort, dict) or cohort.get("schema") != "manager.tournament.v1":
@@ -207,10 +237,12 @@ def main() -> int:
         registry = json.loads(registry_path.read_text(encoding="utf-8"))
         catalog_path = root / registry["catalog"]["path"]
         catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+        estate_path = root / registry["classifier_estate"]["path"]
+        estate = json.loads(estate_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError, KeyError, TypeError) as exc:
         print(f"input error: {exc}", file=sys.stderr)
         return 2
-    errors = validate_registry(root, registry, catalog)
+    errors = validate_registry(root, registry, catalog, estate)
     if errors:
         for error in errors:
             print(f"FAIL: {error}", file=sys.stderr)
@@ -218,7 +250,7 @@ def main() -> int:
     print(
         f"PASS: {registry['registry_id']}@{registry['registry_version']} — "
         f"{len(registry['candidates'])} candidates, {len(registry['graphs'])} graphs, "
-        f"{len(catalog['entries'])} catalog entries"
+        f"{len(estate['units'])} classifier-estate units, {len(catalog['entries'])} catalog entries"
     )
     return 0
 

@@ -64,6 +64,7 @@ ACE may improve its own `SKILL.md` and package within an explicitly authorized c
 | Agent execution metrics | `docs/ops/AGENT-THROUGHPUT-METRICS.md` |
 | Complexity and observability | `docs/ops/AGENT-OBSERVABILITY-RESEARCH-MATRIX.md` |
 | Notation classes and rules | `docs/proposals/active/notation-sets/SIGLARY-STANDARD.md`, `CAVEMAN-MICRO-DENSE-V2.md` |
+| Siglary A2A skill | `.agents/skills/siglary-a2a/SKILL.md` |
 | Measured notation cost | `docs/proposals/active/notation-sets/SIGLARY-TOKEN-COST.md` and its JSON data |
 | Zipf / conditional vocabulary research | `docs/proposals/active/notation-sets/ITEMS.md`, NSE-009 through NSE-018, and linked `zipf_fork` |
 | Filesystem-memory research | `docs/icm/objects/knowledge/cost-of-remembering.md` |
@@ -282,6 +283,7 @@ When improving this skill:
 - `.agents/skills/skill-evaluation/SKILL.md`
 - `.agents/skills/context-relationship-graph/SKILL.md`
 - `.agents/skills/multivariate-doe/SKILL.md`
+- `.agents/skills/siglary-a2a/SKILL.md`
 - `docs/ops/CONTINUOUS-IMPROVEMENT-POLICY.md`
 - `docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md`
 - `docs/ops/AGENT-THROUGHPUT-METRICS.md`

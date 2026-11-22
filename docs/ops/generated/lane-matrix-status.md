@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-22T07:52:58Z)
+# Lane matrix status (2026-11-22T07:54:51Z)
 
-- Master: `ef103fdac8b6dd6e74d5062aca9cf6f1c8aa223a`
+- Master: `e09e9a369903d1cbd9103c7bdb72c94daf6bea3f`
 - Open PRs: **508**
 - Oldest: #47 (108.67d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -27,7 +27,7 @@
 | #4069 | 19.15 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
 | #4621 | 18.46 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
 | #4898 | 17.8 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
-| #5034 | 15.7 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
+| #5034 | 15.71 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
 | #5722 | 1.61 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted routes and bind local Do |
 | #5723 | 1.61 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted review relay and record  |
 | #5724 | 1.61 | EXTRACT | state:unknown, minesweeper-title | fix(jules): replace hosted PR handoff with receipt |
@@ -46,12 +46,12 @@
 | #1469 | 31.78 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
 | #1470 | 31.78 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
 | #1495 | 31.23 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
-| #1513 | 30.98 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
+| #1513 | 30.99 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 30.98 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
 | #1516 | 30.98 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
 | #1531 | 30.97 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
 | #1537 | 30.95 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
-| #1557 | 30.28 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
+| #1557 | 30.29 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 29.2 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
 | #1616 | 29.2 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 29.19 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |

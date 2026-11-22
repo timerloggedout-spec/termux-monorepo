@@ -1,11 +1,11 @@
 {
  "buckets": {
-  "live": 7,
+  "live": 8,
   "no_public_programme": 1,
   "not-established": 1,
   "pending": 6
  },
- "generated_at": "2026-11-16T18:09:42Z",
+ "generated_at": "2026-11-22T17:11:53Z",
  "items": [
   {
    "bucket": "live",
@@ -141,6 +141,15 @@
    "next_due": "2026-12-09",
    "open_gate": "programme verified, NOT enrolled - enrolment = main's go",
    "state_detail": "programme_verified_not_enrolled"
+  },
+  {
+   "bucket": "live",
+   "cadence": "weekly",
+   "id": "mermaidchart",
+   "last_verified": "2026-11-21",
+   "next_due": "2026-11-28",
+   "open_gate": "commission/visitor/cookie/payout terms NOT established - owner-supplied link only",
+   "state_detail": "active_link"
   }
  ],
  "reconciliation_note": "Feed of record = live 7 \u00b7 pending 6 \u00b7 not-established 1 \u00b7 no_public_programme 1 (hark own-state). Lane ships feed-verbatim; bucket ruling = Oversight/main.",

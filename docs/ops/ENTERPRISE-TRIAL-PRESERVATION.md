@@ -63,7 +63,7 @@ GitHub confirms name availability during creation. The proposed slug is `asastra
 6. Run the preservation verifier with `mode=transferred` and the baseline run ID.
 7. Recreate organization-level resources from the baseline inventory.
 
-GitHub repository transfers preserve issues, pull requests, wikis, stars, watchers, settings, repository webhooks, services, secrets, deploy keys, and Git history. GitHub Pages site URLs do not redirect. Package associations depend on the registry. The original owner becomes a collaborator, and existing collaborators remain.
+GitHub repository transfers preserve issues, pull requests, wikis, stars, watchers, settings, repository webhooks, services, secrets, deploy keys, and Git history. GitHub Pages site URLs retain their original address and require a separate URL and DNS update. Package associations depend on the registry. The original owner becomes a collaborator, and existing collaborators remain.
 
 Organization-level teams, membership, secrets, variables, webhooks, GitHub App installations, projects, and package ownership require separate reconciliation. The baseline workflow records metadata and names; secret values remain write-only and require their original source or operator re-entry.
 

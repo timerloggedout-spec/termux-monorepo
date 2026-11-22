@@ -1,0 +1,75 @@
+from scripts.provider_model_catalog_vultr_inspired import (
+    OUTPUT_SCHEMA,
+    normalize_incumbent,
+)
+
+
+def _incumbent(models):
+    return {
+        "schema": "provider-model-catalog/v5",
+        "observed_at": "2026-11-21T00:00:00Z",
+        "providers": ["fixture"],
+        "models": models,
+    }
+
+
+def test_vultr_inspired_projection_preserves_exact_prices_and_evidence():
+    result = normalize_incumbent(_incumbent([{
+        "provider": "fixture",
+        "id": "model-a",
+        "name": "Model A",
+        "pricing": {"prompt": "0.00000017", "completion": "0"},
+        "pricing_classification": "paid",
+        "context_length": 128000,
+        "max_output_tokens": 8192,
+        "input_modalities": ["text", "image"],
+        "output_modalities": ["text"],
+        "active": True,
+        "future_field": {"preserve": True},
+    }]))
+
+    assert result["schema"] == OUTPUT_SCHEMA
+    assert result["catalogue"] == "VultrInspired"
+    model = result["models"][0]
+    assert model["pricing"]["exact_decimal_strings"] == {
+        "prompt": "0.00000017",
+        "completion": "0",
+    }
+    assert model["limits"] == {"context_tokens": 128000, "output_tokens": 8192}
+    assert model["modalities"]["input"] == ["text", "image"]
+    assert model["lifecycle"]["readiness"] is True
+    assert model["extensions"]["future_field"] == {"preserve": True}
+    assert model["incumbent_record"]["provider"] == "fixture"
+
+
+def test_vultr_inspired_projection_isolates_invalid_rows_and_marks_float_prices():
+    result = normalize_incumbent(_incumbent([
+        None,
+        {"provider": "fixture", "id": "model-b", "pricing": {"prompt": 0.1}},
+        {"provider": "fixture", "id": "model-c", "pricing": {"prompt": "0.2"}},
+    ]))
+
+    assert [row["id"] for row in result["models"]] == ["model-b", "model-c"]
+    assert result["models"][0]["pricing"]["exact_decimal_strings"] == {}
+    assert result["models"][1]["pricing"]["exact_decimal_strings"] == {"prompt": "0.2"}
+    assert {issue["code"] for issue in result["issues"]} == {
+        "invalid_model_record",
+        "pricing_value_not_exact_decimal",
+    }
+
+
+def test_vultr_inspired_projection_has_no_compute_or_provider_side_effects():
+    result = normalize_incumbent(_incumbent([]))
+    assert result["execution"] == {
+        "mode": "offline_projection",
+        "network_requests": 0,
+        "credentials_required": False,
+        "inference_calls": 0,
+    }
+
+
+def test_vultr_inspired_projection_requires_incumbent_schema():
+    import pytest
+
+    with pytest.raises(ValueError, match="unsupported_incumbent_schema"):
+        normalize_incumbent({"schema": "unknown"})

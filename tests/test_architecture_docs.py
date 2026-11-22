@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import importlib.util
 import subprocess
 import tempfile
@@ -53,6 +54,32 @@ class ArchitectureDocumentationTests(unittest.TestCase):
             self.assertIn("docs/ops/diagrams/ops.mmd", paths)
             self.assertEqual(len(first["source_set_sha256"]), 64)
             self.assertEqual(len(first["diagrams"]), 2)
+
+    def test_manifest_records_hashes_and_excludes_generated_projections(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.make_root(root)
+            manifest_path = root / "docs/architecture/generated/architecture-manifest.json"
+            manifest_path.write_text("{}\\n", encoding="utf-8")
+            manifest = architecture_docs.build_manifest(root)
+            source = root / "docs/architecture/flows/sample.mmd"
+            render = root / "docs/architecture/generated/flows/sample.svg"
+            diagram = next(
+                item for item in manifest["diagrams"]
+                if item["source"] == "docs/architecture/flows/sample.mmd"
+            )
+            self.assertEqual(
+                diagram["source_sha256"],
+                hashlib.sha256(source.read_bytes()).hexdigest(),
+            )
+            self.assertEqual(
+                diagram["render_sha256"],
+                hashlib.sha256(render.read_bytes()).hexdigest(),
+            )
+            source_paths = {item["path"] for item in manifest["sources"]}
+            self.assertFalse(
+                any(path.startswith("docs/architecture/generated/") for path in source_paths)
+            )
 
     def test_manifest_rejects_unpaired_flow_source(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

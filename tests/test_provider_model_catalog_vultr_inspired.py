@@ -58,7 +58,7 @@ def test_vultr_inspired_projection_isolates_invalid_rows_and_marks_float_prices(
     }
 
 
-def test_vultr_inspired_projection_has_no_compute_or_provider_side_effects():
+def test_vultr_inspired_projection_declares_offline_execution_boundary():
     result = normalize_incumbent(_incumbent([]))
     assert result["execution"] == {
         "mode": "offline_projection",

@@ -1,26 +1,23 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-22T20:36:16Z",
+ "generated_at": "2026-11-22T20:58:53Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 3,
+   "queued": 2,
    "in_progress": 1,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "repo gate": 1,
     "PR scope guard": 2
    }
   },
   "2": {
    "tier": 2,
-   "queued": 1,
+   "queued": 0,
    "in_progress": 1,
-   "oldest_queued_at": "2026-11-22T20:35:44Z",
-   "by_workflow_queued": {
-    "tribute-dashboard-deploy": 1
-   }
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "3": {
    "tier": 3,
@@ -31,28 +28,20 @@
   },
   "4": {
    "tier": 4,
-   "queued": 13,
-   "in_progress": 14,
+   "queued": 5,
+   "in_progress": 10,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "Foresight Evidence Spine": 1,
-    "Agent Readability Source Contract": 1,
-    "quota-allocation-planner": 1,
-    "que-cadence-kick": 1,
-    "graph-matrix-probe": 1,
-    "quota-served-probe": 1,
-    "DO Statement Style": 2,
-    "termux smoke": 1,
-    "lane events recorder": 1,
-    "Agent PR Jules Handoff": 1,
+    "Agent PR Jules Handoff": 2,
     "PR Change Effectiveness Ledger": 1,
-    "Advisory GitHub Actions lint": 1
+    "Advisory GitHub Actions lint": 1,
+    "DO Statement Style": 1
    }
   }
  },
  "totals": {
-  "queued": 17,
-  "in_progress": 16
+  "queued": 7,
+  "in_progress": 12
  },
  "wedged_ancient": [
   {
@@ -210,13 +199,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 4,
-   "2": 2,
+   "1": 3,
+   "2": 1,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 6,
-  "default_t4": 27,
+  "explicit_total": 4,
+  "default_t4": 15,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

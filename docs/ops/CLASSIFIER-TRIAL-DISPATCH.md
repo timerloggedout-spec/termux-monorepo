@@ -84,8 +84,8 @@ APIs from Actions (runs 40504965897–40506393011). Established state:
 - **First completed trial — acceptance condition met.** Run
   40509162104 (2026-10-27, after PR #1782 set the verified defaults)
   completed successfully: producer `liquid/lfm-2.5-2.6b:free`, judge
-  `openrouter/free`; Mev → Jev → Kev → Laya all executed and Laya
-  ranked a winner (2,353-byte trial record). The route remains
+  `openrouter/free`; all four local role stages completed, and the
+  Laya reducer ranked a winner (2,353-byte trial record). The route remains
   rate-limit-prone, so a failed future dispatch should be read against
   fresh diagnose evidence before any retry.
 
@@ -102,8 +102,8 @@ ranked. Test execution is pending CI.
 
 ## System One decide stage
 
-`observatory/decide.py` + `llm/adapters/systemone.py` connect the
-quartet to the System One ecosystem (proposal
+`observatory/decide.py` + `llm/adapters/systemone.py` connect a trial
+result to the System One typed-decision lane (proposal
 `system-one-classifier-census`, catalog
 `docs/ops/SYSTEM-ONE-CATALOG.md`): any TypeSafe-compatible decision
 server (self-hosted Kev, simple-jev, Ollaya, …) can verify a text.

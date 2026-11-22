@@ -635,7 +635,8 @@
             "implementation_id",
             "version",
             "source_ref",
-            "status"
+            "status",
+            "cli_source_ref"
           ],
           "properties": {
             "implementation_id": {
@@ -652,6 +653,10 @@
             },
             "status": {
               "const": "executable_component"
+            },
+            "cli_source_ref": {
+              "type": "string",
+              "minLength": 1
             }
           }
         }

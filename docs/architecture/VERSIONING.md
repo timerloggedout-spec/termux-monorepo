@@ -69,6 +69,18 @@ The generator writes docs/architecture/generated/architecture-manifest.json with
 
 The manifest contains deterministic source and render metadata. Git commit SHA, workflow run ID, artifact identity, and wall-clock timestamps remain in the GitHub Actions execution record and uploaded validation artifact. Identical source and render bytes produce identical manifest bytes.
 
+## Contributor commands
+
+After rendering the paired Mermaid sources, run the architecture manifest tool from the repository root:
+
+```bash
+python3 scripts/ci/architecture_docs.py --write
+python3 scripts/ci/architecture_docs.py --check
+python3 scripts/ci/architecture_docs.py --write --check-version-from origin/master
+```
+
+The pull-request workflow runs the base-diff version gate and publishes an immutable validation artifact. The trusted master workflow regenerates and commits the manifest and rendered projections.
+
 ## Automated lifecycle
 
 | Event | Action | Authority |

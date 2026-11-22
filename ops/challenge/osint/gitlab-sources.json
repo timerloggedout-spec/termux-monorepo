@@ -15,7 +15,7 @@
       "url": "https://gitlab.com/gitlab-ai-hackathon",
       "kind": "gitlab_group",
       "relation": "root_group",
-      "observation": "Public root group ID 121124982; first-level inventory includes six subgroups and three direct projects, with child counts captured in this source registry.",
+      "observation": "Public root group ID 121124982; first-level inventory includes seven subgroups and three direct projects.",
       "coverage": "observed",
       "fetched_at": "2026-11-22",
       "platform_id": "121124982"
@@ -36,10 +36,11 @@
       "kind": "gitlab_subgroup",
       "relation": "child_of:gitlab-ai-hackathon-root",
       "platform_id": "132494471",
-      "observation": "Public subgroup API returned 312 public project workspaces across four pages and zero child subgroups.",
+      "observation": "Sibling subgroup created 2026-05-18; archived=false; 312 public projects and zero child subgroups. Project descriptions reference Transcend showcase workspaces; exact event-cycle mapping remains NOT_ESTABLISHED.",
       "coverage": "partial_listing",
       "fetched_at": "2026-11-22",
-      "project_catalog_snapshot": "ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json"
+      "project_catalog_snapshot": "ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json",
+      "event_cycle_mapping": "NOT_ESTABLISHED"
     },
     {
       "id": "gitlab-project-templates-subgroup",
@@ -116,7 +117,7 @@
       "url": "https://gitlab-transcend.devpost.com/",
       "kind": "devpost_event",
       "relation": "event:gitlab-transcend-life-after-code-2026",
-      "observation": "Closed; USD 45000 prize pool; submissions ended 2026-10-27T13:00:00Z.",
+      "observation": "Life After Code closed; public Devpost page displays 3,313 participants and USD 45,000 prize pool.",
       "coverage": "connector_complete",
       "fetched_at": "2026-11-22T10:00:14Z"
     },
@@ -142,7 +143,7 @@
       "url": "https://contributors.gitlab.com/docs/hackathon-rules",
       "kind": "official_rules",
       "relation": "program:gitlab-community-hackathon",
-      "observation": "Current terms version 2026-10-v2; issue/MR caps, assignment-before-MR, AI contribution responsibility, labeling restrictions, and scoring/merge-window rules observed.",
+      "observation": "Live public rules page returned terms version 2026-10-v2; search-index copy returned 2026-10-v1. Preserve version discrepancy; live page was fetched 2026-11-22.",
       "coverage": "observed",
       "fetched_at": "2026-11-22"
     },
@@ -213,10 +214,10 @@
     },
     {
       "id": "gitlab-community-hackathon-onboarding",
-      "url": "https://contributors.gitlab.com/#start",
+      "url": "https://contributors.gitlab.com/start",
       "kind": "onboarding",
       "relation": "event:gitlab-community-hackathon-2027-jan",
-      "observation": "Start onboarding; page says a personal onboarding issue is sent within five minutes.",
+      "observation": "Contributor Platform onboarding entry; current event page describes a personal onboarding issue delivered by email within five minutes.",
       "coverage": "observed",
       "fetched_at": "2026-11-22"
     },
@@ -251,11 +252,14 @@
       "url": "https://gitlab.com/api/v4/groups/132494471/projects?include_subgroups=true&per_page=100",
       "kind": "group_project_catalog",
       "relation": "child_projects_of:gitlab-transcend-subgroup",
-      "observation": "Four public API pages returned 312 unique public projects; metadata snapshot stored at ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json.",
+      "observation": "Four public API pages returned 312 unique public projects; all are public and active (archived=false). Exact event-cycle mapping remains NOT_ESTABLISHED.",
       "coverage": "full_listing",
       "fetched_at": "2026-11-22",
       "pages": 4,
-      "page_size": 100
+      "page_size": 100,
+      "project_count": 312,
+      "archived_count": 0,
+      "snapshot_path": "ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json"
     },
     {
       "id": "gitlab-transcend-sample-work-item",
@@ -395,6 +399,65 @@
       "platform_id": "77782807",
       "observation": "Public CI component test project in the root group's Test subgroup.",
       "coverage": "observed",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-hackathon-events-index",
+      "url": "https://contributors.gitlab.com/hackathon-events",
+      "kind": "program_index",
+      "relation": "program:gitlab-hackathon-family",
+      "observation": "Official index distinguishes the Transcend cash-prize Devpost event from the Community Hackathon swag-credit contribution event.",
+      "coverage": "observed",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-transcend-october-2026-group",
+      "url": "https://gitlab.com/groups/gitlab-ai-hackathon/transcend-october-2026",
+      "kind": "gitlab_subgroup",
+      "relation": "child_of:gitlab-ai-hackathon-root",
+      "platform_id": "142538134",
+      "parent_group_id": "121124982",
+      "archived": true,
+      "created_at": "2026-09-17T09:11:36.776Z",
+      "child_subgroup_count": 1273,
+      "child_project_count": 1820,
+      "observation": "Archived October 2026 showcase group. Owner-published boundary: keep observability disabled at group scope and keep secrets out of group-level settings. Participant onboarding allows optional observability within each participant subgroup.",
+      "coverage": "full_listing",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-transcend-october-2026-project-catalog",
+      "url": "https://gitlab.com/api/v4/groups/142538134/projects?include_subgroups=true&per_page=100",
+      "kind": "group_project_catalog",
+      "relation": "child_projects_of:gitlab-transcend-october-2026-group",
+      "observation": "19 public API pages returned 1,820 unique projects; all 1,820 are public and archived.",
+      "coverage": "full_listing",
+      "page_size": 100,
+      "pages": 19,
+      "project_count": 1820,
+      "snapshot_path": "ops/challenge/osint/gitlab-transcend-october-2026-projects-2026-11-22.ndjson",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-transcend-october-2026-subgroup-catalog",
+      "url": "https://gitlab.com/api/v4/groups/142538134/subgroups?per_page=100",
+      "kind": "group_subgroup_catalog",
+      "relation": "child_subgroups_of:gitlab-transcend-october-2026-group",
+      "observation": "13 public API pages returned 1,273 unique participant subgroups; all are public and archived.",
+      "coverage": "full_listing",
+      "page_size": 100,
+      "pages": 13,
+      "subgroup_count": 1273,
+      "snapshot_path": "ops/challenge/osint/gitlab-transcend-october-2026-subgroups-2026-11-22.ndjson",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-transcend-october-2026-sample-work-item",
+      "url": "https://gitlab.com/gitlab-ai-hackathon/transcend-october-2026/621485/showcase/-/work_items/1",
+      "kind": "sample_workspace_onboarding",
+      "relation": "group:gitlab-transcend-october-2026-group",
+      "observation": "Archived sample issue describes participant subgroup/project provisioning, the Transcend guide, #transcend-hackathon, office hours, and optional per-participant observability.",
+      "coverage": "observed_read_only",
       "fetched_at": "2026-11-22"
     }
   ]

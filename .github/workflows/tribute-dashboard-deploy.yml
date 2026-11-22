@@ -160,8 +160,7 @@ jobs:
             echo "::error::Architecture Explorer has no Mermaid sources to render."
             exit 1
           fi
-          python3 scripts/ci/build_architecture_portal.py --output _site/architecture --verify-rendered
-          rm -rf _site/architecture/render-inputs
+          python3 scripts/ci/build_architecture_portal.py --output _site/architecture --verify-rendered --finalize
           python3 -m unittest discover -s tests -p test_build_architecture_portal.py -v
           python3 scripts/ci/verify_agent_readability_surfaces.py
       - name: Opt gh-pages out of Vercel Git deployments

@@ -19,6 +19,8 @@ def test_classifiers_page():
     assert "classifier_graph_registry.json" in html
     assert "model candidates" in html
     assert "awaiting qualification" in html
+    assert "Local Mev/Jev/Kev/Laya lateral screen" in html
+    assert "independent role arms" in html
     assert "Tournament protocol" in html
     assert "Matched implementation comparator" in html
     assert "implementation_competition.py" in html

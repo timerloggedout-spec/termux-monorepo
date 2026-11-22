@@ -236,6 +236,19 @@ def verify_rendered(output: Path) -> list[str]:
     return missing
 
 
+def finalize_bundle(output: Path) -> None:
+    """Remove build-only render inputs and their private catalog pointers."""
+    catalog_path = output / "catalog.json"
+    catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+    for item in catalog.get("items", []):
+        item.pop("render_input_path", None)
+    catalog_path.write_text(
+        json.dumps(catalog, indent=2, sort_keys=True, ensure_ascii=False) + "\\n",
+        encoding="utf-8",
+    )
+    shutil.rmtree(output / "render-inputs", ignore_errors=True)
+
+
 def main(argv: Iterable[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=ROOT)
@@ -243,6 +256,7 @@ def main(argv: Iterable[str] | None = None) -> int:
     parser.add_argument("--source-ref", default=os.environ.get("GITHUB_REF_NAME", "master"))
     parser.add_argument("--source-sha", default=os.environ.get("GITHUB_SHA", "unknown"))
     parser.add_argument("--verify-rendered", action="store_true")
+    parser.add_argument("--finalize", action="store_true", help="remove build-only render inputs after successful SVG verification")
     args = parser.parse_args(argv)
 
     if args.verify_rendered:
@@ -253,6 +267,9 @@ def main(argv: Iterable[str] | None = None) -> int:
                 print(f" - missing or invalid: {path}", file=sys.stderr)
             return 1
         print("Architecture Explorer SVG render verification: PASS")
+        if args.finalize:
+            finalize_bundle(args.output)
+            print("Architecture Explorer bundle finalized")
         return 0
 
     catalog = build_portal(args.root, args.output, args.source_ref, args.source_sha)

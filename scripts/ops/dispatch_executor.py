@@ -102,9 +102,9 @@ def _sha256_text(text: str) -> str:
 def eligible_filings(filings: list[dict]) -> list[dict]:
     """Admitted + queued + unclaimed, oldest first.
 
-    `deferred-by-tier` filings never carry swarm-admitted in the
-    admitted snapshot, so they are excluded by the label test itself;
-    the executor never re-evaluates them.
+    Deferred and QDesk seat-queue filings are explicitly excluded,
+    including legacy mixed-label states. A stale `swarm-admitted` label
+    must never override `deferred-by-tier` or `project-task`.
     """
     out = []
     for f in filings:
@@ -112,6 +112,9 @@ def eligible_filings(filings: list[dict]) -> list[dict]:
         if "swarm-admitted" not in labels:
             continue
         if "dispatch-queued" not in labels:
+            continue
+        # Fail closed on stale/mixed admission labels and QDesk-owned work.
+        if "deferred-by-tier" in labels or "project-task" in labels:
             continue
         if "dispatch-claimed" in labels:
             continue

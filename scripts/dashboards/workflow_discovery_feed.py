@@ -135,11 +135,87 @@ def inspect_workflow(path: Path) -> dict[str, Any]:
     }
 
 
+
+def load_job_observations(raw_root: Path) -> dict[str, Any] | None:
+    """Aggregate the latest committed raw run/job snapshot by workflow path."""
+    run_files = sorted((raw_root / "actions-runs").glob("runs-*.json"))
+    if not run_files:
+        return None
+    run_file = run_files[-1]
+    run_wrapper = _read_json(run_file)
+    run_data = run_wrapper.get("data") or {}
+    runs = run_data.get("workflow_runs") or []
+    stamp = run_file.stem.removeprefix("runs-")
+    job_dir = raw_root / "actions-jobs" / stamp
+    if not job_dir.is_dir():
+        return None
+
+    run_paths: dict[int, str] = {}
+    for run in runs:
+        try:
+            run_id = int(run.get("id"))
+        except (TypeError, ValueError):
+            continue
+        workflow_path = run.get("path")
+        if workflow_path:
+            run_paths[run_id] = str(workflow_path)
+
+    by_workflow: dict[str, dict[str, Any]] = {}
+    for job_file in sorted(job_dir.glob("jobs-*.json")):
+        wrapper = _read_json(job_file)
+        meta = wrapper.get("meta") or {}
+        try:
+            run_id = int(meta.get("run_id") or job_file.stem.removeprefix("jobs-"))
+        except (TypeError, ValueError):
+            continue
+        workflow_path = run_paths.get(run_id)
+        if not workflow_path:
+            continue
+        payload = wrapper.get("data") or {}
+        jobs = payload.get("jobs") or []
+        bucket = by_workflow.setdefault(workflow_path, {
+            "state": "observed",
+            "runs_with_job_data": 0,
+            "job_count": 0,
+            "jobs_with_duration": 0,
+            "job_failures": 0,
+            "job_runtime_ms": 0,
+        })
+        bucket["runs_with_job_data"] += 1
+        for job in jobs:
+            if not isinstance(job, dict):
+                continue
+            bucket["job_count"] += 1
+            conclusion = str(job.get("conclusion") or "").lower()
+            if conclusion in {"failure", "timed_out"}:
+                bucket["job_failures"] += 1
+            start, end = _stamp(job.get("started_at")), _stamp(job.get("completed_at"))
+            if start and end and end >= start:
+                bucket["jobs_with_duration"] += 1
+                bucket["job_runtime_ms"] += int((end - start).total_seconds() * 1000)
+
+    for bucket in by_workflow.values():
+        bucket["job_runtime_minutes"] = round(bucket["job_runtime_ms"] / 60000, 3)
+        del bucket["job_runtime_ms"]
+    return {
+        "by_workflow": by_workflow,
+        "source": str(job_dir.relative_to(ROOT)),
+        "run_snapshot": str(run_file.relative_to(ROOT)),
+        "run_count": len(runs),
+        "workflow_count": len(by_workflow),
+        "job_count": sum(v["job_count"] for v in by_workflow.values()),
+        "jobs_with_duration": sum(v["jobs_with_duration"] for v in by_workflow.values()),
+        "job_failures": sum(v["job_failures"] for v in by_workflow.values()),
+        "job_runtime_minutes": round(sum(v["job_runtime_minutes"] for v in by_workflow.values()), 3),
+    }
+
+
 def build_feed(
     catalog: dict[str, Any],
     observations: dict[str, Any] | None,
     *,
     workflow_root: Path,
+    job_data: dict[str, Any] | None = None,
     generated_at: str | None = None,
 ) -> dict[str, Any]:
     now = _stamp(generated_at) or datetime.now(timezone.utc)
@@ -239,6 +315,7 @@ def build_feed(
                     "state": "resolved" if target_job in known_jobs else "unresolved",
                 })
 
+        job_observation = (job_data or {}).get("by_workflow", {}).get(path)
         workflow_rows.append({
             "path": path,
             "name": row.get("name") or Path(path).stem,
@@ -248,6 +325,7 @@ def build_feed(
             "schedules": schedules,
             "jobs": list(row.get("jobs") or []),
             "run_observation": run_summary,
+            "job_observation": job_observation or {"state": "unobserved"},
         })
 
     observation_stamp = _stamp((observations or {}).get("read_at"))
@@ -265,6 +343,8 @@ def build_feed(
         gaps.append(f"{len(unresolved)} declared nested references are unresolved or ambiguous.")
     if len(observed) < len(records):
         gaps.append(f"Run sample covers {len(observed)} workflows; inventory contains {len(records)} definitions.")
+    if job_data is None:
+        gaps.append("Job-duration sample is unavailable; sampled job runtime remains UNKNOWN.")
     return {
         "schema": SCHEMA,
         "surface": "actions-workflow-discovery",
@@ -276,6 +356,8 @@ def build_feed(
             "observations_read_at": (observations or {}).get("read_at"),
             "sampling": (observations or {}).get("budget"),
             "workflow_source": ".github/workflows/",
+            "job_snapshot": job_data.get("source") if job_data else None,
+            "job_run_snapshot": job_data.get("run_snapshot") if job_data else None,
         },
         "summary": {
             "workflow_definitions": len(records),
@@ -287,6 +369,12 @@ def build_feed(
             "workflow_run_edges": len(workflow_run_edges),
             "reusable_workflow_edges": len(reusable_edges),
             "job_dependency_edges": len(job_edges),
+            "job_observed_workflows": job_data.get("workflow_count") if job_data else None,
+            "jobs_sampled": job_data.get("job_count") if job_data else None,
+            "jobs_with_duration": job_data.get("jobs_with_duration") if job_data else None,
+            "job_failures": job_data.get("job_failures") if job_data else None,
+            "job_runtime_minutes": job_data.get("job_runtime_minutes") if job_data else None,
+            "job_sample_runs": job_data.get("run_count") if job_data else None,
             "nested_edges": len(edges),
             "observation_age_hours": round(age_hours, 2) if age_hours is not None else None,
             "observation_state": "stale" if stale else "fresh",
@@ -318,6 +406,7 @@ def main() -> int:
     parser.add_argument("--observations", type=Path, default=OBSERVATIONS)
     parser.add_argument("--out", type=Path, default=OUTPUT)
     parser.add_argument("--workflow-root", type=Path, default=ROOT / ".github/workflows")
+    parser.add_argument("--raw-root", type=Path, default=ROOT / "ops/github-telemetry/raw")
     args = parser.parse_args()
 
     if args.catalog:
@@ -326,7 +415,8 @@ def main() -> int:
         from scripts.ci.automation_docs import build_catalog
         catalog = build_catalog(ROOT)
     observations = _read_json(args.observations) if args.observations.is_file() else None
-    feed = build_feed(catalog, observations, workflow_root=args.workflow_root)
+    job_data = load_job_observations(args.raw_root)
+    feed = build_feed(catalog, observations, workflow_root=args.workflow_root, job_data=job_data)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(feed, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(

@@ -79,7 +79,7 @@ Keep the archived `transcend-october-2026` workspace corpus as the October 2026 
 - October 2026 edition: **2026-10-06 – 2026-10-12 UTC**; qualifying MRs merged within 31 days (cutoff Nov 12). The current page reports 76 prize winners and 636 merged MRs for that edition.
 - **Next edition: January 21–28, 2027**. The page says the hackathon runs in UTC and displays a live countdown to January 21; page text supplies date-only boundaries; exact start/end clock times remain NOT_ESTABLISHED.
 - Reward model: first place 200 Contributor Success store credits; second 150; third 100; 50 credits for each participant with a qualifying merged MR. Cash component: NONE_LISTED.
-- Current rules version: **2026-10-v2**. Requirements include maximum 20 MRs and 20 issues per day; issue assignment before MR; AI tools allowed with contributor review/testing responsibility; scripted/automated/programmatic labeling is prohibited; one typo-fix MR per project; and first-time-contributor quick-win restrictions.
+- Current live rules version: **2026-10-v2**; the search-index copy returned **2026-10-v1**. Preserve the version discrepancy. Requirements include maximum 20 MRs and 20 issues per day; issue assignment before MR; AI tools allowed with contributor review/testing responsibility; scripted/automated/programmatic labeling is prohibited; one typo-fix MR per project; and first-time-contributor quick-win restrictions.
 - This contribution/leaderboard program is distinct from the Devpost AI-agent competition. January 2027 is **upcoming**; the owner's onboarding/registration and issue assignment remain NOT_ESTABLISHED.
 
 ## 3. Discord and onboarding sources

@@ -40,6 +40,19 @@ The change author proposes the level. Reviewers verify the classification agains
 
 The CI version gate compares the pull-request head with its base ref. Semantic source changes require both VERSION and CHANGELOG.md in that same change, and the new version must be greater than the base version. The first governed baseline starts at 1.0.0.
 
+## Bounded feedback loop
+
+The architecture refresh uses the Loopy six-step contract:
+
+1. Observe the current source tree, base SHA, version, manifest, and diagram fingerprints.
+2. Choose the bounded source/diagram scope and semantic version increment.
+3. Act on canonical documents, paired Mermaid sources, VERSION, and CHANGELOG.
+4. Verify tests, the base-diff gate, diagram renders, and manifest consistency.
+5. Record commit, run, artifact, fingerprints, outcome, and remaining work.
+6. Repeat only when fresh feedback can change the next action; otherwise stop with a named terminal state.
+
+The loop's terminal states are success, clean no-op, blocked, approval-required, exhausted, and stagnated. Failed checks remain recorded observations and enter diagnosis before another attempt.
+
 ## Deterministic manifest
 
 Run the following commands:

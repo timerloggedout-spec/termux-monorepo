@@ -10,7 +10,7 @@ sys.path.insert(0, str(ROOT / "deepcli"))
 from deepcli.observatory.implementation_competition import compare_implementations
 
 
-def receipt(implementation, version, task, quality, latency, *, accepted=True):
+def receipt(implementation, version, task, quality, latency, *, cost, accepted=True):
     return {
         "implementation_id": implementation,
         "implementation_version": version,
@@ -32,7 +32,7 @@ def receipt(implementation, version, task, quality, latency, *, accepted=True):
         "metrics": {
             "task_quality": quality,
             "latency_ms": latency,
-            "compute_cost": None,
+            "compute_cost": cost,
         },
     }
 
@@ -41,8 +41,8 @@ class ImplementationCompetitionTests(unittest.TestCase):
     def setUp(self):
         self.receipts = []
         for task, quality, latency in [("a", .7, 120), ("b", .8, 100), ("c", .6, 140)]:
-            self.receipts.append(receipt("incumbent", "1.0.0", task, quality, latency))
-            self.receipts.append(receipt("challenger", "1.1.0", task, quality + .1, latency - 10))
+            self.receipts.append(receipt("incumbent", "1.0.0", task, quality, latency, cost=10))
+            self.receipts.append(receipt("challenger", "1.1.0", task, quality + .1, latency - 10, cost=9))
 
     def test_matched_comparison_reports_paired_effects_and_uncertainty(self):
         report = compare_implementations(self.receipts)
@@ -54,10 +54,14 @@ class ImplementationCompetitionTests(unittest.TestCase):
 
     def test_missing_metrics_remain_null_and_reduce_sample_count(self):
         self.receipts[0]["metrics"]["task_quality"] = None
+        for item in self.receipts:
+            item["metrics"]["compute_cost"] = None
         report = compare_implementations(self.receipts)
         self.assertEqual(report["metrics"]["task_quality"]["sample_count"], 2)
         self.assertEqual(report["metrics"]["compute_cost"]["sample_count"], 0)
+        self.assertIn("compute_cost", report["unobserved_metrics"])
         self.assertIsNone(report["metrics"]["compute_cost"]["improvement_mean"])
+        self.assertEqual(report["recommendation"], "pareto_tradeoff_or_insufficient_evidence")
 
     def test_hard_gate_failure_blocks_recommendation(self):
         self.receipts[-1]["hard_gates"]["security_and_policy"] = False

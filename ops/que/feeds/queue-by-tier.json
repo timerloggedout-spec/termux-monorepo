@@ -1,26 +1,24 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-22T15:24:47Z",
+ "generated_at": "2026-11-22T17:28:32Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 4,
+   "queued": 3,
    "in_progress": 1,
-   "oldest_queued_at": "2026-11-22T15:23:25Z",
+   "oldest_queued_at": "2026-11-22T17:27:55Z",
    "by_workflow_queued": {
-    "repo gate": 1,
-    "PR scope guard": 3
+    "PR scope guard": 2,
+    "repo gate": 1
    }
   },
   "2": {
    "tier": 2,
-   "queued": 1,
-   "in_progress": 1,
-   "oldest_queued_at": "2026-11-22T15:22:52Z",
-   "by_workflow_queued": {
-    "pages build and deployment": 1
-   }
+   "queued": 0,
+   "in_progress": 0,
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "3": {
    "tier": 3,
@@ -31,54 +29,54 @@
   },
   "4": {
    "tier": 4,
-   "queued": 93,
-   "in_progress": 19,
-   "oldest_queued_at": "2026-11-22T15:21:46Z",
+   "queued": 92,
+   "in_progress": 13,
+   "oldest_queued_at": "2026-11-22T17:26:11Z",
    "by_workflow_queued": {
-    "n8n SHE bridge": 3,
-    "Agent Throughput Evidence": 27,
-    "DO Statement Style": 3,
+    "Agent Throughput Evidence": 26,
+    "lane events recorder": 18,
+    "termux smoke": 1,
+    "Repository development evaluation": 1,
+    "CellCog review": 1,
+    "DeepSeek CI \u2013 Agentic Automation": 1,
+    "Sweep Accountability": 2,
     "Lane matrix event-driven inventory": 1,
-    "Sweep Accountability": 3,
-    "DeepSeek CI \u2013 Agentic Automation": 2,
-    "termux smoke": 2,
-    "Agent PR Jules Handoff": 2,
-    "Audit Cycle \u2014 Single PR Feed-Forward": 2,
-    "Agent Readability Source Contract": 1,
-    "Action Effectiveness Ledger": 3,
-    "Repository development evaluation": 2,
-    "archwiz dangle check": 1,
-    "lane events recorder": 23,
-    "PR production ledger": 3,
-    "CellCog review": 2,
-    "Context Relationship + Lead/Lag Audit": 3,
-    "PR evidence evaluation": 2,
-    "Peer review orchestrator": 2,
     "PR Change Effectiveness Ledger": 1,
     "RECON INTEL discovery": 1,
+    "Agent PR Jules Handoff": 1,
+    "archwiz dangle check": 1,
+    "Agent Readability Source Contract": 1,
+    "Action Effectiveness Ledger": 2,
+    "DO Statement Style": 2,
+    "Peer review orchestrator": 1,
+    "PR production ledger": 1,
     "delphi-rfp-feed-collect": 1,
-    "Issue Comment Router \u2014 modular fan-out reduction": 1,
-    "Workflow Surface Policy": 1,
-    "telemetry-ingest": 1
+    "Issue Comment Router \u2014 modular fan-out reduction": 12,
+    "Context Relationship + Lead/Lag Audit": 12,
+    "delphi-ledger-feed-collect": 1,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
+    "Gemini review after peers": 1,
+    "n8n SHE bridge": 1,
+    "graph-matrix-census": 1
    }
   }
  },
  "totals": {
-  "queued": 98,
-  "in_progress": 21
+  "queued": 95,
+  "in_progress": 14
  },
  "wedged_ancient": [],
  "wedged_excluded_from_counts": true,
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 5,
-   "2": 2,
+   "1": 4,
+   "2": 0,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 7,
-  "default_t4": 112,
+  "explicit_total": 4,
+  "default_t4": 105,
   "unmatched": 0,
   "ancient_excluded": 0,
   "operator_excluded": 0

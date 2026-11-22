@@ -11,7 +11,7 @@ Capture publicly observable Antinuous product patterns and adapt useful ideas to
 
 The target is an original **DoE Tournament Operating System** with a **Self-Improvement Engine (SIE)**. The primary competition is between versioned tournament implementations. The 70+ classifier population is a capability pool used to discover individual strengths, complementary combinations and effective routing graphs. SIE converts validated evidence into bounded challenger versions, matched experiments and gated promotion.
 
-This is an architectural reference. It is not an implementation claim, an Antinuous SDK, a vendor integration, or a reproduction of proprietary source code.
+This document defines an original architectural adaptation for the monorepo. It provides a research-backed design reference; implementation, SDK, vendor integration and proprietary-source reproduction remain separate scopes.
 
 ## Source material
 
@@ -92,7 +92,7 @@ Use a **hybrid control plane**:
 7. Pareto-frontier and constrained utility selection for multi-objective promotion.
 8. Adapter ports for Termux, GitHub Actions, containers, MCP/A2A peers and optional cloud compute.
 
-No external product owns canonical state. No single scalar score overrides correctness, security, reproducibility or explicit acceptance.
+Keep canonical state inside the monorepo. Apply correctness, security, reproducibility and explicit acceptance as hard gates before scalar ranking.
 
 ## Operating principles
 
@@ -100,9 +100,9 @@ No external product owns canonical state. No single scalar score overrides corre
 - Preserve immutable run manifests and append-only observations.
 - Use matched cohorts and randomized assignment where feasible.
 - Keep failed, cancelled, timed-out and incomplete runs distinct.
-- Treat missing measurements as unknown/null, never synthetic zero.
+- Represent missing measurements as unknown/null and preserve them throughout reduction.
 - Attribute provider, model, agent, manager, adapter and GitHub actor separately.
-- Use ATES/WTCV as throughput observations, never standalone quality or merge gates.
+- Use ATES/WTCV as throughput observations alongside quality, acceptance, reproducibility and safety gates.
 - Promote only from reproducible evidence and explicit dual-gate/task-outcome policy.
 - Keep secrets out of source, prompts, traces, receipts and artifacts.
 - Support offline-first operation and bounded compute on Android/Termux.
@@ -119,7 +119,7 @@ Repository owner: timerloggedout-spec/termux-monorepo
 Research snapshot: 2026-11-22
 
 
-The canonical classifier inventory is `config/system_one_catalog.json`, documented in `docs/ops/SYSTEM-ONE-CATALOG.md`. Keep role contract, local implementation, external candidate and protocol adapter as distinct identities. The System One adapter supports typed decisions; it is not a generic text-generation adapter.
+The canonical classifier inventory is `config/system_one_catalog.json`, documented in `docs/ops/SYSTEM-ONE-CATALOG.md`. Keep role contract, local implementation, external candidate and protocol adapter as distinct identities. The System One adapter implements typed decisions; generic text generation and chat judging require their own adapters.
 
 | scripts/ci/classifier_candidate_admission.py | deterministic evidence-aware candidate admission report |
 | scripts/ci/test_classifier_candidate_admission.py | admission gate regression tests |

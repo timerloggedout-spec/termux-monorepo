@@ -73,3 +73,19 @@ def test_vultr_inspired_projection_requires_incumbent_schema():
 
     with pytest.raises(ValueError, match="unsupported_incumbent_schema"):
         normalize_incumbent({"schema": "unknown"})
+
+
+def test_vultr_inspired_cli_writes_local_projection(tmp_path):
+    import json
+    from scripts import provider_model_catalog_vultr_inspired as adapter
+
+    source = tmp_path / "incumbent.json"
+    target = tmp_path / "vultr-inspired.json"
+    source.write_text(json.dumps(_incumbent([
+        {"provider": "fixture", "id": "model-cli", "pricing": {"prompt": "0.0001"}}
+    ])), encoding="utf-8")
+
+    assert adapter.main(["--input", str(source), "--output", str(target)]) == 0
+    output = json.loads(target.read_text(encoding="utf-8"))
+    assert output["catalogue"] == "VultrInspired"
+    assert output["models"][0]["id"] == "model-cli"

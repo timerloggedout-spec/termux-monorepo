@@ -136,11 +136,13 @@ jobs:
             --source-ref "$GITHUB_REF_NAME" \
             --source-sha "$GITHUB_SHA"
           touch _site/.nojekyll
+      - name: Validate Architecture Explorer JavaScript syntax
+        run: node --check apps/project-pages-hub/architecture/architecture.js
       - name: Render Mermaid architecture sources to SVG
         timeout-minutes: 20
         run: |
           set -euo pipefail
-          printf '%s\\n' '{"args":["--no-sandbox","--disable-setuid-sandbox"]}' > /tmp/puppeteer-config.json
+          printf '%s\n' '{"args":["--no-sandbox","--disable-setuid-sandbox"]}' > /tmp/puppeteer-config.json
           count=0
           while IFS= read -r -d '' src; do
             relative="${src#./}"

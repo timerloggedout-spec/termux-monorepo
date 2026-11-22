@@ -6,32 +6,39 @@
 **Owner:** ChatGPT — migration verification and documentation  
 **Operator authorization:** accepted for the preservation scope  
 **Deadline:** 2026-12-03  
-**Affected organization:** `search-astute-ly`  
-**Enterprise account:** `AdAstraNeoNexus`
+**Source organization:** `search-astute-ly`  
+**Enterprise account:** `AdAstraNeoNexus`  
+**Proposed Free destination:** `AsAstraNeoNexus`
 
 ## Objective
 
-Preserve the existing `search-astute-ly` organization as an independent GitHub Free organization before the `AdAstraNeoNexus` Enterprise trial deletion date. Preserve its organization identity, repository IDs, Git refs, releases, Actions surfaces, secrets metadata, variables metadata, webhooks, and GitHub App installations.
+Preserve the repositories and associated operational assets owned by `search-astute-ly` before the `AdAstraNeoNexus` Enterprise trial deletion date.
 
-## Chosen preservation path
+The preferred outcome is to retain `search-astute-ly` as an independent Free organization if GitHub exposes the owner-level Remove organization operation. GitHub's trial documentation also describes trial-created organizations that remain in a downgraded state and can move assets elsewhere. The fallback destination is a new standalone GitHub Free organization named `AsAstraNeoNexus`, created from personal-account settings outside the expiring Enterprise account.
 
-Use GitHub's **Remove organization** operation from Enterprise settings. GitHub documents that this operation makes the organization stand alone and downgrades it to GitHub Free. The operation preserves repositories and settings while changing Enterprise-governed policy and billing.
+## Chosen preservation paths
 
-The current repository inventory contains three public repositories. Their public visibility keeps them within the full-featured public-repository tier of GitHub Free for organizations.
+1. **Detach path:** remove `search-astute-ly` from Enterprise when GitHub permits the operation; verify the same organization ID on GitHub Free.
+2. **Transfer path:** create `AsAstraNeoNexus` on GitHub Free from personal-account settings; transfer every repository from `search-astute-ly`; recreate organization-level integrations and access controls; verify repository IDs and metadata in the destination.
+
+The transfer path preserves repository contents, issues, pull requests, wikis, stars, watchers, settings, repository webhooks, secrets, deploy keys, and Git history. Package associations depend on the package registry. Organization-level teams, membership, secrets, variables, webhooks, and GitHub App installations require separate reconciliation.
 
 ## Scope
 
 - Confirm the Enterprise deletion notice and affected organization.
 - Capture a metadata-only baseline for `search-astute-ly`.
-- Provide a read-only Actions workflow for baseline capture and post-detachment comparison.
-- Document the owner-only Enterprise settings operation.
-- Verify the organization plan is Free and its baseline assets remain present.
+- Verify whether the Enterprise owner UI permits direct organization removal.
+- Provide a safe, dry-run-first repository transfer workflow for the Free destination.
+- Extend repository provisioning to create repositories under an authorized Free organization.
+- Reconcile organization-level integrations and access controls.
+- Preserve both historical `termux-monorepo_enterprise*` snapshots and `manus-public-ui-research`.
 - Keep `Research-Astute` and the personal `timerloggedout-spec` account outside this migration scope.
-- Preserve both historical `termux-monorepo_enterprise*` snapshots.
 
-## Human-only edge
+## Human-only edges
 
-An Enterprise owner performs the **Remove organization** action in GitHub Enterprise settings. The current GitHub connector exposes repository and organization-repository administration, while Enterprise organization removal is a GitHub settings operation. The verifier records evidence after the owner action.
+- Create `AsAstraNeoNexus` from personal-account Settings → Organizations → New organization → Choose GitHub Free. Enterprise settings are excluded from this creation path.
+- Confirm the organization slug is available and the new organization reports the Free plan.
+- Complete any Enterprise settings operation that GitHub exposes to the Enterprise owner.
 
 ## Acceptance
 
@@ -39,14 +46,17 @@ An Enterprise owner performs the **Remove organization** action in GitHub Enterp
 - [x] Live repository inventory identifies all three affected repositories.
 - [x] The two enterprise monorepo snapshots are confirmed to share the same HEAD SHA.
 - [x] A read-only baseline/verification workflow and regression tests are implemented.
-- [ ] Owner removes `search-astute-ly` from the Enterprise account.
-- [ ] Post-detachment workflow reports `plan=free`.
-- [ ] Organization ID, repository IDs, branches, tags, releases, workflows, secret names, variable names, webhooks, and app installations reconcile against the baseline.
-- [ ] Final evidence is recorded and the proposal is closed.
+- [ ] Confirm the available Enterprise organization-removal path.
+- [ ] Establish an independent Free destination if transfer is required.
+- [ ] Transfer all source repositories and verify stable repository IDs.
+- [ ] Reconcile organization-level teams, membership, secrets, variables, webhooks, apps, projects, and packages.
+- [ ] Verify the destination organization and repository feature posture on GitHub Free.
+- [ ] Record final evidence before 2026-12-03.
 
 ## Review log
 
 | Date | Actor | Event | Evidence |
 |---|---|---|---|
-| 2026-11-22 | ChatGPT | Confirmed deadline and affected organization | GitHub Support email received 2026-11-03; companion runbook |
+| 2026-11-22 | ChatGPT | Confirmed deadline and affected organization | GitHub Support emails received 2026-11-03 and 2026-10-04 |
 | 2026-11-22 | ChatGPT | Live repository inventory | GitHub repository search and commit comparison |
+| 2026-11-22 | ChatGPT | Confirmed trial lifecycle and transfer semantics | GitHub Enterprise trial and repository transfer documentation |

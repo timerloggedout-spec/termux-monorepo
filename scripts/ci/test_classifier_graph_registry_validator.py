@@ -100,6 +100,14 @@ class ClassifierGraphRegistryTests(unittest.TestCase):
         self.assertEqual(registered_models, model_ids)
         self.assertEqual(registered_infrastructure, infrastructure_ids)
 
+    def test_classifier_estate_groups_reconcile_to_all_71_units(self):
+        groups = self.registry["classifier_estate"]["groups"]
+        self.assertEqual(len(groups), 12)
+        self.assertEqual(sum(group["units"] for group in groups), 71)
+        self.assertEqual(sum(group["live"] for group in groups), 43)
+        self.assertEqual(sum(group["dormant"] for group in groups), 26)
+        self.assertEqual(sum(group["dead"] for group in groups), 2)
+
     def test_unclassified_candidates_make_no_role_claim(self):
         candidates = [item for item in self.registry["candidates"]
                       if item["qualification_state"] == "unclassified"]

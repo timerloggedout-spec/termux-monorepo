@@ -5,7 +5,7 @@
 var CACHE = "tribute-v1";
 var SHELL = ["./", "./index.html", "./dashboard.css", "./manifest.webmanifest",
              "./versioning.js", "./site-nav.js", "./publishing.html", "./publishing.js", "./publishing.md", "./version-manifest.json",
-             "./icon-192.png", "./icon-512.png"];
+             "./icon-192.png", "./icon-512.png", "./workflows.html", "./data/workflow-discovery-feed.json"];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(SHELL); })
     .then(function () { return self.skipWaiting(); }));

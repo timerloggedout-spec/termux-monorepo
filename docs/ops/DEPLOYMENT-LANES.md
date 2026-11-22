@@ -46,7 +46,7 @@ n8n therefore may host or demonstrate workflow composition around the frontend/e
 ## Current implementation evidence
 
 - `docs/ops/SHE-DASHBOARD-PRD.md` is the deployment/visual-lane contract.
-- `docs/ops/SHE-DASHBOARD-ARCHITECTURE.mmd` is the existing Mermaid architecture source.
+- `docs/ops/SHE-DASHBOARD-ARCHITECTURE.mmd` is the existing Mermaid architecture source.\n- `apps/project-pages-hub/architecture/` is the read-only GitHub Pages Architecture Explorer; the existing Pages publisher builds its source catalog and renders Mermaid sources to SVG for the published route.
 - `docs/ops/SHE-DASHBOARD-ARCHITECTURE.png` (when generated) is a review projection, not source.
 - `docs/evaluations/manus/session_metadata/connector_config.json` records n8n and Mermaid connector metadata; connector presence is not proof of deployment.
 

@@ -40,7 +40,7 @@ def test_vultr_inspired_projection_preserves_exact_prices_and_evidence():
     }
     assert model["limits"] == {"context_tokens": 128000, "output_tokens": 8192}
     assert model["modalities"]["input"] == ["text", "image"]
-    assert model["lifecycle"]["readiness"] is True
+    assert model["lifecycle"]["catalogue_active"] is True
     assert model["extensions"]["future_field"] == {"preserve": True}
     assert model["incumbent_record"]["provider"] == "fixture"
     assert result["provider_observations"]["fixture"]["status"] == "observed"

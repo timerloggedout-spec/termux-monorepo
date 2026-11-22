@@ -1,0 +1,225 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/CLASSIFIER-TOURNAMENT-EXPERIMENT-PLAN.schema.json",
+  "title": "Classifier Tournament Experiment Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "plan_id",
+    "version",
+    "status",
+    "execution_ready",
+    "canonical_cohort",
+    "comparison_units",
+    "phases",
+    "outcome_vector",
+    "analysis",
+    "allocation",
+    "stopping"
+  ],
+  "properties": {
+    "schema": {
+      "const": "classifier.tournament-experiment-plan.v1"
+    },
+    "plan_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "status": {
+      "enum": [
+        "design_only",
+        "qualification",
+        "screening",
+        "evaluating",
+        "promoting",
+        "complete"
+      ]
+    },
+    "execution_ready": {
+      "type": "boolean"
+    },
+    "canonical_cohort": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "contract_path"
+      ],
+      "properties": {
+        "schema": {
+          "const": "manager.tournament.v1"
+        },
+        "contract_path": {
+          "const": "docs/ops/MANAGER-TOURNAMENT.schema.json"
+        }
+      }
+    },
+    "comparison_units": {
+      "type": "array",
+      "minItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "classifier_capability",
+          "routing_policy",
+          "composition_graph",
+          "tournament_implementation"
+        ]
+      }
+    },
+    "phases": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "phase_id",
+          "status",
+          "objective",
+          "cohort",
+          "admission_gates",
+          "exit_condition"
+        ],
+        "properties": {
+          "phase_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "planned",
+              "active",
+              "blocked",
+              "complete"
+            ]
+          },
+          "objective": {
+            "type": "string",
+            "minLength": 1
+          },
+          "cohort": {
+            "type": "string",
+            "minLength": 1
+          },
+          "admission_gates": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "exit_condition": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "outcome_vector": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "analysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "hard_gates",
+        "decision_order",
+        "uncertainty",
+        "missing_observation",
+        "raw_objectives_preserved"
+      ],
+      "properties": {
+        "hard_gates": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "decision_order": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "string"
+          }
+        },
+        "uncertainty": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "missing_observation": {
+          "const": "null"
+        },
+        "raw_objectives_preserved": {
+          "const": true
+        }
+      }
+    },
+    "allocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "initial_method",
+        "adaptive_methods",
+        "adaptive_entry_gate",
+        "exploration_share_required",
+        "resource_budget_required"
+      ],
+      "properties": {
+        "initial_method": {
+          "type": "string"
+        },
+        "adaptive_methods": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "adaptive_entry_gate": {
+          "type": "string"
+        },
+        "exploration_share_required": {
+          "const": true
+        },
+        "resource_budget_required": {
+          "const": true
+        }
+      }
+    },
+    "stopping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stop_on",
+        "promotion_requires_human_approval"
+      ],
+      "properties": {
+        "stop_on": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "promotion_requires_human_approval": {
+          "const": true
+        }
+      }
+    }
+  }
+}

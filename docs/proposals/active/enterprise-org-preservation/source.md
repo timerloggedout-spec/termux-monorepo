@@ -40,11 +40,11 @@ The deletion notice names both the Enterprise account and the associated organiz
 
 ## Repository transfer semantics
 
-GitHub documents that repository transfer retains issues, pull requests, wiki, stars, watchers, repository settings, repository webhooks, services, secrets, deploy keys, and Git history. GitHub Pages site URLs do not redirect. Package transfer depends on the package registry. Organization-level resources require separate reconciliation.
+GitHub documents that repository transfer retains issues, pull requests, wiki, stars, watchers, repository settings, repository webhooks, services, secrets, deploy keys, and Git history. GitHub Pages site URLs retain their original address and require a separate URL and DNS update. Package transfer depends on the package registry. Organization-level resources require separate reconciliation.
 
 ## Adjacent organization and personal-account scope
 
-- `Research-Astute` exposes five public repositories and is not named in the Enterprise deletion notice.
+- The Enterprise deletion notice names `search-astute-ly`; the separate `Research-Astute` organization exposes five public repositories.
 - `timerloggedout-spec` is the connected personal GitHub identity. The repository's 2026-11-02 integration census records the personal plan as Free and 711 public repositories.
 - `AsAstraNeoNexus` is the proposed new organization name. The Enterprise account is `AdAstraNeoNexus`; these are distinct account concepts.
 

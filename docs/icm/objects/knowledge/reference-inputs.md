@@ -6,13 +6,13 @@
 | Cluster | knowledge |
 | Universe | live |
 | Status | verified |
-| Entity | The pinned external references that inform, but do not operate, the monorepo ICM workspace |
+| Entity | Pinned external references that inform the monorepo ICM workspace while remaining outside its operations |
 
 ## What this is
 
-The monorepo is the ICM workspace. Its own `docs/icm/` catalog, contracts, cards, process definitions, and maintenance Pipeline are the **operative** method. The shallow submodules under `refTemplates/smods/` are read-only **reference inputs**: they supply a form-selection skill, full conventions/examples, layered-routing precedent, filesystem-memory evidence, and an optional visual-review pattern. They do not run automatically, replace governance, or authorize code changes.
+The monorepo is the ICM workspace. Its own `docs/icm/` catalog, contracts, cards, process definitions, and maintenance Pipeline are the **operative** method. The shallow submodules under `refTemplates/smods/` are read-only **reference inputs**: they supply a form-selection skill, full conventions/examples, layered-routing precedent, filesystem-memory evidence, and an optional visual-review pattern. Governance and code-change authorization remain within the monorepo.
 
-| Reference input | Use in this repository | Do not treat as |
+| Reference input | Use in this repository | Boundary |
 |---|---|---|
 | `icm-architect_fork` | Form selection, map audit, templates, and walk-test method | Runtime agent or source-of-truth monorepo policy |
 | `interpretable-context-methodology_fork` | Full conventions, example workspaces, and workspace-builder patterns | A second live repository workspace |
@@ -29,7 +29,7 @@ Open this card when selecting a reference, updating a pinned fork, deciding whet
 ## First-order impact
 
 **Hits:** the custom-reference Gitlinks, ICM map, method coverage, human review boundary and provider catalogue reference lane.
-**Does not hit:** application runtime, Termux MCP/device access, external service accounts, Vultr compute or automatic deployment.
+**Unaffected surfaces:** application runtime, Termux MCP/device access, external service accounts, Vultr compute and automatic deployment.
 
 ## Evidence
 

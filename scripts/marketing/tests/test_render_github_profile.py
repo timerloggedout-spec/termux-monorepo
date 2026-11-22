@@ -85,7 +85,7 @@ class GitHubProfileRendererTests(unittest.TestCase):
                     "youtube_channel": "https://youtube.com/@example",
                     "video_library": "https://example.com/videos"
                 },
-                "sources": sources,
+                "sources": {"partners": "docs/PARTNERS.md", "videos": "docs/ops/PUBLIC-VIDEO-LIBRARY-2026-11-15.md"},
                 "featured_projects": [{"name": "Repo", "url": "https://github.com/example/repo", "description": "Project"}],
                 "featured_videos": [{"id": "abc123", "label": "Latest Short", "kind": "short"}],
                 "rotation": {"disclosure": "Referral links may be affiliate links."}
@@ -137,14 +137,14 @@ class GitHubProfileRendererTests(unittest.TestCase):
                 "youtube_channel": "https://youtube.com/@example",
                 "video_library": "https://example.com/videos"
             },
-            "sources": {"partners": "docs/PARTNERS.md", "videos": "docs/ops/PUBLIC-VIDEO-LIBRARY-2026-11-15.md"},
+            "sources": sources,
             "featured_projects": [{"name": "Repo", "url": "https://github.com/example/repo", "description": "Project"}],
             "featured_videos": featured_videos,
             "rotation": {"disclosure": "Referral links may be affiliate links."}
         }
         (root / "marketing/github-profile/profile.json").write_text(json.dumps(config), encoding="utf-8")
 
-    def test_latest_short_resolves_current_latest_row_when_previous_short_remains(self):
+    def test_latest_short_selects_most_recent_published_short_across_groups(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self._write_fixture(
@@ -153,7 +153,7 @@ class GitHubProfileRendererTests(unittest.TestCase):
                     "| Latest | [Current Short](https://youtube.com/shorts/current123) | 0:08 | 2026-11-15 | Current update |\n",
                     "| Archive | [Previous Short](https://youtube.com/shorts/previous123) | 0:08 | 2026-11-14 | Prior update |\n",
                 ],
-                [{"source": "latest", "label": "Latest Short", "kind": "short"}],
+                [{"source": "latest_short", "label": "Latest Short", "kind": "short"}],
             )
             output = root / "out"
             try:
@@ -161,7 +161,8 @@ class GitHubProfileRendererTests(unittest.TestCase):
             except (KeyError, ValueError) as exc:
                 self.fail(f"renderer must resolve the Latest slot from the current library row: {type(exc).__name__}: {exc}")
             generated = (output / "README.md").read_text(encoding="utf-8")
-            self.assertIn("https://youtube.com/shorts/current123", generated)
+            self.assertIn("https://youtube.com/shorts/latest123", generated)
+            self.assertNotIn("current123", generated)
             self.assertNotIn("previous123", generated)
 
     def test_hackathon_highlight_resolves_published_submission_from_coordinator(self):

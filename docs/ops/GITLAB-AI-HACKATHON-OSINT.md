@@ -74,7 +74,7 @@ The official event page directs participants to the GitLab Community Discord `#a
 - [GitLab Discord invite](https://discord.com/invite/gitlab) — `#ai-hackathon` for the Devpost AI Hackathon; current Community Hackathon rules direct questions to `#hackathon` or `#contribute`; Transcend sample workspaces use `#transcend-hackathon`.
 - [Devpost Discord](https://info.devpost.com/blog/join-the-devpost-discord).
 - Office-hours schedule: posted in the relevant GitLab Discord channels; individual session dates are NOT_ESTABLISHED in this public-source pass.
-- The [Participant Template README](https://gitlab.com/gitlab-ai-hackathon/project-templates/participant-template) links to a `work_items/1` onboarding item. The public item currently returns **Work item not found**; its instructions remain NOT_ESTABLISHED.
+- The [Participant Template README](https://gitlab.com/gitlab-ai-hackathon/project-templates/participant-template) links to a `work_items/1` onboarding item. The public item is currently **unavailable**; its instructions remain NOT_ESTABLISHED.
 - A representative [Transcend showcase workspace onboarding issue](https://gitlab.com/gitlab-ai-hackathon/transcend/27098937/-/work_items/1) directs the workspace owner to the Showcase Track guide, `#transcend-hackathon`, and office hours. This sample workspace onboarding record illustrates one Transcend workspace path; event-wide AI Hackathon registration remains governed by the official Devpost event page.
 - The public event page links an example participant issue at [participants/621485](https://gitlab.com/gitlab-ai-hackathon/participants/621485/-/issues/1).
 

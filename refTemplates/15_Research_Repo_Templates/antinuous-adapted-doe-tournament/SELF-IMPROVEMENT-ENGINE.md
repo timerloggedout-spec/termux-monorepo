@@ -184,3 +184,5 @@ run in the repository gate. This is an executable comparison component;
 the complete SIE control plane remains a design-only challenger pending
 scheduler, receipt-ledger, evaluator and promotion-controller integration.
 
+
+The CLI `scripts/tournament/compare_implementations.py` accepts a matched receipt array and writes a versioned comparison report. The receipt contract and operating boundary are documented in `docs/ops/TOURNAMENT-IMPLEMENTATION-COMPETITION.md`.

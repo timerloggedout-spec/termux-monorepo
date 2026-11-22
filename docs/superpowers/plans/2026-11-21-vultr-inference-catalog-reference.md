@@ -98,7 +98,7 @@
 - [x] Run `python3 scripts/ci/refTemplates_inventory.py --strict` in the isolated source-mirror harness: 3 slots validated, 0 failures.
 - [x] GitHub repo gate passed on PR head `9787c614ccb84b02d61134564d22fb52cdef4f0a`.
 - [x] GitHub Termux smoke passed on PR head `9787c614ccb84b02d61134564d22fb52cdef4f0a`.
-- [x] Re-fetch all 19 changed paths and record the branch comparison with immutable refs. The clean reconstruction starts from current master `bb3d58265f8c4908de8967fc00c79ed72f647b56` and records the implementation as one imperative commit. The branch comparison is 1 commit ahead and 0 behind at creation; re-fetch current master before promotion.
+- [x] Re-fetch all 19 changed paths and record the branch comparison with immutable refs. The clean reconstruction starts from current master `bb3d58265f8c4908de8967fc00c79ed72f647b56`. The initial implementation was consolidated into one imperative commit, followed by two small imperative commits for DoE registry regression coverage and plan evidence. The branch remains 3 commits ahead and 0 behind at the latest recorded comparison; re-fetch current master before promotion.
 - [x] Open draft PR #5754 citing `Implements: MSM-025` after the explicit PR request.
 - [x] Inspect repo-gate, Termux smoke, proposal lifecycle, PR evidence and review findings on the recorded head SHA.
 - [x] Preserve the isolated branch for review; promotion follows repository gates and independent review.

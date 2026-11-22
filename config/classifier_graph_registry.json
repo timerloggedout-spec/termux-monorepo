@@ -1598,6 +1598,43 @@
           "depends_on": []
         }
       ]
+    },
+    {
+      "graph_id": "local-role-lateral-screen",
+      "graph_version": "0.1.0",
+      "competition_unit": "composition",
+      "status": "design_only",
+      "execution_mode": "parallel_screen",
+      "nodes": [
+        {
+          "node_id": "mev",
+          "kind": "classifier",
+          "role_id": "text_generation",
+          "candidate_id": "local.deepcli.mev",
+          "depends_on": []
+        },
+        {
+          "node_id": "jev",
+          "kind": "classifier",
+          "role_id": "rubric_critique",
+          "candidate_id": "local.deepcli.jev",
+          "depends_on": []
+        },
+        {
+          "node_id": "kev",
+          "kind": "classifier",
+          "role_id": "reference_verification",
+          "candidate_id": "local.deepcli.kev",
+          "depends_on": []
+        },
+        {
+          "node_id": "laya",
+          "kind": "classifier",
+          "role_id": "evidence_reduction",
+          "candidate_id": "local.deepcli.laya",
+          "depends_on": []
+        }
+      ]
     }
   ],
   "evaluation": {

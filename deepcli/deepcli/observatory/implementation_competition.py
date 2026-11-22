@@ -62,6 +62,7 @@ def _validate_receipts(receipts: list[dict[str, Any]]) -> dict[str, Any]:
     contracts = set()
     evaluators = set()
     cohorts = set()
+    run_ids: set[str] = set()
     roles_by_implementation: dict[tuple[str, str], str] = {}
     for index, receipt in enumerate(receipts):
         if not isinstance(receipt, dict):
@@ -71,8 +72,14 @@ def _validate_receipts(receipts: list[dict[str, Any]]) -> dict[str, Any]:
             raise ValueError(f"receipt[{index}] missing fields: {', '.join(missing)}")
         implementation = (receipt["implementation_id"], receipt["implementation_version"])
         task_id = receipt["task_id"]
-        if not all(isinstance(value, str) and value for value in (*implementation, task_id)):
-            raise ValueError(f"receipt[{index}] has an empty implementation or task identity")
+        identity_fields = (*implementation, receipt["cohort_id"], task_id,
+                           receipt["task_contract_hash"], receipt["environment_fingerprint"],
+                           receipt["evaluator_version"], receipt["run_id"])
+        if not all(isinstance(value, str) and value for value in identity_fields):
+            raise ValueError(f"receipt[{index}] has an empty identity or provenance field")
+        if receipt["run_id"] in run_ids:
+            raise ValueError(f"duplicate run_id {receipt['run_id']}")
+        run_ids.add(receipt["run_id"])
         role = receipt["competition_role"]
         if role not in {"incumbent", "challenger"}:
             raise ValueError(f"receipt[{index}] competition_role must be incumbent or challenger")

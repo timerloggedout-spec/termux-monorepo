@@ -4,96 +4,354 @@
   "title": "Versioned Classifier Graph Tournament Registry",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "registry_id", "registry_version", "catalog", "classifier_estate", "canonical_cohort", "roles", "candidates", "graphs", "evaluation"],
+  "required": [
+    "schema_version",
+    "registry_id",
+    "registry_version",
+    "catalog",
+    "classifier_estate",
+    "canonical_cohort",
+    "roles",
+    "candidates",
+    "graphs",
+    "evaluation",
+    "infrastructure",
+    "implementation_competition"
+  ],
   "properties": {
-    "schema_version": {"const": "classifier.graph-registry.v1"},
-    "registry_id": {"type": "string", "minLength": 1},
-    "registry_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "schema_version": {
+      "const": "classifier.graph-registry.v1"
+    },
+    "registry_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "registry_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
     "catalog": {
-      "type": "object", "additionalProperties": false,
-      "required": ["path", "schema"],
-      "properties": {"path": {"const": "config/system_one_catalog.json"}, "schema": {"const": "system-one-catalog/1"}}
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "schema"
+      ],
+      "properties": {
+        "path": {
+          "const": "config/system_one_catalog.json"
+        },
+        "schema": {
+          "const": "system-one-catalog/1"
+        }
+      }
     },
     "classifier_estate": {
-      "type": "object", "additionalProperties": false,
-      "required": ["path", "schema", "snapshot_date", "unit_count", "states"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "schema",
+        "snapshot_date",
+        "unit_count",
+        "states"
+      ],
       "properties": {
-        "path": {"const": "ops/classifiers/classifiers-feed.json"},
-        "schema": {"const": "classifiers-feed/v1"},
-        "snapshot_date": {"type": "string", "format": "date"},
-        "unit_count": {"type": "integer", "minimum": 1},
+        "path": {
+          "const": "ops/classifiers/classifiers-feed.json"
+        },
+        "schema": {
+          "const": "classifiers-feed/v1"
+        },
+        "snapshot_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "unit_count": {
+          "type": "integer",
+          "minimum": 1
+        },
         "states": {
-          "type": "object", "additionalProperties": false,
-          "required": ["live", "dormant", "dead"],
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "live",
+            "dormant",
+            "dead"
+          ],
           "properties": {
-            "live": {"type": "integer", "minimum": 0},
-            "dormant": {"type": "integer", "minimum": 0},
-            "dead": {"type": "integer", "minimum": 0}
+            "live": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "dormant": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "dead": {
+              "type": "integer",
+              "minimum": 0
+            }
           }
         }
       }
     },
     "canonical_cohort": {
-      "type": "object", "additionalProperties": false,
-      "required": ["schema", "contract_path"],
-      "properties": {"schema": {"const": "manager.tournament.v1"}, "contract_path": {"const": "docs/ops/MANAGER-TOURNAMENT.schema.json"}}
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "contract_path"
+      ],
+      "properties": {
+        "schema": {
+          "const": "manager.tournament.v1"
+        },
+        "contract_path": {
+          "const": "docs/ops/MANAGER-TOURNAMENT.schema.json"
+        }
+      }
     },
     "roles": {
-      "type": "array", "minItems": 1,
+      "type": "array",
+      "minItems": 1,
       "items": {
-        "type": "object", "additionalProperties": false,
-        "required": ["role_id", "capability", "contract_version"],
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "role_id",
+          "capability",
+          "contract_version"
+        ],
         "properties": {
-          "role_id": {"type": "string", "minLength": 1},
-          "capability": {"type": "string", "minLength": 1},
-          "contract_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"}
+          "role_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "capability": {
+            "type": "string",
+            "minLength": 1
+          },
+          "contract_version": {
+            "type": "string",
+            "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+          }
         }
       }
     },
     "candidates": {
-      "type": "array", "minItems": 1,
+      "type": "array",
+      "minItems": 1,
       "items": {
-        "type": "object", "additionalProperties": false,
-        "required": ["candidate_id", "kind", "roles", "readiness", "operational_state", "adapter_status", "source_ref"],
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "candidate_id",
+          "kind",
+          "roles",
+          "readiness",
+          "operational_state",
+          "adapter_status",
+          "source_ref",
+          "qualification_state"
+        ],
         "properties": {
-          "candidate_id": {"type": "string", "minLength": 1},
-          "kind": {"enum": ["local", "catalog"]},
-          "catalog_entry_id": {"type": ["string", "null"]},
-          "roles": {"type": "array", "minItems": 1, "items": {"type": "string"}},
-          "readiness": {"enum": ["incumbent", "catalogued", "adapter_required", "trial_candidate", "evaluated"]},
-          "operational_state": {"enum": ["dispatch_only_baseline", "blocked_paid_owner_gate", "trial_candidate_composition_required", "evaluated_self_hosted", "referenced_not_runnable", "trial_candidate_host_blocked"]},
-          "adapter_status": {"enum": ["native", "available", "partial", "required", "unverified"]},
-          "source_ref": {"type": "string", "minLength": 1},
-          "notes": {"type": "string"}
+          "candidate_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "local",
+              "catalog"
+            ]
+          },
+          "catalog_entry_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "roles": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "readiness": {
+            "enum": [
+              "incumbent",
+              "catalogued",
+              "adapter_required",
+              "trial_candidate",
+              "evaluated"
+            ]
+          },
+          "operational_state": {
+            "enum": [
+              "dispatch_only_baseline",
+              "blocked_paid_owner_gate",
+              "trial_candidate_composition_required",
+              "evaluated_self_hosted",
+              "referenced_not_runnable",
+              "trial_candidate_host_blocked",
+              "catalogued_unverified",
+              "trial_candidate_unverified",
+              "evaluated_recorded"
+            ]
+          },
+          "adapter_status": {
+            "enum": [
+              "native",
+              "available",
+              "partial",
+              "required",
+              "unverified"
+            ]
+          },
+          "source_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "notes": {
+            "type": "string"
+          },
+          "qualification_state": {
+            "enum": [
+              "qualified",
+              "unclassified"
+            ]
+          }
         },
         "allOf": [
-          {"if": {"properties": {"kind": {"const": "catalog"}}}, "then": {"required": ["catalog_entry_id"], "properties": {"catalog_entry_id": {"type": "string", "minLength": 1}}}},
-          {"if": {"properties": {"kind": {"const": "local"}}}, "then": {"properties": {"catalog_entry_id": {"type": "null"}}}}
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "catalog"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "catalog_entry_id"
+              ],
+              "properties": {
+                "catalog_entry_id": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "local"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "catalog_entry_id": {
+                  "type": "null"
+                }
+              }
+            }
+          }
         ]
       }
     },
     "graphs": {
-      "type": "array", "minItems": 1,
+      "type": "array",
+      "minItems": 1,
       "items": {
-        "type": "object", "additionalProperties": false,
-        "required": ["graph_id", "graph_version", "competition_unit", "status", "execution_mode", "nodes"],
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "graph_id",
+          "graph_version",
+          "competition_unit",
+          "status",
+          "execution_mode",
+          "nodes"
+        ],
         "properties": {
-          "graph_id": {"type": "string", "minLength": 1},
-          "graph_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
-          "competition_unit": {"const": "composition"},
-          "status": {"enum": ["incumbent", "design_only", "trial_candidate", "evaluated", "promoted", "retired"]},
-          "execution_mode": {"enum": ["sequential_baseline", "dependency_dag", "parallel_screen", "conditional_route"]},
+          "graph_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "graph_version": {
+            "type": "string",
+            "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+          },
+          "competition_unit": {
+            "const": "composition"
+          },
+          "status": {
+            "enum": [
+              "incumbent",
+              "design_only",
+              "trial_candidate",
+              "evaluated",
+              "promoted",
+              "retired"
+            ]
+          },
+          "execution_mode": {
+            "enum": [
+              "sequential_baseline",
+              "dependency_dag",
+              "parallel_screen",
+              "conditional_route"
+            ]
+          },
           "nodes": {
-            "type": "array", "minItems": 1,
+            "type": "array",
+            "minItems": 1,
             "items": {
-              "type": "object", "additionalProperties": false,
-              "required": ["node_id", "kind", "role_id", "depends_on"],
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "node_id",
+                "kind",
+                "role_id",
+                "depends_on"
+              ],
               "properties": {
-                "node_id": {"type": "string", "minLength": 1},
-                "kind": {"enum": ["classifier", "router", "critic", "verifier", "reducer", "evaluator"]},
-                "role_id": {"type": "string", "minLength": 1},
-                "candidate_id": {"type": ["string", "null"]},
-                "depends_on": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+                "node_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "kind": {
+                  "enum": [
+                    "classifier",
+                    "router",
+                    "critic",
+                    "verifier",
+                    "reducer",
+                    "evaluator"
+                  ]
+                },
+                "role_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "candidate_id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "depends_on": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string"
+                  }
+                }
               }
             }
           }
@@ -101,14 +359,225 @@
       }
     },
     "evaluation": {
-      "type": "object", "additionalProperties": false,
-      "required": ["evaluator_id", "evaluator_version", "hard_gates", "objectives", "held_out_required"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evaluator_id",
+        "evaluator_version",
+        "hard_gates",
+        "objectives",
+        "held_out_required"
+      ],
       "properties": {
-        "evaluator_id": {"type": "string", "minLength": 1},
-        "evaluator_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
-        "hard_gates": {"type": "array", "minItems": 1, "items": {"type": "string"}},
-        "objectives": {"type": "array", "minItems": 1, "items": {"type": "string"}},
-        "held_out_required": {"type": "boolean"}
+        "evaluator_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evaluator_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "hard_gates": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "objectives": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "held_out_required": {
+          "type": "boolean"
+        }
+      }
+    },
+    "infrastructure": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "catalog_entry_id",
+          "layer",
+          "operational_state",
+          "source_ref",
+          "notes"
+        ],
+        "properties": {
+          "catalog_entry_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "layer": {
+            "enum": [
+              "adapter",
+              "runtime",
+              "directory"
+            ]
+          },
+          "operational_state": {
+            "const": "infrastructure_reference"
+          },
+          "source_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "implementation_competition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "canonical_cohort",
+        "incumbent",
+        "challengers",
+        "protocol"
+      ],
+      "properties": {
+        "schema": {
+          "const": "tournament.implementation-competition.v1"
+        },
+        "canonical_cohort": {
+          "const": "manager.tournament.v1"
+        },
+        "incumbent": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "implementation_id",
+            "version",
+            "status",
+            "components"
+          ],
+          "properties": {
+            "implementation_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "version": {
+              "type": "string",
+              "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+            },
+            "status": {
+              "const": "incumbent"
+            },
+            "components": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "component_id",
+                  "version",
+                  "source_ref"
+                ],
+                "properties": {
+                  "component_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "version": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source_ref": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "challengers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "implementation_id",
+              "version",
+              "status",
+              "source_ref",
+              "hypothesis",
+              "execution_ready"
+            ],
+            "properties": {
+              "implementation_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "version": {
+                "type": "string",
+                "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+              },
+              "status": {
+                "enum": [
+                  "design_only",
+                  "trial_candidate",
+                  "evaluated",
+                  "promoted",
+                  "rejected"
+                ]
+              },
+              "source_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "hypothesis": {
+                "type": "string",
+                "minLength": 1
+              },
+              "execution_ready": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "protocol": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "matched_cohort_required",
+            "held_out_required",
+            "independent_evaluator_required",
+            "immutable_receipts_required",
+            "rollback_target_required",
+            "owner_approval_for_production"
+          ],
+          "properties": {
+            "matched_cohort_required": {
+              "const": true
+            },
+            "held_out_required": {
+              "const": true
+            },
+            "independent_evaluator_required": {
+              "const": true
+            },
+            "immutable_receipts_required": {
+              "const": true
+            },
+            "rollback_target_required": {
+              "const": true
+            },
+            "owner_approval_for_production": {
+              "const": true
+            }
+          }
+        }
       }
     }
   }

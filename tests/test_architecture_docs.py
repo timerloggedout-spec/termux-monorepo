@@ -127,6 +127,17 @@ class ArchitectureDocumentationTests(unittest.TestCase):
             subprocess.run(["git", "commit", "-qm", "architecture version bump"], cwd=root, check=True)
             self.assertTrue(architecture_docs.check_version_bump(root, "HEAD~1"))
 
+    def test_version_gate_accepts_generated_only_refresh_without_bump(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.make_root(root)
+            self.init_git(root)
+            manifest = root / "docs/architecture/generated/architecture-manifest.json"
+            manifest.write_text("{}\\n", encoding="utf-8")
+            subprocess.run(["git", "add", "."], cwd=root, check=True)
+            subprocess.run(["git", "commit", "-qm", "generated projection refresh"], cwd=root, check=True)
+            self.assertTrue(architecture_docs.check_version_bump(root, "HEAD~1"))
+
     def test_version_file_change_requires_matching_changelog(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -194,6 +205,7 @@ class ArchitectureDocumentationWorkflowTests(unittest.TestCase):
     def test_trusted_master_job_owns_generated_projection_writes(self) -> None:
         self.assertIn("contents: write", self.trusted_job)
         self.assertIn("if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'", self.trusted_job)
+        self.assertIn("workflow_dispatch:", self.workflow)
         self.assertIn("architecture_docs.py --write", self.trusted_job)
         self.assertIn(
             "git add docs/ops/generated docs/architecture/generated",

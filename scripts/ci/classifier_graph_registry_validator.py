@@ -68,9 +68,13 @@ def validate_registry(root: Path, registry: Any, catalog: Any, estate: Any, plan
                 state = unit.get("state")
                 if state in {"live", "dormant", "dead"}:
                     actual_groups[name][state] += 1
+            group_rows = estate_ref.get("groups", [])
+            group_names = [item.get("group_name") for item in group_rows if isinstance(item, dict)]
+            if not isinstance(group_rows, list) or len(group_names) != len(group_rows) or not _unique(group_names):
+                errors.append("classifier estate.groups: require unique group names")
             expected_groups = {
                 item.get("group_name"): {key: item.get(key) for key in ("units", "live", "dormant", "dead")}
-                for item in estate_ref.get("groups", []) if isinstance(item, dict)
+                for item in group_rows if isinstance(item, dict)
             }
             if actual_groups != expected_groups:
                 errors.append("classifier estate.groups: group counts mismatch with source rows")

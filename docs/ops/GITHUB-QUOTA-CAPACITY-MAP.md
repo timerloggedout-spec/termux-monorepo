@@ -293,7 +293,7 @@ Classify the 5,000 read as **DISPUTED**, rather than a confirmed increase. Resol
 
 ### Freshness gaps
 
-- Bucket headroom feed: 2026-11-22 10:18Z; over six hours old at the 16:18Z reconnaissance point, despite the 10-minute cadence.
+- Bucket headroom feed: 2026-11-22 10:18Z; nearly six hours old at the 16:18Z reconnaissance point, despite the 10-minute cadence.
 - Canonical quota readings: generated 2026-11-18.
 - Quota usage pack: generated 2026-11-19.
 - PAT core series: latest point 2026-11-02.

@@ -63,6 +63,37 @@ flowchart TD
 
 The graph is a plan, not a hardcoded sequence. The scheduler admits independent nodes concurrently and waits only at declared dependency edges. A treatment can compare the current local baseline, parallel fan-out, conditional cascade, voting ensemble, specialist delegation, or hybrid graph.
 
+## 2A. Classifier estate and operational status
+
+The repository's classifier estate feed records **71 operating units** in
+its 2026-11-02 snapshot: 43 live, 26 dormant and 2 dead. Its units span
+observatory, ML pipelines, model selection/routing, Delphi, repo gates,
+workflow review, intake, repository observatory, dashboards, provider
+substrate and external surfaces. This is the operating estate census;
+each row is a system/unit, not an interchangeable model candidate.
+
+The System One catalog is a separate inventory: 88 entries across 61
+model families, 16 adapters, 7 runtimes and 4 directories. Preserve the
+layer distinction when deriving candidate pools.
+
+**Jev status is scope-dependent:**
+
+- Local `deepcli.observatory.jev` is part of the incumbent trial role set.
+  The estate feed calls the quartet live via dispatch; the Tier-1 recon
+  defines that as human-dispatched execution, with no standing trigger
+  classifying repository LLM traffic.
+- External TypeSafe Jev (S1-01) is catalogued, while its hosted route is
+  blocked-paid in the census trial record. The free-only gate prevented
+  an external Jev trial; owner approval is the admission prerequisite.
+- External ConvAI Laya (S1-03) has a self-hosted evaluation record:
+  quality 0.7139 and grounding 0.7692 on the recorded trial state.
+- External Jared Palmer Kev (S1-02) remains a trial candidate pending its
+  compatible LoRA-plus-head serving composition.
+
+The registry stores `readiness` and `operational_state` separately.
+Catalog presence, adapter availability, dispatch activity and measured
+evaluation each represent different evidence.
+
 ## 3. Candidate tournament arms
 
 Use small, interpretable families before searching arbitrary graphs:

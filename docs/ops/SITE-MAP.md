@@ -7,7 +7,7 @@
 ```text
 https://timerloggedout-spec.github.io/                 MARKETING / REFERRALS
 https://timerloggedout-spec.github.io/tribute/     OPS DASHBOARD (canonical UI)
-https://timerloggedout-spec.github.io/tribute/icm-cctv.html  ICM CCTV (static card board)
+https://timerloggedout-spec.github.io/tribute/icm-cctv.html  ICM CCTV (static card board)\nhttps://timerloggedout-spec.github.io/tribute/workflows.html  Workflow Discovery (nested Actions topology + sampled run stats)
   sitemap → /help-wanted/sitemap.xml
   robots → /help-wanted/robots.txt
 https://timerloggedout-spec.github.io/termux-monorepo/  PROJECT HUB (thin)

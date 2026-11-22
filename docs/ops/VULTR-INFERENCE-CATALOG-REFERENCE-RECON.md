@@ -27,7 +27,7 @@ Known incumbent limitations include binary-float pricing classification, numeric
 
 ## VultrInspired v1.0.0
 
-The local implementation accepts an incumbent v5 document and emits `provider-model-catalog/vultr-inspired/v1`. It adds structured limits, input/output modalities, capability groups, exact decimal strings for string/integer price inputs, explicit unknown readiness, separate access/entitlement evidence, provenance, unknown-field preservation and indexed diagnostics for malformed rows.
+The local implementation accepts an incumbent v5 document and emits `provider-model-catalog/vultr-inspired/v1`. Run it with `python3 -m scripts.provider_model_catalog_vultr_inspired --input <incumbent-v5.json> --output <vultr-inspired-v1.json>`. It adds structured limits, input/output modalities, capability groups, exact decimal strings for string/integer price inputs, explicit unknown readiness, separate access/entitlement evidence, provenance, unknown-field preservation and indexed diagnostics for malformed rows.
 
 Float-origin prices are marked as precision-limited. The projection cannot reconstruct decimal text after an incumbent adapter has already converted a source value to binary float. Source-native exact-price capture belongs in a later adapter increment.
 

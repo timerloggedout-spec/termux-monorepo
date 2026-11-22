@@ -15,6 +15,8 @@ PAGES = [
      "https://timerloggedout-spec.github.io/matrix/", "/matrix/index.md"),
     ("apps/project-pages-hub/index.html", "apps/project-pages-hub/index.md",
      "https://timerloggedout-spec.github.io/termux-monorepo/", "/termux-monorepo/index.md"),
+    ("apps/project-pages-hub/architecture/index.html", "apps/project-pages-hub/architecture/index.md",
+     "https://timerloggedout-spec.github.io/termux-monorepo/architecture/", "/termux-monorepo/architecture/index.md"),
 ]
 errors: list[str] = []
 

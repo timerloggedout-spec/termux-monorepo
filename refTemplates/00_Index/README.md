@@ -16,7 +16,7 @@
 - Policy: docs/ops/REFTEMPLATES-CONTINUOUS-EVAL.md (ELO layers, DeepWiki batch, commit slices)
 - Integration lane: docs/ops/RESEARCH-INTEGRATION-LANE.md
 - Flywheel stack integration: docs/ops/DICKLESWORTHSTONE-FLYWHEEL-INTEGRATION.md
-- DoE Tournament research: 15_Research_Repo_Templates/antinuous-adapted-doe-tournament/ (Antinuous recon, hybrid architecture, dynamic utility, versioned tournament contract and schemas)
+- DoE Tournament research: 15_Research_Repo_Templates/antinuous-adapted-doe-tournament/ (Antinuous recon, DoE Tournament OS, SIE, classifier graph tournament, dynamic utility, versioned contracts and schemas)
 - Inspiration register: smods/INSPIRATION-SOURCES.md (Notary, ShipProof, unresolved Transcend candidate; metadata-only)
 - Inventory script: scripts/ci/refTemplates_inventory.py
 - Workflow hooks: docs/ops/REFTEMPLATES-WORKFLOW-HOOKS.md

@@ -21,4 +21,4 @@
 - Inventory script: scripts/ci/refTemplates_inventory.py
 - Workflow hooks: docs/ops/REFTEMPLATES-WORKFLOW-HOOKS.md
 
-All slots are continuous repopulate / upgrade / score targets — not a one-shot dump. Live gitlinks require a real custom fork, immutable reviewed pin, compatibility evidence, and passing gates.
+All slots support recurring repopulation, upgrades, evidence review and scoring cycles. Live gitlinks require a real custom fork, immutable reviewed pin, compatibility evidence, and passing gates.

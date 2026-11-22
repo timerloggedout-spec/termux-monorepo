@@ -126,3 +126,6 @@ The canonical classifier inventory is `config/system_one_catalog.json`, document
 
 | deepcli/deepcli/observatory/implementation_competition.py | paired matched-cohort comparison of versioned tournament implementations |
 | deepcli/tests/test_implementation_competition.py | uncertainty, hard-gate and promotion-boundary tests |
+
+| scripts/tournament/compare_implementations.py | CLI for matched tournament implementation receipts |
+| docs/ops/TOURNAMENT-IMPLEMENTATION-COMPETITION.md | receipt, metric, uncertainty and promotion contract |

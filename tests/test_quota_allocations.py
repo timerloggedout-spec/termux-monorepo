@@ -332,3 +332,14 @@ def test_gitlab_compute_and_storage_entitlements_are_registered_but_held():
     assert {"gitlab.ci.compute_minutes", "gitlab.project.repository_lfs_storage"} <= held
     assert {"gitlab.ci.compute_minutes", "gitlab.project.repository_lfs_storage"}.isdisjoint(pooled)
 
+def test_gitlab_storage_entitlement_matches_free_storage_ledger():
+    storage_ledger = json.loads(
+        (ROOT / "ops/free-storage/free-storage-registry.json").read_text()
+    )
+    gitlab = next(row for row in storage_ledger["rows"] if row["id"] == "gitlab")
+    assert gitlab["free_allowance"].startswith("10 GiB per project")
+    assert any(
+        "docs.gitlab.com/user/storage_usage_quotas/" in source
+        for source in gitlab["sources"]
+    )
+

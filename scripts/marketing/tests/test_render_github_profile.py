@@ -103,5 +103,93 @@ class GitHubProfileRendererTests(unittest.TestCase):
             self.assertIn("Hackathon highlight", generated_readme)
 
 
+    def _write_fixture(self, root, video_rows, featured_videos):
+        (root / "marketing/github-profile").mkdir(parents=True)
+        (root / "docs/ops").mkdir(parents=True)
+        (root / "docs/PARTNERS.md").write_text(
+            "## 1. Active lanes\\n"
+            "| Partner | Category | Offer | Link | Badge | Owner |\\n"
+            "|---|---|---|---|---|---|\\n"
+            "| Alpha | AI tools | 10 credits | https://alpha.example/ref | badge | owner |\\n"
+            "## 1b. Code lanes\\n",
+            encoding="utf-8",
+        )
+        video_text = (
+            "## Curated public assets\\n"
+            "| Group | Video | Duration | Published | Purpose |\\n"
+            "|---|---|---:|---|---|\\n"
+            + "".join(video_rows)
+            + "## Public placements\\n"
+        )
+        (root / "docs/ops/PUBLIC-VIDEO-LIBRARY-2026-11-15.md").write_text(video_text, encoding="utf-8")
+        config = {
+            "identity": {
+                "handle": "timerloggedout-spec",
+                "headline": "Built in the open",
+                "summary": "Evidence-backed work",
+                "website": "https://example.com/",
+                "monorepo": "https://github.com/example/repo",
+                "youtube_channel": "https://youtube.com/@example",
+                "video_library": "https://example.com/videos"
+            },
+            "sources": {"partners": "docs/PARTNERS.md", "videos": "docs/ops/PUBLIC-VIDEO-LIBRARY-2026-11-15.md"},
+            "featured_projects": [{"name": "Repo", "url": "https://github.com/example/repo", "description": "Project"}],
+            "featured_videos": featured_videos,
+            "rotation": {"disclosure": "Referral links may be affiliate links."}
+        }
+        (root / "marketing/github-profile/profile.json").write_text(json.dumps(config), encoding="utf-8")
+
+    def test_latest_short_resolves_current_latest_row_when_previous_short_remains(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self._write_fixture(
+                root,
+                [
+                    "| Latest | [Current Short](https://youtube.com/shorts/current123) | 0:08 | 2026-11-15 | Current update |\\n",
+                    "| Archive | [Previous Short](https://youtube.com/shorts/previous123) | 0:08 | 2026-11-14 | Prior update |\\n",
+                ],
+                [{"source": "latest", "label": "Latest Short", "kind": "short"}],
+            )
+            output = root / "out"
+            try:
+                render(root, output, dt.date(2026, 11, 16))
+            except (KeyError, ValueError) as exc:
+                self.fail(f"renderer must resolve the Latest slot from the current library row: {type(exc).__name__}: {exc}")
+            generated = (output / "README.md").read_text(encoding="utf-8")
+            self.assertIn("https://youtube.com/shorts/current123", generated)
+            self.assertNotIn("previous123", generated)
+
+    def test_hackathon_highlight_renders_submission_summary_and_build_story(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self._write_fixture(
+                root,
+                [
+                    "| Archive | [StudySprint v0.4.0 demo](https://www.youtube.com/watch?v=WK9LMwpvHUk) | 2:55 | 2026-11-03 | Earlier release |\\n",
+                ],
+                [{
+                    "id": "WK9LMwpvHUk",
+                    "label": "StudySprint hackathon submission",
+                    "kind": "hackathon",
+                    "highlight": "Official AWS Builder Center D1 submission demo.",
+                    "related_url": "https://builder.aws.com/project/example/studysprint"
+                }],
+            )
+            output = root / "out"
+            render(root, output, dt.date(2026, 11, 16))
+            generated = (output / "README.md").read_text(encoding="utf-8")
+            self.assertIn("Official AWS Builder Center D1 submission demo.", generated)
+            self.assertIn("[Build story](https://builder.aws.com/project/example/studysprint)", generated)
+
+    def test_weekly_spotlight_advances_one_partner_across_iso_year_boundaries(self):
+        partners = [{"name": "A"}, {"name": "B"}, {"name": "C"}, {"name": "D"}]
+        for monday in (dt.date(2026, 12, 28), dt.date(2027, 12, 27)):
+            following_monday = monday + dt.timedelta(days=7)
+            current = select_spotlight(partners, monday)
+            following = select_spotlight(partners, following_monday)
+            expected = partners[(partners.index(current) + 1) % len(partners)]
+            self.assertEqual(following, expected, f"rotation must advance one slot from {monday} to {following_monday}")
+
+
 if __name__ == "__main__":
     unittest.main()

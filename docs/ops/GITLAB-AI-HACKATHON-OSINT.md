@@ -12,7 +12,7 @@ The supplied URLs identify GitLab group hierarchy:
 
 - [GitLab AI Hackathon](https://gitlab.com/gitlab-ai-hackathon) is the public root group.
 - [GitLab DevSecOps Flow Hackathon](https://gitlab.com/gitlab-ai-hackathon/gitlab-devsecops-flow-hackathon) resolves to a **subgroup** rather than a project. Its public subgroup page showed **zero child projects and zero child subgroups** at observation time. The root group listing associates it with group ID `126794830`.
-- [Transcend](https://gitlab.com/gitlab-ai-hackathon/transcend) is a separate subgroup under the root. Its public listing showed **312 items** at observation time; it is the collection containing the October 2026 Transcend showcase workspaces.
+- [Transcend](https://gitlab.com/gitlab-ai-hackathon/transcend) is a separate subgroup under the root. Its subgroup API returned **312 public project workspaces across four pages** and zero child subgroups at observation time. The dated metadata snapshot is `ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json`.
 - [Project Templates](https://gitlab.com/gitlab-ai-hackathon/project-templates) is another subgroup. It contains the public [Participant Template](https://gitlab.com/gitlab-ai-hackathon/project-templates/participant-template) project (project ID `77423853`), with `agents/`, `flows/`, `LICENSE`, and `README.md`.
 - [GitLab Profile README](https://gitlab.com/gitlab-ai-hackathon/gitlab-profile/-/blob/main/README.md) points participants to the Devpost GitLab AI Hackathon page.
 
@@ -29,7 +29,7 @@ Treat these as separate events/programs. Their rules, dates, registration states
 - Judging: **2026-03-30 – 2026-04-17**; winners announced **2026-04-22 14:00 ET**. The rules give the judging window as 10:00 ET start / 17:00 ET end; the connector's structured dates differ on the start instant (15:45Z). Preserve this source discrepancy for a future raw-page reconciliation.
 - Current phase: **closed** (Devpost connector, fetched 2026-11-22).
 - Published prize pool: **$65,000**.
-- Devpost listing: 6,922 participants (directory/event listing observation).
+- Participant count discrepancy: the public event page displayed **6,920**; the connector's search listing returned **6,922**. Preserve both source observations.
 - Sponsor: GitLab; Google Cloud and Anthropic category prizes.
 - Core brief: working GitLab Duo Agent Platform agent or flow that automates a specific SDLC action; chat-only responses fall outside the published requirement.
 - Minimum submission shape: public project in the GitLab AI Hackathon group, working implementation, explanatory text, public demo video under three minutes, and appropriate open-source licensing.
@@ -63,14 +63,14 @@ The Transcend subgroup is related to the same GitLab AI Hackathon root but repre
 
 ## 3. Discord and onboarding sources
 
-The official event materials direct participants to the GitLab Community Discord and the `#ai-hackathon` channel for technical help, team formation, office hours, and announcements. The Devpost event resources also link the Devpost Discord for team formation.
+The official event page directs participants to the GitLab Community Discord `#ai-hackathon`, requests access to the GitLab AI Hackathon group, and links custom-agent/custom-flow tutorials plus the prompt library. It states that group access requests closed on **2026-03-25 09:00 ET**. The event resource page links the Devpost Discord for team formation and states that office-hours scheduling is posted in Discord.
 
-- [GitLab Discord invite](https://discord.com/invite/gitlab) — `#ai-hackathon` for the Devpost AI Hackathon; current Community Hackathon rules direct questions to `#hackathon` or `#contribute`.
+- [GitLab Discord invite](https://discord.com/invite/gitlab) — `#ai-hackathon` for the Devpost AI Hackathon; current Community Hackathon rules direct questions to `#hackathon` or `#contribute`; Transcend sample workspaces use `#transcend-hackathon`.
 - [Devpost Discord](https://info.devpost.com/blog/join-the-devpost-discord).
-- Office-hours schedule is posted in the GitLab Discord; individual session dates are NOT_ESTABLISHED in this public-source pass.
-- The initial AI Hackathon access-request form was [https://forms.gle/EeCH2WWUewK3eGmVA](https://forms.gle/EeCH2WWUewK3eGmVA). The Devpost event page stated access requests stopped on **2026-03-25 09:00 ET**. Treat this form as historical evidence; verify a new official form before any future registration.
-
-Public onboarding guidance observed in the participant issue describes this sequence: register on Devpost; request access to the GitLab AI Hackathon group with a valid GitLab username and project idea; set the GitLab Duo default namespace to the hackathon group; start from the participant template; replace agent/flow placeholders and remove the `.template` suffix; commit and pass the project CI validation; create a tag to publish the agent/flow to the public catalog; then enable and test it.
+- Office-hours schedule: posted in the relevant GitLab Discord channels; individual session dates are NOT_ESTABLISHED in this public-source pass.
+- The [Participant Template README](https://gitlab.com/gitlab-ai-hackathon/project-templates/participant-template) links to a `work_items/1` onboarding item. The public item currently returns **Work item not found**; its instructions remain NOT_ESTABLISHED.
+- A representative [Transcend showcase workspace onboarding issue](https://gitlab.com/gitlab-ai-hackathon/transcend/27098937/-/work_items/1) directs the workspace owner to the Showcase Track guide, `#transcend-hackathon`, and office hours. Treat this as a sample workspace onboarding record, not a universal AI Hackathon registration workflow.
+- The public event page links an example participant issue at [participants/621485](https://gitlab.com/gitlab-ai-hackathon/participants/621485/-/issues/1).
 
 ## 4. Reusable technical references
 

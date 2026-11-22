@@ -13,5 +13,9 @@ Open entries:
   Opportunity manager channel vs folding into Challenge
   Management oversight. First instance: `.approxination`,
   routed via the dedicated channel created 2026-11-01.
+- CMP-7: external architecture portfolio tournament placement —
+  extend existing versioned tournaments vs dedicated lane vs
+  hybrid typed capability/composition/implementation units.
+  First instance: Ksarith portfolio intake (PR #5769), design-only.
 
 New examples append as CMP-n entries by amendment PR.

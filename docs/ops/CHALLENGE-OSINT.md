@@ -21,9 +21,13 @@ watch disposition are recorded in
 The machine-readable URL inventory is
 `ops/challenge/osint/gitlab-sources.json`. It records the supplied root group
 and DevSecOps Flow subgroup, the Transcend and Project Templates subgroups,
-the Participant Template project, the 312-project Transcend catalog snapshot,
-Devpost event/gallery/participants/rules/resources pages, the GitLab Community
-Hackathon pages, and the official Discord/documentation links. The 312-project public Transcend catalog snapshot is `ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json`.
+the Participant Template project, the 312-project sibling Transcend catalog,
+the archived October 2026 Transcend group, Devpost event/gallery/participants/
+rules/resources pages, the GitLab Community Hackathon pages, and the official
+Discord/documentation links. The sibling snapshot is
+`ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json`; the October
+showcase snapshots contain 1,273 subgroups and 1,820 projects under
+`ops/challenge/osint/gitlab-transcend-october-2026-*-2026-11-22.ndjson`.
 The supplied DevSecOps Flow URL resolved to an **empty subgroup** at the
 2026-11-22 observation; retain it as a URL-addressed subgroup source.
 

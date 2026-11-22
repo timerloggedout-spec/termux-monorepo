@@ -12,7 +12,7 @@ Build and compare two repository-owned catalogue variants: the incumbent multi-p
 
 - Incumbent v5 remains the source collector and current evidence contract.
 - VultrInspired v1 is implemented in `scripts/provider_model_catalog_vultr_inspired.py` as a pure offline projection over incumbent v5 documents.
-- Vultr Python and TypeScript pins live in reference metadata and the DoE `source_references` list. They are not installed, imported, executed, forked or vendored.
+- Vultr Python and TypeScript pins live in reference metadata and the DoE `source_references` list; local execution uses repository-owned code.
 - The projection preserves the incumbent record and adds structured limits, modalities, capability groups, pricing provenance, lifecycle, access evidence, extensions and per-row diagnostics.
 - Provider-specific wire protocols remain in their existing adapter modules.
 
@@ -24,14 +24,14 @@ Local fixture comparison uses the repository's existing Python runtime and ordin
 
 Experiment `DOE-VULTR-CATALOG-001` version `2.0.0` compares `Incumbent` v5.0.0 with `VultrInspired` v1.0.0. Factors cover catalogue variant, fixture family, record quality and price representation. Paired trials use identical incumbent v5 input documents, model rows and timestamps.
 
-Responses measure semantic preservation, exact decimal visibility, modality/capability coverage, unknown-field retention, malformed-row diagnostics, provenance, evidence-boundary preservation and resource footprint. The Python and TypeScript upstream projects are immutable design references, not variants.
+Responses measure semantic preservation, exact decimal visibility, modality/capability coverage, unknown-field retention, malformed-row diagnostics, provenance, evidence-boundary preservation and resource footprint. The Python and TypeScript upstream projects remain immutable design references; Incumbent and VultrInspired are the local variants.
 
 ## Invariants
 
 - Catalog presence, pricing, access, entitlement, quota, readiness, health and inference success remain separate evidence classes.
 - Missing readiness or entitlement remains unknown.
 - The incumbent remains authoritative until a separately reviewed promotion.
-- VultrInspired v1 cannot activate providers, alter routing, mutate quotas or call inference.
+- VultrInspired v1 has evaluation-only authority; provider activation, routing, quota mutation and inference follow separate gates.
 - Each design change increments the DoE version; each run binds source, fixture and implementation revisions.
 
 ## Acceptance

@@ -84,9 +84,12 @@ async def run_trial(prompt: str,
                     client_factory=None) -> dict:
     """Return full trial record: artifacts, jevs, kevs, laya, score."""
     t0 = time.time()
+    run_id = hashlib.sha256(
+        f"{task}:{prompt}:{time.time_ns()}".encode()
+    ).hexdigest()[:16]
     artifacts = []
     for index, (prov, model) in enumerate(providers):
-        candidate_id = f"candidate-{index:04d}"
+        candidate_id = f"{run_id}-candidate-{index:04d}"
         try:
             a = await produce(prompt, prov, model, client_factory=client_factory)
             a.update({"candidate_id": candidate_id, "ok": True})
@@ -156,6 +159,7 @@ async def run_trial(prompt: str,
 
     return {
         "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "run_id": run_id,
         "composition_hash": _comp_hash,
         "bank_config": _bank_cfg,
         "task": task,

@@ -20,6 +20,16 @@ on:
       # status.json-only push is carved out of the app glob.
       - "!apps/tribute-dashboard/data/status.json"
       - "apps/project-pages-hub/**"
+      - "architecture.md"
+      - "docs/architecture/**"
+      - "docs/ops/diagrams/**"
+      - "docs/ops/generated/*.svg"
+      - "docs/ops/generated/*.png"
+      - "docs/ops/SHE-DASHBOARD-*"
+      - "docs/ops/SHE-INTEGRATION-FINDINGS.md"
+      - "docs/ops/INTEGRATION-GRAPH-MATRIX.md"
+      - "scripts/ci/build_architecture_portal.py"
+      - "tests/test_build_architecture_portal.py"
       - ".github/workflows/tribute-dashboard-deploy.yml"
       - ".github/workflows/tribute-dashboard-preview.yml"
       - "scripts/build_dashboard_manifest.py"
@@ -109,9 +119,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Prepare project hub + matrix page
         run: |
-          mkdir -p _site/data
+          set -euo pipefail
+          mkdir -p _site/data _site/architecture
           cp apps/project-pages-hub/index.html _site/index.html
           cp apps/project-pages-hub/index.md _site/index.md
+          cp -a apps/project-pages-hub/architecture/. _site/architecture/
           cp apps/tribute-dashboard/matrix.html _site/matrix.html
           cp apps/tribute-dashboard/matrix.md _site/matrix.md
           cp apps/tribute-dashboard/dashboard.css _site/dashboard.css
@@ -119,7 +131,34 @@ jobs:
           if [ -f docs/ops/generated/lane-matrix-status.json ]; then
             cp docs/ops/generated/lane-matrix-status.json _site/data/lane-matrix-status.json
           fi
+          python3 scripts/ci/build_architecture_portal.py \
+            --output _site/architecture \
+            --source-ref "$GITHUB_REF_NAME" \
+            --source-sha "$GITHUB_SHA"
           touch _site/.nojekyll
+      - name: Render Mermaid architecture sources to SVG
+        timeout-minutes: 20
+        run: |
+          set -euo pipefail
+          printf '%s\\n' '{"args":["--no-sandbox","--disable-setuid-sandbox"]}' > /tmp/puppeteer-config.json
+          count=0
+          while IFS= read -r -d '' src; do
+            relative="${src#./}"
+            out="_site/architecture/assets/diagrams/${relative%.mmd}.svg"
+            mkdir -p "$(dirname "$out")"
+            echo "mmdc: $src -> $out"
+            npx --yes @mermaid-js/mermaid-cli@11.4.2 \
+              -i "$src" -o "$out" -b transparent -s 2 \
+              --puppeteerConfigFile /tmp/puppeteer-config.json
+            count=$((count + 1))
+          done < <(find docs/architecture docs/ops/diagrams docs/ops/SHE-DASHBOARD-ARCHITECTURE.mmd -type f -name '*.mmd' -print0)
+          if [ "$count" -eq 0 ]; then
+            echo "::error::Architecture Explorer has no Mermaid sources to render."
+            exit 1
+          fi
+          python3 scripts/ci/build_architecture_portal.py --output _site/architecture --verify-rendered
+          python3 -m unittest discover -s tests -p test_build_architecture_portal.py -v
+          python3 scripts/ci/verify_agent_readability_surfaces.py
       - name: Opt gh-pages out of Vercel Git deployments
         # gh-pages is a force-orphaned static Pages artifact, not an app source.
         # Every Vercel project linked to this repo (mcp-hub, tribute-dash,

@@ -712,7 +712,7 @@ January 2027 event.
 
 The October 2026 Community Hackathon edition is historical: the current
 Contributor Platform page reports 76 prize winners and 636 merged MRs.
-Current rules version is 2026-10-v2.
+Live rules page version is 2026-10-v2; the search-index copy returned 2026-10-v1. Preserve the version discrepancy.
 
 **Source hierarchy:** `https://gitlab.com/gitlab-ai-hackathon` is the public root
 group. The supplied

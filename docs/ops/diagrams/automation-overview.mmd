@@ -36,6 +36,20 @@ flowchart TB
   reconcile --> evidence
   dependency --> evidence
 
+  subgraph architecture_docs[Architecture documentation lane]
+    event --> archdocs[Architecture docs refresh workflow]:::event
+    archdocs --> archversion[SemVer and changelog gate]:::read
+    archversion --> archrender[Mermaid SVG and PNG rendering]:::state
+    archrender --> archmanifest[Deterministic architecture manifest]:::read
+    archmanifest --> archartifact[PR review artifact]:::read
+    archdocs --> archrefresh[Trusted master projection commit]:::writer
+  end
+
+  archdocs --> evidence
+  archmanifest --> evidence
+  archartifact --> evidence
+  archrefresh --> evidence
+
   evidence --> outcome{Outcome and authority boundary}:::event
   outcome --> pass[Pass / advisory result / reviewable state]:::read
   outcome --> wait[Pending evidence, cooldown, quota, or retry wait]:::state

@@ -37,6 +37,7 @@ The monorepo already contains meaningful DoE/tournament primitives. This referen
 | deepcli/deepcli/observatory/tournament.py | campaign selection and leaderboard integration |
 | deepcli/deepcli/observatory/leaderboard.py | persistent role/task/provider/model records |
 | config/system_one_catalog.json | heterogeneous external model, adapter, runtime and directory inventory |
+| ops/classifiers/classifiers-feed.json | separate 71-unit classifier estate snapshot (43 live, 26 dormant, 2 dead; generated 2026-11-02) |
 | config/classifier_graph_registry.json | versioned local/external candidate identities and graph arms |
 | docs/ops/CLASSIFIER-GRAPH-REGISTRY.schema.json | runtime registry schema |
 | scripts/ci/classifier_graph_registry_validator.py | catalog, role, source-path and DAG validator |
@@ -62,7 +63,7 @@ The canonical manager cohort schema remains authoritative. Proposed DoE design, 
 
 The monorepo remains authoritative for task identity, version lineage, evidence, acceptance and promotion. External research/compute systems remain optional adapters.
 
-The initial classifier graph registry registers four local role implementations and five catalog-backed namesake candidates. It preserves the 88-entry System One inventory as heterogeneous catalog layers rather than treating every entry as an interchangeable classifier. The graph validator checks candidate-to-catalog references, role compatibility, local source paths, unique node identity and DAG acyclicity. The typed-decision candidate screen remains design-only pending candidate-specific adapters and matched trials.
+The initial classifier graph registry registers four local role implementations and five catalog-backed namesake candidates. It preserves the 88-entry System One inventory as heterogeneous catalog layers rather than treating every entry as an interchangeable classifier. Separately, the classifier-estate feed records 71 operating units (43 live, 26 dormant, 2 dead) as of 2026-11-02; those units include pipelines, routing, gates and feed systems as well as classifier surfaces. The graph validator checks candidate-to-catalog references, estate snapshot counts, role compatibility, local source paths, unique node identity and DAG acyclicity. The typed-decision candidate screen remains design-only pending candidate-specific adapters and matched trials.
 
 ## Added operating-system references\n\n- OPERATING-SYSTEM.md — planes, competition units, lifecycle and promotion.\n- SELF-IMPROVEMENT-ENGINE.md — SIE subsystems and bounded improvement loop.\n- CLASSIFIER-GRAPH-TOURNAMENT.md — lateral classifier comparison, complementarity and graph composition.\n\nThe earlier trial implementation had a source-inspection risk: independently filtered artifact/Jev/Kev arrays could misalign after partial failures. The current branch adds stable candidate IDs, preserves per-candidate stage slots, checks identity at reduction, and excludes incomplete evidence triples. Regression tests have been added; CI execution remains pending.\n\n## Architectural decision
 

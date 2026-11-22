@@ -801,24 +801,20 @@
 --------------------------------------------------------------------------------
  gitlab (2)
   gitlab.ci.compute_minutes
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 400 compute minutes
     metric: GitLab.com instance-runner compute minutes aggregated to the
     top-level namespace | window: monthly | reset: first day of each calendar
     month
-    No live reading (live source: GET /api/v4/namespaces/:id exposes
-    ci_minutes_usage for an eligible top-level group Owner; live account read
-    and quota reader are unconfigured; usage remains unknown)
+    Public evidence state only; no account balance or runtime admission implied.
   gitlab.project.repository_lfs_storage
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 10 GiB/project
     metric: GitLab.com project repository plus Git LFS storage
     (container/package registries and job artifacts excluded) | window:
     per-project fixed cap | reset: continuous accumulation; usage changes when
     repository/LFS data is reduced or storage is purchased
-    No live reading (live source: GitLab project Usage quotas > Storage; live
-    project read and storage reader are unconfigured; current usage remains
-    unknown)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  google (3)
   gemini.api_free
@@ -1358,6 +1354,6 @@
   zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
   registry: zai.free_models
  Coverage and quota checks do not grant runtime admission.
- 174 registry records | 1 alert(s) | 172 with a reported reading | 2 with No
+ 174 registry records | 1 alert(s) | 174 with a reported reading | 0 with No
  live reading
 ================================================================================

@@ -149,3 +149,10 @@ Source: https://jules.google/docs/changelog/
 **Adaptation:** compare individual classifier capability, routing policy, graph composition and full tournament implementation as separate units. Test complementarity and conditional error overlap; preserve matched cohorts, held-out evaluation, stable candidate identity and actual end-to-end task outcome.
 
 These references inform architecture and experiment design. Their benchmark results do not establish performance for the repository's 70+ classifier pool.
+
+
+## Classifier inventory authority
+
+The existing `docs/ops/SYSTEM-ONE-CATALOG.md` describes `config/system_one_catalog.json` (schema `system-one-catalog/1`) as the machine-readable catalog and reports 88 entries: 61 models, 16 adapters, 7 runtimes and 4 directories. The documented lifecycle is referenced → catalogued → trial_candidate → evaluated, with firsthand evidence required at each transition. The local Mev/Jev/Kev/Laya classes implement trial roles; same-named external projects are distinct catalog entities. This distinction is carried into the classifier graph contract.
+
+The existing `docs/ops/CLASSIFIER-TRIAL-DISPATCH.md` already records the positional-zip alignment issue in trial.py as a steward backlog item. The proposed graph work elevates stable candidate-ID joins and regression coverage to a prerequisite.

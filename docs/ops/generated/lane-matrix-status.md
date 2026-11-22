@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-22T09:16:00Z)
+# Lane matrix status (2026-11-22T09:16:39Z)
 
-- Master: `dfb5af69d0dceea320825248e7a12e857b411829`
+- Master: `ad039a54e09bb3894424c6f601a348be5686b710`
 - Open PRs: **510**
 - Oldest: #47 (108.73d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -32,7 +32,7 @@
 | #5723 | 1.67 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted review relay and record  |
 | #5724 | 1.67 | EXTRACT | state:unknown, minesweeper-title | fix(jules): replace hosted PR handoff with receipt |
 | #47 | 108.73 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
-| #81 | 106.47 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
+| #81 | 106.48 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
 | #103 | 105.34 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
 | #527 | 68.06 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
 | #605 | 64.64 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
@@ -58,7 +58,7 @@
 | #1626 | 29.13 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
 | #1645 | 28.37 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
 | #1650 | 28.29 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
-| #1694 | 26.32 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
+| #1694 | 26.33 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
 | #1734 | 25.92 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
 | #1735 | 25.91 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
 | #1966 | 25.18 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |

@@ -1,10 +1,16 @@
-# Classifier Trial Dispatch — first execution surface for the observatory quartet
+# Classifier Trial Dispatch — observatory role implementations and candidate execution
 
-State before this landed (verified 2026-10-27): the Tier 1 classifier
-quartet in `deepcli/deepcli/observatory/` (Mev producer, Jev judge, Kev
-verifier, Laya merger, orchestrated by `trial.run_trial`) was tested but
-had never executed — no workflow imported it, and the provider adapter
-layer Mev routes to (`deepcli.llm.adapters.<provider>`) did not exist.
+The local observatory modules expose four role contracts: Mev (text
+generation), Jev (rubric critique), Kev (reference verification), and
+Laya (evidence reduction). These are local implementation labels, not
+the external projects catalogued under the same names. The current
+dispatch composes these roles for one trial; the tournament's next
+evolution compares alternate implementations and graphs laterally.
+
+The implementation history below records the first dispatch path and
+its dated execution evidence. The current candidate identity contract
+keeps each artifact, critique, and verification result attached to the
+same candidate even when a stage fails.
 
 ## What landed
 
@@ -78,29 +84,37 @@ APIs from Actions (runs 40504965897–40506393011). Established state:
 - **First completed trial — acceptance condition met.** Run
   40509162104 (2026-10-27, after PR #1782 set the verified defaults)
   completed successfully: producer `liquid/lfm-2.5-2.6b:free`, judge
-  `openrouter/free`; Mev → Jev → Kev → Laya all executed and Laya
-  ranked a winner (2,353-byte trial record). The route remains
+  `openrouter/free`; all four local role stages completed, and the
+  Laya reducer ranked a winner (2,353-byte trial record). The route remains
   rate-limit-prone, so a failed future dispatch should be read against
   fresh diagnose evidence before any retry.
 
-## Known follow-up
+## Candidate identity and partial failures
 
-`trial.run_trial` filters failed Jev/Kev entries before zipping them
-with artifacts in `laya.synthesize`, so a mid-list critique failure can
-pair an artifact with another artifact's verdicts. Single-producer
-dispatches are unaffected. Fix belongs in trial.py with a regression
-test (steward backlog).
+The candidate-alignment defect is corrected in the current tournament
+branch. `trial.run_trial` assigns a stable per-trial candidate ID and
+retains one result slot per candidate at each stage. `laya.synthesize`
+validates candidate ID sets and joins Jev/Kev evidence by ID independent
+of stage-array order, excludes incomplete evidence triples, and records
+excluded candidates. Regression coverage
+includes direct identity mismatch and a multi-candidate trial where the
+first Jev critique fails and the second candidate remains correctly
+ranked. Test execution is pending CI.
 
 ## System One decide stage
 
-`observatory/decide.py` + `llm/adapters/systemone.py` connect the
-quartet to the System One ecosystem (proposal
+`observatory/decide.py` + `llm/adapters/systemone.py` connect a trial
+result to the System One typed-decision lane (proposal
 `system-one-classifier-census`, catalog
 `docs/ops/SYSTEM-ONE-CATALOG.md`): any TypeSafe-compatible decision
 server (self-hosted Kev, simple-jev, Ollaya, …) can verify a text.
 The rubric maps to Score questions with criteria ["0", "1"] — the
 server's interpolated score is the 0..1 field score — plus a Noul
-fabrication check. Dispatch flags: `--decide` (verify the winning
+fabrication check. This is a separate typed-decision lane: the System
+One adapter implements decide(state, questions), while ask(prompt)
+raises NotImplementedError. These endpoints are therefore candidates
+for typed evaluation, rather than drop-in Mev generation or Jev chat
+critique adapters. Dispatch flags: `--decide` (verify the winning
 text after the trial; endpoint from `--decide-url` or the
 SYSTEMONE_BASE_URL env), `--decide-only` (run just the check on the
 prompt). Workflow inputs: `systemone_url`, `systemone_model`. Local

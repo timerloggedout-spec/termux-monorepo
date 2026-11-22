@@ -214,11 +214,13 @@ def missing_names(before, after, key):
     return sorted({str(x.get(key, "")) for x in before} - {str(x.get(key, "")) for x in after})
 
 
-def compare_snapshots(before, after):
+def compare_snapshots(before, after, mode="detached", target_org="search-astute-ly"):
     findings = []
     old_org, new_org = before.get("organization", {}), after.get("organization", {})
-    if old_org.get("id") != new_org.get("id"):
+    if mode == "detached" and old_org.get("id") != new_org.get("id"):
         findings.append("organization_id_changed")
+    if mode == "transferred" and old_org.get("id") == new_org.get("id"):
+        findings.append("destination_organization_id_matches_source")
 
     old_repos = {x.get("id"): x for x in old_org.get("repositories", [])}
     new_repos = {x.get("id"): x for x in new_org.get("repositories", [])}
@@ -228,7 +230,12 @@ def compare_snapshots(before, after):
     for repo_id in old_repos.keys() & new_repos.keys():
         old, new = old_repos[repo_id], new_repos[repo_id]
         name = old.get("name", repo_id)
-        if old.get("full_name") != new.get("full_name"):
+        if old.get("name") != new.get("name"):
+            findings.append(f"repository_name_changed:{name}")
+        expected_full_name = f"{target_org}/{name}"
+        if new.get("full_name", "").casefold() != expected_full_name.casefold():
+            findings.append(f"repository_owner_path_mismatch:{name}:{new.get('full_name')}")
+        if mode == "detached" and old.get("full_name") != new.get("full_name"):
             findings.append(f"repository_identity_changed:{name}")
         for collection in ("branches", "tags", "releases", "workflows", "hooks", "deployments"):
             status_key = f"{collection}_status"
@@ -251,22 +258,23 @@ def compare_snapshots(before, after):
             if missing:
                 findings.append(f"items_missing:{name}:{collection}:{','.join(missing)}")
 
-    old_int, new_int = old_org.get("integrations", {}), new_org.get("integrations", {})
-    for collection, status_key, identity_key in (
-        ("actions_secret_names", "actions_secrets_status", None),
-        ("actions_variable_names", "actions_variables_status", None),
-        ("webhooks", "webhooks_status", "id"),
-        ("app_installations", "app_installations_status", "id"),
-    ):
-        if old_int.get(status_key) != "observed" or new_int.get(status_key) != "observed":
-            findings.append(f"integration_unverified:{collection}")
-            continue
-        if identity_key:
-            missing = missing_names(old_int.get(collection, []), new_int.get(collection, []), identity_key)
-        else:
-            missing = sorted(set(old_int.get(collection, [])) - set(new_int.get(collection, [])))
-        if missing:
-            findings.append(f"integration_items_missing:{collection}:{','.join(missing)}")
+    if mode == "detached":
+        old_int, new_int = old_org.get("integrations", {}), new_org.get("integrations", {})
+        for collection, status_key, identity_key in (
+            ("actions_secret_names", "actions_secrets_status", None),
+            ("actions_variable_names", "actions_variables_status", None),
+            ("webhooks", "webhooks_status", "id"),
+            ("app_installations", "app_installations_status", "id"),
+        ):
+            if old_int.get(status_key) != "observed" or new_int.get(status_key) != "observed":
+                findings.append(f"integration_unverified:{collection}")
+                continue
+            if identity_key:
+                missing = missing_names(old_int.get(collection, []), new_int.get(collection, []), identity_key)
+            else:
+                missing = sorted(set(old_int.get(collection, [])) - set(new_int.get(collection, [])))
+            if missing:
+                findings.append(f"integration_items_missing:{collection}:{','.join(missing)}")
     return sorted(findings)
 
 
@@ -274,6 +282,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--org", default=os.getenv("ORG_SLUG", "search-astute-ly"))
     parser.add_argument("--phase", choices=("baseline", "verify"), default=os.getenv("PHASE", "baseline"))
+    parser.add_argument("--mode", choices=("detached", "transferred"), default=os.getenv("MODE", "detached"))
+    parser.add_argument("--source-org", default=os.getenv("SOURCE_ORG", "search-astute-ly"))
     parser.add_argument("--baseline", type=Path)
     parser.add_argument("--output", type=Path, default=Path("enterprise-org-state.json"))
     args = parser.parse_args()
@@ -302,7 +312,20 @@ def main():
             print("Verification requires the baseline artifact JSON.", file=sys.stderr)
             return 2
         before = json.loads(args.baseline.read_text(encoding="utf-8"))
-        errors.extend(compare_snapshots(before, snapshot))
+        errors.extend(compare_snapshots(before, snapshot, args.mode, args.org))
+        if args.mode == "transferred":
+            try:
+                remaining = pages(f"/orgs/{urllib.parse.quote(args.source_org, safe='')}/repos?type=all&per_page=100", token)
+            except ApiError as exc:
+                remaining = [] if exc.status == 404 else None
+            if remaining is None:
+                errors.append("source_repository_inventory_unavailable")
+            elif remaining:
+                errors.append(f"source_repositories_remaining:{len(remaining)}")
+            old_integrations = before.get("organization", {}).get("integrations", {})
+            if old_integrations.get("actions_secret_names") or old_integrations.get("actions_variable_names") or old_integrations.get("webhooks") or old_integrations.get("app_installations"):
+                warnings.append("recreate_source_organization_integrations_in_destination")
+            warnings.append("review_source_teams_members_projects_and_packages")
         if (org.get("plan") or "").casefold() != "free":
             errors.append(f"plan_not_free:{org.get('plan') or 'unavailable'}")
 
@@ -326,6 +349,7 @@ def main():
             "## Enterprise organization preservation",
             "",
             f"- Phase: {args.phase}",
+            f"- Preservation mode: {args.mode}",
             f"- Organization: {org.get('login')} ({org.get('html_url')})",
             f"- Organization ID: {org.get('id')}",
             f"- Plan: {org.get('plan') or 'UNVERIFIED'}",

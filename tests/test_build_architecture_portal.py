@@ -102,6 +102,26 @@ class ArchitecturePortalBuilderTests(unittest.TestCase):
                     render.write_text("<svg xmlns=\"http://www.w3.org/2000/svg\"></svg>", encoding="utf-8")
             self.assertEqual(portal.verify_rendered(output), [])
 
+    def test_finalize_removes_internal_render_inputs_from_published_bundle(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "repo"
+            output = Path(tmp) / "site" / "architecture"
+            root.mkdir()
+            self.make_repo(root)
+            portal.build_portal(root, output, "master", "abc123")
+            for item in json.loads((output / "catalog.json").read_text())["items"]:
+                if item["kind"] == "mermaid":
+                    render = output / item["render_path"]
+                    render.parent.mkdir(parents=True, exist_ok=True)
+                    render.write_text("<svg xmlns=\"http://www.w3.org/2000/svg\"></svg>", encoding="utf-8")
+
+            portal.finalize_bundle(output)
+            catalog = json.loads((output / "catalog.json").read_text())
+
+            self.assertFalse((output / "render-inputs").exists())
+            self.assertTrue(all("render_input_path" not in item for item in catalog["items"]))
+            self.assertTrue(all((output / item["render_path"]).is_file() for item in catalog["items"] if item["kind"] == "mermaid"))
+
     def test_rejects_symlink_that_escapes_repository_root(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp) / "repo"

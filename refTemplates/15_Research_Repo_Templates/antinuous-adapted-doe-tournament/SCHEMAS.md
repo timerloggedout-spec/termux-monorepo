@@ -1,6 +1,6 @@
 # DoE Tournament — schema reference
 
-The following YAML and JSON are illustrative v1 contracts. They are not yet wired to runtime validators.
+The YAML and JSON examples below are reference contracts. The checked-in classifier graph registry and staged tournament experiment plan have dedicated JSON Schemas and offline CI validation.
 
 ## Experiment manifest
 
@@ -330,4 +330,20 @@ source references, the design-only SIE challenger, and mandatory matched
 cohort, held-out, independent-evaluator, receipt, rollback and owner
 approval gates. `manager.tournament.v1` remains the canonical cohort
 identity.
+
+
+## Staged classifier tournament experiment plan
+
+The checked-in plan is `classifier.tournament-experiment-plan.v1`:
+
+- Plan: `config/classifier_tournament_experiment_plan.json`
+- Schema: `docs/ops/CLASSIFIER-TOURNAMENT-EXPERIMENT-PLAN.schema.json`
+- Validation: `scripts/ci/classifier_graph_registry_validator.py`
+
+The five phases are inventory qualification, lateral capability screening,
+graph composition, complete tournament-implementation comparison, and
+promotion/canary. The plan remains `design_only` with
+`execution_ready: false` until candidate-specific gates pass. It preserves
+four independent comparison units: classifier capability, routing policy,
+composition graph and tournament implementation.
 

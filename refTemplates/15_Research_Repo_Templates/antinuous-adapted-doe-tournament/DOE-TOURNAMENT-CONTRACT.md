@@ -111,3 +111,18 @@ A stop is a recorded outcome, not a synthetic pass.
 - Reducers declare accepted schema versions.
 - Migrations preserve original payload digest and migration provenance.
 - Historical scores can be recomputed from raw events with a named reducer version; original published decisions remain immutable.
+
+
+## 11. Tournament implementation version competition
+
+The principal tournament arm is a complete implementation version, not an isolated classifier or model. Freeze the manager policy, router, graph topology, classifier catalog snapshot, scheduler/admission policy, evaluator suite, environment and budget. Compare incumbent and challenger on the same matched cohort; retain component ablations to explain where gains originate. Use held-out tasks and later time windows before promotion.
+
+## 12. Classifier graph comparison
+
+The classifier registry is a pool of independently versioned capabilities. Run individual screening first, then compare graph compositions: single specialist, static ensemble, capability router, conditional cascade, independent verification, committee/voting and manager-delegated graph. Measure individual classifier quality separately from end-to-end graph outcome. Use conditional error overlap, calibration, disagreement and coverage to identify complementary strengths. Every node result and evaluator record joins by stable candidate_id/run_id, with explicit missing/failed/skipped states.
+
+Mev/Jev/Kev/Laya describe the current producer/critic/verifier/merger roles. The current trial path is a sequential baseline adapter. The tournament may schedule equivalent roles and other classifiers in parallel or conditionally through a DAG; the names do not impose a universal pipeline.
+
+## 13. SIE adoption loop
+
+SIE (Self-Improvement Engine) is the control loop that turns evidence into bounded, versioned challengers. It re-fetches the incumbent and latest evidence, diagnoses one bottleneck, preregisters one falsifiable change, runs matched checks, compares raw outcome vectors and uncertainty, and records promote/hold/reject/stop. The evaluator and promotion policy remain independently versioned and gated. See SELF-IMPROVEMENT-ENGINE.md.

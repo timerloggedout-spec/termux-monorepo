@@ -4,6 +4,10 @@ Status: architecture proposal; source reconnaissance completed 2026-11-22.
 Owner: challenge-entries lane (event records) + Devpost directory adapter (global project discovery).
 Authority: public-source observation only. Existing lane ownership and single-writer boundaries remain in force.
 
+## Observatory-wide concept intelligence
+
+The Devpost adapters are one Observatory source family. The source-neutral concept corpus and challenge-outcome comparison/prediction design are specified in [`docs/superpowers/specs/2026-11-22-observatory-concept-intelligence-design.md`](../superpowers/specs/2026-11-22-observatory-concept-intelligence-design.md). That design separates independent concept value from official award outcomes and defines leakage-safe evidence gates before predictive probabilities.
+
 ## 1. Decision
 
 Extend the existing Challenge OSINT and Observatory system with two distinct Devpost source adapters:

@@ -24,9 +24,12 @@ class ClassifierGraphRegistryTests(unittest.TestCase):
         cls.estate = json.loads(
             (ROOT / "ops/classifiers/classifiers-feed.json").read_text(encoding="utf-8")
         )
+        cls.plan = json.loads(
+            (ROOT / "config/classifier_tournament_experiment_plan.json").read_text(encoding="utf-8")
+        )
 
     def validate(self, registry):
-        return validate_registry(ROOT, registry, self.catalog, self.estate)
+        return validate_registry(ROOT, registry, self.catalog, self.estate, self.plan)
 
     def test_checked_in_registry_is_valid(self):
         self.assertEqual(self.validate(copy.deepcopy(self.registry)), [])
@@ -122,6 +125,22 @@ class ClassifierGraphRegistryTests(unittest.TestCase):
         self.assertTrue(competition["protocol"]["held_out_required"])
         self.assertTrue(competition["protocol"]["independent_evaluator_required"])
         self.assertTrue(competition["protocol"]["rollback_target_required"])
+
+    def test_experiment_plan_preserves_four_competition_units(self):
+        self.assertEqual(set(self.plan["comparison_units"]), {
+            "classifier_capability", "routing_policy",
+            "composition_graph", "tournament_implementation"
+        })
+        self.assertEqual(len(self.plan["phases"]), 5)
+        self.assertFalse(self.plan["execution_ready"])
+        self.assertEqual(self.plan["status"], "design_only")
+
+    def test_experiment_plan_requires_nulls_and_raw_objectives(self):
+        plan = copy.deepcopy(self.plan)
+        plan["analysis"]["missing_observation"] = "zero"
+        self.assertTrue(any("preserve null observations" in error
+                            for error in validate_registry(ROOT, self.registry,
+                                self.catalog, self.estate, plan)))
 
     def test_local_jev_is_dispatch_only_and_external_jev_is_paid_gated(self):
         registry = copy.deepcopy(self.registry)

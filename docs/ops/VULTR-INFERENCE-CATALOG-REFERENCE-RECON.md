@@ -51,9 +51,7 @@ Pricing is represented as decimal strings in USD per token or per request. The `
 
 ### 2.3 Parser tolerance and forward compatibility
 
-The parser accepts the documented envelope or a bare list. A malformed individual entry is skipped and recorded as a `CatalogIssue`; valid entries remain usable. An unexpected schema version is surfaced as an issue while parsing continues. Unknown fields and modality types pass through.
-
-This separates an invalid catalog envelope from one malformed model record.
+The parser accepts the documented envelope or a bare list. Its entry-level checks validate model identity and modality-list structure; an unexpected schema version is surfaced as an issue while parsing continues. Unknown fields and modality types pass through. These checks do not validate every nested field: for example, a text entry with a string-valued `supported_inputs` can pass parsing, then raise `AttributeError` during Python model normalization and prevent valid sibling entries from being returned. Treat parser tolerance as partial structural validation rather than a guarantee that every malformed row is isolated.
 
 ### 2.4 Cache and partial-source resilience
 
@@ -182,7 +180,7 @@ Each runtime slice needs its own accepted proposal item, test-first implementati
 
 This task is a bounded one-shot reference capture and architecture comparison. The codebase already has two distinct observation surfaces:
 
-- `.github/workflows/openrouter-free-catalog-sync.yml` runs daily at `17 12 * * *`, compares the public OpenRouter free-model snapshot, and uploads immutable run-attempt artifacts with 14-day retention. Its contract is observation-only.
+- `.github/workflows/openrouter-free-catalog-sync.yml` runs daily at `17 12 * * *` and uploads immutable run-attempt artifacts with 14-day retention. Its contract is observation-only. The poller reads `/tmp/openrouter-free-catalog.json` before writing; each fresh runner starts without that file, and the missing-file path behaves as an empty prior snapshot. Consequently, the current run reports every current model ID as an addition rather than comparing with the preceding run. A durable prior-snapshot handoff is a prerequisite for meaningful cross-run deltas; artifact upload alone does not provide that handoff.
 - `.github/workflows/provider-availability.yml` is `workflow_dispatch`-only in the inspected revision. Its cadence is owned by `quota-dispatch-tree.yml`; it records credential/catalog continuity and keeps routine inference disabled.
 - `.github/workflows/provider-batch.yml` runs contract tests for relevant changes and exposes separate trusted manual observation inputs. Its inference smoke defaults off.
 

@@ -35,11 +35,13 @@ def _children_with_metadata(slot: Path) -> list[dict]:
             continue
         source = child / "SOURCE.txt"
         readme = child / "README.md"
+        metadata = child / "metadata.json"
         lines = source.read_text(encoding="utf-8").strip().splitlines() if source.is_file() else []
         records.append({
             "name": child.name,
             "has_source": source.is_file(),
             "has_readme": readme.is_file(),
+            "has_metadata": metadata.is_file(),
             "source_preview": lines[0] if lines else None,
         })
     return records
@@ -72,10 +74,13 @@ def validate(entries: list[dict]) -> list[str]:
             child_sets.append(entry.get("metadata_children", []))
         for children in child_sets:
             for child in children:
+                prefix = f"{entry['slot']}/{child['name']}"
                 if not child.get("has_source"):
-                    failures.append(f"{entry['slot']}/{child['name']}: missing SOURCE.txt")
+                    failures.append(f"{prefix}: missing SOURCE.txt")
                 if not child.get("has_readme"):
-                    failures.append(f"{entry['slot']}/{child['name']}: missing README.md")
+                    failures.append(f"{prefix}: missing README.md")
+                if entry["slot"] in METADATA_CHILD_SLOTS and not child.get("has_metadata"):
+                    failures.append(f"{prefix}: missing metadata.json")
     return failures
 
 

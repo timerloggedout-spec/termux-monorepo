@@ -1,0 +1,259 @@
+{
+  "schema_version": "classifier.graph-registry.v1",
+  "registry_id": "termux-monorepo-classifier-graph-tournament",
+  "registry_version": "0.1.0",
+  "catalog": {
+    "path": "config/system_one_catalog.json",
+    "schema": "system-one-catalog/1"
+  },
+  "canonical_cohort": {
+    "schema": "manager.tournament.v1",
+    "contract_path": "docs/ops/MANAGER-TOURNAMENT.schema.json"
+  },
+  "roles": [
+    {
+      "role_id": "text_generation",
+      "capability": "Produce candidate text or artifacts",
+      "contract_version": "1.0.0"
+    },
+    {
+      "role_id": "rubric_critique",
+      "capability": "Evaluate candidate artifacts against a frozen rubric",
+      "contract_version": "1.0.0"
+    },
+    {
+      "role_id": "reference_verification",
+      "capability": "Compare candidate artifacts with reference evidence",
+      "contract_version": "1.0.0"
+    },
+    {
+      "role_id": "typed_decision",
+      "capability": "Return structured choices, scores or predicates from typed state",
+      "contract_version": "1.0.0"
+    },
+    {
+      "role_id": "option_scoring",
+      "capability": "Score or select among a bounded option set",
+      "contract_version": "1.0.0"
+    },
+    {
+      "role_id": "evidence_reduction",
+      "capability": "Join evidence by candidate identity and produce a versioned decision",
+      "contract_version": "1.0.0"
+    }
+  ],
+  "candidates": [
+    {
+      "candidate_id": "local.deepcli.mev",
+      "kind": "local",
+      "catalog_entry_id": null,
+      "roles": [
+        "text_generation"
+      ],
+      "readiness": "incumbent",
+      "adapter_status": "native",
+      "source_ref": "deepcli/deepcli/observatory/mev.py",
+      "notes": "Local baseline producer implementation."
+    },
+    {
+      "candidate_id": "local.deepcli.jev",
+      "kind": "local",
+      "catalog_entry_id": null,
+      "roles": [
+        "rubric_critique"
+      ],
+      "readiness": "incumbent",
+      "adapter_status": "native",
+      "source_ref": "deepcli/deepcli/observatory/jev.py",
+      "notes": "Local baseline rubric critic; judge independence is an evaluation factor."
+    },
+    {
+      "candidate_id": "local.deepcli.kev",
+      "kind": "local",
+      "catalog_entry_id": null,
+      "roles": [
+        "reference_verification"
+      ],
+      "readiness": "incumbent",
+      "adapter_status": "native",
+      "source_ref": "deepcli/deepcli/observatory/kev.py",
+      "notes": "Local baseline exact/token-F1 reference verifier."
+    },
+    {
+      "candidate_id": "local.deepcli.laya",
+      "kind": "local",
+      "catalog_entry_id": null,
+      "roles": [
+        "evidence_reduction"
+      ],
+      "readiness": "incumbent",
+      "adapter_status": "native",
+      "source_ref": "deepcli/deepcli/observatory/laya.py",
+      "notes": "Local baseline reducer; current weighted scalar remains a baseline preference."
+    },
+    {
+      "candidate_id": "catalog.S1-01",
+      "kind": "catalog",
+      "catalog_entry_id": "S1-01",
+      "roles": [
+        "typed_decision"
+      ],
+      "readiness": "catalogued",
+      "adapter_status": "available",
+      "source_ref": "config/system_one_catalog.json#S1-01",
+      "notes": "TypeSafe AI Jev; evaluate in the typed-decision lane."
+    },
+    {
+      "candidate_id": "catalog.S1-02",
+      "kind": "catalog",
+      "catalog_entry_id": "S1-02",
+      "roles": [
+        "typed_decision"
+      ],
+      "readiness": "trial_candidate",
+      "adapter_status": "available",
+      "source_ref": "config/system_one_catalog.json#S1-02",
+      "notes": "Jared Palmer Kev; TypeSafe-compatible serving is catalogued, candidate-specific trial evidence remains required."
+    },
+    {
+      "candidate_id": "catalog.S1-03",
+      "kind": "catalog",
+      "catalog_entry_id": "S1-03",
+      "roles": [
+        "typed_decision"
+      ],
+      "readiness": "evaluated",
+      "adapter_status": "available",
+      "source_ref": "config/system_one_catalog.json#S1-03",
+      "notes": "ConvAI Laya decision encoder family; preserve exact checkpoint and serving provenance per trial."
+    },
+    {
+      "candidate_id": "catalog.S1-04",
+      "kind": "catalog",
+      "catalog_entry_id": "S1-04",
+      "roles": [
+        "typed_decision"
+      ],
+      "readiness": "catalogued",
+      "adapter_status": "required",
+      "source_ref": "config/system_one_catalog.json#S1-04",
+      "notes": "Recruiting-domain Mev encoder/decision-head candidate; domain-specific evaluation required."
+    },
+    {
+      "candidate_id": "catalog.S1-05",
+      "kind": "catalog",
+      "catalog_entry_id": "S1-05",
+      "roles": [
+        "option_scoring"
+      ],
+      "readiness": "trial_candidate",
+      "adapter_status": "required",
+      "source_ref": "config/system_one_catalog.json#S1-05",
+      "notes": "Mellow AI mev option-selection model; protocol and adapter compatibility require validation."
+    }
+  ],
+  "graphs": [
+    {
+      "graph_id": "local-role-baseline",
+      "graph_version": "0.1.0",
+      "competition_unit": "composition",
+      "status": "incumbent",
+      "execution_mode": "sequential_baseline",
+      "nodes": [
+        {
+          "node_id": "producer",
+          "kind": "classifier",
+          "role_id": "text_generation",
+          "candidate_id": "local.deepcli.mev",
+          "depends_on": []
+        },
+        {
+          "node_id": "critic",
+          "kind": "critic",
+          "role_id": "rubric_critique",
+          "candidate_id": "local.deepcli.jev",
+          "depends_on": [
+            "producer"
+          ]
+        },
+        {
+          "node_id": "verifier",
+          "kind": "verifier",
+          "role_id": "reference_verification",
+          "candidate_id": "local.deepcli.kev",
+          "depends_on": [
+            "producer"
+          ]
+        },
+        {
+          "node_id": "reducer",
+          "kind": "reducer",
+          "role_id": "evidence_reduction",
+          "candidate_id": "local.deepcli.laya",
+          "depends_on": [
+            "critic",
+            "verifier"
+          ]
+        }
+      ]
+    },
+    {
+      "graph_id": "typed-decision-candidate-screen",
+      "graph_version": "0.1.0",
+      "competition_unit": "composition",
+      "status": "design_only",
+      "execution_mode": "parallel_screen",
+      "nodes": [
+        {
+          "node_id": "typesafe-jev",
+          "kind": "classifier",
+          "role_id": "typed_decision",
+          "candidate_id": "catalog.S1-01",
+          "depends_on": []
+        },
+        {
+          "node_id": "jared-kev",
+          "kind": "classifier",
+          "role_id": "typed_decision",
+          "candidate_id": "catalog.S1-02",
+          "depends_on": []
+        },
+        {
+          "node_id": "convai-laya",
+          "kind": "classifier",
+          "role_id": "typed_decision",
+          "candidate_id": "catalog.S1-03",
+          "depends_on": []
+        },
+        {
+          "node_id": "recruiting-mev",
+          "kind": "classifier",
+          "role_id": "typed_decision",
+          "candidate_id": "catalog.S1-04",
+          "depends_on": []
+        }
+      ]
+    }
+  ],
+  "evaluation": {
+    "evaluator_id": "classifier-graph-evaluator",
+    "evaluator_version": "1.0.0",
+    "hard_gates": [
+      "task_correctness",
+      "security_and_policy",
+      "evidence_provenance",
+      "schema_validity"
+    ],
+    "objectives": [
+      "quality",
+      "acceptance_rate",
+      "reproducibility",
+      "latency",
+      "compute_cost",
+      "inference_cost",
+      "human_effort",
+      "calibration"
+    ],
+    "held_out_required": true
+  }
+}

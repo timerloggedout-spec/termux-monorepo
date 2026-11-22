@@ -70,16 +70,18 @@ def validate_registry(root: Path, registry: Any, catalog: Any, estate: Any) -> l
     if not isinstance(catalog, dict) or catalog.get("schema") != "system-one-catalog/1":
         errors.append("catalog: expected system-one-catalog/1")
         catalog_ids: set[str] = set()
+        catalog_by_id: dict[str, dict] = {}
     else:
         entries = catalog.get("entries")
         if not isinstance(entries, list):
             errors.append("catalog.entries: expected list")
             catalog_ids = set()
         else:
-            catalog_ids = {
-                entry.get("id") for entry in entries
+            catalog_by_id = {
+                entry.get("id"): entry for entry in entries
                 if isinstance(entry, dict) and isinstance(entry.get("id"), str)
             }
+            catalog_ids = set(catalog_by_id)
             if len(catalog_ids) != len(entries):
                 errors.append("catalog.entries: missing or duplicate catalog IDs")
 
@@ -121,11 +123,19 @@ def validate_registry(root: Path, registry: Any, catalog: Any, estate: Any) -> l
                 for role_id in candidate_roles:
                     if not isinstance(role_id, str) or role_id not in role_ids:
                         errors.append(f"{prefix}.roles: unknown role {role_id!r}")
+            qualification_state = candidate.get("qualification_state")
+            if qualification_state not in {"role_mapped", "role_mapped_unverified", "unclassified"}:
+                errors.append(f"{prefix}.qualification_state: unknown or missing state {qualification_state!r}")
+            elif qualification_state == "unclassified" and candidate_roles != ["unclassified"]:
+                errors.append(f"{prefix}.qualification_state: unclassified candidates must use only the unclassified role")
+            elif qualification_state != "unclassified" and candidate_roles == ["unclassified"]:
+                errors.append(f"{prefix}.qualification_state: mapped candidates require an explicit role")
             operational_state = candidate.get("operational_state")
             allowed_states = {
                 "dispatch_only_baseline", "blocked_paid_owner_gate",
                 "trial_candidate_composition_required", "evaluated_self_hosted",
                 "referenced_not_runnable", "trial_candidate_host_blocked",
+                "catalogued_unverified", "trial_candidate_unverified", "evaluated_recorded",
             }
             if not isinstance(operational_state, str) or operational_state not in allowed_states:
                 errors.append(f"{prefix}.operational_state: unknown or missing state {operational_state!r}")
@@ -134,6 +144,8 @@ def validate_registry(root: Path, registry: Any, catalog: Any, estate: Any) -> l
                 catalog_id = candidate.get("catalog_entry_id")
                 if catalog_id not in catalog_ids:
                     errors.append(f"{prefix}.catalog_entry_id: unknown catalog entry {catalog_id!r}")
+                elif catalog_by_id[catalog_id].get("layer") != "model":
+                    errors.append(f"{prefix}.catalog_entry_id: model candidate must reference a model-layer catalog entry")
             elif kind == "local":
                 source_ref = candidate.get("source_ref")
                 if not isinstance(source_ref, str) or not source_ref:
@@ -142,6 +154,83 @@ def validate_registry(root: Path, registry: Any, catalog: Any, estate: Any) -> l
                     errors.append(f"{prefix}.source_ref: local source file is missing: {source_ref}")
             else:
                 errors.append(f"{prefix}.kind: expected local or catalog")
+
+    if isinstance(catalog, dict) and isinstance(catalog.get("entries"), list):
+        expected_model_ids = {
+            entry.get("id") for entry in catalog["entries"]
+            if isinstance(entry, dict) and entry.get("layer") == "model"
+        }
+        actual_model_ids = {
+            candidate.get("catalog_entry_id") for candidate in candidate_by_id.values()
+            if candidate.get("kind") == "catalog"
+        }
+        if actual_model_ids != expected_model_ids:
+            errors.append(
+                f"registry.candidates: model catalog coverage mismatch "
+                f"(missing={sorted(expected_model_ids - actual_model_ids)}, "
+                f"extra={sorted(actual_model_ids - expected_model_ids)})"
+            )
+
+    infrastructure = registry.get("infrastructure")
+    expected_infrastructure_ids = {
+        entry.get("id") for entry in catalog_by_id.values()
+        if entry.get("layer") in {"adapter", "runtime", "directory"}
+    }
+    actual_infrastructure_ids: set[str] = set()
+    if not isinstance(infrastructure, list):
+        errors.append("registry.infrastructure: expected list")
+    else:
+        for index, item in enumerate(infrastructure):
+            prefix = f"registry.infrastructure[{index}]"
+            if not isinstance(item, dict):
+                errors.append(f"{prefix}: expected object")
+                continue
+            catalog_id = item.get("catalog_entry_id")
+            if not isinstance(catalog_id, str) or catalog_id not in catalog_by_id:
+                errors.append(f"{prefix}.catalog_entry_id: unknown catalog entry {catalog_id!r}")
+                continue
+            if catalog_id in actual_infrastructure_ids:
+                errors.append(f"{prefix}.catalog_entry_id: duplicate infrastructure entry {catalog_id!r}")
+            actual_infrastructure_ids.add(catalog_id)
+            expected_layer = catalog_by_id[catalog_id].get("layer")
+            if expected_layer == "model" or item.get("layer") != expected_layer:
+                errors.append(f"{prefix}.layer: catalog layer mismatch for {catalog_id!r}")
+            if item.get("operational_state") != "infrastructure_reference":
+                errors.append(f"{prefix}.operational_state: expected infrastructure_reference")
+        if actual_infrastructure_ids != expected_infrastructure_ids:
+            errors.append(
+                f"registry.infrastructure: layer coverage mismatch "
+                f"(missing={sorted(expected_infrastructure_ids - actual_infrastructure_ids)}, "
+                f"extra={sorted(actual_infrastructure_ids - expected_infrastructure_ids)})"
+            )
+
+    implementation = registry.get("implementation_competition")
+    if not isinstance(implementation, dict) or implementation.get("schema") != "tournament.implementation-competition.v1":
+        errors.append("registry.implementation_competition: expected tournament.implementation-competition.v1")
+    else:
+        if implementation.get("canonical_cohort") != "manager.tournament.v1":
+            errors.append("registry.implementation_competition.canonical_cohort: expected manager.tournament.v1")
+        incumbent = implementation.get("incumbent", {})
+        components = incumbent.get("components", []) if isinstance(incumbent, dict) else []
+        if not components:
+            errors.append("registry.implementation_competition.incumbent.components: expected non-empty list")
+        for component in components:
+            source_ref = component.get("source_ref") if isinstance(component, dict) else None
+            if not isinstance(source_ref, str) or not (root / source_ref).is_file():
+                errors.append(f"registry.implementation_competition.incumbent: missing component source {source_ref!r}")
+        challengers = implementation.get("challengers", [])
+        if not isinstance(challengers, list) or not challengers:
+            errors.append("registry.implementation_competition.challengers: expected non-empty list")
+        else:
+            for challenger in challengers:
+                source_ref = challenger.get("source_ref") if isinstance(challenger, dict) else None
+                if not isinstance(source_ref, str) or not (root / source_ref).is_file():
+                    errors.append(f"registry.implementation_competition.challengers: missing source {source_ref!r}")
+        protocol = implementation.get("protocol", {})
+        for gate in ("matched_cohort_required", "held_out_required", "independent_evaluator_required",
+                     "immutable_receipts_required", "rollback_target_required", "owner_approval_for_production"):
+            if not isinstance(protocol, dict) or protocol.get(gate) is not True:
+                errors.append(f"registry.implementation_competition.protocol.{gate}: must be true")
 
     graphs = registry.get("graphs")
     if not isinstance(graphs, list) or not graphs:

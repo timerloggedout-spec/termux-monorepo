@@ -26,7 +26,7 @@ Architecture release identity and refresh rules live in [VERSIONING.md](VERSIONI
 | [VERSIONING.md](VERSIONING.md) | Canonical release contract | Current | SemVer policy, same-change version/changelog gate, deterministic manifest and automated refresh lifecycle |
 | [CHANGELOG.md](CHANGELOG.md) | Release history | Current | Semantic architecture version history, starting at 1.0.0 |
 | [VERSION](VERSION) | Release metadata | Current | Current architecture version identifier |
-| [flows/README.md](flows/README.md) | Architecture module index | Current | Seven paired Markdown/Mermaid flow modules and generated SVG links |
+| [flows/README.md](flows/README.md) | Architecture module index | Current | Seven paired Markdown/Mermaid flow modules and generated SVG projection paths |
 | [AGENT-EVALUATION-FRAMEWORK.md](AGENT-EVALUATION-FRAMEWORK.md) | Canonical spec | Stated (2026-10-28 backfill): canonical spec | The measurement layer: evaluation units for agents, managers, prompts, tools, orchestration policies, providers/models (the MVT/DoE measurement home) |
 | [AGENT-SELECTION-BLIND-EVALUATION.md](AGENT-SELECTION-BLIND-EVALUATION.md) | Companion spec | Stated (2026-10-28 backfill): canonical companion spec, implemented as a skill | Double-blind-style evaluation layer separating treatment identity from evaluation identity, inside the framework above |
 | [TOOL-DEFINITION-QUALITY-SCORE.md](TOOL-DEFINITION-QUALITY-SCORE.md) | Integration spec | Stated: integrated as an evaluation/observability provider lane | Tool-definition quality as a signal inside the Agent Evaluation Framework; explicitly not a router policy or leaderboard metric |

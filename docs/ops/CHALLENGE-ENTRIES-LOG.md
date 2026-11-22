@@ -156,6 +156,8 @@ free-tier / mesh-resiliency engineering (device pull queue, quota systems);
 | C10 | Agentware — Hackathon Raptors | Build **Nov 27–30, 2026**; submissions close Dec 7, 18:00 UTC (organizer page, checked 2026-10-30) | Autonomous agent; **new code only** in the 72h window (pre-window code disqualifies) | Free; Discord | I1 △ — repo-maintenance agent framing; 72h new-code constraint = rebuild, not reuse |
 | C11 | AMD AI League — AMD × lablab.ai. **REGISTERED 2026-10-30 (see R6) — state Approved.** | League Sep 1 – **Dec 1, 2026**; submission deadline **Dec 1, 2026, 11:00 AM PST**; final Match ends Nov 14 (official event page, read 2026-10-30) | **Individual participation only** (no teams). Points league: Onboarding (300 pts: AMD sign-up, claim $100 GPU credits, first Academy course, complete AMD profile, join lablab Discord — **required for Match participation**, join AMD Discord) ∘ Academy course milestones (5 courses = League-podium eligibility gate) ∘ 6 Matches (Match 4 LIVE: Intelligent Web Information Retrieval, 1,800 pts; Match 5: AI-Powered Code Repository Repair, 2,100 pts; Match 6 Nov 10–14, 2,400 pts; closed Matches stay open for points only) ∘ per-Match project submitted via event page (solo-team create ⇒ Submit Project) | Free; lablab account + AMD SSO (live); no card at any step (verified at join) | Prizes: League podium $2,500/$1,500/$1,000 (gate: ≥5 Academy courses) · per Match $500 cash / $250 GPU credits / $100 GPU credits top-50 · Referral Leaders $1,000/$600/$400 · ROCm Certified Associate credential. Fit: Match 4 = web-retrieval agent (fleet web-RE surface); Match 5 = repo-repair multi-agent. **Candidate, unassigned — packet decision = Manager** |
 
+| C17 | GitLab Community Hackathon — January 2027 (Contributor Platform) | **Jan 21–28, 2027 UTC**; qualifying MRs merge within 31 days after event end | Start Contributor Platform onboarding; accept rules; choose an eligible GitLab issue; get assigned BEFORE opening an MR; open MR during the seven-day event; maintainer merge within 31 days. AI allowed with review/testing responsibility; 20 MRs + 20 issues/day caps; no scripted labeling. | Free; store credits (200 / 150 / 100 for top three; 50 per qualifying merged MR). No cash prize listed. | Contribution-lane fit; code/docs/translation/issue work. No owner onboarding, registration, issue assignment, or contribution is established. See C17 in coordinator candidate_events. |
+
 ### Idea bank (unassigned concepts)
 
 | # | Idea | Source | Concept (1-line) | Matched ⇒ status |
@@ -696,17 +698,21 @@ PR #1970 merged 2e99fadd).
   recording demonstrating your application no later than **Thursday,
   Nov. 19 at 12 p.m. PT**." Countdown now carries Nov 19 12:00 PT.
 
-### GitLab program-family watchlist — future editions only
+### GitLab program-family watchlist — future editions and historical editions
 
-The following 2026 editions are closed. Keep the programs in the opportunity
-sweep as future-cycle watch targets; the next dates and registration paths are
-`NOT_ESTABLISHED`. These are three distinct programs, not one combined event.
+Keep the programs separate. The February–March AI Hackathon and October
+Transcend edition are closed; the Community Hackathon has an upcoming
+January 2027 event.
 
-| Program | 2026 status | Verified window / result | Planning disposition |
+| Program | State | Verified window / result | Planning disposition |
 |---|---|---|---|
-| GitLab AI Hackathon — “You Orchestrate. AI Accelerates.” | CLOSED | Submissions Feb 9–Mar 25; judging Mar 30–Apr 17; winners announced Apr 22; $65,000 pool | Watch next edition; fit = GitLab Duo agent/flow that reacts to SDLC triggers and performs actions |
-| GitLab Transcend — “Life After Code” | CLOSED | Submissions Oct 5–27; judging/results timeline contains a rules-vs-connector discrepancy; $45,000 pool | Watch next edition; fit = post-code DevSecOps lifecycle automation |
-| GitLab Community Hackathon | CLOSED | Oct 6–12 contribution window; merge cutoff Nov 12 | Watch next edition; separate contribution/leaderboard format |
+| GitLab AI Hackathon — “You Orchestrate. AI Accelerates.” | CLOSED | Submissions Feb 9–Mar 25; judging Mar 30–Apr 17; winners Apr 22; $65,000 pool | Watch next edition; next dates NOT_ESTABLISHED |
+| GitLab Transcend — “Life After Code” | CLOSED | Submissions Oct 5–27; judging/results timeline has rules-vs-connector discrepancies; $45,000 pool | Watch next edition; next dates NOT_ESTABLISHED |
+| GitLab Community Hackathon | **UPCOMING — C17** | **Jan 21–28, 2027 UTC**; qualifying MRs merge within 31 days after event end | Candidate event; 200/150/100 store credits for top three; 50 credits per qualifying merged MR |
+
+The October 2026 Community Hackathon edition is historical: the current
+Contributor Platform page reports 76 prize winners and 636 merged MRs.
+Current rules version is 2026-10-v2.
 
 **Source hierarchy:** `https://gitlab.com/gitlab-ai-hackathon` is the public root
 group. The supplied
@@ -718,11 +724,12 @@ The source map and evidence are in
 `docs/ops/GITLAB-AI-HACKATHON-OSINT.md` and
 `ops/challenge/osint/gitlab-sources.json`.
 
-**Registration:** no owner registration, GitLab group membership, Devpost
-registration, project creation, or submission is established by this
-watchlist. The February–March event's group-access form is historical and
-closed; a future edition requires a newly published official form/path and a
-fresh rules/eligibility read before any registration action.
+**Registration:** C17 remains pre-registration. The official sequence is
+start onboarding → accept rules → choose an issue → obtain assignment →
+open an MR in the event window → get it merged within the 31-day post-event
+window. Owner onboarding, registration, issue assignment, and contribution
+state remain NOT_ESTABLISHED. The February–March AI Hackathon's group-access
+form is historical and closed.
 
 ## 5. Sweep sources
 

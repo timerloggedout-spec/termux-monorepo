@@ -6,7 +6,7 @@
 **Owner:** ChatGPT — documentation implementation  
 **Operator authorization:** accepted for the bounded documentation change  
 **Canonical output:** repository root `architecture.md`  
-**Implementation branch:** `docs/architecture-versioning-automation-20261122-v2`
+**Implementation branch:** `docs/architecture-versioning-automation-20261122-v3`
 
 ## Objective
 
@@ -68,9 +68,10 @@ Establish one repository-wide architecture entry that routes collaborators to ca
 
 ## Current implementation PR
 
-- Predecessor PR #5770: https://github.com/timerloggedout-spec/termux-monorepo/pull/5770 (closed as superseded by the action-first successor branch).
-- Successor PR #5771: https://github.com/timerloggedout-spec/termux-monorepo/pull/5771
-- Branch: docs/architecture-versioning-automation-20261122-v2
+- Predecessor PR #5770: https://github.com/timerloggedout-spec/termux-monorepo/pull/5770 (closed as superseded).
+- Predecessor PR #5771: https://github.com/timerloggedout-spec/termux-monorepo/pull/5771 (closed as superseded during commit-style reconciliation).
+- Successor PR #5772: https://github.com/timerloggedout-spec/termux-monorepo/pull/5772
+- Branch: docs/architecture-versioning-automation-20261122-v3
 - Current status: open and ready for review; exact-head validation and independent review pending.
 
 ## Architecture versioning extension — REPO-ARCH-007

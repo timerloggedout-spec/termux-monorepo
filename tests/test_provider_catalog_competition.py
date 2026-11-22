@@ -25,6 +25,7 @@ def test_populate_writes_both_catalogues_from_one_v5_snapshot(tmp_path):
     assert incumbent_bytes == source_bytes
     assert inspired["catalogue"] == "VultrInspired"
     assert inspired["models"][0]["id"] == "model-a"
+    assert inspired["provider_observations"] == {"fixture": {"status": "observed"}}
     assert manifest == stored_manifest
     assert manifest["source_sha256"] == hashlib.sha256(source_bytes).hexdigest()
     assert [variant["catalogue"] for variant in manifest["variants"]] == [

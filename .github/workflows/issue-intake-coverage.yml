@@ -20,6 +20,10 @@ on:
       - "docs/ops/GITHUB-ISSUE-INTAKE-MAP.md"
       - "scripts/ci/issue_intake_coverage.py"
       - "tests/test_issue_intake_coverage.py"
+      - "roadmap-completions/scripts/**"
+      - "roadmap-completions/config/verification-rules.yaml"
+      - "tests/test_roadmap_completion.py"
+      - "tests/test_roadmap_completion_publisher.py"
   workflow_dispatch:
 
 permissions:

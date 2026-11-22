@@ -53,7 +53,7 @@ def inventory_entry(slot: Path) -> dict:
         if child.is_dir() or child.suffix in {".md", ".txt"}
     ]
     research_children = _children_with_metadata(slot) if slot.name.startswith("15_") else []
-    metadata_children = _children_with_metadata(slot) if slot.name in METADATA_CHILD_SLOTS else []
+    metadata_children = _children_with_metadata(slot) if slot.name.startswith("15_") or slot.name in METADATA_CHILD_SLOTS else []
     return {
         "slot": slot.name,
         "path": str(slot.relative_to(ROOT)),

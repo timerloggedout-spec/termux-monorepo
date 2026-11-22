@@ -134,14 +134,14 @@
         {
           "evidence_id": "SPACEX-STARSHIP",
           "evidence_state": "primary-source",
-          "source_url": "https://www.spacex.com/vehicles/starship/",
+          "source_url": "https://new.spacex.com/vehicles/starship",
           "publisher": "SpaceX",
           "claim_or_artifact": "Official Starship overview describes Starship and Super Heavy as a fully reusable transportation system and provides high-level vehicle specifications."
         },
         {
           "evidence_id": "SPACEX-FALCON9",
           "evidence_state": "primary-source",
-          "source_url": "https://www.spacex.com/vehicles/falcon-9/",
+          "source_url": "https://new.spacex.com/vehicles/falcon-9",
           "publisher": "SpaceX",
           "claim_or_artifact": "Official Falcon 9 overview describes a reusable two-stage launch vehicle and publishes first-stage propulsion and vehicle-level specifications."
         },
@@ -258,5 +258,6 @@
         "Separate company-reported claims from independently verified performance and safety evidence."
       ]
     }
-  ]
+  ],
+  "request_schema": "../schemas/engineering-blueprint-request.schema.json"
 }

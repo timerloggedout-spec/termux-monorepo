@@ -13,7 +13,7 @@ The monorepo already defines:
 - deepcli/deepcli/observatory/trial.py and tournament.py — trial and campaign orchestration.
 - docs/ops/EVOLUTIONARY-REPLAY.md — deterministic replay and incumbent-preserving evolutionary policy screening.
 
-This document specifies the missing design-management layer: immutable experiment versions, factor-level definitions, treatment assignments, adaptive-allocation decisions and promotion lineage. It does not introduce a competing manager cohort schema.
+This document specifies the supplemental design-management layer: immutable experiment versions, factor-level definitions, treatment assignments, adaptive-allocation decisions and promotion lineage. It references the canonical `manager.tournament.v1` cohort contract.
 
 ## 1. Experiment preregistration
 
@@ -36,7 +36,7 @@ The design record references a canonical manager.tournament.v1 record by tournam
 | Retry policy | none, bounded retry, repair loop |
 | Environment | Termux, container image digest, runner image |
 
-Do not hardcode model IDs as architecture. Resolve eligible providers from a dated catalog snapshot and retain that snapshot with each treatment.
+Resolve eligible providers from a dated catalog snapshot and retain that snapshot with each treatment.
 
 ## 3. Cohorts and assignment
 
@@ -49,7 +49,7 @@ Do not hardcode model IDs as architecture. Resolve eligible providers from a dat
 - Prevent leakage of hidden evaluator answers into worker context.
 - Record all exclusions and incomplete assignments.
 
-Reuse the existing DoE functions where their semantics fit. Add a design method only when the current full-factorial, Taguchi L9 and seeded assignment helpers cannot express the preregistered design.
+Reuse the existing DoE functions where their semantics fit. Add a design method when existing full-factorial, Taguchi L9 and seeded assignment helpers lack the preregistered design semantics.
 
 ## 4. Outcome vector
 
@@ -78,13 +78,13 @@ Every adaptive decision records policy version, input evidence window, candidate
 - **Round 4 — promotion:** evaluate feasibility, Pareto position, uncertainty and dual-gate/task outcome.
 - **Round 5 — lineage:** promote policy version, preserve parent and evidence links, schedule drift monitoring.
 
-Elimination from active compute does not delete candidate history.
+Elimination from active compute preserves candidate history and evidence.
 
 ## 7. Promotion contract
 
-A candidate becomes promotable only when declared hard constraints pass; task outcome and integration acceptance pass; evidence and artifact provenance are complete; evaluator and environment versions are pinned; repeat/held-out evidence meets the preregistered rule; no unresolved critical safety/security findings remain; and the promotion decision records the exact experiment version and evidence digests.
+A candidate becomes promotable only when declared hard constraints pass; task outcome and integration acceptance pass; evidence and artifact provenance are complete; evaluator and environment versions are pinned; repeat/held-out evidence meets the preregistered rule; all critical safety/security findings have explicit resolution receipts; and the promotion decision records the exact experiment version and evidence digests.
 
-ATES, speedup, token efficiency or nominal zero-cost capacity alone cannot promote a candidate.
+Treat ATES, speedup, token efficiency and nominal zero-cost capacity as supporting metrics alongside quality and acceptance gates.
 
 ## 8. Event and artifact requirements
 
@@ -101,7 +101,7 @@ The tournament_id/cohort_id must resolve to the canonical manager.tournament.v1 
 
 Stop or pause on resource budget exhaustion; repeated infrastructure failure; safety/security gate failure; cohort contamination; evaluator drift; insufficient evidence to distinguish treatments; preregistered futility or success boundary.
 
-A stop is a recorded outcome, not a synthetic pass.
+A stop is a recorded outcome with its own status and evidence.
 
 ## 10. Version evolution
 
@@ -115,13 +115,13 @@ A stop is a recorded outcome, not a synthetic pass.
 
 ## 11. Tournament implementation version competition
 
-The principal tournament arm is a complete implementation version, not an isolated classifier or model. Freeze the manager policy, router, graph topology, classifier catalog snapshot, scheduler/admission policy, evaluator suite, environment and budget. Compare incumbent and challenger on the same matched cohort; retain component ablations to explain where gains originate. Use held-out tasks and later time windows before promotion.
+The principal tournament arm is a complete implementation version; classifier and model changes serve as controlled factors and ablations. Freeze the manager policy, router, graph topology, classifier catalog snapshot, scheduler/admission policy, evaluator suite, environment and budget. Compare incumbent and challenger on the same matched cohort; retain component ablations to explain where gains originate. Use held-out tasks and later time windows before promotion.
 
 ## 12. Classifier graph comparison
 
 The classifier registry is a pool of independently versioned capabilities. Run individual screening first, then compare graph compositions: single specialist, static ensemble, capability router, conditional cascade, independent verification, committee/voting and manager-delegated graph. Measure individual classifier quality separately from end-to-end graph outcome. Use conditional error overlap, calibration, disagreement and coverage to identify complementary strengths. Every node result and evaluator record joins by stable candidate_id/run_id, with explicit missing/failed/skipped states.
 
-Mev/Jev/Kev/Laya describe the current producer/critic/verifier/merger roles. The current trial path is a sequential baseline adapter. The tournament may schedule equivalent roles and other classifiers in parallel or conditionally through a DAG; the names do not impose a universal pipeline.
+Mev/Jev/Kev/Laya describe the current producer/critic/verifier/merger roles. The current trial path is a sequential baseline adapter. The tournament may schedule equivalent roles and other classifiers in parallel or conditionally through a DAG; the names identify role contracts; the tournament schedules them in parallel or conditionally through a DAG when evidence supports that design.
 
 ## 13. SIE adoption loop
 

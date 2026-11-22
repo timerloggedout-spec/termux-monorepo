@@ -24,6 +24,8 @@ class ArchitecturePortalBuilderTests(unittest.TestCase):
             "docs/ops/diagrams/repository-data-flow.mmd": "flowchart TB\n A-->C\n",
             "docs/ops/generated/legacy.svg": "<svg xmlns=\"http://www.w3.org/2000/svg\"><title>Legacy</title></svg>\n",
             "docs/ops/generated/preview.png": "png-bytes",
+            "docs/agentic/dependency-phases.mmd": "flowchart TD\n A-->B\n",
+            "docs/assets/ates-attention-placeholder.svg": "<svg xmlns=\"http://www.w3.org/2000/svg\"><title>ATES</title></svg>\n",
             "docs/ops/SHE-DASHBOARD-INDEX.md": "# SHE Dashboard Index\n\nArchitecture navigation.\n",
             "docs/unrelated/private-notes.md": "# Excluded\n\nOutside the architecture scope.\n",
         }
@@ -46,6 +48,8 @@ class ArchitecturePortalBuilderTests(unittest.TestCase):
             self.assertIn("docs/architecture/flows/execution-session.mmd", by_path)
             self.assertIn("docs/architecture/flows/imported.svg", by_path)
             self.assertIn("docs/ops/diagrams/repository-data-flow.mmd", by_path)
+            self.assertIn("docs/agentic/dependency-phases.mmd", by_path)
+            self.assertIn("docs/assets/ates-attention-placeholder.svg", by_path)
             self.assertIn("docs/ops/SHE-DASHBOARD-INDEX.md", by_path)
             self.assertNotIn("docs/unrelated/private-notes.md", by_path)
 
@@ -84,7 +88,7 @@ class ArchitecturePortalBuilderTests(unittest.TestCase):
             portal.build_portal(root, output, "master", "abc123")
 
             missing = portal.verify_rendered(output)
-            self.assertEqual(len(missing), 2)
+            self.assertEqual(len(missing), 3)
             for item in json.loads((output / "catalog.json").read_text())["items"]:
                 if item["kind"] == "mermaid":
                     render = output / item["render_path"]

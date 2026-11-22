@@ -1066,6 +1066,14 @@ roadmaps:
             required: true
 
 # Badge levels
+scoring:
+  weights:
+    code: 40
+    test: 30
+    documentation: 10
+    portfolio: 10
+    deployment: 10
+
 badge_levels:
   bronze:
     min_score: 60

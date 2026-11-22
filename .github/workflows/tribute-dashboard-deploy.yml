@@ -22,6 +22,8 @@ on:
       - "apps/project-pages-hub/**"
       - "architecture.md"
       - "docs/architecture/**"
+      - "docs/**/*.mmd"
+      - "docs/**/*.svg"
       - "docs/ops/diagrams/**"
       - "docs/ops/generated/*.svg"
       - "docs/ops/generated/*.png"
@@ -153,7 +155,7 @@ jobs:
               -i "$src" -o "$out" -b transparent -s 2 \
               --puppeteerConfigFile /tmp/puppeteer-config.json
             count=$((count + 1))
-          done < <(find docs/architecture docs/ops/diagrams docs/ops/SHE-DASHBOARD-ARCHITECTURE.mmd -type f -name '*.mmd' -print0)
+          done < <(find docs -type f -name '*.mmd' -print0)
           if [ "$count" -eq 0 ]; then
             echo "::error::Architecture Explorer has no Mermaid sources to render."
             exit 1

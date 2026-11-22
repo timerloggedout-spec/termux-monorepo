@@ -76,7 +76,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 -B scripts/dashboards/actions_observe.py \
-            --pages 1,2,3 --per-page 100 --via-env-token \
+            --pages 1,50,100 --per-page 100 --via-env-token \
             --out scripts/dashboards/actions_observations.json
 
       - name: Build workflow discovery + telemetry dashboard feeds

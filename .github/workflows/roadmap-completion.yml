@@ -124,7 +124,8 @@ jobs:
         run: |
           while IFS= read -r issue_number; do
             [ -z "$issue_number" ] && continue
-            gh issue comment "$issue_number" --repo "$GITHUB_REPOSITORY" --body "Roadmap evidence verification passed for `$ROADMAP/$EXERCISE`. The verifier checked the configured evidence paths, code constraints, submitted test-result metadata, and documentation requirements. The workflow records evidence verification; badge publication and README updates remain a separate publication step."
+            body=$(printf 'Roadmap evidence verification passed for %s/%s. The verifier checked configured evidence paths, code constraints, submitted test-result metadata, and documentation requirements. Badge publication and README updates remain separate publication steps.' "$ROADMAP" "$EXERCISE")
+            gh issue comment "$issue_number" --repo "$GITHUB_REPOSITORY" --body "$body"
           done <<< "$ISSUE_NUMBERS"
 
       - name: Report evidence requiring changes
@@ -137,7 +138,8 @@ jobs:
         run: |
           while IFS= read -r issue_number; do
             [ -z "$issue_number" ] && continue
-            gh issue comment "$issue_number" --repo "$GITHUB_REPOSITORY" --body "Roadmap evidence verification needs updates for `$ROADMAP/$EXERCISE`. Review the workflow run summary for the exact checks and resubmit the evidence file."
+            body=$(printf 'Roadmap evidence verification needs updates for %s/%s. Review the workflow run summary for the exact checks and resubmit the evidence file.' "$ROADMAP" "$EXERCISE")
+            gh issue comment "$issue_number" --repo "$GITHUB_REPOSITORY" --body "$body"
           done <<< "$ISSUE_NUMBERS"
 
       - name: Enforce evidence result

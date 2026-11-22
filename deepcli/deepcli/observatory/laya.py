@@ -22,12 +22,41 @@ def synthesize(artifacts: list[dict], jevs: list[dict], kevs: list[dict],
 
     scored = []
     excluded = []
-    for a, j, k in zip(artifacts, jevs, kevs):
-        ids = [x.get("candidate_id") for x in (a, j, k)]
-        present_ids = [value for value in ids if value is not None]
-        if present_ids and (len(present_ids) != 3 or len(set(present_ids)) != 1):
-            raise ValueError(f"candidate evidence identity mismatch: {ids}")
-        candidate_id = present_ids[0] if present_ids else None
+    stage_has_ids = [
+        any(record.get("candidate_id") is not None for record in records)
+        for records in (artifacts, jevs, kevs)
+    ]
+    if any(stage_has_ids):
+        if not all(stage_has_ids):
+            raise ValueError("candidate IDs must be present in every evidence stage")
+
+        def index_by_candidate(records, stage):
+            indexed = {}
+            for record in records:
+                candidate_id = record.get("candidate_id")
+                if candidate_id is None:
+                    raise ValueError(f"{stage} record is missing candidate_id")
+                if candidate_id in indexed:
+                    raise ValueError(f"{stage} contains duplicate candidate_id: {candidate_id}")
+                indexed[candidate_id] = record
+            return indexed
+
+        jevs_by_id = index_by_candidate(jevs, "jev")
+        kevs_by_id = index_by_candidate(kevs, "kev")
+        artifact_ids = {record["candidate_id"] for record in artifacts}
+        if artifact_ids != set(jevs_by_id) or artifact_ids != set(kevs_by_id):
+            raise ValueError("candidate ID sets differ across evidence stages")
+        triples = [
+            (artifact, jevs_by_id[artifact["candidate_id"]],
+             kevs_by_id[artifact["candidate_id"]])
+            for artifact in artifacts
+        ]
+    else:
+        # Compatibility path for historical records without candidate IDs.
+        triples = list(zip(artifacts, jevs, kevs))
+
+    for a, j, k in triples:
+        candidate_id = a.get("candidate_id")
         if not all(x.get("ok", True) for x in (a, j, k)):
             excluded.append({
                 "candidate_id": candidate_id,

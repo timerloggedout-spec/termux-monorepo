@@ -43,6 +43,7 @@
     ["Referrals", tribute + "referrals.html", "referrals"],
     ["Marketing Gantt", tribute + "marketing-gantt.html", "marketing-gantt"],
     ["Telemetry", tribute + "telemetry.html", "telemetry"],
+    ["Workflows", tribute + "workflows.html", "workflows"],
     ["ICM CCTV", origin + "/tribute/icm-cctv.html", "icm-cctv"],
     ["Desk", tribute + "desk.html", "desk"],
     ["Tracking", tribute + "tracking.html", "tracking"],

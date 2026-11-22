@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-22T07:58:41Z)
+# Lane matrix status (2026-11-22T08:01:15Z)
 
-- Master: `11e3f940886720401a37ccf4b903f4e77a26657b`
+- Master: `44abb06ffda7e3320754d313817d91f429ffabdf`
 - Open PRs: **508**
 - Oldest: #47 (108.68d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -23,14 +23,14 @@
 | PR | Days | Lane | Reasons | Title |
 |---:|-----:|------|---------|-------|
 | #1436 | 32.06 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): salvage operational Hindsight das |
-| #2702 | 21.65 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
-| #4069 | 19.15 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
-| #4621 | 18.46 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
+| #2702 | 21.66 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
+| #4069 | 19.16 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
+| #4621 | 18.47 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
 | #4898 | 17.81 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
 | #5034 | 15.71 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
-| #5722 | 1.61 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted routes and bind local Do |
-| #5723 | 1.61 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted review relay and record  |
-| #5724 | 1.61 | EXTRACT | state:unknown, minesweeper-title | fix(jules): replace hosted PR handoff with receipt |
+| #5722 | 1.62 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted routes and bind local Do |
+| #5723 | 1.62 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted review relay and record  |
+| #5724 | 1.62 | EXTRACT | state:unknown, minesweeper-title | fix(jules): replace hosted PR handoff with receipt |
 | #47 | 108.68 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
 | #81 | 106.42 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
 | #103 | 105.29 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
@@ -41,7 +41,7 @@
 | #969 | 51.92 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
 | #990 | 51.06 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
 | #1020 | 49.8 | CANDIDATE | state:unknown | feat: close provider continuity and executable rou |
-| #1274 | 33.94 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
+| #1274 | 33.95 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
 | #1441 | 32.01 | CANDIDATE | state:unknown | feat(triage): reconcile official quota before disp |
 | #1469 | 31.79 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
 | #1470 | 31.78 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
@@ -54,8 +54,8 @@
 | #1557 | 30.29 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 29.21 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
 | #1616 | 29.2 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
-| #1617 | 29.19 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
-| #1626 | 29.07 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
+| #1617 | 29.2 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
+| #1626 | 29.08 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
 | #1645 | 28.31 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
 | #1650 | 28.24 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
 | #1694 | 26.27 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |

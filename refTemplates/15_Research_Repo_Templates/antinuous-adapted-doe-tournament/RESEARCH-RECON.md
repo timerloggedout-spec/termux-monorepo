@@ -115,3 +115,37 @@ These are source inspections, not test execution results. The PR has not yet run
 Antinuous is relevant as a reference for integrated research, orchestration, compute and artifacts. The monorepo already has a manager tournament schema, DoE helpers, trial/tournament orchestration and evolutionary replay. The adaptation should compose these existing systems and add only missing versioned design, treatment, allocation and evidence-linkage contracts.
 
 The useful product idea is adapted into an original architecture whose canonical contracts remain repository-owned.
+
+
+## Additional references — classifier routing and bounded improvement
+
+### Loop Library / Loopy
+
+The user-supplied Loopy skill export describes discover, find, audit, adapt, craft, run, debrief, save/reuse and publish workflows. Its core loop is observe → choose → act → verify → record → repeat or stop, with explicit terminal states and run receipts. The current public Forward Future repository describes the library and skill as separate surfaces: the catalog publishes reusable loops, while the optional skill guides discovery, execution and debrief.
+
+**Adaptation:** SIE adopts bounded passes, evidence receipts, named terminal states, explicit approval boundaries and post-run debrief. SIE keeps repository-owned experiment identity, evaluators and promotion authority.
+
+Sources:
+- https://github.com/Forward-Future/loopy
+- https://signals.forwardfuture.com/loop-library/
+- https://github.com/Forward-Future/loopy/tree/main/skills/loopy
+
+### Jules lifecycle correction
+
+The user-supplied Jules workflow material is valuable for agent-team design, attribution, asynchronous task delegation, PR integration and run observation. The official Jules changelog states that Jules winds down on 2026-12-31 and became read-only after 2026-11-11. For this 2026-11-22 snapshot, treat Jules as a historical/limited read-only collaborator for session export, provenance reconstruction and workflow analysis. Record live write-execution eligibility from an observed adapter, not from the historic roster.
+
+**Adaptation:** make every agent's availability and permissions time-bounded registry fields. Historical agent contributions remain measurable without implying current execution capability.
+
+Source: https://jules.google/docs/changelog/
+
+### Classifier and router research
+
+- RouteLLM provides multiple router strategies and an evaluation harness across benchmarks. https://github.com/lm-sys/RouteLLM
+- RouterBench studies multi-model routing with a large inference-outcome dataset. https://arxiv.org/abs/2403.12031
+- LLMRouterBench emphasizes unified comparison, model complementarity, model-pool composition and limitations of simplistic router baselines. https://arxiv.org/abs/2601.07206
+- TwinRouterBench evaluates step-level routing in long-horizon agent trajectories, including static router iteration and end-to-end live execution. https://arxiv.org/abs/2605.18859
+- Who Routes the Router highlights task diversity, model-pool balance and evaluation methodology as sources of routing-evaluation bias. https://openreview.net/pdf?id=EEPostHMtF
+
+**Adaptation:** compare individual classifier capability, routing policy, graph composition and full tournament implementation as separate units. Test complementarity and conditional error overlap; preserve matched cohorts, held-out evaluation, stable candidate identity and actual end-to-end task outcome.
+
+These references inform architecture and experiment design. Their benchmark results do not establish performance for the repository's 70+ classifier pool.

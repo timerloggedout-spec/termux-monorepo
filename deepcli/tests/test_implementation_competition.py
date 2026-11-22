@@ -14,6 +14,7 @@ def receipt(implementation, version, task, quality, latency, *, accepted=True):
     return {
         "implementation_id": implementation,
         "implementation_version": version,
+        "competition_role": "incumbent" if implementation == "incumbent" else "challenger",
         "cohort_id": "cohort-2026-11",
         "task_id": task,
         "task_contract_hash": "sha256:task-contract",
@@ -78,6 +79,17 @@ class ImplementationCompetitionTests(unittest.TestCase):
         self.receipts.append(self.receipts[0].copy())
         with self.assertRaisesRegex(ValueError, "duplicate receipt"):
             compare_implementations(self.receipts)
+
+    def test_input_order_does_not_change_incumbent_and_challenger_roles(self):
+        reversed_receipts = list(reversed(self.receipts))
+        report = compare_implementations(reversed_receipts)
+        self.assertEqual(report["incumbent"]["implementation_id"], "incumbent")
+        self.assertEqual(report["challenger"]["implementation_id"], "challenger")
+
+    def test_single_observation_cannot_establish_dominance(self):
+        receipts = self.receipts[:2]
+        report = compare_implementations(receipts)
+        self.assertEqual(report["recommendation"], "pareto_tradeoff_or_insufficient_evidence")
 
     def test_promotion_always_requires_separate_authorization(self):
         report = compare_implementations(self.receipts)

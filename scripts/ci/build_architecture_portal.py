@@ -44,10 +44,15 @@ def discover_sources(root: Path = ROOT) -> list[Path]:
     fixed.extend(root / name for name in SELECTED_OPERATIONS_DOCS)
     candidates.update(path for path in fixed if path.is_file())
 
+    docs_root = root / "docs"
+    if docs_root.is_dir():
+        candidates.update(
+            path for path in docs_root.rglob("*")
+            if path.is_file() and path.suffix.lower() in {".mmd", ".svg"}
+        )
     scan_rules = (
-        (root / "docs/architecture", {".md", ".mmd", ".svg"}),
-        (root / "docs/ops/diagrams", {".mmd", ".svg"}),
-        (root / "docs/ops/generated", {".svg", ".png"}),
+        (root / "docs/architecture", {".md"}),
+        (root / "docs/ops/generated", {".png"}),
     )
     for directory, suffixes in scan_rules:
         if directory.is_dir():
@@ -74,6 +79,12 @@ def _category(relative: str) -> str:
         return "Architecture / Flow Modules"
     if relative.startswith("docs/architecture/"):
         return "Architecture / Reference"
+    if relative.startswith("docs/agentic/"):
+        return "Architecture / Agentic"
+    if relative.startswith("docs/assets/"):
+        return "Architecture / Imported Assets"
+    if relative.startswith("docs/graph/"):
+        return "Architecture / Graph"
     if relative.startswith("docs/ops/diagrams/"):
         return "Operations / Mermaid Library"
     if relative.startswith("docs/ops/generated/"):

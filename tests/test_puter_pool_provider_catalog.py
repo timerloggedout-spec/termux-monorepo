@@ -18,6 +18,8 @@ def test_canonical_catalog_polls_loopback_puter_models_with_x_api_key(monkeypatc
     assert calls == [("http://127.0.0.1:4321/v1/models", "local-key", "x-api-key")]
     assert [row["id"] for row in rows] == ["model-a", "model-b"]
     assert all(row["provider"] == "puter_pool" for row in rows)
+    assert all(row["provider_id"] == "g4f.puter" for row in rows)
+    assert all(row["provider_family"] == "g4f/Puter" for row in rows)
     assert all(row["pricing_classification"] == "unknown" for row in rows)
     assert headers["x-request-id"] == "synthetic"
 

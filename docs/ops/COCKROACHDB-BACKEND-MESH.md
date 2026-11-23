@@ -65,6 +65,10 @@ Record observed values from drills. The design target is an independently replay
 
 The dedicated workflow runs a TLS-secured single-node contract without a license key. It provisions least-privilege writer/migrator identities, applies the schema, verifies insert/readback, checks UPDATE/DELETE denial, drops and recreates the database, replays the canonical event and runs offline unit tests. A separate three-node drill runs only when `COCKROACH_LICENSE_KEY` contains a valid license; it tests node failure and native backup/restore through a surviving node. Hosted multi-region availability and external-storage disaster recovery remain separate drills.
 
+## CI execution history
+
+The first disposable-cluster attempt (workflow run [44817231584](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/44817231584)) failed before schema setup: CockroachDB rejected the insecure single-node listener bound to `0.0.0.0` and required a loopback listener. The contract was subsequently changed to a TLS-secured disposable node with generated CA, node and client certificates; the current workflow uses the secure listener and verified client URIs. Treat the corrected workflow as pending until a fresh run passes both contract and, where licensed, three-node jobs.
+
 ## Upstream references
 
 - https://www.cockroachlabs.com/docs/stable/developer-basics.html

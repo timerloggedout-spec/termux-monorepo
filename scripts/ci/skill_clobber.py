@@ -168,9 +168,25 @@ def reference_text(path: str, base: str, cwd: pathlib.Path = ROOT) -> tuple[str 
     return parent, base
 
 
+def preserved_source_path(path: str, cwd: pathlib.Path = ROOT) -> bool:
+    """Keep imported vendor originals outside rewrite/clobber remediation."""
+    if path.startswith("vendor/skills-mirror/"):
+        return True
+    candidate = cwd / path
+    if candidate.is_symlink():
+        target = candidate.resolve()
+        mirror = (cwd / "vendor/skills-mirror").resolve()
+        return target == mirror or mirror in target.parents
+    return False
+
+
 def tracked_skills(cwd: pathlib.Path = ROOT) -> list[str]:
     out = _git("ls-files", cwd=cwd).stdout.splitlines()
-    return [p for p in out if p.endswith("/SKILL.md") or p == "SKILL.md"]
+    return [
+        p for p in out
+        if (p.endswith("/SKILL.md") or p == "SKILL.md")
+        and not preserved_source_path(p, cwd)
+    ]
 
 
 def _override(cwd: pathlib.Path) -> bool:
@@ -179,6 +195,7 @@ def _override(cwd: pathlib.Path) -> bool:
 
 def cmd_check(args: argparse.Namespace) -> int:
     paths = args.paths or tracked_skills()
+    paths = [p for p in paths if not preserved_source_path(p)]
     ov = _override(ROOT)
     bad = []
     for p in paths:
@@ -204,6 +221,10 @@ def cmd_check(args: argparse.Namespace) -> int:
 def cmd_repair(args: argparse.Namespace) -> int:
     rc = 0
     for p in args.paths:
+        if preserved_source_path(p):
+            print(f"{p}: preserved vendor source; use source-fidelity verification")
+            rc = 1
+            continue
         cur = (ROOT / p).read_text(encoding="utf-8") if (ROOT / p).is_file() else ""
         lg = last_good(p, args.start)
         if lg is None:

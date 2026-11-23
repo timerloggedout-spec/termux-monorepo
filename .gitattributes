@@ -1,3 +1,2 @@
-.github/workflows/*.lock.yml linguist-generated=true
-# Encrypted vault ciphertext via Git LFS
-vault/**/*.age filter=lfs diff=lfs merge=lfs -text
+# Preserve byte-level vendor exports as source evidence.
+docs/ops/skills/source/skills-inventory.csv whitespace=-blank-at-eol

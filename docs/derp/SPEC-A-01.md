@@ -16,7 +16,7 @@ A DERP document has three channels:
 - **Clue envelope:** bounded Unicode sequences interpreted only by the DERP puzzle decoder.
 - **Resolver:** a versioned mapping from clue IDs to canonical rePointers.
 
-The clue envelope carries opaque clue identifiers and puzzle-state hints only. It carries no commands, hidden prompts, crawler directives, access-control decisions, or instructions for third-party models.
+Limit clue-envelope payloads to opaque clue identifiers and puzzle-state hints. Keep commands, prompts, crawler directives, access-control decisions, and third-party model guidance in their documented, visible control surfaces.
 
 ## Proposed token grammar
 
@@ -34,7 +34,7 @@ The marker sequence MUST use an explicit allowlist and a versioned table. It MUS
 4. Verify that the destination is public and active.
 5. Present the destination with a visible label and accessible description.
 
-The decoder MUST NOT execute content recovered from an envelope.
+The decoder MUST treat recovered content as inert data and resolve registered clue identifiers only.
 
 ## Interoperability
 
@@ -45,7 +45,7 @@ The decoder MUST NOT execute content recovered from an envelope.
 
 ## Risks
 
-The encoding is brittle across platforms and may resemble malicious prompt-injection or cloaking techniques. The envelope therefore remains a playful clue format with no authority over crawlers, external LLMs, or browser security boundaries.
+The encoding is brittle across platforms and may resemble malicious prompt-injection or cloaking techniques. The envelope therefore remains a playful clue format; crawler policy, external-agent guidance, and browser security remain governed by their documented control surfaces.
 
 ## Acceptance tests
 

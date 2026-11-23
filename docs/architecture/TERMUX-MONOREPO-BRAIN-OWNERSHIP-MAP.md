@@ -1,6 +1,6 @@
 # Monorepo Brain — ownership and integration map
 
-**Status:** P0 source reconciliation, source-inspected on branch `feat/root-brain-rust-core-final` at the current filing snapshot.  
+**Status:** P0 source reconciliation; architecture map and SIE adapter are now carried on a fresh master-based integration branch.  
 **Purpose:** identify the existing canonical owner for each Brain responsibility before writing adapters or duplicating functionality.
 
 Brain is the **repository-wide cognitive coordination layer**. It observes, contextualizes, reasons, plans, explains and proposes feedback across the monorepo. It is not a new execution plane. Existing systems remain authoritative for identity, admission, policy, dispatch, memory, provider routing, execution, verification and persistent evidence.
@@ -19,7 +19,7 @@ Brain is the **repository-wide cognitive coordination layer**. It observes, cont
 
 | Brain responsibility | Existing canonical owner / source-inspected surface | What it owns today | Brain integration boundary |
 |---|---|---|---|
-| SIE lifecycle and QDesk self-repair | [sie_pipeline.py](../../scripts/que/sie_pipeline.py) and [self_repair.py](../../scripts/que/self_repair.py) (SIE stage contract currently tracked in PR #5390; QDesk self-repair loop is on master) | Observe/triage/research/RFP/Delphi/design/claim/implement/verify/promote/learn lifecycle; consumes workflow failures and queue stall-gap evidence; QDesk remains the scheduled host | Brain consumes versioned SIE stage observations through the typed adapter; SIE/QUE/DoE/Delphi retain lifecycle, admission, verification and promotion authority |
+| SIE lifecycle and QDesk self-repair | [sie_pipeline.py](../../scripts/que/sie_pipeline.py) and [self_repair.py](../../scripts/que/self_repair.py) (SIE stage schema is included in the Brain adapter PR; the fuller lifecycle transition/research-packet implementation remains under review in PR #5390; QDesk self-repair loop is on master) | Observe/triage/research/RFP/Delphi/design/claim/implement/verify/promote/learn lifecycle; consumes workflow failures and queue stall-gap evidence; QDesk remains the scheduled host | Brain consumes versioned SIE stage observations through the typed adapter; SIE/QUE/DoE/Delphi retain lifecycle, admission, verification and promotion authority |
 | Orchestration contract and lifecycle vocabulary | [ORCHESTRATION-CONTRACTS.md](../ops/ORCHESTRATION-CONTRACTS.md) | Canonical orchestration layers, lifecycle states, identity chain and normalized receipts | Use its vocabulary and identity chain; do not create a second lifecycle model |
 | Multi-agent control-plane sequence | [AGENT-TEAM-CONTROL-PLANE.md](AGENT-TEAM-CONTROL-PLANE.md) | Scout → MVT/DoE → telemetry → bilateral review → promotion → synthesis | Coordinate reasoning and evidence around this sequence; do not invent a parallel promotion pipeline |
 | QUE queue projections | [que-queue-feed.json](../../ops/que/feeds/que-queue-feed.json), [queue-by-tier.json](../../ops/que/feeds/queue-by-tier.json) | Generated queue and tier feeds | Read-only observation; never write queue state through a generated feed |

@@ -528,5 +528,50 @@ persists in cache).
 - **Org-repo integrations** (hooks/secrets above are org-level stores; the 8
   org repos' own hooks/apps were not censused — hub repo first by design).
 
-*End of matrix. Update rule: refresh from a poll diff or a fresh #184-style
-owner paste; never edit a row from memory alone.*
+*End of 2026-11-02 matrix vintage. The dated addendum below extends current evidence while preserving historical snapshots.
+
+## 11. Utilization extension — 2026-11-23
+
+**Evidence date:** 2026-11-23. **Method:** repository inspection, official provider documentation, and read-only connected Cloudflare account inventory. Provider selection and resource provisioning remain separate owner decisions.
+
+### Existing mesh assets
+
+| Surface | Current evidence | Utilization state |
+|---|---|---|
+| GitHub Actions | Public-repository standard hosted runners; repository CI and scheduled automation | Established control plane; measure job duration, queue delay, and per-workflow cost shape |
+| GitHub Codespaces | Personal Free entitlement: 120 core-hours/month + 15 GB-month storage; five role-specific devcontainer lanes and existing workflows | **HOLD** for compute utilization: owner order 2026-10-27 excludes the Codespaces pool after a prior full-allocation burn; allocation pool remains 0% with 100% reserve until owner reopening |
+| Cloudflare Workers + D1 | Read-only account inventory: 2 deployed Workers, 3 D1 databases, 4 application tables + 3 `_cf_KV` tables; GraphQL Analytics confirms Worker and D1 activity; private usage counts retained in oversight; `tmx-device-queue` is a D1-backed pull-queue rendezvous | **PARTIALLY DEPLOYED**: Queues inventory 0; R2 activation pending; Worker observability returned 0 events while both scripts report `logpush=false` and observability unset; Billing Read permission required for financial usage |
+| Render | `readme-extractor-image.yml` builds and publishes `ghcr.io/timerloggedout-spec/termux-readme-extractor`; `ops/render-image/` defines the image-backed service; `scripts/quota_poll.py` has an optional Render API reader | **REPO-WIRED / PROVIDER HEALTH PENDING**: confirm the Render workspace, service, URL, latest deploy, source digest, and usage |
+| GitLab CI | Opt-in secondary validation lane; quota entitlements are recorded in PR #5767 | CI compute and mirror/webhook are separate lanes; namespace usage pending; last mirror/webhook response recorded as 429 on 2026-11-02 |
+
+### Six extended utilization candidates
+
+The [dated evidence dossier](../rfps/mesh-resiliency-free-compute/EXTENDED-UTILIZATION-OPTIONS-2026-11-23.md) and [provider evidence matrix](../rfps/mesh-resiliency-free-compute/PROVIDER-EVIDENCE-MATRIX.md) carry official sources, published entitlements, workload fit, and open validation items.
+
+| Candidate | Capability class | Published free allowance / constraint | Priority |
+|---|---|---|---|
+| SnapDeploy | Managed containers | 4 × 512 MB / 0.25 vCPU; 100 shared container-hours/month; idle sleep and browser-only wake behavior | P1 synthetic cold-start test |
+| Leapcell Hobby | Serverless execution | 100K invocations/month; 3 GB-hours; 2 GB egress; 10 GB ingress; 900-second invocation timeout | P1 bounded function test |
+| Appwrite Free | Backend functions | 750K executions; 5 GB bandwidth; 2 GB storage; 60-minute minimum Free interval; cron schedules require paid plan | P1 schedule and pause recovery test |
+| alwaysdata Free | Personal website hosting | 1 GB SSD; 256 MB RAM; 0.25 CPU; personal-use and website restrictions | P2 website-only fit |
+| Back4app Containers Free | Docker preview | 0.25 CPU; 256 MB RAM; 100 GB transfer; vendor article records 60-minute temporary URLs | P2 resolve source conflict |
+| zrok Free | Network sharing | 5 GB/day; 25 environments; 50 share backends; 50 private frontends; compute capacity: none | P2 access/transfer test |
+
+### Watcher cadence distinction
+
+- `bucket-headroom-watch.yml`: configured `*/10 * * * *` watcher; reads GitHub rate-limit buckets, derives reset-aware headroom, and records QUE transition receipts.
+- `que-feed-collect.yml`: separate 10-minute collection schedule.
+- `que-cadence-kick.yml`: 5-minute cadence kick with qualifying master-push and stale-producer dispatch paths.
+- GitLab validation and GHCR image build also carry 10-minute `timeout-minutes` ceilings; these are per-run limits rather than watcher schedules.
+- GitHub schedule delivery remains best-effort; compare configured cron with observed workflow-run timestamps.
+
+### Priority queue
+
+1. Cloudflare: add Billing Read scope for usage, verify deployed Worker/D1 routes and usage, then owner-review Queues and R2 activation.
+2. Codespaces: retain the owner HOLD; reopen only through an explicit owner decision and a current billing read.
+3. Leapcell, Appwrite, SnapDeploy: run bounded synthetic workloads with measured invocation, duration, egress, cold-start, and recovery receipts.
+4. Back4app, zrok, alwaysdata: resolve the URL-lifetime conflict, validate network-sharing controls, and retain alwaysdata for its restricted website class.
+5. Render: inspect the confirmed workspace and reconcile service health with the repo image/deploy path.
+6. GitLab: reconcile the 429 mirror/webhook lane and capture namespace-level compute/storage usage.
+
+**Update rule:** retain the dated source and API evidence, append new observations, and preserve owner holds and unknown usage as explicit state.*

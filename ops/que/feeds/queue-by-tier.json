@@ -1,24 +1,22 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-23T19:56:45Z",
+ "generated_at": "2026-11-23T20:09:00Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 6,
-   "in_progress": 2,
+   "queued": 2,
+   "in_progress": 1,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "repo gate": 1,
-    "PR scope guard": 4,
-    "Orchestration Regression Guard": 1
+    "PR scope guard": 2
    }
   },
   "2": {
    "tier": 2,
    "queued": 2,
-   "in_progress": 2,
-   "oldest_queued_at": "2026-11-23T19:54:31Z",
+   "in_progress": 1,
+   "oldest_queued_at": "2026-11-23T20:07:48Z",
    "by_workflow_queued": {
     "pages build and deployment": 1,
     "tribute-dashboard-deploy": 1
@@ -33,38 +31,24 @@
   },
   "4": {
    "tier": 4,
-   "queued": 53,
-   "in_progress": 12,
+   "queued": 39,
+   "in_progress": 13,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "Sweep Accountability": 4,
-    "DO Statement Style": 4,
-    "lane events recorder": 13,
-    "n8n SHE bridge": 1,
-    "DeepSeek CI \u2013 Agentic Automation": 2,
-    "Repository development evaluation": 2,
-    "Action Effectiveness Ledger": 4,
-    "Context Relationship + Lead/Lag Audit": 3,
-    "Agent Readability Source Contract": 1,
-    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
-    "PR production ledger": 3,
-    "Lane matrix event-driven inventory": 2,
-    "RECON INTEL discovery": 2,
-    "archwiz dangle check": 1,
-    "CellCog review": 1,
-    "PR evidence evaluation": 2,
-    "Peer review orchestrator": 1,
-    "Agent PR Jules Handoff": 2,
-    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
-    "Reviewer metrics collect": 1,
+    "Agent Throughput Evidence": 16,
+    "Context Relationship + Lead/Lag Audit": 7,
+    "Issue Comment Router \u2014 modular fan-out reduction": 11,
+    "delphi-rfp-feed-collect": 1,
+    "Agent PR Jules Handoff": 1,
     "PR Change Effectiveness Ledger": 1,
-    "Advisory GitHub Actions lint": 1
+    "Advisory GitHub Actions lint": 1,
+    "DO Statement Style": 1
    }
   }
  },
  "totals": {
-  "queued": 61,
-  "in_progress": 16
+  "queued": 43,
+  "in_progress": 15
  },
  "wedged_ancient": [
   {
@@ -222,13 +206,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 8,
-   "2": 4,
+   "1": 3,
+   "2": 3,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 12,
-  "default_t4": 65,
+  "explicit_total": 6,
+  "default_t4": 52,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

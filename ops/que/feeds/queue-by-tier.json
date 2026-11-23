@@ -1,26 +1,23 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-23T06:00:10Z",
+ "generated_at": "2026-11-23T06:32:13Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 3,
+   "queued": 2,
    "in_progress": 2,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "PR scope guard": 3
+    "PR scope guard": 2
    }
   },
   "2": {
    "tier": 2,
-   "queued": 2,
-   "in_progress": 1,
-   "oldest_queued_at": "2026-11-23T05:59:12Z",
-   "by_workflow_queued": {
-    "tribute-dashboard-deploy": 1,
-    "pages build and deployment": 1
-   }
+   "queued": 0,
+   "in_progress": 2,
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "3": {
    "tier": 3,
@@ -31,35 +28,22 @@
   },
   "4": {
    "tier": 4,
-   "queued": 50,
-   "in_progress": 13,
+   "queued": 7,
+   "in_progress": 11,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "lane events recorder": 20,
-    "Quota Dispatch Tree": 1,
-    "Sweep Accountability": 2,
-    "CellCog review": 1,
-    "DO Statement Style": 3,
-    "PR production ledger": 1,
-    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
-    "Lane matrix event-driven inventory": 1,
-    "Action Effectiveness Ledger": 2,
-    "Agent Readability Source Contract": 1,
-    "RECON INTEL discovery": 1,
-    "PR evidence evaluation": 1,
-    "Context Relationship + Lead/Lag Audit": 1,
-    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
-    "quota-usage-series-refresh": 1,
-    "Agent Throughput Evidence": 9,
+    "lane events recorder": 2,
+    "repo-tracking-collect": 1,
     "Agent PR Jules Handoff": 1,
     "PR Change Effectiveness Ledger": 1,
-    "Advisory GitHub Actions lint": 1
+    "Advisory GitHub Actions lint": 1,
+    "DO Statement Style": 1
    }
   }
  },
  "totals": {
-  "queued": 55,
-  "in_progress": 16
+  "queued": 9,
+  "in_progress": 15
  },
  "wedged_ancient": [
   {
@@ -217,13 +201,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 5,
-   "2": 3,
+   "1": 4,
+   "2": 2,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 8,
-  "default_t4": 63,
+  "explicit_total": 6,
+  "default_t4": 18,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

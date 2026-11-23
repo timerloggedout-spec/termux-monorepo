@@ -105,7 +105,7 @@ def test_main_writes_document_without_leaking_secrets(tmp_path):
     providers = {row["provider"] for row in doc["providers"]}
     assert {"gemini", "openrouter", "felo", "huggingface", "aion", "llm7",
             "cerebras", "groq", "mistral", "nvidia", "modelscope", "siliconflow", "kilo", "ovhcloud",
-            "sambanova", "cloudflare", "cohere", "ollama"}.issubset(providers)
+            "sambanova", "cloudflare", "cohere", "ollama", "agentrouter"}.issubset(providers)
     public = {"llm7", "modelscope", "ovhcloud", "routeway", "requesty", "xkiro"}
     configured = {"huggingface": "HF_TOKEN", "sambanova": "SAMBANOVA_API_KEY", "agentrouter": "AGENTROUTER_API_KEY"}
     by_provider = {row["provider"]: row for row in doc["providers"]}

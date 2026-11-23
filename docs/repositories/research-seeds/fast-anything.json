@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "seed_id": "github:research-seed:timerloggedout-spec/fast-anything_fork",
+  "canonical_upstream": "EL4CTEO/fast-anything",
+  "local_fork": "timerloggedout-spec/fast-anything_fork",
+  "provenance": [
+    "owned",
+    "forked"
+  ],
+  "classification": {
+    "domains": [
+      "rust",
+      "performance-optimization",
+      "developer-tools",
+      "agent-assisted-migration"
+    ],
+    "research_value": "high",
+    "integration_mode": "upstream-comparison",
+    "adoption": "research-only"
+  },
+  "observed_facts": {
+    "source_commit": "80ab099817b3d07ebe5b5221d4a9c6b881cfd044",
+    "crate_name": "fast-anything",
+    "crate_version": "0.8.0",
+    "license": "MIT",
+    "minimum_rust_version": "1.88"
+  },
+  "capability_signals": [
+    "profile-guided-hot-path-identification",
+    "selective-rust-port",
+    "recorded-call-replay",
+    "derived-edge-case-validation",
+    "reversible-enable-disable",
+    "whole-application-benchmark-report"
+  ],
+  "integration_constraints": [
+    "do-not-vendor-source",
+    "preserve-upstream-provenance",
+    "compare-before-extracting-patterns",
+    "gate-performance-claims-on-independent-correctness"
+  ]
+}

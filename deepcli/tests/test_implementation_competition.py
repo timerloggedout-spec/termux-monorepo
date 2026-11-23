@@ -60,6 +60,7 @@ class ImplementationCompetitionTests(unittest.TestCase):
         self.assertEqual(report["metrics"]["task_quality"]["sample_count"], 3)
         self.assertAlmostEqual(report["metrics"]["task_quality"]["improvement_mean"], .1)
         self.assertIsNotNone(report["metrics"]["task_quality"]["ci95"])
+        self.assertEqual(report["metrics"]["task_quality"]["interval_status"], "estimated")
         self.assertEqual(report["recommendation"], "challenger_for_human_review")
 
     def test_missing_metrics_remain_null_and_reduce_sample_count(self):
@@ -69,6 +70,7 @@ class ImplementationCompetitionTests(unittest.TestCase):
         report = compare_implementations(self.receipts)
         self.assertEqual(report["metrics"]["task_quality"]["sample_count"], 2)
         self.assertEqual(report["metrics"]["compute_cost"]["sample_count"], 0)
+        self.assertEqual(report["metrics"]["compute_cost"]["interval_status"], "no_observations")
         self.assertIn("compute_cost", report["unobserved_metrics"])
         self.assertIsNone(report["metrics"]["compute_cost"]["improvement_mean"])
         self.assertEqual(report["recommendation"], "pareto_tradeoff_or_insufficient_evidence")

@@ -1,22 +1,21 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-23T18:02:34Z",
+ "generated_at": "2026-11-23T18:29:12Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 3,
+   "queued": 2,
    "in_progress": 0,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "Orchestration Regression Guard": 1,
     "PR scope guard": 2
    }
   },
   "2": {
    "tier": 2,
    "queued": 0,
-   "in_progress": 2,
+   "in_progress": 1,
    "oldest_queued_at": null,
    "by_workflow_queued": {}
   },
@@ -29,14 +28,15 @@
   },
   "4": {
    "tier": 4,
-   "queued": 8,
-   "in_progress": 10,
+   "queued": 37,
+   "in_progress": 15,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "hitl-control-plane-verify": 1,
-    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
-    "graph-matrix-probe": 1,
     "Quota Dispatch Tree": 1,
+    "Agent Throughput Evidence": 15,
+    "lane events recorder": 13,
+    "Gemini review after peers": 3,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
     "Agent PR Jules Handoff": 1,
     "PR Change Effectiveness Ledger": 1,
     "Advisory GitHub Actions lint": 1,
@@ -45,8 +45,8 @@
   }
  },
  "totals": {
-  "queued": 11,
-  "in_progress": 12
+  "queued": 39,
+  "in_progress": 16
  },
  "wedged_ancient": [
   {
@@ -204,13 +204,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 3,
-   "2": 2,
+   "1": 2,
+   "2": 1,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 5,
-  "default_t4": 18,
+  "explicit_total": 3,
+  "default_t4": 52,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

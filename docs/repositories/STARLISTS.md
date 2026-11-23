@@ -16,6 +16,13 @@
 | [filiksyos/gitreverse](https://github.com/filiksyos/gitreverse) | External upstream | `main` snapshot `e7f7d2859105aafe16ec4f39c0315c07e6b0eae3` | Turns repository metadata, depth-1 tree and README into a synthetic coding prompt; MIT license verified from upstream LICENSE | Research candidate; star status pending Observatory reconciliation |
 | Internal GitReverse implementation | In-progress repository-native implementation | Exact source path and commit pending recon | Custom reconstruction pipeline; Siglary integration/version to be verified | Build-in-progress; comparison candidate |
 
+## Adjacent internal systems — distinct contracts
+
+| Repository | Verified contract | Comparison disposition |
+|---|---|---|
+| [timerloggedout-spec/repo-replay](https://github.com/timerloggedout-spec/repo-replay) | Reconstructs files from session-chat code extractions using content-addressed objects, provenance pointers, recipes and its own history DAG | Adjacent reconstruction system; distinct from GitReverse's public-repository-to-prompt task |
+| [timerloggedout-spec/repo-story](https://github.com/timerloggedout-spec/repo-story) | Narrates PR/repository history from commits, file mutations and authors, with source-commit citations | Adjacent repository-intelligence system; distinct from GitReverse's prompt-synthesis task |
+
 ## Extensible comparison rules
 
 1. Keep repository identity, upstream identity, fork identity, source commit, license and observation date separate.

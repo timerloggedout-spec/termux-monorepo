@@ -16,16 +16,19 @@ scheduling every poll at the top of the hour. The workflow also exposes
 
 - `collect` — one `GET /rate_limit` read per token available to the
   run: the PAT (repo secret), the per-repo `GITHUB_TOKEN`, and freshly
-  minted installation tokens for the fleet apps whose SEC-03 mint
-  copies exist in this repo (Swarm — the mint path itself — Collector,
-  CrossReference).
-- `evaluate` — pure projection/transition logic. It enumerates every
-  fleet app from `ops/github-apps/PROCESS.json` (10 apps) and merges
-  the reads into the full bucket universe: PAT core, GITHUB_TOKEN
-  class, and all 10 app installations. An app with no readable bucket
-  is carried as `unreadable` with a named reason
-  (`sec03_unprovisioned` / `mint_unavailable` / `no_read_supplied`) —
-  never silently skipped.
+  minted installation tokens for the fleet Apps whose SEC-03 mint
+  copies exist in this repo (Swarm, Collector, CrossReference).
+  Each successful response retains `X-RateLimit-Limit`,
+  `X-RateLimit-Resource`, `X-RateLimit-Remaining`, and
+  `X-RateLimit-Reset` in `read.rate_limit_headers`, alongside the
+  `/rate_limit` JSON payload. The response headers provide the
+  authoritative bucket evidence.
+- `evaluate` — pure projection/transition logic. It enumerates all 11
+  registered Apps in `ops/github-apps/PROCESS.json` and merges the
+  reads into the full bucket universe: PAT core, GITHUB_TOKEN class,
+  and all 11 AppID buckets. An App with no readable bucket is carried
+  as `unreadable` with a named reason (`sec03_unprovisioned` /
+  `mint_unavailable` / `no_read_supplied`) — never silently skipped.
 
 ## Derived thresholds (no hardcoded counts)
 
@@ -93,10 +96,22 @@ a gate.
 
 ## Known gap (provisioning lane)
 
-Only 3 of 10 fleet apps have Actions-side SEC-03 mint copies in this
-repo today. The other 7 (Publisher, Reviewer, Gate, Lifecycle,
-RepoStory, DelphiOracle, MoneyBall) are enumerated and reported
-unreadable with the named reason until the provisioning lane lands
-their `TERMUX_FLEET_<ROLE>_*` copies (names-only); the watcher picks
-them up by adding their mint steps — the evaluation universe already
-covers them.
+Three of the 11 registered Apps have Actions-side SEC-03 mint copies
+in `termux-monorepo`: Swarm, Collector, and CrossReference. The other
+eight AppID buckets remain visible and unreadable in this repository:
+Publisher, Reviewer, Gate, Lifecycle, Repostory, MoneyBall,
+DelphiOracle, and Understudy. `PROCESS.json` records Repostory,
+DelphiOracle, MoneyBall, and Understudy against separate repositories;
+Repostory's credential pair is recorded on `repo-story`, outside this
+watcher's secret scope. Publisher, Reviewer, Gate, and Lifecycle have
+live/provisioned registration records but lack corresponding SEC-03
+mint copies recorded for `termux-monorepo`. Provisioning each required
+repository-local `TERMUX_FLEET_<ROLE>_*` pair and adding its mint step
+makes that bucket readable; the evaluator already preserves the full
+11-AppID universe.
+
+The PAT core row currently remains `unreadable/no_read_supplied`. The
+GITHUB_TOKEN row previously reported a 5,000 limit from the JSON
+payload without response-header evidence. Keep that limit disputed
+until a post-change watcher run records the `rate_limit_headers` values
+and they can be compared with the documented per-repository limit.

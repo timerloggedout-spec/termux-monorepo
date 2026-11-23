@@ -77,6 +77,25 @@ class ImplementationCompetitionTests(unittest.TestCase):
         interval = report["metrics"]["task_quality"]["ci95"]
         self.assertGreater(interval[1] - interval[0], 1.0)
 
+    def test_declared_metric_with_all_null_observations_blocks_dominance(self):
+        for item in self.receipts:
+            item["metric_set"].append("policy_violations")
+            item["metrics"]["policy_violations"] = None
+        report = compare_implementations(self.receipts)
+        self.assertIn("policy_violations", report["unobserved_metrics"])
+        self.assertEqual(report["recommendation"], "pareto_tradeoff_or_insufficient_evidence")
+
+    def test_metric_set_must_match_across_receipts(self):
+        self.receipts[-1]["metric_set"].append("policy_violations")
+        self.receipts[-1]["metrics"]["policy_violations"] = None
+        with self.assertRaisesRegex(ValueError, "same declared metric_set"):
+            compare_implementations(self.receipts)
+
+    def test_metric_keys_must_match_declared_metric_set(self):
+        del self.receipts[0]["metrics"]["compute_cost"]
+        with self.assertRaisesRegex(ValueError, "metrics keys must match metric_set"):
+            compare_implementations(self.receipts)
+
     def test_hard_gate_failure_blocks_recommendation(self):
         self.receipts[-1]["hard_gates"]["security_and_policy"] = False
         report = compare_implementations(self.receipts)

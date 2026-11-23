@@ -8,10 +8,11 @@ small leg, no fold into #5160), QDesk acceptance c.6823811148.
 
 ## What runs
 
-`.github/workflows/bucket-headroom-watch.yml` every 10 minutes
-(Cadence poll floor is 5 minutes; 10 is inside the floor and on the
-fleet cadence norm), plus `workflow_dispatch` with `dry_run` and
-`drill` inputs. `scripts/ops/bucket_headroom.py` has two legs:
+`.github/workflows/bucket-headroom-watch.yml` every 10 minutes at UTC
+minutes `7,17,27,37,47,57` (Cadence poll floor is 5 minutes; 10 is
+inside the floor and on the fleet cadence norm). The offset avoids
+scheduling every poll at the top of the hour. The workflow also exposes
+`workflow_dispatch` with `dry_run` and `drill` inputs. `scripts/ops/bucket_headroom.py` has two legs:
 
 - `collect` — one `GET /rate_limit` read per token available to the
   run: the PAT (repo secret), the per-repo `GITHUB_TOKEN`, and freshly

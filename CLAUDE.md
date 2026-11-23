@@ -23,7 +23,7 @@
 - `CHAT := STATE-CHANGE ∨ OVERSIGHT`.
 - Lead authored prose with `DO`: action + owner/scope + condition + expected state.
 - Apply CAVEMAN-6: actor → action → object → evidence → next state; keep ≤4±1 live items.
-- Use the stable Siglary operator registry; one glyph = one meaning, with explicit grouping and no implied precedence.
+- Use the stable Siglary operator registry; one glyph = one meaning, with explicit grouping; precedence remains undefined.
 - Comments explain intent, invariant, boundary, trade-off, or non-obvious behavior.
 - Commits use imperative, outcome-led subjects and record rationale, §1d§, and `Implements: TER-N`.
 - PR/§1a§ text uses evidence → impact → requested action → acceptance condition.

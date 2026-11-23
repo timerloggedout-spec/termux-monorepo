@@ -69,11 +69,36 @@ def collect_puter_pool_observation(request: PuterPoolObservationInput) -> dict[s
         api_key=os.environ.get("PUTER_POOL_API_KEY"),
     )
     info = activity.info()
+    observation["correlation"] = {
+        "task_or_entry_ref": request.task_or_entry_ref or None,
+        "doe_run_id": request.doe_run_id or None,
+        "workflow_run_id": request.workflow_run_id or None,
+        "run_attempt": request.run_attempt,
+        "temporal_workflow_id": info.workflow_id,
+        "temporal_run_id": info.workflow_run_id,
+    }
     event = build_event(observation, request, info.workflow_id, info.workflow_run_id)
     output = Path(os.environ.get("PUTER_POOL_EVENT_OUT", str(REPO_ROOT / "agent_telemetry_stream.json")))
     output.parent.mkdir(parents=True, exist_ok=True)
+    if output.is_symlink():
+        raise RuntimeError("puter_pool_event_output_symlink_refused")
     with output.open("a", encoding="utf-8") as stream:
         stream.write(json.dumps(event, sort_keys=True, separators=(",", ":")) + "\n")
         stream.flush()
         os.fsync(stream.fileno())
-    return {"observation": observation, "event_id": event["event_id"], "event_path": str(output)}
+    runtime_output = Path(os.environ.get(
+        "PUTER_POOL_RUNTIME_OUT",
+        str(REPO_ROOT / "apps" / "tribute-dashboard" / "data" / "puter-pool-runtime.json"),
+    ))
+    runtime_output.parent.mkdir(parents=True, exist_ok=True)
+    if runtime_output.is_symlink():
+        raise RuntimeError("puter_pool_runtime_output_symlink_refused")
+    temporary = runtime_output.with_name(runtime_output.name + ".tmp")
+    temporary.write_text(json.dumps(observation, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    os.replace(temporary, runtime_output)
+    return {
+        "observation": observation,
+        "event_id": event["event_id"],
+        "event_path": str(output),
+        "runtime_feed_path": str(runtime_output),
+    }

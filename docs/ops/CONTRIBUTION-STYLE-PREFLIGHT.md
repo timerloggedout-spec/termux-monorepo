@@ -69,7 +69,7 @@ python3 scripts/ci/check_do_statement_style.py \
   --preflight --base origin/master --text-file /tmp/collaboration-draft.md
 ```
 
-Select `origin/master-staging` when the active contribution lane targets `master-staging`. Stage new instruction files before running preflight so the checker can include them.
+Select `origin/master-staging` when the active contribution lane targets `master-staging`. The checker includes untracked instruction files automatically.
 
 ## 6. CI coverage and response
 

@@ -9,7 +9,7 @@
 | Scope | DO-first CAVEMAN-6 and Siglary enforcement across repository-authored communications, source/projection parity, lint, CI, and bounded discussion auditing |
 | Base | `master-staging` |
 | Linear | [TER-981](https://linear.app/termux-monorepo-linear/issue/TER-981/siglary-001-enforce-caveman-6-do-statement-style-across-repository) |
-| Foundation | [PR #5339](https://github.com/timerloggedout-spec/termux-monorepo/pull/5339) |
+| Foundation | [PR #5339](https://github.com/timerloggedout-spec/termux-monorepo/pull/5339) · [PR #5806](https://github.com/timerloggedout-spec/termux-monorepo/pull/5806) |
 
 ## Authority
 

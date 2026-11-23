@@ -26,6 +26,8 @@ on:
   pull_request:
     paths:
       - 'scripts/provider_model_catalog.py'
+      - 'scripts/puter_pool_catalog.py'
+      - 'tests/test_puter_pool_catalog.py'
       - 'scripts/provider_extension_catalogs.py'
       - 'scripts/ops/provider_operational_check.py'
       - 'scripts/ops/gemini_free_smoke.py'

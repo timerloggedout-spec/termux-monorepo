@@ -4,6 +4,7 @@
 - [Architecture](Architecture)
 - [Navigation](Navigation)
 - [DeepWiki Mirror](DeepWiki-Mirror)
+- [DERP / d3rp Language](DERP-Language)
 
 ---
 

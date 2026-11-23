@@ -9,7 +9,7 @@ import re
 import subprocess
 import sys
 
-NEGATIVE_RE = re.compile(r"\b(?:do\s+not|don't|dont|never|cannot|can't|won't|wont|not|no)\b", re.I)
+NEGATIVE_RE = re.compile(r"\b(?:do\s+not|don't|dont|never|without|cannot|can't|won't|wont|not|no)\b", re.I)
 ALLOWLIST_RE = re.compile(r"\b(?:no-go|no-cost|no-op|no-fallback|not-found|not_found|not requested|not-requested|not configured|not-configured|not_applicable|not-applicable)\b", re.I)
 FENCE_RE = re.compile(r"^ {0,3}(\x60{3,}|~{3,})")
 HUNK_RE = re.compile(r"\+(\d+)(?:,(\d+))?")

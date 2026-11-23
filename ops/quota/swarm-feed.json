@@ -71,12 +71,12 @@
     {
      "id": "agentrouter.models",
      "provider": "agentrouter",
-     "metric": "Owner-reported community-pool model catalogue visibility; per-account quota balance/reset not established",
+     "metric": "Owner-reported community-pool model catalogue visibility; per-account quota balance/reset unverified",
      "limit": null,
      "unit": "provider-defined",
      "window": "unknown",
      "reset": "unknown",
-     "live": "GET https://co.agentrouter.org/v1/models (authenticated model catalogue; no remaining-credit/reset response contract verified)",
+     "live": "GET https://co.agentrouter.org/v1/models (authenticated model catalogue; remaining-credit/reset response contract unverified)",
      "readings": {
       "status": "unknown",
       "used": null,
@@ -343,7 +343,7 @@
      "available": "not-established",
      "claimed": "not-established",
      "balance": null,
-     "source": "key-gated models surface answered 200 in probe run 41263537880; limits/balance not exposed by this surface"
+     "source": "the API-key balance endpoint is documented separately; the catalog probe recorded model-list success, while key-level and account-wide balances remain unmeasured."
     },
     "replenishment": {
      "mechanism": "not-established",
@@ -2964,7 +2964,7 @@
     "evidence": "api-verified",
     "free_tier": {
      "state": "active",
-     "limits": "Multi-provider free-model catalog (current platform API example lists 50 vendors); about one request/minute per free model/account above independent upstream caps. The model library lists AI Horde alongside many other providers; AI Horde is one upstream, not the whole UnoRouter service. API-key balance is documented at /api/usage/token/; account-wide balance/logs require a separate access token. Provider-level consent/objection covers free and paid models; blocking was not active in the October 21, 2026 notice and is planned to be phased in."
+     "limits": "Multi-provider free-model catalog (current platform API example lists 50 vendors); about one request/minute per free model/account above independent upstream caps. The model library lists AI Horde alongside many other providers, demonstrating that UnoRouter aggregates multiple upstreams. API-key balance is documented at /api/usage/token/; account-wide balance/logs require a separate access token. Provider-level consent/objection covers free and paid models; the October 21, 2026 notice describes a staged rollout with enforcement scheduled for a later phase."
     },
     "credits": {
      "available": "not-established",
@@ -2978,8 +2978,8 @@
     },
     "flags": [
     "catalog-only",
-    "no-inference",
-    "key-balance-not-observed"
+    "inference-disabled",
+    "key-balance-unmeasured"
    ]
    },
    "records": [
@@ -2991,7 +2991,7 @@
      "unit": "requests/minute per free model per account",
      "window": "per minute",
      "reset": "Retry-After on 429; upstream resets provider-specific; account balance reset unknown",
-     "live": "GET /api/usage/token/ with UNOROUTER_API_KEY returns key-level total_granted, total_used, total_available and quota flags; this is not per-model headroom. HTTP 429 carries Retry-After for the separate per-model request window.",
+     "live": "GET /api/usage/token/ with UNOROUTER_API_KEY returns key-level total_granted, total_used, total_available and quota flags; the endpoint reports key-level balance separately from per-model request headroom. HTTP 429 carries Retry-After for the separate per-model request window.",
      "readings": {
       "status": "unknown",
       "used": null,

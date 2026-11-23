@@ -535,7 +535,7 @@ owner paste; never edit a row from memory alone.*
 
 ## 2026-11-20 delta — CockroachDB backend mesh
 
-CockroachDB joins the database continuity lane as an optional projection of canonical lane events. The existing Neon route remains unchanged. Implementation and evidence are tracked in PR #5735 and `docs/ops/COCKROACHDB-BACKEND-MESH.md`.
+CockroachDB joins the database continuity lane as an optional projection of canonical lane events. The existing Neon route remains unchanged. Implementation and evidence are tracked in PR #5815 and `docs/ops/COCKROACHDB-BACKEND-MESH.md`.
 
 - Runtime writer: `scripts/ops/cockroach_lane_event.py`.
 - Composite action: `.github/actions/lane-event` supports the optional `COCKROACH_DATABASE_URL` secret.

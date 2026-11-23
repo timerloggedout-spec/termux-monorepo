@@ -37,13 +37,13 @@ Operator direction received 2026-11-20: continue Brain integration without devic
 
 ## Scope boundaries
 
-- Brain owns domain-neutral reasoning and typed specialist invocation.
-- MOSAIC owns methodology-intelligence evaluation through its pure specialist crate.
-- QUE admission, capability authorization, dispatch, device I/O, provider calls, memory persistence, proposal mutation, and promotion remain with their existing owners.
-- The merged shadow composition proves the kernel-to-specialist seam and policy-hold behavior.
-- The QDesk self-repair execution host and generic QUE admission workflow are identified; the Brain-specific route and bridge remain to be confirmed by their owners.
-- Production host activation requires fresh Delphi admission and a verified canonical QUE/QDesk host and bridge contract, as recorded in issue #5693 and RFP #5501.
-- The qdesk.brain-rs RFP remains parked at 6.69/25, with recheck after 2026-12-16T09:39Z and filing_grants_execution=false.
+- DO keep Brain focused on domain-neutral reasoning and typed specialist invocation.
+- DO route methodology-intelligence evaluation through the MOSAIC pure specialist crate.
+- DO delegate QUE admission, capability authorization, dispatch, device I/O, provider calls, memory persistence, proposal mutation, and promotion to their canonical owners.
+- DO use the merged shadow composition as evidence for the kernel-to-specialist seam and policy-hold behavior.
+- DO confirm the Brain-specific route and bridge with the QUE/QDesk owners while preserving the existing QDesk self-repair and generic QUE admission boundaries.
+- DO gate production host activation on fresh Delphi admission and verified canonical QUE/QDesk host and bridge contracts, as recorded in issue #5693 and RFP #5501.
+- DO retain the qdesk.brain-rs RFP's parked status at 6.69/25, with recheck after 2026-12-16T09:39Z and filing_grants_execution=false.
 
 ## Review log
 
@@ -72,6 +72,6 @@ Operator direction received 2026-11-20: continue Brain integration without devic
 - Host reconnaissance: ./HOST-RECON.md
 - Candidate bridge contract: ./BRIDGE-CANDIDATE.md
 - Source record: ./source.md
-- Implementation plan: ../../../../superpowers/plans/2026-11-20-cns-integration.md
+- Implementation plan: ../../../superpowers/plans/2026-11-20-cns-integration.md
 - CNS-06 issue: https://github.com/timerloggedout-spec/termux-monorepo/issues/5693
 - MOSAIC design: ../continuous-capability-evolution-lab/MOSAIC-BRAIN-ROOT-INTEGRATION-PROPOSAL.md

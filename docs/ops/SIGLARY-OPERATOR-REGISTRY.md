@@ -10,7 +10,7 @@ Use stable IDs in reviews, tests, documentation, and lint findings. Keep glyphs 
 |---|---|---|---|
 | SIG-OP-001 | ∧ | AND; both predicates hold | auth ∧ catalog |
 | SIG-OP-002 | ∨ | OR; either predicate holds | queued ∨ running |
-| SIG-OP-003 | ¬ | NOT; logical negation | ¬eligible |
+| SIG-OP-003 | ¬ | logical negation | ¬eligible |
 | SIG-OP-004 | ⇒ | implies; left condition entails right result | tests pass ⇒ ready |
 | SIG-OP-005 | ⇔ | iff; both directions hold | ready ⇔ gates pass |
 | SIG-OP-006 | ∈ | member of a set | provider ∈ catalog |
@@ -30,7 +30,7 @@ Use stable IDs in reviews, tests, documentation, and lint findings. Keep glyphs 
 | ID | Glyph | Meaning | Example |
 |---|---|---|---|
 | SIG-OP-017 | ⊢ | proven by cited evidence | ⊢ repo gate PASS |
-| SIG-OP-018 | ⊬ | evidence does not establish the claim | ⊬ inference ready |
+| SIG-OP-018 | ⊬ | evidence insufficient to establish the claim | ⊬ inference ready |
 | SIG-OP-019 | ⊩ | assertion paired with trace/evidence | ⊩ catalog healthy {run 123} |
 | SIG-OP-020 | ≟ | disputed / requires adjudication | quota ≟ free |
 | SIG-OP-021 | ∎ | closed / terminal disposition | SIG-01 ∎ |
@@ -63,7 +63,7 @@ Use stable IDs in reviews, tests, documentation, and lint findings. Keep glyphs 
 ## Composition rules
 
 1. Prefix the operator ID in formal policy, lint output, and review dispositions when a definition matters.
-2. Use parentheses for mixed logical expressions; the registry defines no operator precedence.
+2. Use parentheses for mixed logical expressions; the registry assigns zero operator precedence.
 3. Keep one meaning per glyph. Add a new glyph only with a new stable ID and collision review.
 4. Preserve Unicode code points exactly in tests and machine output.
 5. Treat ⊢ as evidence-backed proof, ⊩ as assertion plus trace, and ⊬ as an evidence boundary.

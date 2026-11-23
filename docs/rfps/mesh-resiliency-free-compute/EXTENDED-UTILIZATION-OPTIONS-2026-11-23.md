@@ -31,18 +31,18 @@ All values below are published plan entitlements. Account eligibility, current r
 
 ### Candidate-specific evidence
 
-**SnapDeploy**
+### SnapDeploy
 - Free-tier documentation: https://snapdeploy.dev/docs/free-tier
 - Pricing: https://snapdeploy.dev/pricing
 - FAQ and automation wake behavior: https://snapdeploy.dev/docs/faq
 - The key scheduling constraint is the wake path: a browser visit wakes a sleeping free container in about 60 seconds, while automated server-to-server requests receive HTTP 503 and leave the container asleep. Keep scheduled workers on an always-on or alternative execution surface.
 
-**Leapcell**
+### Leapcell
 - Official pricing: https://www.leapcell.io/pricing
 - Hobby includes 20 projects, 100K monthly serverless invocations, 3 GB-hours, 2 GB egress, 10 GB ingress, and a 900-second invocation timeout.
 - Plus adds persistent servers and higher included quotas. Treat Hobby as a serverless/scale-to-zero lane; meter invocations, duration, and egress independently.
 
-**Appwrite**
+### Appwrite
 - Official pricing: https://appwrite.io/pricing
 - Free-plan inactivity pause: https://appwrite.io/changelog/entry/2026-02-20-1
 - Paused-project deletion after 90 days: https://appwrite.io/changelog/entry/2026-06-29
@@ -50,18 +50,18 @@ All values below are published plan entitlements. Account eligibility, current r
 - Function interval and timeout contract: https://appwrite.io/docs/products/functions/execute
 - Seven consecutive days without Console development activity pauses the project. Paused projects suspend scheduled functions and background processes; projects paused for 90 days are deleted. From 2026-10-19, Appwrite Cloud Free uses intervals of 60 minutes or longer; cron schedules require a paid plan. Function timeout tops out at 900 seconds. Add a maintenance owner, reactivation receipt, and schedule-compatibility check before relying on Appwrite for recurring tasks.
 
-**alwaysdata**
+### alwaysdata
 - Official offers: https://www.alwaysdata.com/en/offers/
 - Official free-plan restrictions: https://help.alwaysdata.com/en/docs/admin-billing/billing/public-cloud-prices/
 - Free offer has 1 GB disk, 256 MB RAM, quarter CPU, and three backup days. The vendor restricts the free plan to personal use and website hosting on the alwaysdata.net address; running services belongs outside the free-plan fit.
 
-**Back4app Containers**
+### Back4app Containers
 - Official pricing: https://www.back4app.com/pricing/container-as-a-service
 - Official deployment guide: https://www.back4app.com/docs-containers
 - Vendor engineering article with September 15, 2026 change: https://www.back4app.com/blog/deploy-node-app-dockerfile-back4app
 - The pricing page presents the Free container as a $0 plan with 0.25 CPU, 256 MB RAM, and 100 GB transfer; its FAQ confirms card requirement: none. The engineering article records temporary URLs expiring after 60 minutes, with free auto-deploy disabled and a separate backend required for persistence. Preserve the URL-lifetime and deployment constraints as disqualifiers for persistent public endpoints.
 
-**zrok**
+### zrok
 - Official pricing: https://zrok.io/pricing/
 - The free allowance is a daily transfer and sharing quota. zrok adds network reachability and access mediation; it contributes zero compute capacity by itself.
 

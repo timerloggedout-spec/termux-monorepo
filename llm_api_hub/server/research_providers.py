@@ -190,6 +190,8 @@ def post_json(url: str, payload: dict[str, Any], key: str, timeout: float, *, re
 def _safe_correlation_value(value: Any) -> str | None:
     if not isinstance(value, str) or not re.fullmatch(r"[A-Za-z0-9_.:/@-]{1,256}", value):
         return None
+    if value.startswith(("sk-", "ghp_", "github_pat_")):
+        return None
     return value
 
 

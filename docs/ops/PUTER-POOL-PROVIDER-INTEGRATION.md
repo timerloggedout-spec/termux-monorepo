@@ -56,7 +56,7 @@ to produce an allowlisted source manifest with commit identity, file hashes,
 route names, SQLite table names, and event names. The manifest excludes
 `.env`, SQLite files, browser storage, account credentials, and request bodies.
 
-Run `python3 scripts/puter_pool_catalog.py` for model discovery and
+Run `python3 scripts/provider_model_catalog.py --providers puter_pool --output /tmp/provider-model-catalog/puter-pool.json` to harvest into the canonical provider model catalog; the `puter_pool` rows join `provider_id=g4f.puter` and `provider_family=g4f/Puter`. Run `python3 scripts/puter_pool_catalog.py` for the focused local model inventory and
 `python3 scripts/puter_pool_observation.py` for a privacy-minimized runtime
 snapshot. Configure `PUTER_POOL_BASE_URL` to a loopback origin and
 `PUTER_POOL_API_KEY` in the worker environment. The observer reads only

@@ -358,7 +358,7 @@ CockroachDB is admitted as an optional, independently addressable distributed-SQ
 | PostgreSQL-wire writer | `scripts/ops/cockroach_lane_event.py` | Committed on PR branch |
 | Schema / idempotent insert | `ops/cockroachdb/lane-events-schema.sql`, `lane-events-insert.sql` | Committed on PR branch |
 | Recorder integration | `.github/actions/lane-event`, `.github/workflows/lane-events-recorder.yml` | Optional dual-write path, gated by `COCKROACH_DATABASE_URL` |
-| Disposable runtime test | `.github/workflows/cockroachdb-backend-ci.yml` | Single-node restricted-writer + canonical-event replay recovery; three-node node-failure and native backup/restore gated by `COCKROACH_LICENSE_KEY`; PR validation pending |
+| Disposable runtime test | `.github/workflows/cockroachdb-backend-ci.yml` | TLS single-node restricted-writer + canonical-event replay recovery; disposable three-node node-failure and native backup/restore run in the documented seven-day no-license grace period; optional `COCKROACH_LICENSE_KEY` |
 | Reference source | `cockroachdb/cockroach`, observed upstream commit `d30c905fff79ef825adc96bcc647f1872a90f2ff` | Historical public source snapshot pinned as shallow gitlink at `refTemplates/smods/cockroachdb`; immutable pin `d30c905fff79ef825adc96bcc647f1872a90f2ff` |
 | Hosted cluster | `COCKROACH_DATABASE_URL` | Owner provisioning pending; presence/authentication unverified |
 | Failover / restore | Seeded canary + forced-path interruption + readback receipt | Pending; RPO/RTO remain `null` |

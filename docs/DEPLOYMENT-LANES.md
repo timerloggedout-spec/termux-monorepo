@@ -90,8 +90,8 @@ The Render README utility is separate from the Render/n8n reference lane in
    establishes the deployment.
 3. Record the public URL/domain and immutable source/deployment evidence when
    the lane becomes live.
-4. If the lane needs its own environment variables/secrets, document what
-   names only; values remain private in the folder's own README.
+4. If the lane needs its own environment variables/secrets, document their
+   names in the folder's own README; keep secret values private.
 5. If the lane duplicates an existing surface, document why it is a fallback,
    preview, experiment, or deliberate multi-provider redundancy rather than
    silently becoming another production source.

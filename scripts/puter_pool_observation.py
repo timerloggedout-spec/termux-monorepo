@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+import math
 import os
 import tempfile
 import urllib.error
@@ -50,7 +51,10 @@ def _fetch_json(base_url: str, path: str, timeout: float, api_key: str | None) -
         with opener.open(request, timeout=timeout) as response:
             raw = response.read(MAX_RESPONSE_BYTES + 1)
     except urllib.error.HTTPError as exc:
-        raise RuntimeError(f"puter_pool_http_{exc.code}") from None
+        if path == "/readyz" and exc.code == 503:
+            raw = exc.read(MAX_RESPONSE_BYTES + 1)
+        else:
+            raise RuntimeError(f"puter_pool_http_{exc.code}") from None
     except (urllib.error.URLError, TimeoutError, OSError):
         raise RuntimeError("puter_pool_unreachable") from None
     if len(raw) > MAX_RESPONSE_BYTES:
@@ -70,11 +74,19 @@ def _nonnegative_int(value: Any) -> int | None:
     return value
 
 
+def _nonnegative_number(value: Any) -> int | float | None:
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value < 0:
+        return None
+    return value
+
+
 def collect_observation(base_url: str = DEFAULT_BASE_URL, timeout: float = 8.0, api_key: str | None = None) -> dict[str, Any]:
     models = fetch_models(base_url, timeout, api_key)
     snapshots = {path: _fetch_json(base_url, path, timeout, api_key) for path in PATHS}
     stats, queue = snapshots["/api/stats"], snapshots["/api/queue"]
-    counters = {key: _nonnegative_int(stats.get(key)) for key in COUNTERS}
+    counters = {key: _nonnegative_int(stats.get(key)) for key in COUNTERS if key not in {"averageLatency", "uptime"}}
+    counters["averageLatency"] = _nonnegative_number(stats.get("averageLatency"))
+    counters["uptime"] = _nonnegative_number(stats.get("uptime"))
     counters["queuedRequests"] = _nonnegative_int(queue.get("queuedRequests")) if _nonnegative_int(queue.get("queuedRequests")) is not None else counters["queuedRequests"]
     counters["activeRequests"] = _nonnegative_int(queue.get("activeRequests")) if _nonnegative_int(queue.get("activeRequests")) is not None else counters["activeRequests"]
     health, ready = snapshots["/healthz"], snapshots["/readyz"]

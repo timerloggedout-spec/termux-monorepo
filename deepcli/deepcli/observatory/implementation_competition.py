@@ -243,6 +243,7 @@ def compare_implementations(receipts: list[dict[str, Any]]) -> dict[str, Any]:
         "task_contract_hash": validated["task_contract_hash"],
         "environment_fingerprint": validated["environment_fingerprint"],
         "evaluator_version": validated["evaluator_version"],
+        "metric_set": validated["metric_set"],
         "matched_task_count": len(validated["task_ids"]),
         "task_ids": validated["task_ids"],
         "incumbent": {"implementation_id": incumbent_key[0],

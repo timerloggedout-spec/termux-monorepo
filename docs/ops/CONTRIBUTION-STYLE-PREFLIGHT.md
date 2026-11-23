@@ -71,6 +71,8 @@ python3 scripts/ci/check_do_statement_style.py \
 
 Select `origin/master-staging` when the active contribution lane targets `master-staging`. The checker includes untracked instruction files automatically. The local checker enforces DO-first wording; validate Siglary classes, chord domains, register boundaries, and receipt placement against the canonical Standard as part of the same preflight.
 
+Run the focused regression suite with `python3 -m unittest discover -s tests -p 'test_do_statement_style_preflight.py' -v`.
+
 ## 6. CI coverage and response
 
 The `DO Statement Style` workflow checks:

@@ -43,6 +43,9 @@ def _knowable(raw, label, wall_at, wall_date):
     if "11:30 PT" in raw:
         return {"kind": "dated", "at": "2026-11-20T11:30:00-08:00",
                 "text": raw}
+    if len(raw) > 10 and raw[10] in {"T", " "}:
+        return {"kind": "dated", "at": raw, "text": raw,
+                "basis": "explicit timestamp preserved"}
     date = raw[:10]
     out = {"kind": "dated", "text": raw}
     if "by wall" in label and wall_date and date == wall_date:
@@ -155,12 +158,17 @@ def build_feed(bookfeed, book, ledger_count, generated_at, book_ref):
                            "feed's stamped pct is proof-of-shape only"}
     positions = bookfeed["positions"]
     feed_settlements = bookfeed["settlements"]
+    window_starts = [s["window"]["window_start"] for s in bookfeed["subjects"]
+                     if s.get("window", {}).get("window_start")]
+    window_walls = [s["window"]["wall"] for s in bookfeed["subjects"]
+                    if s.get("window", {}).get("wall")]
+    horizon_start = min(window_starts, key=_parse)
+    horizon_end = max(window_walls, key=_parse)
     return {
         "schema": "moneyball.wagering-book/v2",
         "generated_at": generated_at,
         "book": {"opened": "2026-11-02", "subjects": len(subjects)},
-        "horizon": {"start": "2026-11-02T00:00:00-08:00",
-                    "end": "2026-12-12T23:59:00-08:00"},
+        "horizon": {"start": horizon_start, "end": horizon_end},
         "family_label": family_label,
         "forecast_layer": book["calendar_binding"]["forecast_rule"],
         "publishability_flags": bookfeed["publishability_flags"],

@@ -322,6 +322,7 @@ def poll(provider: str, token: str) -> tuple[list[dict], dict]:
         max_out = _positive_int(max_out) or (trial.get("max_output_tokens") if trial else None)
         rows.append({
             "provider": provider,
+            **({"provider_id": "g4f.puter", "provider_family": "g4f/Puter"} if provider == "puter_pool" else {}),
             "id": model_id,
             "name": item.get("displayName") if provider == "gemini" else item.get("name"),
             "pricing": pricing,
@@ -385,6 +386,7 @@ def main(argv: list[str] | None = None) -> int:
             provider_rows, headers = poll(provider, token)
             rows.extend(provider_rows)
             provider_observations[provider] = {
+                **({"provider_id": "g4f.puter", "provider_family": "g4f/Puter", "source_repository": "timerloggedout-spec/puter-pool_fork"} if provider == "puter_pool" else {}),
                 "catalog_observed_at": observed_at,
                 "response_headers": headers,
                 "secret_env_resolved": env_name if token else None,

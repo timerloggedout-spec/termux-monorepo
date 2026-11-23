@@ -234,8 +234,9 @@ def _emit_puter_pool_request_event(
         "latency_ms": max(0, int(latency_ms)),
         "input_tokens": _token_count(usage, "prompt_tokens", "input_tokens"),
         "output_tokens": _token_count(usage, "completion_tokens", "output_tokens"),
+        "error_code": _safe_correlation_value(error_code),
     }
-    occurred_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    occurred_at = datetime.now(timezone.utc).isoformat(timespec="microseconds").replace("+00:00", "Z")
     event = {
         "schema_version": "eps.v1",
         "event_type": "provider.inference.completed",

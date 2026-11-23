@@ -11,7 +11,7 @@ The mesh has more useful surfaces than the VM/container shortlist suggests. The 
 
 Two existing assets deserve immediate utilization work before additional signup activity:
 
-1. **GitHub Codespaces** — personal-account allowance of 120 core-hours and 15 GB-month storage on GitHub Free. The repository already has Codespaces workflows and a Codespaces resource history; actual usage remains an account-billing measurement.
+1. **GitHub Codespaces** — personal-account allowance of 120 core-hours and 15 GB-month storage on GitHub Free. The repository has five role-specific devcontainer lanes and Codespaces resource history. Owner order 2026-10-27 holds BOINC compute use after a prior full-allocation burn; actual account usage remains unmeasured and the lane awaits explicit owner reopening.
 2. **Cloudflare Workers + D1** — live account inventory shows deployed Workers and D1 databases. This is an existing execution/data surface with an empty Queues inventory and R2 activation still pending.
 
 Render also has repository-side wiring through a GitHub Actions → GHCR → image-backed Render path. The Render account inventory remains pending workspace confirmation.
@@ -22,11 +22,11 @@ All values below are published plan entitlements. Account eligibility, current r
 
 | Candidate | Class | Published free shape | Operational constraints | Mesh fit | Evidence state |
 |---|---|---|---|---|---|
-| **SnapDeploy** | Managed container | Up to 4 containers; 512 MB RAM / 0.25 vCPU each; 100 shared container-hours/month; 10 deploys/day; card requirement: none | Sleeps after ~15 min idle; browser visit wakes in ~60 sec; scripts/cron/CI calls receive the wake response; persistent disk: none; deploy failures count toward cap | Interactive demos, low-traffic previews, manual-triggered tasks; weak fit for unattended workers and scheduled jobs | Official docs retrieved 2026-11-23; source page says last verified 2026-09-28 |
+| **SnapDeploy** | Managed container | Up to 4 containers; 512 MB RAM / 0.25 vCPU each; 100 shared container-hours/month; 10 deploys/day; card requirement: none | Sleeps after ~15 min idle; browser visit wakes in ~60 sec; scripts/cron/CI receive HTTP 503 and leave the container asleep; persistent disk: none; deploy failures count toward cap; 5 deploys per rolling 12 hours | Interactive demos, low-traffic previews, manual-triggered tasks; weak fit for unattended workers and scheduled jobs | Official docs retrieved 2026-11-23; source page says last verified 2026-09-28 |
 | **Leapcell Hobby** | Serverless + app runtime | 20 projects/services; up to 3 vCPU / 4 GB per project; one free PostgreSQL database; 100,000 invocations/month; 3 GB-hours/month; 2 GB egress/month; 10 GB ingress/month; 10,000 async invocations/month; 100,000 Redis commands/month; 1 GB Redis bandwidth/month; 60 build minutes/month; 100 MB log ingestion/month; 900 sec invocation timeout | Metered overage pricing is published; persistent servers are listed on paid Plus rather than Hobby; free Postgres is listed | Strong candidate for bounded webhook handlers, short API jobs, and serverless batch slices; preserve external durable state | Official pricing page retrieved 2026-11-23 |
-| **Appwrite Free** | Backend platform + functions | 750,000 executions/month; 100 GB-hours/month; 5 GB bandwidth/month; 2 GB storage; 75,000 MAU; 1 database + 1 bucket + 2 functions/project; 2 projects/organization; 0.5 CPU / 512 MB; 15-minute builds; 900-second max async function timeout | Projects pause after 7 inactive days and delete after 90 paused days; Free intervals start at 60 minutes; cron schedules require a paid plan from 2026-10-19 | Candidate for event-triggered functions and auth/data services; recurring jobs need hourly cadence and a reactivation owner | Official pricing + changelog retrieved 2026-11-23 |
-| **alwaysdata Free** | Shared PaaS / website hosting | 1 GB SSD; 256 MB RAM; 1/4 CPU; 3 days of backups; lifetime free offer | Free plan is limited to personal use; websites use the alwaysdata.net address; free plan excludes running services | Documentation/static site and small personal web workloads only; exclude from general-purpose worker pool | Official pricing + plan restrictions retrieved 2026-11-23 |
-| **Back4app Containers Free** | Docker container preview | 0.25 CPU; 256 MB RAM; 100 GB transfer; GitHub deployment; payment method: unknown | Back4app engineering update records a 60-minute temporary URL lifetime per free deployment (change dated 2026-09-15); current pricing page omits this URL lifetime, so public documentation is internally inconsistent | Ephemeral demos, smoke tests, and deployment previews; persistent service placement requires current dashboard confirmation or paid plan evidence | Official pricing and vendor engineering article conflict; conditional |
+| **Appwrite Free** | Backend platform + functions | 750,000 executions/month; 100 GB-hours/month; 5 GB bandwidth/month; 2 GB storage; 75,000 MAU; 1 database + 1 bucket + 2 functions/project; 2 projects/organization; 0.5 CPU / 512 MB; 15-minute builds; 900-second max async function timeout | Free organization resources are shared across two projects; projects pause after 7 inactive days and delete after 90 paused days; Free intervals start at 60 minutes; cron schedules require a paid plan from 2026-10-19 | Candidate for event-triggered functions and auth/data services; recurring jobs need hourly cadence and a reactivation owner | Official pricing + changelog retrieved 2026-11-23 |
+| **alwaysdata Free** | Shared PaaS / website hosting | 1 GB SSD; 256 MB RAM; 1/4 CPU; 3 days of backups; lifetime free offer | Free plan is limited to personal use; websites use the alwaysdata.net address; service processes are excluded from this plan | Documentation/static site and small personal web workloads only; exclude from general-purpose worker pool | Official pricing + plan restrictions retrieved 2026-11-23 |
+| **Back4app Containers Free** | Docker container preview | 0.25 CPU; 256 MB RAM; 100 GB transfer; GitHub deployment; payment method: unknown | Back4app engineering update records a 60-minute temporary URL lifetime per free deployment (change dated 2026-09-15); pricing FAQ confirms card requirement: none; free auto-deploy is disabled and a separate backend app supplies persistence | Ephemeral demos, smoke tests, and deployment previews; persistent service placement requires current dashboard confirmation or paid plan evidence | Official pricing and vendor engineering article conflict; conditional |
 | **zrok Free** | Zero-trust network sharing | 5 GB/day; 25 environments; 50 share backends; 50 private access frontends; card requirement: none | Provides secure resource sharing/tunneling, compute capacity: none; self-hosted edition is Apache-2.0 | Network ingress and private resource sharing adjunct; pair with a separate worker and explicit access policy | Official pricing page retrieved 2026-11-23 |
 
 ### Candidate-specific evidence
@@ -72,7 +72,7 @@ All values below are published plan entitlements. Account eligibility, current r
 - Official personal-account allowance: 120 core-hours/month and 15 GB-month storage on GitHub Free; GitHub Pro lists 180 core-hours and 20 GB-month.
 - Sources: https://docs.github.com/en/billing/concepts/product-billing/github-codespaces and https://docs.github.com/en/codespaces/troubleshooting/troubleshooting-included-usage
 - Personal-account allowance applies to personal accounts; organization-owned Codespaces use organization billing.
-- The repository already contains Codespaces workflows and a Codespaces resource history. Treat the free quota as a personal-account budget and capture current usage before placing routine heavy builds there.
+- The repository contains five role-specific devcontainer lanes and Codespaces resource history. Owner order 2026-10-27 keeps the BOINC compute lane on HOLD after a prior full-allocation burn; resume utilization planning after explicit owner reopening and a current billing read.
 - Priority: **HOLD — owner decision required**. Capture billing actuals and resume utilization planning only after the owner reopens the lane.
 
 ### Cloudflare Workers, D1, Queues, and R2
@@ -84,7 +84,7 @@ All values below are published plan entitlements. Account eligibility, current r
 - The `admin-graph-live` Worker has a D1 binding and a 2026-11-17 deployment.
 - Cloudflare Queues inventory returned 0 queues. The existing `tmx-device-queue` Worker is a D1-backed pull-queue rendezvous, distinct from the Cloudflare Queues product.
 - R2 bucket inventory returned an activation-required response. The account's R2 activation status is pending.
-- Worker observability returned 0 events for 2026-10-24 through 2026-11-24; both scripts reported `logpush=false` and unset observability configuration. GraphQL Workers Analytics independently returned 80 requests, 0 errors, and 0 subrequests across the two scripts for that 30-day window: 70 requests on `tmx-device-queue` and 10 on `admin-graph-live`. Observed CPU quantiles ranged from about 0.5 ms to 3.25 ms. D1 GraphQL Analytics returned 57 reads and 3 writes across the three databases for the same 30-day window; `termux-surface-matrix` had no usage row. Billing usage reads still require Billing Read.
+- Worker observability returned 0 events for 2026-10-24 through 2026-11-24; both scripts reported `logpush=false` and unset observability configuration. GraphQL Workers Analytics independently returned 80 requests, 0 errors, and 0 subrequests across the two scripts for that 30-day window: 70 requests on `tmx-device-queue` and 10 on `admin-graph-live`. Observed CPU quantiles ranged from about 0.5 ms to 3.25 ms. D1 GraphQL Analytics returned 57 reads and 3 writes across the three databases for the same 30-day window; `termux-surface-matrix` returned zero usage rows. Billing usage reads still require Billing Read.
 - Account billing usage reads returned an authorization response requiring Billing Read. Current request/billing usage therefore remains unknown.
 - The connected account identity and account/database IDs are excluded from this public evidence record.
 
@@ -137,8 +137,8 @@ Related schedules:
 
 | Priority | Surface | Investigation | Exit evidence |
 |---|---|---|---|
-| HOLD | Codespaces | Preserve the 2026-10-27 owner exclusion; prepare a billing-usage read and per-codespace inventory for the reopening decision | explicit owner reopening + timestamped billing reading + safe monthly budget |
-| P0 | Cloudflare Workers/D1 | Capture Billing Read usage; verify Worker routes/deployments and D1 metrics; record the empty Queues and R2 activation gaps | account-scoped usage evidence, deployment receipts, D1 usage, and decision on Queues/R2 |
+| HOLD | Codespaces | Preserve the 2026-10-27 owner decision; prepare a billing-usage read and per-codespace inventory for the reopening decision | explicit owner reopening + timestamped billing reading + safe monthly budget |
+| P0 | Cloudflare Workers/D1 | Preserve 80 Worker requests, 57 D1 reads, and 3 D1 writes as the baseline; obtain Billing Read for financial usage; review empty Queues and pending R2 activation | account-scoped usage evidence, deployment receipts, D1 usage, and owner decision on Queues/R2 |
 | P1 | Leapcell | Validate Hobby invocation, GB-hour, ingress/egress, and timeout behavior with a synthetic workload | test receipt and usage delta |
 | P1 | Appwrite | Validate function runtime limits, inactivity pause behavior, and scheduled-work recovery | function test receipt, pause/reactivation test, and recovery checklist |
 | P1 | SnapDeploy | Test cold-start behavior and automated caller response; measure shared container-hour draw | synthetic request traces, wake classification, and hour consumption |
@@ -148,7 +148,7 @@ Related schedules:
 
 ## 6. Mesh placement rules
 
-- Use Codespaces for interactive and heavy-build workloads with idle-stop and monthly core-hour budgets.
+- Keep Codespaces on owner HOLD for BOINC compute; revisit interactive and heavy-build use after explicit reopening and billing review.
 - Use Workers for short, stateless request handling and dispatch; use D1 for small durable control records with explicit write budgets.
 - Use Cloudflare Queues when message delivery/buffering is required; record the 10K daily operation budget and 24-hour retention.
 - Use R2 for artifact/object storage only after account activation and owner approval; include storage and operation budgets.

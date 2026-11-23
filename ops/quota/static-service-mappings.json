@@ -100,6 +100,18 @@
       "live_account_state": "unknown"
     },
     {
+      "provider_family": "g4f/puter",
+      "mapping_id": "adapter:puter-pool",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS",
+        "data/g4f-working/providers.json",
+        "ops/quota/registry.json"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
       "provider_family": "gemini",
       "mapping_id": "adapter:gemini",
       "evidence": [

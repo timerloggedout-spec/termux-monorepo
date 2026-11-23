@@ -55,7 +55,7 @@ def harvest(root: str | Path) -> dict[str, Any]:
         if path.suffix in {".ts", ".json", ".md"} and path.stat().st_size <= 2 * 1024 * 1024:
             text_by_path[relative] = path.read_text(encoding="utf-8", errors="replace")
     all_source = "\n".join(text_by_path.values())
-    routes = sorted(set(re.findall(r"""router\.(?:get|post|put|patch|delete)\(['"]([^'"]+)""", all_source)))
+    routes = sorted(set(re.findall(r"""(?:router|app)\.(?:get|post|put|patch|delete)\(['"]([^'"]+)""", all_source)))
     tables = sorted(set(re.findall(r"CREATE TABLE IF NOT EXISTS\s+([a-zA-Z0-9_]+)", all_source, flags=re.I)))
     events = sorted(set(re.findall(r"""['"]((?:request|credit|account):[a-zA-Z0-9:_-]+)['"]""", all_source)))
     return {

@@ -22,12 +22,12 @@ All values below are published plan entitlements. Account eligibility, current r
 
 | Candidate | Class | Published free shape | Operational constraints | Mesh fit | Evidence state |
 |---|---|---|---|---|---|
-| **SnapDeploy** | Managed container | Up to 4 containers; 512 MB RAM / 0.25 vCPU each; 100 shared container-hours/month; 10 deploys/day; no card required | Sleeps after ~15 min idle; browser visit wakes in ~60 sec; scripts/cron/CI calls receive the wake response; no persistent disk; deploy failures count toward cap | Interactive demos, low-traffic previews, manual-triggered tasks; weak fit for unattended workers and scheduled jobs | Official docs retrieved 2026-11-23; source page says last verified 2026-09-28 |
+| **SnapDeploy** | Managed container | Up to 4 containers; 512 MB RAM / 0.25 vCPU each; 100 shared container-hours/month; 10 deploys/day; card requirement: none | Sleeps after ~15 min idle; browser visit wakes in ~60 sec; scripts/cron/CI calls receive the wake response; persistent disk: none; deploy failures count toward cap | Interactive demos, low-traffic previews, manual-triggered tasks; weak fit for unattended workers and scheduled jobs | Official docs retrieved 2026-11-23; source page says last verified 2026-09-28 |
 | **Leapcell Hobby** | Serverless + app runtime | 20 services; up to 3 vCPU / 4 GB per project; 100,000 invocations/month; 3 GB-hours/month; 2 GB egress/month; 10 GB ingress/month; 900 sec invocation timeout | Metered overage pricing is published; persistent servers are listed on paid Plus rather than Hobby; free Postgres is listed | Strong candidate for bounded webhook handlers, short API jobs, and serverless batch slices; preserve external durable state | Official pricing page retrieved 2026-11-23 |
 | **Appwrite Free** | Backend platform + functions | 750,000 executions; 5 GB bandwidth; 2 GB storage; 75,000 MAU; 2 functions/project; 2 projects; 15-minute builds | Free projects pause after 7 consecutive days without Console development activity; paused projects stop scheduled/background processing | Candidate for event-triggered application functions and auth/data services; runtime CPU/memory and function-specific limits need a targeted follow-up | Official pricing + changelog retrieved 2026-11-23 |
 | **alwaysdata Free** | Shared PaaS / website hosting | 1 GB SSD; 256 MB RAM; 1/4 CPU; 3 days of backups; lifetime free offer | Free plan is limited to personal use; websites use the alwaysdata.net address; free plan excludes running services | Documentation/static site and small personal web workloads only; exclude from general-purpose worker pool | Official pricing + plan restrictions retrieved 2026-11-23 |
-| **Back4app Containers Free** | Docker container preview | 0.25 CPU; 256 MB RAM; 100 GB transfer; GitHub deployment; no card required | Back4app engineering update records a 60-minute temporary URL lifetime per free deployment (change dated 2026-09-15); current pricing page omits this URL lifetime, so public documentation is internally inconsistent | Ephemeral demos, smoke tests, and deployment previews; persistent service placement requires current dashboard confirmation or paid plan evidence | Official pricing and vendor engineering article conflict; conditional |
-| **zrok Free** | Zero-trust network sharing | 5 GB/day; 25 environments; 50 share backends; 50 private access frontends; no card required | Provides secure resource sharing/tunneling, not compute; self-hosted edition is Apache-2.0 | Network ingress and private resource sharing adjunct; pair with a separate worker and explicit access policy | Official pricing page retrieved 2026-11-23 |
+| **Back4app Containers Free** | Docker container preview | 0.25 CPU; 256 MB RAM; 100 GB transfer; GitHub deployment; card requirement: none | Back4app engineering update records a 60-minute temporary URL lifetime per free deployment (change dated 2026-09-15); current pricing page omits this URL lifetime, so public documentation is internally inconsistent | Ephemeral demos, smoke tests, and deployment previews; persistent service placement requires current dashboard confirmation or paid plan evidence | Official pricing and vendor engineering article conflict; conditional |
+| **zrok Free** | Zero-trust network sharing | 5 GB/day; 25 environments; 50 share backends; 50 private access frontends; card requirement: none | Provides secure resource sharing/tunneling, compute capacity: none; self-hosted edition is Apache-2.0 | Network ingress and private resource sharing adjunct; pair with a separate worker and explicit access policy | Official pricing page retrieved 2026-11-23 |
 
 ### Candidate-specific evidence
 
@@ -80,8 +80,8 @@ All values below are published plan entitlements. Account eligibility, current r
 - The deployed `tmx-device-queue` Worker has a D1 binding and five deployment records; its latest deployment was 2026-10-22.
 - The `admin-graph-live` Worker has a D1 binding and a 2026-11-17 deployment.
 - Cloudflare Queues inventory returned 0 queues. The existing `tmx-device-queue` Worker is a D1-backed pull-queue rendezvous, distinct from the Cloudflare Queues product.
-- R2 bucket inventory returned an activation-required response. The account's R2 service is not yet enabled.
-- Worker observability returned 0 events for 2026-10-24 through 2026-11-24. This is the observability endpoint's event count, not proof of zero requests.
+- R2 bucket inventory returned an activation-required response. The account's R2 activation status is pending.
+- Worker observability returned 0 events for 2026-10-24 through 2026-11-24. This is the observability endpoint's event count; request volume remains unknown.
 - Account billing usage reads returned an authorization response requiring Billing Read. Current request/billing usage therefore remains unknown.
 - The connected account identity and account/database IDs are excluded from this public evidence record.
 
@@ -91,7 +91,7 @@ All values below are published plan entitlements. Account eligibility, current r
 - Queues Free: 10,000 operations/day, 10,000 queues/account, 24-hour message retention. https://developers.cloudflare.com/queues/platform/pricing/ and https://developers.cloudflare.com/changelog/post/2026-02-04-queues-free-plan/
 - R2 Free: 10 GB-month Standard storage, 1 million Class A operations/month, 10 million Class B operations/month, free egress. https://developers.cloudflare.com/r2/pricing/
 
-**Priority:** **P0 — finish existing lane**. Capture Billing Read usage, document the deployed Worker/D1 bindings, evaluate whether Cloudflare Queues should be provisioned for receiver-mesh use, and resolve R2 activation through the account owner. Keep D1 write budgets explicit; the existing Neon exhaustion incident demonstrates why a quota read alone does not enforce admission.
+**Priority:** **P0 — finish existing lane**. Capture Billing Read usage, document the deployed Worker/D1 bindings, evaluate whether Cloudflare Queues should be provisioned for receiver-mesh use, and resolve R2 activation through the account owner. Keep D1 write budgets explicit; the existing Neon exhaustion incident demonstrates why a quota read is observational; runtime admission requires a separate enforcement gate.
 
 ## 3. Render reconciliation — repository wiring exists
 
@@ -108,7 +108,7 @@ Official Render sources:
 - Prebuilt image deployment: https://render.com/docs/deploying-an-image
 - Pipeline billing: https://render.com/docs/build-pipeline
 
-**Reconciliation:** the root deployment-lane SSOT currently labels Render as an unproven candidate. The repo image-build workflow and image-backed service README establish repository wiring; they do not establish current account service health, public URL, source digest, or successful latest deploy. The lane status should therefore read **REPO-WIRED / PROVIDER-HEALTH PENDING** until the Render workspace is confirmed and its service/event inventory is inspected.
+**Reconciliation:** the root deployment-lane SSOT currently labels Render as an unproven candidate. The repo image-build workflow and image-backed service README establish repository wiring. Account service health, public URL, source digest, and latest successful deploy remain unverified. The lane status should therefore read **REPO-WIRED / PROVIDER-HEALTH PENDING** until the Render workspace is confirmed and its service/event inventory is inspected.
 
 ## 4. GitLab and the 10-minute watcher
 

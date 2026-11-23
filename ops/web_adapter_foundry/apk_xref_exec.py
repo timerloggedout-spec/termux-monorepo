@@ -71,7 +71,7 @@ def filing_spec(fields: dict, body: str = "") -> dict:
         "repo": fields.get("Target repo URL", "").strip(),
         "source": fields.get("Artifact source", "none-known").strip()
         or "none-known",
-        "sources": [s.strip() for s in re.split(r"[,\\n]+", fields.get("Acquisition source order", "")) if s.strip()]
+        "sources": [s.strip() for s in re.split(r"[,\n]+", fields.get("Acquisition source order", "")) if s.strip()]
                    or [fields.get("Artifact source", "none-known").strip() or "none-known"],
         "package_id": package_id,
         "package_id_via": via,

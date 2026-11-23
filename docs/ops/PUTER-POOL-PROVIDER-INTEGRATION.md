@@ -22,7 +22,12 @@ The reader performs catalog-only GET. It does not read Depot account inventory, 
 
 ## Correlation and telemetry contract
 
-Every later inference adapter event joins existing identifiers rather than inventing new ledgers:
+Each Puter Pool inference dispatch now emits a per-request EPS v1 event to
+`agent_telemetry_stream.json`. The LLM Hub reads correlation headers
+`x-task-or-entry-ref` (or `x-que-entry`), `x-doe-run-id`,
+`x-workflow-run-id`, `x-run-attempt`, `x-temporal-workflow-id`,
+`x-temporal-run-id`, and `x-request-id`. The Temporal observer separately emits
+aggregate `provider.pool.observed` events. Both join existing identifiers:
 
 - `task_or_entry_ref` / `entry`: QUE task identity
 - `provider_family`: `g4f/Puter`
@@ -39,13 +44,20 @@ Telemetry policy: emit allowlisted metadata only. Keep account tokens, account n
 
 1. Harvest the live model list from the operator's local Pool.
 2. Merge catalog rows into the canonical provider-model catalog using the `g4f/Puter` identity.
-3. Add the exact model to the existing explicit provider admission policy only after the operator verifies the account and terms.
-4. Dispatch through the existing QUE task identity and record one request outcome per dispatch.
-5. Normalize usage/quota headers or provider-returned account-independent counters; preserve null for absent values.
+3. Add the exact model to the existing explicit provider admission policy after the operator verifies the account and terms.
+4. Dispatch through `puter_pool/<exact-model-id>` with QUE/DoE/Temporal correlation headers; the LLM Hub emits one sanitized outcome event per request.
+5. Preserve response token counts and aggregate pool counters where supplied; keep provider quota fields null until authoritative quota evidence exists.
 6. Append provenance and HindSight records, then regenerate the existing quota, usage, availability, and task-correlation feeds.
 7. Validate the resulting SHE/Tribute projections against source hashes and workflow receipts.
 
-The catalog harvester is implemented as a bounded read-only source adapter. The inference request path and live usage/quota counters remain separate integration work; model discovery alone does not assert that either has executed.
+The canonical catalog adapter, loopback inference transport, per-request EPS emitter,
+aggregate runtime observer, and Temporal cadence are implemented. Exact model
+admission remains explicit: the existing provider policy must contain the exact
+catalog model with operator-verified free-account and terms assertions. The
+Puter registry row keeps `runtime_eligible=false` until a real inference receipt
+is observed. Catalog discovery and transport support alone do not activate a
+model. Provider-authoritative quota remains unknown; the local CreditTracker
+heuristic is excluded from quota calculations.
 
 
 ## Runtime observation and Temporal execution

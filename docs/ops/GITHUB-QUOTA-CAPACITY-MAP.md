@@ -371,6 +371,8 @@ A subsequent feed publication at **2026-11-23T03:55:42Z** confirms that the sche
 
 The latest matching publication commits were recorded at 2026-11-23 03:55Z, 2026-11-22 23:26Z, 17:54Z, 10:18Z, and 02:33Z. The observed inter-publication gaps were approximately **4h29m, 5h32m, 7h36m, and 7h45m**. These observations show a persistent publication-cadence gap; they do not identify the precise scheduler, queue, or workflow failure cause.
 
+GitHub documents scheduled events as best-effort: high Actions load can delay them, the start of each hour is a known high-load period, and queued schedule events can be dropped. This workflow's `*/10` schedule includes minute `00`; shifting the six polls to off-hour minutes (for example `7,17,27,37,47,57`) is a documented mitigation candidate, while an external dispatch fallback provides a stronger recovery path. See [GitHub schedule event behavior](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule).
+
 Latest feed readings:
 
 | Bucket | Limit | Used | Remaining | State |

@@ -180,21 +180,7 @@ its upstreams; its digest-verification idea is already belt behaviour
 index hash claim for parity checks). A filing naming KomiStore maps
 to the upstream repo's releases route.
 
-**Aurora Store — fallback semantics.** When `aurora-store` appears in an ordered acquisition chain, the belt tries the wired IzzyOnDroid and F-Droid channels as alternatives and records `via: aurora-store-><channel>`. This is an alternative-store fallback, not an Aurora Store session or Play-protocol acquisition. Aurora is
-an unofficial Google Play *protocol client*, not a download URL: an
-anonymous session is dispensed a Google account token by community
-dispenser servers, then speaks the Play protobuf API (check-in,
-purchase, delivery), and modern Play apps are delivered as split-APK
-sets derived from bundles rather than one universal APK. None of
-that fits this belt's stdlib, URL-route shape, and the dispenser
-layer adds a third party's Google accounts to the trust path. The
-belt's direct-Play refusal therefore stands, and `aurora` is **not**
-a wired source: a Play-only target filed today resolves through the
-wired alt channels (`other-store` chain) and, when none serves it,
-the no-artifact record names the checked channels — that record is
-the Aurora demand signal. Wiring Aurora for real is a separate
-build (dedicated Play-protocol client + an owner ruling on the
-dispenser trust posture), not an acquire-route patch.
+**Aurora Store — fallback semantics.** When `aurora-store` appears in an ordered acquisition chain, the belt tries the wired IzzyOnDroid and F-Droid channels as alternatives and records `via: aurora-store-><channel>`. This is an alternative-store fallback, not an Aurora Store session or Play-protocol acquisition. Aurora itself is an unofficial Google Play protocol client that uses community account dispensers and Play delivery APIs; that session and split-APK protocol is outside this stdlib URL-route belt. The direct-Play refusal remains in force. A true Aurora client requires a separate implementation and an owner ruling on dispenser trust posture.
 
 **Channel parity.** Where two channels serve the same package, run
 acquire per channel and compare: provenance `sha256` (belt-computed

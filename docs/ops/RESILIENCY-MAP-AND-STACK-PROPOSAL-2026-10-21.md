@@ -349,7 +349,7 @@ route P1–P6, or send this chat a scoped build order. Nothing above executes it
 
 ## 2026-11-20 integration delta — CockroachDB continuity projection
 
-**Implementation surface:** PR #5735, branch `feat/cockroachdb-backend-mesh-resiliency`.
+**Implementation surface:** PR #5815, branch `feat/cockroachdb-mesh-resiliency-rebased`.
 
 CockroachDB is admitted as an optional, independently addressable distributed-SQL projection for the canonical lane-events stream. The existing Neon route remains intact; canonical GitHub JSONL, event keys and immutable SHA/run provenance remain the evidence authority.
 

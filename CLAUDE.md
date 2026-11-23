@@ -46,11 +46,24 @@ BIUDL is the compounding development motion: a broad system view selects a focus
 2. [`docs/proposals/registry.yaml`](docs/proposals/registry.yaml) — what is active
 3. [`docs/proposals/PROCESS.md`](docs/proposals/PROCESS.md) — post / debate / consensus / close
 4. [`docs/ARCHW1Z-GATE.md`](docs/ARCHW1Z-GATE.md) — dual gates (automated)
+4a. [`docs/ops/CONTRIBUTION-STYLE-PREFLIGHT.md`](docs/ops/CONTRIBUTION-STYLE-PREFLIGHT.md) — DO-first + winning Siglary requirements before work
 5. [`docs/proposals/AGENTIC-PERMISSIONS.md`](docs/proposals/AGENTIC-PERMISSIONS.md) — human-only edges
 6. [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) — adaptive wait + ops skills
 7. [`docs/ops/LANE-MATRIX.md`](docs/ops/LANE-MATRIX.md) — living session SSOT (rewrite every admin cycle)
 
 Then route the task with **[`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md)** — one verified component or process card before loading deeper source.
+
+## Contribution language preflight
+
+**Read [Contribution Style Preflight](docs/ops/CONTRIBUTION-STYLE-PREFLIGHT.md) before implementation, drafting, or external collaboration.**
+
+- Apply DO-first CAVEMAN-6 to every authored collaboration surface.
+- Apply the winning Siglary Standard and current Notation Matrice to comments, commits, PRs, issues, reviews, discussions, workflow directives, skills, and project chat.
+- Keep OPERATORS / GLYPHS / CHORDS distinct; resolve chords in named Shorthand Domains; preserve exact technical literals.
+- Place scope, action, constraint, output, state, owner, and evidence in the statement.
+- Run `python3 scripts/ci/check_do_statement_style.py --preflight --base origin/master` before committing or posting.
+- Add `--text-file PATH` to validate the exact draft of a comment, review, issue, or discussion.
+- Select `origin/master-staging` when the active contribution lane targets staging.
 
 ## Hard rules
 
@@ -96,6 +109,7 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 | Active work | `docs/proposals/registry.yaml` |
 | How to review / close | `docs/proposals/PROCESS.md` |
 | Gates | `docs/ARCHW1Z-GATE.md` |
+| Contribution style preflight | `docs/ops/CONTRIBUTION-STYLE-PREFLIGHT.md` |
 | Status | `docs/ARCHW1Z-STATUS.md` |
 | Permissions / human edges | `docs/proposals/AGENTIC-PERMISSIONS.md` |
 | Repository architecture | `architecture.md` |
@@ -141,18 +155,15 @@ Credential rotation and history rewrite require Operator (human) authorization. 
 Full text: `docs/ops/TOOL-ACQUISITION-ROUTES.md`. Summary for every install/download task:
 ① Exec network calls ride an approval system — "Site always allowed" is decided per host by card (precedents: api.github.com, api.mistral.ai, mcp.deepwiki.com). ② Silent failure mode: downloads from non-whitelisted hosts (storage.googleapis.com, googlechromelabs.github.io) die at write (curl rc23/EPERM, 0-byte) with ∅ card generated — never report "platform-impossible"; correct report = "host not whitelisted ∧ no card engaged; route via ③/④". ③ Browser-channel downloads persist (~/workspace/browser_downloads). ④ GitHub-artifact route via api.github.com (precedent dd04486c). ⑤ Precedent: go.tgz 66.9MB + Go tree landed 2026-10-27.
 
-
 ## Superpowers engineering workflow
 
 Repository-local skill: `.agents/skills/superpowers/SKILL.md`. Load it for feature work, bug fixes, refactors, and non-trivial engineering changes. The upstream Superpowers methodology supplements this file; it does not override proposal authorization, ICM source ownership, `AGENTIC-PERMISSIONS.md`, dual gates, or adaptive WAIT.
 
 Integration catalog and event contract: `docs/integrations/README.md`. Design and execution plan: `docs/superpowers/specs/2026-11-02-integration-intelligence-design.md` and `docs/superpowers/plans/2026-11-02-integration-intelligence.md`.
 
-
 ## Continuous Capability Evolution Laboratory (CEEL)
 
 Start at docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md and follow its proposal work ledger. CEEL is the event-driven discovery and comparison lane across FOSS, external platforms and internal capabilities. It reuses the Integration Intelligence registry/event contract, DoE family/experiment schema, ATES, Delphi Oracle/EGM and proposal/dual-gate lifecycle. It creates no parallel scheduler, telemetry ledger, registry or merge authority. The initial platform cohort is Langfuse, PromptLayer, PostHog and Braintrust plus the native repository baseline; external capability claims remain unverified until pinned evidence exists. GitHub-native events are primary; bounded reconciliation is fallback. Weekly reporting is not the sensing mechanism.
-
 
 ## Linguist / Siglary communication contract
 

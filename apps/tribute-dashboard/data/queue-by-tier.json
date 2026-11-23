@@ -1,6 +1,6 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-23T03:19:22Z",
+ "generated_at": "2026-11-23T03:31:40Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
@@ -9,16 +9,16 @@
    "in_progress": 1,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "Orchestration Regression Guard": 1,
-    "PR scope guard": 2
+    "PR scope guard": 3
    }
   },
   "2": {
    "tier": 2,
-   "queued": 1,
+   "queued": 2,
    "in_progress": 1,
-   "oldest_queued_at": "2026-11-23T03:18:42Z",
+   "oldest_queued_at": "2026-11-23T03:31:14Z",
    "by_workflow_queued": {
+    "pages build and deployment": 1,
     "tribute-dashboard-deploy": 1
    }
   },
@@ -31,29 +31,36 @@
   },
   "4": {
    "tier": 4,
-   "queued": 14,
-   "in_progress": 17,
+   "queued": 23,
+   "in_progress": 14,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "lane events recorder": 1,
-    "Agent Throughput Evidence": 2,
+    "que-cadence-kick": 1,
+    "Agent Readability Source Contract": 1,
+    "quota-served-probe": 1,
+    "Foresight Evidence Spine": 1,
     "quota-allocation-planner": 1,
     "graph-matrix-probe": 1,
-    "quota-served-probe": 1,
-    "termux smoke": 1,
-    "telemetry-ingest": 1,
+    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
+    "hitl-control-plane-verify": 1,
+    "Agent PR Jules Handoff": 2,
+    "Lane matrix event-driven inventory": 1,
+    "DO Statement Style": 2,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
+    "Context Relationship + Lead/Lag Audit": 1,
+    "Workflow Surface Policy": 1,
+    "Action Effectiveness Ledger": 1,
+    "CellCog review": 1,
+    "PR Change Effectiveness Ledger": 2,
+    "PR production ledger": 1,
     "Peer review orchestrator": 1,
-    "Quota Dispatch Tree": 1,
-    "Agent PR Jules Handoff": 1,
-    "PR Change Effectiveness Ledger": 1,
-    "Advisory GitHub Actions lint": 1,
-    "DO Statement Style": 1
+    "Advisory GitHub Actions lint": 1
    }
   }
  },
  "totals": {
-  "queued": 18,
-  "in_progress": 19
+  "queued": 28,
+  "in_progress": 16
  },
  "wedged_ancient": [
   {
@@ -212,12 +219,12 @@
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
    "1": 4,
-   "2": 2,
+   "2": 3,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 6,
-  "default_t4": 31,
+  "explicit_total": 7,
+  "default_t4": 37,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

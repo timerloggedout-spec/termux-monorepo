@@ -115,3 +115,11 @@ GITHUB_TOKEN row previously reported a 5,000 limit from the JSON
 payload without response-header evidence. Keep that limit disputed
 until a post-change watcher run records the `rate_limit_headers` values
 and they can be compared with the documented per-repository limit.
+
+A names-only Actions inventory (run `45163853824`, observed
+`2026-11-23T11:17:31Z`) returned 75 secret names and 22 variable names.
+It confirmed that the dedicated `PAT_TOKEN` secret is absent and that
+Collector, CrossReference, and Swarm are the three App credential pairs
+available to this watcher. Keep operator-scoped credentials separate;
+provision the dedicated PAT through the authorized credential path before
+enabling PAT reads.

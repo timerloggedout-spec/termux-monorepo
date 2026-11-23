@@ -74,7 +74,7 @@ def build_record(f):
     kind = "findings" if (f.get("verdict") or "").strip() else "request"
     base = {"schema": "apk-xref/v1", "kind": kind, "target_id": target_id,
             "artifact_source": (f.get("artifact_source") or "").strip(),
-            "artifact_sources": [s.strip() for s in re.split(r"[,\\n]+", f.get("artifact_sources") or "") if s.strip()],
+            "artifact_sources": [s.strip() for s in re.split(r"[,\n]+", f.get("artifact_sources") or "") if s.strip()],
             "artifact_version": (f.get("artifact_version") or "").strip(),
             "package_id": pkg, "evidence_expectation": (f.get("evidence_expectation") or "").strip(),
             "submitter": submitter, "notes": f.get("notes") or ""}

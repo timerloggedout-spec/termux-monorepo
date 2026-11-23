@@ -11,7 +11,7 @@
 - Live demo: [Spaceship IDE](https://chuanqisun.github.io/spaceship/)
 - Provenance: [SOURCE.txt](./SOURCE.txt)
 
-The fork and upstream `master` both resolve to the reviewed commit. The fork currently carries no independently observed customization delta, so this entry remains a design-pattern reference rather than an executable pin.
+The fork and upstream `master` both resolve to the reviewed commit. Customization delta observed: none. This entry therefore remains a design-pattern reference rather than an executable pin.
 
 ## Concepts
 
@@ -43,10 +43,10 @@ Useful source paths:
 - Cross-lane design record: [Spaceship IDE design integration](../../../docs/ops/SPACESHIP-IDE-DESIGN-INTEGRATION.md).
 - Research classification: [Research Integration Lane](../../../docs/ops/RESEARCH-INTEGRATION-LANE.md).
 
-Treat these as design hypotheses and source-reported interaction descriptions. The source establishes the concepts and UI mechanics; it supplies no independently reproduced performance or usability results for this repository.
+Treat these as design hypotheses and source-reported interaction descriptions. The source establishes the concepts and UI mechanics. Independently reproduced performance/usability results for this repository: unavailable.
 
 ## Reuse boundary
 
-Keep the entry metadata-only. Source code, media, and application runtime remain upstream. The source README describes browser-local storage for user API keys; treat that as source-specific demo behavior and keep provider credentials outside repository artifacts.
+Keep the entry metadata-only. Source code, media, and application runtime remain upstream. The source README describes browser-local storage for user API keys; retain that as source-specific demo behavior and keep provider credentials outside repository artifacts. Credential-flow adoption: none.
 
 The Tier-C entry participates in reference inventory and relevant proposal/evidence lanes. It remains separate from the Tier-A research-template score, the 12-silo Delphi participant registry, and `refTemplates/smods/`.

@@ -88,9 +88,9 @@ class ImplementationCompetitionTests(unittest.TestCase):
 
     def test_zero_observed_variance_does_not_create_degenerate_interval(self):
         receipts = self.receipts[:4]
-        receipts[3]["metrics"]["task_quality"] = receipts[1]["metrics"]["task_quality"] + .1
-        receipts[3]["metrics"]["latency_ms"] = receipts[1]["metrics"]["latency_ms"] - 10
-        receipts[3]["metrics"]["compute_cost"] = receipts[1]["metrics"]["compute_cost"] - 1
+        receipts[3]["metrics"]["task_quality"] = receipts[2]["metrics"]["task_quality"] + .1
+        receipts[3]["metrics"]["latency_ms"] = receipts[2]["metrics"]["latency_ms"] - 10
+        receipts[3]["metrics"]["compute_cost"] = receipts[2]["metrics"]["compute_cost"] - 1
         report = compare_implementations(receipts)
         self.assertIsNone(report["metrics"]["task_quality"]["ci95"])
         self.assertEqual(report["metrics"]["task_quality"]["interval_status"], "zero_observed_variance")

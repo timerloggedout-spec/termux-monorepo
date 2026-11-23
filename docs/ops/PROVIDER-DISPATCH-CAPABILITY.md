@@ -18,19 +18,19 @@ wiring · **(d)** inference-only, with the wiring that would promote it.
 | `agent-jules-on-issues.yml` | issue label | Jules (build arm; registry `jules.build_sessions`, lane ci) | 405 successful runs, last 2026-11-01 |
 | `gemini-dispatch.yml` (+ `gemini-after-peers.yml`) | issues / issue_comment | google (Gemini) | dispatch successes 2026-11-01; after-peers 1,158 successes. Standalone `gemini-invoke/triage/review` = 0 successful runs — the router is the proven entry, the legs are not independently proven |
 | `deepseek-ci.yml` + `deepseek-termux-agent.yml` | events + dispatch | DeepSeek (registry `deepseek.build_dispatch`, lane ci) | successes 2026-11-01; termux-agent 22 successes |
-| `provider-batch.yml` | dispatch | 24-provider inference roster (below) | 249 runs, 138 successful at first census. **Gate state: GREEN — #2672 RESOLVED + CLOSED 2026-11-01 (fix chain PRs #3126/#3128/#3130/#3138); proof run 41308987754 (workflow_dispatch, head 87453e9c) SUCCESS: contracts ✓, operational_providers ✓ — the first operational evidence leg executed; the earlier blocked-by-#2672 state (observation jobs gated on the red `contracts` job) is historical** |
+| `provider-batch.yml` | dispatch | 25-provider inference roster (below) | 249 runs, 138 successful at first census. **Gate state: GREEN — #2672 RESOLVED + CLOSED 2026-11-01 (fix chain PRs #3126/#3128/#3130/#3138); proof run 41308987754 (workflow_dispatch, head 87453e9c) SUCCESS: contracts ✓, operational_providers ✓ — the first operational evidence leg executed; the earlier blocked-by-#2672 state (observation jobs gated on the red `contracts` job) is historical** |
 | `provider-command-dispatch.yml` | dispatch / repository_dispatch | coderabbit, qodo, devin (review-arm class; not registry model providers) | 1 run, success 2026-10-18 |
 | `ai-studio-delphi-trigger.yml` | dispatch | google (AI Studio) | 1 run, success 2026-10-30 |
 | `provider-availability.yml` | schedule | probe roster | 93 runs, recent 30/30 success, last 2026-10-28 — probes availability, does not dispatch work |
-| llm_api_hub + MSM catalog | API / selection | catalog roster (16, below) | selection layer; admission-gated (`research-provider-admission/v1` policy) |
+| llm_api_hub + MSM catalog | API / selection | catalog roster (17, below) | selection layer; admission-gated (`research-provider-admission/v1` policy) |
 
 The batch roster = `llm_api_hub/server/research_providers.py` ENDPOINTS
-(14 native) + `provider_protocols` {cloudflare, cohere, ollama} +
+(15 native) + `provider_protocols` {cloudflare, cohere, ollama} +
 `provider_extensions` {requesty, routeway, sealion, typhoon, unorouter,
-xfyun, xkiro} = **24**. The MSM catalog roster
-(`scripts/provider_model_catalog.py` ENDPOINTS) = 16 {aion, cerebras,
+xfyun, xkiro} = **25**. The MSM catalog roster
+(`scripts/provider_model_catalog.py` ENDPOINTS) = 17 {aion, cerebras,
 felo, gemini, groq, huggingface, kilo, llm7, mistral, modelscope,
-nvidia, omni, openrouter, ovhcloud, sambanova, siliconflow}.
+nvidia, omni, openrouter, ovhcloud, puter_pool, sambanova, siliconflow}.
 
 ## (a) Dispatch-wired and proven — 2 of 89
 
@@ -39,7 +39,7 @@ nvidia, omni, openrouter, ovhcloud, sambanova, siliconflow}.
 | google | gemini-dispatch router + after-peers + ai-studio trigger + batch `gemini` leg | workflow successes 2026-11-01 (above); census key-live |
 | openrouter | production invoke legs (swarm/DoE workflows) + `openrouter-free-catalog-sync` | catalog-sync 33 successes, last 2026-10-31; free-counter evidence (allocation census: 50/day :free layer live). Paid layer parked at $0.00 balance; :free roster rotates — same-day roster check before pinning an id |
 
-## (b) Wired, per-provider invoke unproven — 22 of 89
+## (b) Wired, per-provider invoke unproven — 23 of 89
 
 The provider-batch surface is proven (138 successful runs) but
 per-provider invoke success is not audited per provider in batch
@@ -50,7 +50,7 @@ aion (flag route-dead: hub endpoint 404 + site DNS dead) · cerebras
 (flag no-credential) · cloudflare (flag verify-scope: account-scoped
 token) · cohere (key-live 200; **gate-state: GREEN since 2026-11-01 (#2672 closed; run 41308987754)**) · groq (flag route-blocked: Cloudflare
 1010 from Actions egress; invocable from non-Actions egress) ·
-huggingface (key-live; free, isPro=false) · kilo (flag no-credential) ·
+huggingface (key-live; free, isPro=false) · g4f/Puter (local Puter Pool catalog + transport adapter; exact-model admission required; live inference receipt pending; quota unknown) · kilo (flag no-credential) ·
 llm7 (key-live; **gate-state: GREEN since 2026-11-01 (#2672 closed; run 41308987754)**) · mistral (flag no-credential) · modelscope (flag
 no-credential) · nvidia (api-read only; auth not proven) · ovhcloud
 (flag no-credential) · requesty (flag no-credential) · routeway
@@ -88,9 +88,9 @@ llm_api_hub API (admission policy permitting) without the batch
 workflow — the hub is the generic surface; the batch is its scheduled
 exercise.
 
-## (d) Inference-only — 63 of 89, and what promotes them
+## (d) Inference-only — 62 of 89, and what promotes them
 
-- **g4f upstreams (60 `g4f/*` providers + `gpt4free/CLIProxyAPI/Chapito/ai-manus`):**
+- **g4f upstreams (59 remaining `g4f/*` providers + `gpt4free/CLIProxyAPI/Chapito/ai-manus`; `g4f/Puter` promoted to (b) through the local pool adapter):**
   reachable today only through g4f tester/library scripts (usage-log
   inference class in the registry; no dispatch workflow names g4f).
   Promotion, in order of leverage: (1) where a native API exists behind
@@ -114,9 +114,9 @@ exercise.
 
 Proven dispatch today reaches 2/89 registry model providers directly
 (plus the Jules/DeepSeek build arms, which live outside the model
-lane). The batch surface nominally covers 24 more, of which 9 carry a
+lane). The batch surface nominally covers 25 more, of which 9 carry a
 no-credential or route-dead/blocked flag — the cheapest widening is
-therefore: provision the 8 no-credential batch members (cerebras,
-mistral, kilo, modelscope, ovhcloud, requesty, typhoon, xfyun),
+therefore: provision the 9 no-credential batch members (cerebras,
+mistral, kilo, modelscope, ovhcloud, requesty, typhoon, xfyun, puter_pool),
 route groq/xkiro/felo off Actions egress, admit felo + omni,
 and audit batch artifacts per provider to move (b) → (a) honestly.

@@ -6,7 +6,7 @@ This directory defines the machine-readable contract for the repository's longit
 |---|---|
 | `workspace/llm_map/context_relationships/` | Canonical metadata-only historical relationship substrate |
 | `PR-OBSERVATION.schema.json` | Schema for compact per-PR observation projections |
-| `EXPERIMENT.schema.json` | Schema for DOE/MVT candidate/baseline experiment records |
+| `EXPERIMENT.schema.json` | Schema for DOE/MVT candidate/baseline experiment records |\n| `../rfp/COMPETITOR-ADMISSION.schema.json` | Candidate identity, provenance, lifecycle, and admission authority contract |\n| `../rfp/LANE-COMPOSITION.schema.json` | Multi-lane treatment topology, compatibility gates, and DoE design contract |
 | `LEARNING.schema.json` | Schema for experiment-derived learning records |
 | `../ACTION-EFFECT-EVENT.schema.json` | Temporal action→effect event contract |
 | `../EVIDENCE-ENVELOPE.schema.json` | Evidence envelope / provenance contract |

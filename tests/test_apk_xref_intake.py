@@ -110,6 +110,11 @@ class ApkXrefTests(unittest.TestCase):
         self.assertEqual(rec["paired_repo_brief"], "#2063")
         self.assertEqual(rec["schema"], "apk-xref/v1")
 
+    def test_request_records_ordered_acquisition_sources(self):
+        f = ax.parse_form(REQUEST + "\n### Acquisition source order\n\naurora-store, komistore, lizzyondroid, f-droid\n")
+        rec = ax.build_record(f)
+        self.assertEqual(rec["artifact_sources"], ["aurora-store", "komistore", "lizzyondroid", "f-droid"])
+
     def test_findings_record_both_directions(self):
         rec = ax.build_record(ax.parse_form(FINDINGS))
         self.assertEqual(rec["kind"], "findings")

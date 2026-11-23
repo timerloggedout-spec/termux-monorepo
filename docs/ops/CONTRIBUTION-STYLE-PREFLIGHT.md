@@ -69,18 +69,18 @@ python3 scripts/ci/check_do_statement_style.py \
   --preflight --base origin/master --text-file /tmp/collaboration-draft.md
 ```
 
-Select `origin/master-staging` when the active contribution lane targets `master-staging`. The checker includes untracked instruction files automatically.
+Select `origin/master-staging` when the active contribution lane targets `master-staging`. The checker includes untracked instruction files automatically. The local checker enforces DO-first wording; validate Siglary classes, chord domains, register boundaries, and receipt placement against the canonical Standard as part of the same preflight.
 
 ## 6. CI coverage and response
 
 The `DO Statement Style` workflow checks:
 
-- added lines in changed collaborator instructions, skills, workflow directives, and operations/proposal documentation;
+- added lines in changed collaborator instructions, `CONTRIBUTING.md`, skills, workflow directives, and operations/proposal documentation;
 - non-merge commit subjects and bodies in the pushed or proposed range;
 - PR titles and bodies;
 - issue and discussion titles and bodies;
 - issue, PR review, and discussion comments.
 
-Run preflight before authoring and again before publishing. Treat CI as the final independent verifier. On a finding, rewrite the affected line as a concrete DO action, retain the exact technical meaning, rerun preflight, and publish after PASS.
+Run preflight before authoring and again before publishing. Treat CI as the final independent DO-first verifier. Apply the Siglary Standard's class/domain/receipt checks during authoring; its dedicated automated validator remains subject to the machinery route recorded in Standard §5. On a finding, rewrite the affected line as a concrete DO action, retain the exact technical meaning, rerun preflight, and publish after PASS.
 
 **Acceptance:** every contributor can discover the winning Siglary standard before work; every authored collaboration surface follows DO-first CAVEMAN-6; local preflight and CI evaluate the same rule set.

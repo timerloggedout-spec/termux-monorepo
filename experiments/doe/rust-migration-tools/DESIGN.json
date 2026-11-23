@@ -1,0 +1,145 @@
+{
+  "campaign_id": "rust-migration-tools",
+  "family": "doe",
+  "member_kind": "campaign_candidate",
+  "status": "proposed_not_admitted",
+  "observed_at": "2026-11-22T22:04:00-08:00",
+  "sources": [
+    {
+      "repo": "timerloggedout-spec/fast-anything_fork",
+      "ref": "main",
+      "version": "0.8.0",
+      "sha": "80ab099817b3d07ebe5b5221d4a9c6b881cfd044",
+      "license": "MIT",
+      "cargo_rust_version": "1.88"
+    },
+    {
+      "repo": "timerloggedout-spec/rust-anything_fork",
+      "ref": "main",
+      "version": "3.3.0",
+      "sha": "50d3810b622fdc6cb3aee965fe4c9d4b4f29205b",
+      "license": "MIT",
+      "cargo_rust_version": "1.97"
+    }
+  ],
+  "hypothesis": {
+    "statement": "For identical deterministic Python hot-path workloads and a fixed coding-agent configuration, either Rust migration tool can improve whole-application runtime while preserving externally observed behavior; the tools may differ in correctness coverage, integration burden, time-to-verified-port, and realized speedup.",
+    "null": "Neither tool improves the primary quality-constrained outcome over the unmodified Python baseline.",
+    "threshold": "A treatment is eligible for a win only when every independent held-out correctness case passes and the median whole-application runtime improves over baseline by at least 5%; report confidence intervals and all secondary outcomes."
+  },
+  "design": {
+    "type": "blocked full factorial",
+    "generator": "deepcli.observatory.doe.full_factorial",
+    "factors": {
+      "migration_treatment": [
+        "native-python-baseline",
+        "fast-anything-0.8.0-hot-path",
+        "rust-anything-3.3.0-hot-path"
+      ]
+    },
+    "blocks": [
+      "task_id",
+      "replicate"
+    ],
+    "assignment": {
+      "mechanism": "mvt_shuffle",
+      "seed": 20261122,
+      "unit": "randomized treatment order within each task_id × replicate block"
+    },
+    "replication": "6 frozen tasks × 3 treatments × 3 independent repetitions = 54 planned observations; task replication and repeated executions remain separately identified.",
+    "unit_of_observation": "one executed task under one treatment and repetition = one EXPERIMENT record",
+    "suite_type": "control",
+    "stopping": "Complete the pre-registered 54-run cohort. Stop an individual cell on a correctness-gate failure; retain the failed record and classify the remaining dependent execution as blocked. Any cohort change creates a new design version."
+  },
+  "tasks": [
+    {
+      "id": "py-hot-01",
+      "family": "string-processing",
+      "stratum": "medium",
+      "contract": "deterministic Unicode-aware string normalization and matching"
+    },
+    {
+      "id": "py-hot-02",
+      "family": "collection-processing",
+      "stratum": "medium",
+      "contract": "deterministic deduplication and ranking over fixed records"
+    },
+    {
+      "id": "py-hot-03",
+      "family": "json-transformation",
+      "stratum": "medium",
+      "contract": "deterministic nested JSON transformation with exact serialization contract"
+    },
+    {
+      "id": "py-hot-04",
+      "family": "text-scanning",
+      "stratum": "high",
+      "contract": "deterministic token and pattern scan over fixed text corpus"
+    },
+    {
+      "id": "py-hot-05",
+      "family": "graph-processing",
+      "stratum": "high",
+      "contract": "deterministic traversal and aggregation over a fixed graph"
+    },
+    {
+      "id": "py-hot-06",
+      "family": "numeric-processing",
+      "stratum": "high",
+      "contract": "deterministic numeric aggregation with declared float comparison policy"
+    }
+  ],
+  "execution_environment": {
+    "language": "Python",
+    "python": "3.13.x",
+    "rust": "1.97.x (shared toolchain; satisfies both pinned candidates)",
+    "os": "one pinned Linux runner image; exact image digest recorded before execution",
+    "hardware": "same runner class and resource limits for all arms",
+    "agent": "one fixed provider/model@version, system prompt hash, tool manifest hash, role and instance_key across all arms; exact identity recorded before dispatch",
+    "workload": "same committed fixture corpus, inputs, expected outputs, and held-out cases across all arms",
+    "cache": "cold and warm states measured separately; primary comparison uses predeclared warm-state protocol with interleaved arm order"
+  },
+  "outcomes": {
+    "primary": [
+      "independent held-out behavioral parity pass rate",
+      "median whole-application wall-clock speedup versus native baseline"
+    ],
+    "secondary": [
+      "per-call median latency",
+      "time-to-verified-port",
+      "tool/agent elapsed time",
+      "token or credit usage when measured",
+      "compile time",
+      "binary size",
+      "memory peak",
+      "fallback count",
+      "integration diff size",
+      "reversibility result",
+      "recorded-case coverage",
+      "derived-edge-case coverage"
+    ],
+    "quality_gate": "100% pass on the same independent held-out correctness suite, including return values, error behavior, stdout/stderr, exit code, and declared side effects.",
+    "analysis": "Report per-task paired differences, medians, dispersion and confidence intervals; distinguish task replication from repeated runs; retain failures and missing measurements; do not collapse quality, speed, cost, security and maintenance into an opaque scalar."
+  },
+  "comparability": {
+    "common_primary_scope": "Both candidates' `go` hot-path workflow against the same Python 3.13 fixtures.",
+    "fast_anything_scope": "Selective hot-function port; reversible enable/disable; recorded-call replay and derived edge cases.",
+    "rust_anything_scope": "Selective `go` hot-path port only for the primary cohort. Whole-app piecewise migration, side-effect replay and `app lift` form a separate secondary capability study.",
+    "exclusions": "Do not rank whole-app rust-anything capabilities against fast-anything hot-path-only behavior. Do not mix languages, agent configurations, runner images or fixture generations within a cohort."
+  },
+  "automation": {
+    "status": "not_implemented",
+    "requirement": "Campaign-specific GitHub Actions automation must dispatch the frozen cohort, randomize within blocks, emit one canonical EXPERIMENT.schema.json record per executed run, preserve append-only records, and generate SUMMARY.json.",
+    "authority": "Existing GitHub Actions, DoE family and proposal gates; no new scheduler, experiment ledger or merge authority."
+  },
+  "admission_gates": [
+    "Freeze and commit all six executable Python fixtures and the independent held-out correctness corpus.",
+    "Pin the Linux runner image digest and capture the exact Python/Rust toolchain versions.",
+    "Freeze one coding-agent configured instance and all prompt/tool hashes.",
+    "Validate the design against DOE-TAXONOMY.md and the canonical EXPERIMENT.schema.json.",
+    "Implement and test the campaign automation and append-only record emission.",
+    "Run the complete randomized blocked cohort; retain one schema-valid record per executed run.",
+    "Publish SUMMARY.json with per-task effects, uncertainty, missingness, cost and correctness-gate results."
+  ],
+  "promotion": "Candidate remains not admitted until design, automation, fixtures, and run evidence satisfy the DoE family intake rule. Any promotion into a reusable repo template requires independent verification, license/provenance review, and a new version/cohort record."
+}

@@ -1,6 +1,6 @@
 # Termux Monorepo Brain — subsystem and capability architecture
 
-**Status:** proposed target architecture, built on the root Rust kernel in PR #5492  
+**Status:** proposed target architecture, built on the merged root Rust kernel in PR #5525  
 **Owner concept:** Brain is the monorepo-wide consciousness / cognitive coordination layer  
 **Boundary:** shared cognition and coordination; existing systems remain authoritative for execution, policy, persistence, identity, scheduling and evidence.
 
@@ -10,7 +10,7 @@
 
 The Monorepo Brain is the shared, evidence-grounded cognitive layer that constructs an operational understanding of the repository, interprets intent, discovers relevant capabilities, forms and compares plans, requests authorized action through existing control planes, evaluates verified outcomes, and proposes governed learning updates.
 
-It spans the entire Termux monorepo. It is not a narrow agent, LLM wrapper, monolithic replacement, second control plane, or unrestricted execution process.
+It spans the entire Termux monorepo. The 21 cognitive subsystem families contribute observations, context, capabilities, plans, specialist findings and feedback through layered owner adapters; each domain may retain its own specialist coordination before contributing to the root kernel. They are not required to become 21 direct dependencies of the Rust crate. It is not a narrow agent, LLM wrapper, monolithic replacement, second control plane, or unrestricted execution process.
 
 **Brain = shared cognition + repository-wide context integration + decision coordination + feedback interpretation.**
 
@@ -178,7 +178,7 @@ Metrics: verified completion rate; time to verified completion; decision calibra
 Adopt the monorepo-wide Brain as the target cognitive architecture. Continue the root Rust kernel as its shared typed core. Expand through adapter-backed vertical slices, using QUE for admission, existing execution systems for action, and existing evidence/Delphi/DoE contracts for verification and learning.
 
 
-## 9. SIE ↔ Brain composition contract
+## 10. SIE ↔ Brain composition contract
 
 SIE is a first-class existing operational improvement loop. It is a producer and consumer across several Brain families, rather than a duplicate Brain kernel or an independent specialist that bypasses QUE.
 

@@ -1,0 +1,26 @@
+name: bucket-headroom-tests
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/bucket-headroom-watch.yml"
+      - ".github/workflows/bucket-headroom-tests.yml"
+      - "scripts/ops/bucket_headroom.py"
+      - "tests/test_bucket_headroom.py"
+      - "tests/test_bucket_headroom_workflow.py"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install workflow test dependency
+        run: python -m pip install PyYAML
+      - name: Run bucket headroom tests
+        run: python -m unittest discover -s tests -p "test_bucket_headroom*.py" -v

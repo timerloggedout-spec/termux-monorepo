@@ -23,7 +23,7 @@ All values below are published plan entitlements. Account eligibility, current r
 | Candidate | Class | Published free shape | Operational constraints | Mesh fit | Evidence state |
 |---|---|---|---|---|---|
 | **SnapDeploy** | Managed container | Up to 4 containers; 512 MB RAM / 0.25 vCPU each; 100 shared container-hours/month; 10 deploys/day; card requirement: none | Sleeps after ~15 min idle; browser visit wakes in ~60 sec; scripts/cron/CI calls receive the wake response; persistent disk: none; deploy failures count toward cap | Interactive demos, low-traffic previews, manual-triggered tasks; weak fit for unattended workers and scheduled jobs | Official docs retrieved 2026-11-23; source page says last verified 2026-09-28 |
-| **Leapcell Hobby** | Serverless + app runtime | 20 services; up to 3 vCPU / 4 GB per project; 100,000 invocations/month; 3 GB-hours/month; 2 GB egress/month; 10 GB ingress/month; 900 sec invocation timeout | Metered overage pricing is published; persistent servers are listed on paid Plus rather than Hobby; free Postgres is listed | Strong candidate for bounded webhook handlers, short API jobs, and serverless batch slices; preserve external durable state | Official pricing page retrieved 2026-11-23 |
+| **Leapcell Hobby** | Serverless + app runtime | 20 services; up to 3 vCPU / 4 GB per project; one free PostgreSQL database; 100,000 invocations/month; 3 GB-hours/month; 2 GB egress/month; 10 GB ingress/month; 10,000 async invocations/month; 900 sec invocation timeout | Metered overage pricing is published; persistent servers are listed on paid Plus rather than Hobby; free Postgres is listed | Strong candidate for bounded webhook handlers, short API jobs, and serverless batch slices; preserve external durable state | Official pricing page retrieved 2026-11-23 |
 | **Appwrite Free** | Backend platform + functions | 750,000 executions; 5 GB bandwidth; 2 GB storage; 75,000 MAU; 2 functions/project; 2 projects; 15-minute builds | Free projects pause after 7 consecutive days without Console development activity; paused projects stop scheduled/background processing | Candidate for event-triggered application functions and auth/data services; runtime CPU/memory and function-specific limits need a targeted follow-up | Official pricing + changelog retrieved 2026-11-23 |
 | **alwaysdata Free** | Shared PaaS / website hosting | 1 GB SSD; 256 MB RAM; 1/4 CPU; 3 days of backups; lifetime free offer | Free plan is limited to personal use; websites use the alwaysdata.net address; free plan excludes running services | Documentation/static site and small personal web workloads only; exclude from general-purpose worker pool | Official pricing + plan restrictions retrieved 2026-11-23 |
 | **Back4app Containers Free** | Docker container preview | 0.25 CPU; 256 MB RAM; 100 GB transfer; GitHub deployment; card requirement: none | Back4app engineering update records a 60-minute temporary URL lifetime per free deployment (change dated 2026-09-15); current pricing page omits this URL lifetime, so public documentation is internally inconsistent | Ephemeral demos, smoke tests, and deployment previews; persistent service placement requires current dashboard confirmation or paid plan evidence | Official pricing and vendor engineering article conflict; conditional |
@@ -45,7 +45,7 @@ All values below are published plan entitlements. Account eligibility, current r
 **Appwrite**
 - Official pricing: https://appwrite.io/pricing
 - Free-plan inactivity pause: https://appwrite.io/changelog/entry/2026-02-20-1
-- Seven consecutive days without Console development activity pauses the project. Paused projects suspend scheduled functions and background processes. Add a maintenance owner and reactivation receipt before relying on Appwrite for recurring tasks.
+- Seven consecutive days without Console development activity pauses the project. Paused projects suspend scheduled functions and background processes; projects paused for 90 days are deleted. From 2026-10-19, Appwrite Cloud Free uses intervals of 60 minutes or longer; cron schedules require a paid plan. Function timeout tops out at 900 seconds. Add a maintenance owner, reactivation receipt, and schedule-compatibility check before relying on Appwrite for recurring tasks.
 
 **alwaysdata**
 - Official offers: https://www.alwaysdata.com/en/offers/
@@ -56,7 +56,7 @@ All values below are published plan entitlements. Account eligibility, current r
 - Official pricing: https://www.back4app.com/pricing/container-as-a-service
 - Official deployment guide: https://www.back4app.com/docs-containers
 - Vendor engineering article with September 15, 2026 change: https://www.back4app.com/blog/deploy-node-app-dockerfile-back4app
-- The pricing page presents the Free container as a $0 plan with 0.25 CPU, 256 MB RAM, and 100 GB transfer. The engineering article records temporary URLs expiring after 60 minutes. Preserve this conflict as a disqualifier for persistent public endpoints until a current account test resolves it.
+- The pricing page presents the Free container as a $0 plan with 0.25 CPU, 256 MB RAM, and 100 GB transfer. The engineering article records temporary URLs expiring after 60 minutes. Preserve this conflict as a disqualifier for persistent public endpoints until a current account test resolves it. Payment-method requirements remain unknown from the cited pricing page.
 
 **zrok**
 - Official pricing: https://zrok.io/pricing/
@@ -117,15 +117,18 @@ GitLab remains two separate lanes:
 - GitLab mirror/webhook: separate repository-redundancy lane, with the last recorded webhook failure 429 in the integration-mesh history.
 
 The 10-minute watcher is `.github/workflows/bucket-headroom-watch.yml`:
-- `*/10 * * * *` schedule;
-- reads GitHub `/rate_limit` buckets across available credential classes;
-- derives alerts from each bucket's observed burn and reset time;
-- writes transition receipts to the QUE event ledger and updates one standing issue.
+- `*/10 * * * *` schedule, inside the repository's 5-minute cadence floor;
+- reads `/rate_limit` for PAT core, repository `GITHUB_TOKEN`, Swarm App, Collector App, CrossReference App, and every fleet GitHub App installation that the workflow can enumerate;
+- derives alerts from each bucket's observed burn and reset time, projecting exhaustion before the bucket's own reset;
+- writes `que-governor-event/v1` transition receipts to `ops/que/events/` and updates one standing issue;
+- supports `workflow_dispatch` with dry-run and synthetic-drill inputs.
+
+This is distinct from the 10-minute `timeout-minutes` on the GitLab validation job and the 10-minute timeout on the GHCR image-build job. Those are per-run execution ceilings, not watcher schedules.
 
 Related schedules:
 - `que-feed-collect.yml` also uses a 10-minute schedule.
-- `que-cadence-kick.yml` runs every 5 minutes as a redundant push/dispatch cadence kick.
-- The bucket watcher cadence is a configured schedule; GitHub schedule delivery is best-effort. The GitHub quota capacity map records multi-hour publication gaps, so observed firing must be measured separately from the cron expression.
+- `que-cadence-kick.yml` runs every 5 minutes, also waking on qualifying master pushes and dispatching stale producers.
+- GitHub schedule delivery is best-effort. The GitHub quota capacity map records multi-hour publication gaps, so observed firing must be measured separately from the cron expression.
 
 ## 5. Priority investigation order
 

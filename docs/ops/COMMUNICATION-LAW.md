@@ -31,7 +31,7 @@ Use compact language while preserving unambiguous meaning.
 
 `∧` AND · `∨` OR · `¬` NOT · `⇒` implies · `⇔` iff · `∈` member · `∉` excluded · `∀` all · `∃` exists · `∅` empty · `Δ` change · `≈` approximate · `≡` equivalent · `≠` distinct · `≤/≥` bounds · `⊕` combine · `⊗` constrained combine · `⤴` route · `↳` child · `∴` therefore · `∵` because · `⊢` proven · `⊬` unproven · `⊥` invalid · `⏸` hold · `▶` execute · `✓` pass · `✗` fail.
 
-Use symbols where they improve precision; pair unfamiliar notation with a short legend at first use in durable documents.
+Use symbols where they improve precision; pair unfamiliar notation with a short legend at first use in durable documents. The stable definitions and IDs live in [`SIGLARY-OPERATOR-REGISTRY.md`](SIGLARY-OPERATOR-REGISTRY.md).
 
 ## 4. Surface-specific rules
 

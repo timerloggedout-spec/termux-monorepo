@@ -1,5 +1,6 @@
 """QUE #5230: pin the bucket-headroom-watch workflow's shape."""
 import sys
+import unittest
 from pathlib import Path
 
 import yaml
@@ -22,7 +23,7 @@ def steps(d):
 
 def test_schedule_and_inputs():
     on = triggers(doc())
-    assert on["schedule"] == [{"cron": "*/10 * * * *"}]  # >= Cadence 5m floor
+    assert on["schedule"] == [{"cron": "7,17,27,37,47,57 * * * *"}]  # 10m cadence, off-hour
     inputs = on["workflow_dispatch"]["inputs"]
     assert inputs["dry_run"]["default"] is False
     assert inputs["drill"]["default"] is False
@@ -86,3 +87,19 @@ def test_step_order_collect_before_evaluate_before_page():
     page_i = next(i for i, n in enumerate(names) if "Page standing issue" in n)
     commit_i = next(i for i, n in enumerate(names) if "Commit feed" in n)
     assert collect_i < eval_i < page_i < commit_i
+
+
+class SmokeWorkflowRunnerTests(unittest.TestCase):
+    def test_bucket_headroom_function_tests_use_pytest(self):
+        smoke_path = ROOT / ".github" / "workflows" / "termux-smoke.yml"
+        smoke = yaml.safe_load(smoke_path.read_text())
+        steps = smoke["jobs"]["smoke"]["steps"]
+        test_step = next(s for s in steps
+                         if s.get("name") == "Bucket headroom unit and workflow-contract tests")
+        install = test_step["run"].splitlines()[0]
+        command = test_step["run"].splitlines()[1]
+        self.assertIn("pytest", install.split())
+        self.assertEqual(
+            command,
+            "python3 -m pytest -q tests/test_bucket_headroom.py tests/test_bucket_headroom_workflow.py",
+        )

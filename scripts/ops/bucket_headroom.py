@@ -92,10 +92,11 @@ def enumerate_apps(process_doc) -> list:
     return [found[k] for k in sorted(found)]
 
 
-def normalize_rate_limit(payload, bucket, kind, source, read_ts) -> dict:
-    """Normalize a /rate_limit response's resources.core into a read."""
+def normalize_rate_limit(payload, bucket, kind, source, read_ts,
+                         response_headers=None) -> dict:
+    """Normalize core usage and preserve authoritative X-RateLimit headers."""
     core = payload["resources"]["core"]
-    return {
+    row = {
         "bucket": bucket,
         "kind": kind,
         "source": source,
@@ -106,6 +107,15 @@ def normalize_rate_limit(payload, bucket, kind, source, read_ts) -> dict:
         "read_ts": int(read_ts),
         "read_at": iso(read_ts),
     }
+    headers = response_headers or {}
+    captured = {}
+    for name in ("limit", "resource", "remaining", "reset"):
+        value = headers.get(name)
+        if value is not None:
+            captured[name] = value if name == "resource" else int(value)
+    if captured:
+        row["rate_limit_headers"] = captured
+    return row
 
 
 def project(prev, cur):
@@ -401,7 +411,13 @@ def _get_rate_limit(token):
                  "Accept": "application/vnd.github+json",
                  "User-Agent": "termux-monorepo-bucket-headroom"})
     with urllib.request.urlopen(req, timeout=20) as resp:
-        return json.load(resp)
+        payload = json.load(resp)
+        headers = {
+            name: resp.headers.get(f"X-RateLimit-{name.title()}")
+            for name in ("limit", "resource", "remaining", "reset")
+        }
+        return payload, {name: value for name, value in headers.items()
+                         if value is not None}
 
 
 def collect(env, now_ts):
@@ -415,8 +431,9 @@ def collect(env, now_ts):
             if kind == "app_installation":
                 reads.append({"bucket": bucket, "unreadable_reason": "mint_unavailable"})
             continue
-        payload = _get_rate_limit(token)
-        reads.append(normalize_rate_limit(payload, bucket, kind, source, now_ts))
+        payload, headers = _get_rate_limit(token)
+        reads.append(normalize_rate_limit(payload, bucket, kind, source, now_ts,
+                                          response_headers=headers))
     return reads
 
 

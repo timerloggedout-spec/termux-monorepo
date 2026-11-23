@@ -54,6 +54,32 @@ def test_normalize_rate_limit_shape():
     assert row["reset"] == T0 + 3600 and row["read_at"] == bh.iso(T0)
 
 
+def test_normalize_rate_limit_preserves_authoritative_headers():
+    payload = {"resources": {"core": {"limit": 1000, "used": 250,
+                                      "remaining": 750, "reset": T0 + 3600}}}
+    headers = {"limit": "1000", "resource": "core",
+               "remaining": "750", "reset": str(T0 + 3600)}
+    row = bh.normalize_rate_limit(payload, "github-token", "github_token",
+                                  "workflow-github-token", T0,
+                                  response_headers=headers)
+    assert row["rate_limit_headers"] == {
+        "limit": 1000, "resource": "core",
+        "remaining": 750, "reset": T0 + 3600}
+
+
+def test_collect_captures_rate_limit_response_headers(monkeypatch):
+    payload = {"resources": {"core": {"limit": 1000, "used": 250,
+                                      "remaining": 750, "reset": T0 + 3600}}}
+    headers = {"limit": "1000", "resource": "core",
+               "remaining": "750", "reset": str(T0 + 3600)}
+    monkeypatch.setattr(bh, "_get_rate_limit", lambda token: (payload, headers))
+    reads = bh.collect({"HEADROOM_GITHUB_TOKEN": "fixture-token"}, T0)
+    row = next(item for item in reads if item["bucket"] == "github-token")
+    assert row["rate_limit_headers"]["limit"] == row["limit"] == 1000
+    assert row["rate_limit_headers"]["remaining"] == row["remaining"] == 750
+    assert row["rate_limit_headers"]["resource"] == "core"
+
+
 def test_low_remaining_without_burn_does_not_page():
     # The anti-hardcode proof: remaining=100 is below any plausible
     # fixed count threshold, but with zero observed burn there is no

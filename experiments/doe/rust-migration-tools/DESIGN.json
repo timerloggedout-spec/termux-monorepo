@@ -190,5 +190,7 @@
       },
       "status": "design_extension_pending_source_recon"
     }
-  ]
+  ],
+  "task_schema": "experiments/doe/rust-migration-tools/TASK.schema.json",
+  "extension_policy": "Add a new task by creating a versioned fixture conforming to TASK.schema.json, adding its immutable fixture/held-out references to a new design version, and preserving prior cohorts and records."
 }

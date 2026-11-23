@@ -377,7 +377,7 @@ def main(argv: list[str] | None = None) -> int:
         if provider not in ENDPOINTS:
             errors.append({"provider": provider, "error": "unsupported_provider"})
             continue
-        token, env_name = (None, None) if provider in PUBLIC_CATALOGS else resolve_secret(provider)
+        token, env_name = resolve_secret(provider) if provider == "puter_pool" else ((None, None) if provider in PUBLIC_CATALOGS else resolve_secret(provider))
         if not token and provider not in PUBLIC_CATALOGS:
             errors.append({"provider": provider, "error": "missing_secret", "secret_env": env_name, "aliases": list(SECRET_ALIASES.get(provider, ()))})
             continue

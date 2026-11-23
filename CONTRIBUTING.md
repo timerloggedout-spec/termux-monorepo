@@ -1,5 +1,16 @@
 # Contributing
 
+## Required contribution preflight
+
+Read [Contribution Style Preflight](docs/ops/CONTRIBUTION-STYLE-PREFLIGHT.md) before implementation, drafting, or external collaboration.
+
+- Apply DO-first CAVEMAN-6 and the winning Siglary Standard to code comments, commits, PRs, issues, reviews, discussions, workflow directives, skills, and project chat.
+- Preserve exact technical literals; keep OPERATORS / GLYPHS / CHORDS distinct; resolve chords in their named domains.
+- Run `python3 scripts/ci/check_do_statement_style.py --preflight --base origin/master` before commit or publication.
+- Add `--text-file PATH` to validate the exact text of a comment, review, issue, or discussion draft.
+- Apply `origin/master-staging` as the base when contributing to the staging lane.
+
+
 This monorepo is developed with **humans and agents** on Termux and CI.
 
 ## Start here

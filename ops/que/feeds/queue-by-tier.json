@@ -1,6 +1,6 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-23T16:35:14Z",
+ "generated_at": "2026-11-23T16:57:18Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
@@ -15,10 +15,11 @@
   },
   "2": {
    "tier": 2,
-   "queued": 1,
-   "in_progress": 2,
-   "oldest_queued_at": "2026-11-23T16:35:09Z",
+   "queued": 2,
+   "in_progress": 1,
+   "oldest_queued_at": "2026-11-23T16:55:54Z",
    "by_workflow_queued": {
+    "tribute-dashboard-deploy": 1,
     "pages build and deployment": 1
    }
   },
@@ -31,11 +32,16 @@
   },
   "4": {
    "tier": 4,
-   "queued": 5,
-   "in_progress": 10,
+   "queued": 10,
+   "in_progress": 13,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "Foresight Evidence Spine": 1,
+    "termux smoke": 1,
+    "graph-matrix-probe": 1,
+    "quota-served-probe": 1,
+    "Agent Readability Source Contract": 1,
+    "Context Relationship + Lead/Lag Audit": 1,
+    "quota-analysis": 1,
     "Agent PR Jules Handoff": 1,
     "PR Change Effectiveness Ledger": 1,
     "Advisory GitHub Actions lint": 1,
@@ -44,8 +50,8 @@
   }
  },
  "totals": {
-  "queued": 9,
-  "in_progress": 12
+  "queued": 15,
+  "in_progress": 14
  },
  "wedged_ancient": [
   {
@@ -209,7 +215,7 @@
    "4": 0
   },
   "explicit_total": 6,
-  "default_t4": 15,
+  "default_t4": 23,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

@@ -14,9 +14,9 @@
 | **Proposals** | `docs/proposals/` + critical-proposal path — research scaffolds inform structure of new work |
 | **Evidence** | evidence-led receipts; research markers (hypothesis/finding/trust) align with dual-gate culture |
 | **Decisions / voting** | help-wanted claims, dual-gate green/hold, PR disposition; research quality gates (coverage, provenance, adversarial review) inform promote/hold |
-| **Project direction** | `15_Research_Repo_Templates` + SOURCE-MAP are inputs to Repository-development priority; Org phase board gates Enterprise promotion |
-| **Improvements** | integrity checklist + inventory jobs; pattern harvest from 489+ forks / starred set → new slots under `15_*` |
-| **Siloed Delphi** | Each tier-A slot has its own Proposal → Delphi → cycle stovepipe for independent outcome comparison — see `RESEARCH-SILO-DELPHI.md` + `ops/delphi/research-silos.json` |
+| **Project direction** | `15_Research_Repo_Templates` supplies research scaffolds; `13_Third_Party_Refs` supplies Tier-C pattern inputs to Repository-development priority |
+| **Improvements** | integrity checklist + inventory jobs; harvest full research scaffolds into `15_*` and reusable interaction/design patterns into `13_*` |
+| **Siloed Delphi** | Each tier-A slot has its own Proposal → Delphi → cycle stovepipe for independent outcome comparison — see `RESEARCH-SILO-DELPHI.md` + `ops/delphi/research-silos.json`; Tier-C pattern references remain outside this participant set |
 
 They do **not** auto-vote or auto-merge. They supply structure, quality criteria, and evidence shape so humans + agents decide with better signal.
 
@@ -27,7 +27,7 @@ They do **not** auto-vote or auto-merge. They supply structure, quality criteria
 1. **Dual-gate** — every change under `refTemplates/` and `smods/` rides the same green path.
 2. **evidence-led-monorepo-ops** — inventory `00_Index/SOURCE-MAP.md` vs `.gitmodules`; research slots must keep `SOURCE.txt`.
 3. **help-wanted / tribute** — research-template work is claimable; foreign research PRs can be followed with the same follow-up poll.
-4. **Proposals** — new research-shaped work should cite a `15_*` slot when adopting a layout (docxology pipeline, jogyo markers, yy layout, etc.).
+4. **Proposals** — cite a `15_*` slot when adopting a research layout; cite a `13_*` slot when extracting a bounded design or interaction pattern.
 5. **Codespace agent lane** — preferred smoke path before any new live `smods/` pin of a research template.
 6. **credential-router** — research agents use free-first routing only (no hardcoded keys in templates).
 7. **Research Silo Delphi** — 12 independent stovepipes (one per tier-A slot). Baseline cycle: RFP{1st_improve_request_cycle on RFP itself} → Delphi → validated output / feature extraction / consensus comparison. Evolutionary 🧬 variants (`rnd` · `selected` · `control`) extend per silo. Config: `ops/delphi/research-silos.json`. Spec: `docs/ops/RESEARCH-SILO-DELPHI.md`.
@@ -44,8 +44,8 @@ See also: `REFTEMPLATES-WORKFLOW-HOOKS.md`, `REFTEMPLATES-CONSOLIDATION.md`, `DE
 |------|----------|--------|
 | **A — Integrate metadata now** | Clear research-repo / project-template / agent-research layout; public; fits Repository development | Slot under `15_Research_Repo_Templates/` (done for core set) |
 | **B — Watch / score** | High stars or active fork under timerloggedout-spec; research-adjacent but not yet layout-ready | List in SOURCE-MAP “candidates”; re-score on cadence |
-| **C — Pattern only** | Single idea (marker style, gate, pipeline stage) without full scaffold | Document pattern in CONSOLIDATION or ops notes; no full slot |
-| **D — Out of scope** | Unrelated product, pure app, or secret-heavy | Skip |
+| **C — Pattern only** | Reusable interaction or workflow design from a source without a research scaffold | Add a metadata-only slot under `13_Third_Party_Refs/`, with README + SOURCE and an owning integration note |
+| **D — Out of scope** | Unrelated product or secret-heavy source without a reusable pattern fit | Skip; a pure app qualifies for Tier C only when the work explicitly extracts a bounded reusable pattern |
 
 **Already tier-A (full 12):**
 
@@ -87,7 +87,7 @@ Tree target:
 ```text
 refTemplates/
 ├── 00_Index/                 # SSOT + recovery + SOURCE-MAP
-├── 01 … 14/                  # category stubs from skeleton
+├── 01 … 14/                  # category stubs; 13_Third_Party_Refs holds Tier-C patterns
 ├── 15_Research_Repo_Templates/  # full research class (12 silos)
 ├── 16_Org_Phased/            # org phase gates
 └── smods/                    # live custom-adapted pins only

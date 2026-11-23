@@ -40,7 +40,7 @@ Optional: `§05§.md`, `CONTRIBUTING.md`.
 
 ## Communication Law
 
-Apply [`docs/ops/COMMUNICATION-LAW.md`](docs/ops/COMMUNICATION-LAW.md) across chat, source comments, commits, PRs, reviews, issues, and stewardship reports. Use DO-first language, CAVEMAN-6, and Siglary operators. Keep chat to state-change ∨ oversight; route implementation detail to durable repository artifacts. Review the canonical standard before authoring or reviewing agent-facing text.
+Apply [`docs/ops/COMMUNICATION-LAW.md`](docs/ops/COMMUNICATION-LAW.md) across chat, source comments, commits, PRs, reviews, issues, and stewardship reports. Use DO-first §10§, CAVEMAN-6, and Siglary operators. Keep chat to state-change ∨ oversight; route implementation detail to durable §19§ artifacts. Use `docs/ops/SIGLARY-OPERATOR-REGISTRY.md` as the stable symbol dictionary. §1a§ the canonical standard before authoring or reviewing agent-facing text. Edit `*.hum.md` sources and regenerate projections with `scripts/cedrlang/render_contact_projections.py`; §1f§ with `--check`.
 
 ## Debate & close
 

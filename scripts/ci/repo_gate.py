@@ -442,6 +442,40 @@ def write_baseline(counters: dict[str, int]) -> None:
 # --------------------------------------------------------------------------- #
 
 
+def check_communication_law(report: Report, base: str) -> int:
+    """Run the changed-prose / metadata DO-first policy check."""
+    script = REPO_ROOT / "scripts" / "ci" / "communication_lint.py"
+    proc = subprocess.run(
+        [sys.executable, str(script), "--base", base, "--json"],
+        cwd=REPO_ROOT,
+        env=os.environ.copy(),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    try:
+        result = json.loads(proc.stdout)
+    except json.JSONDecodeError:
+        report.fail(
+            "communication-law",
+            "linter output is unreadable: " + (proc.stderr.strip() or proc.stdout.strip()),
+        )
+        return 0
+    for finding in result.get("findings", []):
+        report.fail(
+            "communication-law",
+            f"{finding['path']}:{finding['line']}: {finding['phrase']!r}; "
+            f"{finding['suggestion']}",
+        )
+    if proc.returncode and not result.get("findings"):
+        report.fail("communication-law", proc.stderr.strip() or "linter execution failed")
+    if not proc.returncode:
+        report.note(
+            f"communication-law: checked {result.get('checked_files', 0)} changed prose file(s)"
+        )
+    return int(result.get("checked_files", 0))
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--base", help="base ref for the changed-file scope")
@@ -474,6 +508,7 @@ def main() -> int:
                 "json": check_json_parses(report, paths, by_path),
                 "symlinks": check_new_symlinks(report, paths, by_path),
                 "scanned": check_secrets(report, paths, by_path),
+                "communication": check_communication_law(report, base),
             }
             check_new_debt_paths(report, paths)
             print(

@@ -62,6 +62,7 @@ EXTRACTION_SCHEMA = "apk-extraction/v1"
 CLAIMS_SCHEMA = "apk-claims/v1"
 RECORD_SCHEMA = "apk-xref/v1"
 ARTIFACT_SOURCES = ("github-releases", "gitea-releases", "f-droid",
+                    "aurora-store", "komistore", "lizzyondroid", "izzyondroid",
                     "google-play", "direct-apk", "other-store", "none-known")
 VERDICTS = ("match", "divergences-found", "no-artifact-found")
 LOCAL_HOSTS = ("localhost", "127.0.0.1", "::1", "10.0.2.2")

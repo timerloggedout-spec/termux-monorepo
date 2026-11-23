@@ -84,7 +84,7 @@ def _validate_receipts(receipts: list[dict[str, Any]]) -> dict[str, Any]:
         if missing:
             raise ValueError(f"receipt[{index}] missing fields: {', '.join(missing)}")
         if receipt["schema"] != "tournament.implementation-receipt.v1":
-            raise ValueError(f"receipt[{index}] schema must be tournament.implementation-receipt.v1")
+            raise ValueError(f"receipt schema at index {index} must be tournament.implementation-receipt.v1")
         implementation = (receipt["implementation_id"], receipt["implementation_version"])
         task_id = receipt["task_id"]
         identity_fields = (*implementation, receipt["cohort_id"], task_id,
@@ -92,9 +92,6 @@ def _validate_receipts(receipts: list[dict[str, Any]]) -> dict[str, Any]:
                            receipt["evaluator_version"], receipt["run_id"])
         if not all(isinstance(value, str) and value for value in identity_fields):
             raise ValueError(f"receipt[{index}] has an empty identity or provenance field")
-        if receipt["run_id"] in run_ids:
-            raise ValueError(f"duplicate run_id {receipt['run_id']}")
-        run_ids.add(receipt["run_id"])
         role = receipt["competition_role"]
         if role not in {"incumbent", "challenger"}:
             raise ValueError(f"receipt[{index}] competition_role must be incumbent or challenger")
@@ -103,6 +100,9 @@ def _validate_receipts(receipts: list[dict[str, Any]]) -> dict[str, Any]:
         roles_by_implementation[implementation] = role
         if task_id in grouped[implementation]:
             raise ValueError(f"duplicate receipt for {implementation[0]} task {task_id}")
+        if receipt["run_id"] in run_ids:
+            raise ValueError(f"duplicate run_id {receipt['run_id']}")
+        run_ids.add(receipt["run_id"])
         if not isinstance(receipt["metrics"], dict) or not isinstance(receipt["hard_gates"], dict):
             raise ValueError(f"receipt[{index}] metrics and hard_gates must be objects")
         metric_set = receipt["metric_set"]

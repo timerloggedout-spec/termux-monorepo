@@ -1,7 +1,7 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-09-11T19:00:00Z"
-updated_by: timerloggedout-spec
+updated_at: "2026-11-19T22:00:00-08:00"
+updated_by: ChatGPT
 
 proposals:
   - id: context-relationship-graph
@@ -62,8 +62,10 @@ proposals:
       - id: Manus
         role: author+executor
         status: executing
-    related_prs: []
-    related_branches: [feature/termux-agentic-hub]
+    related_prs: [221, 5683]
+    related_branches:
+      - feature/termux-agentic-hub
+      - feat/accessibility-agents-adaptive-integration
     gates_required: [repo-gate, termux-smoke]
 
   - id: chatgpt-critical-eval

@@ -109,7 +109,7 @@ capability qualification.
 
 ### Registry and experiment plan
 
-- Registry: `config/classifier_graph_registry.json`, version `0.8.0`.
+- Registry: `config/classifier_graph_registry.json`, version `0.9.0`.
 - Registry schema: `docs/ops/CLASSIFIER-GRAPH-REGISTRY.schema.json`.
 - Experiment plan: `config/classifier_tournament_experiment_plan.json`.
 - Experiment schema: `docs/ops/CLASSIFIER-TOURNAMENT-EXPERIMENT-PLAN.schema.json`.
@@ -132,8 +132,8 @@ cohort contract. The challenger remains design-only while its scheduler,
 receipt-ledger, evaluator and promotion-controller integrations mature.
 
 The executable comparison component is
-`deepcli.observatory.implementation_competition@0.2.0`, with CLI
-`scripts/tournament/compare_implementations.py`. It requires exact matched
+`deepcli.observatory.implementation_competition@0.3.0`, with CLI
+`scripts/tournament/compare_implementations.py`, with receipt schema `docs/ops/TOURNAMENT-IMPLEMENTATION-RECEIPT.schema.json`. It requires exact matched
 task IDs, cohort, task contract, environment fingerprint and evaluator
 version. It computes paired deltas, sample counts and 95% intervals using
 Student-t critical values for small samples. Each receipt declares the same

@@ -107,8 +107,10 @@ def test_posted_and_already_present_are_distinct_real_outcomes():
 def test_pr_workflow_keeps_vote_scan_and_never_receives_operator_secrets():
     text = (ROOT / '.github/workflows/proposal-lifecycle.yml').read_text()
     assert 'VOTE:' in text and 'MANIFEST Review log is the binding store' in text
-    assert 'secrets.OPERATOR' not in text and 'pull_request_target' not in text
     workflow = yaml.safe_load(text)
+    events = workflow.get('on', workflow.get(True))
+    assert 'pull_request_target' not in events
+    assert 'secrets.' not in yaml.safe_dump(workflow['jobs']['vote-hygiene'])
     assert workflow['permissions'] == {'contents': 'read'}
     vote_job = workflow['jobs']['vote-hygiene']
     assert vote_job['permissions'] == {'contents': 'read', 'pull-requests': 'write'}

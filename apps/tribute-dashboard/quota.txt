@@ -44,8 +44,9 @@
   agentrouter.models
     status: PRIVATE_PREFLIGHT
     limit (documented): n/a provider-defined
-    metric: Account-scoped model catalogue visibility; quota balance and reset
-    not established | window: unknown | reset: unknown
+    metric: Owner-reported community-pool model catalogue visibility;
+    per-account quota balance/reset not established | window: unknown | reset:
+    unknown
     Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  aion (1)
@@ -1197,9 +1198,10 @@
  unorouter (1)
   unorouter.free_models
     status: PRIVATE_PREFLIGHT
-    limit (documented): 1 requests/minute per free model per user
-    metric: Free model rate cap (UnoRouter's own, above upstream) | window: per
-    minute | reset: per-minute window; Retry-After on 429
+    limit (documented): 1 requests/minute per free model per account
+    metric: UnoRouter-side free-model request window (separate from shared
+    upstream caps) | window: per-minute request window | reset: Retry-After on
+    429; upstream resets provider-specific; account balance reset unknown
     Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  upstash (4)

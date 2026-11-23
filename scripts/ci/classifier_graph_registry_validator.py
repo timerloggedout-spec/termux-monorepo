@@ -268,6 +268,9 @@ def validate_registry(root: Path, registry: Any, catalog: Any, estate: Any, plan
         comparator_cli = comparator.get("cli_source_ref") if isinstance(comparator, dict) else None
         if not isinstance(comparator_cli, str) or not (root / comparator_cli).is_file():
             errors.append(f"registry.implementation_competition.comparison_engine: missing CLI source {comparator_cli!r}")
+        receipt_schema = comparator.get("receipt_schema_ref") if isinstance(comparator, dict) else None
+        if not isinstance(receipt_schema, str) or not (root / receipt_schema).is_file():
+            errors.append(f"registry.implementation_competition.comparison_engine: missing receipt schema {receipt_schema!r}")
         incumbent = implementation.get("incumbent", {})
         components = incumbent.get("components", []) if isinstance(incumbent, dict) else []
         if not components:

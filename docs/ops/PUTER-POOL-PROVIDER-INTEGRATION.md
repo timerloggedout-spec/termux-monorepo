@@ -18,7 +18,7 @@ python3 scripts/puter_pool_catalog.py --output /tmp/provider-catalog/puter-pool.
 PUTER_POOL_BASE_URL=http://127.0.0.1:3000 python3 scripts/puter_pool_catalog.py
 ```
 
-The reader performs catalog-only GET. It does not read Depot account inventory, auth tokens, credits, usage history, request bodies, or completions. Catalog metadata remains `catalog_only`; pricing, entitlement, quota, and reset remain unknown until provider-authoritative evidence is separately captured.
+The reader performs catalog-only GET. It does not read Puter Pool account inventory, auth tokens, credits, usage history, request bodies, or completions. Catalog metadata remains `catalog_only`; pricing, entitlement, quota, and reset remain unknown until provider-authoritative evidence is separately captured.
 
 ## Correlation and telemetry contract
 

@@ -1,0 +1,429 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/rfp/COMPETITOR-ADMISSION.schema.json",
+  "title": "RFP Competitor Admission Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "candidate_id",
+    "name",
+    "classification",
+    "source",
+    "identity",
+    "capability_contract",
+    "lifecycle",
+    "owner"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "candidate_id": {
+      "type": "string",
+      "pattern": "^[A-Z0-9][A-Z0-9._-]{1,63}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "classification": {
+      "enum": [
+        "pipeline_method",
+        "implementation",
+        "provider_lane",
+        "evaluator",
+        "benchmark",
+        "specification",
+        "research",
+        "template",
+        "complement",
+        "competitor",
+        "historical",
+        "unknown"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "uri",
+        "revision",
+        "observed_at",
+        "license_status"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "repository",
+            "release",
+            "paper",
+            "website",
+            "internal_lane",
+            "production_observation",
+            "generated_proposal",
+            "benchmark",
+            "other"
+          ]
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "revision": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "artifact_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^([0-9a-f]{64})?$"
+        },
+        "license_status": {
+          "enum": [
+            "verified_compatible",
+            "restricted",
+            "unknown",
+            "not_applicable"
+          ]
+        },
+        "license_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "source_revision",
+        "configuration_sha256"
+      ],
+      "properties": {
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_revision": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "configuration_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^([0-9a-f]{64})?$"
+        },
+        "provider": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "model": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "configured_instance_key": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^([0-9a-f]{64})?$"
+        },
+        "pipeline_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "phase_topology": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "capability_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "inputs",
+        "outputs",
+        "capabilities",
+        "intended_rfp_scope"
+      ],
+      "properties": {
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "intended_rfp_scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "supported_phases": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 13
+          }
+        }
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "relation",
+          "candidate_id"
+        ],
+        "properties": {
+          "relation": {
+            "enum": [
+              "competes_with",
+              "complements",
+              "composes_with",
+              "measures",
+              "consumes",
+              "supersedes",
+              "derived_from",
+              "alias_of"
+            ]
+          },
+          "candidate_id": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "updated_at"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "discovered",
+            "classified",
+            "triage_pending",
+            "eligible_for_design",
+            "pre_registered",
+            "admitted_design_only",
+            "executing",
+            "executed",
+            "validated",
+            "promoted",
+            "retained",
+            "culled",
+            "deferred",
+            "blocked",
+            "superseded",
+            "historical"
+          ]
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "state_history": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "state",
+              "at",
+              "reason"
+            ],
+            "properties": {
+              "state": {
+                "type": "string"
+              },
+              "at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "evidence_ref": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "uri"
+              }
+            }
+          }
+        }
+      }
+    },
+    "admission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision",
+        "basis",
+        "production_authority"
+      ],
+      "properties": {
+        "decision": {
+          "enum": [
+            "candidate_only",
+            "design_only",
+            "experiment_admitted",
+            "deferred",
+            "blocked",
+            "rejected"
+          ]
+        },
+        "basis": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "campaign_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "production_authority": {
+          "const": false
+        },
+        "review_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "lifecycle": {
+            "properties": {
+              "state": {
+                "const": "admitted_design_only"
+              }
+            }
+          }
+        },
+        "required": [
+          "lifecycle"
+        ]
+      },
+      "then": {
+        "properties": {
+          "admission": {
+            "properties": {
+              "decision": {
+                "enum": [
+                  "design_only",
+                  "experiment_admitted"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "lifecycle": {
+            "properties": {
+              "state": {
+                "const": "executing"
+              }
+            }
+          }
+        },
+        "required": [
+          "lifecycle"
+        ]
+      },
+      "then": {
+        "properties": {
+          "admission": {
+            "properties": {
+              "campaign_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

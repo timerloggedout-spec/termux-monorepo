@@ -109,7 +109,7 @@ capability qualification.
 
 ### Registry and experiment plan
 
-- Registry: `config/classifier_graph_registry.json`, version `0.7.0`.
+- Registry: `config/classifier_graph_registry.json`, version `0.8.0`.
 - Registry schema: `docs/ops/CLASSIFIER-GRAPH-REGISTRY.schema.json`.
 - Experiment plan: `config/classifier_tournament_experiment_plan.json`.
 - Experiment schema: `docs/ops/CLASSIFIER-TOURNAMENT-EXPERIMENT-PLAN.schema.json`.
@@ -135,10 +135,13 @@ The executable comparison component is
 `deepcli.observatory.implementation_competition@0.2.0`, with CLI
 `scripts/tournament/compare_implementations.py`. It requires exact matched
 task IDs, cohort, task contract, environment fingerprint and evaluator
-version. It computes paired deltas, sample counts, missing metrics and
-approximate 95% intervals. Hard-gate failures block recommendations.
-Dominance requires interval-supported non-regression across all observed
-metrics and positive improvement on at least one. Recommendations route
+version. It computes paired deltas, sample counts and 95% intervals using
+Student-t critical values for small samples. Each receipt declares the same
+`metric_set`; every declared key appears in `metrics`, with `null` for
+unobserved values. Fully unobserved and partially observed dimensions block
+dominance. Hard-gate failures block recommendations. Dominance requires
+complete paired coverage, interval-supported non-regression across every
+declared metric and positive improvement on at least one. Recommendations route
 to human review; held-out validation, owner approval and rollback lineage
 remain separate promotion gates.
 
@@ -149,7 +152,7 @@ python scripts/ci/classifier_graph_registry_validator.py
 python scripts/ci/classifier_candidate_admission.py
 python -m unittest scripts/ci/test_classifier_graph_registry_validator.py
 python -m unittest scripts/ci/test_classifier_candidate_admission.py
-python -m unittest deepcli/tests/test_implementation_competition.py
+python -m unittest discover -s deepcli/tests -p 'test_implementation_competition.py'
 ```
 
 ## 8. Remaining implementation gates

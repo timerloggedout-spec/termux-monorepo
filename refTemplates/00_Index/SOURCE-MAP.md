@@ -23,7 +23,7 @@ The Flywheel slot is metadata-first and tracks a composable stack; it is not a r
 |------|------------------|-------|-------------|
 | spaceship-ide | https://github.com/timerloggedout-spec/spaceship_fork/tree/e567943134da28e337ccab6662e5a11fa4869fed | Focus Monitor, Attention Lock, Future Vector Steering, Realtime Regeneration | Metadata-only design reference; source code and media remain upstream |
 
-The fork and upstream master resolve to the same inspected commit. Keep this as a pattern source; the Tier-A research-template and Delphi participant registries remain unchanged. See [the integration record](../../ops/SPACESHIP-IDE-DESIGN-INTEGRATION.md).
+The fork and upstream master resolve to the same inspected commit. Keep this as a pattern source; the Tier-A research-template and Delphi participant registries remain unchanged. See [the integration record](../../docs/ops/SPACESHIP-IDE-DESIGN-INTEGRATION.md).
 
 ## Candidates (tier B — re-score on cadence)
 

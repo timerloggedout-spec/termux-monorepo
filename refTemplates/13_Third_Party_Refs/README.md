@@ -8,4 +8,4 @@ Third-party reference patterns (assistral, etc.). Expand-only; live pins under `
 
 - [spaceship-ide](./spaceship-ide/README.md) — four real-time human/LLM interaction concepts; Tier C, metadata-only, MIT, exact source revision recorded.
 
-Integration: [Spaceship IDE design integration](../../ops/SPACESHIP-IDE-DESIGN-INTEGRATION.md).
+Integration: [Spaceship IDE design integration](../../docs/ops/SPACESHIP-IDE-DESIGN-INTEGRATION.md).

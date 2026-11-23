@@ -27,6 +27,7 @@ IMPERATIVE = {
     "test", "update", "use", "validate", "verify", "wire", "collect", "generate", "regenerate", "rebuild",
     "connect", "display", "distinguish", "exercise", "expose", "express", "index", "join", "map",
     "resolve", "scope", "specify", "state", "summarize", "version",
+    "declare", "discover", "reference", "report",
 }
 STYLE_PATHS = [
     "AGENTS.md", "moniker.md", "CLAUDE.md", "GEMINI.md", "SKILLS.md",

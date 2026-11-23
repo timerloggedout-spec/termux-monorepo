@@ -230,6 +230,28 @@ jobs:
           python3 -m pytest -q tests/test_provider_quota_managers.py tests/test_provider_quota_transport.py tests/test_provider_quota_service.py tests/test_provider_quota_openrouter.py tests/test_provider_quota_private_workflow.py tests/test_provider_quota_coverage.py tests/test_quota_dashboard.py tests/test_quota_poll.py tests/test_delphi_gate.py
           python3 -m pytest -q tests/test_quota_allocations.py
           python3 scripts/provider_quota_coverage.py --check apps/tribute-dashboard/data/provider-quota-coverage.json
+      - name: Harvest current Puter Pool source repository contracts
+        run: |
+          set -euo pipefail
+          git clone --depth 1 https://github.com/timerloggedout-spec/puter-pool_fork.git /tmp/puter-pool-source
+          python3 scripts/puter_pool_repo_harvest.py --repo-root /tmp/puter-pool-source --output /tmp/puter-pool-source-harvest.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          manifest = json.loads(Path("/tmp/puter-pool-source-harvest.json").read_text())
+          assert manifest["source_revision"]
+          assert manifest["capabilities"]["openai_compatible"]
+          assert "/chat/completions" in manifest["capabilities"]["http_routes"]
+          print("Puter Pool source revision:", manifest["source_revision"])
+          print("Allowlisted source files:", len(manifest["harvested_files"]))
+          PY
+      - name: Preserve sanitized Puter Pool source harvest
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: puter-pool-source-harvest
+          path: /tmp/puter-pool-source-harvest.json
+          if-no-files-found: error
+          retention-days: 14
       - name: Upload contracts log for diagnostics
         if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

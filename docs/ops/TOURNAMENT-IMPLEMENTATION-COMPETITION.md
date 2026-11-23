@@ -24,7 +24,7 @@ Required hard gates: task contract, schema, security/policy, provenance, and det
 
 The comparator understands quality, acceptance, grounding, calibration, reproducibility, latency, compute/inference cost, human effort, context tokens, retries, integration conflicts and policy violations. Each metric declares a maximize/minimize direction.
 
-Missing metric observations remain null and reduce that metric's paired sample count. Partial coverage blocks dominance for the cohort; the report lists incomplete and wholly unobserved metrics explicitly. The report includes raw paired deltas, direction-normalized improvement, sample counts and approximate 95% intervals. Paired intervals use Student-t critical values through 30 degrees of freedom and a normal approximation for larger samples. Dominance requires complete paired coverage, interval-supported non-regression on every observed metric and positive improvement on at least one.
+Missing metric observations remain null and reduce that metric's paired sample count. Partial coverage blocks dominance for the cohort; the report lists incomplete and wholly unobserved metrics explicitly. The report includes raw paired deltas, direction-normalized improvement, sample counts and 95% intervals. Paired intervals use Student-t critical values through 30 degrees of freedom and a normal approximation for larger samples. Dominance requires complete paired coverage, interval-supported non-regression on every declared metric and positive improvement on at least one.
 
 ## Execute
 
@@ -32,7 +32,7 @@ Missing metric observations remain null and reduce that metric's paired sample c
 python scripts/tournament/compare_implementations.py receipts.json --output comparison.json
 ```
 
-The input file may contain a JSON array or an object with a `receipts` array. Each receipt carries the versioned receipt schema identifier. The report identifies incumbent and challenger, paired outcomes, hard-gate failures and a recommendation.
+The input file may contain a JSON array or an object with a `receipts` array. Each receipt carries the versioned receipt schema identifier. The report identifies the receipt schema, incumbent and challenger, declared metric set, paired outcomes, hard-gate failures and a recommendation.
 
 Recommendations route to human review. Promotion uses held-out validation, owner approval and a pinned rollback target; the active implementation changes only through that separate promotion process.
 

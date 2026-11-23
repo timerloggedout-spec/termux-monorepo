@@ -18,11 +18,11 @@
 - Keep research separate from provisioning, paid spend, credentials, production deployment, and runtime admission.
 - Preserve the existing GitHub/Actions control plane and provider-neutral ledger.
 - Render's repository wiring is distinct from live service/account verification.
-- Use the existing Loopy-derived six-step feedback semantics and native adaptive WAIT; create no second scheduler or telemetry ledger.
+- Use the existing Loopy-derived six-step feedback semantics and native adaptive WAIT; keep one scheduler and one telemetry ledger.
 
 ## Review Focus
 
-- SnapDeploy's idle wake behavior and no-persistent-disk boundary.
+- SnapDeploy's idle wake behavior and ephemeral-filesystem boundary.
 - Leapcell's included quota versus metered overage and serverless-only free shape.
 - Appwrite's seven-day inactivity pause and function runtime limits.
 - alwaysdata's free-plan service/profit restrictions.
@@ -44,7 +44,7 @@
 
 - [ ] Add SnapDeploy, Leapcell, Appwrite, alwaysdata, Back4app Containers, and zrok with official evidence, fit, constraints, uncertainty, and next validation.
 - [ ] Add Codespaces and Cloudflare as existing mesh surfaces requiring measured usage and lane completion.
-- [ ] Preserve the RFP's no-provider-winner and no-provisioning boundary.
+- [ ] Preserve the RFP's provider selection pending and research-only provisioning boundary.
 
 ### Task 2: Reconcile Render deployment wiring
 
@@ -65,4 +65,4 @@
 - [ ] Open a focused PR linked to issue #1622.
 - [ ] Re-fetch checks against the immutable PR head SHA and report terminal states.
 
-**Review Focus / acceptance:** Six candidate surfaces are added; Render's repository wiring is accurately recorded; Codespaces/Cloudflare remain distinct from new providers; unknowns remain explicit; no account or production changes occur.
+**Review Focus / acceptance:** Six candidate surfaces are added; Render's repository wiring is accurately recorded; Codespaces/Cloudflare remain distinct from new providers; unknowns remain explicit; account and production state remain unchanged.

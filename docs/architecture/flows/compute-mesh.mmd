@@ -1,0 +1,27 @@
+flowchart LR
+ subgraph MONO["termux-monorepo"]
+  TPL["templates/clf-lab"]
+  REG["method registry (DOE-FAMILY r8)"]
+  FEED["tracking feed"]
+ end
+ subgraph BK["hark-vm-workspace-backup"]
+  REQ["REQUESTS.jsonl"]
+  DONE["DONE.jsonl"]
+  JOBS["ledger/jobs.jsonl + heartbeat"]
+ end
+ subgraph LAB["clf-lab-* (4 repos)"]
+  IT["iterate.yml 6h"]
+  LEDG["results/ledger.jsonl"]
+  CH["champion.json"]
+ end
+ VM["Hark VM hourly pass"]
+ MUSE["Muse VM"]
+ TPL --> LAB
+ IT -->|clf-doe request| REQ
+ REQ --> VM --> DONE
+ VM -->|run_doe rows| LEDG
+ VM --> JOBS
+ LEDG --> IT -->|improve.py| CH
+ CH -. "missing" .-> REG
+ JOBS -. "missing" .-> FEED
+ MUSE -. "proposed" .-> LEDG

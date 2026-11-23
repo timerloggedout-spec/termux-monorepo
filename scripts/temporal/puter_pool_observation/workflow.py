@@ -21,6 +21,10 @@ class PuterPoolObservationWorkflow:
     def stop(self) -> None:
         self._stop_requested = True
 
+    @workflow.query
+    def last_result(self) -> dict:
+        return self._last_observation
+
     @workflow.run
     async def run(self, request: PuterPoolObservationInput) -> dict:
         if not 60 <= request.interval_seconds <= 3600:
@@ -39,5 +43,8 @@ class PuterPoolObservationWorkflow:
                 ),
             )
             if not self._stop_requested:
-                await workflow.sleep(timedelta(seconds=request.interval_seconds))
+                await workflow.wait_condition(
+                    lambda: self._stop_requested,
+                    timeout=timedelta(seconds=request.interval_seconds),
+                )
         return self._last_observation

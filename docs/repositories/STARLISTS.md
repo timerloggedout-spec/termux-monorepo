@@ -9,6 +9,13 @@
 | [timerloggedout-spec/fast-anything_fork](https://github.com/timerloggedout-spec/fast-anything_fork) | Owned fork of `EL4CTEO/fast-anything` | `0.8.0` · `80ab099817b3d07ebe5b5221d4a9c6b881cfd044` | Selective hot-path Rust migration | Candidate; DoE design-only |
 | [timerloggedout-spec/rust-anything_fork](https://github.com/timerloggedout-spec/rust-anything_fork) | Owned fork of `erkamyaman/rust-anything` | `3.3.0` · `50d3810b622fdc6cb3aee965fe4c9d4b4f29205b` | Incremental cross-language migration and behavior replay | Candidate; DoE design-only |
 
+### External upstream sources
+
+| Repository | Relationship | Pinned candidate | Research role | Status |
+|---|---|---|---|---|
+| [EL4CTEO/fast-anything](https://github.com/EL4CTEO/fast-anything) | Upstream of owned fork | Fork comparison snapshot `80ab099817b3d07ebe5b5221d4a9c6b881cfd044` | Selective hot-path Rust migration | Research candidate; star status pending Observatory reconciliation |
+| [erkamyaman/rust-anything](https://github.com/erkamyaman/rust-anything) | Upstream of owned fork | Fork comparison snapshot `50d3810b622fdc6cb3aee965fe4c9d4b4f29205b` | Incremental cross-language migration | Research candidate; star status pending Observatory reconciliation |
+
 ## Repository reconstruction and prompt synthesis
 
 | Repository | Relationship | Pinned candidate | Research role | Status |

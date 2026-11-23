@@ -112,3 +112,11 @@ def test_telemetry_actions_values_not_hardcoded():
     assert "41022221792" not in html
     assert "api_observations_snapshot" not in html
     assert "actions_observations.json" not in html
+
+
+def test_puter_pool_recent_dispatches_render_task_correlation():
+    script = _script()
+    assert "Recent inference dispatches" in script
+    assert "pr.recent_requests" in script
+    assert "task_or_entry_ref" in script
+    assert "doe_run_id" in script

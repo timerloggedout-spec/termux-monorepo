@@ -1,6 +1,6 @@
 {
  "schema": "que-queue-feed/v1",
- "generated_at": "2026-11-22T23:55:56Z",
+ "generated_at": "2026-11-23T00:06:46Z",
  "provenance": {
   "producer": "optimizations-assurance (QUE lead) via que-feed-collect",
   "design_input": "Stagefoil \u2014 the desk-flow template brand (Registry issuance PR #4817) \u2014 agent-browser-clerk pattern (D2 candidate B learnings); the Desk as interactive-flow + routing template, agent-operated",
@@ -10,73 +10,53 @@
   "tiers": {
    "1": {
     "tier": 1,
-    "queued": 9,
-    "in_progress": 1,
+    "queued": 3,
+    "in_progress": 2,
     "oldest_queued_at": "2026-11-20T07:43:25Z",
     "by_workflow_queued": {
-     "repo gate": 2,
-     "PR scope guard": 7
+     "Orchestration Regression Guard": 1,
+     "PR scope guard": 2
     }
    },
    "2": {
     "tier": 2,
-    "queued": 2,
-    "in_progress": 1,
-    "oldest_queued_at": "2026-11-22T23:53:24Z",
-    "by_workflow_queued": {
-     "tribute-dashboard-deploy": 1,
-     "pages build and deployment": 1
-    }
+    "queued": 0,
+    "in_progress": 2,
+    "oldest_queued_at": null,
+    "by_workflow_queued": {}
    },
    "3": {
     "tier": 3,
     "queued": 0,
-    "in_progress": 0,
+    "in_progress": 1,
     "oldest_queued_at": null,
     "by_workflow_queued": {}
    },
    "4": {
     "tier": 4,
-    "queued": 81,
-    "in_progress": 19,
+    "queued": 17,
+    "in_progress": 25,
     "oldest_queued_at": "2026-11-20T07:43:25Z",
     "by_workflow_queued": {
-     "Agent Throughput Evidence": 14,
-     "lane events recorder": 9,
-     "repo-tracking-collect": 1,
-     "n8n SHE bridge": 3,
-     "Lane matrix event-driven inventory": 1,
-     "Repository development evaluation": 2,
-     "termux smoke": 2,
-     "Context Relationship + Lead/Lag Audit": 1,
-     "Workflow Surface Policy": 1,
-     "CellCog review": 2,
-     "DO Statement Style": 5,
-     "DeepSeek CI \u2013 Agentic Automation": 2,
-     "Audit Cycle \u2014 Single PR Feed-Forward": 2,
-     "Agent PR Jules Handoff": 4,
-     "Sweep Accountability": 4,
-     "PR production ledger": 5,
-     "PR Change Effectiveness Ledger": 2,
-     "RECON INTEL discovery": 2,
-     "Peer review orchestrator": 3,
-     "PR evidence evaluation": 3,
-     "Action Effectiveness Ledger": 3,
-     "archwiz dangle check": 2,
+     "Issue Comment Router \u2014 modular fan-out reduction": 3,
+     "Context Relationship + Lead/Lag Audit": 3,
      "Agent Readability Source Contract": 1,
-     "Observer Poller Scheduled": 1,
      "quota-analysis": 1,
-     "quota-allocation-planner": 1,
-     "telemetry-ingest": 1,
-     "hitl-control-plane-verify": 1,
-     "Agent review \u2192 auto Jules": 1,
-     "Advisory GitHub Actions lint": 1
+     "Foresight Evidence Spine": 1,
+     "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
+     "graph-matrix-probe": 1,
+     "termux smoke": 1,
+     "que-cadence-kick": 1,
+     "Agent PR Jules Handoff": 1,
+     "PR Change Effectiveness Ledger": 1,
+     "Advisory GitHub Actions lint": 1,
+     "DO Statement Style": 1
     }
    }
   },
   "totals": {
-   "queued": 92,
-   "in_progress": 21
+   "queued": 20,
+   "in_progress": 30
   },
   "wedged_ancient": [
    {
@@ -233,13 +213,13 @@
   "tier_basis": {
    "population": "actions-runs (queued \u2227 in_progress)",
    "explicit": {
-    "1": 10,
-    "2": 3,
-    "3": 0,
+    "1": 5,
+    "2": 2,
+    "3": 1,
     "4": 0
    },
-   "explicit_total": 13,
-   "default_t4": 100,
+   "explicit_total": 8,
+   "default_t4": 42,
    "unmatched": 0,
    "ancient_excluded": 25,
    "operator_excluded": 1
@@ -1606,67 +1586,66 @@
  },
  "source_freshness": {
   "schema": "que.source-freshness/v1",
-  "generated_at": "2026-11-22T23:55:56Z",
+  "generated_at": "2026-11-23T00:06:46Z",
   "rule": "FRESH iff age \u2264 cadence + tolerance; freshness(x) \u00acinferred from freshness(y)",
   "counts": {
-   "STALE": 1,
-   "FRESH": 3,
+   "FRESH": 4,
    "UNVERIFIABLE": 1
   },
   "sources": {
    "que-feed-collect": {
     "source_ref": "ops/que/feeds/que-queue-feed.json",
-    "generated_at": "2026-11-22T23:55:56Z",
-    "observed_at": "2026-11-22T23:55:56Z",
+    "generated_at": "2026-11-23T00:06:46Z",
+    "observed_at": "2026-11-23T00:06:46Z",
     "expected_cadence_min": 10,
     "tolerance_min": 5,
-    "previous_cycle_at": "2026-11-22T23:32:43Z",
-    "cycle_gap_min": 23.2,
-    "health": "STALE",
+    "previous_cycle_at": "2026-11-22T23:55:56Z",
+    "cycle_gap_min": 10.8,
+    "health": "FRESH",
     "health_basis": "gap since previous cycle watermark",
-    "sha": "27d8d3633fda06c57e7d481cb428ccebec48cb72",
-    "run_id": "45085667192"
+    "sha": "0a86916e25c17c0c9ff1e4bcef98ba2776db2689",
+    "run_id": "45086811254"
    },
    "dispatch-state-feed": {
     "source_ref": "ops/challenge/dispatch-state-feed.json",
-    "observed_at": "2026-11-22T23:55:56Z",
+    "observed_at": "2026-11-23T00:06:46Z",
     "expected_cadence_min": 15,
     "tolerance_min": 15,
-    "sha": "27d8d3633fda06c57e7d481cb428ccebec48cb72",
+    "sha": "0a86916e25c17c0c9ff1e4bcef98ba2776db2689",
     "generated_at": "2026-11-22T23:50:30Z",
-    "age_min": 5.4,
+    "age_min": 16.3,
     "health": "FRESH"
    },
    "stall-gap-feed": {
     "source_ref": "ops/que/feeds/stall-gap-feed.json",
-    "observed_at": "2026-11-22T23:55:56Z",
+    "observed_at": "2026-11-23T00:06:46Z",
     "expected_cadence_min": 15,
     "tolerance_min": 15,
-    "sha": "27d8d3633fda06c57e7d481cb428ccebec48cb72",
+    "sha": "0a86916e25c17c0c9ff1e4bcef98ba2776db2689",
     "generated_at": "2026-11-22T23:50:30Z",
-    "age_min": 5.4,
+    "age_min": 16.3,
     "health": "FRESH"
    },
    "opportunity-priority": {
     "source_ref": "ops/que/feeds/opportunity-priority.json",
-    "observed_at": "2026-11-22T23:55:56Z",
+    "observed_at": "2026-11-23T00:06:46Z",
     "expected_cadence_min": 720,
     "tolerance_min": 0,
-    "sha": "27d8d3633fda06c57e7d481cb428ccebec48cb72",
+    "sha": "0a86916e25c17c0c9ff1e4bcef98ba2776db2689",
     "generated_at": "2026-11-22T20:23:32Z",
-    "age_min": 212.4,
+    "age_min": 223.2,
     "health": "FRESH"
    },
    "governor-events": {
     "source_ref": "ops/que/events/governor-events-*.jsonl",
-    "observed_at": "2026-11-22T23:55:56Z",
+    "observed_at": "2026-11-23T00:06:46Z",
     "generated_at": "2026-11-22T02:33:40Z",
-    "age_min": 1282.3,
+    "age_min": 1293.1,
     "expected_cadence_min": null,
     "tolerance_min": null,
     "health": "UNVERIFIABLE",
     "health_basis": "emitter cadence \u00acdeclared (source-specific)",
-    "sha": "27d8d3633fda06c57e7d481cb428ccebec48cb72"
+    "sha": "0a86916e25c17c0c9ff1e4bcef98ba2776db2689"
    }
   }
  }

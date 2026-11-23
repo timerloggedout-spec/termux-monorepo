@@ -178,11 +178,13 @@ The reducer reports per-metric paired deltas, sample counts, missing-value
 preservation and 95% intervals using Student-t critical values for small
 samples. Each cohort declares one `metric_set`; every receipt supplies every
 key and uses `null` for an unobserved value. Fully unobserved and partially
-observed dimensions block dominance. Hard-gate failures block a challenger
-recommendation. Dominance requires complete paired coverage, interval-
-supported non-regression across every declared metric and positive
-improvement on at least one. A challenger recommendation routes to human
-review; the module leaves promotion as a separate owner-approved operation.
+observed dimensions block dominance. Zero-observed-variance intervals
+remain unestimated, preventing degenerate zero-width intervals from
+establishing dominance. Hard-gate failures block a challenger recommendation.
+Dominance requires complete paired coverage, an estimated interval for every
+declared metric, interval-supported non-regression and positive improvement
+on at least one. A challenger recommendation routes to human review; the
+module leaves promotion as a separate owner-approved operation.
 
 Tests live in `deepcli/tests/test_implementation_competition.py` and
 run in the repository gate. This is an executable comparison component;

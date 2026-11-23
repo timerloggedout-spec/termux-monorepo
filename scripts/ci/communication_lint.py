@@ -68,18 +68,7 @@ def comment_body(line, suffix):
 def excluded_lines(lines):
     excluded = set()
     fence = None
-    in_html_comment = False
     for number, line in enumerate(lines, 1):
-        if in_html_comment:
-            excluded.add(number)
-            if "-->" in line:
-                in_html_comment = False
-            continue
-        if "<!--" in line:
-            excluded.add(number)
-            if "-->" not in line:
-                in_html_comment = True
-            continue
         match = FENCE_RE.match(line)
         if fence:
             excluded.add(number)

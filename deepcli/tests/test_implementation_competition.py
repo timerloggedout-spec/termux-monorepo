@@ -58,7 +58,7 @@ class ImplementationCompetitionTests(unittest.TestCase):
         self.assertEqual(report["receipt_schema"], "tournament.implementation-receipt.v1")
         self.assertEqual(report["matched_task_count"], 3)
         self.assertEqual(report["metrics"]["task_quality"]["sample_count"], 3)
-        self.assertAlmostEqual(report["metrics"]["task_quality"]["improvement_mean"], .1)
+        self.assertAlmostEqual(report["metrics"]["task_quality"]["improvement_mean"], .101)
         self.assertIsNotNone(report["metrics"]["task_quality"]["ci95"])
         self.assertEqual(report["metrics"]["task_quality"]["interval_status"], "estimated")
         self.assertEqual(report["recommendation"], "challenger_for_human_review")

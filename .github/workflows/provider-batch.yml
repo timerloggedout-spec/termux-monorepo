@@ -27,6 +27,15 @@ on:
     paths:
       - 'scripts/provider_model_catalog.py'
       - 'scripts/puter_pool_catalog.py'
+      - 'scripts/puter_pool_observation.py'
+      - 'scripts/puter_pool_repo_harvest.py'
+      - 'scripts/temporal/puter_pool_observation/**'
+      - 'tests/test_puter_pool_catalog.py'
+      - 'tests/test_puter_pool_provider.py'
+      - 'tests/test_puter_pool_observation.py'
+      - 'tests/test_puter_pool_repo_harvest.py'
+      - 'tests/test_puter_pool_temporal.py'
+      - 'scripts/puter_pool_catalog.py'
       - 'tests/test_puter_pool_catalog.py'
       - 'scripts/provider_extension_catalogs.py'
       - 'scripts/ops/provider_operational_check.py'
@@ -112,6 +121,15 @@ on:
     branches: [master]
     paths:
       - 'scripts/provider_model_catalog.py'
+      - 'scripts/puter_pool_catalog.py'
+      - 'scripts/puter_pool_observation.py'
+      - 'scripts/puter_pool_repo_harvest.py'
+      - 'scripts/temporal/puter_pool_observation/**'
+      - 'tests/test_puter_pool_catalog.py'
+      - 'tests/test_puter_pool_provider.py'
+      - 'tests/test_puter_pool_observation.py'
+      - 'tests/test_puter_pool_repo_harvest.py'
+      - 'tests/test_puter_pool_temporal.py'
       - 'scripts/provider_extension_catalogs.py'
       - 'scripts/ops/provider_operational_check.py'
       - 'scripts/ops/gemini_free_smoke.py'
@@ -186,7 +204,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Install contract test dependencies
-        run: python3 -m pip install pytest==8.4.2 fastapi==0.143.3 pydantic==2.14.1 httpx==0.28.1 PyYAML==6.0.3
+        run: python3 -m pip install pytest==8.4.2 fastapi==0.143.3 pydantic==2.14.1 httpx==0.28.1 PyYAML==6.0.3 'temporalio>=1.7.0'
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -201,6 +219,7 @@ jobs:
           python3 -m pytest -q tests/test_provider_availability_probe.py tests/test_deepagent_entrypoint.py tests/test_deepagent_worktree_base.py deepcli/tests/test_agent_execute.py
           python3 -m pytest -q tests/test_provider_secret_inventory.py tests/test_provider_free_smoke.py tests/test_provider_free_diagnostics.py
           python3 -m pytest -q tests/test_provider_model_catalog.py tests/test_provider_batch.py tests/test_review_evidence.py tests/test_research_provider_hub.py tests/test_llm_api_hub_server.py
+          python3 -m pytest -q tests/test_puter_pool_catalog.py tests/test_puter_pool_provider.py tests/test_puter_pool_observation.py tests/test_puter_pool_repo_harvest.py tests/test_puter_pool_temporal.py
           python3 -m pytest -q tests/test_provider_recon.py tests/test_market_cadence.py tests/test_publish_provider_recon.py tests/test_resource_index.py tests/test_resource_registry.py
           python3 -m unittest scripts.model_selection_market.test_msm
           python3 -m pytest -q tests/test_provider_quota_managers.py tests/test_provider_quota_transport.py tests/test_provider_quota_service.py tests/test_provider_quota_openrouter.py tests/test_provider_quota_private_workflow.py tests/test_provider_quota_coverage.py tests/test_quota_dashboard.py tests/test_quota_poll.py tests/test_delphi_gate.py

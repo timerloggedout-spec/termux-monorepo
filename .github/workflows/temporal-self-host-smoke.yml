@@ -72,7 +72,7 @@ jobs:
       - name: Install temporalio + run hello workflow from module
         run: |
           set -euo pipefail
-          python3 -m pip install --quiet 'temporalio>=1.7.0'
+          python3 -m pip install --quiet 'temporalio>=1.7.0' pytest
           mkdir -p scripts/temporal
           cat > scripts/temporal/_ci_hello.py <<'PY'
           import asyncio, os, uuid
@@ -113,6 +113,7 @@ jobs:
           export TEMPORAL_TASK_QUEUE=termux-agent-ci
           export TEMPORAL_HELLO_NAME=ci-smoke
           python3 scripts/temporal/_ci_hello.py
+          TEMPORAL_ADDRESS=127.0.0.1:7233 python3 -m pytest -q tests/test_puter_pool_temporal_live.py
 
       - name: Stop Temporal
         if: always()

@@ -1,20 +1,20 @@
-# Lane matrix status (2026-11-23T07:22:32Z)
+# Lane matrix status (2026-11-23T07:23:36Z)
 
-- Master: `47b1adcca53deb0b95f53893cb1ed851f8990732`
-- Open PRs: **528**
+- Master: `f36e8637128ef36f62006a009ee887a408afac21`
+- Open PRs: **529**
 - Oldest: #47 (109.65d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
 | Lane | Count |
 |------|------:|
 | CANDIDATE | 179 |
 | EXTRACT | 9 |
-| NEED_EVIDENCE | 157 |
+| NEED_EVIDENCE | 158 |
 | SUPERSEDE | 183 |
 
 | Age bucket | Count |
 |------------|------:|
 | ancient | 27 |
-| fresh | 104 |
+| fresh | 105 |
 | mid | 230 |
 | stale | 167 |
 
@@ -33,7 +33,7 @@
 | #5724 | 2.59 | EXTRACT | state:unknown, minesweeper-title | fix(jules): replace hosted PR handoff with receipt |
 | #47 | 109.65 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
 | #81 | 107.4 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
-| #103 | 106.26 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
+| #103 | 106.27 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
 | #527 | 68.98 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
 | #605 | 65.56 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
 | #684 | 63.54 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
@@ -53,7 +53,7 @@
 | #1537 | 31.93 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 31.26 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 30.18 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
-| #1616 | 30.17 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
+| #1616 | 30.18 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 30.17 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
 | #1626 | 30.05 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
 | #1645 | 29.29 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |

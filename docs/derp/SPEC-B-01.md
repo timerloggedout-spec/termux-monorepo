@@ -6,7 +6,7 @@
 
 ## Intent
 
-Make DERP a readable playful dialect that works in ordinary HTML, Markdown, search snippets, terminals, screen readers, and agent-readable exports. Use visible leetspeak and rePointer tokens as the canonical syntax. Invisible Unicode remains optional decoration and never carries essential meaning.
+Make DERP a readable playful dialect that works in ordinary HTML, Markdown, search snippets, terminals, screen readers, and agent-readable exports. Use visible leetspeak and rePointer tokens as the canonical syntax. Use invisible Unicode as optional decoration; express essential meaning through visible tokens.
 
 ## Model
 
@@ -39,7 +39,7 @@ Unknown IDs render as unresolved text and are reported by validation.
 
 ## Invisible-character policy
 
-Invisible marks MAY appear as optional decorative puzzle texture. They MUST NOT be the sole carrier of a clue, destination, instruction, permission, or crawler policy. The page MUST remain fully functional after all such marks are removed.
+Invisible marks MAY appear as optional decorative puzzle texture. Express each clue, destination, instruction, permission, and crawler policy through visible, documented forms; use invisible marks as optional decoration. The page MUST remain fully functional after all such marks are removed.
 
 ## SEO and agent-readable surfaces
 

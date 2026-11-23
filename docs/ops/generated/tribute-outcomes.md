@@ -1,10 +1,10 @@
 ## Tribute outcome SLO: **FAIL** (30d window)
 
-real merges **0** · stake-only merges **1** (weight 0) · closed-unmerged **24** · real merge rate **0.0** · open now **7** · days since real merge **35.0**
+real merges **0** · stake-only merges **1** (weight 0) · closed-unmerged **24** · real merge rate **0.0** · open now **7** · days since real merge **35.1**
 
 - FAIL `zero_real_merges`: 0 real foreign merges in the last 30d
 - FAIL `real_merge_rate_below`: real merge rate 0.0% < 10% over 25 decided PRs (30d)
-- FAIL `real_merge_drought`: last real merge 35.0d ago (> 21d)
+- FAIL `real_merge_drought`: last real merge 35.1d ago (> 21d)
 - WARN `stake_only_merges_weight_0`: 1 stake-only merges in 30d counted at weight 0
 - WARN `closed_unmerged`: 24 PRs closed without merge in 30d (counted as failures)
 

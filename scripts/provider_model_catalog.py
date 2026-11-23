@@ -31,8 +31,9 @@ except ImportError:
 UA = "termux-monorepo-provider-catalog/5"
 # Catalog-only public GETs; ModelScope is verified by a current provider response,
 # not a published catalog specification. Inference still requires account admission.
-PUBLIC_CATALOGS = frozenset({"llm7", "ovhcloud", "modelscope"}) | provider_extension_catalogs.PUBLIC_CATALOGS
+PUBLIC_CATALOGS = frozenset({"llm7", "ovhcloud", "modelscope", "puter_pool"}) | provider_extension_catalogs.PUBLIC_CATALOGS
 ENDPOINTS = {
+    "puter_pool": "http://127.0.0.1:3000/v1/models",
     "openrouter": "https://openrouter.ai/api/v1/models",
     "felo": "https://openapi.felo.ai/api/v1/models",
     "omni": "https://cloud.omniroute.online/v1/models",
@@ -51,6 +52,7 @@ ENDPOINTS = {
     "sambanova": "https://api.sambanova.ai/v1/models",
 }
 SECRETS = {
+    "puter_pool": "PUTER_POOL_API_KEY",
     "openrouter": "OPENROUTER_API_KEY",
     "felo": "FELO_AI_API",
     "omni": "OMNI_API_KEY",
@@ -202,8 +204,8 @@ def _request_json(url: str, token: str | None = None, header_name: str = "Author
     return _request(url, token, header_name, page_token)
 
 
-def get_json(url: str, token: str | None = None) -> tuple[dict, dict]:
-    return _request(url, token)
+def get_json(url: str, token: str | None = None, header_name: str = "Authorization") -> tuple[dict, dict]:
+    return _request(url, token, header_name)
 
 
 def _gemini_pages(token: str) -> tuple[dict, dict]:
@@ -254,9 +256,17 @@ def _positive_int(value):
 def poll(provider: str, token: str) -> tuple[list[dict], dict]:
     if provider in provider_extension_catalogs.ENDPOINTS:
         return provider_extension_catalogs.poll(provider, token, get_json)
-    if provider in provider_catalog_protocols.PROVIDERS:
+    if provider == "puter_pool":
+        try:
+            from llm_api_hub.server import puter_pool_protocol
+        except ImportError:
+            import puter_pool_protocol  # type: ignore
+        url = puter_pool_protocol.models_url(os.environ.get("PUTER_POOL_BASE_URL", "http://127.0.0.1:3000"))
+        payload, response_headers = get_json(url, token, "x-api-key")
+    elif provider in provider_catalog_protocols.PROVIDERS:
         return provider_catalog_protocols.poll(provider, token, get_json, os.environ.get("CLOUDFLARE_ACCOUNT_ID"))
-    payload, response_headers = _gemini_pages(token) if provider == "gemini" else get_json(ENDPOINTS[provider], token)
+    else:
+        payload, response_headers = _gemini_pages(token) if provider == "gemini" else get_json(ENDPOINTS[provider], token)
     items = payload.get("models" if provider == "gemini" else "data")
     if not isinstance(items, list) or any(not isinstance(item, dict) for item in items):
         raise ValueError("invalid_response_shape")
@@ -378,8 +388,8 @@ def main(argv: list[str] | None = None) -> int:
                 "catalog_observed_at": observed_at,
                 "response_headers": headers,
                 "secret_env_resolved": env_name if token else None,
-                "catalog_authentication": "credential" if token else ("observed_public_get" if provider == "modelscope" else "documented_public_get"),
-                "catalog_contract_source": "provider_runtime_observation" if provider == "modelscope" else "official_documentation",
+                "catalog_authentication": "credential" if token else ("observed_public_get" if provider in {"modelscope", "puter_pool"} else "documented_public_get"),
+                "catalog_contract_source": "source_repository_contract" if provider == "puter_pool" else ("provider_runtime_observation" if provider == "modelscope" else "official_documentation"),
                 "account_endpoint": None,
                 "account_endpoint_status": "not_documented",
                 "documented_entitlements": DOCUMENTED_ENTITLEMENTS.get(provider, []),

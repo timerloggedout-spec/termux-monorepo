@@ -63,6 +63,19 @@ class ImplementationCompetitionTests(unittest.TestCase):
         self.assertIsNone(report["metrics"]["compute_cost"]["improvement_mean"])
         self.assertEqual(report["recommendation"], "pareto_tradeoff_or_insufficient_evidence")
 
+    def test_partial_metric_coverage_blocks_dominance(self):
+        self.receipts[3]["metrics"]["task_quality"] = None
+        report = compare_implementations(self.receipts)
+        self.assertIn("task_quality", report["incomplete_metrics"])
+        self.assertEqual(report["recommendation"], "pareto_tradeoff_or_insufficient_evidence")
+
+    def test_small_sample_interval_uses_student_t_critical_value(self):
+        receipts = self.receipts[:4]
+        receipts[3]["metrics"]["task_quality"] += .1
+        report = compare_implementations(receipts)
+        interval = report["metrics"]["task_quality"]["ci95"]
+        self.assertGreater(interval[1] - interval[0], 1.0)
+
     def test_hard_gate_failure_blocks_recommendation(self):
         self.receipts[-1]["hard_gates"]["security_and_policy"] = False
         report = compare_implementations(self.receipts)

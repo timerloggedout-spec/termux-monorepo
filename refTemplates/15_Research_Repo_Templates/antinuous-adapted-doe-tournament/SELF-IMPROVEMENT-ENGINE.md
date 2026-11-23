@@ -169,6 +169,8 @@ The full classifier estate remains a separate operating-surface inventory.
 
 `deepcli/deepcli/observatory/implementation_competition.py` adds a
 stdlib-only comparison engine for exactly two versioned implementations.
+Receipts follow `docs/ops/TOURNAMENT-IMPLEMENTATION-RECEIPT.schema.json`
+and identify `tournament.implementation-receipt.v1`.
 It joins immutable receipts by task ID and requires the same cohort,
 task contract, environment fingerprint and evaluator version.
 

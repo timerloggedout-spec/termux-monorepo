@@ -174,7 +174,8 @@ def _metric_summary(incumbent: dict[str, dict[str, Any]],
     if not pairs:
         return {"direction": direction, "sample_count": 0, "incumbent_mean": None,
                 "challenger_mean": None, "paired_delta_mean": None,
-                "improvement_mean": None, "ci95": None, "pairs": []}
+                "improvement_mean": None, "ci95": None,
+                "interval_status": "no_observations", "pairs": []}
     incumbent_values = [item["incumbent"] for item in pairs]
     challenger_values = [item["challenger"] for item in pairs]
     improvements = [item["improvement"] for item in pairs]

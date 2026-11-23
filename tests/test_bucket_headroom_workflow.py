@@ -22,7 +22,7 @@ def steps(d):
 
 def test_schedule_and_inputs():
     on = triggers(doc())
-    assert on["schedule"] == [{"cron": "*/10 * * * *"}]  # >= Cadence 5m floor
+    assert on["schedule"] == [{"cron": "7,17,27,37,47,57 * * * *"}]  # 10m cadence, off-hour
     inputs = on["workflow_dispatch"]["inputs"]
     assert inputs["dry_run"]["default"] is False
     assert inputs["drill"]["default"] is False

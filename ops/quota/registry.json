@@ -2763,6 +2763,10 @@
   {
    "id": "g4f.puter",
    "provider": "g4f/Puter",
+   "runtime_source": "https://github.com/timerloggedout-spec/puter-pool_fork",
+   "catalog_adapter": "scripts/provider_model_catalog.py:puter_pool",
+   "runtime_observer": "scripts/puter_pool_observation.py",
+   "temporal_workflow": "scripts/temporal/puter_pool_observation/",
    "lane": "model",
    "metric": "g4f provider Puter \u2014 free/no-auth quota (resolution 2026-10-28)",
    "limit": null,

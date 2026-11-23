@@ -59,6 +59,7 @@ class ImplementationCompetitionCliTests(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr)
             report = json.loads(output.read_text(encoding="utf-8"))
             self.assertEqual(report["schema"], "tournament.implementation-comparison.v1")
+            self.assertEqual(report["receipt_schema"], "tournament.implementation-receipt.v1")
             self.assertEqual(report["matched_task_count"], 2)
             self.assertFalse(report["promotion_authorized"])
             self.assertEqual(json.loads(result.stdout)["recommendation"],

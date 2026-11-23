@@ -16,25 +16,23 @@
 | [EL4CTEO/fast-anything](https://github.com/EL4CTEO/fast-anything) | Upstream of owned fork | Fork comparison snapshot `80ab099817b3d07ebe5b5221d4a9c6b881cfd044` | Selective hot-path Rust migration | Research candidate; star status pending Observatory reconciliation |
 | [erkamyaman/rust-anything](https://github.com/erkamyaman/rust-anything) | Upstream of owned fork | Fork comparison snapshot `50d3810b622fdc6cb3aee965fe4c9d4b4f29205b` | Incremental cross-language migration | Research candidate; star status pending Observatory reconciliation |
 
-## Repository reconstruction and prompt synthesis
+## Termux-monorepo development note
 
-| Repository | Relationship | Pinned candidate | Research role | Status |
-|---|---|---|---|---|
-| [filiksyos/gitreverse](https://github.com/filiksyos/gitreverse) | External upstream | `main` snapshot `e7f7d2859105aafe16ec4f39c0315c07e6b0eae3` | Turns repository metadata, depth-1 tree and README into a synthetic coding prompt; MIT license verified from upstream LICENSE | Research candidate; star status pending Observatory reconciliation |
-| Internal GitReverse implementation | In-progress repository-native implementation | Exact source path and commit pending recon | Custom reconstruction pipeline; Siglary integration/version to be verified | Build-in-progress; comparison candidate |
+GitReverse (`filiksyos/gitreverse`) is a process reference for development happening inside `termux-monorepo`. The reference will inform a further Rust.rs implementation/version, initially developed in the existing Rust migration lane. Track the work as an implementation evolution of that lane; add it as a DoE treatment only after its source revision, capability contract, integration boundary and fixture compatibility are pinned. This is a development note, not a separate repository comparison campaign or a starlist candidate.
 
-## Adjacent internal systems — distinct contracts
+## Project and tool distinctions
 
-| Repository | Verified contract | Comparison disposition |
+| Repository | Classification | Verified contract / role |
 |---|---|---|
-| [timerloggedout-spec/repo-replay](https://github.com/timerloggedout-spec/repo-replay) | Reconstructs files from session-chat code extractions using content-addressed objects, provenance pointers, recipes and its own history DAG | Adjacent reconstruction system; distinct from GitReverse's public-repository-to-prompt task |
-| [timerloggedout-spec/repo-story](https://github.com/timerloggedout-spec/repo-story) | Narrates PR/repository history from commits, file mutations and authors, with source-commit citations | Adjacent repository-intelligence system; distinct from GitReverse's prompt-synthesis task |
+| [timerloggedout-spec/repo-story](https://github.com/timerloggedout-spec/repo-story) | Project | Project identity; keep its project scope and roadmap distinct from repository reconstruction utilities. |
+| [timerloggedout-spec/repo-replay](https://github.com/timerloggedout-spec/repo-replay) | Tool | Uses session provenance to build a repository from code extracted from chats. |
+
 
 ## Extensible comparison rules
 
 1. Keep repository identity, upstream identity, fork identity, source commit, license and observation date separate.
 2. Treat a curated starlist entry as research intent; the Observatory verifies actual GitHub `starred` provenance.
-3. Keep capability-incommensurate studies in sibling DoE campaigns. Rust runtime outcomes and reconstruction-quality outcomes remain separate.
+3. Keep capability-incommensurate studies in separate campaigns. Promote new Rust implementation versions into the existing migration lane only after their contract and fixtures are pinned.
 4. Pin each source snapshot before execution. Record later upstream changes as a new version/cohort.
 5. Promote reusable patterns only after correctness, provenance, security, maintenance and cost evidence passes the existing repository gates.
 

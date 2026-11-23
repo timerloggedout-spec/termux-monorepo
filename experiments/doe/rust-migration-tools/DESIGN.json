@@ -126,7 +126,7 @@
     "fast_anything_scope": "Selective hot-function port; reversible enable/disable; recorded-call replay and derived edge cases.",
     "rust_anything_scope": "Selective `go` hot-path port only for the primary cohort. Whole-app piecewise migration, side-effect replay and `app lift` form a separate secondary capability study.",
     "exclusions": "Do not rank whole-app rust-anything capabilities against fast-anything hot-path-only behavior. Do not mix languages, agent configurations, runner images or fixture generations within a cohort.",
-    "gitreverse_scope": "Sibling capability campaign only; GitReverse reconstructs build prompts from repository context and is not ranked against Rust hot-path runtime treatments."
+    "gitreverse_scope": "GitReverse is a development-process reference within termux-monorepo. Its approach may inform a further Rust.rs implementation/version in this lane; treat that implementation as a new treatment only after source revision, capability contract, integration boundary and fixture compatibility are pinned. GitReverse is not a separate campaign or runtime comparison arm."
   },
   "automation": {
     "status": "not_implemented",
@@ -140,57 +140,18 @@
     "Validate the design against DOE-TAXONOMY.md and the canonical EXPERIMENT.schema.json.",
     "Implement and test the campaign automation and append-only record emission.",
     "Run the complete randomized blocked cohort; retain one schema-valid record per executed run.",
-    "Publish SUMMARY.json with per-task effects, uncertainty, missingness, cost and correctness-gate results.",
-    "For the GitReverse sibling campaign, pin upstream commit and license evidence; identify the internal implementation path/SHA and Siglary version/integration state; freeze matched repositories and blinded scoring rubric before execution."
+    "Publish SUMMARY.json with per-task effects, uncertainty, missingness, cost and correctness-gate results."
   ],
   "promotion": "Candidate remains not admitted until design, automation, fixtures, and run evidence satisfy the DoE family intake rule. Any promotion into a reusable repo template requires independent verification, license/provenance review, and a new version/cohort record.",
-  "extensions": [
-    {
-      "campaign_id": "gitreverse-reconstruction",
-      "relationship": "sibling_campaign",
-      "reason": "Repository reconstruction is a distinct capability contract from selective Rust hot-path migration; retain independent tasks, outcomes, and records.",
-      "treatments": [
-        "upstream-gitreverse-pinned",
-        "internal-gitreverse-custom-current",
-        "structured-human-reference-baseline"
-      ],
-      "siglary_factor": {
-        "status": "unverified_pending_source_recon",
-        "levels": [
-          "integrated",
-          "not_integrated"
-        ],
-        "rule": "Freeze as a randomized factor only when the internal implementation exposes a stable switch and both variants share the same source revision. Otherwise record Siglary use as a treatment attribute and compare in a separate cohort."
-      },
-      "tasks": [
-        "reconstruct repository purpose and user-facing requirements from README plus depth-1 tree",
-        "reconstruct architecture and component boundaries from frozen source corpus",
-        "reconstruct operational workflows and validation requirements",
-        "reconstruct a build-ready implementation brief from mixed-quality repository evidence"
-      ],
-      "primary_outcomes": [
-        "independent requirement coverage",
-        "factual attribution precision",
-        "unsupported-claim rate",
-        "human-blind rubric score for implementation usefulness"
-      ],
-      "secondary_outcomes": [
-        "prompt completeness",
-        "source coverage and depth",
-        "time to first usable brief",
-        "latency and token/credit cost",
-        "reproducibility across repeated runs",
-        "sensitivity to README quality and repository size"
-      ],
-      "correctness_gate": "Every factual claim in the generated brief maps to an inspected source; unknowns remain explicit; no implementation detail is inferred solely from repository name or README.",
-      "implementation_identity": {
-        "upstream": "filiksyos/gitreverse",
-        "internal": "termux-monorepo custom GitReverse implementation; exact path, commit and maturity to be source-verified before admission",
-        "siglary": "version and integration boundary to be pinned before execution"
-      },
-      "status": "design_extension_pending_source_recon"
-    }
-  ],
   "task_schema": "experiments/doe/rust-migration-tools/TASK.schema.json",
-  "extension_policy": "Add a new task by creating a versioned fixture conforming to TASK.schema.json, adding its immutable fixture/held-out references to a new design version, and preserving prior cohorts and records."
+  "extension_policy": "Add a new task by creating a versioned fixture conforming to TASK.schema.json, adding its immutable fixture/held-out references to a new design version, and preserving prior cohorts and records.",
+  "development_notes": [
+    {
+      "reference": "filiksyos/gitreverse",
+      "role": "development-process reference",
+      "disposition": "inform a further Rust.rs implementation/version developed initially in this migration lane",
+      "status": "note_only",
+      "admission_rule": "A future Rust implementation may join a new DoE design version only after its source commit, capability contract, integration boundary, Siglary profile if applicable, and fixture compatibility are pinned."
+    }
+  ]
 }

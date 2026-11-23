@@ -14,6 +14,7 @@ SCRIPT = ROOT / "scripts" / "tournament" / "compare_implementations.py"
 
 def make_receipt(implementation, role, task, quality, latency, cost):
     return {
+        "schema": "tournament.implementation-receipt.v1",
         "implementation_id": implementation,
         "implementation_version": "1.0.0",
         "competition_role": role,

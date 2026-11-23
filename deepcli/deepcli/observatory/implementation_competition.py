@@ -24,6 +24,7 @@ METRIC_DIRECTIONS = {
     "context_tokens": "min",
     "retry_count": "min",
     "integration_conflicts": "min",
+    "policy_violations": "min",
 }
 
 REQUIRED_RECEIPT_FIELDS = (
@@ -38,6 +39,7 @@ REQUIRED_RECEIPT_FIELDS = (
     "run_id",
     "outcome",
     "hard_gates",
+    "metric_set",
     "metrics",
 )
 
@@ -73,6 +75,7 @@ def _validate_receipts(receipts: list[dict[str, Any]]) -> dict[str, Any]:
     cohorts = set()
     run_ids: set[str] = set()
     roles_by_implementation: dict[tuple[str, str], str] = {}
+    metric_sets: set[tuple[str, ...]] = set()
     for index, receipt in enumerate(receipts):
         if not isinstance(receipt, dict):
             raise ValueError(f"receipt[{index}] must be an object")
@@ -99,6 +102,18 @@ def _validate_receipts(receipts: list[dict[str, Any]]) -> dict[str, Any]:
             raise ValueError(f"duplicate receipt for {implementation[0]} task {task_id}")
         if not isinstance(receipt["metrics"], dict) or not isinstance(receipt["hard_gates"], dict):
             raise ValueError(f"receipt[{index}] metrics and hard_gates must be objects")
+        metric_set = receipt["metric_set"]
+        if (not isinstance(metric_set, list) or not metric_set
+                or any(not isinstance(metric, str) or metric not in METRIC_DIRECTIONS
+                       for metric in metric_set)
+                or len(metric_set) != len(set(metric_set))):
+            raise ValueError(f"receipt[{index}] metric_set must list unique supported metric IDs")
+        if set(receipt["metrics"]) != set(metric_set):
+            raise ValueError(f"receipt[{index}] metrics keys must match metric_set; use null for missing observations")
+        for metric, value in receipt["metrics"].items():
+            if value is not None and not _number(value):
+                raise ValueError(f"receipt[{index}] metric {metric} must be finite numeric or null")
+        metric_sets.add(tuple(sorted(metric_set)))
         grouped[implementation][task_id] = receipt
         fingerprints.add(receipt["environment_fingerprint"])
         contracts.add(receipt["task_contract_hash"])
@@ -106,6 +121,8 @@ def _validate_receipts(receipts: list[dict[str, Any]]) -> dict[str, Any]:
         cohorts.add(receipt["cohort_id"])
     if len(grouped) != 2:
         raise ValueError("exactly two implementation versions are required")
+    if len(metric_sets) != 1:
+        raise ValueError("all receipts must share the same declared metric_set")
     if len(cohorts) != 1 or len(contracts) != 1 or len(fingerprints) != 1 or len(evaluators) != 1:
         raise ValueError("implementations require the same cohort, task contract, environment and evaluator")
     if set(roles_by_implementation.values()) != {"incumbent", "challenger"}:
@@ -123,6 +140,7 @@ def _validate_receipts(receipts: list[dict[str, Any]]) -> dict[str, Any]:
         "task_contract_hash": next(iter(contracts)),
         "environment_fingerprint": next(iter(fingerprints)),
         "evaluator_version": next(iter(evaluators)),
+        "metric_set": list(next(iter(metric_sets))),
     }
 
 
@@ -185,10 +203,7 @@ def compare_implementations(receipts: list[dict[str, Any]]) -> dict[str, Any]:
     challenger = grouped[challenger_key]
     incumbent_failures = _gate_failures(incumbent)
     challenger_failures = _gate_failures(challenger)
-    metric_names = sorted({
-        metric for receipt in receipts for metric in receipt["metrics"]
-        if metric in METRIC_DIRECTIONS
-    })
+    metric_names = validated["metric_set"]
     metrics = {
         metric: _metric_summary(incumbent, challenger, metric, METRIC_DIRECTIONS[metric])
         for metric in metric_names

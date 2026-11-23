@@ -42,3 +42,14 @@ The [provider manager manifest](../../ops/quota/provider-managers.json) suppleme
 The [collaborator capability map](PROVIDER-COLLABORATOR-CAPABILITY-MAP.md) separately records declared roles/monikers, implemented workflow and connector scopes, context handoffs, actual sampled GitHub participation and missing model-level attribution. The [upgrade status](PROVIDER-QUOTA-UPGRADE-STATUS.md) tracks what is implemented, deployed and still open, with publication receipts. Existing quota/router integration PR #1441 and consolidation PR #1278 remain separate review lanes; this overlay does not activate or merge them.
 
 Public mode requires a new or empty output directory so stale private artifacts cannot accidentally ride along. It does not emit the legacy numeric `QUOTA count24h=` log line: any downstream scheduling consumer that reads public workflow logs must migrate to a separately authorized private execution path, not request private values in a public summary. Default private CLI behavior and existing routing/admission logic are unchanged. Historical artifacts are not rewritten or deleted by this upgrade.
+
+
+## 2026-11-23 account evidence addendum
+
+- **Cloudflare inventory:** read-only account inspection confirmed two deployed Workers, three D1 databases, four application tables plus three `_cf_KV` system tables, zero provisioned Queues, and R2 activation pending.
+- **Cloudflare usage:** GraphQL Analytics confirms Worker and D1 activity with zero observed Worker errors. Exact account usage counts remain in private oversight. Worker observability configuration is unset on both scripts, so the zero-event observability response represents an instrumentation gap.
+- **D1 metric semantics:** GraphQL `readQueries` and `writeQueries` are query counts; the D1 daily quotas are row counts. Preserve those metrics as separate units. Direct `sqlite_master` reads verified application tables.
+- **Billing scope:** financial usage reads require Cloudflare Billing Read. The connected account currently supplies Workers/D1 inventory and Analytics reads.
+- **Codespaces:** public entitlements remain in the registry; the allocation pool stays at 0% with 100% reserve under the 2026-10-27 owner HOLD.
+- **Render:** the image-backed README service is repo-wired through GHCR and the optional Render quota reader. Provider health remains pending workspace confirmation.
+- **Candidate boundary:** the six extended provider entitlements live in the mesh RFP evidence matrix until account approval and service adoption establish an active quota-registry record.

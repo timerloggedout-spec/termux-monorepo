@@ -1,7 +1,7 @@
 {
   "schema_version": "classifier.graph-registry.v1",
   "registry_id": "termux-monorepo-classifier-graph-tournament",
-  "registry_version": "0.8.0",
+  "registry_version": "0.9.0",
   "catalog": {
     "path": "config/system_one_catalog.json",
     "schema": "system-one-catalog/1"
@@ -2001,10 +2001,11 @@
     },
     "comparison_engine": {
       "implementation_id": "matched-cohort-comparator",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "source_ref": "deepcli/deepcli/observatory/implementation_competition.py",
       "status": "executable_component",
-      "cli_source_ref": "scripts/tournament/compare_implementations.py"
+      "cli_source_ref": "scripts/tournament/compare_implementations.py",
+      "receipt_schema_ref": "docs/ops/TOURNAMENT-IMPLEMENTATION-RECEIPT.schema.json"
     }
   }
 }

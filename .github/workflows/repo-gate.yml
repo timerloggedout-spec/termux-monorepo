@@ -46,5 +46,11 @@ jobs:
           git fetch --no-tags origin "+refs/heads/${BASE_REF}:refs/remotes/origin/${BASE_REF}"
           echo "ref=origin/${BASE_REF}" >> "$GITHUB_OUTPUT"
 
+      - name: Test communication lint
+        run: python3 -m unittest tests.test_communication_lint tests.test_contact_projections
+
       - name: Run gate
+        env:
+          SIGLARY_PR_TITLE: ${{ github.event.pull_request.title || '' }}
+          SIGLARY_PR_BODY: ${{ github.event.pull_request.body || '' }}
         run: python3 scripts/ci/repo_gate.py --base "${{ steps.base.outputs.ref }}"

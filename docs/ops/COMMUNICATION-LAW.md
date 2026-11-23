@@ -29,9 +29,9 @@ Lead with affirmative, executable statements. Prefer direct verbs and explicit o
 
 Use compact language while preserving unambiguous meaning.
 
-`∧` AND · `∨` OR · `¬` NOT · `⇒` implies · `⇔` iff · `∈` member · `∉` excluded · `∀` all · `∃` exists · `∅` empty · `Δ` change · `≈` approximate · `≡` equivalent · `≠` distinct · `≤/≥` bounds · `⊕` combine · `⊗` constrained combine · `⤴` route · `↳` child · `∴` therefore · `∵` because · `⊢` proven · `⊬` unproven · `⊥` invalid · `⏸` hold · `▶` execute · `✓` pass · `✗` fail.
+`∧` AND · `∨` OR · `¬` logical negation · `⇒` implies · `⇔` iff · `∈` member · `∉` excluded · `∀` all · `∃` exists · `∅` empty · `≠` unequal · `≡` equivalent · `≈` approximate · `≤` lower bound · `≥` upper bound · `∝` proportional · `⊢` proven · `⊬` unproven · `⊩` assertion plus trace · `≟` disputed · `∎` closed · `⤴` route · `↳` child · `⤵` land · `↻` cadence-cycle · `⊕` combine · `⊗` constrained combine · `⋈` join · `⏸` hold · `▶` execute · `✓` pass · `✗` fail · `⧖` pending · `⚡` immediate · `Δ` change · `§` rule reference.
 
-Use symbols where they improve precision; pair unfamiliar notation with a short legend at first use in durable documents.
+Use symbols where they improve precision; pair unfamiliar notation with a short legend at first use in durable documents. The stable definitions and IDs live in [`SIGLARY-OPERATOR-REGISTRY.md`](SIGLARY-OPERATOR-REGISTRY.md).
 
 ## 4. Surface-specific rules
 
@@ -91,3 +91,14 @@ Configure the local commit prompt once: `git config commit.template .github/comm
 - [ ] PR/review text includes evidence and acceptance criteria.
 - [ ] Notation is precise and locally legible.
 - [ ] Negation preserves an exact technical requirement.
+
+
+## 7. Automated enforcement
+
+- `scripts/ci/communication_lint.py` checks added authored-prose lines, source comments, commit messages, PR titles, and PR bodies.
+- Structural spans: fenced code, inline code, blockquotes, and generated Linguist projections. Imported/vendor paths receive advisory treatment.
+- HTML comments remain authored prose and receive lint.
+- Machine output follows `siglary-lint/v1`: path, line, matched phrase, and suggested DO rewrite.
+- `scripts/ci/repo_gate.py` runs communication lint as a HARD changed-file check; `.github/workflows/repo-gate.yml` runs focused lint and projection regression tests.
+- Exact technical identifiers use a narrow allowlist: `NO-GO`, `no-cost`, `no-op`, `not_found`, and related state literals.
+- Keep exceptions narrow, source-backed, and covered by regression tests.

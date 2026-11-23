@@ -10,7 +10,7 @@
         "https://co.agentrouter.org/portal/guide",
         "https://co.agentrouter.org/portal/models"
       ],
-      "scope": "key/resource-pool scoped model visibility; no documented account remaining-credit or reset response contract verified",
+      "scope": "Owner-reported community-pool capacity; provider guide describes unified API-key metering across supported agents, but no account remaining-credit/balance or reset response contract is verified. Catalog visibility is not a per-account quota or admission signal.",
       "reset": "unknown",
       "signals": []
     },
@@ -26,7 +26,7 @@
       "provider_family": "baseten",
       "status": "public_documentation_only",
       "source": "https://docs.baseten.co",
-      "scope": "public API/model documentation; account quota counter and scope not verified",
+      "scope": "Per-model free request window (about one request/minute/account) above shared upstream provider pools; the API key endpoint /api/usage/token/ exposes that key's usage counters; account-wide balance and usage logs require a separate access token; provider-level consent/objection may govern routing. Upstream caps and pool availability remain independent.",
       "reset": "unknown",
       "signals": []
     },
@@ -378,7 +378,7 @@
     {
       "provider_family": "unorouter",
       "status": "public_documentation_only",
-      "source": "https://unorouter.com/en",
+      "source": "https://unorouter.com/en/docs/platform/platform-api",
       "scope": "public API/model documentation; account quota counter and scope not verified",
       "reset": "unknown",
       "signals": []

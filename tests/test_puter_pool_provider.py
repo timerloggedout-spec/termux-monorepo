@@ -46,6 +46,7 @@ def _policy(tmp_path, entries):
 def test_puter_pool_complete_uses_local_x_api_key_and_exact_admission(monkeypatch, tmp_path):
     monkeypatch.setenv("PUTER_POOL_API_KEY", "synthetic-local-key")
     monkeypatch.setenv("PUTER_POOL_BASE_URL", "http://127.0.0.1:3333")
+    monkeypatch.setenv("PUTER_POOL_EVENT_OUT", str(tmp_path / "direct-events.jsonl"))
     monkeypatch.setenv("LLM_API_HUB_PROVIDER_POLICY", str(_policy(tmp_path, [_entry()])))
     calls = []
     def fake(url, payload, key, timeout, **kwargs):

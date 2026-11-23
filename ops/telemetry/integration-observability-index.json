@@ -111,6 +111,15 @@
       "role": "Harvest exact Puter Pool model IDs under existing g4f/Puter provider identity; later request outcomes join QUE task and DoE run IDs",
       "observed_state": "GET /v1/models adapter implemented with loopback-only origin validation; catalog harvest requires operator-hosted Pool; account/quota values remain unknown until authoritative telemetry is ingested",
       "authority": "Puter Pool fork API contract + provider-model-catalog/v5; no independent provider or quota ledger"
+    },
+    {
+      "id": "puter-pool",
+      "domain": "provider_datastore",
+      "status": "local_temporal_observer_implemented",
+      "record_of_record": "agent_telemetry_stream.json (EPS v1) + ops/quota/registry.json#g4f.puter",
+      "role": "Puter Pool model discovery, aggregate scheduler telemetry, task/DoE correlation and local runtime observation",
+      "observed_state": "Temporal workflow appends sanitized model/request/queue counters; local CreditTracker heuristic is excluded from quota readings; provider quota remains unknown",
+      "authority": "scripts/puter_pool_catalog.py + scripts/puter_pool_observation.py + scripts/temporal/puter_pool_observation/"
     }
   ],
   "shared_observation_contract": {

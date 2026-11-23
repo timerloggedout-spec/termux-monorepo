@@ -136,12 +136,13 @@ The executable comparison component is
 `scripts/tournament/compare_implementations.py`, with receipt schema `docs/ops/TOURNAMENT-IMPLEMENTATION-RECEIPT.schema.json`. It requires exact matched
 task IDs, cohort, task contract, environment fingerprint and evaluator
 version. It computes paired deltas, sample counts and 95% intervals using
-Student-t critical values for small samples. Each receipt declares the same
-`metric_set`; every declared key appears in `metrics`, with `null` for
-unobserved values. Fully unobserved and partially observed dimensions block
-dominance. Hard-gate failures block recommendations. Dominance requires
-complete paired coverage, interval-supported non-regression across every
-declared metric and positive improvement on at least one. Recommendations route
+Student-t critical values for small samples. Zero-observed-variance
+intervals remain unestimated. Each receipt declares the same `metric_set`;
+every declared key appears in `metrics`, with `null` for unobserved values.
+Fully unobserved and partially observed dimensions block dominance.
+Hard-gate failures block recommendations. Dominance requires complete paired
+coverage, an estimated interval for every declared metric, interval-supported
+non-regression and positive improvement on at least one. Recommendations route
 to human review; held-out validation, owner approval and rollback lineage
 remain separate promotion gates.
 

@@ -15,7 +15,7 @@ Correct the provider observation control plane using existing credentials and tr
 2. Preserve AgentRouter as catalog-only / community-pool evidence until an authoritative account balance/reset contract is verified.
 3. Update UnoRouter manager and quota registry metadata from its current official docs: per-model request window, shared upstream caps, /api/usage/token/ key usage, separate access-token account routes, provider-level consent/objection.
 4. Correct the proposal-lifecycle regression so it validates actual trigger configuration and the vote job's secret boundary, rather than rejecting harmless text in a concurrency expression.
-5. Extend .github/workflows/operator-wake.yml with one allowlisted wake-provider-availability command. It dispatches the trusted master workflow through the existing Actions PAT chain and reports a run receipt without reading credential values.
+5. Extend .github/workflows/operator-wake.yml with one owner-only, allowlisted wake-provider-availability command. It dispatches the trusted master workflow through the existing Actions PAT chain and reports a run receipt without reading credential values.
 
 ## Non-goals
 

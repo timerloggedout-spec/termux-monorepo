@@ -381,7 +381,13 @@
       "source": "https://unorouter.com/en/docs/platform/platform-api",
       "scope": "Per-model free request window (about one request/minute/account) above shared upstream provider pools; the API key endpoint /api/usage/token/ exposes that key's granted, used, and available balance plus quota flags; account-wide balance and usage logs require a separate access token. Provider-level consent and objection cover providers serving free and paid models; the October 21, 2026 notice says blocking is not active yet and will be phased in. Upstream caps and pool availability remain independent.",
       "reset": "Gateway per-minute window with Retry-After on 429; upstream and key/account balance reset semantics vary or remain unknown.",
-      "signals": []
+      "signals": [],
+      "official_evidence": [
+        "https://unorouter.com/en/blog/free-ai-api",
+        "https://unorouter.com/en/docs/platform/platform-api",
+        "https://unorouter.com/en/models",
+        "https://unorouter.com/en/blog/consent-per-provider"
+      ]
     },
     {
       "provider_family": "xfyun",

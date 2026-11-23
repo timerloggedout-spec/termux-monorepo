@@ -26,6 +26,14 @@ on:
   pull_request:
     paths:
       - 'scripts/provider_model_catalog.py'
+      - 'llm_api_hub/server/app.py'
+      - 'llm_api_hub/server/research_providers.py'
+      - 'llm_api_hub/server/puter_pool_protocol.py'
+      - 'data/g4f-working/providers.json'
+      - 'ops/quota/registry.json'
+      - 'docs/ops/PUTER-POOL-PROVIDER-INTEGRATION.md'
+      - 'docs/ops/TELEMETRY-INGEST.md'
+      - 'docs/ops/TELEMETRY-VIZ-RECON.md'
       - 'tests/test_puter_pool_provider_catalog.py'
       - 'scripts/puter_pool_catalog.py'
       - 'scripts/dashboards/telemetry_feed.py'

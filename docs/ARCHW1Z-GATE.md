@@ -34,6 +34,7 @@ Docs: this file + original Critical-Eval recommendation
 - **index-based** — reads `git ls-files`, never the working tree
 - **device-friendly** — same command works on Termux and in CI
 - **HARD checks** scoped to *changed* files
+- **DO-first lint** checks changed authored prose, commit messages, and PR metadata
 - **RATCHET** on whole-repo debt counters (debt may only shrink)
 
 ### What it enforces
@@ -46,6 +47,7 @@ Docs: this file + original Critical-Eval recommendation
 | No browser credential stores | changed paths | HARD |
 | No committed backups | changed paths | HARD |
 | High-confidence secrets | changed content | HARD |
+| DO-first communication prose | changed prose + commit/PR metadata | HARD |
 | Debt counters | whole index | RATCHET |
 
 Baseline: `scripts/ci/baseline.json`

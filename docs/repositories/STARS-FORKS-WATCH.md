@@ -145,3 +145,17 @@ file managers/web apps matching `android|in your browser`, diagnosed and
 re-run under strong-signal rules (49); (2) a service restart killed the
 first refined run pre-write, re-dispatched to completion with dumps saved
 (`dumps.json` stays local — poller-output rule).
+
+
+## 7. New research list — Rust migration + repository reconstruction
+
+The curated, categorized list is maintained in [`STARLISTS.md`](./STARLISTS.md). This pass adds the two owned migration-tool forks and the upstream GitReverse repository to explicit research categories. The internal GitReverse implementation is tracked separately as an in-progress local candidate until its exact source path and commit are verified.
+
+| Candidate | Provenance / relationship | Research classification | Evidence state |
+|---|---|---|---|
+| `timerloggedout-spec/fast-anything_fork` | owned fork of `EL4CTEO/fast-anything` | selective Rust hot-path migration | Cargo `0.8.0`; source SHA pinned in DoE design |
+| `timerloggedout-spec/rust-anything_fork` | owned fork of `erkamyaman/rust-anything` | incremental cross-language migration | Cargo `3.3.0`; source SHA pinned in DoE design |
+| `filiksyos/gitreverse` | external upstream | repository-to-prompt reconstruction | upstream commit `e7f7d2859105aafe16ec4f39c0315c07e6b0eae3`; MIT LICENSE fetched from upstream |
+| Internal GitReverse implementation | repository-local, in progress | custom reconstruction pipeline; Siglary relation pending source verification | path/SHA/version pending; design-only |
+
+**Starring status:** the GitHub connector available in this session exposes repository search and content operations, but no star/unstar mutation. The curated starlist is updated here; actual account-star provenance is left to the Observatory's authenticated collector and is not asserted by this document.

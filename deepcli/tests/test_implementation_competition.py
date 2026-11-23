@@ -48,6 +48,7 @@ class ImplementationCompetitionTests(unittest.TestCase):
 
     def test_matched_comparison_reports_paired_effects_and_uncertainty(self):
         report = compare_implementations(self.receipts)
+        self.assertEqual(report["receipt_schema"], "tournament.implementation-receipt.v1")
         self.assertEqual(report["matched_task_count"], 3)
         self.assertEqual(report["metrics"]["task_quality"]["sample_count"], 3)
         self.assertAlmostEqual(report["metrics"]["task_quality"]["improvement_mean"], .1)
@@ -95,6 +96,11 @@ class ImplementationCompetitionTests(unittest.TestCase):
     def test_metric_keys_must_match_declared_metric_set(self):
         del self.receipts[0]["metrics"]["compute_cost"]
         with self.assertRaisesRegex(ValueError, "metrics keys must match metric_set"):
+            compare_implementations(self.receipts)
+
+    def test_unknown_receipt_schema_is_rejected(self):
+        self.receipts[0]["schema"] = "tournament.implementation-receipt.v0"
+        with self.assertRaisesRegex(ValueError, "receipt schema"):
             compare_implementations(self.receipts)
 
     def test_hard_gate_failure_blocks_recommendation(self):

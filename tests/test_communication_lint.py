@@ -36,6 +36,12 @@ class CommunicationLintTests(unittest.TestCase):
         findings = scan_text(text, "scripts/example.py")
         self.assertEqual(len(findings), 1)
 
+    def test_javascript_and_yaml_comments_are_scanned(self):
+        js = scan_text("// Do not bypass review.\\n", "src/example.js")
+        yaml = scan_text("# Never store credentials.\\n", ".github/example.yml")
+        self.assertEqual(len(js), 1)
+        self.assertEqual(len(yaml), 1)
+
     def test_pr_metadata_is_scanned_as_prose(self):
         findings = scan_text("No fallback without quota proof.\n", "<PR title>")
         self.assertEqual(len(findings), 1)

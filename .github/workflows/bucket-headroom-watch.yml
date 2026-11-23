@@ -11,7 +11,8 @@ name: bucket-headroom-watch
 # fleet cadence norm (que-feed-collect shape).
 on:
   schedule:
-    - cron: "*/10 * * * *"
+    # Offset polls away from the top of the hour to reduce schedule-event contention.
+    - cron: "7,17,27,37,47,57 * * * *"
   workflow_dispatch:
     inputs:
       dry_run:

@@ -76,7 +76,7 @@ Use explicit lifecycle states and preserve state transitions append-only:
 
 Proposal status, admission status, execution status, outcome validity, and promotion status remain separate fields. A proposal or Delphi award alone does not establish experiment admission or production readiness.
 
-## 3. Competitor identity and evidence
+## 3. Machine-readable contracts\n\nThe governance records use dedicated JSON Schema 2020-12 contracts:\n\n- `docs/ops/rfp/COMPETITOR-ADMISSION.schema.json` — candidate source, immutable version/configuration identity, capability contract, lifecycle, admission decision, and production-authority boundary.\n- `docs/ops/rfp/LANE-COMPOSITION.schema.json` — composition pattern, participating lanes, topology, compatibility gates, experimental design, and production-routing boundary.\n- `docs/ops/rfp/examples/` — illustrative records for RFP-V13 admission and a parallel baseline/candidate comparison.\n- `tests/test_rfp_admission_schemas.py` — schema and authority-boundary proof obligations.\n\nThese records govern candidate and composition admission. Executed work continues to emit the family-adopted `docs/ops/corpus/EXPERIMENT.schema.json` record, one per executed run.\n\n## 4. Competitor identity and evidence
 
 Candidate identity must distinguish a named product/method from the configured instance that actually ran.
 
@@ -88,7 +88,7 @@ Also stamp the candidate/version ID, lane ID, source revision, pipeline version,
 
 Each run emits exactly one record conforming to `docs/ops/corpus/EXPERIMENT.schema.json`. Designed runs carry the pre-registered design provenance. Undesigned production activity remains observational. Existing historical records remain immutable.
 
-## 4. Lane mixing and composition experiments
+## 5. Lane mixing and composition experiments
 
 Lane mixing is a first-class DoE operation. A lane may contribute a capability, phase, evaluator, provider, execution arm, or hand-off. The design declares the composition and tests the combined treatment.
 
@@ -160,7 +160,7 @@ The phases remain the governance sequence. Multiple asynchronous workstreams may
 
 Other pipeline versions may use different internal topologies, but each must map its work and evidence to the shared RFP capability contract and comparable outcome dimensions. Preserve the mapping so comparisons remain interpretable.
 
-## 6. External due dates as direct constraints
+## 7. External due dates as direct constraints
 
 An external due date enters the plan only when supported by authoritative evidence. Store the source, exact instant, timezone, observed time, and date type (registration close, eligibility cutoff, submission close, event start, award date, or external recheck).
 
@@ -203,7 +203,7 @@ Reuse the existing CEEL capability graph, proposal registry, Delphi/EGM lifecycl
 
 Discovery is event-driven with existing bounded recovery/reconciliation paths. Candidate revisions and relationships remain traceable. Reconsider deferred candidates when evidence, internal demand, compatibility, or external maturity changes.
 
-## 9. Implementation sequence
+## 10. Implementation sequence
 
 | Step | Deliverable | Acceptance evidence |
 |---|---|---|
@@ -219,7 +219,7 @@ Discovery is event-driven with existing bounded recovery/reconciliation paths. C
 
 Build validators and record emission alongside the schemas. Reuse existing automation and owning registries. Each admitted campaign names its runner/workflow in `DESIGN.json`; manual chat dispatch is not the experiment execution mechanism.
 
-## 10. Acceptance criteria
+## 11. Acceptance criteria
 
 - The RFP pipeline remains the internal mandate across all candidate versions.
 - New competitor versions can be proposed and admitted through a repeatable, extensible lifecycle.

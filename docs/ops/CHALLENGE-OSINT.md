@@ -36,8 +36,15 @@ Transcend edition are closed. The next GitLab Community Hackathon is published
 for **January 21–28, 2027 UTC** (candidate C17); owner onboarding, rule acceptance,
 issue assignment, and contribution state: NOT_ESTABLISHED; Devpost
 registration: NOT_REQUIRED. This URL inventory
-is a source register; integration with the current weekly event watcher is
-pending.
+is a source register; C17 is now included in the candidate-page observer.
+
+The PICO Space Program (candidate C18) is open for submissions
+**November 18, 2026–February 1, 2027**. The Devpost event page, rules, and
+Luma kickoff listing are watched as separate sources. The November 24
+kickoff is listed by Luma as 10:00 AM–12:15 PM PT; the supplied Discord
+announcement ends at 12:00 PM PT, so the 15-minute discrepancy remains
+explicit pending organizer clarification. Registration and participant
+eligibility remain user-specific and are not written to this public file.
 
 ## Surfaces
 
@@ -57,18 +64,22 @@ pending.
 ## Watch mechanism (recurring, GitHub-native per VM rule)
 
 `scripts/challenge/osint_watch.py` + workflow
-`.github/workflows/challenge-osint-watch.yml` (weekly Wed 08:17 UTC +
-push on coordinator + dispatch; no VM execution):
+`.github/workflows/challenge-osint-watch.yml` (daily 08:17 UTC + push on
+coordinator/watcher/doc changes + dispatch; no VM execution):
 
-1. Recomputes the coverage matrix → `ops/challenge/osint/coverage.json`.
-2. Fetches each event's official public page, sha256-hashes its text,
-   and **appends** a snapshot to `ops/challenge/osint/snapshots.json`
-   only when the hash is new (a changed hash = prizes/rules/schedule
-   changed on the official page; the snapshot carries a prize excerpt).
+1. Recomputes separate admitted-event and pre-admission-candidate coverage
+   matrices → `ops/challenge/osint/coverage.json`.
+2. Fetches each record's `watch_sources[]` (or `official_url` fallback),
+   sha256-hashes each page, and **appends** a snapshot to
+   `ops/challenge/osint/snapshots.json` only when the same record kind,
+   event ID, URL, and hash have not been observed (a changed hash = a
+   source-page change; the snapshot carries the source label and excerpt).
    Failed fetch appends nothing and warns.
 3. Mirrors snapshots append-only into Neon (`osint_page_snapshots`,
    via `participant_event.py`) and proposes repo changes as a refresh
-   PR (countdowns-feed pattern) — never commits directly.
+   PR (countdowns-feed pattern) — never commits directly. Candidate
+   snapshots remain pre-admission observations; they do not create event
+   rows or participant records.
 
 ## Coverage matrix (baseline 2026-10-28, collector firsthand)
 

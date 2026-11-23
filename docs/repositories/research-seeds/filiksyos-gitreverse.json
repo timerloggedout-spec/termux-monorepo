@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "seed_id": "github:research-seed:filiksyos/gitreverse",
+  "canonical_upstream": "filiksyos/gitreverse",
+  "provenance": [
+    "user-requested-research-candidate"
+  ],
+  "classification": {
+    "domains": [
+      "codebase-reconstruction",
+      "prompt-engineering",
+      "developer-tools",
+      "repository-analysis"
+    ],
+    "research_value": "high",
+    "integration_mode": "upstream-comparison",
+    "adoption": "research-only"
+  },
+  "observed_facts": {
+    "default_branch": "main",
+    "source_commit": "e7f7d2859105aafe16ec4f39c0315c07e6b0eae3",
+    "license": "MIT",
+    "license_evidence": "upstream LICENSE file fetched; README links to LICENSE",
+    "stack": [
+      "Next.js 16",
+      "React 19",
+      "TypeScript",
+      "Tailwind CSS 4"
+    ],
+    "context_inputs": [
+      "repository metadata",
+      "root file tree at depth 1",
+      "README"
+    ],
+    "output": "one synthetic conversational user prompt"
+  },
+  "capability_signals": [
+    "repository-to-prompt-reconstruction",
+    "shareable-repository-route",
+    "multi-provider-llm-routing",
+    "optional-prompt-cache-and-library",
+    "optional-user-history"
+  ],
+  "integration_constraints": [
+    "do-not-vendor-source",
+    "preserve-upstream-license-notices",
+    "pin-upstream-commit-per-cohort",
+    "score-output-against-source-attributed-rubric",
+    "separate-from-rust-hot-path-performance-comparison"
+  ]
+}

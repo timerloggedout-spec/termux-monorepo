@@ -155,5 +155,7 @@
     "Implement tested automation and append-only record emission.",
     "Run the complete randomized cohort and publish SUMMARY.json with uncertainty, missingness, cost and correctness gates."
   ],
-  "promotion": "Candidate remains not admitted until source identity, design, fixtures, automation and complete run evidence satisfy DoE family intake. Any promoted implementation pattern requires independent verification, provenance/license review and a new cohort/version record."
+  "promotion": "Candidate remains not admitted until source identity, design, fixtures, automation and complete run evidence satisfy DoE family intake. Any promoted implementation pattern requires independent verification, provenance/license review and a new cohort/version record.",
+  "task_schema": "experiments/doe/gitreverse-reconstruction/TASK.schema.json",
+  "extension_policy": "Add a new task by creating a versioned fixture conforming to TASK.schema.json, adding its immutable fixture/held-out references to a new design version, and preserving prior cohorts and records."
 }

@@ -22,5 +22,7 @@ def test_operator_wake_exposes_only_allowlisted_provider_availability_dispatch()
     assert "--ref master" in run
     assert "workflow_dispatch" in run
     assert "wake-provider-availability" in run
+    assert "want_provider_availability=true" in run
+    assert "provider availability run" in run
     assert "echo $GH_TOKEN" not in run and "printf '%s' \"$GH_TOKEN\"" not in run
     assert "provider-availability.yml" in text

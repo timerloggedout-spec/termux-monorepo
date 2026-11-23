@@ -80,6 +80,87 @@ def http_json(method: str, url: str, token: str, payload=None, timeout=90):
         return None, {"transport_error": f"{type(e).__name__}: {e}"}
 
 
+def control_plane_observation(prompt_text: str | None = None) -> dict:
+    """Return a bounded, secret-free ORBIT/SHIELD observation.
+
+    This is deliberately advisory: it never changes the selected provider,
+    model, prompt, request count, retries, or invocation outcome.
+    """
+    try:
+        from scripts import orbit_arbitration, orbit_provider_population, shield_context
+
+        population = orbit_provider_population.load_population()
+        candidates = orbit_provider_population.as_orbit_candidates(population)
+        decision = orbit_arbitration.arbitrate(candidates)
+
+        current_sha = os.environ.get("GITHUB_SHA")
+        task = {
+            "task_id": "provider-invoke",
+            "objective": "Execute one bounded provider inference request.",
+            "source_refs": ["scripts/ops/provider_invoke.py"],
+            "allowed_effects": ["provider_inference"],
+        }
+        if isinstance(current_sha, str) and len(current_sha) == 40:
+            task["current_sha"] = current_sha
+
+        signals = []
+        if prompt_text is not None:
+            signals.append({
+                "source_ref": "provider-invoke://prompt",
+                "trusted": False,
+                "relevance": None,
+                "urgency": "normal",
+                "text": prompt_text,
+            })
+        capsule = shield_context.build_capsule(task, signals)
+
+        wiring = population.get("inference_wiring", {})
+        census = population.get("endpoint_census", {})
+        g4f = population.get("g4f", {})
+        return {
+            "mode": "observe_only",
+            "status": "observed",
+            "population": {
+                "provider_count": population.get("provider_count"),
+                "wired_invoke": wiring.get("wired"),
+                "model_lane_total": wiring.get("total"),
+                "endpoint_verified_floor": census.get("verified_floor"),
+                "g4f_universe_providers": g4f.get("universe_providers"),
+                "g4f_universe_pairs": g4f.get("universe_pairs"),
+                "g4f_sandbox_verified_pairs": g4f.get("sandbox_verified_pairs"),
+                "g4f_actions_verified_pairs": g4f.get("actions_verified_pairs"),
+            },
+            "orbit": {
+                "decision": decision.get("decision"),
+                "reason": decision.get("reason"),
+                "candidate_count": decision.get("candidate_count"),
+                "eligible_count": decision.get("eligible_count"),
+                "deferred_count": decision.get("deferred_count"),
+                "vetoed_count": decision.get("vetoed_count"),
+                "policy_version": decision.get("policy_version"),
+            },
+            "shield": {
+                "schema": capsule.get("schema"),
+                "counts": capsule.get("counts"),
+                "budget": capsule.get("budget"),
+                "signals": [
+                    {
+                        key: signal.get(key)
+                        for key in ("source_ref", "content_sha256", "content_chars", "disposition", "reason")
+                    }
+                    for signal in capsule.get("signals", [])
+                ],
+            },
+        }
+    except Exception as exc:
+        # Observability must not break the pre-existing invocation path.
+        return {
+            "mode": "observe_only",
+            "status": "unavailable",
+            "error_class": type(exc).__name__,
+        }
+
+
 def pick_model(catalog: dict) -> str | None:
     ids = [m.get("id") for m in catalog.get("data", []) if isinstance(m, dict) and m.get("id")]
     chat = [i for i in ids if not any(h in i.lower() for h in NON_CHAT_HINTS)]
@@ -98,7 +179,8 @@ def main() -> int:
 
     provider = args.provider
     verdict = {"provider": provider, "ok": False, "diagnosis": "", "model": None,
-               "http": None, "latency_ms": None, "catalog_http": None}
+               "http": None, "latency_ms": None, "catalog_http": None,
+               "control_plane": control_plane_observation()}
     url, secret_names, catalog_url, note = resolve_provider(provider)
     if url is None:
         verdict["diagnosis"] = note or "unresolved provider"
@@ -113,7 +195,8 @@ def main() -> int:
         if args.catalog_only:
             print("CATALOG_VERDICT " + json.dumps(
                 {"provider": provider, "credential": None, "catalog_http": None, "models": None,
-                 "sample": [], "diagnosis": f"no-credential: none of {list(secret_names)} present in job env"}))
+                 "sample": [], "diagnosis": f"no-credential: none of {list(secret_names)} present in job env",
+                 "control_plane": verdict["control_plane"]}))
             return 0
         verdict["diagnosis"] = f"no-credential: none of {list(secret_names)} present in job env"
         print("INVOKE_VERDICT " + json.dumps(verdict))
@@ -123,7 +206,7 @@ def main() -> int:
     candidates: list = []
     if args.catalog_only:
         cverdict = {"provider": provider, "credential": token_name, "catalog_http": None,
-                    "models": None, "sample": []}
+                    "models": None, "sample": [], "control_plane": verdict["control_plane"]}
         if catalog_url is None and provider in provider_catalog_protocols.PROVIDERS:
             pass  # catalog stays None: counted as not countable from CI
         if catalog_url:
@@ -186,6 +269,7 @@ def main() -> int:
     verdict["model"] = model
 
     prompt = open(args.prompt_file).read()
+    verdict["control_plane"] = control_plane_observation(prompt)
     attempts = [m for m in dict.fromkeys([model] + candidates[:2]) if m] or ["default"]
     status, body = None, {}
     for attempt_model in attempts:

@@ -32,6 +32,8 @@ from typing import Any
 
 # Script execution sets sys.path[0] to scripts/que; add the repository root for the shared intake module.
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import sie_pipeline  # noqa: E402
 from scripts.que.branch_reconciliation_intake import branch_reconciliation_groups
 
 REPO = os.environ.get("GITHUB_REPOSITORY", "timerloggedout-spec/termux-monorepo")
@@ -226,7 +228,9 @@ def failing_groups(gh: GH, window_h: int) -> list[dict]:
             "path": path, "name": latest["name"], "room": room, "step": step, "message": message,
             "sig": sig, "key": item_key(path, sig), "failures": len(rs), "total": max(total, len(rs)),
             "window_h": window_h, "priority": priority(len(rs), max(total, len(rs)), path),
-            "receipts": [{"url": r["html_url"], "sha": r["head_sha"]} for r in sorted(rs, key=lambda r: r["created_at"], reverse=True)],
+            "receipts": [{"url": r["html_url"], "sha": r["head_sha"], "id": r["id"],
+                          "run_attempt": r.get("run_attempt", 1)}
+                         for r in sorted(rs, key=lambda r: r["created_at"], reverse=True)],
         })
     # Bootstrap order: branch gates first, then priority.
     return sorted(out, key=lambda g: (Path(g["path"]).name not in BRANCH_GATES, -g["priority"]))
@@ -254,6 +258,19 @@ def stale_feeds(gh: GH) -> list[dict]:
                 "receipts": [{"url": c[0]["html_url"], "sha": c[0]["sha"]}],
             })
     return out
+
+
+def queue_stall_groups() -> list[dict]:
+    """Read the canonical QUE dispatch watchdog feed as SIE observations."""
+    path = HERE / "ops" / "challenge" / "dispatch-state-feed.json"
+    if not path.exists():
+        return []
+    from sie_event_adapter import queue_stall_groups
+    try:
+        return queue_stall_groups(json.loads(path.read_text(encoding="utf-8")))
+    except (OSError, ValueError, TypeError) as exc:
+        print(f"::warning::QUE stall feed unreadable; retain prior intake: {exc}")
+        return []
 
 
 def open_items(gh: GH) -> dict[str, dict]:
@@ -351,7 +368,7 @@ def main(argv: list[str] | None = None) -> int:
     gh = GH(os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN") or "")
     summary = {"observe": [], "promote": [], "learn": []}
     try:
-        groups = failing_groups(gh, a.window_hours) + stale_feeds(gh)
+        groups = failing_groups(gh, a.window_hours) + stale_feeds(gh) + queue_stall_groups()
         if a.branch_inventory:
             groups += branch_reconciliation_groups(a.branch_inventory)
         summary["observe"] = file_items(gh, groups, a.dry_run, a.max_new)

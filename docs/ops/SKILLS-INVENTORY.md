@@ -91,6 +91,7 @@ Agent-Identity: Grok (Administrator)
 ## Adaptive-wait + evidence-led cluster
 
 - adaptive-wait — evidence-driven asynchronous cadence, stall detection, disjoint work, terminal states.
+- adaptive-dynamic-awareness — registry-owned Dynamic cadence decisions, cross-surface propagation/read-back, per-lane receipts, and watermark parity; policy: `docs/ops/ADAPTIVE-DYNAMIC-AWARENESS.md`.
 - evidence-led-monorepo-ops — current-SHA reconstruction, evidence hierarchy, provenance, mutation/promotion discipline.
 - context-relationship-graph — exact-root metadata-only relationship evidence; verified/candidate separation.
 - review-loop — review ingestion and attribution.

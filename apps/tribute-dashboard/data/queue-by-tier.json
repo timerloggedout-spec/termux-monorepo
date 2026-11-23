@@ -1,14 +1,17 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-23T11:12:13Z",
+ "generated_at": "2026-11-23T11:46:12Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 0,
-   "in_progress": 0,
-   "oldest_queued_at": null,
-   "by_workflow_queued": {}
+   "queued": 3,
+   "in_progress": 2,
+   "oldest_queued_at": "2026-11-23T11:44:03Z",
+   "by_workflow_queued": {
+    "PR scope guard": 2,
+    "repo gate": 1
+   }
   },
   "2": {
    "tier": 2,
@@ -26,47 +29,53 @@
   },
   "4": {
    "tier": 4,
-   "queued": 98,
+   "queued": 96,
    "in_progress": 15,
-   "oldest_queued_at": "2026-11-23T11:10:20Z",
+   "oldest_queued_at": "2026-11-23T11:42:25Z",
    "by_workflow_queued": {
-    "Agent Throughput Evidence": 20,
-    "Gemini review after peers": 1,
-    "lane events recorder": 30,
-    "Agent review \u2192 auto Jules": 6,
+    "lane events recorder": 36,
     "Quota Dispatch Tree": 1,
-    "Issue Comment Router \u2014 modular fan-out reduction": 13,
-    "Context Relationship + Lead/Lag Audit": 12,
-    "PR production ledger": 3,
-    "Peer review orchestrator": 2,
-    "PR Change Effectiveness Ledger": 1,
-    "Action Effectiveness Ledger": 2,
-    "RECON INTEL discovery": 1,
-    "Sweep Accountability": 1,
-    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
-    "PR evidence evaluation": 1,
-    "Repository development evaluation": 1,
+    "Agent Throughput Evidence": 18,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 3,
+    "Gemini review after peers": 3,
+    "PR evidence evaluation": 2,
+    "Agent review \u2192 auto Jules": 3,
+    "PR production ledger": 4,
+    "Agent feedback \u2192 Linear subtasks": 2,
+    "Peer review orchestrator": 4,
     "Lane matrix event-driven inventory": 1,
-    "Agent feedback \u2192 Linear subtasks": 1
+    "DeepSeek CI \u2013 Agentic Automation": 2,
+    "PR Change Effectiveness Ledger": 1,
+    "Agent PR Jules Handoff": 1,
+    "Repository development evaluation": 1,
+    "archwiz dangle check": 1,
+    "Context Relationship + Lead/Lag Audit": 1,
+    "DO Statement Style": 2,
+    "termux smoke": 1,
+    "Agent Readability Source Contract": 1,
+    "Action Effectiveness Ledger": 4,
+    "refTemplates continuous eval": 1,
+    "Sweep Accountability": 2,
+    "RECON INTEL discovery": 1
    }
   }
  },
  "totals": {
-  "queued": 98,
-  "in_progress": 16
+  "queued": 99,
+  "in_progress": 18
  },
  "wedged_ancient": [],
  "wedged_excluded_from_counts": true,
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 0,
+   "1": 5,
    "2": 1,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 1,
-  "default_t4": 113,
+  "explicit_total": 6,
+  "default_t4": 111,
   "unmatched": 0,
   "ancient_excluded": 0,
   "operator_excluded": 0

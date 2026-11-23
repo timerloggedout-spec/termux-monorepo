@@ -12,6 +12,7 @@ from deepcli.observatory.implementation_competition import compare_implementatio
 
 def receipt(implementation, version, task, quality, latency, *, cost, accepted=True):
     return {
+        "schema": "tournament.implementation-receipt.v1",
         "implementation_id": implementation,
         "implementation_version": version,
         "competition_role": "incumbent" if implementation == "incumbent" else "challenger",

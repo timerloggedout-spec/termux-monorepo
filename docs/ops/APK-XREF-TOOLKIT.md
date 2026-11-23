@@ -158,18 +158,19 @@ re-runs intake, which skips its duplicate.
 
 ## Acquisition routes (2026-11-01 alt-store pass)
 
-Wired sources (`acquire` tries the filing's sources in order):
+Wired sources (`acquire` tries the filing's `Acquisition source order` list in order; the single `Artifact source` value is the fallback when that list is empty):
 
 | source | channel | mechanics |
 |---|---|---|
 | `github-releases` | GitHub Releases | latest release carrying an `.apk` asset; repo may be filed as slug or URL (normalized) |
 | `gitea-releases` | Gitea/Forgejo Releases | same shape via `/api/v1` |
 | `f-droid` | f-droid.org | metadata API; F-Droid-rebuilt + F-Droid-signed binaries |
+| `lizzyondroid` | Form spelling alias for IzzyOnDroid; provenance records canonical channel `izzyondroid` and the alias in `via` |
 | `izzyondroid` | IzzyOnDroid repo (`apt.izzysoft.de/fdroid/repo`) | F-Droid-protocol v2 index (`index-v2.json`, verified live: 1,401 packages); binaries are **developer-built + developer-signed**, taken from upstream — a different trust class from `f-droid`, recorded in provenance (`repo_base`, `index_sha256` = the channel's per-file hash claim, next to the belt's own sha256 of the bytes) |
 | `other-store` | alt-store fallback chain | tries `izzyondroid` then `f-droid` for the package id; the acquired provenance carries `via: other-store-><channel>` |
 | `direct-apk` | a filed URL | refused outright when the host is `play.google.com` |
 
-**KomiStore — no channel to wire (verdict).** Komi Store (formerly
+**KomiStore — upstream route.** When `komistore` appears in the ordered chain, the belt resolves the filed upstream repository to GitHub Releases or Codeberg/Forgejo Releases and records `via: komistore->upstream-releases`. KomiStore is a discovery/install layer; the downloaded bytes are the upstream release assets. **KomiStore — no separate artifact channel (verdict).** Komi Store (formerly
 GitHub Store) is a discovery/install layer over GitHub, Codeberg and
 Forgejo *releases*: the bytes it delivers are the upstream release
 assets themselves, already covered by `github-releases`/`gitea-releases`
@@ -179,7 +180,7 @@ its upstreams; its digest-verification idea is already belt behaviour
 index hash claim for parity checks). A filing naming KomiStore maps
 to the upstream repo's releases route.
 
-**Aurora Store — the design question, answered honestly.** Aurora is
+**Aurora Store — fallback semantics.** When `aurora-store` appears in an ordered acquisition chain, the belt tries the wired IzzyOnDroid and F-Droid channels as alternatives and records `via: aurora-store-><channel>`. This is an alternative-store fallback, not an Aurora Store session or Play-protocol acquisition. Aurora is
 an unofficial Google Play *protocol client*, not a download URL: an
 anonymous session is dispensed a Google account token by community
 dispenser servers, then speaks the Play protobuf API (check-in,

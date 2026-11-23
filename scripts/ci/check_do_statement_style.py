@@ -14,7 +14,7 @@ EVENT_PATH = os.environ.get("GITHUB_EVENT_PATH", "")
 EVENT_NAME = os.environ.get("GITHUB_EVENT_NAME", "")
 BASE_REF = os.environ.get("GITHUB_BASE_REF", "")
 NEGATIVE_FIRST = re.compile(
-    r"^\\s*(?:(?:[-*]\\s*)|(?:#+\\s*))?(?:do not|don't|never|no\\b|not\\b|avoid\\b)",
+    r"^\s*(?:(?:[-*]\s*)|(?:#+\s*))?(?:do not|don't|never|no\b|not\b|avoid\b)",
     re.IGNORECASE,
 )
 IMPERATIVE = {
@@ -22,7 +22,7 @@ IMPERATIVE = {
     "correct", "cover", "centralize", "export", "format", "implement", "initialize", "invoke", "isolate", "link", "normalize",
     "parse", "pin", "recognize", "reject", "sort",
     "compare", "create", "define", "deploy", "document", "enforce", "expand", "fix", "gate",
-    "include", "inspect", "keep", "measure", "migrate", "move", "open", "preserve", "guard",
+    "include", "inspect", "keep", "measure", "migrate", "move", "open", "preserve", "guard", "surface",
     "publish", "record", "reconcile", "refresh", "refine", "register", "remove", "rename", "repair",
     "replace", "require", "restore", "route", "run", "set", "snapshot", "split", "sync",
     "test", "update", "use", "validate", "verify", "wire", "collect", "generate", "regenerate", "rebuild",
@@ -75,7 +75,7 @@ def inspect_git_range(base: str, head: str) -> None:
     )
     inspect_text("commit.body", bodies)
     for subject in subjects:
-        scoped = re.match(r"^[a-z][a-z0-9-]*(?:\\([^)]+\\))?:\\s*(.+)$", subject)
+        scoped = re.match(r"^[a-z][a-z0-9-]*(?:\([^)]+\))?:\s*(.+)$", subject)
         description = scoped.group(1) if scoped else subject
         first = description.split(maxsplit=1)
         verb = first[0].lower() if first else ""
@@ -98,7 +98,7 @@ def inspect_worktree() -> None:
     inspect_added_lines("working-tree", diff)
 
     untracked = run_git("ls-files", "--others", "--exclude-standard", "-z")
-    for raw_path in untracked.split("\\0"):
+    for raw_path in untracked.split("\0"):
         if not raw_path or not is_style_path(raw_path):
             continue
         path = Path(raw_path)

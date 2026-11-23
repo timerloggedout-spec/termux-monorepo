@@ -27,8 +27,8 @@ scheduling every poll at the top of the hour. The workflow also exposes
   registered Apps in `ops/github-apps/PROCESS.json` and merges the
   reads into the full bucket universe: PAT core, GITHUB_TOKEN class,
   and all 11 AppID buckets. An App with no readable bucket is carried
-  as `unreadable` with a named reason (`sec03_unprovisioned` /
-  `mint_unavailable` / `no_read_supplied`) — never silently skipped.
+  as `unreadable` with its named reason (`sec03_unprovisioned` /
+  `mint_unavailable` / `no_read_supplied`), so every AppID remains represented.
 
 ## Derived thresholds (no hardcoded counts)
 

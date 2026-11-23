@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "seed_id": "github:research-seed:timerloggedout-spec/rust-anything_fork",
+  "canonical_upstream": "erkamyaman/rust-anything",
+  "local_fork": "timerloggedout-spec/rust-anything_fork",
+  "provenance": [
+    "owned",
+    "forked"
+  ],
+  "classification": {
+    "domains": [
+      "rust",
+      "software-migration",
+      "developer-tools",
+      "agent-assisted-migration"
+    ],
+    "research_value": "high",
+    "integration_mode": "upstream-comparison",
+    "adoption": "research-only"
+  },
+  "observed_facts": {
+    "source_commit": "50d3810b622fdc6cb3aee965fe4c9d4b4f29205b",
+    "crate_name": "rust-anything",
+    "crate_version": "3.3.0",
+    "license": "MIT",
+    "minimum_rust_version": "1.97"
+  },
+  "capability_signals": [
+    "incremental-cross-language-migration",
+    "record-bridge-harness-shadow-gate-workflow",
+    "behavior-replay",
+    "side-effect-validation",
+    "whole-application-piecewise-migration"
+  ],
+  "integration_constraints": [
+    "do-not-vendor-source",
+    "preserve-upstream-provenance",
+    "compare-common-hot-path-scope-only-in-primary-cohort",
+    "separate-whole-app-migration-study"
+  ]
+}

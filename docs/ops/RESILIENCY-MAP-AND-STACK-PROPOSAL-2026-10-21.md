@@ -365,4 +365,4 @@ CockroachDB is admitted as an optional, independently addressable distributed-SQ
 
 The adapter requires `sslmode=verify-full` or `verify-ca` for hosted connections. Local insecure mode is restricted to the disposable CI cluster. Canonical event identity makes replay idempotent across both providers; independent writes preserve each sink's failure state and do not imply cross-provider replication.
 
-**Continuity grade:** DESIGNED + IMPLEMENTED ON PR BRANCH. Hosted availability, multi-region replication, backup restore and failover remain UNTESTED until the owner provisions the cluster and a drill produces timestamped evidence. CockroachDB is registered as a live distributed-SQL reference submodule; hosted pricing and account entitlement remain unverified.
+**Continuity grade:** IMPLEMENTED ON PR BRANCH; CI execution pending. Hosted availability, multi-region replication, backup restore and failover remain UNTESTED until the owner provisions the cluster and a drill produces timestamped evidence. CockroachDB is registered as a live distributed-SQL reference submodule; hosted pricing and account entitlement remain unverified.

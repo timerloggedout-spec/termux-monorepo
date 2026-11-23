@@ -150,7 +150,7 @@ def execute(fields: dict, issue_number: int, workdir: Path,
     common = ["--target-id", spec["target_id"],
               "--xref-issue", f"#{issue_number}",
               "--submitter", SUBMITTER,
-              "--artifact-source", spec["source"]]
+              "--artifact-source", acquisition.get("source") or spec["source"]]
     if acquisition.get("status") != "acquired":
         checked = acquisition.get("sources_checked") or [spec["source"]]
         _belt(["no-artifact", *common, "--evidence", "observed",

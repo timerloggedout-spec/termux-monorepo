@@ -16,6 +16,7 @@ def test_repo_harvest_uses_allowlist_and_extracts_operational_contracts(tmp_path
     result = harvest.harvest(tmp_path)
     assert result["schema"] == "provider-source-harvest/v1"
     assert "/stats" in result["capabilities"]["http_routes"]
+    assert "/healthz" in result["capabilities"]["http_routes"]
     assert "ai_responses" in result["capabilities"]["sqlite_tables"]
     assert "request:completed" in result["capabilities"]["event_names"]
     assert all(row["path"] != ".env" for row in result["harvested_files"])

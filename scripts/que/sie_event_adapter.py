@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-"""Translate canonical QUE dispatch watchdog state into SIE intake groups."""
+"""Translate the canonical QUE stall-gap feed into SIE intake groups."""
 
 from __future__ import annotations
 
 import hashlib
 import json
-import math
 from typing import Any
+
+SCHEMA = "que.stall-gap/v1"
+ACTIONABLE_KINDS = {"placement_failed", "lease_released"}
 
 
 def canonical_json(value: Any) -> bytes:
@@ -14,62 +16,68 @@ def canonical_json(value: Any) -> bytes:
 
 
 def queue_stall_groups(feed: dict) -> list[dict]:
-    """Create stable intake groups for unclaimed escalation and stall receipts."""
+    """Create stable SIE intake groups from canonical, actionable QUE stall records."""
     if not isinstance(feed, dict):
-        raise ValueError("dispatch feed must be an object")
-    dispatches = feed.get("dispatches", [])
-    if not isinstance(dispatches, list) or any(not isinstance(row, dict) for row in dispatches):
-        raise ValueError("dispatch feed entries must be objects in an array")
-    groups = []
-    for row in dispatches:
+        raise ValueError("stall-gap feed must be an object")
+    if feed.get("schema") != SCHEMA:
+        raise ValueError(f"stall-gap schema must be {SCHEMA}")
+    records = feed.get("records")
+    if not isinstance(records, list) or any(not isinstance(row, dict) for row in records):
+        raise ValueError("stall-gap records must be an array of objects")
+
+    latest_by_issue: dict[int, dict] = {}
+    for row in records:
         issue = row.get("issue")
-        state = str(row.get("state") or "").lower()
-        events = row.get("stall_events") or []
-        if not isinstance(events, list) or any(not isinstance(event, dict) for event in events):
-            raise ValueError("dispatch stall_events must contain objects")
-        tier = row.get("tier", {})
-        if tier is None:
-            tier = {}
-        if not isinstance(tier, dict):
-            raise ValueError("dispatch tier must be an object")
-        try:
-            age_min = float(row.get("age_min") or 0)
-        except (TypeError, ValueError) as exc:
-            raise ValueError("dispatch age_min must be numeric") from exc
-        if not math.isfinite(age_min):
-            raise ValueError("dispatch age_min must be finite")
-        if not isinstance(issue, int) or isinstance(issue, bool) or state == "claimed" or row.get("claim"):
+        if not isinstance(issue, int) or isinstance(issue, bool) or issue < 1:
+            raise ValueError("stall-gap issue must be a positive integer")
+        kind = row.get("kind")
+        if not isinstance(kind, str) or not kind:
+            raise ValueError("stall-gap kind must be a non-empty string")
+        at = row.get("at")
+        if not isinstance(at, str) or not at.strip():
+            raise ValueError("stall-gap at must be a non-empty timestamp")
+        for field in ("exception_kind", "reason", "claim_class", "claimant"):
+            value = row.get(field)
+            if value is not None and not isinstance(value, str):
+                raise ValueError(f"stall-gap {field} must be a string or null")
+        if kind not in ACTIONABLE_KINDS:
             continue
-        if state != "escalated" and not events:
-            continue
-        source_kind = "stall_gap"
-        path = f"dispatch-issue-{issue}"
-        event_kinds = sorted({str(event.get("kind") or "unknown") for event in events})
-        # One unresolved dispatch stall maps to one repair item across tier/state updates.
+        previous = latest_by_issue.get(issue)
+        if previous is None or at > previous["at"]:
+            latest_by_issue[issue] = row
+
+    groups = []
+    for issue, row in sorted(latest_by_issue.items()):
+        kind = row["kind"]
+        exception_kind = row.get("exception_kind") or "unknown"
+        reason = row.get("reason") or "no reason supplied"
         fingerprint = {"issue": issue, "failure_class": "dispatch-stall"}
         signature = hashlib.sha256(canonical_json(fingerprint)).hexdigest()[:12]
         revision_material = {
             "issue": issue,
-            "state": state,
-            "tier": tier.get("name", "unknown"),
-            "stall_events": events,
+            "kind": kind,
+            "exception_kind": exception_kind,
+            "reason": reason,
+            "claim_class": row.get("claim_class"),
+            "claimant": row.get("claimant"),
         }
         revision = hashlib.sha256(canonical_json(revision_material)).hexdigest()
+        path = f"dispatch-issue-{issue}"
         groups.append({
             "path": path,
-            "name": f"QUE dispatch issue #{issue} {state or 'stall'}",
+            "name": f"QUE dispatch issue #{issue} {kind}",
             "room": None,
             "step": "dispatch-watchdog",
-            "message": f"unclaimed dispatch age={age_min:.1f}m; state={state}; events={','.join(event_kinds) or 'escalated'}",
+            "message": f"queue stall kind={kind}; exception={exception_kind}; reason={reason}",
             "sig": signature,
             "key": f"{path}:{signature}",
-            "source_kind": source_kind,
+            "source_kind": "stall_gap",
             "source_id": str(issue),
             "source_revision": revision,
-            "failures": max(1, len(events)),
-            "total": max(1, len(events)),
-            "window_h": max(1, int(age_min / 60)),
-            "priority": round(min(age_min / 60, 5.0), 3),
+            "failures": 1,
+            "total": 1,
+            "window_h": 1,
+            "priority": 1.0,
             "receipts": [{
                 "url": f"https://github.com/timerloggedout-spec/termux-monorepo/issues/{issue}",
                 "sha": "",

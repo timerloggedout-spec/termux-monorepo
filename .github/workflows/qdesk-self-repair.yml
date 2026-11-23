@@ -10,6 +10,14 @@ name: qdesk self-repair
 on:
   schedule:
     - cron: "41 */3 * * *"
+  pull_request:
+    paths:
+      - "scripts/que/**"
+      - "tests/que/**"
+      - "brain/src/adapters/**"
+      - "brain/src/lib.rs"
+      - "docs/schemas/que-sie-stage-v1.schema.json"
+      - ".github/workflows/qdesk-self-repair.yml"
   workflow_run:
     workflows:
       - "repo gate"
@@ -30,8 +38,22 @@ concurrency:
   group: qdesk-self-repair
   cancel-in-progress: false
 jobs:
+  sie-contract:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate SIE stage contract and QDesk intake adapter
+        run: |
+          python3 scripts/que/sie_pipeline.py --self-test
+          python3 -m unittest discover -s tests/que -p 'test_sie_pipeline.py' -v
   loop:
-    if: vars.QDESK_LOOP_ENABLED != 'false' && (github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'failure' && github.event.workflow_run.head_branch == 'master'))
+    if: github.event_name != 'pull_request' && vars.QDESK_LOOP_ENABLED != 'false' && (github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'failure' && github.event.workflow_run.head_branch == 'master'))
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

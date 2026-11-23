@@ -1,6 +1,6 @@
 {
   "schema": "integration-observability-index/v1",
-  "generated_at": "2026-11-05",
+  "generated_at": "2026-11-23",
   "kind": "static_inventory_contract",
   "canonical_results_index": "ops/telemetry/results-index.json",
   "systems": [
@@ -102,6 +102,15 @@
       "role": "OpenAI-compatible and Anthropic-compatible LLM gateway",
       "observed_state": "authenticated dynamic GET /v1/models adapter and unit tests added in PR; owner reports API key provisioned; authenticated account model discovery pending workflow evidence; per-inference quota/token/usage and performance metrics are provider-logged per owner; inference not admitted",
       "authority": "official provider guide and per-key model catalogue"
+    },
+    {
+      "id": "puter-pool",
+      "domain": "provider_catalog_and_inference_transport",
+      "status": "local_read_only_catalog_harvester_implemented",
+      "record_of_record": "scripts/puter_pool_catalog.py; docs/ops/PUTER-POOL-PROVIDER-INTEGRATION.md",
+      "role": "Harvest exact Puter Pool model IDs under existing g4f/Puter provider identity; later request outcomes join QUE task and DoE run IDs",
+      "observed_state": "GET /v1/models adapter implemented with loopback-only origin validation; catalog harvest requires operator-hosted Pool; account/quota values remain unknown until authoritative telemetry is ingested",
+      "authority": "Puter Pool fork API contract + provider-model-catalog/v5; no independent provider or quota ledger"
     }
   ],
   "shared_observation_contract": {

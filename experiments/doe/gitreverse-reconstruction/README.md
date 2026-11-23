@@ -16,6 +16,10 @@ Upstream README describes an input surface of repository metadata, a depth-1 roo
 
 Siglary integration is an explicit experimental dimension. The campaign freezes enabled/disabled levels only if the internal implementation exposes a stable switch on one source revision. Otherwise the Siglary version, notation profile and adapter hash become treatment attributes and a separate ablation cohort is required.
 
+## Extensible task contract
+
+Each repository task conforms to [TASK.schema.json](TASK.schema.json). New tasks add a pinned repository commit, hashed evidence inputs, expected output contract, independent gold annotations and rubric version. Corpus additions create a new design version; prior cohorts and records remain immutable.
+
 ## Design
 
 See [DESIGN.json](DESIGN.json). The pre-registration specifies 8 frozen repositories × 3 treatments × 3 repetitions = 72 planned observations, blocked by repository and repetition with randomized treatment order.

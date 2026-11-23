@@ -146,7 +146,7 @@ async function load(){
     $('provider-runtime-note').textContent='Provider '+(pr.provider_id||'g4f.puter')+' · observed '+(pr.observed_at||'not yet observed')+' · readiness '+(pr.readiness||'unknown');
     let ph='<div class="grid grid-3">'+
       card('Provider',esc(pr.provider||'g4f/Puter'),'registry identity g4f.puter')+
-      card('Readiness',num(pr.readiness),'local pool readiness')+
+      card('Readiness',esc(pr.readiness||'unknown'),'local pool readiness')+
       card('Models',num(pr.model_count),'catalog-visible model count')+
       card('Requests',num((pr.counters||{}).totalRequests),'aggregate pool requests')+
       card('Succeeded',num((pr.counters||{}).successfulRequests),'aggregate successful requests')+

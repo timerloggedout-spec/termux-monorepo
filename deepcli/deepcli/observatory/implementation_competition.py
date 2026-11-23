@@ -49,6 +49,15 @@ REQUIRED_HARD_GATES = (
     "deterministic_checks",
 )
 
+T_CRITICAL_95 = {
+    1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776, 5: 2.571,
+    6: 2.447, 7: 2.365, 8: 2.306, 9: 2.262, 10: 2.228,
+    11: 2.201, 12: 2.179, 13: 2.160, 14: 2.145, 15: 2.131,
+    16: 2.120, 17: 2.110, 18: 2.101, 19: 2.093, 20: 2.086,
+    21: 2.080, 22: 2.074, 23: 2.069, 24: 2.064, 25: 2.060,
+    26: 2.056, 27: 2.052, 28: 2.048, 29: 2.045, 30: 2.042,
+}
+
 
 def _number(value: Any) -> bool:
     return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
@@ -151,7 +160,9 @@ def _metric_summary(incumbent: dict[str, dict[str, Any]],
     mean = statistics.fmean(improvements)
     ci95 = None
     if len(improvements) >= 2:
-        margin = 1.96 * statistics.stdev(improvements) / math.sqrt(len(improvements))
+        degrees_of_freedom = len(improvements) - 1
+        critical_value = T_CRITICAL_95.get(degrees_of_freedom, 1.96)
+        margin = critical_value * statistics.stdev(improvements) / math.sqrt(len(improvements))
         ci95 = [mean - margin, mean + margin]
     return {
         "direction": direction,
@@ -190,11 +201,16 @@ def compare_implementations(receipts: list[dict[str, Any]]) -> dict[str, Any]:
         metric for metric, summary in metrics.items()
         if summary["sample_count"] == 0
     ]
-    candidate_dominates = bool(comparable) and not unobserved_metrics and all(
+    incomplete_metrics = [
+        metric for metric, summary in metrics.items()
+        if 0 < summary["sample_count"] < len(validated["task_ids"])
+    ]
+    evidence_complete = bool(comparable) and not unobserved_metrics and not incomplete_metrics
+    candidate_dominates = evidence_complete and all(
         summary["ci95"] is not None and summary["ci95"][0] >= 0
         for summary in comparable.values()
     ) and any(summary["ci95"][0] > 0 for summary in comparable.values())
-    incumbent_dominates = bool(comparable) and not unobserved_metrics and all(
+    incumbent_dominates = evidence_complete and all(
         summary["ci95"] is not None and summary["ci95"][1] <= 0
         for summary in comparable.values()
     ) and any(summary["ci95"][1] < 0 for summary in comparable.values())
@@ -220,6 +236,7 @@ def compare_implementations(receipts: list[dict[str, Any]]) -> dict[str, Any]:
                        "version": challenger_key[1], "hard_gate_failures": challenger_failures},
         "metrics": metrics,
         "unobserved_metrics": unobserved_metrics,
+        "incomplete_metrics": incomplete_metrics,
         "recommendation": recommendation,
         "promotion_authorized": False,
         "promotion_gate": ["held_out_validation", "owner_approval", "rollback_target"],

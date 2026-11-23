@@ -14,7 +14,7 @@
 
 ## Integrity checklist (for CI / scripts)
 
-1. Every child under `13_Third_Party_Refs/*` and `15_Research_Repo_Templates/*` has `README.md` + `SOURCE.txt`
+1. Every directory child under `13_Third_Party_Refs/*` and `15_Research_Repo_Templates/*` has `README.md` + `SOURCE.txt`
 2. Every `smods/*` path appears in `.gitmodules` with `shallow = true` when present
 3. Preferred SOURCE URLs are resolvable (HEAD or public)
 4. No hardcoded API keys in template metadata

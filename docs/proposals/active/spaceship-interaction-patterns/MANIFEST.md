@@ -36,7 +36,7 @@ Register the four Spaceship IDE interaction concepts as a provenance-backed Tier
 
 - [ ] `refTemplates/13_Third_Party_Refs/spaceship-ide/` contains README + SOURCE with MIT and exact-revision provenance.
 - [ ] `07_Prompt_Context`, `11_Evaluation_Quality`, SOURCE-MAP, index, ICM reference inputs, and research integration docs link to the source.
-- [ ] `refTemplates_inventory.py --strict` validates Tier-C child metadata; focused tests cover present and missing metadata.
+- [ ] `refTemplates_inventory.py --strict` validates Tier-C child metadata; focused tests cover present, missing, and whitespace-only metadata.
 - [ ] Tier-C stays outside the Tier-A score, 12-silo Delphi participant registry, and live `smods/` gitlinks.
 - [ ] Proposal registry validation, repository gate, Termux smoke, and required PR checks pass on one immutable head SHA.
 

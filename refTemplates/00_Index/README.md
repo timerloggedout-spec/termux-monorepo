@@ -22,4 +22,4 @@
 - Inventory script: scripts/ci/refTemplates_inventory.py
 - Workflow hooks: docs/ops/REFTEMPLATES-WORKFLOW-HOOKS.md
 
-All slots are continuous repopulate / upgrade / score targets — not a one-shot dump. Live gitlinks require a real custom fork, immutable reviewed pin, compatibility evidence, and passing gates.
+All slots are continuous repopulate / upgrade targets. Tier-A research templates are score targets; Tier-C pattern references remain unscored. Live gitlinks require a real custom fork, immutable reviewed pin, compatibility evidence, and passing gates.

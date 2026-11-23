@@ -1,9 +1,11 @@
 # Spaceship IDE — design reference integration
 
-**Status:** reference-only · Tier C pattern source  
-**Reviewed:** 2026-11-23  
-**Source revision:** `e567943134da28e337ccab6662e5a11fa4869fed`  
-**Owner lane:** `refTemplates/13_Third_Party_Refs/spaceship-ide/`
+| Field | Value |
+|---|---|
+| Status | Reference-only · Tier C pattern source |
+| Reviewed | 2026-11-23 |
+| Source revision | `e567943134da28e337ccab6662e5a11fa4869fed` |
+| Owner lane | `refTemplates/13_Third_Party_Refs/spaceship-ide/` |
 
 ## Decision
 

@@ -28,6 +28,13 @@ def slots() -> list[Path]:
     return out
 
 
+def source_preview(source: Path) -> str | None:
+    if not source.is_file():
+        return None
+    lines = source.read_text(encoding="utf-8").strip().splitlines()
+    return lines[0] if lines else None
+
+
 def inventory_entry(slot: Path) -> dict:
     children = [c.name for c in sorted(slot.iterdir()) if c.is_dir() or c.suffix in {".md", ".txt"}]
     research_children = []
@@ -43,9 +50,7 @@ def inventory_entry(slot: Path) -> dict:
                     "name": c.name,
                     "has_source": source.is_file(),
                     "has_readme": readme.is_file(),
-                    "source_preview": source.read_text(encoding="utf-8").strip().splitlines()[0]
-                    if source.is_file() and source.stat().st_size
-                    else None,
+                    "source_preview": source_preview(source),
                 }
             )
     if slot.name.startswith("15_"):

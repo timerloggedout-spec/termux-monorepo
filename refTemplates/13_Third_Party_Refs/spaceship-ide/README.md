@@ -1,8 +1,10 @@
 # Spaceship IDE — interaction design patterns
 
-**Classification:** Tier C · pattern-only · metadata-only  
-**Source revision:** `e567943134da28e337ccab6662e5a11fa4869fed`  
-**License:** MIT · Copyright (c) 2026 Sun
+| Field | Value |
+|---|---|
+| Classification | Tier C · pattern-only · metadata-only |
+| Source revision | `e567943134da28e337ccab6662e5a11fa4869fed` |
+| License | MIT · Copyright (c) 2026 Sun |
 
 ## Source
 

@@ -63,7 +63,7 @@ Record observed values from drills. The design target is an independently replay
 
 ## Validation
 
-The dedicated workflow runs a TLS-secured single-node contract without a license key. It provisions least-privilege writer/migrator identities, applies the schema, verifies insert/readback, checks UPDATE/DELETE denial, drops and recreates the database, replays the canonical event and runs offline unit tests. A separate three-node drill runs only when `COCKROACH_LICENSE_KEY` contains a valid license; it tests node failure and native backup/restore through a surviving node. Hosted multi-region availability and external-storage disaster recovery remain separate drills.
+The dedicated workflow runs a TLS-secured single-node contract and a disposable three-node continuity drill. CockroachDB documents a seven-day no-license grace period for ephemeral clusters; CI destroys the cluster at job completion. If `COCKROACH_LICENSE_KEY` is present, CI applies it before running the same drill. The contract provisions least-privilege writer/migrator identities, applies schema, verifies insert/readback, checks UPDATE/DELETE denial, recreates the database, replays the canonical event, and runs offline tests. Hosted multi-region availability and external-storage disaster recovery remain separate drills.
 
 ## CI execution history
 

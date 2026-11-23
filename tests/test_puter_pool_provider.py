@@ -75,3 +75,54 @@ def test_puter_pool_requires_explicit_exact_model_policy(monkeypatch, tmp_path):
         providers.complete("puter_pool", "gpt-5.6-sol", {"model": "gpt-5.6-sol"}, 2.0)
     assert exc.value.code == "provider_not_admitted"
 
+
+
+def test_live_hub_dispatch_emits_per_request_que_doe_temporal_event(monkeypatch, tmp_path):
+    from fastapi.testclient import TestClient
+
+    event_path = tmp_path / "agent_telemetry_stream.json"
+    monkeypatch.setenv("PUTER_POOL_API_KEY", "synthetic-local-key")
+    monkeypatch.setenv("PUTER_POOL_BASE_URL", "http://127.0.0.1:3333")
+    monkeypatch.setenv("PUTER_POOL_EVENT_OUT", str(event_path))
+    monkeypatch.setenv("LLM_API_HUB_KEY", "synthetic-hub-key")
+    monkeypatch.setenv("LLM_API_HUB_PROVIDER_POLICY", str(_policy(tmp_path, [_entry()])))
+    monkeypatch.setattr(
+        providers,
+        "post_json",
+        lambda *args, **kwargs: {
+            "id": "pool-response-7",
+            "choices": [{"message": {"role": "assistant", "content": "synthetic reply"}, "finish_reason": "stop"}],
+            "usage": {"prompt_tokens": 5, "completion_tokens": 7},
+        },
+    )
+    client = TestClient(app_module.app)
+    response = client.post(
+        "/v1/chat/completions",
+        headers={
+            "Authorization": "Bearer synthetic-hub-key",
+            "x-task-or-entry-ref": "QUE-42",
+            "x-doe-run-id": "DOE-17",
+            "x-workflow-run-id": "GHA-99",
+            "x-run-attempt": "2",
+            "x-temporal-workflow-id": "puter-pool-observability",
+            "x-temporal-run-id": "temporal-run-7",
+            "x-request-id": "request-42",
+        },
+        json={"model": "puter_pool/gpt-5.6-sol", "messages": [{"role": "user", "content": "PRIVATE PROMPT"}]},
+    )
+    assert response.status_code == 200
+    event = json.loads(event_path.read_text(encoding="utf-8").splitlines()[-1])
+    assert event["event_type"] == "provider.inference.completed"
+    assert event["provider_id"] if "provider_id" in event else event["entity_id"] == "g4f.puter"
+    attrs = event["attributes"]
+    assert attrs["exact_model_id"] == "gpt-5.6-sol"
+    assert attrs["task_or_entry_ref"] == "QUE-42"
+    assert attrs["doe_run_id"] == "DOE-17"
+    assert attrs["workflow_run_id"] == "GHA-99"
+    assert attrs["run_attempt"] == 2
+    assert attrs["temporal_workflow_id"] == "puter-pool-observability"
+    assert attrs["temporal_run_id"] == "temporal-run-7"
+    assert attrs["request_id"] == "request-42"
+    assert attrs["input_tokens"] == 5
+    assert attrs["output_tokens"] == 7
+    assert "PRIVATE PROMPT" not in event_path.read_text(encoding="utf-8")

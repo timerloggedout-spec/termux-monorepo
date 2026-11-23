@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "64958cede72a64472b64235afe850afe73afbd831ddbfa0b864d02d6e269e444",
+  "source_fingerprint": "598f40d5043f160709588ca16d56d8a869e0149982b47c92abf0989d370e84a3",
   "workflow_count": 326,
   "workflows": [
     {
@@ -762,7 +762,7 @@
       "name": "bucket-headroom-watch",
       "path": ".github/workflows/bucket-headroom-watch.yml",
       "schedules": [
-        "*/10 * * * *"
+        "7,17,27,37,47,57 * * * *"
       ],
       "triggers": [
         "schedule",

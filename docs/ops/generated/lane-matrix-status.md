@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-23T14:22:01Z)
+# Lane matrix status (2026-11-23T14:23:48Z)
 
-- Master: `fb546449d45d05726817aa49fb677e51511be651`
+- Master: `29eb9d84a32ba7ff71b14bd51c492f9205c01898`
 - Open PRs: **541**
 - Oldest: #47 (109.94d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -14,9 +14,9 @@
 | Age bucket | Count |
 |------------|------:|
 | ancient | 27 |
-| fresh | 100 |
+| fresh | 99 |
 | mid | 242 |
-| stale | 172 |
+| stale | 173 |
 
 ## Tip lanes (EXTRACT / CANDIDATE / NEED_EVIDENCE first)
 
@@ -46,12 +46,12 @@
 | #1469 | 33.05 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
 | #1470 | 33.05 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
 | #1495 | 32.5 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
-| #1513 | 32.25 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
+| #1513 | 32.26 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 32.25 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
 | #1516 | 32.25 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
 | #1531 | 32.24 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
 | #1537 | 32.22 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
-| #1557 | 31.55 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
+| #1557 | 31.56 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 30.47 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
 | #1616 | 30.47 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 30.46 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |

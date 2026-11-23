@@ -23,5 +23,5 @@
 - [OverTheWire Bandit](https://overthewire.org/wargames/bandit/)
 - [OffSec PEN-200](https://www.offsec.com/courses/pen-200/)
 - [OffSec OSCP+ Exam Guide](https://help.offsec.com/hc/en-us/articles/360040165632-OSCP-Exam-Guide)
-- [Agent Team Control Plane](../architecture/AGENT-TEAM-CONTROL-PLANE.md)
-- [Adaptive WAIT](../../.agents/skills/adaptive-wait/SKILL.md)
+- [Agent Team Control Plane](../../architecture/AGENT-TEAM-CONTROL-PLANE.md)
+- [Adaptive WAIT](../../../.agents/skills/adaptive-wait/SKILL.md)

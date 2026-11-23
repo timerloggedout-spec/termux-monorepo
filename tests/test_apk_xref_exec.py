@@ -60,14 +60,22 @@ def test_filing_spec_defaults():
     spec = ex.filing_spec(ex.parse_filing(FILING))
     assert spec == {"target_id": "agora",
                     "repo": "https://github.com/newo-ether/Agora",
-                    "source": "github-releases", "package_id": "",
+                    "source": "github-releases", "sources": ["github-releases"], "package_id": "",
                     "package_id_via": "none",
                     "evidence": "reproduced"}
+
+
+def test_filing_spec_ordered_acquisition_chain():
+    fields = {"Target ID": "bixberry-android", "Artifact source": "aurora-store",
+              "Acquisition source order": "aurora-store, komistore, lizzyondroid, f-droid"}
+    spec = ex.filing_spec(fields)
+    assert spec["sources"] == ["aurora-store", "komistore", "lizzyondroid", "f-droid"]
 
 
 def test_filing_spec_blank_source_and_evidence_default():
     spec = ex.filing_spec({"Target ID": "x"})
     assert spec["source"] == "none-known"
+    assert spec["sources"] == ["none-known"]
     assert spec["evidence"] == "reproduced"
 
 

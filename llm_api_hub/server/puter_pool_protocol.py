@@ -31,3 +31,8 @@ def chat_url(base_url: str = DEFAULT_BASE_URL) -> str:
     if parsed.path not in {"", "/"}:
         raise PuterPoolProtocolError("origin_only")
     return urllib.parse.urlunsplit((parsed.scheme, parsed.netloc, "/v1/chat/completions", "", ""))
+
+
+def models_url(base_url: str = DEFAULT_BASE_URL) -> str:
+    chat = chat_url(base_url)
+    return chat.rsplit("/", 2)[0] + "/models"

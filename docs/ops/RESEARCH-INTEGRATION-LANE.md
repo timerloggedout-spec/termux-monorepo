@@ -45,7 +45,7 @@ See also: `REFTEMPLATES-WORKFLOW-HOOKS.md`, `REFTEMPLATES-CONSOLIDATION.md`, `DE
 | **A — Integrate metadata now** | Clear research-repo / project-template / agent-research layout; public; fits Repository development | Slot under `15_Research_Repo_Templates/` (done for core set) |
 | **B — Watch / score** | High stars or active fork under timerloggedout-spec; research-adjacent but not yet layout-ready | List in SOURCE-MAP “candidates”; re-score on cadence |
 | **C — Pattern only** | Reusable interaction or workflow design from a source without a research scaffold | Add a metadata-only slot under `13_Third_Party_Refs/`, with README + SOURCE and an owning integration note |
-| **D — Out of scope** | Unrelated product or secret-heavy source without a reusable pattern fit | Skip; a pure app qualifies for Tier C only when the work explicitly extracts a bounded reusable pattern |
+| **D — Out of scope** | Unrelated product or secret-heavy source without a reusable pattern fit | Keep outside refTemplates; route a pure app to Tier C only when the work explicitly extracts a bounded reusable pattern |
 
 **Already tier-A (full 12):**
 

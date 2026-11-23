@@ -1,6 +1,6 @@
 {
  "schema": "quota.swarm-feed/v1",
- "generated_at": "2026-11-23T13:28:43Z",
+ "generated_at": "2026-11-23T13:31:31Z",
  "generated_by": "scripts/quota_swarm_feed.py",
  "spec": {
   "doc": "docs/ops/PROVIDER-DISPATCH-CAPABILITY.md",
@@ -2976,7 +2976,11 @@
      "mechanism": "not-established",
      "gate": "not-established"
     },
-    "flags": []
+    "flags": [
+     "catalog-only",
+     "no-inference",
+     "key-balance-not-observed"
+    ]
    },
    "records": [
     {

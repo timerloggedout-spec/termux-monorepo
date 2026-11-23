@@ -208,7 +208,7 @@ def test_agentrouter_and_unorouter_documentation_semantics_are_distinct_and_publ
     scope = unorouter["scope"].lower()
     for phrase in ("per-model", "shared upstream", "/api/usage/token/", "access token", "provider-level consent"):
         assert phrase in scope
-    assert "account-balance reset unknown" in unorouter["reset"].lower()
+    assert "account-balance reset semantics" in unorouter["reset"].lower()
 
     public = managers.build_public_metadata()
     public_rows = {row["provider_family"]: row for row in public["provider_families"]}

@@ -46,3 +46,53 @@ Telemetry policy: emit allowlisted metadata only. Keep account tokens, account n
 7. Validate the resulting SHE/Tribute projections against source hashes and workflow receipts.
 
 The catalog harvester is implemented as a bounded read-only source adapter. The inference request path and live usage/quota counters remain separate integration work; model discovery alone does not assert that either has executed.
+
+
+## Runtime observation and Temporal execution
+
+The source repository is harvested separately from the local runtime. Run
+`python3 scripts/puter_pool_repo_harvest.py --repo-root /path/to/puter-pool_fork`
+to produce an allowlisted source manifest with commit identity, file hashes,
+route names, SQLite table names, and event names. The manifest excludes
+`.env`, SQLite files, browser storage, account credentials, and request bodies.
+
+Run `python3 scripts/puter_pool_catalog.py` for model discovery and
+`python3 scripts/puter_pool_observation.py` for a privacy-minimized runtime
+snapshot. Configure `PUTER_POOL_BASE_URL` to a loopback origin and
+`PUTER_POOL_API_KEY` in the worker environment. The observer reads only
+`/v1/models`, `/api/stats`, `/api/queue`, `/healthz`, and `/readyz`.
+It excludes account inventories, account balances, history rows, prompts,
+completions, browser storage, and credentials from all outputs.
+
+### Temporal loop
+
+Install the existing Temporal SDK dependency with `python3 -m pip install 'temporalio>=1.7.0'`.
+Start the worker with
+`python3 -m scripts.temporal.puter_pool_observation.worker --address localhost:7233`.
+Start the durable workflow with
+`python3 -m scripts.temporal.puter_pool_observation.start --task-or-entry-ref QUE-<entry> --doe-run-id <doe-run> --workflow-run-id <workflow-run> --run-attempt 1 --interval-seconds 300`.
+The workflow runs every 300 seconds by default and accepts a Temporal `stop` signal.
+Each activity appends one EPS v1 event to `agent_telemetry_stream.json` with
+provider identity, task/entry, DoE run, Temporal workflow/run, workflow-run
+attempt, model count, aggregate request outcomes, queue depth, latency, and
+readiness. Event attributes contain aggregate operational metadata only.
+
+### Downstream feed contract
+
+`agent_telemetry_stream.json` is the existing source consumed by
+`scripts/telemetry_ingest/ingest.py`. Its provider field normalizes to
+`g4f-puter`, joining the existing `g4f.puter` quota registry row and
+Provenance/HindSight payload generation. Witness consumes the provenance
+evidence spine; Temporal owns durable cadence and correlation; HindSight
+receives sanitized retention payloads; Bifrost, n8n, Platform201, and the
+SHE/Tribute interfaces consume the normalized telemetry/quota projections.
+The dashboard quota record retains `used=null`, `limit=null`, and
+`reset=null` until provider-authoritative quota data is observed. Puter Pool's
+local `CreditTracker` is an account-count heuristic and remains excluded from
+provider quota calculations.
+
+The workflow writes to the operator's local checkout. The existing
+telemetry-ingest pipeline then folds the appended events into the provenance
+ledger, HindSight payloads, and downstream projections; operator deployment
+must keep the Temporal worker and Puter Pool service on the same host or
+network namespace so the loopback endpoint resolves locally.

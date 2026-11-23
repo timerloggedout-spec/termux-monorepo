@@ -61,6 +61,9 @@ def queue_stall_groups(feed: dict) -> list[dict]:
             "claim_class": row.get("claim_class"),
             "claimant": row.get("claimant"),
         }
+        if kind == "lease_released":
+            # Each release is a distinct occurrence, even for the same lease owner.
+            revision_material["at"] = row["at"]
         revision = hashlib.sha256(canonical_json(revision_material)).hexdigest()
         path = f"dispatch-issue-{issue}"
         groups.append({
@@ -74,6 +77,7 @@ def queue_stall_groups(feed: dict) -> list[dict]:
             "source_kind": "stall_gap",
             "source_id": str(issue),
             "source_revision": revision,
+            "observed_at": row["at"],
             "failures": 1,
             "total": 1,
             "window_h": 1,

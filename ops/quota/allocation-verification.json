@@ -970,7 +970,11 @@
         "gate": "not-established"
       },
       "verdict": "free",
-      "flags": []
+      "flags": [
+        "catalog-only",
+        "no-inference",
+        "key-balance-not-observed"
+      ]
     },
     {
       "provider": "xfyun",

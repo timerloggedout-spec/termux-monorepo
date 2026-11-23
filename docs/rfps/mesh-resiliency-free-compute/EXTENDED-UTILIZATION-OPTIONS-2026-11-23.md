@@ -84,7 +84,7 @@ All values below are published plan entitlements. Account eligibility, current r
 - The `admin-graph-live` Worker has a D1 binding and a 2026-11-17 deployment.
 - Cloudflare Queues inventory returned 0 queues. The existing `tmx-device-queue` Worker is a D1-backed pull-queue rendezvous, distinct from the Cloudflare Queues product.
 - R2 bucket inventory returned an activation-required response. The account's R2 activation status is pending.
-- Worker observability returned 0 events for 2026-10-24 through 2026-11-24. Both scripts reported `logpush=false` and unset observability configuration, so this is an instrumentation gap; request volume remains unknown.
+- Worker observability returned 0 events for 2026-10-24 through 2026-11-24; both scripts reported `logpush=false` and unset observability configuration. GraphQL Workers Analytics independently returned 80 requests, 0 errors, and 0 subrequests across the two scripts for that 30-day window: 70 requests on `tmx-device-queue` and 10 on `admin-graph-live`. Observed CPU quantiles ranged from about 0.5 ms to 3.25 ms. D1 GraphQL Analytics returned 57 reads and 3 writes across the three databases for the same 30-day window; `termux-surface-matrix` had no usage row. Billing usage reads still require Billing Read.
 - Account billing usage reads returned an authorization response requiring Billing Read. Current request/billing usage therefore remains unknown.
 - The connected account identity and account/database IDs are excluded from this public evidence record.
 
@@ -94,7 +94,7 @@ All values below are published plan entitlements. Account eligibility, current r
 - Queues Free: 10,000 operations/day, 10,000 queues/account, 24-hour message retention. https://developers.cloudflare.com/queues/platform/pricing/ and https://developers.cloudflare.com/changelog/post/2026-02-04-queues-free-plan/
 - R2 Free: 10 GB-month Standard storage, 1 million Class A operations/month, 10 million Class B operations/month, free egress. https://developers.cloudflare.com/r2/pricing/
 
-**Priority:** **P0 — finish existing lane**. Capture Billing Read usage, document the deployed Worker/D1 bindings, evaluate whether Cloudflare Queues should be provisioned for receiver-mesh use, and resolve R2 activation through the account owner. Keep D1 write budgets explicit; the existing Neon exhaustion incident demonstrates why a quota read is observational; runtime admission requires a separate enforcement gate.
+**Priority:** **P0 — finish existing lane**. Preserve the measured 80 Worker requests and 57 D1 reads / 3 writes as the initial baseline; obtain Billing Read for financial usage, document the deployed Worker/D1 bindings, evaluate Cloudflare Queues for receiver-mesh buffering, and route R2 activation through the account owner. Keep D1 write budgets explicit; the existing Neon exhaustion incident demonstrates why a quota read is observational; runtime admission requires a separate enforcement gate.
 
 ## 3. Render reconciliation — repository wiring exists
 

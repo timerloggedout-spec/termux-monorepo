@@ -6,10 +6,7 @@ import os
 import threading
 import uuid
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
-
-import pytest
 from temporalio.client import Client
 from temporalio.worker import Worker
 

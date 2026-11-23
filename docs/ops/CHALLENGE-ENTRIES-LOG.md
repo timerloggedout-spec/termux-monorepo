@@ -738,6 +738,56 @@ rule acceptance, issue assignment, and contribution state remain
 NOT_ESTABLISHED. The February–March AI Hackathon group-access request window
 is historical and closed.
 
+### C12 — UGREEN Hackathon 2026 on AI NAS — R1 SUBMITTED; R2 CONDITIONAL
+
+- **Round 1 receipt:** Receipts Vault is published on Devpost at
+  https://devpost.com/software/receipts-vault. The authenticated project
+  record reports published_at = submitted_at =
+  2026-11-15T22:16:33-08:00, before the Round 1 wall
+  (2026-11-15 23:45 PT). The coordinator now records registration and
+  Round 1 submission as complete.
+- **Schedule correction (official Devpost announcement #47894, sent
+  2026-11-22T03:02:11Z):** Top 30 finalists and invitations Nov 27;
+  assigned remote-NAS testing Nov 28–Dec 4; final submission Dec 6 at
+  11:45 PM PT; winners Dec 12.
+- **Source conflict:** the Devpost key-dates endpoint still returned the
+  earlier winner date when re-read Nov 23. The later official announcement
+  governs; the conflict remains recorded in the coordinator.
+- **Round 2 gate:** conditional on finalist invitation. Preserve the
+  Round 1 package; if invited, complete the assigned NAS testing day and
+  final package/demo by the updated wall.
+
+### C18 — Build with AI — PICO Space Program — UPCOMING / SUBMISSIONS OPEN
+
+- **Program window:** Nov 18, 2026–Feb 1, 2027; winners announced Feb 25.
+  Devpost lists a $50,000 cash pool, $10,000 top prize, and 32 prizes.
+- **Tracks:** Android/Kotlin and Unity/C#. The official emulator supports
+  development without a headset.
+- **Kickoff:** Tue Nov 24, 10:00 AM PT. Luma lists 10:00 AM–12:15 PM PT;
+  the supplied Discord post lists 10:00 AM–12:00 PM PT. Preserve this
+  15-minute discrepancy until the organizer clarifies. Calendar entry
+  uses the Luma end time.
+- **Eligibility/registration gates:** age 18+; eligible country/territory
+  (Quebec excluded); Devpost country, GitHub username, and Discord
+  username fields; explicit agreement to Official Rules and Devpost Terms.
+  The registration form's country dropdown is narrower than the rules
+  eligibility text, so verify the selected country before registration.
+- **Build/submission gates:** PICO developer account; join the PICO Space
+  Program Discord; choose a track; build or significantly port/update the
+  app after Nov 18; test on PICO or the official emulator; publish source
+  with license, APK, test instructions, and public YouTube demo under
+  three minutes; disclose AI tools/models. AI-agent use is required for
+  Agentic Workflow and Frontier Models award categories.
+- **Participation state:** user requested participation Nov 23.
+  Account-specific eligibility and Devpost registration, Luma RSVP, track,
+  and project remain pending confirmation. Personal identifiers are kept
+  out of this public register.
+- **Sources:** https://pico-space-program.devpost.com/ ;
+  https://pico-space-program.devpost.com/rules ;
+  https://luma.com/g2wipwwq ;
+  https://developer.picoxr.com/ ;
+  https://discord.gg/bCFgjmjKCr .
+
 ## 5. Sweep sources
 
 AWS Builder Center hackathons listing; Devpost (AI/agent, Nov–Dec 2026);

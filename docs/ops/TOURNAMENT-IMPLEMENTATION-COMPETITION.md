@@ -14,15 +14,15 @@ Supply one immutable receipt per implementation and task. Each receipt includes:
 - `implementation_id`, `implementation_version`, and `competition_role` (`incumbent` or `challenger`);
 - `cohort_id`, `task_id`, `task_contract_hash`;
 - `environment_fingerprint`, `evaluator_version`, `run_id`;
-- `outcome`, `hard_gates`, and a `metrics` object.
+- `outcome`, `hard_gates`, a cohort-wide `metric_set`, and a `metrics` object.
 
-The comparator requires exact task-set equality, one cohort, one task contract, one environment fingerprint, one evaluator version, and unique run IDs. This strict environment match is for tournament implementation comparisons. Heterogeneous model candidates use capability-specific cohorts and environment blocks.
+The comparator requires exact task-set equality, one cohort, one task contract, one environment fingerprint, one evaluator version, one identical declared metric set, and unique run IDs. Every receipt supplies every metric-set key; use JSON `null` for an unobserved value. The comparator rejects omitted keys, mismatched metric sets, non-finite values and unsupported metric IDs. This strict environment match is for tournament implementation comparisons. Heterogeneous model candidates use capability-specific cohorts and environment blocks.
 
 Required hard gates: task contract, schema, security/policy, provenance, and deterministic checks. A hard-gate failure in either arm sets the recommendation to `blocked_by_hard_gate`.
 
 ## Outcome vector
 
-The comparator understands quality, acceptance, grounding, calibration, reproducibility, latency, compute/inference cost, human effort, context tokens, retries and integration conflicts. Each metric declares a maximize/minimize direction.
+The comparator understands quality, acceptance, grounding, calibration, reproducibility, latency, compute/inference cost, human effort, context tokens, retries, integration conflicts and policy violations. Each metric declares a maximize/minimize direction.
 
 Missing metric observations remain null and reduce that metric's paired sample count. Partial coverage blocks dominance for the cohort; the report lists incomplete and wholly unobserved metrics explicitly. The report includes raw paired deltas, direction-normalized improvement, sample counts and approximate 95% intervals. Paired intervals use Student-t critical values through 30 degrees of freedom and a normal approximation for larger samples. Dominance requires complete paired coverage, interval-supported non-regression on every observed metric and positive improvement on at least one.
 

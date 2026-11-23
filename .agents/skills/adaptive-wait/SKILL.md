@@ -58,6 +58,8 @@ While useful work is running, continue only with work that cannot mutate or inva
 
 Do not create competing writes, duplicate workflow dispatches, or overlapping branches merely to stay busy.
 
+**Review-finding isolation:** When actionable review feedback arrives during an active validation cohort, classify and record each finding while preserving the watched SHA. Let the current cohort reach terminal before applying a successor commit; then re-run the affected gates and bind all new conclusions to the successor SHA. Preserve the earlier run evidence as historical.
+
 ## Retry / steering rule
 
 Retry only when the new attempt has an evidence-backed reason to differ: changed input or SHA; transient infrastructure/provider failure; recovered capacity/quota; corrected workflow/reference; or a new review finding or authoritative instruction.
@@ -690,3 +692,12 @@ Session 2026-10-19 14:15 PDT / 2026-10-19 21:15 UTC:
 - Recent gates success/skipped. help-wanted execute in_progress on tip. No tip failures. Decision: QUIET / KEEP. No promote.
 - #1286 dual-gate PASS but not on tip base. Master functional. Disjoint: skills updated with recon.
 - Agent-Identity: Grok (Administrator)
+
+
+Session 2026-11-23 14:18 UTC:
+- Watched PR #5822 head `3dbfe3fc7f71ce6d4ebf32f2d6214b65f50dd623`, base `64a7b5251692434b91d526849b4389bb96639c57`.
+- Initial Actions queue depth was 273 and later 238. Required gates reached terminal success: repo gate 45191122771, termux smoke 45191122793, refTemplates evaluation 45191122880, proposal lifecycle 45191122706, DO Statement Style 45191122728; CodeQL 45191122720 also succeeded.
+- PR production ledger 45191122590 and Sweep Accountability 45191122944 succeeded.
+- Action Effectiveness Ledger 45191122773 failed at GitHub API HTTP 403 rate limit during event measurement. Classified as API-capacity infrastructure evidence; the longitudinal ledger publish step was skipped.
+- Devin Review identified four actionable findings: whitespace-only SOURCE preview safety, base-to-head whitespace-check semantics, directory-only metadata validation wording, and Tier-C scoring scope in the index.
+- Decision: preserve the watched SHA through terminal required gates, then apply a successor revision with focused regression coverage. Earlier run evidence remains historical.

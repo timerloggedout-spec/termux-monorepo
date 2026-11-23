@@ -26,7 +26,7 @@ Do **not** treat the current master tree as the complete reconstruction inventor
 ```text
 refTemplates/
 ├── 00_Index/                          # navigator + recovery + SOURCE map
-├── 01_Agent_Runtime/ … 14_…           # metadata-first
+├── 01_Agent_Runtime/ … 14_…           # metadata-first; 13_Third_Party_Refs carries Tier-C patterns
 ├── 15_Research_Repo_Templates/        # consolidated research scaffolds
 │   └── jogyo-research-lab/            # primary — Yeachan-Heo/My-Jogyo pattern
 ├── 16_Org_Phased/                     # Enterprise + complementary orgs
@@ -35,6 +35,8 @@ refTemplates/
 
 Rules:
 - Metadata-first (README + SOURCE.txt + preferred fork URL).
+- Tier-C design/workflow patterns live under `13_Third_Party_Refs/`; full research scaffolds live under `15_Research_Repo_Templates/`.
+- Tier-C patterns join metadata inventory and relevant proposal/evidence lanes; the Tier-A research score and Delphi participant registry remain scoped to `15_*`.
 - Live gitlinks only when a pin is required for Actions / agent runtime.
 - Pin intentionally; promote when dual-gate green and task outcome verified.
 

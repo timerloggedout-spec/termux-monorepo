@@ -28,9 +28,31 @@ def slots() -> list[Path]:
     return out
 
 
+def source_preview(source: Path) -> str | None:
+    if not source.is_file():
+        return None
+    lines = source.read_text(encoding="utf-8").strip().splitlines()
+    return lines[0] if lines else None
+
+
 def inventory_entry(slot: Path) -> dict:
     children = [c.name for c in sorted(slot.iterdir()) if c.is_dir() or c.suffix in {".md", ".txt"}]
     research_children = []
+    pattern_children = []
+    if slot.name.startswith("13_"):
+        for c in sorted(slot.iterdir()):
+            if not c.is_dir():
+                continue
+            source = c / "SOURCE.txt"
+            readme = c / "README.md"
+            pattern_children.append(
+                {
+                    "name": c.name,
+                    "has_source": source.is_file(),
+                    "has_readme": readme.is_file(),
+                    "source_preview": source_preview(source),
+                }
+            )
     if slot.name.startswith("15_"):
         for c in sorted(slot.iterdir()):
             if not c.is_dir():
@@ -52,6 +74,7 @@ def inventory_entry(slot: Path) -> dict:
         "path": str(slot.relative_to(ROOT)),
         "entries": children,
         "research_children": research_children,
+        "pattern_children": pattern_children,
         "collected_at": datetime.now(UTC).isoformat(),
     }
 
@@ -65,6 +88,12 @@ def validate(entries: list[dict]) -> list[str]:
                     failures.append(f"{e['slot']}/{rc['name']}: missing SOURCE.txt")
                 if not rc.get("has_readme"):
                     failures.append(f"{e['slot']}/{rc['name']}: missing README.md")
+        if e["slot"].startswith("13_"):
+            for pc in e.get("pattern_children", []):
+                if not pc.get("has_source"):
+                    failures.append(f"{e['slot']}/{pc['name']}: missing SOURCE.txt")
+                if not pc.get("has_readme"):
+                    failures.append(f"{e['slot']}/{pc['name']}: missing README.md")
     return failures
 
 

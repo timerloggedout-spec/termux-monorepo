@@ -34,7 +34,7 @@ Leetspeak is a display dialect. Canonical paths, identifiers, permissions, and v
 
 ## Invisible-character experiments
 
-Invisible Unicode may provide optional puzzle texture. Each clue keeps a visible label, accessible description, and canonical destination. Clues remain inert data and carry no hidden instructions for crawlers, external LLMs, or user agents.
+Invisible Unicode may provide optional puzzle texture. Each clue keeps a visible label, accessible description, and canonical destination. Clues remain inert data. Keep crawler policy and external-agent guidance in their documented, visible control surfaces.
 
 The public Agent Ready representation uses the plain surface and canonical links. The public site remains useful after all invisible marks are removed.
 

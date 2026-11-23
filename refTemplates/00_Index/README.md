@@ -5,6 +5,7 @@
 | Path | Role |
 |------|------|
 | 00_Index/ | This navigator + recovery + SOURCE map |
+| 00_Index/EXTERNAL-RE-TARGETS.md | Metadata-only register for external Reverse Engineering targets; includes Bixberry intake #5810 |
 | 01_Agent_Runtime/ … 14_* | Categorical metadata from skeleton |
 | 15_Research_Repo_Templates/ | Consolidated research scaffolds, including the Dicklesworthstone Flywheel stack profile |
 | 16_Org_Phased/ | Orgs + Enterprise phase gates |

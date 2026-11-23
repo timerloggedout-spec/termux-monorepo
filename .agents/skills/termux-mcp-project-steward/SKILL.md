@@ -19,7 +19,9 @@ Use this skill for repository stewardship through a connected Android/Termux MCP
 2. Inspect resource pressure before expensive work.
 3. Keep MCP checkouts, caches, sessions, tunnels, and generated logs outside tracked worktrees.
 4. For edits, use a clean isolated worktree from the requested remote base.
-5. Before commit, run `git diff --check`, the smallest relevant test, and `git status --short`.
+5. Read [Contribution Style Preflight](../../../docs/ops/CONTRIBUTION-STYLE-PREFLIGHT.md) before implementation, drafting, comments, commits, PRs, or issue work.
+6. Run `python3 scripts/ci/check_do_statement_style.py --preflight --base origin/master` before commit or publication; pass `--text-file PATH` for collaboration drafts.
+7. Before commit, run `git diff --check`, the smallest relevant test, and `git status --short`.
 
 ## WAIT + loop
 
@@ -42,8 +44,7 @@ For GitHub stewardship, preserve SHA/run/job/artifact provenance and distinguish
 - `docs/ops/SKILLS-INVENTORY.md`
 - `.agents/skills/adaptive-wait/SKILL.md`
 - `.agents/skills/adaptive-feedback-cycle/SKILL.md`
-
-
-## Repo-wide Linguist / Siglary mandate
-
-Apply [the DO-first Linguist / Siglary mandate](../../../docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md) to repository chat, comments, commits, PRs, issues, workflow directives, and skills. Use `CHAT := STATE-CHANGE ∨ OVERSIGHT`, CAVEMAN-6, concrete DO verbs, and registered Siglary operators. Keep OPERATORS, GLYPHS, and CHORDS distinct; resolve chords in named domains; preserve exact technical literals. State scope, owner, condition, expected state, and evidence. Preserve read-only defaults and approval boundaries.
+- `docs/ops/CONTRIBUTION-STYLE-PREFLIGHT.md`
+- `docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md`
+- `docs/proposals/active/notation-sets/SIGLARY-STANDARD.md`
+- `docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md`

@@ -75,6 +75,7 @@ jobs:
 
       - name: Tournament implementation comparison contracts
         run: |
+          python3 -m json.tool docs/ops/TOURNAMENT-IMPLEMENTATION-RECEIPT.schema.json > /dev/null
           python3 -m unittest discover -s deepcli/tests -p 'test_implementation_competition.py' -v
 
       - name: Tournament comparison CLI contracts

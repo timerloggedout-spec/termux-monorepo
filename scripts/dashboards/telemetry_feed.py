@@ -22,7 +22,9 @@ from __future__ import annotations
 
 import argparse
 import json
-from collections import Counter
+import math
+import re
+from collections import Counter, deque
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -35,6 +37,7 @@ QUOTA = "apps/tribute-dashboard/data/quota.json"
 QUOTA_USAGE = "apps/tribute-dashboard/data/quota-usage.json"
 OBSERVATIONS = "scripts/dashboards/workflow_observations.json"
 ACTIONS_OBS = "scripts/dashboards/actions_observations.json"
+AGENT_STREAM = "agent_telemetry_stream.json"
 PROVIDER_RUNTIME = "apps/tribute-dashboard/data/puter-pool-runtime.json"
 
 HONESTY = [
@@ -57,6 +60,62 @@ def _read_json(rel: str):
     return json.loads(p.read_text())
 
 
+def _safe_event_text(value):
+    if not isinstance(value, str) or not re.fullmatch(r"[A-Za-z0-9_.:/@-]{1,256}", value):
+        return None
+    if value.startswith(("sk-", "ghp_", "github_pat_")):
+        return None
+    return value
+
+
+def _recent_puter_requests(limit: int = 20) -> list[dict]:
+    path = ROOT / AGENT_STREAM
+    if not path.is_file() or path.is_symlink():
+        return []
+    tail = deque(maxlen=limit)
+    try:
+        with path.open("rb") as stream:
+            size = path.stat().st_size
+            if size > 2_000_000:
+                stream.seek(size - 2_000_000)
+                stream.readline()
+            for raw in stream:
+                if len(raw) > 64_000:
+                    continue
+                try:
+                    event = json.loads(raw)
+                except (UnicodeDecodeError, json.JSONDecodeError):
+                    continue
+                if not isinstance(event, dict) or event.get("event_type") != "provider.inference.completed":
+                    continue
+                if event.get("entity_id") != "g4f.puter" and event.get("provider_id") != "g4f.puter":
+                    continue
+                attrs = event.get("attributes") or {}
+                if not isinstance(attrs, dict):
+                    continue
+                latency = attrs.get("latency_ms")
+                tokens_in = attrs.get("input_tokens")
+                tokens_out = attrs.get("output_tokens")
+                tail.append({
+                    "occurred_at": event.get("occurred_at") if isinstance(event.get("occurred_at"), str) else None,
+                    "request_id": _safe_event_text(attrs.get("request_id")),
+                    "exact_model_id": _safe_event_text(attrs.get("exact_model_id")),
+                    "outcome": attrs.get("outcome") if attrs.get("outcome") in {"success", "failure"} else "unknown",
+                    "latency_ms": latency if isinstance(latency, (int, float)) and not isinstance(latency, bool) and math.isfinite(latency) and latency >= 0 else None,
+                    "input_tokens": tokens_in if isinstance(tokens_in, int) and not isinstance(tokens_in, bool) and tokens_in >= 0 else None,
+                    "output_tokens": tokens_out if isinstance(tokens_out, int) and not isinstance(tokens_out, bool) and tokens_out >= 0 else None,
+                    "task_or_entry_ref": _safe_event_text(attrs.get("task_or_entry_ref")),
+                    "doe_run_id": _safe_event_text(attrs.get("doe_run_id")),
+                    "workflow_run_id": _safe_event_text(attrs.get("workflow_run_id")),
+                    "run_attempt": attrs.get("run_attempt") if isinstance(attrs.get("run_attempt"), int) and not isinstance(attrs.get("run_attempt"), bool) and attrs.get("run_attempt") > 0 else None,
+                    "temporal_workflow_id": _safe_event_text(attrs.get("temporal_workflow_id")),
+                    "temporal_run_id": _safe_event_text(attrs.get("temporal_run_id")),
+                })
+    except OSError:
+        return []
+    return list(reversed(tail))
+
+
 def collect() -> dict:
     gaps: list[str] = []
     sources: list[dict] = []
@@ -67,6 +126,7 @@ def collect() -> dict:
     obs = _read_json(OBSERVATIONS)
     act = _read_json(ACTIONS_OBS)
     provider_runtime = _read_json(PROVIDER_RUNTIME)
+    recent_puter_requests = _recent_puter_requests()
 
     for rel, doc, key in ((STATUS, status, "generated_at"),
                           (QUOTA, quota, "generated_at"),
@@ -78,6 +138,14 @@ def collect() -> dict:
             gaps.append(f"source missing at collection time: {rel}")
         else:
             sources.append({"path": rel, "stamped_at": doc.get(key)})
+
+    agent_path = ROOT / AGENT_STREAM
+    if agent_path.is_file():
+        sources.append({"path": AGENT_STREAM, "stamped_at": recent_puter_requests[0]["occurred_at"] if recent_puter_requests else None})
+    else:
+        gaps.append(f"source missing at collection time: {AGENT_STREAM}")
+    if not recent_puter_requests:
+        gaps.append("Puter Pool per-request inference events not yet observed in agent_telemetry_stream.json.")
 
     # ---- S2: outcome ledger (status.json) --------------------------------
     outcomes = None
@@ -234,6 +302,7 @@ def collect() -> dict:
                 "counters": pool.get("counters") or {},
                 "quota": provider_runtime.get("quota") or {"status": "unknown", "used": None, "limit": None, "reset": None},
                 "correlation": provider_runtime.get("correlation") or {},
+                "recent_requests": recent_puter_requests,
             }
         else:
             gaps.append("Puter Pool runtime snapshot has an unrecognized schema or provider identity; provider runtime block withheld.")

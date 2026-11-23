@@ -91,3 +91,14 @@ Configure the local commit prompt once: `git config commit.template .github/comm
 - [ ] PR/review text includes evidence and acceptance criteria.
 - [ ] Notation is precise and locally legible.
 - [ ] Negation preserves an exact technical requirement.
+
+
+## 7. Automated enforcement
+
+- `scripts/ci/communication_lint.py` checks added authored-prose lines, source comments, commit messages, PR titles, and PR bodies.
+- Structural spans: fenced code, inline code, blockquotes, and generated Linguist projections. Imported/vendor paths receive advisory treatment.
+- HTML comments remain authored prose and receive lint.
+- Machine output follows `siglary-lint/v1`: path, line, matched phrase, and suggested DO rewrite.
+- `scripts/ci/repo_gate.py` runs communication lint as a HARD changed-file check; `.github/workflows/repo-gate.yml` runs focused lint and projection regression tests.
+- Exact technical identifiers use a narrow allowlist: `NO-GO`, `no-cost`, `no-op`, `not_found`, and related state literals.
+- Keep exceptions narrow, source-backed, and covered by regression tests.

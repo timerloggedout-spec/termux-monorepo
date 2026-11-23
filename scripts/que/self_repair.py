@@ -99,9 +99,28 @@ def item_key(path: str, sig: str) -> str:
 
 
 def item_body(item: dict) -> str:
-    rec = "\n".join(f"- run {r['url']} @ `{r['sha'][:8]}`" for r in item["receipts"][:5])
+    rec = "\\n".join(f"- run {r['url']} @ `{r['sha'][:8]}`" for r in item["receipts"][:5])
+    source_kind = item.get("source_kind") or ("feed_freshness" if item.get("step") == "freshness" else "workflow_run")
+    source_id = item.get("source_id") or item["path"]
+    latest_receipt = (item.get("receipts") or [{}])[0]
+    source_revision = item.get("source_revision") or latest_receipt.get("sha") or item["sig"]
+    source_sha = source_revision if re.fullmatch(r"[0-9a-f]{40}", source_revision) else None
+    event_source_id, event_source_revision = source_id, source_revision
+    if source_kind == "workflow_run" and latest_receipt.get("id") is not None:
+        event_source_id = f"{source_id}:{latest_receipt['id']}"
+        event_source_revision = f"{source_revision}:attempt:{latest_receipt.get('run_attempt') or 1}"
+    stage_receipt = sie_pipeline.build_receipt(
+        source_kind=source_kind, source_id=source_id,
+        source_revision=source_revision, failure_class=item["sig"],
+        repository=REPO, ref="master", sha=source_sha,
+        evidence_refs=[r["url"] for r in item["receipts"] if r.get("url")],
+        owner_role=item.get("room"),
+        event_source_id=event_source_id,
+        event_source_revision=event_source_revision,
+    )
+    stage_json = json.dumps(stage_receipt, sort_keys=True, indent=2)
     detail = item.get("detail", "")
-    detail_section = f"\n## Branch reconciliation\n{detail}\n" if detail else ""
+    detail_section = f"\\n## Branch reconciliation\\n{detail}\\n" if detail else ""
     return f"""{MARK.format(key=item['key'])}
 class: `{item.get('class', 'self-repair')}` · workflow: `{item['path']}` · signature: `{item['sig']}` · priority: {item['priority']}
 
@@ -110,6 +129,11 @@ class: `{item.get('class', 'self-repair')}` · workflow: `{item['path']}` · sig
 - failing step: `{item['step'] or 'n/a'}`
 - error: {item['message'] or 'n/a'}
 {rec}
+
+## SIE stage receipt
+```json
+{stage_json}
+```
 {detail_section}
 ## Loop (PROPOSAL.md)
 - [ ] Research: diagnosis note with receipts (run URL ∧ SHA)

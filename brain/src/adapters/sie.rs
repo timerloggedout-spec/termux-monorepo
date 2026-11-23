@@ -5,8 +5,8 @@
 //! it owns no queue state, stage transition, policy, execution or persistence.
 
 use crate::{
-    Brain, BrainError, BrainInput, BrainMode, BrainResult, ContextClassification,
-    ContextItem, EvidenceStatus, PolicyGate, RunIdentity, StageBackend,
+    Brain, BrainError, BrainInput, BrainMode, BrainResult, ContextClassification, ContextItem,
+    EvidenceStatus, PolicyGate, RunIdentity, StageBackend,
 };
 
 pub const SIE_STAGE_SCHEMA: &str = "que.sie-stage/v1";
@@ -62,7 +62,9 @@ impl std::fmt::Display for SieAdapterError {
 impl std::error::Error for SieAdapterError {}
 
 impl From<BrainError> for SieAdapterError {
-    fn from(value: BrainError) -> Self { Self::Brain(value) }
+    fn from(value: BrainError) -> Self {
+        Self::Brain(value)
+    }
 }
 
 pub fn into_brain_input(envelope: SieBrainEnvelope) -> Result<BrainInput, SieAdapterError> {
@@ -141,50 +143,122 @@ pub fn run_observation<B: StageBackend, P: PolicyGate>(
 mod tests {
     use super::*;
     use crate::{
-        BrainConfig, BrainStage, Complexity, DecisionStatus, Decomposition,
-        ExecutionDesign, ExecutionPlan, IntentAnalysis, OptimizationReport,
-        PlanStep, PolicyDecision, PolicyInput, ReflectionReport, RiskLevel,
-        RunStatus, StageExecution, StageInput, StageOutput, Strategy,
+        BrainConfig, BrainStage, Complexity, DecisionStatus, Decomposition, ExecutionDesign,
+        ExecutionPlan, IntentAnalysis, OptimizationReport, PlanStep, PolicyDecision, PolicyInput,
+        ReflectionReport, RiskLevel, RunStatus, StageExecution, StageInput, StageOutput, Strategy,
         ValidationCheck, ValidationReport,
     };
 
     struct FixtureBackend;
     impl StageBackend for FixtureBackend {
-        fn run_stage(&self, stage: BrainStage, input: &StageInput<'_>) -> Result<StageExecution, String> {
-            let evidence = input.selected_context.iter().map(|item| item.source_ref.clone()).collect::<Vec<_>>();
+        fn run_stage(
+            &self,
+            stage: BrainStage,
+            input: &StageInput<'_>,
+        ) -> Result<StageExecution, String> {
+            let evidence = input
+                .selected_context
+                .iter()
+                .map(|item| item.source_ref.clone())
+                .collect::<Vec<_>>();
             let output = match stage {
-                BrainStage::Intent => StageOutput::Intent(IntentAnalysis { intent: "assess SIE observation".into(), complexity: Complexity::Moderate, confidence_bps: 9_000 }),
-                BrainStage::Decomposition => StageOutput::Decomposition(Decomposition { tasks: vec![] }),
-                BrainStage::Strategy => StageOutput::Strategy(Strategy { approach: "evidence-first shadow assessment".into(), rationale: "preserve SIE and QUE authority".into(), success_criteria: vec!["identity preserved".into()], constraints: vec!["read-only".into()] }),
-                BrainStage::ExecutionDesign => StageOutput::ExecutionDesign(ExecutionDesign { plan: ExecutionPlan { steps: vec![PlanStep { id: "inspect".into(), title: "Inspect SIE evidence".into(), description: "Read the supplied observation".into(), depends_on: vec![], agent_role: None, tool_ids: vec![], expected_output: "typed assessment".into(), verification: vec!["source reference retained".into()], risk: RiskLevel::Low, has_side_effects: false }] } }),
-                BrainStage::Validation => StageOutput::Validation(ValidationReport { passed: true, checks: vec![ValidationCheck { id: "receipt-present".into(), passed: true, evidence_refs: evidence.clone() }], blocking_issues: vec![], evidence_refs: evidence }),
-                BrainStage::Optimization => StageOutput::Optimization(OptimizationReport { improvements: vec![], tradeoffs: vec![] }),
-                BrainStage::Reflection => StageOutput::Reflection(ReflectionReport { lessons: vec![], learning_candidates: vec![] }),
+                BrainStage::Intent => StageOutput::Intent(IntentAnalysis {
+                    intent: "assess SIE observation".into(),
+                    complexity: Complexity::Moderate,
+                    confidence_bps: 9_000,
+                }),
+                BrainStage::Decomposition => {
+                    StageOutput::Decomposition(Decomposition { tasks: vec![] })
+                }
+                BrainStage::Strategy => StageOutput::Strategy(Strategy {
+                    approach: "evidence-first shadow assessment".into(),
+                    rationale: "preserve SIE and QUE authority".into(),
+                    success_criteria: vec!["identity preserved".into()],
+                    constraints: vec!["read-only".into()],
+                }),
+                BrainStage::ExecutionDesign => StageOutput::ExecutionDesign(ExecutionDesign {
+                    plan: ExecutionPlan {
+                        steps: vec![PlanStep {
+                            id: "inspect".into(),
+                            title: "Inspect SIE evidence".into(),
+                            description: "Read the supplied observation".into(),
+                            depends_on: vec![],
+                            agent_role: None,
+                            tool_ids: vec![],
+                            expected_output: "typed assessment".into(),
+                            verification: vec!["source reference retained".into()],
+                            risk: RiskLevel::Low,
+                            has_side_effects: false,
+                        }],
+                    },
+                }),
+                BrainStage::Validation => StageOutput::Validation(ValidationReport {
+                    passed: true,
+                    checks: vec![ValidationCheck {
+                        id: "receipt-present".into(),
+                        passed: true,
+                        evidence_refs: evidence.clone(),
+                    }],
+                    blocking_issues: vec![],
+                    evidence_refs: evidence,
+                }),
+                BrainStage::Optimization => StageOutput::Optimization(OptimizationReport {
+                    improvements: vec![],
+                    tradeoffs: vec![],
+                }),
+                BrainStage::Reflection => StageOutput::Reflection(ReflectionReport {
+                    lessons: vec![],
+                    learning_candidates: vec![],
+                }),
             };
-            Ok(StageExecution { output, provider_id: Some("fixture".into()), model_id: Some("deterministic-test".into()), fallback_used: false })
+            Ok(StageExecution {
+                output,
+                provider_id: Some("fixture".into()),
+                model_id: Some("deterministic-test".into()),
+                fallback_used: false,
+            })
         }
     }
 
     struct HoldPolicy;
     impl PolicyGate for HoldPolicy {
         fn evaluate(&self, _input: &PolicyInput<'_>) -> PolicyDecision {
-            PolicyDecision { status: DecisionStatus::NeedsApproval, reason: "SIE host approval remains authoritative".into(), evidence_refs: vec!["policy-fixture".into()] }
+            PolicyDecision {
+                status: DecisionStatus::NeedsApproval,
+                reason: "SIE host approval remains authoritative".into(),
+                evidence_refs: vec!["policy-fixture".into()],
+            }
         }
     }
 
     fn envelope() -> SieBrainEnvelope {
         SieBrainEnvelope {
-            identity: RunIdentity { orchestration_id: "orch-1".into(), cycle_id: "cycle-2".into(), attempt_id: "attempt-3".into() },
+            identity: RunIdentity {
+                orchestration_id: "orch-1".into(),
+                cycle_id: "cycle-2".into(),
+                attempt_id: "attempt-3".into(),
+            },
             goal: "Assess the latest SIE stage observation".into(),
             mode: BrainMode::Standard,
             context_budget_tokens: 1024,
             estimated_tokens: 80,
             observation: SieObservation {
-                schema: SIE_STAGE_SCHEMA.into(), event_id: "a".repeat(64), item_key: "b".repeat(24),
-                stage: "OBSERVE".into(), state: "COMPLETED".into(), source_kind: "workflow_run".into(),
-                source_id: "12345".into(), source_ref: "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/12345".into(),
-                observed_at: "2026-11-23T10:00:00Z".into(), repository: "timerloggedout-spec/termux-monorepo".into(),
-                git_ref: "refs/heads/master".into(), sha: Some("c".repeat(40)), evidence_refs: vec!["run:12345".into()], reason: Some("workflow failed".into()),
+                schema: SIE_STAGE_SCHEMA.into(),
+                event_id: "a".repeat(64),
+                item_key: "b".repeat(24),
+                stage: "OBSERVE".into(),
+                state: "COMPLETED".into(),
+                source_kind: "workflow_run".into(),
+                source_id: "12345".into(),
+                source_ref:
+                    "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/12345"
+                        .into(),
+                observed_at: "2026-11-23T10:00:00Z".into(),
+                repository: "timerloggedout-spec/termux-monorepo".into(),
+                git_ref: "refs/heads/master".into(),
+                sha: Some("c".repeat(40)),
+                evidence_refs: vec!["run:12345".into()],
+                reason: Some("workflow failed".into()),
             },
         }
     }
@@ -196,10 +270,15 @@ mod tests {
         assert_eq!(input.identity.cycle_id, "cycle-2");
         assert_eq!(input.identity.attempt_id, "attempt-3");
         assert_eq!(input.context[0].id, format!("sie:{}", "a".repeat(64)));
-        assert_eq!(input.context[0].classification, ContextClassification::Internal);
+        assert_eq!(
+            input.context[0].classification,
+            ContextClassification::Internal
+        );
         assert_eq!(input.context[0].evidence, EvidenceStatus::Observed);
         assert_eq!(input.context[0].estimated_tokens, 80);
-        assert!(input.context[0].content.contains("independent task verification"));
+        assert!(input.context[0]
+            .content
+            .contains("independent task verification"));
     }
 
     #[test]
@@ -217,13 +296,19 @@ mod tests {
     fn rejects_unknown_sie_schema() {
         let mut request = envelope();
         request.observation.schema = "que.sie-stage/v2".into();
-        assert!(matches!(into_brain_input(request), Err(SieAdapterError::UnsupportedSchema(_))));
+        assert!(matches!(
+            into_brain_input(request),
+            Err(SieAdapterError::UnsupportedSchema(_))
+        ));
     }
 
     #[test]
     fn rejects_missing_host_resolved_source_reference() {
         let mut request = envelope();
         request.observation.source_ref.clear();
-        assert!(matches!(into_brain_input(request), Err(SieAdapterError::MissingField("source_ref"))));
+        assert!(matches!(
+            into_brain_input(request),
+            Err(SieAdapterError::MissingField("source_ref"))
+        ));
     }
 }

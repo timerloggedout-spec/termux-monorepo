@@ -72,7 +72,9 @@ Start the worker with
 Start the durable workflow with
 `python3 -m scripts.temporal.puter_pool_observation.start --task-or-entry-ref QUE-<entry> --doe-run-id <doe-run> --workflow-run-id <workflow-run> --run-attempt 1 --interval-seconds 300`.
 The workflow runs every 300 seconds by default and accepts a Temporal `stop` signal.
-Each activity appends one EPS v1 event to `agent_telemetry_stream.json` with
+Send the signal with `temporal workflow signal --workflow-id <workflow-id> --name stop --address localhost:7233`.
+Each activity appends one EPS v1 event to `agent_telemetry_stream.json` and writes
+the current aggregate snapshot to `apps/tribute-dashboard/data/puter-pool-runtime.json` with
 provider identity, task/entry, DoE run, Temporal workflow/run, workflow-run
 attempt, model count, aggregate request outcomes, queue depth, latency, and
 readiness. Event attributes contain aggregate operational metadata only.

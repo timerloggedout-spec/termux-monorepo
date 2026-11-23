@@ -71,6 +71,8 @@ def filing_spec(fields: dict, body: str = "") -> dict:
         "repo": fields.get("Target repo URL", "").strip(),
         "source": fields.get("Artifact source", "none-known").strip()
         or "none-known",
+        "sources": [s.strip() for s in re.split(r"[,\\n]+", fields.get("Acquisition source order", "")) if s.strip()]
+                   or [fields.get("Artifact source", "none-known").strip() or "none-known"],
         "package_id": package_id,
         "package_id_via": via,
         "evidence": fields.get("Evidence expectation", "reproduced").strip()
@@ -132,12 +134,15 @@ def execute(fields: dict, issue_number: int, workdir: Path,
         raise ValueError("filing has no Target ID")
     workdir.mkdir(parents=True, exist_ok=True)
     art_dir = workdir / "artifact"
-    acq = _belt(["acquire", "--source", spec["source"],
-                 "--repo", spec["repo"], "--package-id", spec["package_id"],
-                 "--out", str(art_dir)], expect=(0, 3))
+    acquire_args = ["acquire"]
+    for source in spec["sources"]:
+        acquire_args.extend(["--source", source])
+    acquire_args.extend(["--repo", spec["repo"], "--package-id", spec["package_id"],
+                         "--out", str(art_dir)])
+    acq = _belt(acquire_args, expect=(0, 3))
     acquisition = json.loads(acq.stdout)
     summary = {"target_id": spec["target_id"], "issue": issue_number,
-               "source": spec["source"],
+               "source": spec["source"], "sources": spec["sources"],
                "spec_package_id": spec["package_id"],
                "spec_package_id_via": spec["package_id_via"],
                "spec_repo": spec["repo"],

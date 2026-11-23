@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-23T08:03:02Z)
+# Lane matrix status (2026-11-23T08:04:10Z)
 
-- Master: `6218b865d033d567f3cc5e94956c12fed8a2c105`
+- Master: `2b8a1d9cfdede0d45653a9d67febebdf22764196`
 - Open PRs: **529**
 - Oldest: #47 (109.68d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -32,9 +32,9 @@
 | #5723 | 2.62 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted review relay and record  |
 | #5724 | 2.62 | EXTRACT | state:unknown, minesweeper-title | fix(jules): replace hosted PR handoff with receipt |
 | #47 | 109.68 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
-| #81 | 107.42 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
+| #81 | 107.43 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
 | #103 | 106.29 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
-| #527 | 69.0 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
+| #527 | 69.01 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
 | #605 | 65.59 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
 | #684 | 63.57 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
 | #769 | 61.02 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
@@ -44,8 +44,8 @@
 | #1274 | 34.95 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
 | #1441 | 33.01 | CANDIDATE | state:unknown | feat(triage): reconcile official quota before disp |
 | #1469 | 32.79 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
-| #1470 | 32.78 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
-| #1495 | 32.23 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
+| #1470 | 32.79 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
+| #1495 | 32.24 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
 | #1513 | 31.99 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 31.99 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
 | #1516 | 31.99 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
@@ -59,7 +59,7 @@
 | #1645 | 29.32 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
 | #1650 | 29.24 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
 | #1694 | 27.27 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
-| #1734 | 26.86 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
+| #1734 | 26.87 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
 | #1735 | 26.86 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
 | #1966 | 26.13 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
 

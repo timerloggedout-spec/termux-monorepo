@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-23T06:31:45Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-23T06:48:59Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-23T06:31:44Z` (merged 150 · open 200) · lane-events(Neon) status=`error:HTTPError` count=`None` read_at=`2026-11-23T06:31:44Z`
+Sources: PR feed read_at=`2026-11-23T06:48:59Z` (merged 150 · open 200) · lane-events(Neon) status=`error:HTTPError` count=`None` read_at=`2026-11-23T06:48:59Z`
 
 Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknown=8
 
@@ -18,7 +18,7 @@ Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknow
 | classifiers | `tier-1` | Tier-1 classifier engine | in-flight | NOT_ESTABLISHED | land/close PR #5681 — feat(capabilities): nested skill/plugin/tool discovery and progressive activation |
 | desk | `contribution-desk` | Contribution Desk + desk-feed | active | #5215 `25215ce21f8c` 2026-11-12T10:36:15Z | NOT_ESTABLISHED |
 | desk | `ops` | Lane-events Neon ledger | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #5648 `c9648146400d` 2026-11-19T09:11:31Z | land/close PR #5793 — doe: preregister fast-anything vs rust-anything comparison |
+| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #5648 `c9648146400d` 2026-11-19T09:11:31Z | land/close PR #5793 — doe: preregister Rust migration and GitReverse comparisons |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | marketing | `marketing` | FB Pages MVT + challenge promo | in-flight | #5456 `dacd20c4c57c` 2026-11-15T13:42:20Z | land/close PR #5781 — feat(marketing): add GitHub profile marketing surface |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |

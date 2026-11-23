@@ -110,7 +110,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         with os.fdopen(fd, "w", encoding="utf-8") as stream:
             json.dump(document, stream, indent=2, sort_keys=True)
-            stream.write("\\n")
+            stream.write(chr(10))
             stream.flush()
             os.fsync(stream.fileno())
         os.replace(tmp, output)

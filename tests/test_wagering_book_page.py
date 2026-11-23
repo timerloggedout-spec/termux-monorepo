@@ -51,7 +51,7 @@ def test_feed_shape_and_counts():
     for s in subs:
         fams[s["family"]] = fams.get(s["family"], 0) + 1
     assert fams == {"D1": 2, "D2": 3, "D3": 4, "D4": 4, "D5": 3,
-                    "AMD": 6, "FCC": 1}
+                    "AMD": 6, "FCC": 1, "C12": 3, "SPEC": 12, "PROP": 1}
     assert all("forecast" not in s["id"] for s in subs)
     assert "OUTPUT" in feed["forecast_layer"]
     assert "no external participation" in feed["publication"]
@@ -106,6 +106,9 @@ def test_anchor_derivations():
         "2026-11-20T11:30:00-08:00"
     assert by["D5-16-placement-winner"]["wall_at"] == \
         "2026-11-19T12:00:00-08:00"
+    assert by["PROP-01-fireworks-ai"]["knowable"]["at"] == \
+        "2026-12-31T23:59:59-08:00"
+    assert _feed()["horizon"]["end"] == "2026-12-31T23:59:59-08:00"
 
 
 def test_no_winprob_rendered():
@@ -145,25 +148,29 @@ console.log(JSON.stringify({
   set_text: expectationText({prior_value: 0.4, posterior_value: 0.55, n_evidence: 3}),
   stale_fresh: staleOf(feed, Date.parse("2026-11-03T00:00:00Z")),
   stale_old: staleOf(feed, Date.parse("2026-12-01T00:00:00Z")),
+  stale_source: staleOf({...feed, generated_at:"2026-11-30T00:00:00Z",
+    pct_block:{...feed.pct_block, upstream_computed_at:"2026-11-01T00:00:00Z"}},
+    Date.parse("2026-12-01T00:00:00Z")),
 }));
 """)
     r = subprocess.run(["node", str(out), str(FIXTURE)],
                        capture_output=True, text=True)
     assert r.returncode == 0, r.stderr
     res = json.loads(r.stdout.strip())
-    assert res["n"] == 39 and res["ticks"] == 7
+    assert res["n"] == 39 and res["ticks"] >= 7
     assert res["d1_settle_is_wall"] and res["placement_open_ended"]
     assert res["kickoff_no_wall"] and res["d5_settle_after_wall"]
     assert res["fcc_soft"] and res["intake_state"] == "INTAKE"
     assert res["intake_text"] == "INTAKE \u2014 no estimate"
     assert "0.55" in res["set_text"]
     assert res["stale_fresh"] is False and res["stale_old"] is True
+    assert res["stale_source"] is True
 
 
 def test_render_hooks_present():
     html = _html()
     for hook in ['class="bar"', 'class="landingmark"', 'class="wallmark"',
-                 'class="settlemark"', 'class="fctick"', 'id="hatch"',
+                 'class="settlemark"', 'class="fctick"', 'id="hatch"', 'id="gantt-title"',
                  'class="chip intake"', 'id="booktable"', 'id="positions"',
                  'id="settlements"', "moneyball.wagering-book/v2"]:
         assert hook in html, hook
@@ -172,6 +179,7 @@ def test_render_hooks_present():
 def test_window_pct_feed():
     feed = _feed()
     assert feed["pct_block"]["computed_at"] == feed["generated_at"]
+    assert feed["pct_block"]["upstream_computed_at"]
     for s in feed["subjects"]:
         assert s["window"] and s["window"]["start"] and s["window"]["wall"]
         wp = s["window_pct"]

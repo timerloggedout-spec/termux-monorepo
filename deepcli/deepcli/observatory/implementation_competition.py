@@ -28,6 +28,7 @@ METRIC_DIRECTIONS = {
 }
 
 REQUIRED_RECEIPT_FIELDS = (
+    "schema",
     "implementation_id",
     "implementation_version",
     "competition_role",
@@ -82,6 +83,8 @@ def _validate_receipts(receipts: list[dict[str, Any]]) -> dict[str, Any]:
         missing = [field for field in REQUIRED_RECEIPT_FIELDS if field not in receipt]
         if missing:
             raise ValueError(f"receipt[{index}] missing fields: {', '.join(missing)}")
+        if receipt["schema"] != "tournament.implementation-receipt.v1":
+            raise ValueError(f"receipt[{index}] schema must be tournament.implementation-receipt.v1")
         implementation = (receipt["implementation_id"], receipt["implementation_version"])
         task_id = receipt["task_id"]
         identity_fields = (*implementation, receipt["cohort_id"], task_id,
@@ -239,6 +242,7 @@ def compare_implementations(receipts: list[dict[str, Any]]) -> dict[str, Any]:
         recommendation = "pareto_tradeoff_or_insufficient_evidence"
     return {
         "schema": "tournament.implementation-comparison.v1",
+        "receipt_schema": "tournament.implementation-receipt.v1",
         "cohort_id": validated["cohort_id"],
         "task_contract_hash": validated["task_contract_hash"],
         "environment_fingerprint": validated["environment_fingerprint"],

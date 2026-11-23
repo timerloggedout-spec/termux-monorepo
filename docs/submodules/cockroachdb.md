@@ -12,7 +12,7 @@
 
 Cockroach Labs announced that new CockroachDB source development moved to a private repository on 2026-09-15. This public GitHub repository is retained as a historical source snapshot; the gitlink pins an immutable commit and omits branch tracking. Runtime images are versioned and digest-pinned independently.
 
-The submodule retains its CockroachDB Software License. Preserve the upstream `LICENSE` file and follow its use, license-key and telemetry terms. Unlicensed non-production use is limited to a single-node deployment. The CI single-node adapter and canonical-event replay recovery contract runs without a license key. The three-node failover and native backup/restore drill runs only when the `COCKROACH_LICENSE_KEY` Actions secret contains a valid license. Keep license keys in the secret store.
+The submodule retains its CockroachDB Software License. Preserve the upstream `LICENSE` file and follow its use, license-key and telemetry terms. CockroachDB documents a seven-day no-license grace period for ephemeral clusters; the CI three-node cluster is created for one job and destroyed immediately afterward. A valid `COCKROACH_LICENSE_KEY` may be supplied to apply a provisioned license. Persistent or production multi-node deployments require owner-managed license compliance. Keep license keys in the secret store.
 
 
 ## Boundary

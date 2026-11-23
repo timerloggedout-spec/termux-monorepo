@@ -636,7 +636,8 @@
             "version",
             "source_ref",
             "status",
-            "cli_source_ref"
+            "cli_source_ref",
+            "receipt_schema_ref"
           ],
           "properties": {
             "implementation_id": {
@@ -657,6 +658,9 @@
             "cli_source_ref": {
               "type": "string",
               "minLength": 1
+            },
+            "receipt_schema_ref": {
+              "const": "docs/ops/TOURNAMENT-IMPLEMENTATION-RECEIPT.schema.json"
             }
           }
         }

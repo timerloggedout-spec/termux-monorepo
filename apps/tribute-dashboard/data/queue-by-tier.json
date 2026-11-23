@@ -1,23 +1,27 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-23T20:21:11Z",
+ "generated_at": "2026-11-23T20:56:47Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 2,
-   "in_progress": 3,
+   "queued": 3,
+   "in_progress": 0,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
+    "Orchestration Regression Guard": 1,
     "PR scope guard": 2
    }
   },
   "2": {
    "tier": 2,
-   "queued": 0,
+   "queued": 2,
    "in_progress": 1,
-   "oldest_queued_at": null,
-   "by_workflow_queued": {}
+   "oldest_queued_at": "2026-11-23T20:56:12Z",
+   "by_workflow_queued": {
+    "pages build and deployment": 1,
+    "tribute-dashboard-deploy": 1
+   }
   },
   "3": {
    "tier": 3,
@@ -28,25 +32,27 @@
   },
   "4": {
    "tier": 4,
-   "queued": 9,
-   "in_progress": 15,
+   "queued": 12,
+   "in_progress": 16,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "Quota Dispatch Tree": 1,
-    "repo-tracking-collect": 1,
     "quota-served-probe": 1,
     "termux smoke": 1,
-    "Sweep Accountability": 1,
+    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
+    "Agent Readability Source Contract": 1,
+    "quota-allocation-planner": 1,
+    "hitl-control-plane-verify": 1,
+    "DO Statement Style": 2,
+    "Quota Dispatch Tree": 1,
     "Agent PR Jules Handoff": 1,
     "PR Change Effectiveness Ledger": 1,
-    "Advisory GitHub Actions lint": 1,
-    "DO Statement Style": 1
+    "Advisory GitHub Actions lint": 1
    }
   }
  },
  "totals": {
-  "queued": 11,
-  "in_progress": 19
+  "queued": 17,
+  "in_progress": 17
  },
  "wedged_ancient": [
   {
@@ -204,13 +210,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 5,
-   "2": 1,
+   "1": 3,
+   "2": 3,
    "3": 0,
    "4": 0
   },
   "explicit_total": 6,
-  "default_t4": 24,
+  "default_t4": 28,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

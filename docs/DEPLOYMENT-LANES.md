@@ -6,10 +6,10 @@
 > admission rule) — a distinct architecture record.
 
 Single source of truth for every Vercel project deployed from this org's
-repos. A "lane" is one Vercel project — each has exactly one Root Directory,
-so a monorepo with independent deployables needs one lane per deployable,
-uses a separate project for each deployable. Add a row here whenever a new lane
-is created; update it whenever a lane's purpose or Root Directory changes.
+repos. A "lane" is one Vercel project with exactly one Root Directory. A
+monorepo with independent deployables uses one project per deployable. Add a
+row here whenever a new lane is created; update it whenever a lane's purpose
+or Root Directory changes.
 
 ## Vercel lanes
 
@@ -20,10 +20,11 @@ is created; update it whenever a lane's purpose or Root Directory changes.
 
 ## Publication and evidence surface matrix
 
-Vercel is the only currently documented **live application-hosting lane** in
-this repository. The other surfaces below are deliberately tracked here so
-future publication work does not silently create a second, conflicting
-source of truth.
+Vercel remains the primary interactive application-hosting lane for the
+MCP/demo projects. Cloudflare Workers/D1 provide separate edge/data-plane
+services, and Render carries a narrow image-backed README utility service.
+GitHub Pages remains a distinct static-publication lane. These surfaces are
+tracked here to preserve one source of truth and clear deployment boundaries.
 
 | Surface | Role | Current repository evidence | Status / rule |
 |---|---|---|---|

@@ -170,14 +170,9 @@ def reference_text(path: str, base: str, cwd: pathlib.Path = ROOT) -> tuple[str 
 
 def preserved_source_path(path: str, cwd: pathlib.Path = ROOT) -> bool:
     """Keep imported vendor originals outside rewrite/clobber remediation."""
-    if path.startswith("vendor/skills-mirror/"):
-        return True
-    candidate = cwd / path
-    if candidate.is_symlink():
-        target = candidate.resolve()
-        mirror = (cwd / "vendor/skills-mirror").resolve()
-        return target == mirror or mirror in target.parents
-    return False
+    candidate = (cwd / path).resolve()
+    mirror = (cwd / "vendor/skills-mirror").resolve()
+    return candidate == mirror or mirror in candidate.parents
 
 
 def tracked_skills(cwd: pathlib.Path = ROOT) -> list[str]:

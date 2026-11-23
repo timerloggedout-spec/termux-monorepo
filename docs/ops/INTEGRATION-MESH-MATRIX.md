@@ -551,10 +551,10 @@ The [dated evidence dossier](../rfps/mesh-resiliency-free-compute/EXTENDED-UTILI
 | Candidate | Capability class | Published free allowance / constraint | Priority |
 |---|---|---|---|
 | SnapDeploy | Managed containers | 4 × 512 MB / 0.25 vCPU; 100 shared container-hours/month; idle sleep and browser-only wake behavior | P1 synthetic cold-start test |
-| Leapcell Hobby | Serverless execution | 100K invocations/month; 3 GB-hours; 2 GB egress; 10 GB ingress; 900-second invocation timeout | P1 bounded function test |
-| Appwrite Free | Backend functions | 750K executions; 5 GB bandwidth; 2 GB storage; 60-minute minimum Free interval; cron schedules require paid plan | P1 schedule and pause recovery test |
+| Leapcell Hobby | Serverless execution | 100K invocations/month; 3 GB-hours; 2 GB egress; 10 GB ingress; 10K async invocations; one free PostgreSQL database; 900-second invocation timeout | P1 bounded function test |
+| Appwrite Free | Backend functions | 750K executions/month; 100 GB-hours; 5 GB bandwidth; 2 GB storage; 0.5 CPU / 512 MB; 60-minute minimum Free interval; cron schedules require paid plan | P1 schedule and pause recovery test |
 | alwaysdata Free | Personal website hosting | 1 GB SSD; 256 MB RAM; 0.25 CPU; personal-use and website restrictions | P2 website-only fit |
-| Back4app Containers Free | Docker preview | 0.25 CPU; 256 MB RAM; 100 GB transfer; vendor article records 60-minute temporary URLs | P2 resolve source conflict |
+| Back4app Containers Free | Docker preview | 0.25 CPU; 256 MB RAM; 100 GB transfer; 60-minute temporary URLs; free auto-deploy disabled | P2 verify URL and deployment behavior |
 | zrok Free | Network sharing | 5 GB/day; 25 environments; 50 share backends; 50 private frontends; compute capacity: none | P2 access/transfer test |
 
 ### Watcher cadence distinction

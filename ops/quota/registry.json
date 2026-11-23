@@ -1543,10 +1543,10 @@
    "zone": "UTC",
    "source": "https://unorouter.com/en/blog/free-ai-api",
    "doc_quote": "Free models allow about one request per minute per model and account.",
-   "live": "GET /api/usage/token/ with UNOROUTER_API_KEY returns key-level total_granted, total_used, total_available and quota flags; this is not per-model headroom. HTTP 429 carries Retry-After for the separate per-model request window.",
+   "live": "GET /api/usage/token/ with UNOROUTER_API_KEY returns key-level total_granted, total_used, total_available and quota flags; the endpoint reports key-level balance separately from per-model request headroom. HTTP 429 carries Retry-After for the separate per-model request window.",
    "planned_use": {
     "safety": 0.9,
-    "note": "Shared upstream pools impose independent provider-specific caps and can be exhausted separately. The API-key endpoint exposes that key's granted/used/available balance; account-wide balance and logs require a separate access token. Provider-level consent/objection applies to providers serving free and paid models; blocking was not active in the October 21, 2026 notice and is planned to be phased in."
+    "note": "Shared upstream pools impose independent provider-specific caps and can be exhausted separately. The API-key endpoint exposes that key's granted/used/available balance; account-wide balance and logs require a separate access token. Provider-level consent/objection applies to providers serving free and paid models; the October 21, 2026 notice describes a staged rollout with enforcement scheduled for a later phase."
    }
   },
   {
@@ -3264,16 +3264,16 @@
    "id": "agentrouter.models",
    "provider": "agentrouter",
    "lane": "model",
-   "metric": "Owner-reported community-pool model catalogue visibility; per-account quota balance/reset not established",
+   "metric": "Owner-reported community-pool model catalogue visibility; per-account quota balance/reset unverified",
    "limit": null,
    "unit": "provider-defined",
    "window": "unknown",
    "reset": "unknown",
    "zone": "unknown",
    "source": "https://co.agentrouter.org/portal/guide",
-   "live": "GET https://co.agentrouter.org/v1/models (authenticated model catalogue; no remaining-credit/reset response contract verified)",
+   "live": "GET https://co.agentrouter.org/v1/models (authenticated model catalogue; remaining-credit/reset response contract unverified)",
    "planned_use": {
-    "note": "Owner-reported community pool; the official guide describes unified API-key metering across supported agents, but catalog visibility does not establish a per-account remaining balance, reset, or admission."
+    "note": "Owner-reported community pool; the official guide describes unified API-key metering across supported agents, but catalog visibility and unified API-key metering establish model-access metadata; per-account remaining balance, reset, and admission require separate evidence."
    },
    "limit_diagnostic": {
     "class": "not-a-quota",

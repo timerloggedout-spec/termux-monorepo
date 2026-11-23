@@ -5,8 +5,8 @@
    "cadence": "weekly-sweep",
    "feed_state": "live",
    "id": "muse",
-   "last_verified": "2026-11-16",
-   "next_due": "2026-11-23",
+   "last_verified": "2026-11-23",
+   "next_due": "2026-11-30",
    "owner": "affiliate-referrals",
    "state_detail": "active_codes"
   },
@@ -15,8 +15,8 @@
    "cadence": "weekly-sweep",
    "feed_state": "live",
    "id": "manus",
-   "last_verified": "2026-11-16",
-   "next_due": "2026-11-23",
+   "last_verified": "2026-11-23",
+   "next_due": "2026-11-30",
    "owner": "affiliate-referrals",
    "state_detail": "active_link"
   },
@@ -25,8 +25,8 @@
    "cadence": "weekly-sweep",
    "feed_state": "live",
    "id": "cue",
-   "last_verified": "2026-11-16",
-   "next_due": "2026-11-23",
+   "last_verified": "2026-11-23",
+   "next_due": "2026-11-30",
    "owner": "affiliate-referrals",
    "state_detail": "active_codes"
   },
@@ -35,8 +35,8 @@
    "cadence": "weekly-sweep",
    "feed_state": "live",
    "id": "migoo",
-   "last_verified": "2026-11-16",
-   "next_due": "2026-11-23",
+   "last_verified": "2026-11-23",
+   "next_due": "2026-11-30",
    "owner": "affiliate-referrals",
    "state_detail": "active_codes"
   },
@@ -45,8 +45,8 @@
    "cadence": "weekly-sweep",
    "feed_state": "live",
    "id": "cellcog",
-   "last_verified": "2026-11-16",
-   "next_due": "2026-11-23",
+   "last_verified": "2026-11-23",
+   "next_due": "2026-11-30",
    "owner": "affiliate-referrals",
    "state_detail": "active_link"
   },
@@ -65,8 +65,8 @@
    "cadence": "weekly-sweep",
    "feed_state": "live",
    "id": "unorouter",
-   "last_verified": "2026-11-16",
-   "next_due": "2026-11-23",
+   "last_verified": "2026-11-23",
+   "next_due": "2026-11-30",
    "owner": "affiliate-referrals",
    "state_detail": "active_link"
   },
@@ -95,8 +95,8 @@
    "cadence": "weekly-sweep",
    "feed_state": "live",
    "id": "replit",
-   "last_verified": "2026-11-16",
-   "next_due": "2026-11-23",
+   "last_verified": "2026-11-23",
+   "next_due": "2026-11-30",
    "owner": "affiliate-referrals",
    "state_detail": "active_link"
   },
@@ -159,9 +159,19 @@
    "next_due": "2026-11-28",
    "owner": "affiliate-referrals",
    "state_detail": "active_link"
+  },
+  {
+   "bucket": "pending",
+   "cadence": "monthly-reverify",
+   "feed_state": "pending",
+   "id": "vercel",
+   "last_verified": "2026-11-23",
+   "next_due": "2026-12-23",
+   "owner": "affiliate-referrals",
+   "state_detail": "programme_verified_not_enrolled"
   }
  ],
- "bucket_mapping_note": "Feed-verbatim per Oversight ruling 2026-11-04 (manus = live). 3-bucket Gantt schema: no_public_programme (hark) folds to pending (open monthly reverify watch). Result live 7 \u00b7 pending 2 \u00b7 not-established 1. The brief's 6/3/1 assumed manus->pending; superseded by the ruling.",
+ "bucket_mapping_note": "Feed-verbatim per Oversight ruling 2026-11-04 (manus = live). 3-bucket Gantt schema: no_public_programme (hark) folds to pending (open monthly reverify watch). Result live 8 \u00b7 pending 8 \u00b7 not-established 1. The brief's 6/3/1 assumed manus->pending; superseded by the ruling.",
  "constraint": {
   "additional_tokens": {
    "left": "0",
@@ -172,7 +182,7 @@
    "used_pct": 87
   }
  },
- "generated_at": "2026-11-22T17:11:53Z",
+ "generated_at": "2026-11-23T17:11:54Z",
  "milestones": [
   {
    "date": "2026-11-07",

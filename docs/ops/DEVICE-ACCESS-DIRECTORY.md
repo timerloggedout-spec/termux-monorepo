@@ -26,6 +26,7 @@ cd ~ && git fetch origin master && git checkout origin/master -- scripts/termux
 | GitHub Actions → SSH (`deepcli-agent-bridge.yml`, `termux-bridge-connect.yml`, `deepagent-task.yml`) | runner → device | Actions | none | `TERMUX_MCP_SSH_PRIVATE_KEY`, `TERMUX_MCP_KNOWN_HOSTS`, `MANUS_SSH_*` | Run receipts | **Skips and reports green** while the manifest is not active | Run green with "skipped" notice |
 | termux-job-scheduler jobs 43107 / 43108 / 43109 | on device | Termux | **typing** to (re)install | — | Publisher, sentinel | Unverified: likely lost (no manifest, no pressure alerts) | `termux-job-scheduler --pending` empty |
 | Termux:API notifications (`termux-resource-sentinel.sh`) | device → operator | Sentinel job | none | — | "Termux resource pressure" | Silent (only fires on pressure, or job missing) | No notification for >1 day |
+| ARTEMIS over ADB (`refTemplates/smods/artemis_fork`, `termux/connect.sh` T1 tailnet ∨ T2 SSH tunnel ∨ T3 self-ADB) | host → device | ARTEMIS agent / MCP on a host | none for T1/T2 after `adb tcpip 5555` | ADB RSA key on host; `TERMUX_MCP_SSH_PRIVATE_KEY` for T2 | `termux/doctor.sh` JSON, ARTEMIS traces | Added 2026-11-23; live run ⊬ | `connect.sh` exit 2/4 |
 | Hark queue (`hark:queue` issues via `hark-enqueue.yml`) | Actions → Hark | Hark poller (2h) | none | GitHub connector | Issue comments, `hark:done` | Working | Issue stays `hark:queue` |
 
 ## No-typing recovery order

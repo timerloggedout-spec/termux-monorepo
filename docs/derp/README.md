@@ -24,11 +24,11 @@ The public entrance teaches DERP to newcomers. Repository documentation remains 
 
 - Public content remains independently understandable without decoding.
 - Canonical destinations resolve through a versioned registry.
-- Puzzle clues remain non-executable data; they carry no instructions for external agents, crawlers, or user agents.
+- Puzzle clues remain inert data; reserve executable instructions and crawler policy for their documented, visible control surfaces.
 - robots.txt expresses crawler access policy using its standard syntax.
 - llms.txt and Markdown mirrors describe public content accurately.
 - Agent Ready output stays plain, predictable, and free of puzzle markers.
-- Invisible characters are an experimental presentation channel, never a dependable crawler-control or LLM-control mechanism.
+- Treat invisible characters as experimental presentation; use documented visible control surfaces for crawler policy and agent guidance.
 - Search visibility comes from useful visible content, stable URLs, semantic metadata, internal links, and valid sitemap/robots policy.
 - Every clue has a visible equivalent, accessible description, and canonical destination.
 - The maze reveals documented capabilities; it does not fabricate availability or permissions.
@@ -41,4 +41,4 @@ Select a candidate only after evidence is recorded in the [decision matrix](DECI
 
 ## Status
 
-This branch contains proposal artifacts only. It does not change the production landing page, robots policy, llms publication, or Agent Ready configuration.
+This branch contains proposal artifacts only; production landing pages, robots policy, llms publication, and Agent Ready configuration retain their current settings.

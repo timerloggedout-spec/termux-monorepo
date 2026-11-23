@@ -24,7 +24,7 @@ Required hard gates: task contract, schema, security/policy, provenance, and det
 
 The comparator understands quality, acceptance, grounding, calibration, reproducibility, latency, compute/inference cost, human effort, context tokens, retries, integration conflicts and policy violations. Each metric declares a maximize/minimize direction.
 
-Missing metric observations remain null and reduce that metric's paired sample count. Partial coverage blocks dominance for the cohort; the report lists incomplete and wholly unobserved metrics explicitly. The report includes raw paired deltas, direction-normalized improvement, sample counts and 95% intervals. Paired intervals use Student-t critical values through 30 degrees of freedom and a normal approximation for larger samples. Dominance requires complete paired coverage, interval-supported non-regression on every declared metric and positive improvement on at least one.
+Missing metric observations remain null and reduce that metric's paired sample count. Partial coverage blocks dominance for the cohort; the report lists incomplete and wholly unobserved metrics explicitly. The report includes raw paired deltas, direction-normalized improvement, sample counts and 95% intervals. Paired intervals use Student-t critical values through 30 degrees of freedom and a normal approximation for larger samples. The reducer marks zero-observed-variance intervals as unestimated rather than emitting a degenerate zero-width interval. Dominance requires complete paired coverage, an estimated interval for every declared metric, interval-supported non-regression and positive improvement on at least one.
 
 ## Execute
 

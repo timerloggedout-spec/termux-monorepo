@@ -75,11 +75,11 @@ jobs:
 
       - name: Tournament implementation comparison contracts
         run: |
-          python3 -m unittest deepcli/tests/test_implementation_competition.py -v
+          python3 -m unittest discover -s deepcli/tests -p 'test_implementation_competition.py' -v
 
       - name: Tournament comparison CLI contracts
         run: |
-          python3 -m unittest deepcli/tests/test_implementation_competition_cli.py -v
+          python3 -m unittest discover -s deepcli/tests -p 'test_implementation_competition_cli.py' -v
 
       - name: Native orchestration contracts
         run: |

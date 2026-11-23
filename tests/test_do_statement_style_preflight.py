@@ -33,7 +33,7 @@ class DoStatementPreflightTests(unittest.TestCase):
         git(repo, "init", "-q")
         git(repo, "config", "user.name", "Preflight Test")
         git(repo, "config", "user.email", "preflight@example.invalid")
-        (repo / "docs" / "ops" / "baseline.md").write_text("# Baseline\\n", encoding="utf-8")
+        (repo / "docs" / "ops" / "baseline.md").write_text("# Baseline\n", encoding="utf-8")
         git(repo, "add", ".")
         git(repo, "commit", "-m", "docs: add baseline")
         base = subprocess.run(
@@ -52,7 +52,7 @@ class DoStatementPreflightTests(unittest.TestCase):
     def test_preflight_flags_untracked_instruction_lines(self) -> None:
         repo, base = self.fixture_repo()
         draft = repo / "docs" / "ops" / "new-guidance.md"
-        draft.write_text("Never start with a prohibition.\\n", encoding="utf-8")
+        draft.write_text("Never start with a prohibition.\n", encoding="utf-8")
 
         result = self.run_preflight(repo, base)
 
@@ -63,9 +63,9 @@ class DoStatementPreflightTests(unittest.TestCase):
     def test_preflight_accepts_action_first_worktree_and_draft(self) -> None:
         repo, base = self.fixture_repo()
         draft = repo / "docs" / "ops" / "new-guidance.md"
-        draft.write_text("Require authenticated transport for every fetch.\\n", encoding="utf-8")
+        draft.write_text("Require authenticated transport for every fetch.\n", encoding="utf-8")
         comment = self.tmp_path / "comment.md"
-        comment.write_text("Hold promotion until all required checks pass.\\n", encoding="utf-8")
+        comment.write_text("Hold promotion until all required checks pass.\n", encoding="utf-8")
 
         result = self.run_preflight(repo, base, "--text-file", str(comment))
 

@@ -42,7 +42,7 @@ COMMENT_SUFFIXES = {
     ".css", ".scss", ".sql", ".rb", ".lua", ".pl", ".r", ".tf",
     ".mk", ".make",
 }
-COMMENT_PREFIX = re.compile(r"^\\s*(?://+|#+|--+|/\\*+|\\*+|<!--|;|%|REM\\b)\\s*(.*)$", re.IGNORECASE)
+COMMENT_PREFIX = re.compile(r"^\s*(?://+|#+|--+|/\*+|\*+|<!--|;|%|REM\b)\s*(.*)$", re.IGNORECASE)
 
 errors: list[str] = []
 

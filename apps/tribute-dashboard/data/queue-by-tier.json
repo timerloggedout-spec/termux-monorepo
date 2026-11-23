@@ -1,6 +1,6 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-23T23:40:28Z",
+ "generated_at": "2026-11-23T23:58:31Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
@@ -28,23 +28,34 @@
   },
   "4": {
    "tier": 4,
-   "queued": 8,
-   "in_progress": 12,
+   "queued": 61,
+   "in_progress": 16,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "lane events recorder": 2,
-    "que-cadence-kick": 1,
+    "lane events recorder": 20,
+    "Agent Throughput Evidence": 22,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
+    "OpenRouter free catalog snapshot": 1,
+    "n8n SHE bridge": 1,
+    "Gemini review after peers": 2,
+    "quota-usage-series-refresh": 1,
+    "Foresight Evidence Spine": 1,
+    "termux smoke": 1,
+    "DO Statement Style": 2,
+    "PR evidence evaluation": 2,
+    "Agent review \u2192 auto Jules": 1,
+    "DeepSeek CI \u2013 Agentic Automation": 1,
+    "RECON INTEL discovery": 1,
     "Sweep Accountability": 1,
     "Agent PR Jules Handoff": 1,
     "PR Change Effectiveness Ledger": 1,
-    "Advisory GitHub Actions lint": 1,
-    "DO Statement Style": 1
+    "Advisory GitHub Actions lint": 1
    }
   }
  },
  "totals": {
-  "queued": 10,
-  "in_progress": 16
+  "queued": 63,
+  "in_progress": 20
  },
  "wedged_ancient": [
   {
@@ -208,7 +219,7 @@
    "4": 0
   },
   "explicit_total": 6,
-  "default_t4": 20,
+  "default_t4": 77,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

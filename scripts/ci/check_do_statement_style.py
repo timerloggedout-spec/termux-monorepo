@@ -137,7 +137,7 @@ def inspect_worktree() -> None:
 
     untracked = run_git("ls-files", "--others", "--exclude-standard", "-z")
     for raw_path in untracked.split("\0"):
-        if not raw_path:
+        if not raw_path or not (is_style_path(raw_path) or is_comment_path(raw_path)):
             continue
         path = Path(raw_path)
         try:

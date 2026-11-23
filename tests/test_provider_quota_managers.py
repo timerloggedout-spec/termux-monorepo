@@ -193,3 +193,27 @@ class ProviderQuotaManagerTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+def test_agentrouter_and_unorouter_documentation_semantics_are_distinct_and_public_safe():
+    rows = managers.load_managers()
+    agentrouter = rows["agentrouter"]
+    assert agentrouter["status"] == "unsupported"
+    assert "community pool" in agentrouter["scope"].lower()
+    assert "per-account" in agentrouter["scope"].lower()
+    assert agentrouter["reset"] == "unknown"
+
+    unorouter = rows["unorouter"]
+    assert unorouter["status"] == "public_documentation_only"
+    scope = unorouter["scope"].lower()
+    for phrase in ("per-model", "shared upstream", "/api/usage/token/", "access token", "provider-level consent"):
+        assert phrase in scope
+    assert unorouter["reset"] == "unknown"
+
+    public = managers.build_public_metadata()
+    public_rows = {row["provider_family"]: row for row in public["provider_families"]}
+    assert public_rows["agentrouter"]["status"] == "unsupported"
+    assert public_rows["unorouter"]["status"] == "public_documentation_only"
+    assert public["network_used"] is False
+    assert public["live_account_validation"] is False
+    assert public["runtime_admission"] == "unchanged"

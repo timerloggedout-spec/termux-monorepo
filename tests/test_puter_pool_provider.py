@@ -113,7 +113,7 @@ def test_live_hub_dispatch_emits_per_request_que_doe_temporal_event(monkeypatch,
     assert response.status_code == 200
     event = json.loads(event_path.read_text(encoding="utf-8").splitlines()[-1])
     assert event["event_type"] == "provider.inference.completed"
-    assert event["provider_id"] if "provider_id" in event else event["entity_id"] == "g4f.puter"
+    assert event["provider_id"] == "g4f.puter"
     attrs = event["attributes"]
     assert attrs["exact_model_id"] == "gpt-5.6-sol"
     assert attrs["task_or_entry_ref"] == "QUE-42"

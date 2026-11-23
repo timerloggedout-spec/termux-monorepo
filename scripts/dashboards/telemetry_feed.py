@@ -35,6 +35,7 @@ QUOTA = "apps/tribute-dashboard/data/quota.json"
 QUOTA_USAGE = "apps/tribute-dashboard/data/quota-usage.json"
 OBSERVATIONS = "scripts/dashboards/workflow_observations.json"
 ACTIONS_OBS = "scripts/dashboards/actions_observations.json"
+PROVIDER_RUNTIME = "apps/tribute-dashboard/data/puter-pool-runtime.json"
 
 HONESTY = [
     "Show only what the record holds; a value the record does not hold renders as absent, never synthesized.",
@@ -65,12 +66,14 @@ def collect() -> dict:
     usage = _read_json(QUOTA_USAGE)
     obs = _read_json(OBSERVATIONS)
     act = _read_json(ACTIONS_OBS)
+    provider_runtime = _read_json(PROVIDER_RUNTIME)
 
     for rel, doc, key in ((STATUS, status, "generated_at"),
                           (QUOTA, quota, "generated_at"),
                           (QUOTA_USAGE, usage, "generated_at"),
                           (OBSERVATIONS, obs, "read_at"),
-                          (ACTIONS_OBS, act, "read_at")):
+                          (ACTIONS_OBS, act, "read_at"),
+                          (PROVIDER_RUNTIME, provider_runtime, "observed_at")):
         if doc is None:
             gaps.append(f"source missing at collection time: {rel}")
         else:
@@ -213,6 +216,30 @@ def collect() -> dict:
             "buckets": usage.get("buckets"),
         }
 
+    # ---- Puter Pool runtime and correlation -------------------------------
+    provider_runtime_block = None
+    if provider_runtime is not None:
+        if provider_runtime.get("schema") == "provider-runtime-observation/v1" and provider_runtime.get("provider_id") == "g4f.puter":
+            pool = provider_runtime.get("pool") or {}
+            provider_runtime_block = {
+                "provider_id": "g4f.puter",
+                "provider": "g4f/Puter",
+                "source_repository": provider_runtime.get("source_repository"),
+                "observed_at": provider_runtime.get("observed_at"),
+                "health": pool.get("health"),
+                "readiness": pool.get("readiness"),
+                "strategy": pool.get("strategy"),
+                "model_count": pool.get("model_count"),
+                "model_ids": pool.get("model_ids") or [],
+                "counters": pool.get("counters") or {},
+                "quota": provider_runtime.get("quota") or {"status": "unknown", "used": None, "limit": None, "reset": None},
+                "correlation": provider_runtime.get("correlation") or {},
+            }
+        else:
+            gaps.append("Puter Pool runtime snapshot has an unrecognized schema or provider identity; provider runtime block withheld.")
+    else:
+        gaps.append(f"Puter Pool runtime snapshot not yet observed: {PROVIDER_RUNTIME} is absent.")
+
     # ---- golden top row ----------------------------------------------------
     golden = {
         "receipts_total": (status or {}).get("receipts"),
@@ -247,6 +274,7 @@ def collect() -> dict:
             "actions": actions,
             "outcomes": outcomes,
             "quota": quota_block,
+            "provider_runtime": provider_runtime_block,
         },
         "gaps": gaps,
     }

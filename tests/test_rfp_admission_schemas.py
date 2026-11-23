@@ -80,3 +80,31 @@ def test_composition_cannot_authorize_production_routing():
 
 def load_example(name):
     return json.loads((RFP / "examples" / name).read_text())
+
+
+def test_advanced_composition_requires_passed_gates():
+    schema = load("LANE-COMPOSITION.schema.json")
+    record = load_example("lane-composition-parallel.json")
+    record["governance"]["state"] = "admitted_design_only"
+    with pytest.raises(jsonschema.ValidationError):
+        validate(schema, record)
+    for key in ("schema_compatibility", "provenance_preservation",
+                "security_review", "license_review", "capacity_review",
+                "failure_semantics"):
+        record["compatibility"][key] = "pass"
+    record["compatibility"]["human_approval"] = "not_required"
+    validate(schema, record)
+
+
+def test_executing_composition_requires_campaign_id():
+    schema = load("LANE-COMPOSITION.schema.json")
+    record = load_example("lane-composition-parallel.json")
+    record["governance"]["state"] = "executing"
+    for key in ("schema_compatibility", "provenance_preservation",
+                "security_review", "license_review", "capacity_review",
+                "failure_semantics"):
+        record["compatibility"][key] = "pass"
+    record["compatibility"]["human_approval"] = "not_required"
+    record["design"]["campaign_id"] = ""
+    with pytest.raises(jsonschema.ValidationError):
+        validate(schema, record)

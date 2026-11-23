@@ -47,8 +47,8 @@ def _write_fixture(root, now):
     }
     (book_dir / "challenges-book.json").write_text(json.dumps(book))
     (book_dir / "book-feed.json").write_text(json.dumps(bookfeed))
-    (book_dir / "ledger.jsonl").write_text('{"event":"seed"}\\n')
-    rendered = json.dumps(feed, indent=1) + "\\n"
+    (book_dir / "ledger.jsonl").write_text('{"event":"seed"}\n')
+    rendered = json.dumps(feed, indent=1) + "\n"
     (money_dir / "wagering-book.json").write_text(rendered)
     (mirror_dir / "wagering-book.json").write_text(rendered)
     (fixture_dir / "wagering-book.fixture.json").write_text(rendered)
@@ -75,7 +75,7 @@ def test_freshness_observer_detects_stale_upstream_and_ledger_mismatch(tmp_path)
     mirror_path = tmp_path / "apps" / "tribute-dashboard" / "data" / "wagering-book.json"
     fixture_path = tmp_path / "tests" / "fixtures" / "wagering-book.fixture.json"
     (book_dir / "book-feed.json").write_text(json.dumps(bookfeed))
-    rendered = json.dumps(feed, indent=1) + "\\n"
+    rendered = json.dumps(feed, indent=1) + "\n"
     money_path.write_text(rendered)
     mirror_path.write_text(rendered)
     fixture_path.write_text(rendered)

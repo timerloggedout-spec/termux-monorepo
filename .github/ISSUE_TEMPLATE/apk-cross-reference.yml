@@ -37,8 +37,13 @@ body:
     attributes:
       label: Artifact source
       description: Where the published APK artifact comes from.
-      options: [github-releases, gitea-releases, f-droid, aurora-store, komistore, izzyondroid, google-play, direct-apk, other-store, none-known]
+      options: [github-releases, gitea-releases, f-droid, aurora-store, komistore, lizzyondroid, izzyondroid, google-play, direct-apk, other-store, none-known]
     validations: { required: true }
+  - type: textarea
+    id: acquisition_source_order
+    attributes:
+      label: Acquisition source order
+      description: Optional ordered comma-separated fallback chain. Example: aurora-store, komistore, lizzyondroid, f-droid. Each route records its actual channel and provenance; Google Play remains a discovery reference, never a scraper.
   - type: input
     id: artifact_version
     attributes:

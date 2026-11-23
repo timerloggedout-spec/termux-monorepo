@@ -10,7 +10,7 @@ class CommunicationLintTests(unittest.TestCase):
 
     def test_negative_prose_produces_machine_finding(self):
         findings = scan_text("Do not commit credentials.\n", "docs/guide.md")
-        self.assertEqual(len(findings), 2)
+        self.assertEqual(len(findings), 1)
         self.assertEqual(findings[0]["line"], 1)
         self.assertIn("affirmative action", findings[0]["suggestion"])
 

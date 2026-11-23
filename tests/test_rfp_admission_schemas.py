@@ -108,3 +108,14 @@ def test_executing_composition_requires_campaign_id():
     record["design"]["campaign_id"] = ""
     with pytest.raises(jsonschema.ValidationError):
         validate(schema, record)
+
+
+def test_executing_candidate_requires_experiment_admission():
+    schema = load("COMPETITOR-ADMISSION.schema.json")
+    record = load_example("competitor-rfp-v13.json")
+    record["lifecycle"]["state"] = "executing"
+    record["admission"]["campaign_id"] = "rfp-campaign-1"
+    with pytest.raises(jsonschema.ValidationError):
+        validate(schema, record)
+    record["admission"]["decision"] = "experiment_admitted"
+    validate(schema, record)

@@ -28,6 +28,7 @@ Monorepo recovery cockpit + live project map for Termux / DeepSeek / multi-agent
 | [Architecture](Architecture) | Ecosystem layout and main components |
 | [Navigation](Navigation) | SSOT ladder + command table |
 | [DeepWiki-Mirror](DeepWiki-Mirror) | How this mirror is maintained |
+| [DERP-Language](DERP-Language) | Playful leetspeak, clue grammar, rePointers, and discovery maze |
 
 ---
 

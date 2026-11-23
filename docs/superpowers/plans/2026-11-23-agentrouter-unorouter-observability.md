@@ -17,12 +17,12 @@ Correct the provider observation control plane using existing credentials and tr
 4. Correct the proposal-lifecycle regression so it validates actual trigger configuration and the vote job's secret boundary, rather than rejecting harmless text in a concurrency expression.
 5. Extend .github/workflows/operator-wake.yml with one owner-only, allowlisted wake-provider-availability command. It dispatches the trusted master workflow through the existing Actions PAT chain and reports a run receipt without reading credential values.
 
-## Non-goals
+## Excluded work
 
 - Provider inference, runtime admission, routing weights, paid fallback, or automatic retries.
 - Creating or rotating API keys, account access tokens, provider accounts, or terms acceptance.
-- Exposing PAT or provider secret values to the sandbox, PR code, logs, or artifacts.
-- Changing the open quota-router PR #1441 or adding a duplicate quota service to it.
+- Keep PAT and provider secret values inside GitHub Actions; limit the sandbox, PR code, logs, and artifacts to secret names and sanitized observations.
+- Preserve the open quota-router PR #1441 and its service mappings unchanged.
 
 ## Test sequence
 
@@ -36,5 +36,5 @@ Correct the provider observation control plane using existing credentials and tr
 - AgentRouter credential_env_resolved=AGENTROUTER_API_KEY with catalog observation and inference_ok=false.
 - UnoRouter manager row distinguishes the gateway request window from upstream pool capacity and account usage.
 - Provider-availability workflow reports provider catalog evidence without inference.
-- No secret values appear in records, tests, comments, artifacts, or chat.
+- Keep credential values inside Actions; records, tests, comments, artifacts, and chat carry secret names and sanitized observations only.
 - All required exact-head checks are terminal and green before promotion.

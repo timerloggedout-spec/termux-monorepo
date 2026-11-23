@@ -33,6 +33,10 @@ jobs:
           persist-credentials: false
       - name: Structural import test (optional temporalio)
         run: python3 -m unittest tests.test_temporal_hello_import -v
+      - name: Import and validate Puter Pool Temporal workflow
+        run: |
+          python3 -m pip install --quiet 'temporalio>=1.7.0' pytest
+          python3 -m pytest -q tests/test_puter_pool_temporal.py
       - name: Compose file present
         run: test -f mcp-docker/temporal/docker-compose.yml
 

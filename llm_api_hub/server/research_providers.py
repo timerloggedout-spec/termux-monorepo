@@ -20,6 +20,7 @@ except ImportError:
 
 SCHEMA = "research-provider-admission/v1"
 ENDPOINTS = {
+    "puter_pool": ("http://127.0.0.1:3000/v1/chat/completions", ("PUTER_POOL_API_KEY",)),
     "groq": ("https://api.groq.com/openai/v1/chat/completions", ("GROQ_API_KEY",)),
     "huggingface": ("https://router.huggingface.co/v1/chat/completions", ("HUGGINGFACE_TOKEN", "HUGGING_FACE_HUB_TOKEN", "HF_API_TOKEN", "HF_TOKEN")),
     "cerebras": ("https://api.cerebras.ai/v1/chat/completions", ("CEREBRAS_API_KEY",)),
@@ -143,8 +144,9 @@ class _NoRedirect(urllib.request.HTTPRedirectHandler):
         return None
 
 
-def post_json(url: str, payload: dict[str, Any], key: str, timeout: float, *, response_provider: str | None = None, model: str = "") -> dict[str, Any]:
-    req = urllib.request.Request(url, data=json.dumps(payload).encode(), method="POST", headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json", "Accept": "application/json"})
+def post_json(url: str, payload: dict[str, Any], key: str, timeout: float, *, response_provider: str | None = None, model: str = "", auth_header: str = "Authorization") -> dict[str, Any]:
+    auth_value = key if auth_header.lower() == "x-api-key" else f"Bearer {key}"
+    req = urllib.request.Request(url, data=json.dumps(payload).encode(), method="POST", headers={auth_header: auth_value, "Content-Type": "application/json", "Accept": "application/json"})
     opener = urllib.request.build_opener(_NoRedirect)
     try:
         with opener.open(req, timeout=timeout) as res:
@@ -186,6 +188,17 @@ def complete(provider: str, model: str, payload: dict[str, Any], timeout: float)
     key = authorize(provider, model)
     if not isinstance(payload, dict) or payload.get("model") != model:
         raise ProviderAdmissionError(403, "request model does not match admitted model", "provider_not_admitted")
+    if provider == "puter_pool":
+        try:
+            from llm_api_hub.server import puter_pool_protocol
+        except ImportError:
+            import puter_pool_protocol  # type: ignore
+        base_url = os.environ.get("PUTER_POOL_BASE_URL", "http://127.0.0.1:3000")
+        try:
+            url = puter_pool_protocol.chat_url(base_url)
+        except puter_pool_protocol.PuterPoolProtocolError:
+            raise ProviderAdmissionError(503, "Puter Pool endpoint must be a loopback origin", "provider_endpoint_invalid")
+        return post_json(url, payload, key, timeout, auth_header="x-api-key")
     if provider in provider_extensions.ENDPOINTS:
         if provider == "typhoon":
             try:

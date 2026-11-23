@@ -16,7 +16,7 @@ checkboxes, no dropdown `default:`, no `placeholder:`, no explicit
 
 | Form | Purpose | Key fields → record (`apk-xref/v1`) |
 |---|---|---|
-| `apk-cross-reference.yml` | the request | target_id, paired_repo_brief (issue ref of the paired repo Target Brief), target repo URL, artifact_source [github-releases, gitea-releases, f-droid, google-play, direct-apk, other-store, none-known], artifact_version, package_id, authorization basis, scope domains, side effect, state-changing, probe budget, venue, evidence expectation, claims_to_check, submitter Role{Moniker}, notes |
+| `apk-cross-reference.yml` | the request | target_id, paired_repo_brief (issue ref of the paired repo Target Brief), target repo URL, artifact_source [github-releases, gitea-releases, f-droid, aurora-store, komistore, lizzyondroid, izzyondroid, google-play, direct-apk, other-store, none-known], ordered artifact_sources fallback chain, artifact_version, package_id, authorization basis, scope domains, side effect, state-changing, probe budget, venue, evidence expectation, claims_to_check, submitter Role{Moniker}, notes |
 | `apk-cross-reference-findings.yml` | the results | target_id, xref_issue (the request filing), package_id (`none` only for a no-artifact verdict), artifact_source, artifact_version, manifest_permissions, endpoints_observed (actually observed, not source-mentioned), claims_checked, divergences_repo_to_apk, divergences_apk_to_repo ("none found" is a valid explicit value), verdict [match, divergences-found, no-artifact-found], evidence met, submitter, notes |
 
 Semantics (from the wave briefs + `WEB-REVERSE-ENGINEERING-CAMPAIGN.md`):

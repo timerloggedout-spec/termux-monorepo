@@ -25,7 +25,7 @@ VERDICTS = {"match", "divergences-found", "no-artifact-found"}
 FORM_FIELDS = {
     "target id": "target_id", "paired repo brief": "paired_repo_brief",
     "cross-reference issue": "xref_issue", "target repo url": "target",
-    "artifact source": "artifact_source", "artifact version + build": "artifact_version",
+    "artifact source": "artifact_source", "acquisition source order": "artifact_sources", "artifact version + build": "artifact_version",
     "package id": "package_id", "authorization basis": "basis",
     "scope domains": "scope_domains", "side effect": "side_effect",
     "state-changing authorization": "state_changing", "probe budget": "probe_budget",
@@ -74,6 +74,7 @@ def build_record(f):
     kind = "findings" if (f.get("verdict") or "").strip() else "request"
     base = {"schema": "apk-xref/v1", "kind": kind, "target_id": target_id,
             "artifact_source": (f.get("artifact_source") or "").strip(),
+            "artifact_sources": [s.strip() for s in re.split(r"[,\\n]+", f.get("artifact_sources") or "") if s.strip()],
             "artifact_version": (f.get("artifact_version") or "").strip(),
             "package_id": pkg, "evidence_expectation": (f.get("evidence_expectation") or "").strip(),
             "submitter": submitter, "notes": f.get("notes") or ""}

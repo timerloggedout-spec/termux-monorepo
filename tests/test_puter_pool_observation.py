@@ -33,3 +33,28 @@ def test_invalid_counters_are_omitted_as_null(monkeypatch):
     assert result["pool"]["counters"]["totalRequests"] is None
     assert result["pool"]["counters"]["activeAccounts"] is None
 
+
+
+def test_decimal_latency_and_uptime_are_preserved():
+    assert observer._nonnegative_number(187.25) == 187.25
+    assert observer._nonnegative_number(0) == 0
+    assert observer._nonnegative_number(float("nan")) is None
+    assert observer._nonnegative_number(True) is None
+
+
+def test_readyz_503_is_a_valid_degraded_observation(monkeypatch):
+    import io
+    import urllib.error
+
+    body = b'{"status":"not ready","activeAccounts":0}'
+    error = urllib.error.HTTPError(
+        "http://127.0.0.1:3000/readyz", 503, "not ready", {}, io.BytesIO(body)
+    )
+
+    class Opener:
+        def open(self, request, timeout):
+            raise error
+
+    monkeypatch.setattr(observer.urllib.request, "build_opener", lambda *args: Opener())
+    result = observer._fetch_json("http://127.0.0.1:3000", "/readyz", 1.0, None)
+    assert result == {"status": "not ready", "activeAccounts": 0}

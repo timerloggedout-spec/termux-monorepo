@@ -142,7 +142,7 @@ Related schedules:
 | P1 | Leapcell | Validate Hobby invocation, GB-hour, ingress/egress, and timeout behavior with a synthetic workload | test receipt and usage delta |
 | P1 | Appwrite | Validate function runtime limits, inactivity pause behavior, and scheduled-work recovery | function test receipt, pause/reactivation test, and recovery checklist |
 | P1 | SnapDeploy | Test cold-start behavior and automated caller response; measure shared container-hour draw | synthetic request traces, wake classification, and hour consumption |
-| P2 | Back4app | Resolve temporary URL lifetime discrepancy in the current account and verify deployment persistence | dashboard-observed URL lifetime and teardown receipt |
+| P2 | Back4app | Verify the 60-minute preview URL behavior and free auto-deploy setting in the current account | dashboard-observed URL lifetime and teardown receipt |
 | P2 | zrok | Validate environment lifecycle, daily transfer reporting, and access controls for one synthetic private resource | access-policy test, transfer reading, and revocation receipt |
 | P2 | alwaysdata | Confirm free-plan eligibility and website-only restrictions for intended personal/static use | explicit use-case fit decision; keep out of worker pool |
 

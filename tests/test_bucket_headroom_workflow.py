@@ -1,5 +1,6 @@
 """QUE #5230: pin the bucket-headroom-watch workflow's shape."""
 import sys
+import unittest
 from pathlib import Path
 
 import yaml
@@ -88,7 +89,7 @@ def test_step_order_collect_before_evaluate_before_page():
     assert collect_i < eval_i < page_i < commit_i
 
 
-class SmokeWorkflowRunnerTests(__import__("unittest").TestCase):
+class SmokeWorkflowRunnerTests(unittest.TestCase):
     def test_bucket_headroom_function_tests_use_pytest(self):
         smoke_path = ROOT / ".github" / "workflows" / "termux-smoke.yml"
         smoke = yaml.safe_load(smoke_path.read_text())

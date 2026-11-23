@@ -106,10 +106,10 @@
     {
       "id": "puter-pool",
       "domain": "provider_catalog_and_inference_transport",
-      "status": "local_read_only_catalog_harvester_implemented",
-      "record_of_record": "scripts/puter_pool_catalog.py; docs/ops/PUTER-POOL-PROVIDER-INTEGRATION.md",
-      "role": "Harvest exact Puter Pool model IDs under existing g4f/Puter provider identity; later request outcomes join QUE task and DoE run IDs",
-      "observed_state": "GET /v1/models adapter implemented with loopback-only origin validation; catalog harvest requires operator-hosted Pool; account/quota values remain unknown until authoritative telemetry is ingested",
+      "status": "request_and_temporal_telemetry_implemented",
+      "record_of_record": "agent_telemetry_stream.json (EPS v1) + apps/tribute-dashboard/data/puter-pool-runtime.json + ops/quota/registry.json#g4f.puter",
+      "role": "Puter Pool model catalog, local inference dispatch, per-request task/DoE telemetry, aggregate scheduler observations, and dashboard runtime projection",
+      "observed_state": "LLM Hub emits per-request provider.inference.completed events; Temporal emits aggregate provider.pool.observed events and refreshes the Tribute runtime snapshot. Local CreditTracker heuristic is excluded from quota readings; provider quota remains unknown.",
       "authority": "Puter Pool fork API contract + provider-model-catalog/v5; no independent provider or quota ledger"
     },
     {

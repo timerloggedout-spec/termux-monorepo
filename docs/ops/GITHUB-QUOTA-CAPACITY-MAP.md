@@ -363,3 +363,24 @@ The existing instrumentation is a strong foundation. The next work is freshness 
 ## 11. Access boundary
 
 The GitHub connector verified repository metadata and read public repository contents, workflow-run records, and the committed quota feeds. Its supported API surface excludes account billing, secrets, and private settings endpoints. Therefore account plan, billing balances, live private token values, and repository Actions settings remain owner-side evidence requirements.
+
+
+## 12. Follow-up live headroom and cadence evidence — 2026-11-23
+
+A subsequent feed publication at **2026-11-23T03:55:42Z** confirms that the scheduled watcher resumed publishing after the earlier 2026-11-22 10:18Z snapshot. At the 2026-11-23T06:51Z review point, the feed was approximately **2 hours 56 minutes old**, still outside its configured 10-minute cadence.
+
+The latest matching publication commits were recorded at 2026-11-23 03:55Z, 2026-11-22 23:26Z, 17:54Z, 10:18Z, and 02:33Z. The observed inter-publication gaps were approximately **4h29m, 5h32m, 7h36m, and 7h45m**. These observations show a persistent publication-cadence gap; they do not identify the precise scheduler, queue, or workflow failure cause.
+
+Latest feed readings:
+
+| Bucket | Limit | Used | Remaining | State |
+|---|---:|---:|---:|---|
+| Swarm installation | 12,500/hour | 8,452 | 4,048 | OK |
+| Collector installation | 5,000/hour | 34 | 4,966 | OK |
+| CrossReference installation | 5,000/hour | 0 | 5,000 | OK |
+| Workflow `GITHUB_TOKEN` /rate_limit read | 5,000 | 87 | 4,913 | DISPUTED |
+| PAT core | — | — | — | UNREADABLE |
+
+Eight fleet App buckets remain unreadable with `sec03_unprovisioned`; the PAT core bucket remains `no_read_supplied`; the Gemini provider-arm remains unreadable. The feed therefore still reports 4 readable buckets and 10 unreadable buckets across its 14-bucket inventory.
+
+The `GITHUB_TOKEN` reading remains a `/rate_limit` observation. The watcher currently stores the JSON resource values and omits response-header evidence. The 5,000 reading remains disputed against the documented 1,000/hour/repository allowance and the canonical 1,000/hour snapshot. Capture `x-ratelimit-limit`, `x-ratelimit-resource`, `x-ratelimit-remaining`, and `x-ratelimit-reset` in a follow-up implementation before changing the registry's entitlement value.

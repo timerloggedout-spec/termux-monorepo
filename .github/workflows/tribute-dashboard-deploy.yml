@@ -111,7 +111,7 @@ jobs:
         run: |
           mkdir -p _site/data _site/brain-ops
           cp apps/project-pages-hub/index.html _site/index.html
-          cp apps/project-pages-hub/brain-ops/index.html _site/brain-ops/index.html
+          cp -a apps/project-pages-hub/brain-ops/. _site/brain-ops/
           cp apps/project-pages-hub/index.md _site/index.md
           cp apps/tribute-dashboard/matrix.html _site/matrix.html
           cp apps/tribute-dashboard/matrix.md _site/matrix.md

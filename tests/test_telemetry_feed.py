@@ -32,9 +32,10 @@ def test_schema_and_envelope(tmp_path):
         "apps/tribute-dashboard/data/quota-usage.json",
         "scripts/dashboards/workflow_observations.json",
         "scripts/dashboards/actions_observations.json",
+        "apps/tribute-dashboard/data/puter-pool-runtime.json",
     }
     assert set(feed["data"]) == {"golden", "executions", "actions",
-                                 "outcomes", "quota"}
+                                 "outcomes", "quota", "provider_runtime"}
 
 
 def test_outcomes_equal_source(tmp_path):
@@ -119,3 +120,15 @@ def test_actions_block_matches_snapshot(tmp_path):
     assert "unexecuted" in a["join"]["status"]
     assert feed["data"]["golden"]["actions_runs_sampled"] == snap["totals"]["runs"]
     assert any(g.startswith("G1 partial") for g in feed["gaps"])
+
+
+def test_puter_pool_runtime_is_projected_with_task_correlation_and_unknown_quota(tmp_path):
+    feed = _collect(tmp_path)
+    runtime = json.loads((DATA / "puter-pool-runtime.json").read_text())
+    projected = feed["data"]["provider_runtime"]
+    assert projected["provider_id"] == "g4f.puter"
+    assert projected["observed_at"] == runtime["observed_at"]
+    assert projected["correlation"] == runtime["correlation"]
+    assert projected["quota"]["status"] == "unknown"
+    assert projected["quota"]["used"] is None
+    assert projected["quota"]["limit"] is None

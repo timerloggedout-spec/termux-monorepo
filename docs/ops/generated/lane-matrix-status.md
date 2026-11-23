@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-23T13:33:31Z)
+# Lane matrix status (2026-11-23T13:34:25Z)
 
-- Master: `0b6b451f554c2b683209eafcc5ca3d6e98ccccc3`
+- Master: `01d8c8aed962a49ec986dbb8ce3cc25e5c3ad5a9`
 - Open PRs: **540**
 - Oldest: #47 (109.91d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -61,6 +61,6 @@
 | #1694 | 27.5 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
 | #1734 | 27.09 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
 | #1735 | 27.09 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
-| #1966 | 26.35 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
+| #1966 | 26.36 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
 
 Writer only: does not merge. Dual-gate remains promote authority. HOLD/WAIT/OBSERVE are invalid parking. Age alone ≠ promote.

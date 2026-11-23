@@ -34,10 +34,10 @@ class CommunicationLintTests(unittest.TestCase):
     def test_code_files_scan_comments_only(self):
         text = "message = \"Do not rewrite this runtime string.\"\n# Do not store tokens.\n"
         findings = scan_text(text, "scripts/example.py")
-        self.assertEqual(len(findings), 1
+        self.assertEqual(len(findings), 1)
 
     def test_pr_metadata_is_scanned_as_prose(self):
-        findings = scan_text("No fallback without quota proof.\\n", "<PR title>")
+        findings = scan_text("No fallback without quota proof.\n", "<PR title>")
         self.assertEqual(len(findings), 1)
 
     def test_generated_projection_is_skipped(self):

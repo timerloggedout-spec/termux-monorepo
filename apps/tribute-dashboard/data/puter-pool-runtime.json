@@ -1,0 +1,52 @@
+{
+  "schema": "provider-runtime-observation/v1",
+  "provider_id": "g4f.puter",
+  "provider": "g4f/Puter",
+  "source_repository": "timerloggedout-spec/puter-pool_fork",
+  "observed_at": null,
+  "pool": {
+    "health": "unknown",
+    "readiness": "unknown",
+    "strategy": null,
+    "counters": {
+      "totalAccounts": null,
+      "activeAccounts": null,
+      "disabledAccounts": null,
+      "exhaustedAccounts": null,
+      "errorAccounts": null,
+      "totalRequests": null,
+      "successfulRequests": null,
+      "failedRequests": null,
+      "queuedRequests": null,
+      "activeRequests": null,
+      "averageLatency": null,
+      "uptime": null
+    },
+    "model_count": null,
+    "model_ids": []
+  },
+  "quota": {
+    "status": "unknown",
+    "used": null,
+    "limit": null,
+    "remaining": null,
+    "reset": null,
+    "reason": "Provider-authoritative quota has not been observed."
+  },
+  "privacy": {
+    "account_inventory_collected": false,
+    "account_balances_collected": false,
+    "request_history_collected": false,
+    "prompts_collected": false,
+    "completions_collected": false,
+    "credentials_collected": false
+  },
+  "correlation": {
+    "task_or_entry_ref": null,
+    "doe_run_id": null,
+    "workflow_run_id": null,
+    "run_attempt": null,
+    "temporal_workflow_id": null,
+    "temporal_run_id": null
+  }
+}

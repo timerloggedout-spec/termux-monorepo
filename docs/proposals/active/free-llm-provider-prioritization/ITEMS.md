@@ -37,6 +37,12 @@ Continued acceptance: **MSM-015 implemented and production-verified**: exact ori
 
 MSM-023 implementation: separate pure Typhoon protocol, 40 synthetic protocol/discovery cases, legally held source linkage and dashboard/resource matrix documentation. Full provider-contract parity passed 512 pytest cases plus 9 legacy unittests, local dual gates and the 39-proposal validator. Independent review identified a request-role type-validation edge case; fixed type-first validation and malformed-role regressions close it. Typhoon's public $0 claim is documented, not account-verified; remaining quota/reset and actual inference stay unknown/not attempted. LongCat's paid-balance setup does not satisfy the free requirement. Hosted exact-head checks and scoped independent review remain promotion prerequisites; no terms/account or runtime activation follows from code promotion.
 
+
+## Provider observation correction
+
+| ID | Priority | Scope | Acceptance |
+|---|---|---|---|
+| MSM-027 | P1 | Reconcile AgentRouter and UnoRouter observation semantics. Wire the existing AgentRouter secret into the availability workflow; add credential-resolution regression coverage; preserve AgentRouter's owner-reported community-pool/catalog-only boundary without inventing an account quota. Update UnoRouter's manager and registry metadata for its layered per-model request window, shared upstream pools, key-level usage endpoint, account access-token separation, and provider-consent semantics. Repair the proposal-lifecycle contract test and add an owner-only, owner-PAT-backed operator-wake command for the read-only provider-availability workflow. | Offline tests prove secret-name mapping, catalog-only/no-inference behavior, safe public manager metadata, accurate workflow trigger/security boundaries, and dispatch allowlisting. Live provider reads occur only through the trusted master workflow; no inference, account-token provisioning, quota allocation, paid fallback, or routing admission. Exact-head repo-gate and Termux smoke pass before promotion. |
 ## Owner-authorized operational provider batch
 
 | ID | Priority | Scope | Acceptance |

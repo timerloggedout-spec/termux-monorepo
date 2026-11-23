@@ -17,7 +17,7 @@ CREDENTIAL_KEYS = (
     "CEREBRAS_API_KEY", "NVIDIA_API_KEY", "NVIDIA_NIM_API_KEY", "AION_API_KEY",
     "LLM7_API_TOKEN", "ZAI_API_KEY", "MODELSCOPE_TOKEN", "SILICONFLOW_API_KEY",
     "KILO_API_KEY", "OVHCLOUD_API_KEY", "SAMBANOVA_API_KEY", "CLOUDFLARE_API_TOKEN",
-    "CLOUDFLARE_ACCOUNT_ID", "COHERE_API_KEY", "OLLAMA_API_KEY",
+    "CLOUDFLARE_ACCOUNT_ID", "COHERE_API_KEY", "OLLAMA_API_KEY", "AGENTROUTER_API_KEY",
     "HUGGING_FACE_HUB_TOKEN", "HF_API_TOKEN",
 )
 
@@ -87,6 +87,7 @@ def test_main_writes_document_without_leaking_secrets(tmp_path):
     env["OUTPUT"] = str(out)
     env["HF_TOKEN"] = "fixture-hf-secret"
     env["SAMBANOVA_API_KEY"] = "fixture-sambanova-secret"
+    env["AGENTROUTER_API_KEY"] = "fixture-agentrouter-secret"
     from scripts import provider_model_catalog
 
     # Public catalogs are still observed, but the test must never use the network.
@@ -104,9 +105,9 @@ def test_main_writes_document_without_leaking_secrets(tmp_path):
     providers = {row["provider"] for row in doc["providers"]}
     assert {"gemini", "openrouter", "felo", "huggingface", "aion", "llm7",
             "cerebras", "groq", "mistral", "nvidia", "modelscope", "siliconflow", "kilo", "ovhcloud",
-            "sambanova", "cloudflare", "cohere", "ollama"}.issubset(providers)
+            "sambanova", "cloudflare", "cohere", "ollama", "agentrouter"}.issubset(providers)
     public = {"llm7", "modelscope", "ovhcloud", "routeway", "requesty", "xkiro"}
-    configured = {"huggingface": "HF_TOKEN", "sambanova": "SAMBANOVA_API_KEY"}
+    configured = {"huggingface": "HF_TOKEN", "sambanova": "SAMBANOVA_API_KEY", "agentrouter": "AGENTROUTER_API_KEY"}
     by_provider = {row["provider"]: row for row in doc["providers"]}
     for row in doc["providers"]:
         assert row["inference_ok"] is False
@@ -136,6 +137,7 @@ def test_main_writes_document_without_leaking_secrets(tmp_path):
     body = out.read_text(encoding="utf-8")
     assert "fixture-hf-secret" not in body
     assert "fixture-sambanova-secret" not in body
+    assert "fixture-agentrouter-secret" not in body
 
 
 def test_main_rejects_path_traversal(tmp_path):
@@ -342,3 +344,11 @@ def test_missing_provider_credential_reports_only_expected_environment_name():
     assert row["credential_env_resolved"] is None
     assert row["credential_env_expected"] == "GROQ_API_KEY"
     assert "fixture" not in json.dumps(row)
+
+
+def test_agentrouter_workflow_maps_existing_secret_for_catalog_only_observation():
+    from pathlib import Path
+
+    workflow = (Path(__file__).resolve().parents[1] / ".github/workflows/provider-availability.yml").read_text()
+    assert "AGENTROUTER_API_KEY: ${{ secrets.AGENTROUTER_API_KEY }}" in workflow
+    assert "AGENTROUTER_API_KEY" in CREDENTIAL_KEYS

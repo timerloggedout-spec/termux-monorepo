@@ -1408,7 +1408,7 @@
    "metric": "AI Endpoints anonymous rate limit",
    "limit": 2,
    "unit": "requests/minute",
-   "window": "per minute",
+   "window": "per-minute request window",
    "reset": "per-minute window",
    "zone": "UTC",
    "source": "https://docs.ovhcloud.com/en/guides/public-cloud/ai-machine-learning/ai-endpoints-getting-started",
@@ -1535,18 +1535,18 @@
    "id": "unorouter.free_models",
    "provider": "unorouter",
    "lane": "model",
-   "metric": "Free model rate cap (UnoRouter's own, above upstream)",
+   "metric": "UnoRouter-side free-model request window (separate from shared upstream caps)",
    "limit": 1,
-   "unit": "requests/minute per free model per user",
+   "unit": "requests/minute per free model per account",
    "window": "per minute",
-   "reset": "per-minute window; Retry-After on 429",
+   "reset": "Retry-After on 429; upstream resets provider-specific; account balance reset unknown",
    "zone": "UTC",
-   "source": "http://unorouter.com/en/blog/free-models-aggregated",
-   "doc_quote": "On top of the upstream caps we add a small limit of our own: one request per minute per free model, per user",
-   "live": "Retry-After header on HTTP 429",
+   "source": "https://unorouter.com/en/blog/free-ai-api",
+   "doc_quote": "Free models allow about one request per minute per model and account.",
+   "live": "GET /api/usage/token/ with UNOROUTER_API_KEY returns key-level total_granted, total_used, total_available and quota flags; this is not per-model headroom. HTTP 429 carries Retry-After for the separate per-model request window.",
    "planned_use": {
     "safety": 0.9,
-    "note": "upstream providers impose their own caps (RPM, daily token quotas) beneath this one"
+    "note": "Shared upstream pools impose independent provider-specific caps and can be exhausted separately. The API-key endpoint exposes that key's granted/used/available balance; account-wide balance and logs require a separate access token. Provider-level consent/objection applies to providers serving free and paid models; blocking was not active in the October 21, 2026 notice and is planned to be phased in."
    }
   },
   {
@@ -3264,20 +3264,20 @@
    "id": "agentrouter.models",
    "provider": "agentrouter",
    "lane": "model",
-   "metric": "Account-scoped model catalogue visibility; quota balance and reset not established",
+   "metric": "Owner-reported community-pool model catalogue visibility; per-account quota balance/reset not established",
    "limit": null,
    "unit": "provider-defined",
    "window": "unknown",
    "reset": "unknown",
    "zone": "unknown",
    "source": "https://co.agentrouter.org/portal/guide",
-   "live": "GET https://co.agentrouter.org/v1/models (authenticated model catalogue only; no documented remaining-credit/reset endpoint verified)",
+   "live": "GET https://co.agentrouter.org/v1/models (authenticated model catalogue; no remaining-credit/reset response contract verified)",
    "planned_use": {
-    "note": "Catalog-only registration. Do not infer account quota, spend allowance, or runtime admission."
+    "note": "Owner-reported community pool; the official guide describes unified API-key metering across supported agents, but catalog visibility does not establish a per-account remaining balance, reset, or admission."
    },
    "limit_diagnostic": {
-    "class": "live-read",
-    "basis": "limit read at use: GET https://co.agentrouter.org/v1/models (authenticated model catalogue only; no documented remaining-credit/r",
+    "class": "not-a-quota",
+    "basis": "Authenticated model-catalog visibility only; owner-reported community pool; no per-account remaining-credit or reset contract verified.",
     "as_of": "2026-11-18"
    }
   }

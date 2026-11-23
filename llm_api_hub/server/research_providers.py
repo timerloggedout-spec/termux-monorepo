@@ -267,7 +267,7 @@ def _emit_puter_pool_request_event(
         flags = os.O_WRONLY | os.O_CREAT | os.O_APPEND | getattr(os, "O_NOFOLLOW", 0)
         descriptor = os.open(str(output), flags, 0o600)
         try:
-            line = json.dumps(event, sort_keys=True, separators=(",", ":")).encode("utf-8") + b"\\n"
+            line = json.dumps(event, sort_keys=True, separators=(",", ":")).encode("utf-8") + b"\x0a"
             written = os.write(descriptor, line)
             if written != len(line):
                 raise OSError("short telemetry append")

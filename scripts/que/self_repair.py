@@ -286,7 +286,7 @@ def stale_feeds(gh: GH) -> list[dict]:
 
 def queue_stall_groups() -> list[dict]:
     """Read the canonical QUE dispatch watchdog feed as SIE observations."""
-    path = HERE / "ops" / "challenge" / "dispatch-state-feed.json"
+    path = HERE / "ops" / "que" / "feeds" / "stall-gap-feed.json"
     if not path.exists():
         return []
     from sie_event_adapter import queue_stall_groups

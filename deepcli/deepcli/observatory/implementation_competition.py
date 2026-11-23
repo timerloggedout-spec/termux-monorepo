@@ -180,11 +180,17 @@ def _metric_summary(incumbent: dict[str, dict[str, Any]],
     improvements = [item["improvement"] for item in pairs]
     mean = statistics.fmean(improvements)
     ci95 = None
+    interval_status = "insufficient_samples"
     if len(improvements) >= 2:
-        degrees_of_freedom = len(improvements) - 1
-        critical_value = T_CRITICAL_95.get(degrees_of_freedom, 1.96)
-        margin = critical_value * statistics.stdev(improvements) / math.sqrt(len(improvements))
-        ci95 = [mean - margin, mean + margin]
+        sample_sd = statistics.stdev(improvements)
+        if sample_sd > 0:
+            degrees_of_freedom = len(improvements) - 1
+            critical_value = T_CRITICAL_95.get(degrees_of_freedom, 1.96)
+            margin = critical_value * sample_sd / math.sqrt(len(improvements))
+            ci95 = [mean - margin, mean + margin]
+            interval_status = "estimated"
+        else:
+            interval_status = "zero_observed_variance"
     return {
         "direction": direction,
         "sample_count": len(pairs),
@@ -193,6 +199,7 @@ def _metric_summary(incumbent: dict[str, dict[str, Any]],
         "paired_delta_mean": statistics.fmean(item["delta"] for item in pairs),
         "improvement_mean": mean,
         "ci95": ci95,
+        "interval_status": interval_status,
         "pairs": pairs,
     }
 

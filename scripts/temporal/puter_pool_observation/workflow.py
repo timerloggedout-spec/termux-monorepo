@@ -43,8 +43,11 @@ class PuterPoolObservationWorkflow:
                 ),
             )
             if not self._stop_requested:
-                await workflow.wait_condition(
-                    lambda: self._stop_requested,
-                    timeout=timedelta(seconds=request.interval_seconds),
-                )
+                try:
+                    await workflow.wait_condition(
+                        lambda: self._stop_requested,
+                        timeout=timedelta(seconds=request.interval_seconds),
+                    )
+                except TimeoutError:
+                    pass
         return self._last_observation

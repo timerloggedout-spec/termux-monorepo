@@ -567,11 +567,11 @@ The [dated evidence dossier](../rfps/mesh-resiliency-free-compute/EXTENDED-UTILI
 
 ### Priority queue
 
-1. Cloudflare: add Billing Read scope for usage, verify deployed Worker/D1 routes and usage, then owner-review Queues and R2 activation.
+1. Cloudflare: preserve the GraphQL Analytics baseline, obtain Billing Read for financial usage, verify deployed Worker/D1 routes, then owner-review Queues and R2 activation.
 2. Codespaces: retain the owner HOLD; reopen only through an explicit owner decision and a current billing read.
 3. Leapcell, Appwrite, SnapDeploy: run bounded synthetic workloads with measured invocation, duration, egress, cold-start, and recovery receipts.
-4. Back4app, zrok, alwaysdata: resolve the URL-lifetime conflict, validate network-sharing controls, and retain alwaysdata for its restricted website class.
-5. Render: inspect the confirmed workspace and reconcile service health with the repo image/deploy path.
+4. Back4app, zrok, alwaysdata: verify the 60-minute preview URL behavior, validate network-sharing controls, and retain alwaysdata for its restricted website class.
+5. Render: confirm the workspace, inspect service health, and reconcile the account with the repo image/deploy path.
 6. GitLab: reconcile the 429 mirror/webhook lane and capture namespace-level compute/storage usage.
 
-**Update rule:** retain the dated source and API evidence, append new observations, and preserve owner holds and unknown usage as explicit state.*
+**Update rule:** retain the dated source and API evidence, append new observations, and preserve owner holds and unknown usage as explicit state.

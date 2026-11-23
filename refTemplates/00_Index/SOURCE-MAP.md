@@ -32,8 +32,8 @@ Policy: `docs/ops/RESEARCH-INTEGRATION-LANE.md`
 ## smods (live gitlinks + cited inspiration register)
 
 See root `.gitmodules` for the live custom-adapted gitlinks:
-AuditEngine_fork, batteries_fork, content-agent-routing-promptbase_fork, cost-of-remembering_fork, icm-architect_fork, icm-cctv_fork, interpretable-context-methodology_fork, mcp-android-ssh_fork, term_mcp_deepseek_fork, termux-mcp-server_fork, lego_fork, GPTmetrics_fork, Wingman_fork, and other registered pins.
+AuditEngine_fork, batteries_fork, cockroachdb, content-agent-routing-promptbase_fork, cost-of-remembering_fork, icm-architect_fork, icm-cctv_fork, interpretable-context-methodology_fork, mcp-android-ssh_fork, term_mcp_deepseek_fork, termux-mcp-server_fork, lego_fork, GPTmetrics_fork, Wingman_fork, and other registered pins.
 
 Cited inspiration sources are catalogued separately in [smods/INSPIRATION-SOURCES.md](../smods/INSPIRATION-SOURCES.md). Notary, ShipProof, and the unresolved Transcend showcase candidate are metadata-only citations, not gitlinks or runtime dependencies.
 
-Pins intentional; no auto-advance without dual-gate green. New live pins require a real customized fork, immutable reviewed pin, compatibility evidence, and passing gates.
+Pins intentional; no auto-advance without dual-gate green. New live pins require a real customized fork, immutable reviewed pin, compatibility evidence, and passing gates. CockroachDB is pinned as a historical public source snapshot; source development moved private on 2026-09-15. Runtime version and license policy are tracked in `docs/submodules/cockroachdb.md`.

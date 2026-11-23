@@ -2,7 +2,7 @@ name: Operator wake
 
 # Agent/operator plane (docs/ops/CODESPACE-CREDENTIALS-SSOT.md): repo Actions
 # secrets carry the credentials; agents never hold raw token values. This lane
-# exposes five allowlisted operator duties:
+# exposes seven allowlisted operator duties:
 #   inventory — full Actions secret NAME list via scripts/ops/provider_secret_inventory.py
 #               (provider-batch.yml observe pattern; names only, never values)
 #   variables — full Actions repository variable NAME list via the GitHub API

@@ -82,7 +82,7 @@ The `DO Statement Style` workflow checks:
 - PR titles and bodies;
 - issue and discussion titles and bodies;
 - issue comments, PR review submissions and inline comments, and discussion comments;
-- added line-leading source comments in supported languages.
+- added line-leading comments in Python, shell, YAML/TOML, JavaScript/TypeScript, Java, Go, Rust, C-family, C#, Kotlin, Swift, Dart, PHP, CSS/SCSS, SQL, Ruby, Lua, Perl, R, and Terraform sources.
 
 Run preflight before authoring and again before publishing. Treat CI as the final independent DO-first verifier. Apply the Siglary Standard's class/domain/receipt checks during authoring; its dedicated automated validator remains subject to the machinery route recorded in Standard §5. On a finding, rewrite the affected line as a concrete DO action, retain the exact technical meaning, rerun preflight, and publish after PASS.
 

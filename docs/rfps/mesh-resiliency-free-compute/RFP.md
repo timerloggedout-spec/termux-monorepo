@@ -2,14 +2,14 @@
 
 **Lane:** `planning:mesh-resiliency`  
 **Tracking issue:** [#1622](https://github.com/timerloggedout-spec/termux-monorepo/issues/1622)  
-**Status:** Planning claimed; research not yet completed  
+**Status:** Research expanded; provider scoring and selection remain pending  
 **Version:** 0.1.0  
-**Last updated:** 2026-10-24  
+**Last updated:** 2026-11-23  
 **Owner boundary:** Independent of the hackathon Delphi Oracle RFP, PR #1620, Hex, and any AWS account signup.
 
 ## 1. Executive intent
 
-Choose a resilient, portable, evidence-backed compute plan for `termux-monorepo` that makes the best use of genuinely available free quotas and promotional credits across multiple providers. The target is not “the biggest advertised free VM.” It is the best **workload-to-provider allocation and recovery policy** under changing quotas, service limits, failure domains, and account eligibility.
+Choose a resilient, portable, evidence-backed compute plan for `termux-monorepo` that makes the best use of genuinely available free quotas and promotional credits across multiple providers. The target is the best **workload-to-provider allocation and recovery policy**, rather than the biggest advertised free VM, under changing quotas, service limits, failure domains, and account eligibility.
 
 The result must explain:
 - which workload belongs on which execution surface and why;
@@ -18,19 +18,19 @@ The result must explain:
 - how the system behaves when a provider, quota, region, credential, or free offer disappears;
 - what evidence is required before any real deployment.
 
-No provider is selected by this document. This is an RFP and research plan, not a claim of eligibility, an award, or an authorization to provision resources.
+This document records an RFP and research plan. Provider selection, eligibility confirmation, awards, and provisioning authorization remain separate decisions.
 
 ## 2. Separate-lane contract
 
 This RFP lives under `docs/rfps/mesh-resiliency-free-compute/` and is tracked by issue #1622.
 
-It is **not**:
-- a subtask or deliverable owned by the hackathon Delphi RFP;
-- part of the Delphi Oracle MVP/Gantt implementation PR;
-- blocked on Hex access or human collaborator ballots;
-- authorization to sign up for AWS, provision infrastructure, enter payment details, or spend credits.
+Scope boundaries:
+- ownership by the hackathon Delphi RFP;
+- inclusion in the Delphi Oracle MVP/Gantt implementation PR;
+- dependency on Hex access or human collaborator ballots;
+- authorization for AWS signup, infrastructure provisioning, payment setup, or credit spend.
 
-Other lanes may link to this RFP as a dependency. They must not absorb its requirements, status, scoring, or decision records into their own completion claims.
+Other lanes may link to this RFP as a dependency. Each lane preserves separate requirements, status, scoring, and decision records.
 
 ## 3. Objectives and measurable outcomes
 
@@ -45,13 +45,13 @@ Other lanes may link to this RFP as a dependency. They must not absorb its requi
 Provisional targets to validate with workload owners:
 - control plane remains usable if any one optional compute provider is unavailable;
 - queued, retryable jobs can be rescheduled without losing their canonical job record;
-- no provider switch is allowed to bypass budget, security, or eligibility gates;
+- every provider switch remains subject to budget, security, and eligibility gates;
 - every allocation decision is explainable from a versioned policy and evidence snapshot;
-- a missing/expired quota signal never becomes an assumption of free capacity.
+- a missing or expired quota signal remains unknown until a fresh observation establishes capacity.
 
 ## 4. Workload profiles to inventory
 
-Before provider scoring, classify actual repository workloads. Do not infer that all workflows are portable or suitable for long-running instances.
+Classify actual repository workloads before provider scoring. Evaluate portability and long-running suitability independently for each workflow.
 
 | Profile | Examples | Runtime shape | State / side effects | Likely execution class |
 |---|---|---|---|---|
@@ -66,7 +66,7 @@ For every profile record: CPU architecture/features, memory, disk and persistenc
 
 ## 5. Candidate provider and service classes
 
-This is a **research shortlist**, not a ranking. Candidate inclusion does not imply a currently free offering.
+This is an **unranked research shortlist**. Candidate inclusion records a discovery lead; current free status and suitability require fresh evidence.
 
 ### A. General-purpose VM / instance
 - Oracle Cloud Infrastructure Always Free — https://www.oracle.com/cloud/free/
@@ -87,9 +87,22 @@ This is a **research shortlist**, not a ranking. Candidate inclusion does not im
 ### C. Repository-native / CI and scheduling surfaces
 - GitHub Actions — https://docs.github.com/en/billing/managing-billing-for-your-products/about-billing-for-github-actions
 - GitHub-hosted runner limits and usage policies must be evaluated against the actual repository plan and workload.
-- Existing Termux/Android and local/self-hosted runners may be useful for development or controlled workers, but are not assumed to be independent, continuously available production infrastructure.
+- Existing Termux/Android and local/self-hosted runners may be useful for development or controlled workers, and require separate independence and availability evidence before production placement.
 
-Provider names above are discovery leads. For each candidate, verify the exact product and plan; VM, container, serverless, CI, and storage products are not interchangeable.
+Provider names above are discovery leads. For each candidate, verify the exact product and plan; VM, container, serverless, CI, and storage products serve distinct workload classes.
+
+### D. Extended utilization and adjunct surfaces — 2026-11-23
+
+A dated official-source supplement expands the shortlist with six additional surfaces:
+
+- [SnapDeploy](./EXTENDED-UTILIZATION-OPTIONS-2026-11-23.md#snapdeploy) — sleeping containers with a shared monthly hour budget.
+- [Leapcell Hobby](./EXTENDED-UTILIZATION-OPTIONS-2026-11-23.md#leapcell) — bounded serverless invocations and GB-hour quota.
+- [Appwrite Free](./EXTENDED-UTILIZATION-OPTIONS-2026-11-23.md#appwrite) — backend functions with a seven-day inactivity pause.
+- [alwaysdata Free](./EXTENDED-UTILIZATION-OPTIONS-2026-11-23.md#alwaysdata) — restricted personal website hosting.
+- [Back4app Containers](./EXTENDED-UTILIZATION-OPTIONS-2026-11-23.md#back4app-containers) — Docker preview capacity with conflicting URL-lifetime evidence.
+- [zrok Free](./EXTENDED-UTILIZATION-OPTIONS-2026-11-23.md#zrok) — network-sharing capacity, separate from compute.
+
+The supplement also records Codespaces and Cloudflare as existing account-backed surfaces, and reconciles the Render image-backed repository path. The supplement's account observations remain timestamped and distinct from published entitlements.
 
 ## 6. Evidence protocol
 
@@ -110,17 +123,17 @@ Each provider claim must have an evidence row with:
 - raw evidence excerpt or structured facts, captured within provider terms;
 - next recheck date and evidence owner.
 
-Prefer official pricing, quota, product-limit, and terms pages. Secondary sources may identify leads but cannot alone establish current eligibility or cost. Never infer account-specific credits from public marketing pages.
+Prefer official pricing, quota, product-limit, and terms pages. Secondary sources may identify leads but cannot alone establish current eligibility or cost. Confirm account-specific credits directly; public marketing pages provide entitlement context.
 
 ### Evidence freshness
 - Recheck volatile pricing, free-tier, and quota claims immediately before a decision or experiment.
 - Store observation time separately from source publication time.
-- Expired or inaccessible evidence becomes `unknown`, not “still free.”
+- Expired or inaccessible evidence becomes `unknown`; prior free status remains historical.
 - Preserve historical snapshots so quota/terms changes can be analyzed.
 
 ## 7. Scoring rubric (version 1)
 
-Score each criterion 0–5 with written evidence and confidence. Do not compute a total until weights are agreed and published; avoid false precision.
+Score each criterion 0–5 with written evidence and confidence. Compute a total after weights are agreed and published; preserve uncertainty and avoid false precision.
 
 | Criterion | What a high score means | Initial weight |
 |---|---|---:|
@@ -133,11 +146,11 @@ Score each criterion 0–5 with written evidence and confidence. Do not compute 
 | Security and governance | Least privilege, secret isolation, audit, region/data fit | 10% |
 | Exit/lock-in | Clear teardown/export and low switching cost | 5% |
 
-Weights are a proposal for review, not a predeclared scientific truth. Report per-criterion scores, uncertainty ranges, and disqualifiers. Do not let a high free-tier score offset a failed security, durability, or cost-safety gate.
+Weights are a provisional proposal requiring review. Report per-criterion scores, uncertainty ranges, and disqualifiers. Preserve hard disqualifiers independently of every free-tier score.
 
 ### Hard disqualifiers
 - unclear or uncontrolled paid overage;
-- no safe way to cap or prevent billable usage;
+- absence of a safe cap or billable-usage guard;
 - incompatible runtime or data-residency requirement;
 - required state cannot be recovered;
 - terms or eligibility cannot be verified sufficiently for the intended use;
@@ -149,13 +162,13 @@ Separate the **control plane** from the **execution pool**.
 
 - Canonical job identity, desired state, leases, checkpoints, policy versions, and receipts live in a durable, provider-neutral record.
 - Workers are replaceable executors. They receive bounded, least-privilege work envelopes and return structured receipts.
-- Provider adapters implement capabilities and limits; they do not own canonical job truth.
+- Provider adapters implement capabilities and limits; canonical job truth remains in the provider-neutral record.
 - Scheduling decisions are deterministic from a versioned policy plus timestamped quota/health observations.
 - Health, quota, and credential failures are separate signals. A provider can be healthy but quota-exhausted; a quota can exist while an account is ineligible.
-- Provider diversity must be measured across actual failure domains (identity, region, network, storage, control plane, and billing account), not just brand names.
-- Critical secrets are never copied into artifacts, job payloads, logs, or the canonical evidence ledger.
+- Provider diversity must be measured across actual failure domains (identity, region, network, storage, control plane, and billing account), rather than brand-name count.
+- Keep critical secrets out of artifacts, job payloads, logs, and the canonical evidence ledger.
 
-Do not require a new external control-plane service until the current repository-native options and durability needs are measured.
+Prioritize existing repository-native options and measured durability requirements before evaluating a new external control-plane service.
 
 ## 9. Rotation and allocation policy to evaluate
 
@@ -184,7 +197,7 @@ The scheduler must distinguish:
 - exponential backoff with jitter;
 - per-job attempt caps and duplicate suppression;
 - explicit cooldown reason and next-eligible timestamp;
-- no rotation based only on a single transient health probe.
+- require corroborating health observations before non-emergency rotation.
 
 ## 10. Failure and abuse scenarios
 
@@ -210,33 +223,33 @@ For each: expected detection, safe behavior, recovery, data loss/duplication ris
 ## 11. Experiment plan and gates
 
 ### Gate 0 — scope and workload inventory
-Produce measured workload profiles from current workflows and identify which are safe to relocate. No provider scores before requirements exist.
+Produce measured workload profiles from current workflows and identify which are safe to relocate. Provider scoring begins after requirements are established.
 
 ### Gate 1 — source-backed provider matrix
-Collect official evidence for at least three materially different execution classes and at least two independent VM/instance candidates. Mark unsupported fields unknown. No account signup required.
+Collect official evidence for at least three materially different execution classes and at least two independent VM/instance candidates. Mark unsupported fields unknown. Account signup remains outside this gate.
 
 ### Gate 2 — offline policy simulation
 Build fixtures for quota resets, expired evidence, provider outages, shared failure domains, duplicate work, and budget limits. Compare candidate policies with deterministic replay. Report decision correctness, unnecessary switches, failed jobs, duplicated side effects, recovery time estimates, and quota overrun attempts.
 
 ### Gate 3 — sandbox experiment design
-Specify a bounded, no-production test with cost ceiling, data boundaries, teardown checklist, and stop conditions. Do not run until code is deploy-ready and the owner explicitly approves the account/provider scope.
+Specify a bounded sandbox test with cost ceiling, data boundaries, teardown checklist, and stop conditions. Run after code is deploy-ready and owner approval covers the account/provider scope.
 
 ### Gate 4 — controlled pilot
-Only after explicit approval: use synthetic/non-sensitive work, low quotas, spending protections, no broad credentials, and an independently verifiable teardown receipt.
+Only after explicit approval: use synthetic/non-sensitive work, low quotas, spending protections, least-privilege credentials, and an independently verifiable teardown receipt.
 
 ### Gate 5 — recommendation
 Publish a decision record with chosen topology, rejected alternatives, score/uncertainty, costs, failure evidence, portability plan, rollback, and re-evaluation triggers.
 
 ## 12. Security, cost, and operational guardrails
 
-- No cloud calls, account creation, payment setup, or resource provisioning in the planning phase.
-- No paid fallback without explicit owner approval.
+- Planning phase covers repository research and public documentation; cloud calls, account creation, payment setup, and resource provisioning require a separate approved phase.
+- Paid fallback requires explicit owner approval.
 - Default to fail-closed when price, quota, eligibility, or identity is unknown.
-- Separate provider credentials; least privilege; no long-lived secrets in source or artifacts.
+- Separate provider credentials; least privilege; secret values stay out of source and artifacts.
 - Explicit per-provider and global budgets, alerts, usage sampling, and kill switch before pilot.
 - Teardown must enumerate resources and independently verify their deletion/termination.
-- No sensitive repo contents or production secrets in experiments unless separately reviewed and approved.
-- Never describe a public free-tier offer as account-eligible until that account's eligibility is actually verified.
+- Sensitive repository contents and production secrets require separate review and approval before any experiment.
+- Describe a public free-tier offer as account-eligible only after account-specific eligibility evidence exists.
 
 ## 13. Required deliverables
 
@@ -267,12 +280,12 @@ Publish a decision record with chosen topology, rejected alternatives, score/unc
 | Separate planning lane claimed | complete | issue #1622 |
 | Standalone RFP draft | in progress | this committed file, reviewed and refined |
 | Workload inventory | pending | workflow-derived profile table with source references |
-| Official provider evidence collection | pending | timestamped evidence ledger |
+| Official provider evidence collection | in progress | dated six-provider supplement; broader matrix pending |
 | Weight/rubric approval | pending | versioned rubric decision |
 | Offline scheduler simulation | pending | fixtures, tests, deterministic report |
 | Pilot authorization | blocked by design until code ready | explicit owner approval and cost/security gate |
-| Provider selection | not started | decision record based on evidence |
+| Provider selection | pending | decision record based on evidence |
 
 ## 16. Change control
 
-Update this RFP through reviewable commits. Any scoring-weight change must state why and preserve the prior version. Provider terms and quota snapshots are append-only observations; do not silently rewrite history. A recommendation is valid only for the workload profile, evidence timestamps, and policy version it evaluated.
+Update this RFP through reviewable commits. Any scoring-weight change must state why and preserve the prior version. Provider terms and quota snapshots are append-only observations; preserve historical versions. A recommendation is valid only for the workload profile, evidence timestamps, and policy version it evaluated.

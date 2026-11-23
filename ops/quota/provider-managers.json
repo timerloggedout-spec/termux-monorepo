@@ -10,7 +10,7 @@
         "https://co.agentrouter.org/portal/guide",
         "https://co.agentrouter.org/portal/models"
       ],
-      "scope": "Owner-reported community pool capacity; provider guide describes unified API-key metering across supported agents, but no account remaining-credit/balance or reset response contract is verified. Catalog visibility is not a per-account quota or admission signal.",
+      "scope": "Owner-reported community pool capacity; provider guide describes unified API-key metering across supported agents, Per-account remaining-credit/balance and reset contracts remain unverified; catalog visibility stays a separate evidence class from quota balance and runtime admission.",
       "reset": "unknown",
       "signals": []
     },
@@ -379,7 +379,7 @@
       "provider_family": "unorouter",
       "status": "public_documentation_only",
       "source": "https://unorouter.com/en/docs/platform/platform-api",
-      "scope": "Per-model free request window (about one request/minute/account) above shared upstream provider pools; the API key endpoint /api/usage/token/ exposes that key's granted, used, and available balance plus quota flags; account-wide balance and usage logs require a separate access token. Provider-level consent and objection cover providers serving free and paid models; the October 21, 2026 notice says blocking is not active yet and will be phased in. Upstream caps and pool availability remain independent.",
+      "scope": "Per-model free request window (about one request/minute/account) above shared upstream provider pools; the API key endpoint /api/usage/token/ exposes that key's granted, used, and available balance plus quota flags; account-wide balance and usage logs require a separate access token. Provider-level consent and objection cover providers serving free and paid models; the October 21, 2026 notice says the October 21, 2026 notice describes a staged rollout with enforcement scheduled for a later phase. Upstream caps and pool availability remain independent.",
       "reset": "Gateway per-minute window with Retry-After on 429; upstream and key/account balance reset semantics vary or remain unknown.",
       "signals": [],
       "official_evidence": [

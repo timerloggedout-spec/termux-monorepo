@@ -438,7 +438,7 @@
     "gpt-5.1",
     "qwen-math-plus-0919",
     "qwen3-30b-a3b-instruct-2507",
-    "[\u6b21]gemini-3.8-flash",
+    "[次]gemini-3.8-flash",
     "text-embedding-v1",
     "gemma-3n-e2b-it",
     "speech-02-turbo",
@@ -1160,7 +1160,7 @@
   },
   {
    "id": "Claude",
-   "label": "Claude \ud83d\udca5",
+   "label": "Claude 💥",
    "url": "https://claude.ai",
    "auth": "none (per source list)",
    "runtime_eligible": false,
@@ -1827,7 +1827,7 @@
   },
   {
    "id": "GithubCopilot",
-   "label": "GitHub Copilot (OAuth) \ud83d\udd10",
+   "label": "GitHub Copilot (OAuth) 🔐",
    "url": "https://github.com/copilot",
    "auth": "none (per source list)",
    "runtime_eligible": false,
@@ -3235,7 +3235,7 @@
   },
   {
    "id": "Ollama",
-   "label": "Ollama \ud83e\udd99",
+   "label": "Ollama 🦙",
    "url": "https://ollama.com",
    "auth": "none (per source list)",
    "runtime_eligible": false,
@@ -3573,7 +3573,7 @@
   },
   {
    "id": "Pollinations",
-   "label": "Pollinations \ud83c\udf38",
+   "label": "Pollinations 🌸",
    "url": "https://pollinations.ai",
    "auth": "none (per source list)",
    "runtime_eligible": false,
@@ -4859,7 +4859,15 @@
     "zhipu/glm-5.2",
     "zhipu/glm-5.3"
    ],
-   "working_models": []
+   "working_models": [],
+   "pool_datastore_id": "g4f.puter",
+   "pool_source_repository": "timerloggedout-spec/puter-pool_fork",
+   "catalog_adapter": "scripts/provider_model_catalog.py:puter_pool",
+   "runtime_adapter": "llm_api_hub/server/research_providers.py:puter_pool",
+   "runtime_observer": "scripts/puter_pool_observation.py",
+   "temporal_workflow": "scripts/temporal/puter_pool_observation/",
+   "quota_state": "unknown_until_provider_authoritative_signal",
+   "runtime_eligibility_evidence": "catalog and transport adapters implemented; live inference receipt pending"
   },
   {
    "id": "Qwen",

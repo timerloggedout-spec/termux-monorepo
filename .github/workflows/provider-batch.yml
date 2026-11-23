@@ -26,7 +26,6 @@ on:
   pull_request:
     paths:
       - 'scripts/provider_model_catalog.py'
-      - 'scripts/provider_model_catalog.py'
       - 'tests/test_puter_pool_provider_catalog.py'
       - 'scripts/puter_pool_catalog.py'
       - 'scripts/dashboards/telemetry_feed.py'
@@ -43,27 +42,12 @@ on:
       - 'tests/test_puter_pool_observation.py'
       - 'tests/test_puter_pool_repo_harvest.py'
       - 'tests/test_puter_pool_temporal.py'
-      - 'scripts/puter_pool_catalog.py'
-      - 'scripts/dashboards/telemetry_feed.py'
-      - 'apps/tribute-dashboard/telemetry.html'
-      - 'apps/tribute-dashboard/data/telemetry-feed.json'
-      - 'tests/test_telemetry_feed.py'
-      - 'tests/test_telemetry_page.py'
-      - 'tests/test_telemetry_chart.py'
-      - 'tests/test_puter_pool_catalog.py'
       - 'scripts/provider_extension_catalogs.py'
       - 'scripts/ops/provider_operational_check.py'
       - 'scripts/ops/gemini_free_smoke.py'
       - 'tests/test_gemini_free_smoke.py'
       - 'tests/test_provider_extensions.py'
       - 'tests/test_provider_extension_catalogs.py'
-      - 'tests/test_agentrouter_catalog.py'
-      - 'tests/test_util1_auditor.py'
-      - 'experiments/doe/util-1-provider-rotation/scripts/util1_auditor.py'
-      - 'experiments/doe/util-1-provider-rotation/DESIGN.json'
-      - 'ops/telemetry/integration-observability-index.json'
-      - 'docs/ops/UNIFIED-PROVIDER-OBSERVABILITY-INDEX.md'
-      - 'apps/tribute-dashboard/quota.html'
       - 'tests/test_agentrouter_catalog.py'
       - 'tests/test_util1_auditor.py'
       - 'experiments/doe/util-1-provider-rotation/scripts/util1_auditor.py'
@@ -218,7 +202,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:

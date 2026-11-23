@@ -19,14 +19,7 @@ gates_required: [proposal-lifecycle, repo-gate]
 
 ## Why this is a proposal
 
-This census was referenced as the basis for an implementation said to
-have begun. Verified 2026-10-27: no proposal, package, or code for this
-material existed in the repo — the only trace was a passing source
-mention (the Awesome Decision Models directory) in
-`docs/architecture/INFRASTRUCTURE-CMDB-P0-INVENTORY.md`. Implementation
-had not begun. Per the owner's direction it is registered here as a
-proposal, and every entry in the census is extended into a tracked
-item (ITEMS.md) instead of remaining a chat-side reference.
+This census was referenced as the basis for an implementation said to have begun. The 2026-10-27 repository audit found a passing source mention (the Awesome Decision Models directory) in `docs/architecture/INFRASTRUCTURE-CMDB-P0-INVENTORY.md`; a tracked proposal, package and code entry remained unregistered at that point. The owner's direction registered this work as a proposal and extended every census entry into a tracked item in ITEMS.md.
 
 ## Summary
 
@@ -35,19 +28,22 @@ item (ITEMS.md) instead of remaining a chat-side reference.
   return choices, scores, or probabilities (Choice / Score / Noul)
   instead of open-ended text: 88 model families, adapters, runtimes,
   and directories, each with source URLs (CENSUS.md).
-- The fleet's observatory namesakes are ecosystem projects: **Jev** =
-  TypeSafe AI's hosted decision model; **Kev** = Jared Palmer's
-  open Qwen-based family (0.8B–27B, self-hosted, TypeSafe-compatible);
-  **Laya** = ConvAI Innovations' non-autoregressive encoder family
-  (open weights); **Mev** = two projects — a Laya fine-tune for
-  job–candidate matching and Mellow AI's Qwen3.5-4B LoRA. The owner's
-  lane descriptions (Laya encoder triage, Kev Qwen+LoRA pointer,
-  Jev hosted TypeSafe) describe these external projects; deepcli's
-  `observatory/` classes are local role implementations with the
-  same names, not deployments of them.
-- Evaluation machinery now exists: the observatory dispatch
-  (PR #1754/#1782/#1786) runs Mev→Jev→Kev→Laya trials end-to-end on
-  free routes. This proposal is the backlog those trials draw from.
+- The local observatory names are role labels, while the similarly
+  named catalog entries are independently maintained external
+  candidates. Keep four identities separate: role contract, local
+  implementation, external project/model, and protocol adapter.
+  Local Mev captures text-generation output; local Jev scores against
+  a rubric; local Kev performs exact/token-F1 reference comparison;
+  local Laya reduces aligned Jev/Kev evidence. External Jev, Kev, Laya
+  and both Mev entries retain their own model/service identity and
+  provenance. The names alone establish neither code lineage nor
+  capability equivalence.
+- The observatory dispatch provides a local baseline trial. External
+  System One-compatible services also have a distinct typed-decision
+  route through `decide(state, questions)`. That adapter exposes typed `decide(state, questions)`; generic `ask(prompt)` requires a separate adapter. Role mapping remains candidate-specific and requires explicit producer/critic adapters plus matched trials.
+  Compare these candidates through capability-specific adapters and
+  matched cohorts. This proposal supplies the external candidate
+  inventory for those comparisons.
 
 ## Workstreams
 
@@ -55,8 +51,7 @@ item (ITEMS.md) instead of remaining a chat-side reference.
   the fleet's Tier-1 classifier map and provider catalogs
   (`scripts/provider_model_catalog.py`, hub providers), each entry
   carrying its census state (hosted / open weights / adapter /
-  runtime) and source URL. No entry is counted twice across the
-  model / adapter / runtime layers.
+  runtime) and source URL. Each entry maps to one declared model, adapter, runtime or directory layer.
 - **W2 — Counterpart evaluation.** The self-hostable namesakes and
   near-peers (Kev, Laya + ports, Lev, Tev1, Strands Decider 2B,
   Nimble, Open-Jev, jev-style, Ollaya-served models) are candidates
@@ -67,29 +62,23 @@ item (ITEMS.md) instead of remaining a chat-side reference.
 - **W3 — Adapters, runtimes, directories tracking.** The technique
   and runtime layer (SemIf, AnyJev/Tacit, simple-jev, Ollaya,
   laya.cpp, sys1, classifier.dev, the directories) is tracked as
-  infrastructure options, never inflated into model counts.
+  infrastructure options in their own layer and count.
 
 ## Honesty notes (carried from the source)
 
-- Many entries rest on directory-level evidence, not individually
-  inspected primary sources; ITEMS.md states are `referenced` until
-  a workstream verifies an entry firsthand.
-- The source explicitly does not guarantee completeness; variants,
-  quantizations, and new checkpoints are an open-ended set.
-- API compatibility is not capability equivalence (question types,
-  context, calibration differ); no cross-model performance ranking
-  is asserted anywhere in this package.
+- Many entries use directory-level evidence; ITEMS.md states remain `referenced` until a workstream verifies each entry against primary sources.
+- Treat source coverage as a dated snapshot; variants, quantizations and new checkpoints form an open-ended set.
+- Track API compatibility and capability equivalence as separate evidence dimensions (question types, context and calibration differ). Cross-model performance ranking requires matched trials.
 
 ## Tranche-1 trials (2026-10-27)
 
 Executed under the owner's "Get them in our comparisons!" order with the
 free_only gate standing; records in TRIALS.md. Laya **evaluated** via a
-self-hosted simple-jev server calling the fleet dispatch's decide stage
+self-hosted simple-jev server calling the fleet's typed-decision stage
 (quality 0.7139 / grounding 0.7692 on the trial state); simple-jev
 **evaluated** as the serving adapter (its hosted demo refuses datacenter
 egress — 403 from both the sandbox and GitHub Actions, run 40517046438).
-Kev is a LoRA-adapter + head family, not standalone models —
-trial_candidate pending its own serve stack. mev (Mellow AI) is a full
+Kev is a LoRA-adapter + head family; trial admission requires its compatible serving stack. mev (Mellow AI) is a full
 merged model — trial_candidate; local serve blocked on this host
 (9 GB weights vs timing-out egress + 7 GB RAM; see TRIALS.md T1-MEV). Jev (TypeSafe)
 and the other paid-route rows are on the blocked-paid list in TRIALS.md

@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/TOURNAMENT-IMPLEMENTATION-RECEIPT.schema.json",
+  "title": "Tournament Implementation Run Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "implementation_id",
+    "implementation_version",
+    "competition_role",
+    "cohort_id",
+    "task_id",
+    "task_contract_hash",
+    "environment_fingerprint",
+    "evaluator_version",
+    "run_id",
+    "outcome",
+    "hard_gates",
+    "metric_set",
+    "metrics"
+  ],
+  "properties": {
+    "schema": {
+      "const": "tournament.implementation-receipt.v1"
+    },
+    "implementation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "implementation_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "competition_role": {
+      "enum": [
+        "incumbent",
+        "challenger"
+      ]
+    },
+    "cohort_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_contract_hash": {
+      "type": "string",
+      "minLength": 1
+    },
+    "environment_fingerprint": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evaluator_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "outcome": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hard_gates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_contract_valid",
+        "schema_valid",
+        "security_and_policy",
+        "provenance_complete",
+        "deterministic_checks"
+      ],
+      "properties": {
+        "task_contract_valid": {
+          "type": "boolean"
+        },
+        "schema_valid": {
+          "type": "boolean"
+        },
+        "security_and_policy": {
+          "type": "boolean"
+        },
+        "provenance_complete": {
+          "type": "boolean"
+        },
+        "deterministic_checks": {
+          "type": "boolean"
+        }
+      }
+    },
+    "metric_set": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "task_quality",
+          "acceptance_rate",
+          "grounding",
+          "calibration",
+          "reproducibility",
+          "latency_ms",
+          "compute_cost",
+          "inference_cost",
+          "human_effort",
+          "context_tokens",
+          "retry_count",
+          "integration_conflicts",
+          "policy_violations"
+        ]
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": false,
+      "properties": {
+        "task_quality": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "acceptance_rate": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "grounding": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "calibration": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "reproducibility": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "latency_ms": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "compute_cost": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "inference_cost": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "human_effort": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "context_tokens": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "retry_count": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "integration_conflicts": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "policy_violations": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

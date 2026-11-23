@@ -1,10 +1,10 @@
-"""Trial orchestrator — runs Mev → Jev → Kev → Laya end-to-end.
+"""Local observatory trial baseline.
 
-1. produce(prompt) via N providers → artifacts
-2. critique(artifact, rubric) via judge (differ from producer)
-3. verify(artifact, reference) — token_f1 if reference supplied
-4. synthesize(artifacts, jevs, kevs) → ranked winner
-5. persist to Leaderboard + Hindsight (fanout)
+Mev, Jev, and Kev are independent role implementations whose evidence is
+reduced by Laya. The current runner evaluates candidate artifacts against
+the configured critic and verifier; candidate IDs preserve evidence identity
+when individual stages fail. This baseline is one tournament arm, not the
+required topology for the wider classifier capability graph.
 """
 from __future__ import annotations
 import asyncio, hashlib, json, os, time, urllib.request, urllib.error
@@ -84,38 +84,55 @@ async def run_trial(prompt: str,
                     client_factory=None) -> dict:
     """Return full trial record: artifacts, jevs, kevs, laya, score."""
     t0 = time.time()
+    run_id = hashlib.sha256(
+        f"{task}:{prompt}:{time.time_ns()}".encode()
+    ).hexdigest()[:16]
     artifacts = []
-    for prov, model in providers:
+    for index, (prov, model) in enumerate(providers):
+        candidate_id = f"{run_id}-candidate-{index:04d}"
         try:
             a = await produce(prompt, prov, model, client_factory=client_factory)
-            a["ok"] = True
+            a.update({"candidate_id": candidate_id, "ok": True})
             artifacts.append(a)
         except Exception as e:
-            artifacts.append({"provider": prov, "model": model, "text": "",
-                              "ok": False, "error": str(e)[:200]})
+            artifacts.append({"candidate_id": candidate_id, "provider": prov,
+                              "model": model, "text": "", "ok": False,
+                              "error": str(e)[:200]})
 
     jevs = []
     for a in artifacts:
+        candidate_id = a["candidate_id"]
+        if not a.get("ok"):
+            jevs.append({"candidate_id": candidate_id, "scores": {},
+                         "rationale": "upstream_artifact_failed", "ok": False})
+            continue
         try:
             j = await critique(a, rubric, judge[0], judge[1],
                                client_factory=client_factory)
-            j["ok"] = True
+            j.update({"candidate_id": candidate_id, "ok": True})
             jevs.append(j)
         except Exception as e:
-            jevs.append({"scores": {}, "rationale": str(e)[:200], "ok": False})
+            jevs.append({"candidate_id": candidate_id, "scores": {},
+                         "rationale": str(e)[:200], "ok": False})
 
     kevs = []
     for a in artifacts:
+        candidate_id = a["candidate_id"]
+        if not a.get("ok"):
+            kevs.append({"candidate_id": candidate_id, "match_score": None,
+                         "deltas": [], "ok": False})
+            continue
         try:
             k = verify(a, reference or {"text": ""}, method="token_f1")
-            k["ok"] = True
+            k.update({"candidate_id": candidate_id, "ok": True})
             kevs.append(k)
         except Exception as e:
-            kevs.append({"match_score": 0.0, "deltas": [], "ok": False})
+            kevs.append({"candidate_id": candidate_id, "match_score": None,
+                         "deltas": [], "ok": False, "error": str(e)[:200]})
 
-    laya = synthesize([a for a in artifacts if a["ok"]],
-                      [j for j in jevs if j.get("ok")],
-                      [k for k in kevs if k.get("ok")])
+    # Preserve one stage result per candidate. Laya joins and excludes by ID;
+    # compacting successful stage arrays would shift verdicts across candidates.
+    laya = synthesize(artifacts, jevs, kevs)
 
     lb = Leaderboard()
     _bank_cfg = _bank_config(HS_URL, HS_KEY, BANK)
@@ -142,6 +159,7 @@ async def run_trial(prompt: str,
 
     return {
         "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "run_id": run_id,
         "composition_hash": _comp_hash,
         "bank_config": _bank_cfg,
         "task": task,

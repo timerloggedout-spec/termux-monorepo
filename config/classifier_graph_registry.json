@@ -1,0 +1,2011 @@
+{
+  "schema_version": "classifier.graph-registry.v1",
+  "registry_id": "termux-monorepo-classifier-graph-tournament",
+  "registry_version": "0.9.0",
+  "catalog": {
+    "path": "config/system_one_catalog.json",
+    "schema": "system-one-catalog/1"
+  },
+  "canonical_cohort": {
+    "schema": "manager.tournament.v1",
+    "contract_path": "docs/ops/MANAGER-TOURNAMENT.schema.json"
+  },
+  "roles": [
+    {
+      "role_id": "text_generation",
+      "capability": "Produce candidate text or artifacts",
+      "contract_version": "1.0.0"
+    },
+    {
+      "role_id": "rubric_critique",
+      "capability": "Evaluate candidate artifacts against a frozen rubric",
+      "contract_version": "1.0.0"
+    },
+    {
+      "role_id": "reference_verification",
+      "capability": "Compare candidate artifacts with reference evidence",
+      "contract_version": "1.0.0"
+    },
+    {
+      "role_id": "typed_decision",
+      "capability": "Return structured choices, scores or predicates from typed state",
+      "contract_version": "1.0.0"
+    },
+    {
+      "role_id": "option_scoring",
+      "capability": "Score or select among a bounded option set",
+      "contract_version": "1.0.0"
+    },
+    {
+      "role_id": "evidence_reduction",
+      "capability": "Join evidence by candidate identity and produce a versioned decision",
+      "contract_version": "1.0.0"
+    },
+    {
+      "role_id": "unclassified",
+      "capability": "Catalogued model whose task capability and execution contract await qualification",
+      "contract_version": "1.0.0"
+    }
+  ],
+  "candidates": [
+    {
+      "candidate_id": "local.deepcli.mev",
+      "kind": "local",
+      "catalog_entry_id": null,
+      "roles": [
+        "text_generation"
+      ],
+      "readiness": "incumbent",
+      "adapter_status": "native",
+      "source_ref": "deepcli/deepcli/observatory/mev.py",
+      "notes": "Local baseline producer implementation.",
+      "operational_state": "dispatch_only_baseline",
+      "qualification_state": "role_mapped"
+    },
+    {
+      "candidate_id": "local.deepcli.jev",
+      "kind": "local",
+      "catalog_entry_id": null,
+      "roles": [
+        "rubric_critique"
+      ],
+      "readiness": "incumbent",
+      "adapter_status": "native",
+      "source_ref": "deepcli/deepcli/observatory/jev.py",
+      "notes": "Local baseline rubric critic; judge independence is an evaluation factor.",
+      "operational_state": "dispatch_only_baseline",
+      "qualification_state": "role_mapped"
+    },
+    {
+      "candidate_id": "local.deepcli.kev",
+      "kind": "local",
+      "catalog_entry_id": null,
+      "roles": [
+        "reference_verification"
+      ],
+      "readiness": "incumbent",
+      "adapter_status": "native",
+      "source_ref": "deepcli/deepcli/observatory/kev.py",
+      "notes": "Local baseline exact/token-F1 reference verifier.",
+      "operational_state": "dispatch_only_baseline",
+      "qualification_state": "role_mapped"
+    },
+    {
+      "candidate_id": "local.deepcli.laya",
+      "kind": "local",
+      "catalog_entry_id": null,
+      "roles": [
+        "evidence_reduction"
+      ],
+      "readiness": "incumbent",
+      "adapter_status": "native",
+      "source_ref": "deepcli/deepcli/observatory/laya.py",
+      "notes": "Local baseline reducer; current weighted scalar remains a baseline preference.",
+      "operational_state": "dispatch_only_baseline",
+      "qualification_state": "role_mapped"
+    },
+    {
+      "candidate_id": "catalog.S1-01",
+      "kind": "catalog",
+      "catalog_entry_id": "S1-01",
+      "roles": [
+        "typed_decision"
+      ],
+      "readiness": "catalogued",
+      "adapter_status": "partial",
+      "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#Blocked-paid-list",
+      "notes": "TypeSafe AI Jev; evaluate in the typed-decision lane.",
+      "operational_state": "blocked_paid_owner_gate",
+      "qualification_state": "role_mapped_unverified",
+      "catalog_claim": "Hosted native typed decision model (Choice/Score/Noul); OpenRouter lists 1.13/1.14",
+      "catalog_source_url": "https://typesafe.ai/blog/introducing-system-one-models-and-jev"
+    },
+    {
+      "candidate_id": "catalog.S1-02",
+      "kind": "catalog",
+      "catalog_entry_id": "S1-02",
+      "roles": [
+        "typed_decision"
+      ],
+      "readiness": "trial_candidate",
+      "adapter_status": "required",
+      "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#T1-KEV",
+      "notes": "Jared Palmer Kev; TypeSafe-compatible serving is catalogued, candidate-specific trial evidence remains required.",
+      "operational_state": "trial_candidate_composition_required",
+      "qualification_state": "role_mapped_unverified",
+      "catalog_claim": "Open Jev-like family on Qwen (0.8B/4B/9B/27B); self-hosted, TypeSafe-compatible serving",
+      "catalog_source_url": "https://github.com/jaredpalmer/kev"
+    },
+    {
+      "candidate_id": "catalog.S1-03",
+      "kind": "catalog",
+      "catalog_entry_id": "S1-03",
+      "roles": [
+        "typed_decision"
+      ],
+      "readiness": "evaluated",
+      "adapter_status": "available",
+      "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#T1-LAYA",
+      "notes": "ConvAI Laya decision encoder family; preserve exact checkpoint and serving provenance per trial.",
+      "operational_state": "evaluated_self_hosted",
+      "qualification_state": "role_mapped_unverified",
+      "catalog_claim": "Non-autoregressive encoder decision family; English + multilingual checkpoints; open weights",
+      "catalog_source_url": "https://github.com/NandhaKishorM/laya"
+    },
+    {
+      "candidate_id": "catalog.S1-04",
+      "kind": "catalog",
+      "catalog_entry_id": "S1-04",
+      "roles": [
+        "typed_decision"
+      ],
+      "readiness": "catalogued",
+      "adapter_status": "required",
+      "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#T1-MEV",
+      "notes": "Recruiting-domain Mev encoder/decision-head candidate; domain-specific evaluation required.",
+      "operational_state": "referenced_not_runnable",
+      "qualification_state": "role_mapped_unverified",
+      "catalog_claim": "~0.4B bidirectional encoder + decision head, fine-tuned from Laya for job-candidate matching",
+      "catalog_source_url": "https://x.com/i/article/2101962974898397246"
+    },
+    {
+      "candidate_id": "catalog.S1-05",
+      "kind": "catalog",
+      "catalog_entry_id": "S1-05",
+      "roles": [
+        "option_scoring"
+      ],
+      "readiness": "trial_candidate",
+      "adapter_status": "required",
+      "source_ref": "docs/proposals/active/system-one-classifier-census/TRIALS.md#T1-MEV",
+      "notes": "Mellow AI mev option-selection model; protocol and adapter compatibility require validation.",
+      "operational_state": "trial_candidate_host_blocked",
+      "qualification_state": "role_mapped_unverified",
+      "catalog_claim": "Qwen3.5-4B LoRA selecting among 2-24 options; Apache-2.0; standard next-token head",
+      "catalog_source_url": "https://huggingface.co/stay-mellow-ai/mev"
+    },
+    {
+      "candidate_id": "catalog.S2-01",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-01",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-01",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Decision family (Clef, Flash, omni); open-weight + hosted via Workers AI",
+      "catalog_source_url": "https://www.forbes.com/sites/ronschmelzer/2026/10/12/decisions-decisions-a-guide-to-the-new-wave-of-ai-decision-models-besides-jev/"
+    },
+    {
+      "candidate_id": "catalog.S2-02",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-02",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-02",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Multimodal decision family; 27B + Flash; v1.1/v1.2; open weights + hosted",
+      "catalog_source_url": "https://openrouter.ai/rankings/decisions"
+    },
+    {
+      "candidate_id": "catalog.S2-03",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-03",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-03",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Hosted d1/d1-ultra; open d1-3B, d1-omni-600M",
+      "catalog_source_url": "https://www.marktechpost.com/2026/10/17/20-jev-alternatives-the-decision-models-taking-on-typesafe-in-2026/"
+    },
+    {
+      "candidate_id": "catalog.S2-04",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-04",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-04",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Typed predicates/choices/scores over text+images; hosted Decisions API",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S2-05",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-05",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-05",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Classification, agent routing, verification, workflow decisions; Foundry + OpenRouter",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S2-06",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-06",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-06",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Hosted Choice/Score/Noul; closed weights; TypeSafe-compatible endpoint",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S2-07",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-07",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-07",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Decisions over text, images, sampled video frames; hosted, closed",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S2-08",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-08",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-08",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Long-context classification/scoring/routing; hosted beta, 512K context reported",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S2-09",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-09",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-09",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Structured choices/scores/yes-no; hosted; free rate-limited OpenRouter route reported",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S2-10",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-10",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-10",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Enterprise decision family; OpenRouter v1.5/v2.0",
+      "catalog_source_url": "https://openrouter.ai/rankings/decisions"
+    },
+    {
+      "candidate_id": "catalog.S2-11",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-11",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-11",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Behavior detection in AI traces (present/absent/not observable); specialized",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S2-12",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-12",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-12",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Audio-native decisions for live voice agents; API by request",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S2-13",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-13",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-13",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Hosted typed decisions over text+images; invite/recovery-key access",
+      "catalog_source_url": "https://api.djev.dev"
+    },
+    {
+      "candidate_id": "catalog.S2-14",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-14",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-14",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Experimental Qwen 4B/0.8B decision fine-tunes + published training recipe",
+      "catalog_source_url": "https://github.com/togethercomputer/tev1"
+    },
+    {
+      "candidate_id": "catalog.S2-15",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-15",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-15",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Qwen-based decision model, pointer head + LoRA; open weights/data/scripts",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S2-16",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-16",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-16",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Qwen3.5-9B LoRA on contrastively curated data; open model + recipe",
+      "catalog_source_url": "https://github.com/bespokelabsai/nimble"
+    },
+    {
+      "candidate_id": "catalog.S2-17",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-17",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-17",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Encoder caller-defined classification/routing/scoring; Apache-2.0; CPU/GPU",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S2-18",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-18",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-18",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "3B/8B text+image decision models; open + hosted; GGUF builds reported",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S2-19",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-19",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-19",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Dense + MoE typed decision models with image support; CC BY-NC weights",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S2-20",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-20",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-20",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Decision models 0.6B-27B; multiple questions per forward pass; Apache-2.0",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S2-21",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-21",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-21",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Multimodal 0.8B/2B/4B decision models with calibration tooling",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S2-22",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-22",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-22",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Security triage: prompt injection, tool calls, code changes, alerts; Apache-2.0",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S2-23",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-23",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-23",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "9B Jev-like; reasoning training + pointer head + diffusion drafter",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S2-24",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-24",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-24",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Small EN/ZH typed decision encoder with confidence gating; Apache-2.0",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S2-25",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-25",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-25",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Video grounding + multiple-choice QA, shared video context; 4B + 35B-A3B",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S2-26",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-26",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-26",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Thai/English 0.8B typed decision model; Apache-2.0; pip + Ollama",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S2-27",
+      "kind": "catalog",
+      "catalog_entry_id": "S2-27",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S2-27",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Decision model for EN B2B sales-call transcripts; Apache-2.0; specialized",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S3-01",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-01",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-01",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "System One models trained with a contrastive state-action objective",
+      "catalog_source_url": "https://github.com/Contrastive-LM/CLM"
+    },
+    {
+      "candidate_id": "catalog.S3-02",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-02",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-02",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Qwen3.5-4B LoRA with zero-output-token decisions; compatible server",
+      "catalog_source_url": "https://huggingface.co/interfaze-ai/lev"
+    },
+    {
+      "candidate_id": "catalog.S3-03",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-03",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-03",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Small ModernBERT non-autoregressive decision model; repo archived in index",
+      "catalog_source_url": "https://github.com/wfzyx/von"
+    },
+    {
+      "candidate_id": "catalog.S3-04",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-04",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-04",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "0.6B parallel decision model; game demos + training pipeline",
+      "catalog_source_url": "https://github.com/TianyuCodings/NanoJev"
+    },
+    {
+      "candidate_id": "catalog.S3-05",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-05",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-05",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "One-pass context+options scorer; explicitly not TypeSafe's architecture",
+      "catalog_source_url": "https://github.com/vinnylarouge/jevlike"
+    },
+    {
+      "candidate_id": "catalog.S3-06",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-06",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-06",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Qwen/Gemma family, multiple sizes + vision variant; compatible endpoint",
+      "catalog_source_url": "https://www.marktechpost.com/2026/10/17/20-jev-alternatives-the-decision-models-taking-on-typesafe-in-2026/"
+    },
+    {
+      "candidate_id": "catalog.S3-07",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-07",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-07",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Recursively developed decision models; selectable effort; vision variants",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S3-08",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-08",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-08",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Local 0.8B decision model; PyTorch/MLX; compatible + MCP servers, guard hook",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S3-09",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-09",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-09",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Small vision decision model for browser games; weights + browser demo",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S3-10",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-10",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-10",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Multimodal typed decision family 0.8B-27B; open weights reported",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S3-11",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-11",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-11",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Small CPU MiniCPM-derived model; directory documents Noul-only serving",
+      "catalog_source_url": "https://github.com/feder-cr/jev"
+    },
+    {
+      "candidate_id": "catalog.S3-12",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-12",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-12",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Browser-action and target selection model; Apache-2.0 weights/data/recipe",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S3-13",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-13",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-13",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Vision-enabled Qwen 4B/9B decision models; noncommercial weights",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S3-14",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-14",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-14",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Distilled from Jev; combined decision + generation serving; Apache-2.0 reported",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S3-15",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-15",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-15",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Gemma-based 12B/E4B typed decision models; llama.cpp serving",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S3-16",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-16",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-16",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Qwen-based 2B/4B/9B family; Apache-2.0; CUDA + GGUF",
+      "catalog_source_url": "https://github.com/allebee/jevk5"
+    },
+    {
+      "candidate_id": "catalog.S3-17",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-17",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-17",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "English/Turkish/German 4B decision models; GGUF + local serving",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S3-18",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-18",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-18",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Small decision model on a frozen Qwen backbone; local server; WebGPU build",
+      "catalog_source_url": "https://github.com/kshetrajna12/reflex"
+    },
+    {
+      "candidate_id": "catalog.S3-19",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-19",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-19",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Photo comparison / record-checking decisions incl. unknown option; MLX + PyTorch",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S3-20",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-20",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-20",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Text/single-image decision model, prefill-only inference; Apache-2.0",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S3-21",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-21",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-21",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Text decisions incl. Choice/Score/Noul/multilabel; Apache-2.0",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S3-22",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-22",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-22",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Fully trained Qwen decoder; optional thinking; calibrated option probabilities",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S3-23",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-23",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-23",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Multimodal 0.8B/2B/4B System One models; code/data/demo; Apache-2.0",
+      "catalog_source_url": "https://github.com/Valen-Team/Valen"
+    },
+    {
+      "candidate_id": "catalog.S3-24",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-24",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-24",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Trained single-pass decision model with calibration + serving; CC BY-NC weights",
+      "catalog_source_url": "https://github.com/AnotiaWang/awesome-decision-models"
+    },
+    {
+      "candidate_id": "catalog.S3-25",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-25",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-25",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Trained decision-head adapters 2B/9B/27B; check code/weight licenses separately",
+      "catalog_source_url": "https://github.com/Zefan-Cai/Open-Jev"
+    },
+    {
+      "candidate_id": "catalog.S3-26",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-26",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-26",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "4B/27B single-pass decision models distilled from reasoning; academic",
+      "catalog_source_url": "https://www.marktechpost.com/2026/10/17/20-jev-alternatives-the-decision-models-taking-on-typesafe-in-2026/"
+    },
+    {
+      "candidate_id": "catalog.S3-27",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-27",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-27",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Small family with native + Jev-compatible endpoints; Apache-2.0 reported",
+      "catalog_source_url": "https://www.marktechpost.com/2026/10/17/20-jev-alternatives-the-decision-models-taking-on-typesafe-in-2026/"
+    },
+    {
+      "candidate_id": "catalog.S3-28",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-28",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-28",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "Small candidate-head model for agent-state decisions",
+      "catalog_source_url": "https://github.com/malevrigns/agent-jev"
+    },
+    {
+      "candidate_id": "catalog.S3-29",
+      "kind": "catalog",
+      "catalog_entry_id": "S3-29",
+      "roles": [
+        "unclassified"
+      ],
+      "qualification_state": "unclassified",
+      "readiness": "catalogued",
+      "operational_state": "catalogued_unverified",
+      "adapter_status": "unverified",
+      "source_ref": "config/system_one_catalog.json#S3-29",
+      "notes": "Catalog inventory row; capability, execution route, checkpoint and trial provenance require qualification before tournament admission.",
+      "catalog_claim": "~151M non-autoregressive calibrated decision engine; experimental",
+      "catalog_source_url": "https://github.com/Heman10x-NGU/openJev-verdict-2.0"
+    }
+  ],
+  "graphs": [
+    {
+      "graph_id": "local-role-baseline",
+      "graph_version": "0.1.0",
+      "competition_unit": "composition",
+      "status": "incumbent",
+      "execution_mode": "sequential_baseline",
+      "nodes": [
+        {
+          "node_id": "producer",
+          "kind": "classifier",
+          "role_id": "text_generation",
+          "candidate_id": "local.deepcli.mev",
+          "depends_on": []
+        },
+        {
+          "node_id": "critic",
+          "kind": "critic",
+          "role_id": "rubric_critique",
+          "candidate_id": "local.deepcli.jev",
+          "depends_on": [
+            "producer"
+          ]
+        },
+        {
+          "node_id": "verifier",
+          "kind": "verifier",
+          "role_id": "reference_verification",
+          "candidate_id": "local.deepcli.kev",
+          "depends_on": [
+            "producer"
+          ]
+        },
+        {
+          "node_id": "reducer",
+          "kind": "reducer",
+          "role_id": "evidence_reduction",
+          "candidate_id": "local.deepcli.laya",
+          "depends_on": [
+            "critic",
+            "verifier"
+          ]
+        }
+      ]
+    },
+    {
+      "graph_id": "typed-decision-candidate-screen",
+      "graph_version": "0.1.0",
+      "competition_unit": "composition",
+      "status": "design_only",
+      "execution_mode": "parallel_screen",
+      "nodes": [
+        {
+          "node_id": "typesafe-jev",
+          "kind": "classifier",
+          "role_id": "typed_decision",
+          "candidate_id": "catalog.S1-01",
+          "depends_on": []
+        },
+        {
+          "node_id": "jared-kev",
+          "kind": "classifier",
+          "role_id": "typed_decision",
+          "candidate_id": "catalog.S1-02",
+          "depends_on": []
+        },
+        {
+          "node_id": "convai-laya",
+          "kind": "classifier",
+          "role_id": "typed_decision",
+          "candidate_id": "catalog.S1-03",
+          "depends_on": []
+        },
+        {
+          "node_id": "recruiting-mev",
+          "kind": "classifier",
+          "role_id": "typed_decision",
+          "candidate_id": "catalog.S1-04",
+          "depends_on": []
+        }
+      ]
+    },
+    {
+      "graph_id": "model-catalog-screen",
+      "graph_version": "0.1.0",
+      "competition_unit": "composition",
+      "status": "design_only",
+      "execution_mode": "parallel_screen",
+      "nodes": [
+        {
+          "node_id": "screen-s1-01",
+          "kind": "classifier",
+          "role_id": "typed_decision",
+          "candidate_id": "catalog.S1-01",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s1-02",
+          "kind": "classifier",
+          "role_id": "typed_decision",
+          "candidate_id": "catalog.S1-02",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s1-03",
+          "kind": "classifier",
+          "role_id": "typed_decision",
+          "candidate_id": "catalog.S1-03",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s1-04",
+          "kind": "classifier",
+          "role_id": "typed_decision",
+          "candidate_id": "catalog.S1-04",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s1-05",
+          "kind": "classifier",
+          "role_id": "option_scoring",
+          "candidate_id": "catalog.S1-05",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-01",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-01",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-02",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-02",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-03",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-03",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-04",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-04",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-05",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-05",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-06",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-06",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-07",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-07",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-08",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-08",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-09",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-09",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-10",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-10",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-11",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-11",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-12",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-12",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-13",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-13",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-14",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-14",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-15",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-15",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-16",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-16",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-17",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-17",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-18",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-18",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-19",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-19",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-20",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-20",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-21",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-21",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-22",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-22",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-23",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-23",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-24",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-24",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-25",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-25",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-26",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-26",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s2-27",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S2-27",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-01",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-01",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-02",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-02",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-03",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-03",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-04",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-04",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-05",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-05",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-06",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-06",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-07",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-07",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-08",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-08",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-09",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-09",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-10",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-10",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-11",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-11",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-12",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-12",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-13",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-13",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-14",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-14",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-15",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-15",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-16",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-16",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-17",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-17",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-18",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-18",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-19",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-19",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-20",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-20",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-21",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-21",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-22",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-22",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-23",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-23",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-24",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-24",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-25",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-25",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-26",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-26",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-27",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-27",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-28",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-28",
+          "depends_on": []
+        },
+        {
+          "node_id": "screen-s3-29",
+          "kind": "classifier",
+          "role_id": "unclassified",
+          "candidate_id": "catalog.S3-29",
+          "depends_on": []
+        }
+      ]
+    },
+    {
+      "graph_id": "local-role-lateral-screen",
+      "graph_version": "0.1.0",
+      "competition_unit": "composition",
+      "status": "design_only",
+      "execution_mode": "parallel_screen",
+      "nodes": [
+        {
+          "node_id": "mev",
+          "kind": "classifier",
+          "role_id": "text_generation",
+          "candidate_id": "local.deepcli.mev",
+          "depends_on": []
+        },
+        {
+          "node_id": "jev",
+          "kind": "classifier",
+          "role_id": "rubric_critique",
+          "candidate_id": "local.deepcli.jev",
+          "depends_on": []
+        },
+        {
+          "node_id": "kev",
+          "kind": "classifier",
+          "role_id": "reference_verification",
+          "candidate_id": "local.deepcli.kev",
+          "depends_on": []
+        },
+        {
+          "node_id": "laya",
+          "kind": "classifier",
+          "role_id": "evidence_reduction",
+          "candidate_id": "local.deepcli.laya",
+          "depends_on": []
+        }
+      ]
+    }
+  ],
+  "evaluation": {
+    "evaluator_id": "classifier-graph-evaluator",
+    "evaluator_version": "1.0.0",
+    "hard_gates": [
+      "task_correctness",
+      "security_and_policy",
+      "evidence_provenance",
+      "schema_validity"
+    ],
+    "objectives": [
+      "quality",
+      "acceptance_rate",
+      "reproducibility",
+      "latency",
+      "compute_cost",
+      "inference_cost",
+      "human_effort",
+      "calibration"
+    ],
+    "held_out_required": true
+  },
+  "classifier_estate": {
+    "path": "ops/classifiers/classifiers-feed.json",
+    "schema": "classifiers-feed/v1",
+    "snapshot_date": "2026-11-02",
+    "unit_count": 71,
+    "states": {
+      "live": 43,
+      "dormant": 26,
+      "dead": 2
+    },
+    "groups": [
+      {
+        "group_name": "dashboard / feed classifiers",
+        "units": 4,
+        "live": 3,
+        "dormant": 1,
+        "dead": 0
+      },
+      {
+        "group_name": "deepcli observatory",
+        "units": 3,
+        "live": 3,
+        "dormant": 0,
+        "dead": 0
+      },
+      {
+        "group_name": "Delphi system",
+        "units": 9,
+        "live": 5,
+        "dormant": 4,
+        "dead": 0
+      },
+      {
+        "group_name": "external surfaces",
+        "units": 6,
+        "live": 6,
+        "dormant": 0,
+        "dead": 0
+      },
+      {
+        "group_name": "intake classifiers",
+        "units": 6,
+        "live": 6,
+        "dormant": 0,
+        "dead": 0
+      },
+      {
+        "group_name": "ml/pipelines",
+        "units": 7,
+        "live": 1,
+        "dormant": 6,
+        "dead": 0
+      },
+      {
+        "group_name": "model selection / routing",
+        "units": 5,
+        "live": 2,
+        "dormant": 3,
+        "dead": 0
+      },
+      {
+        "group_name": "post-recon steward builds (2026-10-28+)",
+        "units": 2,
+        "live": 1,
+        "dormant": 1,
+        "dead": 0
+      },
+      {
+        "group_name": "provider substrate",
+        "units": 4,
+        "live": 3,
+        "dormant": 1,
+        "dead": 0
+      },
+      {
+        "group_name": "repo gates & audits",
+        "units": 9,
+        "live": 5,
+        "dormant": 4,
+        "dead": 0
+      },
+      {
+        "group_name": "repository observatory",
+        "units": 2,
+        "live": 1,
+        "dormant": 1,
+        "dead": 0
+      },
+      {
+        "group_name": "workflow triage / review",
+        "units": 14,
+        "live": 7,
+        "dormant": 5,
+        "dead": 2
+      }
+    ]
+  },
+  "infrastructure": [
+    {
+      "catalog_entry_id": "S4-01",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-01",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-02",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-02",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-03",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-03",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-04",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-04",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-05",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-05",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-06",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-06",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-07",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-07",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-08",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-08",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-09",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-09",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-10",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-10",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-11",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-11",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-12",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-12",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-13",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-13",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-14",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-14",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-15",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-15",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S4-16",
+      "layer": "adapter",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S4-16",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S5-01",
+      "layer": "runtime",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S5-01",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S5-02",
+      "layer": "runtime",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S5-02",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S5-03",
+      "layer": "runtime",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S5-03",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S5-04",
+      "layer": "runtime",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S5-04",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S5-05",
+      "layer": "runtime",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S5-05",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S5-06",
+      "layer": "runtime",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S5-06",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S5-07",
+      "layer": "runtime",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S5-07",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S5-08",
+      "layer": "directory",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S5-08",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S5-09",
+      "layer": "directory",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S5-09",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S5-10",
+      "layer": "directory",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S5-10",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    },
+    {
+      "catalog_entry_id": "S5-11",
+      "layer": "directory",
+      "operational_state": "infrastructure_reference",
+      "source_ref": "config/system_one_catalog.json#S5-11",
+      "notes": "Infrastructure catalog entry; retained in its declared adapter/runtime/directory layer and excluded from model-candidate counts."
+    }
+  ],
+  "implementation_competition": {
+    "schema": "tournament.implementation-competition.v1",
+    "canonical_cohort": "manager.tournament.v1",
+    "incumbent": {
+      "implementation_id": "incumbent.termux-manager-tournament",
+      "version": "1.0.0",
+      "status": "incumbent",
+      "components": [
+        {
+          "component_id": "cohort_contract",
+          "version": "manager.tournament.v1",
+          "source_ref": "docs/ops/MANAGER-TOURNAMENT.schema.json"
+        },
+        {
+          "component_id": "trial_runner",
+          "version": "repository-baseline",
+          "source_ref": "deepcli/deepcli/observatory/trial.py"
+        },
+        {
+          "component_id": "evidence_reducer",
+          "version": "repository-baseline",
+          "source_ref": "deepcli/deepcli/observatory/laya.py"
+        },
+        {
+          "component_id": "leaderboard",
+          "version": "repository-baseline",
+          "source_ref": "deepcli/deepcli/observatory/leaderboard.py"
+        },
+        {
+          "component_id": "evolution_replay",
+          "version": "repository-baseline",
+          "source_ref": "scripts/agent_evolution/replay_simulator.py"
+        }
+      ]
+    },
+    "challengers": [
+      {
+        "implementation_id": "challenger.sie-control-plane",
+        "version": "0.1.0",
+        "status": "design_only",
+        "source_ref": "refTemplates/15_Research_Repo_Templates/antinuous-adapted-doe-tournament/SELF-IMPROVEMENT-ENGINE.md",
+        "hypothesis": "An explicit registry, matched-cohort scheduler, evidence ledger and independent promotion controller improve validated outcome per total resource cost.",
+        "execution_ready": false
+      }
+    ],
+    "protocol": {
+      "matched_cohort_required": true,
+      "held_out_required": true,
+      "independent_evaluator_required": true,
+      "immutable_receipts_required": true,
+      "rollback_target_required": true,
+      "owner_approval_for_production": true
+    },
+    "comparison_engine": {
+      "implementation_id": "matched-cohort-comparator",
+      "version": "0.3.0",
+      "source_ref": "deepcli/deepcli/observatory/implementation_competition.py",
+      "status": "executable_component",
+      "cli_source_ref": "scripts/tournament/compare_implementations.py",
+      "receipt_schema_ref": "docs/ops/TOURNAMENT-IMPLEMENTATION-RECEIPT.schema.json"
+    }
+  }
+}

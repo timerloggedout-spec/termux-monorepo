@@ -357,5 +357,96 @@
         }
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "governance": {
+            "properties": {
+              "state": {
+                "enum": [
+                  "eligible_for_preregistration",
+                  "preregistered",
+                  "admitted_design_only",
+                  "executing",
+                  "validated",
+                  "promoted",
+                  "retained"
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "governance"
+        ]
+      },
+      "then": {
+        "properties": {
+          "compatibility": {
+            "properties": {
+              "schema_compatibility": {
+                "const": "pass"
+              },
+              "provenance_preservation": {
+                "const": "pass"
+              },
+              "security_review": {
+                "const": "pass"
+              },
+              "license_review": {
+                "const": "pass"
+              },
+              "capacity_review": {
+                "const": "pass"
+              },
+              "failure_semantics": {
+                "const": "pass"
+              },
+              "human_approval": {
+                "enum": [
+                  "granted",
+                  "not_required"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "governance": {
+            "properties": {
+              "state": {
+                "enum": [
+                  "executing",
+                  "validated",
+                  "promoted",
+                  "retained"
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "governance"
+        ]
+      },
+      "then": {
+        "properties": {
+          "design": {
+            "properties": {
+              "campaign_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }

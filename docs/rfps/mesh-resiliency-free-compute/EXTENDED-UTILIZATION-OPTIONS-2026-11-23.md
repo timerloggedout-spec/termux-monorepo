@@ -16,6 +16,39 @@ Two existing assets deserve immediate utilization work before additional signup 
 
 Render also has repository-side wiring through a GitHub Actions → GHCR → image-backed Render path. The Render account inventory remains pending workspace confirmation.
 
+
+## Surface map
+
+The map separates deployed repository surfaces from candidate placement classes. Dashed edges represent candidate fit, while solid edges represent repository wiring or an existing account-backed surface.
+
+```mermaid
+flowchart TB
+  GH["GitHub Actions control plane"] --> WATCH["10-minute bucket-headroom watcher"]
+  GH --> GL["GitLab CI secondary validation"]
+  GH --> GHCR["GHCR image publication"]
+  GHCR --> RENDER["Render README utility · repo-wired"]
+  CF["Cloudflare Workers · deployed"] --> D1["Cloudflare D1 · deployed"]
+  CODE["Codespaces · owner HOLD"]
+  subgraph CANDIDATES["Extended utilization candidates"]
+    SERVERLESS["Serverless functions"]
+    PREVIEW["Container previews"]
+    WEB["Personal website hosting"]
+    NETWORK["Network sharing"]
+    LEAP["Leapcell Hobby"]
+    APP["Appwrite Free"]
+    SNAP["SnapDeploy"]
+    BACK["Back4app Containers"]
+    ALWAYS["alwaysdata Free"]
+    ZROK["zrok Free"]
+    SERVERLESS -.-> LEAP
+    SERVERLESS -.-> APP
+    PREVIEW -.-> SNAP
+    PREVIEW -.-> BACK
+    WEB -.-> ALWAYS
+    NETWORK -.-> ZROK
+  end
+```
+
 ## 1. Six extended utilization options
 
 All values below are published plan entitlements. Account eligibility, current remaining capacity, actual billing posture, and region-specific availability remain separate observations.

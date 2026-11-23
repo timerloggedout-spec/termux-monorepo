@@ -157,8 +157,9 @@ details + remaining gap (per-PR token-history join) in
 
 ### Puter Pool runtime stream
 
-Temporal appends sanitized EPS v1 observations for `g4f.puter` to
-`agent_telemetry_stream.json` and writes the current aggregate snapshot to
+The LLM Hub appends per-request `provider.inference.completed` EPS v1 events,
+and Temporal appends aggregate `provider.pool.observed` events for `g4f.puter`,
+to `agent_telemetry_stream.json`. Temporal also writes the current aggregate snapshot to
 `apps/tribute-dashboard/data/puter-pool-runtime.json`. The event carries
 `task_or_entry_ref`, `doe_run_id`, `workflow_run_id`, `run_attempt`,
 `temporal_workflow_id`, and `temporal_run_id` with model/request/queue

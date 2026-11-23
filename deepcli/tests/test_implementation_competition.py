@@ -29,6 +29,7 @@ def receipt(implementation, version, task, quality, latency, *, cost, accepted=T
             "provenance_complete": True,
             "deterministic_checks": True,
         },
+        "metric_set": ["task_quality", "latency_ms", "compute_cost"],
         "metrics": {
             "task_quality": quality,
             "latency_ms": latency,

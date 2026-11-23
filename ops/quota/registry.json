@@ -1727,7 +1727,7 @@
    "reset": "unknown",
    "zone": "UTC",
    "source": "https://api.toolsforagents.tools/site/index.html",
-   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "live": "local Puter Pool GET /api/stats + /api/queue via scripts/puter_pool_observation.py; runtime request counters only; provider-authoritative quota remains unknown",
    "doc_quote": "250 units/day \u00b7 No email \u00b7 No credit card \u00b7 Instant access",
    "planned_use": {
     "safety": 0.9,

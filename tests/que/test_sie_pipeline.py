@@ -122,13 +122,11 @@ class TestSIEPipeline(unittest.TestCase):
 
     def test_queue_watchdog_rejects_malformed_feed_shapes(self):
         malformed_feeds = (
-            None, [], {"dispatches": [None]}, {"dispatches": "not-a-list"},
-            {"dispatches": [{"stall_events": [None]}]},
-            {"dispatches": [{"tier": [], "stall_events": []}]},
-            {"dispatches": [{"issue": 8126, "state": "escalated", "age_min": "Infinity",
-                              "stall_events": [{"kind": "escalation"}]}]},
-            {"dispatches": [{"issue": 8127, "state": "escalated", "age_min": "NaN",
-                              "stall_events": [{"kind": "escalation"}]}]},
+            None, [], {}, {"schema": "unknown", "records": []},
+            {"schema": "que.stall-gap/v1", "records": "not-a-list"},
+            {"schema": "que.stall-gap/v1", "records": [None]},
+            {"schema": "que.stall-gap/v1", "records": [{"issue": True, "kind": "placement_failed", "at": "2026-11-23T00:00:00Z"}]},
+            {"schema": "que.stall-gap/v1", "records": [{"issue": 8123, "kind": "placement_failed", "at": "2026-11-23T00:00:00Z", "reason": []}]},
         )
         for malformed in malformed_feeds:
             with self.subTest(malformed=malformed):
@@ -143,44 +141,30 @@ class TestSIEPipeline(unittest.TestCase):
         data["source"]["kind"] = {}
         self.assertTrue(any("source.kind:" in error for error in validate_receipt(data)))
 
-    def test_queue_watchdog_escalations_create_stable_sie_intake(self):
+    def test_queue_watchdog_stall_records_create_stable_sie_intake(self):
         feed = {
-            "dispatches": [
-                {
-                    "issue": 8123, "state": "escalated", "age_min": 91,
-                    "claim": None, "tier": {"name": "ESCALATION"},
-                    "stall_events": [{"kind": "flag"}, {"kind": "escalation"}],
-                },
-                {
-                    "issue": 8124, "state": "claimed", "age_min": 95,
-                    "claim": {"by": "worker"}, "tier": {"name": "BASE"},
-                    "stall_events": [],
-                },
-                {
-                    "issue": 8125, "state": "claimed", "age_min": 120,
-                    "claim": None, "tier": {"name": "FINAL"},
-                    "stall_events": [{"kind": "escalation"}],
-                },
-            ]
+            "schema": "que.stall-gap/v1",
+            "records": [
+                {"issue": 8123, "kind": "placement_failed", "exception_kind": "unplaceable",
+                 "reason": "missing claim class", "at": "2026-11-23T08:00:00Z"},
+                {"issue": 8124, "kind": "lease_released", "claim_class": "executor",
+                 "claimant": "dispatch-executor", "at": "2026-11-23T08:01:00Z"},
+                {"issue": 8125, "kind": "auto_claimed", "at": "2026-11-23T08:02:00Z"},
+            ],
         }
         groups = queue_stall_groups(feed)
-        self.assertEqual(len(groups), 1)
-        self.assertEqual(groups[0]["source_kind"], "stall_gap")
-        self.assertEqual(groups[0]["source_id"], "8123")
-        self.assertEqual(groups[0]["step"], "dispatch-watchdog")
-        self.assertEqual(groups[0]["key"], queue_stall_groups(feed)[0]["key"])
-        advanced = json.loads(json.dumps(feed))
-        advanced["dispatches"][0]["age_min"] = 121
-        refreshed = queue_stall_groups(advanced)[0]
-        self.assertEqual(groups[0]["source_revision"], refreshed["source_revision"])
-        self.assertGreater(refreshed["priority"], groups[0]["priority"])
-        advanced["dispatches"][0]["tier"]["name"] = "FINAL"
-        advanced["dispatches"][0]["stall_events"].append({"kind": "new-observation"})
-        changed_observation = queue_stall_groups(advanced)[0]
-        self.assertEqual(groups[0]["key"], changed_observation["key"])
-        self.assertNotEqual(groups[0]["source_revision"], changed_observation["source_revision"])
-        body = item_body(groups[0])
-        match = re.search(r"## SIE stage receipt\n\x60\x60\x60json\n(.*?)\n\x60\x60\x60", body, re.S)
+        self.assertEqual(len(groups), 2)
+        first = next(group for group in groups if group["source_id"] == "8123")
+        self.assertEqual(first["source_kind"], "stall_gap")
+        self.assertEqual(first["step"], "dispatch-watchdog")
+        self.assertEqual(first["key"], queue_stall_groups(feed)[0]["key"])
+        changed = json.loads(json.dumps(feed))
+        changed["records"][0]["reason"] = "owner-gated"
+        refreshed = next(group for group in queue_stall_groups(changed) if group["source_id"] == "8123")
+        self.assertEqual(first["key"], refreshed["key"])
+        self.assertNotEqual(first["source_revision"], refreshed["source_revision"])
+        body = item_body(first)
+        match = re.search(r"## SIE stage receipt\\n\\x60\\x60\\x60json\\n(.*?)\\n\\x60\\x60\\x60", body, re.S)
         self.assertIsNotNone(match)
         data = json.loads(match.group(1))
         self.assertEqual(validate_receipt(data), [])

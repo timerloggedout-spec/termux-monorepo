@@ -44,9 +44,14 @@ def make_receipt(implementation, role, task, quality, latency, cost):
 class ImplementationCompetitionCliTests(unittest.TestCase):
     def test_cli_writes_and_prints_comparison_report(self):
         receipts = []
-        for task, quality, latency in [("a", .7, 100), ("b", .8, 110)]:
+        for index, (task, quality, latency) in enumerate([("a", .7, 100), ("b", .8, 110)]):
             receipts.append(make_receipt("incumbent", "incumbent", task, quality, latency, 10))
-            receipts.append(make_receipt("challenger", "challenger", task, quality + .1, latency - 5, 9))
+            receipts.append(make_receipt(
+                "challenger", "challenger", task,
+                quality + .1 + index * .002,
+                latency - 5 - index * .1,
+                9 - index * .1,
+            ))
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             source = root / "receipts.json"

@@ -12,6 +12,10 @@
 
 The two tools share a hot-path `go` use case, while rust-anything exposes a broader piecewise whole-app migration path. The primary experiment compares only their common hot-path scope.
 
+## Extensible task contract
+
+Each workload fixture conforms to [TASK.schema.json](TASK.schema.json). Add workloads through versioned fixture records with source hashes, baseline/candidate commands, held-out oracle references and explicit observable behavior. New tasks create a new cohort/design version; prior records remain immutable.
+
 ## Design
 
 See [DESIGN.json](DESIGN.json). The planned design is a blocked full factorial with one three-level treatment factor, six frozen Python workloads, three repetitions, and 54 planned observations. Treatment order is randomized within each task × repetition block.

@@ -8,7 +8,7 @@
 Single source of truth for every Vercel project deployed from this org's
 repos. A "lane" is one Vercel project — each has exactly one Root Directory,
 so a monorepo with independent deployables needs one lane per deployable,
-not one project reused for everything. Add a row here whenever a new lane
+uses a separate project for each deployable. Add a row here whenever a new lane
 is created; update it whenever a lane's purpose or Root Directory changes.
 
 ## Vercel lanes
@@ -40,15 +40,12 @@ Use these states consistently:
 
 - **LIVE** — a concrete deployment is currently documented and independently
   verifiable from repository/provider evidence.
-- **CANDIDATE / PENDING ACTIVATION** — the platform is an approved option, but no
-  production lane has been established in this repository.
+- **CANDIDATE / PENDING ACTIVATION** — the platform is an approved option, while the production lane remains unestablished in this repository.
 - **AVAILABLE/CANDIDATE, UNPROVEN HERE** — the operator may have access to the
-  platform, but this repository does not yet contain enough evidence to call
-  a deployment live.
+  platform, while this repository contains insufficient evidence to call a deployment live.
 - **INTEGRATED EVIDENCE SURFACE** — the platform participates in analytics,
   evaluation, or evidence handling rather than serving the application.
-- **DOCUMENTATION SURFACE** — publishing/discovery only; never an authorization
-  boundary for source changes.
+- **DOCUMENTATION SURFACE** — publishing/discovery only; separate from source-change authorization.
 
 ## Deployment identity requirements
 
@@ -64,9 +61,7 @@ For every future hosting lane record, at minimum:
 7. Whether the lane is authoritative production, preview, fallback, or
    experimental.
 
-A provider being connected or available is **not** evidence that a deployment
-exists. A deployment being reachable is not, by itself, evidence that the
-intended SHA was deployed. Promotion requires source/commit provenance and a
+A provider connection alone establishes neither deployment existence nor source provenance. Reachability alone establishes neither the intended SHA nor deployment provenance. Promotion requires source/commit provenance and a
 successful verification trail.
 
 ## Why separate lanes
@@ -95,7 +90,7 @@ The Render README utility is separate from the Render/n8n reference lane in
 3. Record the public URL/domain and immutable source/deployment evidence when
    the lane becomes live.
 4. If the lane needs its own environment variables/secrets, document what
-   they are (not their values) in the folder's own README.
+   names only; values remain private in the folder's own README.
 5. If the lane duplicates an existing surface, document why it is a fallback,
    preview, experiment, or deliberate multi-provider redundancy rather than
    silently becoming another production source.

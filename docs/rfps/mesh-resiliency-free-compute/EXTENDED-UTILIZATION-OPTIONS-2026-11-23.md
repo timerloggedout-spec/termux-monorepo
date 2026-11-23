@@ -123,7 +123,7 @@ The 10-minute watcher is `.github/workflows/bucket-headroom-watch.yml`:
 - writes `que-governor-event/v1` transition receipts to `ops/que/events/` and updates one standing issue;
 - supports `workflow_dispatch` with dry-run and synthetic-drill inputs.
 
-This is distinct from the 10-minute `timeout-minutes` on the GitLab validation job and the 10-minute timeout on the GHCR image-build job. Those are per-run execution ceilings, not watcher schedules.
+This is distinct from the 10-minute `timeout-minutes` on the GitLab validation job and the 10-minute timeout on the GHCR image-build job. Those are per-run execution ceilings, separate from watcher schedules.
 
 Related schedules:
 - `que-feed-collect.yml` also uses a 10-minute schedule.

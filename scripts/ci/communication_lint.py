@@ -14,7 +14,7 @@ ALLOWLIST_RE = re.compile(r"\b(?:no-go|no-cost|no-op|no-fallback|not-found|not_f
 FENCE_RE = re.compile(r"^ {0,3}(\x60{3,}|~{3,})")
 HUNK_RE = re.compile(r"\+(\d+)(?:,(\d+))?")
 URL_RE = re.compile(r"https?://\S+")
-INLINE_CODE_RE = re.compile(r"\x60+[^\\x60]*\x60+")
+INLINE_CODE_RE = re.compile(r"\x60+[^\x60]*\x60+")
 
 SKIP_PREFIXES = ("vendor/", "third_party/", "docs/proposals/legacy/", "docs/ops/corpus/", "tmp/", "sandbox/", "workspace/", "exchanges/")
 PROSE_SUFFIXES = {".md", ".mdx", ".txt", ".rst"}
@@ -52,7 +52,7 @@ def changed_line_numbers(base, path):
 
 def comment_body(line, suffix):
     stripped = line.lstrip()
-    if suffix in PROSE_SUFFIXES:
+    if suffix in PROSE_SUFFIXES or not suffix:
         return line
     if suffix in {".py", ".sh", ".bash", ".yml", ".yaml", ".toml", ".ini"}:
         return stripped[1:].lstrip() if stripped.startswith("#") else None

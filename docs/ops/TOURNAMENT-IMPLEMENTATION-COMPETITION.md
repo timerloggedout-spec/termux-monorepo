@@ -9,7 +9,7 @@ Compare two complete tournament implementation versions on the same frozen task 
 
 ## Receipt contract
 
-Supply one immutable receipt per implementation and task. Each receipt includes:
+Supply one immutable receipt per implementation and task, validated against `docs/ops/TOURNAMENT-IMPLEMENTATION-RECEIPT.schema.json`. Each receipt identifies `schema: tournament.implementation-receipt.v1` and includes:
 
 - `implementation_id`, `implementation_version`, and `competition_role` (`incumbent` or `challenger`);
 - `cohort_id`, `task_id`, `task_contract_hash`;
@@ -32,7 +32,7 @@ Missing metric observations remain null and reduce that metric's paired sample c
 python scripts/tournament/compare_implementations.py receipts.json --output comparison.json
 ```
 
-The input file may contain a JSON array or an object with a `receipts` array. The report identifies incumbent and challenger, paired outcomes, hard-gate failures and a recommendation.
+The input file may contain a JSON array or an object with a `receipts` array. Each receipt carries the versioned receipt schema identifier. The report identifies incumbent and challenger, paired outcomes, hard-gate failures and a recommendation.
 
 Recommendations route to human review. Promotion uses held-out validation, owner approval and a pinned rollback target; the active implementation changes only through that separate promotion process.
 

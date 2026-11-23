@@ -26,6 +26,11 @@ on:
   pull_request:
     paths:
       - 'scripts/provider_model_catalog.py'
+      - 'scripts/provider_quota_coverage.py'
+      - 'ops/quota/static-service-mappings.json'
+      - 'ops/quota/four-counts.md'
+      - 'apps/tribute-dashboard/data/provider-quota-coverage.json'
+      - 'docs/ops/PROVIDER-DISPATCH-CAPABILITY.md'
       - 'llm_api_hub/server/app.py'
       - 'llm_api_hub/server/research_providers.py'
       - 'llm_api_hub/server/puter_pool_protocol.py'
@@ -127,6 +132,11 @@ on:
     branches: [master]
     paths:
       - 'scripts/provider_model_catalog.py'
+      - 'scripts/provider_quota_coverage.py'
+      - 'ops/quota/static-service-mappings.json'
+      - 'ops/quota/four-counts.md'
+      - 'apps/tribute-dashboard/data/provider-quota-coverage.json'
+      - 'docs/ops/PROVIDER-DISPATCH-CAPABILITY.md'
       - 'scripts/puter_pool_catalog.py'
       - 'scripts/dashboards/telemetry_feed.py'
       - 'apps/tribute-dashboard/telemetry.html'

@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/experiments/doe/rust-migration-tools/TASK.schema.json",
+  "title": "Rust Migration DoE Task Fixture",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "task_id",
+    "family",
+    "stratum",
+    "contract",
+    "source_fixture",
+    "baseline_command",
+    "oracle",
+    "observables"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{2,63}$"
+    },
+    "family": {
+      "type": "string"
+    },
+    "stratum": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "contract": {
+      "type": "string",
+      "minLength": 20
+    },
+    "source_fixture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "language",
+        "runtime"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "language": {
+          "type": "string"
+        },
+        "runtime": {
+          "type": "string"
+        }
+      }
+    },
+    "baseline_command": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "candidate_commands": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "minItems": 1
+      }
+    },
+    "oracle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "expected_output_ref",
+        "heldout_cases_ref",
+        "comparison_policy"
+      ],
+      "properties": {
+        "expected_output_ref": {
+          "type": "string"
+        },
+        "heldout_cases_ref": {
+          "type": "string"
+        },
+        "comparison_policy": {
+          "type": "string"
+        }
+      }
+    },
+    "observables": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": [
+          "return_value",
+          "error_type",
+          "error_message",
+          "stdout",
+          "stderr",
+          "exit_code",
+          "side_effects",
+          "wall_clock",
+          "memory_peak"
+        ]
+      }
+    },
+    "extension_of": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    }
+  }
+}

@@ -247,6 +247,7 @@ def _emit_puter_pool_request_event(
         "model_provider": "g4f/Puter",
         "entity_type": "provider",
         "entity_id": "g4f.puter",
+        "provider_id": "g4f.puter",
         "status": outcome,
         "run_id": attributes["workflow_run_id"] or attributes["temporal_workflow_id"] or attributes["task_or_entry_ref"],
         "run_attempt": attempt,

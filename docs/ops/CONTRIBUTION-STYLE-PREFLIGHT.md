@@ -81,7 +81,8 @@ The `DO Statement Style` workflow checks:
 - non-merge commit subjects and bodies in the pushed or proposed range;
 - PR titles and bodies;
 - issue and discussion titles and bodies;
-- issue, PR review, and discussion comments.
+- issue, PR review submissions and inline comments, commit comments, and discussion comments;
+- added line-leading source comments in supported languages.
 
 Run preflight before authoring and again before publishing. Treat CI as the final independent DO-first verifier. Apply the Siglary Standard's class/domain/receipt checks during authoring; its dedicated automated validator remains subject to the machinery route recorded in Standard §5. On a finding, rewrite the affected line as a concrete DO action, retain the exact technical meaning, rerun preflight, and publish after PASS.
 

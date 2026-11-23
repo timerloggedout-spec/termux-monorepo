@@ -33,6 +33,17 @@ STYLE_PATHS = [
     "docs/ops", "docs/proposals",
 ]
 
+COMMENT_SUFFIXES = {
+    ".py", ".sh", ".bash", ".zsh", ".ps1", ".bat", ".cmd",
+    ".yml", ".yaml", ".toml", ".ini", ".cfg", ".conf",
+    ".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs",
+    ".java", ".go", ".rs", ".c", ".h", ".cc", ".cpp", ".hpp",
+    ".cs", ".kt", ".kts", ".swift", ".dart", ".php",
+    ".css", ".scss", ".sql", ".rb", ".lua", ".pl", ".r", ".tf",
+    ".mk", ".make",
+}
+COMMENT_PREFIX = re.compile(r"^\\s*(?://+|#+|--+|/\\*+|\\*+|<!--|;|%|REM\\b)\\s*(.*)$", re.IGNORECASE)
+
 errors: list[str] = []
 
 
@@ -41,6 +52,29 @@ def inspect_text(label: str, value: str) -> None:
         if NEGATIVE_FIRST.match(line):
             errors.append(f"{label}:{number}: lead with the intended DO action")
 
+
+
+def is_comment_path(path: str) -> bool:
+    return Path(path).suffix.lower() in COMMENT_SUFFIXES
+
+
+def inspect_comment_line(label: str, line: str) -> None:
+    match = COMMENT_PREFIX.match(line)
+    if match and NEGATIVE_FIRST.match(match.group(1)):
+        errors.append(
+            f"{label}: lead with the intended DO action in source comments: "
+            f"{match.group(1).strip()}"
+        )
+
+
+def inspect_added_comment_lines(diff: str) -> None:
+    current_path = "changed-file"
+    for line in diff.splitlines():
+        if line.startswith("+++ b/"):
+            current_path = line[6:]
+        elif line.startswith("+") and not line.startswith("+++"):
+            if is_comment_path(current_path):
+                inspect_comment_line(current_path, line[1:])
 
 def run_git(*args: str) -> str:
     return subprocess.run(
@@ -66,6 +100,8 @@ def inspect_git_range(base: str, head: str) -> None:
         "diff", "--unified=0", f"{base}...{head}", "--", *STYLE_PATHS
     )
     inspect_added_lines("changed-file", diff)
+    comment_diff = run_git("diff", "--unified=0", f"{base}...{head}")
+    inspect_added_comment_lines(comment_diff)
 
     subjects = run_git(
         "log", "--no-merges", f"{base}..{head}", "--format=%s"
@@ -96,16 +132,25 @@ def inspect_worktree() -> None:
     """Inspect staged + unstaged tracked edits and untracked instruction files."""
     diff = run_git("diff", "--unified=0", "HEAD", "--", *STYLE_PATHS)
     inspect_added_lines("working-tree", diff)
+    comment_diff = run_git("diff", "--unified=0", "HEAD")
+    inspect_added_comment_lines(comment_diff)
 
     untracked = run_git("ls-files", "--others", "--exclude-standard", "-z")
     for raw_path in untracked.split("\0"):
-        if not raw_path or not is_style_path(raw_path):
+        if not raw_path:
             continue
         path = Path(raw_path)
         try:
-            inspect_text(raw_path, path.read_text(encoding="utf-8"))
+            content = path.read_text(encoding="utf-8")
         except UnicodeDecodeError:
-            errors.append(f"{raw_path}: UTF-8 decode failed; inspect the file encoding")
+            if is_style_path(raw_path) or is_comment_path(raw_path):
+                errors.append(f"{raw_path}: UTF-8 decode failed; inspect the file encoding")
+            continue
+        if is_style_path(raw_path):
+            inspect_text(raw_path, content)
+        if is_comment_path(raw_path):
+            for line in content.splitlines():
+                inspect_comment_line(raw_path, line)
 
 
 def inspect_pr_commits() -> None:
@@ -129,6 +174,8 @@ def inspect_event(event: dict) -> None:
     if EVENT_NAME == "pull_request":
         inspect_text("pull_request.title", event.get("pull_request", {}).get("title") or "")
         inspect_text("pull_request.body", event.get("pull_request", {}).get("body") or "")
+    elif EVENT_NAME == "pull_request_review":
+        inspect_text("pull_request_review.body", event.get("review", {}).get("body") or "")
     elif EVENT_NAME == "issues":
         inspect_text("issue.title", event.get("issue", {}).get("title") or "")
         inspect_text("issue.body", event.get("issue", {}).get("body") or "")

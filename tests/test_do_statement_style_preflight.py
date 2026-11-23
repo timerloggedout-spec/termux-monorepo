@@ -72,6 +72,34 @@ class DoStatementPreflightTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("DO-statement style: PASS", result.stdout)
 
+    def test_preflight_checks_untracked_source_comments(self) -> None:
+        repo, base = self.fixture_repo()
+        source = repo / "sample.py"
+        source.write_text("# Never bypass the validation gate.\n", encoding="utf-8")
+
+        result = self.run_preflight(repo, base)
+
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("sample.py", result.stdout)
+        self.assertIn("source comments", result.stdout)
+
+    def test_pull_request_review_body_uses_do_first_language(self) -> None:
+        repo, _ = self.fixture_repo()
+        event = self.tmp_path / "event.json"
+        event.write_text(
+            '{"review":{"body":"Never merge before validation."}}',
+            encoding="utf-8",
+        )
+        result = subprocess.run(
+            [sys.executable, "scripts/ci/check_do_statement_style.py"],
+            cwd=repo, capture_output=True, text=True,
+            env={**os.environ, "GITHUB_EVENT_PATH": str(event),
+                 "GITHUB_EVENT_NAME": "pull_request_review"},
+        )
+
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("pull_request_review.body", result.stdout)
+
     def test_local_invocation_requires_explicit_preflight(self) -> None:
         repo, _ = self.fixture_repo()
         result = subprocess.run(

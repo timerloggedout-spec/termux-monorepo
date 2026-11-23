@@ -155,9 +155,17 @@ class ClassifierGraphRegistryTests(unittest.TestCase):
     def test_matched_cohort_comparator_is_versioned_and_present(self):
         comparator = self.registry["implementation_competition"]["comparison_engine"]
         self.assertEqual(comparator["implementation_id"], "matched-cohort-comparator")
-        self.assertEqual(comparator["version"], "0.2.0")
+        self.assertEqual(comparator["version"], "0.3.0")
         self.assertTrue((ROOT / comparator["source_ref"]).is_file())
         self.assertTrue((ROOT / comparator["cli_source_ref"]).is_file())
+        self.assertEqual(comparator["receipt_schema_ref"],
+                         "docs/ops/TOURNAMENT-IMPLEMENTATION-RECEIPT.schema.json")
+        self.assertTrue((ROOT / comparator["receipt_schema_ref"]).is_file())
+
+    def test_missing_receipt_schema_source_is_rejected(self):
+        registry = copy.deepcopy(self.registry)
+        registry["implementation_competition"]["comparison_engine"]["receipt_schema_ref"] = "docs/ops/missing-receipt.schema.json"
+        self.assertTrue(any("missing receipt schema" in error for error in self.validate(registry)))
 
     def test_tournament_implementation_competition_is_gated(self):
         competition = self.registry["implementation_competition"]

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Check action-first wording in changed repository instructions and collaboration text."""
+"""Check action-first wording in repository instructions and collaboration text."""
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import re
@@ -19,18 +20,29 @@ NEGATIVE_FIRST = re.compile(
 IMPERATIVE = {
     "accept", "account", "allow", "add", "align", "apply", "assert", "audit", "bind", "build", "bump", "check", "clarify", "close",
     "correct", "cover", "centralize", "export", "format", "implement", "initialize", "invoke", "isolate", "link", "normalize",
-    "parse", "pin", "recognize", "reject", "sort",
+    "parse", "pin", "recognize", "reject", "scope", "sort",
     "compare", "create", "define", "deploy", "document", "enforce", "expand", "fix", "gate",
-    "include", "inspect", "keep", "measure", "migrate", "move", "open", "preserve", "guard",
+    "include", "inspect", "keep", "measure", "migrate", "move", "open", "preserve", "guard", "surface",
     "publish", "record", "reconcile", "refresh", "refine", "register", "remove", "rename", "repair",
     "replace", "require", "restore", "route", "run", "set", "snapshot", "split", "sync",
     "test", "update", "use", "validate", "verify", "wire", "collect", "generate", "regenerate", "rebuild",
 }
 STYLE_PATHS = [
-    "AGENTS.md", "moniker.md", "CLAUDE.md", "GEMINI.md", "SKILLS.md",
+    "AGENTS.md", "moniker.md", "CLAUDE.md", "GEMINI.md", "SKILLS.md", "CONTRIBUTING.md",
     ".agents/skills", ".github/skills", ".github/workflows",
     "docs/ops", "docs/proposals",
 ]
+
+COMMENT_SUFFIXES = {
+    ".py", ".sh", ".bash", ".zsh", ".ps1", ".bat", ".cmd",
+    ".yml", ".yaml", ".toml", ".ini", ".cfg", ".conf",
+    ".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs",
+    ".java", ".go", ".rs", ".c", ".h", ".cc", ".cpp", ".hpp",
+    ".cs", ".kt", ".kts", ".swift", ".dart", ".php",
+    ".css", ".scss", ".sql", ".rb", ".lua", ".pl", ".r", ".tf",
+    ".mk", ".make",
+}
+COMMENT_PREFIX = re.compile(r"^\s*(?://+|#+|--+|/\*+|\*+|<!--|;|%|REM\b)\s*(.*)$", re.IGNORECASE)
 
 errors: list[str] = []
 
@@ -41,12 +53,37 @@ def inspect_text(label: str, value: str) -> None:
             errors.append(f"{label}:{number}: lead with the intended DO action")
 
 
-def inspect_git_range(base: str, head: str) -> None:
-    diff = subprocess.run(
-        ["git", "diff", "--unified=0", f"{base}...{head}", "--", *STYLE_PATHS],
-        check=True, capture_output=True, text=True,
-    ).stdout
+
+def is_comment_path(path: str) -> bool:
+    return Path(path).suffix.lower() in COMMENT_SUFFIXES
+
+
+def inspect_comment_line(label: str, line: str) -> None:
+    match = COMMENT_PREFIX.match(line)
+    if match and NEGATIVE_FIRST.match(match.group(1)):
+        errors.append(
+            f"{label}: lead with the intended DO action in source comments: "
+            f"{match.group(1).strip()}"
+        )
+
+
+def inspect_added_comment_lines(diff: str) -> None:
     current_path = "changed-file"
+    for line in diff.splitlines():
+        if line.startswith("+++ b/"):
+            current_path = line[6:]
+        elif line.startswith("+") and not line.startswith("+++"):
+            if is_comment_path(current_path):
+                inspect_comment_line(current_path, line[1:])
+
+def run_git(*args: str) -> str:
+    return subprocess.run(
+        ["git", *args], check=True, capture_output=True, text=True
+    ).stdout
+
+
+def inspect_added_lines(label: str, diff: str) -> None:
+    current_path = label
     for line in diff.splitlines():
         if line.startswith("+++ b/"):
             current_path = line[6:]
@@ -57,14 +94,21 @@ def inspect_git_range(base: str, head: str) -> None:
                     f"{current_path}: lead with the intended DO action: {added.strip()}"
                 )
 
-    subjects = subprocess.run(
-        ["git", "log", "--no-merges", f"{base}..{head}", "--format=%s"],
-        check=True, capture_output=True, text=True,
-    ).stdout.splitlines()
-    bodies = subprocess.run(
-        ["git", "log", "--no-merges", f"{base}..{head}", "--format=%b"],
-        check=True, capture_output=True, text=True,
-    ).stdout
+
+def inspect_git_range(base: str, head: str) -> None:
+    diff = run_git(
+        "diff", "--unified=0", f"{base}...{head}", "--", *STYLE_PATHS
+    )
+    inspect_added_lines("changed-file", diff)
+    comment_diff = run_git("diff", "--unified=0", f"{base}...{head}")
+    inspect_added_comment_lines(comment_diff)
+
+    subjects = run_git(
+        "log", "--no-merges", f"{base}..{head}", "--format=%s"
+    ).splitlines()
+    bodies = run_git(
+        "log", "--no-merges", f"{base}..{head}", "--format=%b"
+    )
     inspect_text("commit.body", bodies)
     for subject in subjects:
         scoped = re.match(r"^[a-z][a-z0-9-]*(?:\([^)]+\))?:\s*(.+)$", subject)
@@ -75,6 +119,38 @@ def inspect_git_range(base: str, head: str) -> None:
             errors.append(
                 f"commit subject requires an imperative action verb after its scope: {subject}"
             )
+
+
+def is_style_path(path: str) -> bool:
+    return any(
+        path == item or path.startswith(item.rstrip("/") + "/")
+        for item in STYLE_PATHS
+    )
+
+
+def inspect_worktree() -> None:
+    """Inspect staged + unstaged tracked edits and untracked instruction files."""
+    diff = run_git("diff", "--unified=0", "HEAD", "--", *STYLE_PATHS)
+    inspect_added_lines("working-tree", diff)
+    comment_diff = run_git("diff", "--unified=0", "HEAD")
+    inspect_added_comment_lines(comment_diff)
+
+    untracked = run_git("ls-files", "--others", "--exclude-standard", "-z")
+    for raw_path in untracked.split("\0"):
+        if not raw_path or not (is_style_path(raw_path) or is_comment_path(raw_path)):
+            continue
+        path = Path(raw_path)
+        try:
+            content = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            if is_style_path(raw_path) or is_comment_path(raw_path):
+                errors.append(f"{raw_path}: UTF-8 decode failed; inspect the file encoding")
+            continue
+        if is_style_path(raw_path):
+            inspect_text(raw_path, content)
+        if is_comment_path(raw_path):
+            for line in content.splitlines():
+                inspect_comment_line(raw_path, line)
 
 
 def inspect_pr_commits() -> None:
@@ -94,35 +170,79 @@ def inspect_push_commits(event: dict) -> None:
     inspect_git_range(before, after)
 
 
-def inspect_event() -> None:
-    if not EVENT_PATH or not Path(EVENT_PATH).is_file():
-        return
-    event = json.loads(Path(EVENT_PATH).read_text(encoding="utf-8"))
+def inspect_event(event: dict) -> None:
     if EVENT_NAME == "pull_request":
         inspect_text("pull_request.title", event.get("pull_request", {}).get("title") or "")
         inspect_text("pull_request.body", event.get("pull_request", {}).get("body") or "")
+    elif EVENT_NAME == "pull_request_review":
+        inspect_text("pull_request_review.body", event.get("review", {}).get("body") or "")
     elif EVENT_NAME == "issues":
         inspect_text("issue.title", event.get("issue", {}).get("title") or "")
         inspect_text("issue.body", event.get("issue", {}).get("body") or "")
     elif EVENT_NAME == "discussion":
         inspect_text("discussion.title", event.get("discussion", {}).get("title") or "")
         inspect_text("discussion.body", event.get("discussion", {}).get("body") or "")
-    elif EVENT_NAME in {"issue_comment", "pull_request_review_comment", "discussion_comment", "commit_comment"}:
+    elif EVENT_NAME in {
+        "issue_comment", "pull_request_review_comment",
+        "discussion_comment", "commit_comment",
+    }:
         inspect_text("comment.body", event.get("comment", {}).get("body") or "")
 
 
-event = {}
-if EVENT_PATH and Path(EVENT_PATH).is_file():
-    event = json.loads(Path(EVENT_PATH).read_text(encoding="utf-8"))
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="Preflight DO-first language before commit or collaboration."
+    )
+    parser.add_argument(
+        "--preflight", action="store_true",
+        help="inspect the local branch, worktree, untracked instruction files, and draft text",
+    )
+    parser.add_argument(
+        "--base", help="base branch/ref for local preflight, e.g. origin/master",
+    )
+    parser.add_argument(
+        "--text-file", action="append", default=[],
+        help="draft comment/PR/issue text file; repeat for multiple drafts",
+    )
+    args = parser.parse_args()
 
-inspect_pr_commits()
-inspect_push_commits(event)
-inspect_event()
+    if args.preflight:
+        base = args.base or "origin/master"
+        if subprocess.run(
+            ["git", "rev-parse", "--verify", "--quiet", f"{base}^{{commit}}"],
+            capture_output=True,
+        ).returncode != 0:
+            print(f"DO-statement preflight: BLOCKED — base ref unavailable: {base}")
+            return 2
+        inspect_git_range(base, "HEAD")
+        inspect_worktree()
+        for filename in args.text_file:
+            path = Path(filename)
+            if not path.is_file():
+                errors.append(f"{filename}: draft file unavailable")
+                continue
+            inspect_text(filename, path.read_text(encoding="utf-8"))
+    else:
+        if not EVENT_PATH or not Path(EVENT_PATH).is_file():
+            print(
+                "DO-statement style: local invocation requires "
+                "--preflight --base <ref>; CI invocation requires GITHUB_EVENT_PATH"
+            )
+            return 2
+        event = json.loads(Path(EVENT_PATH).read_text(encoding="utf-8"))
+        inspect_pr_commits()
+        inspect_push_commits(event)
+        inspect_event(event)
 
-if errors:
-    print("DO-statement style: FAIL")
-    for error in errors:
-        print(f" - {error}")
-    sys.exit(1)
+    if errors:
+        print("DO-statement style: FAIL")
+        for error in errors:
+            print(f" - {error}")
+        sys.exit(1)
 
-print("DO-statement style: PASS")
+    print("DO-statement style: PASS")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

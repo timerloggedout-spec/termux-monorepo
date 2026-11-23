@@ -46,11 +46,25 @@ BIUDL is the compounding development motion: a broad system view selects a focus
 2. [`docs/proposals/registry.yaml`](docs/proposals/registry.yaml) — what is active
 3. [`docs/proposals/PROCESS.md`](docs/proposals/PROCESS.md) — post / debate / consensus / close
 4. [`docs/ARCHW1Z-GATE.md`](docs/ARCHW1Z-GATE.md) — dual gates (automated)
+4a. [`docs/ops/CONTRIBUTION-STYLE-PREFLIGHT.md`](docs/ops/CONTRIBUTION-STYLE-PREFLIGHT.md) — DO-first + winning Siglary requirements before work
 5. [`docs/proposals/AGENTIC-PERMISSIONS.md`](docs/proposals/AGENTIC-PERMISSIONS.md) — human-only edges
 6. [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) — adaptive wait + ops skills
 7. [`docs/ops/LANE-MATRIX.md`](docs/ops/LANE-MATRIX.md) — living session SSOT (rewrite every admin cycle)
 
 Then route the task with **[`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md)** — one verified component or process card before loading deeper source.
+
+## Contribution language preflight
+
+**Read [Contribution Style Preflight](docs/ops/CONTRIBUTION-STYLE-PREFLIGHT.md) before implementation, drafting, or external collaboration.**
+
+- Apply DO-first CAVEMAN-6 to every authored collaboration surface.
+- Apply the winning Siglary Standard and current Notation Matrice to comments, commits, PRs, issues, reviews, discussions, workflow directives, skills, and project chat.
+- Keep OPERATORS / GLYPHS / CHORDS distinct; resolve chords in named Shorthand Domains; preserve exact technical literals.
+- Place scope, action, constraint, output, state, owner, and evidence in the statement.
+- Run `python3 scripts/ci/check_do_statement_style.py --preflight --base origin/master` before committing or posting.
+- Add `--text-file PATH` to validate the exact draft of a comment, review, issue, or discussion.
+- Select `origin/master-staging` when the active contribution lane targets staging.
+
 
 ## Hard rules
 
@@ -96,6 +110,7 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 | Active work | `docs/proposals/registry.yaml` |
 | How to review / close | `docs/proposals/PROCESS.md` |
 | Gates | `docs/ARCHW1Z-GATE.md` |
+| Contribution style preflight | `docs/ops/CONTRIBUTION-STYLE-PREFLIGHT.md` |
 | Status | `docs/ARCHW1Z-STATUS.md` |
 | Permissions / human edges | `docs/proposals/AGENTIC-PERMISSIONS.md` |
 | Repository architecture | `architecture.md` |

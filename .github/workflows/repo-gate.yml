@@ -65,6 +65,8 @@ jobs:
 
       - name: Classifier graph registry contracts
         run: |
+          python3 -m json.tool config/classifier_graph_registry.json > /dev/null
+          python3 -m json.tool docs/ops/CLASSIFIER-GRAPH-REGISTRY.schema.json > /dev/null
           python3 scripts/ci/classifier_graph_registry_validator.py
           python3 -m unittest scripts/ci/test_classifier_graph_registry_validator.py -v
 

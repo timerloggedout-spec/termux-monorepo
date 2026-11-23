@@ -344,3 +344,25 @@ Invert the default:
 
 *End of proposal. Next action belongs to main chat / the owner:
 route P1–P6, or send this chat a scoped build order. Nothing above executes itself.*
+
+---
+
+## 2026-11-20 integration delta — CockroachDB continuity projection
+
+**Implementation surface:** PR #5735, branch `feat/cockroachdb-backend-mesh-resiliency`.
+
+CockroachDB is admitted as an optional, independently addressable distributed-SQL projection for the canonical lane-events stream. The existing Neon route remains intact; canonical GitHub JSONL, event keys and immutable SHA/run provenance remain the evidence authority.
+
+| Component | Implemented surface | State |
+|---|---|---|
+| PostgreSQL-wire writer | `scripts/ops/cockroach_lane_event.py` | Committed on PR branch |
+| Schema / idempotent insert | `ops/cockroachdb/lane-events-schema.sql`, `lane-events-insert.sql` | Committed on PR branch |
+| Recorder integration | `.github/actions/lane-event`, `.github/workflows/lane-events-recorder.yml` | Optional dual-write path, gated by `COCKROACH_DATABASE_URL` |
+| Disposable runtime test | `.github/workflows/cockroachdb-backend-ci.yml` | Single-node restricted-writer + canonical-event replay recovery; three-node node-failure and native backup/restore gated by `COCKROACH_LICENSE_KEY`; PR validation pending |
+| Reference source | `cockroachdb/cockroach`, observed upstream commit `d30c905fff79ef825adc96bcc647f1872a90f2ff` | Historical public source snapshot pinned as shallow gitlink at `refTemplates/smods/cockroachdb`; immutable pin `d30c905fff79ef825adc96bcc647f1872a90f2ff` |
+| Hosted cluster | `COCKROACH_DATABASE_URL` | Owner provisioning pending; presence/authentication unverified |
+| Failover / restore | Seeded canary + forced-path interruption + readback receipt | Pending; RPO/RTO remain `null` |
+
+The adapter requires `sslmode=verify-full` or `verify-ca` for hosted connections. Local insecure mode is restricted to the disposable CI cluster. Canonical event identity makes replay idempotent across both providers; independent writes preserve each sink's failure state and do not imply cross-provider replication.
+
+**Continuity grade:** DESIGNED + IMPLEMENTED ON PR BRANCH. Hosted availability, multi-region replication, backup restore and failover remain UNTESTED until the owner provisions the cluster and a drill produces timestamped evidence. CockroachDB is registered as a live distributed-SQL reference submodule; hosted pricing and account entitlement remain unverified.

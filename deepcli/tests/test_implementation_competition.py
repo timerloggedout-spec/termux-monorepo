@@ -42,9 +42,16 @@ def receipt(implementation, version, task, quality, latency, *, cost, accepted=T
 class ImplementationCompetitionTests(unittest.TestCase):
     def setUp(self):
         self.receipts = []
-        for task, quality, latency in [("a", .7, 120), ("b", .8, 100), ("c", .6, 140)]:
+        for index, (task, quality, latency) in enumerate(
+            [("a", .7, 120), ("b", .8, 100), ("c", .6, 140)]
+        ):
             self.receipts.append(receipt("incumbent", "1.0.0", task, quality, latency, cost=10))
-            self.receipts.append(receipt("challenger", "1.1.0", task, quality + .1, latency - 10, cost=9))
+            self.receipts.append(receipt(
+                "challenger", "1.1.0", task,
+                quality + .1 + index * .001,
+                latency - 10 - index * .1,
+                cost=9 + index * .01,
+            ))
 
     def test_matched_comparison_reports_paired_effects_and_uncertainty(self):
         report = compare_implementations(self.receipts)
@@ -78,6 +85,16 @@ class ImplementationCompetitionTests(unittest.TestCase):
         report = compare_implementations(receipts)
         interval = report["metrics"]["task_quality"]["ci95"]
         self.assertGreater(interval[1] - interval[0], 1.0)
+
+    def test_zero_observed_variance_does_not_create_degenerate_interval(self):
+        receipts = self.receipts[:4]
+        receipts[3]["metrics"]["task_quality"] = receipts[1]["metrics"]["task_quality"] + .1
+        receipts[3]["metrics"]["latency_ms"] = receipts[1]["metrics"]["latency_ms"] - 10
+        receipts[3]["metrics"]["compute_cost"] = receipts[1]["metrics"]["compute_cost"] - 1
+        report = compare_implementations(receipts)
+        self.assertIsNone(report["metrics"]["task_quality"]["ci95"])
+        self.assertEqual(report["metrics"]["task_quality"]["interval_status"], "zero_observed_variance")
+        self.assertEqual(report["recommendation"], "pareto_tradeoff_or_insufficient_evidence")
 
     def test_declared_metric_with_all_null_observations_blocks_dominance(self):
         for item in self.receipts:

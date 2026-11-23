@@ -47,13 +47,13 @@
 <div class="hero">
 <p class="eyebrow">MoneyBall · Agentic Gambling — Challenges Book</p>
 <h1>The wagering book, published</h1>
-<p class="lede">The public, read-only view of our internal challenges wagering book: the Gantt of all 23 subjects, their expectation records, positions as they open, and settlements as they land from the named records of record. This page consumes <code>data/wagering-book.json</code> (schema <code>moneyball.wagering-book/v2</code>) and nothing else. Entries stay internal — observational stakes only, no external participation, no wallet movement.</p>
+<p class="lede">The public, read-only view of our internal challenges wagering book: the Gantt of all currently published subjects, their expectation records, positions as they open, and settlements as they land from the named records of record. This page consumes <code>data/wagering-book.json</code> (schema <code>moneyball.wagering-book/v2</code>) and nothing else. Entries stay internal — observational stakes only, no external participation, no wallet movement.</p>
 </div>
 </header>
 <main>
 <p class="muted" id="meta">Loading book…</p>
 <section>
-<div class="head"><h2>Challenge wagering book — Gantt (Nov 2 → Dec 12)</h2></div>
+<div class="head"><h2 id="gantt-title">Challenge wagering book — Gantt</h2></div>
 <div class="card"><div id="gantt"></div>
 <p class="legend dim" id="legend"></p>
 <p class="dim" id="fcnote"></p>
@@ -82,7 +82,7 @@ const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 // ==== pure logic (node-sim tested) ====
 function parseT(s){return Date.parse(s);}
-function staleOf(feed,nowMs){ if(!feed||!feed.generated_at) return false; return (nowMs-parseT(feed.generated_at))>48*3600*1000; }
+function staleOf(feed,nowMs){ const generated=parseT(feed&&feed.generated_at); if(!Number.isFinite(generated)) return true; const upstream=parseT(feed&&feed.pct_block&&feed.pct_block.upstream_computed_at); const oldest=Number.isFinite(upstream)?Math.min(generated,upstream):generated; return (nowMs-oldest)>48*3600*1000; }
 function ganttGeom(feed,w){
   const t0=parseT(feed.horizon.start), t1=parseT(feed.horizon.end);
   const labelW=370, padR=16, iw=w-labelW-padR;
@@ -116,6 +116,8 @@ if(typeof module!=="undefined"){ module.exports={parseT,staleOf,ganttGeom,expect
 let FEED=null;
 function trunc(s,n){ s=String(s==null?"":s); return s.length>n? s.slice(0,n-1)+"…" : s; }
 function renderBook(nowMs){
+  const dateLabel=function(value){const month=Number(value.slice(5,7));const day=Number(value.slice(8,10));return ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][month-1]+" "+day;};
+  $("gantt-title").textContent="Challenge wagering book — Gantt ("+dateLabel(FEED.horizon.start)+" → "+dateLabel(FEED.horizon.end)+")";
   const W=1120, g=ganttGeom(FEED,W), rowH=36, headH=24, top=30;
   const totalH=top+FEED.subjects.length*rowH+Object.keys(FEED.family_label).length*headH+18;
   let y=top, out='';
@@ -160,7 +162,8 @@ function renderBook(nowMs){
   const stl=FEED.settlements.concat(FEED.feed_settlements);
   $("settlements").innerHTML=stl.length? '<table class="st"><tr><th>Settlement</th></tr>'+stl.map(s2=>'<tr><td>'+esc(trunc(JSON.stringify(s2),400))+'</td></tr>').join('')+'</table>' : '<p class="dim">No settlements yet. Settlements land here from the named records of record as subjects resolve.</p>';
   $("notes").innerHTML='<p>'+esc(FEED.publication)+'</p><ul>'+FEED.honesty.map(h=>'<li>'+esc(h)+'</li>').join('')+'</ul><p class="dim">Ledger of record: '+esc(FEED.ledger_ref.path)+' — '+FEED.ledger_ref.entries+' entries, append-only. '+esc(FEED.ledger_ref.note)+'</p><p class="dim">Sources — publication feed: '+esc(FEED.upstream_feed)+' · book: '+esc(FEED.sources.book)+' · ledger: '+esc(FEED.sources.ledger)+' · register: '+esc(FEED.sources.register)+'</p>';
-  $("meta").innerHTML='Book opened '+esc(FEED.book.opened)+' · '+FEED.book.subjects+' subjects · feed '+esc(FEED.generated_at)+(staleOf(FEED,nowMs)? ' <span class="chip stale">STALE</span>' : '');
+  const sourceComputed=FEED.pct_block&&FEED.pct_block.upstream_computed_at?FEED.pct_block.upstream_computed_at:"NOT_ESTABLISHED";
+  $("meta").innerHTML='Book opened '+esc(FEED.book.opened)+' · '+FEED.book.subjects+' subjects · render '+esc(FEED.generated_at)+' · source '+esc(sourceComputed)+(staleOf(FEED,nowMs)? ' <span class="chip stale">STALE</span>' : '');
 }
 fetch("./data/wagering-book.json",{cache:"no-store"}).then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); }).then(j=>{ FEED=j; renderBook(Date.now()); }).catch(e=>{ $("meta").innerHTML='<span style="color:var(--bad);font-weight:700">FEED ERROR</span> '+esc(e.message); });
 </script>

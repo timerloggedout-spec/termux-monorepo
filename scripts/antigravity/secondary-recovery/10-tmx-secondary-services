@@ -1,0 +1,10 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# AGY-1497-10. Termux:Boot must be installed and launched once by the owner.
+set -euo pipefail
+termux-wake-lock
+marker="$HOME/.local/share/agy-1497-secondary/worktree/.agy-secondary-id"
+[[ -f "$marker" && ! -L "$marker" && "$(cat "$marker")" == tmx-node-55619bd5 ]] || exit 21
+[[ "$(whoami)" == u0_a243 && "$(getprop ro.product.model)" == B160V ]] || exit 23
+[[ "$PREFIX" == /data/data/com.termux/files/usr ]] || exit 24
+source "$PREFIX/etc/profile.d/start-services.sh"
+exec "$HOME/.local/bin/tmx-reconnect"

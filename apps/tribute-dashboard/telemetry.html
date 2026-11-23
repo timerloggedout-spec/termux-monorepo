@@ -156,6 +156,14 @@ async function load(){
       card('Average latency ms',num((pr.counters||{}).averageLatency),'local pool observation')+'</div>';
     ph+='<h3>Task and DoE correlation</h3>'+kvTable(pr.correlation);
     ph+='<h3>Provider quota</h3>'+kvTable({status:(pr.quota||{}).status,used:(pr.quota||{}).used,limit:(pr.quota||{}).limit,remaining:(pr.quota||{}).remaining,reset:(pr.quota||{}).reset});
+    ph+='<h3>Recent inference dispatches</h3>';
+    const recent=pr.recent_requests||[];
+    ph+=recent.length?recent.map(r=>'<details><summary>'+esc(r.exact_model_id||'model unknown')+' · '+esc(r.outcome||'unknown')+' · '+esc(r.task_or_entry_ref||'unlinked')+'</summary>'+kvTable({
+      request_id:r.request_id,doe_run_id:r.doe_run_id,workflow_run_id:r.workflow_run_id,
+      run_attempt:r.run_attempt,temporal_workflow_id:r.temporal_workflow_id,
+      temporal_run_id:r.temporal_run_id,latency_ms:r.latency_ms,
+      input_tokens:r.input_tokens,output_tokens:r.output_tokens
+    })+'</details>').join(''):'<p class="empty">No Puter Pool inference events observed yet.</p>';
     ph+='<p class="muted">Local scheduler counters are operational telemetry. Provider-authoritative quota remains unknown until a provider quota signal is observed.</p>';
     $('provider-runtime').innerHTML=ph;
     let gh='';

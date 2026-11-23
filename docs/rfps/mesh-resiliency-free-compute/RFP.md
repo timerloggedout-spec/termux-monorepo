@@ -60,7 +60,7 @@ Classify actual repository workloads before provider scoring. Evaluate portabili
 | Research/benchmark | provider comparisons, bounded experiments | batch, quota-sensitive | source receipts, results, costs | disposable worker |
 | API/control service | small control endpoints and dispatch | low-latency, persistent availability | durable job/control state | always-on or managed service |
 | Artifact/data service | receipts, manifests, compact indexes | storage/network-sensitive | durability and backup required | managed data/storage plane |
-| Interactive development | shell, debugging, exploratory work | human-session, bursty | developer workspace | dev environment, not production failover |
+| Interactive development | shell, debugging, exploratory work | human-session, bursty | developer workspace | dev environment, production failover excluded |
 
 For every profile record: CPU architecture/features, memory, disk and persistence, network/egress, runtime, max execution duration, concurrency, secrets scope, required inbound connectivity, durability, RPO/RTO, data sensitivity, and whether work is safe to retry.
 

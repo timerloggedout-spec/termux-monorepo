@@ -265,6 +265,12 @@ The root map is the system index. Follow each plane into its paired detailed Mar
 
 [Detailed mapping](docs/architecture/flows/dashboard-snapshots.md) · [Mermaid source](docs/architecture/flows/dashboard-snapshots.mmd)
 
+### Compute Mesh and Cross-Repo Labs
+
+[Detailed mapping](docs/architecture/flows/compute-mesh.md) · [Mermaid source](docs/architecture/flows/compute-mesh.mmd)
+
+Cross-repo map: `clf-lab-*` iterate ⇒ `hark-vm-workspace-backup` request store ⇒ Hark VM / Muse VM nodes ⇒ lab ledgers ⇒ `champion.json`. Edges into the monorepo method registry and tracking feed are labeled **missing** (2026-11-23).
+
 ### Legacy Local Snapshot Pipeline — Gap Audit
 
 [Detailed mapping](docs/architecture/flows/legacy-snapshot-audit.md) · [Mermaid source](docs/architecture/flows/legacy-snapshot-audit.mmd)
@@ -272,3 +278,4 @@ The root map is the system index. Follow each plane into its paired detailed Mar
 ### Snapshot freshness and legacy inventory gap
 
 SHE snapshots require source_sha, generated_at, coverage and corpus manifest SHA. The legacy ArchWiz data-flow manifest generator emits a local wall-clock Generated field, but its tracked output is zero bytes, its script writes to an absolute home-directory path, and it omits source SHA, tree SHA and input digest. Its generated timestamp proves execution time only, not input freshness. No verified consumer connects this inventory to CRG, SHE or EPS. See the [legacy snapshot gap audit](docs/architecture/flows/legacy-snapshot-audit.md). The actual local generated_at is unknown; audit date 2026-11-21 is not a substitute.
+

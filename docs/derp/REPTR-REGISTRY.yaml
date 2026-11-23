@@ -1,0 +1,30 @@
+version: 0.1.0-draft
+status: proposal
+description: >
+  Canonical public destinations for DERP discovery clues. Keep identifiers stable;
+  render every entry with a visible label and accessible description.
+pointers:
+  - id: welcome
+    label: DERP welcome
+    uri: TBD
+    status: experimental
+    audience: newcomer
+    description: Public entrance and discovery-maze landing surface.
+  - id: lexicon
+    label: DERP lexicon
+    uri: ../../wiki/DERP-Language.md
+    status: active
+    audience: newcomer
+    description: Leetspeak mappings, language layers, and clue conventions.
+  - id: spec-index
+    label: DERP specification proposals
+    uri: README.md
+    status: active
+    audience: contributor
+    description: Competing language specifications and evaluation criteria.
+  - id: termux-cockpit
+    label: Termux Hyper-Forge
+    uri: ../../archwiz/termux_cockpit.py
+    status: active
+    audience: operator
+    description: Termux-native cockpit entry point; read its operator documentation before execution.

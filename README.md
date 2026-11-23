@@ -149,3 +149,27 @@ The preserved pre-rebuild br4nch [`archive/pr232-pre-master-rebuild-20260817`](h
 [2]: https://github.com/timerloggedout-spec/termux-monorepo/pull/232 "Repository-native ICM 1n73gr4710n"
 [3]: https://github.com/timerloggedout-spec/termux-monorepo/pull/196 "Linguist: implement CedrLang v2 compilation"
 [4]: https://github.com/timerloggedout-spec/termux-monorepo/commit/975f951bfc00dc6785bd3755b754dd9f19dc272e "Gitlink-safe r3p05170ry gate repair"
+
+
+---
+
+## 8. DERP / d3rp — the discovery dialect
+
+DERP is the playful language and public discovery layer for this repository. It teaches newcomers the repo's leetspeak, symbols, rePointers, and documented capabilities through a separate maze-like entrance.
+
+| DERP | Canonical | Meaning |
+|---|---|---|
+| p47h | path | Repository location |
+| r3p05170ry | repository | Source repository |
+| v4l1d4710n | validation | Evidence that checks passed |
+| c0mm4nd | command | Explicit operation |
+| f1l3 | file | Tracked artifact |
+| hum4n | human | Human reviewer or operator |
+| w0rkfl0w | workflow | Automated process |
+| derpWiki / d3π9W1K¡ | DERP Wiki display form | Playful display spelling registered in [Agent Monikers](docs/ops/AGENT-MONIKERS.md) |
+
+Leetspeak is a display dialect. Canonical paths, identifiers, permissions, and validation results remain explicit and recoverable.
+
+**Language proposals:** [DERP specification index](docs/derp/README.md) · [SPEC-A: zero-width clue envelope](docs/derp/SPEC-A-01.md) · [SPEC-B: visible-first token grammar](docs/derp/SPEC-B-01.md) · [decision matrix](docs/derp/DECISION-MATRIX.md).
+
+**d3rpWiki:** [Wiki introduction](wiki/DERP-Language.md). The public entrance is planned as a separate discovery experience; repository documentation remains the source of truth for technical meaning and capability claims.

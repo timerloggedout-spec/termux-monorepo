@@ -47,7 +47,7 @@ jobs:
           echo "ref=origin/${BASE_REF}" >> "$GITHUB_OUTPUT"
 
       - name: Test communication lint
-        run: python3 -m unittest tests.test_communication_lint
+        run: python3 -m unittest tests.test_communication_lint tests.test_contact_projections
 
       - name: Run gate
         env:

@@ -9,7 +9,7 @@ def test_repo_harvest_uses_allowlist_and_extracts_operational_contracts(tmp_path
     for relative in harvest.ALLOWLIST:
         path = tmp_path / relative
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text("router.get('/stats', handler);\nCREATE TABLE IF NOT EXISTS ai_responses (id TEXT);\nemit('request:completed');", encoding="utf-8")
+        path.write_text("router.get('/stats', handler);\napp.get('/healthz', handler);\nCREATE TABLE IF NOT EXISTS ai_responses (id TEXT);\nemit('request:completed');", encoding="utf-8")
     (tmp_path / ".env").write_text("PUTER_TOKEN=private-value", encoding="utf-8")
     (tmp_path / "data").mkdir()
     (tmp_path / "data" / "pool.db").write_bytes(b"sqlite-private")

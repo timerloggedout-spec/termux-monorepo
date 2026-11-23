@@ -700,7 +700,7 @@
       "live": "Cloudflare GraphQL Analytics API: d1AnalyticsAdaptiveGroups readQueries; account Analytics Read. 30-day sample returned 57 readQueries across 3 databases; query counts differ from row-level quota units.",
       "planned_use": {
         "safety": 0.9,
-        "note": "Account inventory verified 2026-11-23. Preserve 57 readQueries as a 30-day baseline; row-level quota consumption remains unmeasured."
+        "note": "Account inventory verified 2026-11-23. GraphQL Analytics confirms D1 query activity; exact account counts remain in private oversight. Query counts differ from row-level quota consumption; row-level headroom remains unmeasured."
       }
     },
     {
@@ -717,7 +717,7 @@
       "live": "Cloudflare GraphQL Analytics API: d1AnalyticsAdaptiveGroups writeQueries; account Analytics Read. 30-day sample returned 3 writeQueries across 3 databases; query counts differ from row-level quota units.",
       "planned_use": {
         "safety": 0.8,
-        "note": "Account inventory verified 2026-11-23. Preserve 3 writeQueries as a 30-day baseline; row-level quota consumption remains unmeasured."
+        "note": "Account inventory verified 2026-11-23. GraphQL Analytics confirms D1 write activity; exact account counts remain in private oversight. Query counts differ from row-level quota consumption; row-level headroom remains unmeasured."
       }
     },
     {
@@ -733,7 +733,7 @@
       "source": "https://developers.cloudflare.com/d1/platform/pricing/",
       "live": "Cloudflare D1 database list API plus read-only sqlite_master query. 3 databases total 86,016 bytes; 4 application tables plus 3 _cf_KV system tables verified 2026-11-23.",
       "planned_use": {
-        "note": "Account inventory verified 2026-11-23; 86,016 bytes total across 3 databases. The database-list num_tables field returned zero; direct sqlite_master reads confirmed the application tables."
+        "note": "Account inventory verified 2026-11-23. Three D1 databases and four application tables plus three _cf_KV system tables were confirmed through direct schema reads; detailed file sizes remain in private oversight."
       }
     },
     {
@@ -749,7 +749,7 @@
       "source": "https://developers.cloudflare.com/queues/platform/pricing/",
       "live": "GET /accounts/{account_id}/queues; connected-account inventory returned zero queues on 2026-11-23.",
       "planned_use": {
-        "note": "Free plan includes 10,000 operations/day and 24-hour message retention. Account inventory returned zero provisioned Queues; owner review precedes activation."
+        "note": "Free plan includes 10,000 operations/day and 24-hour message retention. Connected-account inventory returned zero provisioned Queues; owner review precedes activation."
       }
     },
     {
@@ -801,7 +801,7 @@
       "live": "Cloudflare GraphQL Analytics API: workersInvocationsAdaptive; account Analytics Read. 30-day sample returned 80 requests, 0 errors, 0 subrequests; observed daily peak 30.",
       "planned_use": {
         "safety": 0.9,
-        "note": "Account inventory verified 2026-11-23. Preserve 80 requests over 30 days and a 30-request daily peak as the initial baseline; current-day usage requires a recurring snapshot."
+        "note": "Account inventory verified 2026-11-23. GraphQL Analytics confirms activity on both deployed Workers with zero observed errors; exact request counts remain in private oversight. Current-day headroom requires a recurring snapshot."
       }
     },
     {

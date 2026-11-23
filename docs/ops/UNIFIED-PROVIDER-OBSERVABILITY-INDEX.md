@@ -11,6 +11,10 @@ Join the provider, gateway, orchestration, deployment, attestation, quota, and e
 
 The existing `ops/telemetry/results-index.json` remains the canonical four-system results projection for **ATES, 3L0, Temporal, and HindSight**. This index links to it and adds the integration/provider dimensions; it does not replace or rewrite it.
 
+## Puter Pool provider harvest
+
+The Puter Pool fork is integrated as a source-backed local transport under the existing `g4f/Puter` provider identity. `scripts/puter_pool_catalog.py` reads the documented local `GET /v1/models` endpoint, validates loopback-only origin, and emits the canonical provider-model-catalog/v5 envelope. Model visibility remains catalog evidence; entitlement, balances, quota reset, and inference success are independently measured. The canonical integration runbook is [PUTER-POOL-PROVIDER-INTEGRATION.md](PUTER-POOL-PROVIDER-INTEGRATION.md).
+
 ## System topology
 
 ```text

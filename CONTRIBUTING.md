@@ -12,6 +12,18 @@ This monorepo is developed with **humans and agents** on Termux and CI.
 | Permissions | [`docs/proposals/AGENTIC-PERMISSIONS.md`](docs/proposals/AGENTIC-PERMISSIONS.md) |
 | Operator checklist | [`docs/ARCHW1Z-OPERATOR-CHECKLIST.md`](docs/ARCHW1Z-OPERATOR-CHECKLIST.md) |
 
+## Required contribution preflight
+
+**Read [Contribution Style Preflight](docs/ops/CONTRIBUTION-STYLE-PREFLIGHT.md) before implementation or collaboration.** It publishes the exact DO-first gate rules, CAVEMAN-6, the winning Siglary standard, notation classes, comment/commit/PR requirements, and the local preflight command.
+
+Run the linguistic preflight before committing or posting:
+
+```bash
+python3 scripts/ci/check_do_statement_style.py --preflight --base origin/master
+```
+
+For comment, review, issue, or discussion drafts, pass the exact draft with `--text-file PATH`. Apply the same DO-first + Siglary contract to code comments, commit subjects/bodies, PRs, issues, reviews, discussions, workflow directives, skills, and project chat.
+
 ## Branch & merge
 
 1. Branch from **`master-staging`** (integration spine).

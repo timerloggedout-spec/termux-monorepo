@@ -182,3 +182,10 @@ Track discovery-to-classification lead time, fraction of candidates with immutab
 ### Novelty is not adoption
 
 A candidate may be novel but low-value, high-risk, unmaintained, incompatible or duplicative. Keep its disposition and evidence so it can be reconsidered when internal demand or external maturity changes. Rejected/deferred candidates are not erased; supersession and reconsideration are append-only state transitions.
+
+
+## RFP pipeline competitor admission and lane composition
+
+The RFP-specific extension to CEEL's discovery and composition model is governed by [RFP Competitor Admissions and Lane Mixing](../../ops/RFP-COMPETITOR-ADMISSIONS-AND-LANE-MIXING.md). That contract defines the RFP pipeline as the internal mandate, DoE as the version/comparison family, extensible admission of new competitor versions, and lane composition as an explicit treatment with compatibility and interaction-effect evidence. It preserves the canonical 13-phase option with asynchronous overlapping workstreams. Verified external due dates constrain only the affected opportunities and workstreams.
+
+CEEL remains the discovery/capability graph and event-awareness layer; the RFP contract adds the RFP-specific lifecycle and composition rules while reusing the existing proposal registry, Delphi/EGM, DoE schema, lane registries, and repository gates.

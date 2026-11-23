@@ -26,7 +26,7 @@
 - Leapcell's included quota versus metered overage and serverless-only free shape.
 - Appwrite's seven-day inactivity pause and function runtime limits.
 - alwaysdata's free-plan service/profit restrictions.
-- Back4app's conflicting free-URL lifetime evidence.
+- Back4app's 60-minute preview URL and free auto-deploy restrictions.
 - zrok's network-sharing role versus actual compute capacity.
 
 ---
@@ -40,11 +40,11 @@
 
 **Interfaces:**
 - Consumes: existing RFP workload profiles and evidence schema.
-- Produces: dated official-source dossier and six additional candidate rows, all unranked and non-authorizing.
+- Produces: dated official-source dossier and six additional candidate rows, unranked; research-only.
 
-- [ ] Add SnapDeploy, Leapcell, Appwrite, alwaysdata, Back4app Containers, and zrok with official evidence, fit, constraints, uncertainty, and next validation.
-- [ ] Add Codespaces and Cloudflare as existing mesh surfaces requiring measured usage and lane completion.
-- [ ] Preserve the RFP's provider selection pending and research-only provisioning boundary.
+- [x] Add SnapDeploy, Leapcell, Appwrite, alwaysdata, Back4app Containers, and zrok with official evidence, fit, constraints, uncertainty, and next validation.
+- [x] Add Codespaces and Cloudflare as existing mesh surfaces with owner/usage states.
+- [x] Preserve the RFP's provider selection pending and research-only provisioning boundary.
 
 ### Task 2: Reconcile Render deployment wiring
 
@@ -54,15 +54,28 @@
 - Reference: `.github/workflows/readme-extractor-image.yml`
 - Reference: `scripts/quota_poll.py`
 
-- [ ] Record the GitHub Actions → GHCR image → Render image-backed service path.
-- [ ] Distinguish repository evidence from Render account/service state.
-- [ ] Preserve the separate Vercel, Pages, and Render lane boundaries.
+- [x] Record the GitHub Actions → GHCR image → Render image-backed service path.
+- [x] Distinguish repository evidence from Render account/service state.
+- [x] Preserve the separate Vercel, Pages, and Render lane boundaries.
 
 ### Task 3: Validate and publish
 
-- [ ] Check Markdown structure, links, and exact source dates.
-- [ ] Verify the diff and current branch base.
-- [ ] Open a focused PR linked to issue #1622.
-- [ ] Re-fetch checks against the immutable PR head SHA and report terminal states.
+- [x] Check Markdown table structure, local anchors, source URLs, and evidence dates.
+- [x] Review the PR diff and compare its base with current master.
+- [x] Open focused PR #5807 linked to issue #1622.
+- [ ] Re-fetch checks against the immutable PR head SHA and record terminal states.
 
 **Review Focus / acceptance:** Six candidate surfaces are added; Render's repository wiring is accurately recorded; Codespaces/Cloudflare remain distinct from new providers; unknowns remain explicit; account and production state remain unchanged.
+
+
+## Execution ledger — 2026-11-23
+
+- **Loop source:** repository `docs/ops/CONTINUOUS-IMPROVEMENT-POLICY.md` and `.agents/skills/adaptive-wait/SKILL.md`; Loopy six-step cycle adapted to the native WAIT contract. Root `LOOPS.md` is absent; the published Loop Library host is unspecified in the supplied skill, so catalog duplication review remains pending.
+- **Task 1:** complete. Six provider candidates, official-source evidence, workload fit, limits, and priority tests are recorded in the RFP supplement and evidence matrix.
+- **Task 2:** complete. Render's GHCR image-backed README path is reconciled as REPO-WIRED / PROVIDER HEALTH PENDING.
+- **Cloudflare:** read-only account inventory and GraphQL Analytics activity confirmed; exact usage counts remain in private oversight. Billing Read remains required for financial usage. Queues inventory is empty; R2 activation remains owner-gated.
+- **Codespaces:** owner HOLD dated 2026-10-27 preserved; allocation remains 0% with 100% reserve.
+- **Quota ledger:** active registry remains 172 unique adopted-service records. Candidate-only entitlements remain in the RFP matrix until account approval and service adoption. Public quota snapshots remain identical.
+- **Validation:** JSON parsing passed; registry IDs are unique; six provider rows and all six RFP anchors resolve; Markdown table column counts pass; positive-form scan passed across the new/updated RFP, provider matrix, deployment SSOT, and plan.
+- **PR:** #5807; head `fc2742910888f809c244d419a58b118bea07db8b`. Current check sample: Vercel `build-rate-limit` failure; Devin Review pending; repository workflows queued/pending/cancelled. Reviews: none recorded. Branch is two generated commits behind master; compared paths are separate from this PR's changed files.
+- **WAIT state:** approval-required for Render workspace selection; pending for repository workflow terminal states. Provider signup, paid resource creation, R2 activation, Queue provisioning, and production deployment remain owner-gated.

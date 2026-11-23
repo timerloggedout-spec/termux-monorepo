@@ -78,6 +78,8 @@ registry.yaml → pick todo item → branch from master
 
 ## Adaptive WAIT (ops)
 
+Dynamic cadence policy: [`docs/ops/ADAPTIVE-DYNAMIC-AWARENESS.md`](docs/ops/ADAPTIVE-DYNAMIC-AWARENESS.md). Read it whenever a collaborator changes or reconciles recurring VM/workflow cadence.
+
 After dispatch / commit / merge attempt:
 
 1. **WAIT** is a stage — re-check jobs → steps → logs → artifacts.

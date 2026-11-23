@@ -8,13 +8,15 @@
 
 | Script | Phase |
 |--------|-------|
-| `refTemplates_inventory.py` | P1 |
+| `refTemplates_inventory.py` | P1 — inventories all categories; validates README + SOURCE for Tier-C `13_*` patterns and Tier-A `15_*` children |
 | `submodule_integrity.py` (smods-scoped) | P2 |
-| `refTemplates_score.py` | P3 |
+| `refTemplates_score.py` | P3 — research-template cohort under `15_*`; Tier-C `13_*` patterns stay unscored |
 | `refTemplates_deepwiki_batch.py` | P4 |
 | `refTemplates_commit_slice.py` | P5 |
 | `refTemplates_papers_seed.py` | P6 |
 | `.github/workflows/refTemplates-eval.yml` | P7 |
+
+Tier-C pattern references participate in metadata inventory and workflow visibility. They remain outside the Tier-A research-template score and the 12-silo Delphi participant registry.
 
 ## Validate → iterate → repeat
 

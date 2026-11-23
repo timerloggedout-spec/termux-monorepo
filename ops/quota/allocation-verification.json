@@ -421,7 +421,7 @@
     "available": "not-established",
     "claimed": "not-established",
     "balance": null,
-    "source": "Key-gated models surface answered 200 in probe run 41263537880; the API-key balance endpoint is documented separately but was not observed in that run; account-wide balance was not observed."
+    "source": "Key-gated models surface answered 200 in probe run 41263537880; the API-key balance endpoint is documented separately; the catalog probe recorded model-list success, while key-level and account-wide balances remain unmeasured."
    },
    "replenishment": {
     "mechanism": "not-established",
@@ -957,7 +957,7 @@
    "evidence": "api-verified",
    "free_tier": {
     "state": "active",
-    "limits": "Multi-provider free-model catalog (current platform API example lists 50 vendors); about one request/minute per free model/account above independent upstream caps. The model library lists AI Horde alongside many other providers; AI Horde is one upstream, not the whole UnoRouter service. API-key balance is documented at /api/usage/token/; account-wide balance/logs require a separate access token. Provider-level consent/objection covers free and paid models; blocking was not active in the October 21, 2026 notice and is planned to be phased in."
+    "limits": "Multi-provider free-model catalog (current platform API example lists 50 vendors); about one request/minute per free model/account above independent upstream caps. The model library lists AI Horde alongside many other providers; The model library lists AI Horde alongside many other providers, showing that UnoRouter aggregates multiple upstreams. API-key balance is documented at /api/usage/token/; account-wide balance/logs require a separate access token. Provider-level consent/objection covers free and paid models; the October 21, 2026 notice describes a staged rollout with enforcement scheduled for a later phase."
    },
    "credits": {
     "available": "not-established",
@@ -972,8 +972,8 @@
    "verdict": "free",
    "flags": [
     "catalog-only",
-    "no-inference",
-    "key-balance-not-observed"
+    "inference-disabled",
+    "key-balance-unmeasured"
    ]
   },
   {

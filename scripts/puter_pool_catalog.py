@@ -36,10 +36,18 @@ def _catalog_url(base_url: str) -> str:
     return urllib.parse.urlunsplit((parsed.scheme, parsed.netloc, "/v1/models", "", ""))
 
 
-def fetch_models(base_url: str, timeout: float = 8.0) -> list[dict[str, Any]]:
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
+def fetch_models(base_url: str, timeout: float = 8.0, api_key: str | None = None) -> list[dict[str, Any]]:
     url = _catalog_url(base_url)
-    request = urllib.request.Request(url, headers={"Accept": "application/json", "User-Agent": UA})
-    opener = urllib.request.build_opener(urllib.request.HTTPHandler(), urllib.request.HTTPSHandler())
+    headers = {"Accept": "application/json", "User-Agent": UA}
+    if api_key:
+        headers["x-api-key"] = api_key
+    request = urllib.request.Request(url, headers=headers)
+    opener = urllib.request.build_opener(_NoRedirect, urllib.request.HTTPHandler(), urllib.request.HTTPSHandler())
     try:
         with opener.open(request, timeout=timeout) as response:
             raw = response.read(MAX_RESPONSE_BYTES + 1)
@@ -93,7 +101,7 @@ def main(argv: list[str] | None = None) -> int:
     if not 0.1 <= args.timeout <= 30:
         parser.error("--timeout must be between 0.1 and 30 seconds")
     observed_at = dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
-    rows = fetch_models(args.base_url, args.timeout)
+    rows = fetch_models(args.base_url, args.timeout, os.environ.get("PUTER_POOL_API_KEY"))
     document = {
         "schema": "provider-model-catalog/v5",
         "observed_at": observed_at,

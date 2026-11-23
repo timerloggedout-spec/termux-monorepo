@@ -1,0 +1,159 @@
+{
+  "campaign_id": "gitreverse-reconstruction",
+  "family": "doe",
+  "member_kind": "campaign_candidate",
+  "status": "proposed_not_admitted",
+  "observed_at": "2026-11-22T00:00:00Z",
+  "sources": [
+    {
+      "repo": "filiksyos/gitreverse",
+      "ref": "main",
+      "sha": "e7f7d2859105aafe16ec4f39c0315c07e6b0eae3",
+      "license": "MIT",
+      "license_evidence": "LICENSE file fetched from upstream; README links to LICENSE",
+      "capability": "repository metadata + depth-1 root tree + README → synthetic coding prompt"
+    },
+    {
+      "repo": "timerloggedout-spec/internal-gitreverse-implementation",
+      "ref": "pending",
+      "sha": null,
+      "license": "internal",
+      "status": "identity_pending",
+      "note": "Exact repository/path and commit must be identified from the in-progress implementation before admission."
+    }
+  ],
+  "hypothesis": {
+    "statement": "For matched public repositories and a fixed AI-agent configuration, the in-progress internal GitReverse implementation may produce more complete, source-grounded and implementation-useful reconstruction prompts than upstream GitReverse, with different latency, cost and maintenance trade-offs.",
+    "null": "The internal implementation does not improve the pre-registered reconstruction-quality outcomes over upstream GitReverse.",
+    "threshold": "A candidate is eligible for promotion only when all material factual claims are source-attributed, the unsupported factual claim rate is zero on the held-out set, and the blind rubric score improves without exceeding the predeclared cost ceiling."
+  },
+  "design": {
+    "type": "blocked full factorial",
+    "generator": "deepcli.observatory.doe.full_factorial",
+    "factors": {
+      "reconstruction_treatment": [
+        "upstream-gitreverse-pinned",
+        "internal-gitreverse-pinned",
+        "deterministic-structured-extraction-baseline"
+      ]
+    },
+    "blocks": [
+      "repository_id",
+      "replicate"
+    ],
+    "assignment": {
+      "mechanism": "mvt_shuffle",
+      "seed": 20261123,
+      "unit": "randomized treatment order within each repository_id × replicate block"
+    },
+    "replication": "8 frozen repositories × 3 treatments × 3 repetitions = 72 planned observations; independent gold annotations are evaluation references, not treatment runs.",
+    "unit_of_observation": "one repository under one reconstruction treatment and repetition = one EXPERIMENT record",
+    "suite_type": "control",
+    "stopping": "Complete the frozen 72-run cohort. Retain all failed, blocked and missing observations. Any source, corpus, prompt, rubric or treatment change creates a new design version."
+  },
+  "tasks": [
+    {
+      "id": "repo-recon-01",
+      "stratum": "small / high-documentation",
+      "contract": "reconstruct user purpose, audience, feature set and setup from frozen repository evidence"
+    },
+    {
+      "id": "repo-recon-02",
+      "stratum": "small / sparse-documentation",
+      "contract": "reconstruct purpose and explicit unknowns without filling gaps from inference"
+    },
+    {
+      "id": "repo-recon-03",
+      "stratum": "medium / application",
+      "contract": "reconstruct architecture, routes, data flow and component boundaries"
+    },
+    {
+      "id": "repo-recon-04",
+      "stratum": "medium / library",
+      "contract": "reconstruct public API, usage contract, extension points and behavioral constraints"
+    },
+    {
+      "id": "repo-recon-05",
+      "stratum": "large / application",
+      "contract": "produce a scoped implementation brief with requirements, constraints and validation plan"
+    },
+    {
+      "id": "repo-recon-06",
+      "stratum": "large / mixed docs",
+      "contract": "separate observed behavior, documented intent and unknowns across inconsistent sources"
+    },
+    {
+      "id": "repo-recon-07",
+      "stratum": "multi-language",
+      "contract": "identify language/runtime boundaries and preserve source-backed implementation details"
+    },
+    {
+      "id": "repo-recon-08",
+      "stratum": "historical / active development",
+      "contract": "pin the snapshot and distinguish current state from historical or planned capabilities"
+    }
+  ],
+  "execution_environment": {
+    "agent": "same fixed provider/model@version, system prompt hash, tool manifest hash, role and instance_key for both AI treatments; record exact identity before dispatch",
+    "inputs": "same frozen commit, README, root tree, and any declared source-depth extension for all treatments",
+    "runner": "same pinned Linux image and resource limits; exact digest required before execution",
+    "credentials": "use identical least-privilege public-read access; redact credentials and exclude secrets from fixtures",
+    "cache": "cold and warm runs separated; primary comparison uses the predeclared cold-start protocol"
+  },
+  "outcomes": {
+    "primary": [
+      "claim-level source attribution precision",
+      "independent requirements coverage",
+      "unsupported factual claim rate",
+      "blind implementation-brief usefulness score"
+    ],
+    "secondary": [
+      "architecture boundary coverage",
+      "explicit-unknowns recall",
+      "prompt completeness",
+      "latency",
+      "token or credit cost",
+      "reproducibility across repetitions",
+      "source depth and bytes inspected",
+      "time to first usable brief"
+    ],
+    "quality_gate": "Every material factual claim must cite a frozen source location; unsupported factual claim rate must be zero on the independent held-out set; unknowns must remain explicit.",
+    "analysis": "Report paired per-repository effects, medians, dispersion and confidence intervals. Preserve source coverage, correctness, usefulness, cost and latency as separate outcomes; do not collapse them into one opaque score."
+  },
+  "siglary": {
+    "factor": "Siglary integration",
+    "levels": [
+      "enabled",
+      "disabled"
+    ],
+    "status": "conditional_not_frozen",
+    "rule": "Promote to a randomized factor only if the internal implementation exposes a stable on/off switch on the same source revision. Otherwise record Siglary version, notation profile and adapter boundary as treatment attributes and create a separate cohort for a true ablation.",
+    "required_pins": [
+      "Siglary version or commit",
+      "notation profile / grammar hash",
+      "adapter source path and hash",
+      "prompt/tool hashes"
+    ]
+  },
+  "comparability": {
+    "primary_comparison": "Upstream GitReverse versus the internal implementation on identical frozen repository evidence.",
+    "baseline": "Deterministic structured extraction baseline reports metadata, README facts and tree facts without LLM synthesis; it calibrates added value from generation.",
+    "exclusions": "Do not compare repository-reconstruction scores with Rust hot-path runtime outcomes. Do not treat repo-history narrative or session-provenance reconstruction systems as equivalent GitReverse treatments without an explicit contract mapping."
+  },
+  "automation": {
+    "status": "not_implemented",
+    "requirement": "Use existing DoE Actions surfaces; dispatch the frozen cohort, randomize within blocks, emit one canonical EXPERIMENT.schema.json record per executed run, preserve append-only records and generate SUMMARY.json.",
+    "authority": "Existing DoE family, GitHub Actions, proposal and dual-gate authorities."
+  },
+  "admission_gates": [
+    "Identify the exact in-progress internal implementation repository/path, source commit and maturity state.",
+    "Verify the implementation's source depth, outputs, providers, tool boundaries and failure behavior against upstream.",
+    "Pin Siglary version, notation profile and adapter boundary; verify whether a stable enabled/disabled ablation exists.",
+    "Freeze eight matched public repositories and independent claim/requirement gold annotations.",
+    "Freeze blind scoring rubric, source-attribution rules, runner digest and configured-agent identity.",
+    "Validate design against DOE-TAXONOMY.md and docs/ops/corpus/EXPERIMENT.schema.json.",
+    "Implement tested automation and append-only record emission.",
+    "Run the complete randomized cohort and publish SUMMARY.json with uncertainty, missingness, cost and correctness gates."
+  ],
+  "promotion": "Candidate remains not admitted until source identity, design, fixtures, automation and complete run evidence satisfy DoE family intake. Any promoted implementation pattern requires independent verification, provenance/license review and a new cohort/version record."
+}

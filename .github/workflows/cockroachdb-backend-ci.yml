@@ -35,11 +35,12 @@ jobs:
         env:
           COCKROACH_LICENSE_KEY: ${{ secrets.COCKROACH_LICENSE_KEY }}
         run: |
+          echo "enabled=true" >> "${GITHUB_OUTPUT}"
           if [ -n "${COCKROACH_LICENSE_KEY}" ]; then
-            echo "enabled=true" >> "${GITHUB_OUTPUT}"
+            echo "present=true" >> "${GITHUB_OUTPUT}"
           else
-            echo "enabled=false" >> "${GITHUB_OUTPUT}"
-            echo "::notice title=cockroachdb-multinode::Three-node failover validation requires a valid COCKROACH_LICENSE_KEY."
+            echo "present=false" >> "${GITHUB_OUTPUT}"
+            echo "::notice title=cockroachdb-multinode::Running this disposable CI cluster within CockroachDB's documented seven-day no-license grace period."
           fi
       - name: Generate cluster TLS certificates
         if: steps.license.outputs.enabled == 'true'
@@ -96,7 +97,7 @@ jobs:
             test "${ready}" = true
           done
       - name: Apply CockroachDB license
-        if: steps.license.outputs.enabled == 'true'
+        if: steps.license.outputs.present == 'true'
         env:
           COCKROACH_LICENSE_KEY: ${{ secrets.COCKROACH_LICENSE_KEY }}
           COCKROACH_IMAGE: cockroachdb/cockroach:v26.4.0@sha256:45c5caf2720d640cb36c0b7d42b7ca3cb435af85e3903c12e3d35659a2a04c67

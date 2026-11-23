@@ -1,6 +1,6 @@
 # CockroachDB — Backend Mesh Integration and Continuity Contract
 
-**Status:** IMPLEMENTATION SLICE — native writer + TLS single-node CI contract; three-node failover drill is license-gated; hosted-cluster admission awaits owner-managed credentials and measured continuity evidence.
+**Status:** IMPLEMENTATION SLICE — native writer + TLS single-node CI contract + disposable three-node failure/restore drill; hosted-cluster admission awaits owner-managed credentials and measured continuity evidence.
 
 ## Decision
 
@@ -67,7 +67,7 @@ The dedicated workflow runs a TLS-secured single-node contract and a disposable 
 
 ## CI execution history
 
-The first disposable-cluster attempt (workflow run [44817231584](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/44817231584)) failed before schema setup: CockroachDB rejected the insecure single-node listener bound to `0.0.0.0` and required a loopback listener. The contract was subsequently changed to a TLS-secured disposable node with generated CA, node and client certificates; the current workflow uses the secure listener and verified client URIs. Treat the corrected workflow as pending until a fresh run passes both contract and, where licensed, three-node jobs.
+The first disposable-cluster attempt (workflow run [44817231584](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/44817231584)) failed before schema setup: CockroachDB rejected the insecure single-node listener bound to `0.0.0.0` and required a loopback listener. The contract was subsequently changed to a TLS-secured disposable node with generated CA, node and client certificates; the current workflow uses the secure listener and verified client URIs. Treat the corrected workflow as pending until a fresh run passes both the single-node contract and three-node continuity drill.
 
 ## Upstream references
 

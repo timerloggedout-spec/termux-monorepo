@@ -2,7 +2,7 @@
 
 Produces the metadata contract for a later autonomous repair PR:
 incident linkage, sandbox branch, evidence URIs, required tests,
-rollback SHA, and dual-gate promotion constraints.
+rollback SHA, and scope-selected promotion constraints.
 
 This module plans. It does not create branches, commits, or pull requests.
 Live materialization is a later slice behind SHE_REPAIR_PR_LIVE=1.
@@ -17,7 +17,7 @@ from typing import Any
 
 from she.incident import Incident, IncidentState
 from she.sandbox import SandboxPlan, plan_repair_sandbox
-from she.verify import BASE_GATES, VerificationPlan, plan_verification
+from she.verify import BASE_GATES, TERMUX_SCOPE_GATES, VerificationPlan, plan_verification
 
 REQUIRED_TESTS: frozenset[str] = frozenset(
     {"repo-gate", "domain-tests"}
@@ -70,6 +70,8 @@ class RepairPRPlan:
             raise RepairPRError("rollback_sha must match sha")
         if not BASE_GATES.issubset(needed):
             raise RepairPRError("repo-gate must be required tests")
+        if self.metadata.get("termux_related") and not TERMUX_SCOPE_GATES.issubset(needed):
+            raise RepairPRError("termux-smoke must be required for Termux scope")
         if not self.incident_id:
             raise RepairPRError("incident_id required")
         if not self.branch.startswith("she/repair/"):
@@ -168,7 +170,7 @@ def plan_repair_pr(
 ) -> RepairPRPlan:
     """Plan an inspectable repair PR. Does not open a pull request.
 
-    Dual gates are always required tests (subset). Security/Dependabot
+    The repository gate is always required; Termux smoke follows scope. Security/Dependabot
     incidents stay observe-only (no write repair PR). Terminal states
     are rejected. promotion_ready stays false until a later executor
     records passing verification against the current SHA.
@@ -216,6 +218,7 @@ def plan_repair_pr(
             "classification": incident.classification,
             "fingerprint": incident.fingerprint,
             "source": incident.source,
+            "termux_related": bool(verification.metadata.get("termux_related")),
             "state": incident.state.value,
             "repository": incident.repository,
             "credential_profile": sandbox.credential_profile,

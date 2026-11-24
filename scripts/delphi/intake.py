@@ -327,6 +327,8 @@ def normalize_intake(issue: dict[str, Any], body: str, root: Path) -> dict[str, 
     unknown_dimensions = sorted(set(reconciliation) - RECONCILIATION_DIMENSIONS)
     if unknown_dimensions:
         raise ValueError("unknown reconciliation dimensions: " + ", ".join(unknown_dimensions))
+    if request_category == "Harmoniously reconcile multiple projects" and not reconciliation:
+        raise ValueError("Harmonious Reconciliation requires at least one selected dimension")
     panel = _checked(fields.get("panel", "")) or list(DEFAULT_PANEL)
     unknown_panel = sorted(set(panel) - PANEL_OPTIONS)
     if unknown_panel:

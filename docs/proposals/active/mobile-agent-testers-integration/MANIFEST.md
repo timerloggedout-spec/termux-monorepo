@@ -59,7 +59,7 @@ The Termux device fleet remains a separate provider for physical-device work. Th
 
 - [x] Proposal registered
 - [x] Work item created
-- [ ] Provider brief and invocation contract documented
+- [x] Provider brief and invocation contract documented
 - [ ] Evidence adapter and sanitized fixtures implemented
 - [ ] Registry and catalog updated
 - [ ] Focused tests pass

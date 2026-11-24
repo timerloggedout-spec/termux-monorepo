@@ -160,7 +160,7 @@ def collect_moneyball() -> dict:
         "stale_rule": "staleness adds age_days * stale_day, floored at stale_cap",
         "clamp": clamp,
         "signals": [
-            {"signal": "dual_gate_green", "condition": "gates repo-gate == success AND termux-smoke == success"},
+            {"signal": "scope_gates_green", "condition": "repo-gate == success AND (termux_related != true OR termux-smoke == success)"},
             {"signal": "on_master_base", "condition": "base ref is master"},
             {"signal": "files_under_100", "condition": "changed_files <= 100"},
             {"signal": "has_tests", "condition": "pr.has_tests is true"},

@@ -8,7 +8,7 @@ from unittest import TestCase, main
 from she.evolve import plan_evolution
 from she.incident import Incident, IncidentState
 from she.promote import PromotionDecision, PromotionError, plan_promotion
-from she.verify import DUAL_GATES, plan_verification
+from she.verify import BASE_GATES, plan_verification
 
 FIXED = datetime(2026, 8, 28, 6, 0, tzinfo=UTC)
 
@@ -47,7 +47,7 @@ class ShePromoteTests(TestCase):
         self.assertFalse(plan.promotion_ready)
         self.assertFalse(plan.live)
         self.assertFalse(plan.mutates_source)
-        self.assertTrue(DUAL_GATES.issubset(plan.required_gates))
+        self.assertTrue(BASE_GATES.issubset(plan.required_gates))
         self.assertEqual(plan.rollback_sha, plan.sha)
 
     def test_promote_when_required_gates_pass(self):
@@ -56,6 +56,16 @@ class ShePromoteTests(TestCase):
         self.assertTrue(plan.promotion_ready)
         self.assertFalse(plan.live)
         self.assertIn("all_required_gates_pass", plan.reasons)
+
+    def test_termux_scope_is_preserved_in_promotion(self):
+        inc = _inc(
+            source="github.termux-smoke",
+            event_provenance="workflow_run:termux-smoke:failure",
+            fingerprint="termux-smoke:runtime",
+        )
+        plan = plan_promotion(inc)
+        self.assertIn("termux-smoke", plan.required_gates)
+        self.assertTrue(plan.metadata["termux_related"])
 
     def test_inconclusive_cannot_promote(self):
         results = dict(_PASS)
@@ -73,7 +83,7 @@ class ShePromoteTests(TestCase):
         plan = plan_promotion(inc)
         self.assertEqual(plan.decision, "observe-only")
         self.assertFalse(plan.promotion_ready)
-        self.assertTrue(DUAL_GATES.issubset(plan.required_gates))
+        self.assertTrue(BASE_GATES.issubset(plan.required_gates))
         self.assertIn("security-checks", plan.required_gates)
 
     def test_terminal_rejected(self):
@@ -89,12 +99,12 @@ class ShePromoteTests(TestCase):
         self.assertEqual(restored.decision, "hold")
         self.assertFalse(restored.promotion_ready)
         self.assertFalse(restored.live)
-        self.assertTrue(DUAL_GATES.issubset(restored.required_gates))
+        self.assertTrue(BASE_GATES.issubset(restored.required_gates))
 
-    def test_from_mapping_rejects_dropped_dual_gate(self):
+    def test_from_mapping_rejects_dropped_repo_gate(self):
         data = plan_promotion(_inc()).to_mapping()
         data["required_gates"] = [g for g in data["required_gates"] if g != "repo-gate"]
-        with self.assertRaisesRegex(PromotionError, "dual gates"):
+        with self.assertRaisesRegex(PromotionError, "repo gate"):
             PromotionDecision.from_mapping(data)
 
     def test_rejects_mismatched_verification(self):

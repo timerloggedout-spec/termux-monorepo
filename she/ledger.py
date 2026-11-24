@@ -1,6 +1,6 @@
 """SHE P0.11 — append-only evidence ledger (observer-only, no persist).
 
-Binds incident identity, dual-gate verification outcomes, promotion
+Binds incident identity, scope-selected verification outcomes, promotion
 decision, and learning record into one inspectable mapping. This module
 plans the ledger. It does not write a store, call the network, or mutate git.
 
@@ -17,7 +17,7 @@ from typing import Any
 from she.incident import Incident, IncidentState
 from she.learn import LearningRecord, plan_learning
 from she.promote import PromotionDecision, plan_promotion
-from she.verify import DUAL_GATES, VerificationPlan, apply_check_results, plan_verification, summarize_results
+from she.verify import BASE_GATES, TERMUX_SCOPE_GATES, VerificationPlan, apply_check_results, plan_verification, summarize_results
 
 ENTRY_KINDS: frozenset[str] = frozenset(
     {"incident", "verification", "promotion", "learning"}
@@ -103,8 +103,10 @@ class EvidenceLedger:
         if not self.sha:
             raise LedgerError("sha required")
         needed = set(self.required_gates)
-        if not DUAL_GATES.issubset(needed):
-            raise LedgerError("dual gates repo-gate + termux-smoke must be required")
+        if not BASE_GATES.issubset(needed):
+            raise LedgerError("repo-gate must be required")
+        if self.metadata.get("termux_related") and not TERMUX_SCOPE_GATES.issubset(needed):
+            raise LedgerError("termux-smoke must be required for Termux scope")
         kinds = [e.kind for e in self.entries]
         if "incident" not in kinds:
             raise LedgerError("ledger must include an incident entry")
@@ -177,9 +179,9 @@ def plan_ledger(
         raise LedgerError("verification incident_id must match incident")
     if verification.sha != incident.sha:
         raise LedgerError("verification sha must match incident sha")
-    required = set(verification.required_gates()) | set(DUAL_GATES)
-    if not DUAL_GATES.issubset(required):
-        raise LedgerError("dual gates repo-gate + termux-smoke must be required")
+    required = set(verification.required_gates()) | set(BASE_GATES)
+    if not BASE_GATES.issubset(required):
+        raise LedgerError("repo-gate must be required")
 
     promotion = promotion or plan_promotion(
         incident, verification=verification, check_results=check_results
@@ -248,7 +250,7 @@ def plan_ledger(
         live=False,
         mutates_source=False,
         constraints=(
-            "dual_gates_required",
+            "repo_gate_required",
             "append_only",
             "no_persist",
             "no_live_store",
@@ -261,6 +263,7 @@ def plan_ledger(
             "classification": incident.classification,
             "fingerprint": incident.fingerprint,
             "source": incident.source,
+            "termux_related": bool(verification.metadata.get("termux_related")),
             "state": incident.state.value,
             "security": security,
             "verification_ready": verification.promotion_ready,

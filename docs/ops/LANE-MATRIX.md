@@ -27,25 +27,25 @@ decision. No issue is used as a generic state container.
 Do **not** open `ops/session-lane-matrix-*` PRs to restamp this file.
 Git history is the audit ledger. The generated PR board is a derived view.
 
-## Dual-gate contract (promote authority)
+## Scope-aware promote contract
 
-1. `hygiene + portability gate` / `repo gate` SUCCESS on **this** SHA
-2. `agentic termux smoke` / `termux smoke` SUCCESS on **this** SHA
-3. Vercel rate-limits are **non-gate** (#772)
-4. Copilot / CodeRabbit / Qodo / Devin = advisory only
-5. Age, file count, and comment volume are context only; age never changes lane state
-6. Mega-merge is allowed when dual-gate SUCCESS **and** mergeable on the candidate SHA
-7. CodeRabbit ~100-file limit is advisory review capacity, not a promote ban
-8. `mergeable_state=dirty` or a merge conflict **blocks** promote until rebase/re-extract
-9. Dual-gate SUCCESS on an older head does not authorize a newer SHA
-10. Combined commit status is not dual-gate; bind the named jobs
+1. `repo-gate` SUCCESS on the candidate SHA for repository integration changes
+2. `termux-smoke` SUCCESS on the candidate SHA when the changed workstream covers Termux runtime, Android device integration, or Termux operations
+3. Owning domain tests SUCCESS when required by the proposal or changed subsystem
+4. Vercel rate-limits are **non-gate** (#772)
+5. Copilot / CodeRabbit / Qodo / Devin = advisory only
+6. Treat age, file count, and comment volume as context; lane state follows evidence
+7. Promotion requires every applicable gate to pass on the candidate SHA
+8. `mergeable_state=dirty` or a merge conflict blocks promotion until rebase/re-extraction
+9. Bind each gate result to the exact candidate SHA
+10. Bind named job conclusions as the scope-gate result
 
 ## Lane vocabulary (sweep v2)
 
 | Lane | Meaning |
 |------|---------|
-| EXTRACT | Re-cut onto live master; do not wholesale-merge |
-| CANDIDATE | On master; dual-gate may promote if green |
+| EXTRACT | Re-cut onto live master as independently reviewable workstreams |
+| CANDIDATE | On master; applicable scope gates may promote when green |
 | NEED_EVIDENCE | Wrong-base / draft / dirty — missing rebase or checks |
 | SUPERSEDE | Session-record artifact, bot-only artifact, or explicitly superseded item |
 
@@ -59,18 +59,18 @@ Agents must:
 
 - **Read** generated status + live GitHub API for current SHA
 - **Write** product or durable policy only
-- **Close** leftover `ops(session): … LANE-MATRIX` PRs as not-planned / superseded
-- **Never** treat HOLD / OBSERVE / WAIT as idle parking when product work exists
+- **Disposition** leftover `ops(session): … LANE-MATRIX` PRs as not-planned / superseded
+- Treat HOLD / OBSERVE / WAIT as active dispositions while product work proceeds
 
 Event-driven classifier marks session-record titles **SUPERSEDE**. Age buckets are snapshot metadata only; crossing an age threshold never changes disposition.
 
 ## Known durable lanes (update only when the fact is durable)
 
-- #48 remainder EXTRACT; core already on master via #805. Dirty vs `master-staging` is a hard block. Do not retarget.
+- #48 remainder EXTRACT; core already on master via #805. Dirty vs `master-staging` = blocked; extract the remainder onto current master.
 - #809 / #806 need rebase onto live `master` before any promote attempt.
 - #69 superseded by #784. #810 / #812 are historical pulses.
 - #772 documents Vercel mergeable_state noise.
 - #814 landed the board-vs-ledger policy.
-- #184 names-only credential inventory. Do not paste secret values.
+- #184 names-only credential inventory; keep secret values in approved stores.
 
 Agent-Identity: Grok (Administrator)

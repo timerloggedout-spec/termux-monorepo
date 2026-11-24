@@ -11,7 +11,7 @@ reviewers:
 related_prs: []
 related_branches:
   - feat/repository-provisioner-workflow
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate]
 ---
 
 # MANIFEST — repository-provisioner

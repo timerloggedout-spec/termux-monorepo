@@ -16,7 +16,6 @@ related_branches:
 gates_required:
   - proposal-lifecycle
   - repo-gate
-  - termux-smoke
 ---
 
 # MANIFEST: integration-portfolio-expansion

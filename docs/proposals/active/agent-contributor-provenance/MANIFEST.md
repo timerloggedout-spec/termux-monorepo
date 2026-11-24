@@ -16,7 +16,7 @@ reviewers:
 related_issues: [1241]
 related_prs: [1244]
 related_branches: [feat/biudl-full-stack-provenance]
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate]
 ---
 
 # MANIFEST — agent-contributor-provenance

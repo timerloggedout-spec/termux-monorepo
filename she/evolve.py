@@ -17,7 +17,7 @@ from typing import Any
 from she.incident import Incident, IncidentState
 from she.repair_pr import REQUIRED_TESTS, plan_repair_pr
 from she.sandbox import SandboxPlan, plan_repair_sandbox
-from she.verify import DUAL_GATES, VerificationPlan, plan_verification
+from she.verify import BASE_GATES, TERMUX_SCOPE_GATES, VerificationPlan, plan_verification
 
 HYPOTHESIS_KINDS: frozenset[str] = frozenset(
     {
@@ -65,8 +65,8 @@ class Hypothesis:
         if self.kind not in HYPOTHESIS_KINDS:
             raise EvolveError(f"unknown hypothesis kind: {self.kind!r}")
         needed = set(self.required_gates)
-        if not DUAL_GATES.issubset(needed):
-            raise EvolveError("dual gates repo-gate + termux-smoke must be required")
+        if not BASE_GATES.issubset(needed):
+            raise EvolveError("repo-gate must be required")
         if not self.isolated:
             raise EvolveError("hypotheses must stay isolated")
 
@@ -107,8 +107,8 @@ class ExperimentSpec:
         if not self.branch.startswith("she/evolve/"):
             raise EvolveError("experiment branch must stay in she/evolve/ namespace")
         needed = set(self.required_gates)
-        if not DUAL_GATES.issubset(needed):
-            raise EvolveError("dual gates must remain required on experiments")
+        if not BASE_GATES.issubset(needed):
+            raise EvolveError("repo-gate must remain required on experiments")
         if self.live or self.mutates_source or self.promotion_ready:
             raise EvolveError("P0.9 experiments cannot be live, mutating, or promotion-ready")
 
@@ -159,8 +159,8 @@ class EvolutionPlan:
         if not self.sha:
             raise EvolveError("sha required")
         needed = set(self.required_gates)
-        if not DUAL_GATES.issubset(needed):
-            raise EvolveError("dual gates repo-gate + termux-smoke must be required")
+        if not BASE_GATES.issubset(needed):
+            raise EvolveError("repo-gate must be required")
         if self.live or self.mutates_source or self.promotion_ready:
             raise EvolveError("P0.9 planner cannot be live, mutating, or promotion-ready")
         kinds = {h.kind for h in self.hypotheses}
@@ -207,7 +207,7 @@ class EvolutionPlan:
 def _hypotheses_for(incident: Incident, gates: Sequence[str]) -> tuple[Hypothesis, ...]:
     classification = (incident.classification or "unknown").lower()
     fp = incident.fingerprint or classification
-    required = tuple(sorted(set(gates) | DUAL_GATES | REQUIRED_TESTS))
+    required = tuple(sorted(set(gates) | BASE_GATES | REQUIRED_TESTS))
     specs = (
         ("retry-known-fix", f"retry known pattern for {fp}"),
         ("narrow-regression", f"narrow regression around {classification}"),
@@ -232,7 +232,7 @@ def _experiments_for(
     hypotheses: Sequence[Hypothesis],
     sandbox: SandboxPlan,
 ) -> tuple[ExperimentSpec, ...]:
-    gates = tuple(sorted(DUAL_GATES | REQUIRED_TESTS))
+    gates = tuple(sorted(set(hypotheses[0].required_gates) | REQUIRED_TESTS))
     out: list[ExperimentSpec] = []
     for hyp in hypotheses:
         slug = hyp.kind.replace("-", "_")
@@ -288,9 +288,9 @@ def plan_evolution(
     verification = verification or plan_verification(incident, sandbox=sandbox)
     _bind_children(incident, sandbox, verification)
     repair = plan_repair_pr(incident, sandbox=sandbox, verification=verification)
-    gates = tuple(sorted(set(verification.required_gates()) | set(repair.required_tests) | DUAL_GATES))
-    if not DUAL_GATES.issubset(gates):
-        raise EvolveError("dual gates must remain required")
+    gates = tuple(sorted(set(verification.required_gates()) | set(repair.required_tests) | BASE_GATES))
+    if not BASE_GATES.issubset(gates):
+        raise EvolveError("repo-gate must remain required")
 
     hypotheses = _hypotheses_for(incident, gates)
     experiments = _experiments_for(incident, hypotheses, sandbox)
@@ -305,7 +305,7 @@ def plan_evolution(
         mutates_source=False,
         promotion_ready=False,
         constraints=(
-            "dual_gates_required",
+            "repo_gate_required",
             "isolated_experiments_only",
             "no_live_evolution",
             "no_source_mutation",
@@ -317,6 +317,7 @@ def plan_evolution(
             "classification": incident.classification,
             "fingerprint": incident.fingerprint,
             "source": incident.source,
+            "termux_related": bool(verification.metadata.get("termux_related")),
             "state": incident.state.value,
             "repository": incident.repository,
             "sandbox_branch": sandbox.branch,

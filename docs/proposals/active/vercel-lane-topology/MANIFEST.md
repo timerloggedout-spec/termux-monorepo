@@ -13,7 +13,7 @@ reviewers:
 related_prs: [442, 445, 446]
 related_branches:
   - docs/proposals/vercel-lane-topology
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate]
 ---
 
 # MANIFEST — vercel-lane-topology

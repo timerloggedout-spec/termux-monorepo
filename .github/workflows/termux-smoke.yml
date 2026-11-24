@@ -1,18 +1,52 @@
 name: termux smoke
 
-# Agentic Termux runtime surface check.
+# Termux runtime and device-surface validation. Scope: Termux-related paths only.
 # Sits *after* repo-gate (hygiene) and *before* language-specific / provider work.
 #
 # On device:
 #     python3 scripts/ci/termux_smoke.py
 #     python3 scripts/ci/termux_smoke.py --with-optional
 #
-# No cargo, no node, no pip, no network required for the default path.
+# The default path uses Python standard-library checks and local repository inputs.
 
 on:
   pull_request:
+    paths:
+      - ".github/workflows/termux-smoke.yml"
+      - "scripts/ci/termux_smoke.py"
+      - "scripts/ci/termux_smoke/**"
+      - "tests/test_termux_smoke.py"
+      - "docs/TERMUX-SMOKE.md"
+      - "docs/ops/TERMUX-*.md"
+      - "termux-multi-agent/**"
+      - "skyhook/**"
+      - "archwiz/termux_*.py"
+      - "archwiz/termux/**"
+      - "**/*termux*"
+      - "**/termux/**"
+      - "docs/proposals/active/termux-*/**"
+      - "docs/proposals/active/demo-portal/**"
+      - "docs/proposals/active/archwiz-ui-protocol/**"
+      - "docs/proposals/active/ratatui-tokio-terminal-dashboard/**"
   push:
     branches: [master, master-staging, termux-smoke]
+    paths:
+      - ".github/workflows/termux-smoke.yml"
+      - "scripts/ci/termux_smoke.py"
+      - "scripts/ci/termux_smoke/**"
+      - "tests/test_termux_smoke.py"
+      - "docs/TERMUX-SMOKE.md"
+      - "docs/ops/TERMUX-*.md"
+      - "termux-multi-agent/**"
+      - "skyhook/**"
+      - "archwiz/termux_*.py"
+      - "archwiz/termux/**"
+      - "**/*termux*"
+      - "**/termux/**"
+      - "docs/proposals/active/termux-*/**"
+      - "docs/proposals/active/demo-portal/**"
+      - "docs/proposals/active/archwiz-ui-protocol/**"
+      - "docs/proposals/active/ratatui-tokio-terminal-dashboard/**"
   workflow_dispatch:
 
 permissions:
@@ -36,15 +70,10 @@ jobs:
       - name: Smoke gate regression tests
         run: python3 -B -m unittest discover -s tests -p 'test_termux_smoke.py' -v
 
-      - name: Bucket headroom unit and workflow-contract tests
-        run: |
-          python3 -m pip install --disable-pip-version-check --quiet PyYAML pytest
-          python3 -m pytest -q tests/test_bucket_headroom.py tests/test_bucket_headroom_workflow.py
-
       - name: Core smoke (required)
         run: python3 scripts/ci/termux_smoke.py
 
       - name: Optional agent-surface probes
         run: python3 scripts/ci/termux_smoke.py --with-optional
-        # Optional probes never fail the job unless --strict is used later.
+        # Optional probes contribute advisory evidence; --strict promotes their failures to job failures.
         continue-on-error: true

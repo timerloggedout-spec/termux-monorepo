@@ -23,20 +23,20 @@ A request and its work item are the input. The implementer branches from `master
 
 ## Why this shape
 
-Skipping registration, branching without a registered item, or treating unrelated gate failures as permission to change broad source areas would make ownership, regression risk, and promotion state opaque.
+Register the work item, branch from the approved base, and scope validation to the owning subsystem; this keeps ownership, regression risk, and promotion state explicit.
 
 ## Steps
 
 1. Read the active proposal registry and select or register the item. Cite `docs/proposals/registry.yaml` and `docs/proposals/PROCESS.md:31-36`.
 2. Create a feature branch from `master` (a `master-staging` base only when that lane is active). Cite `CLAUDE.md:56` and `CLAUDE.md:72-74`.
 3. Implement only the item scope and record the `Implements: <ITEM-ID>` reference in the commit or pull request. Cite `CLAUDE.md:60-61`.
-4. Run `python3 scripts/ci/repo_gate.py` and `python3 scripts/ci/termux_smoke.py`; separate pre-existing failures from branch changes. Cite `CLAUDE.md:57-59`.
-5. Present the branch and evidence for review; do not merge, force-push, rotate credentials, or change protected settings without explicit operator authority. Cite `docs/proposals/AGENTIC-PERMISSIONS.md:9-27`.
+4. Run `python3 scripts/ci/repo_gate.py` for repository changes. Run `python3 scripts/ci/termux_smoke.py` when the workstream changes Termux runtime, Android device integration, or Termux operations. Run the owning domain tests and separate pre-existing failures from branch changes.
+5. Present the branch and evidence for review. Reserve merge, history rewrite, credential rotation, and protected-setting changes for the explicit operator authority defined in `docs/proposals/AGENTIC-PERMISSIONS.md:9-27`.
 
 ## If you change this
 
 - **Hits:** proposal state, feature branch scope, commit/PR evidence, and the directly relevant validation surface.
-- **Does not hit:** protected baseline history or device-side Termux state without a separately authorized operation.
+- **Separate authority:** protected baseline history and device-side Termux state follow their dedicated operator authorization edges.
 
 ## Surfaces
 

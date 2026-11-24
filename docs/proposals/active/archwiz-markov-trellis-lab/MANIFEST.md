@@ -16,7 +16,7 @@ related_issues: [966]
 related_prs: [967]
 related_branches:
   - experiment/archwiz-markov-trellis-lab
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate]
 ---
 
 # MANIFEST — archwiz-markov-trellis-lab
@@ -44,6 +44,6 @@ Gemini is an external design/research reviewer for this lane. Its output is untr
 - [x] Deterministic model fixtures added
 - [x] Gemini review request dispatched
 - [ ] Gemini findings recorded and dispositioned
-- [ ] repo-gate + termux-smoke green
+- [ ] repo-gate plus owning domain tests green
 - [ ] Evaluate graduation candidate(s)
 - [ ] Close or promote proposal deliberately

@@ -14,7 +14,7 @@ related_issues: [5136]
 related_prs: [5145]
 related_branches:
   - feat/provider-family-doe-observatory-20261111
-gates_required: [proposal-lifecycle, repo-gate, termux-smoke]
+gates_required: [proposal-lifecycle, repo-gate]
 ---
 
 # MANIFEST — provider-family-doe-observatory

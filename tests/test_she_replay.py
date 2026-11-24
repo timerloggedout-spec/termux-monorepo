@@ -9,7 +9,7 @@ from she.attest import plan_attestation
 from she.incident import Incident, IncidentState
 from she.ledger import plan_ledger
 from she.replay import ReplayError, ReplayVerdict, plan_replay
-from she.verify import DUAL_GATES
+from she.verify import BASE_GATES
 
 FIXED = datetime(2026, 8, 29, 21, 0, tzinfo=UTC)
 
@@ -50,7 +50,7 @@ class SheReplayTests(TestCase):
         self.assertFalse(replay.signed)
         self.assertFalse(replay.persisted)
         self.assertFalse(replay.mutates_source)
-        self.assertTrue(DUAL_GATES.issubset(replay.required_gates))
+        self.assertTrue(BASE_GATES.issubset(replay.required_gates))
         self.assertEqual(replay.expected_digest, replay.observed_digest)
 
     def test_promote_when_required_gates_pass(self):
@@ -67,7 +67,7 @@ class SheReplayTests(TestCase):
         replay = plan_replay(inc)
         self.assertEqual(replay.verdict, "observe-only")
         self.assertEqual(replay.promotion_decision, "observe-only")
-        self.assertTrue(DUAL_GATES.issubset(replay.required_gates))
+        self.assertTrue(BASE_GATES.issubset(replay.required_gates))
         self.assertIn("security-checks", replay.required_gates)
         self.assertTrue(replay.metadata["security"])
 
@@ -85,12 +85,12 @@ class SheReplayTests(TestCase):
         self.assertEqual(restored.promotion_decision, "hold")
         self.assertFalse(restored.signed)
         self.assertFalse(restored.live)
-        self.assertTrue(DUAL_GATES.issubset(restored.required_gates))
+        self.assertTrue(BASE_GATES.issubset(restored.required_gates))
 
     def test_from_mapping_rejects_dropped_dual_gate(self):
         data = plan_replay(_inc()).to_mapping()
         data["required_gates"] = [g for g in data["required_gates"] if g != "repo-gate"]
-        with self.assertRaisesRegex(ReplayError, "dual gates"):
+        with self.assertRaisesRegex(ReplayError, "repo gate"):
             ReplayVerdict.from_mapping(data)
 
     def test_rejects_mismatched_ledger(self):

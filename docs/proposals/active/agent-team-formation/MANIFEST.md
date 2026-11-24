@@ -16,7 +16,7 @@ reviewers:
 related_issues: [129, 236, 243]
 related_prs: [131]
 related_branches: [docs/agent-team-formation-draft]
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate]
 ---
 
 # MANIFEST — agent-team-formation

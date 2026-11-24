@@ -17,7 +17,7 @@ from typing import Any
 from she.attest import Attestation, digest_mapping, plan_attestation
 from she.incident import Incident, IncidentState
 from she.ledger import EvidenceLedger, plan_ledger
-from she.verify import DUAL_GATES
+from she.verify import BASE_GATES, TERMUX_SCOPE_GATES
 
 VERDICTS = frozenset({"match", "mismatch", "observe-only", "hold"})
 
@@ -66,8 +66,10 @@ class ReplayVerdict:
         if not self.sha:
             raise ReplayError("sha required")
         needed = set(self.required_gates)
-        if not DUAL_GATES.issubset(needed):
-            raise ReplayError("dual gates repo-gate + termux-smoke must be required")
+        if not BASE_GATES.issubset(needed):
+            raise ReplayError("repo-gate must be required")
+        if self.metadata.get("termux_related") and not TERMUX_SCOPE_GATES.issubset(needed):
+            raise ReplayError("termux-smoke must be required for Termux scope")
         if self.verdict not in VERDICTS:
             raise ReplayError(f"unsupported verdict: {self.verdict!r}")
         if len(self.expected_digest) != 64 or len(self.observed_digest) != 64:
@@ -149,12 +151,12 @@ def plan_replay(
     if attestation.sha != incident.sha:
         raise ReplayError("attestation sha must match incident sha")
 
-    required = set(ledger.required_gates) | set(attestation.required_gates) | set(DUAL_GATES)
+    required = set(ledger.required_gates) | set(attestation.required_gates) | set(BASE_GATES)
     security = _is_security(incident)
     if security:
         required |= {"security-checks"}
-    if not DUAL_GATES.issubset(required):
-        raise ReplayError("dual gates repo-gate + termux-smoke must be required")
+    if not BASE_GATES.issubset(required):
+        raise ReplayError("repo-gate must be required")
 
     payload = {
         "incident_id": incident.incident_id,
@@ -189,7 +191,7 @@ def plan_replay(
         signed=False,
         mutates_source=False,
         constraints=(
-            "dual_gates_required",
+            "repo_gate_required",
             "canonical_sha256",
             "no_sign",
             "no_persist",
@@ -204,6 +206,7 @@ def plan_replay(
             "classification": incident.classification,
             "fingerprint": incident.fingerprint,
             "source": incident.source,
+            "termux_related": bool(ledger.metadata.get("termux_related")),
             "state": incident.state.value,
             "security": security,
             "matched": matched,

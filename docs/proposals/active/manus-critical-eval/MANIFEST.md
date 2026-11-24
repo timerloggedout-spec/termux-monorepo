@@ -11,7 +11,7 @@ reviewers:
     status: posted
 related_prs: [13]
 related_branches: [manus/novel-work]
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate]
 ---
 
 # MANIFEST — manus-critical-eval

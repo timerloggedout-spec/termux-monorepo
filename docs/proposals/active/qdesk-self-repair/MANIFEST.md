@@ -12,7 +12,7 @@ reviewers:
 related_issues: [5214]
 related_prs: [5207, 5523]
 related_branches: [feat/que-brr-clean-integration-2026-11-16]
-gates_required: [repo-gate, proposal-lifecycle, termux-smoke]
+gates_required: [repo-gate, proposal-lifecycle]
 ---
 
 # MANIFEST — qdesk-self-repair

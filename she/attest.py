@@ -18,7 +18,7 @@ from typing import Any
 
 from she.incident import Incident, IncidentState
 from she.ledger import EvidenceLedger, plan_ledger
-from she.verify import DUAL_GATES
+from she.verify import BASE_GATES, TERMUX_SCOPE_GATES
 
 DIGEST_ALGO = "sha256"
 
@@ -75,8 +75,10 @@ class Attestation:
         if not self.sha:
             raise AttestError("sha required")
         needed = set(self.required_gates)
-        if not DUAL_GATES.issubset(needed):
-            raise AttestError("dual gates repo-gate + termux-smoke must be required")
+        if not BASE_GATES.issubset(needed):
+            raise AttestError("repo-gate must be required")
+        if self.metadata.get("termux_related") and not TERMUX_SCOPE_GATES.issubset(needed):
+            raise AttestError("termux-smoke must be required for Termux scope")
         if self.algorithm != DIGEST_ALGO:
             raise AttestError(f"unsupported algorithm: {self.algorithm!r}")
         if len(self.digest) != 64:
@@ -147,12 +149,12 @@ def plan_attestation(
     if ledger.sha != incident.sha:
         raise AttestError("ledger sha must match incident sha")
 
-    required = set(ledger.required_gates) | set(DUAL_GATES)
+    required = set(ledger.required_gates) | set(BASE_GATES)
     security = _is_security(incident)
     if security:
         required |= {"security-checks"}
-    if not DUAL_GATES.issubset(required):
-        raise AttestError("dual gates repo-gate + termux-smoke must be required")
+    if not BASE_GATES.issubset(required):
+        raise AttestError("repo-gate must be required")
 
     payload = {
         "incident_id": incident.incident_id,
@@ -174,7 +176,7 @@ def plan_attestation(
         persisted=False,
         mutates_source=False,
         constraints=(
-            "dual_gates_required",
+            "repo_gate_required",
             "canonical_sha256",
             "no_sign",
             "no_persist",
@@ -188,6 +190,7 @@ def plan_attestation(
             "classification": incident.classification,
             "fingerprint": incident.fingerprint,
             "source": incident.source,
+            "termux_related": bool(ledger.metadata.get("termux_related")),
             "state": incident.state.value,
             "security": security,
             "ledger_decision": ledger.promotion_decision,

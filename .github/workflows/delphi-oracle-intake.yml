@@ -35,12 +35,68 @@ jobs:
 
       - name: Normalize intake against canonical research registries
         id: normalize
+        continue-on-error: true
         run: |
           set -euo pipefail
-          python3 scripts/delphi/intake.py --output "$RUNNER_TEMP/delphi-intake.json"
-          echo "record_path=$RUNNER_TEMP/delphi-intake.json" >> "$GITHUB_OUTPUT"
+          error_path="$RUNNER_TEMP/delphi-intake-error.txt"
+          if python3 scripts/delphi/intake.py --output "$RUNNER_TEMP/delphi-intake.json" 2>"$error_path"; then
+            echo "valid=true" >> "$GITHUB_OUTPUT"
+            echo "record_path=$RUNNER_TEMP/delphi-intake.json" >> "$GITHUB_OUTPUT"
+          else
+            echo "valid=false" >> "$GITHUB_OUTPUT"
+            echo "error_path=$error_path" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Report intake validation feedback
+        if: steps.normalize.outputs.valid == 'false'
+        uses: actions/github-script@v7
+        env:
+          ERROR_PATH: ${{ steps.normalize.outputs.error_path }}
+        with:
+          script: |
+            const fs = require("fs");
+            const issue = context.payload.issue;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const marker = "<!-- delphi-oracle-intake-validation:v1 -->";
+            const raw = fs.readFileSync(process.env.ERROR_PATH, "utf8").trim();
+            const detail = raw.startsWith("Traceback")
+              ? "Internal intake validation error. Maintainers can inspect this workflow run."
+              : raw;
+            const safe = detail
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;");
+            const body = [
+              marker,
+              "### Delphi Oracle intake validation",
+              "",
+              "Revise these form fields and save the issue to run intake again:",
+              "",
+              "<pre>",
+              safe,
+              "</pre>"
+            ].join("\n");
+            const comments = await github.rest.issues.listComments({
+              owner, repo, issue_number: issue.number, per_page: 100
+            });
+            const prior = comments.data.find(comment =>
+              comment.user && comment.user.type === "Bot" &&
+              comment.body && comment.body.includes(marker)
+            );
+            if (prior) {
+              await github.rest.issues.updateComment({
+                owner, repo, comment_id: prior.id, body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner, repo, issue_number: issue.number, body
+              });
+            }
+            core.setFailed("Intake validation requires issue correction");
 
       - name: Record selection review and catalogue disposition
+        if: steps.normalize.outputs.valid == 'true'
         uses: actions/github-script@v7
         env:
           RECORD_PATH: ${{ steps.normalize.outputs.record_path }}

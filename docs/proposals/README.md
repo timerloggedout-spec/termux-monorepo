@@ -19,6 +19,7 @@
 | context-relationship-graph | P1 | executing | [active/context-relationship-graph/](active/context-relationship-graph/) — includes proposed CRG-15 Historical Corpus Explorer |
 | provider-family-doe-observatory | P1 | executing | [active/provider-family-doe-observatory/](active/provider-family-doe-observatory/) |
 | continuous-capability-evolution-lab | P1 | executing | [active/continuous-capability-evolution-lab/](active/continuous-capability-evolution-lab/) — event-driven FOSS discovery and DoE combination evaluation |
+| brr-cross-repo-doe | P1 | executing | [active/brr-cross-repo-doe/](active/brr-cross-repo-doe/) — cross-repository BRR, commit, regression, and graph relevance DoE |
 
 ## Large sources / debate branches
 

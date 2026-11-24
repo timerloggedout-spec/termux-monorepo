@@ -511,6 +511,10 @@ def _doe_campaigns() -> list:
         return out
     for design_path in sorted(base.glob("*/DESIGN.json")):
         design = json.loads(design_path.read_text())
+        if design.get("member_kind", "campaign") != "campaign":
+            continue
+        if design.get("status") == "proposed_not_admitted":
+            continue
         camp_dir = design_path.parent
         records = sorted((camp_dir / "records").glob("*.json")) \
             if (camp_dir / "records").exists() else []
@@ -553,6 +557,52 @@ def _doe_campaigns() -> list:
                 "verdict": s.get("verdict"),
             }
         out.append(entry)
+    return out
+
+
+
+def _doe_candidates() -> list:
+    """Proposal-only campaign designs remain visible without active admission."""
+    base = ROOT / "experiments" / "doe"
+    out = []
+    if not base.exists():
+        return out
+    for design_path in sorted(base.glob("*/DESIGN.json")):
+        design = json.loads(design_path.read_text())
+        if (design.get("member_kind", "campaign") != "campaign"
+                or design.get("status") != "proposed_not_admitted"):
+            continue
+        out.append({
+            "member_id": design.get("campaign_id"),
+            "kind": "campaign_candidate",
+            "state": "proposal_only_not_admitted",
+            "design_record": str(design_path.relative_to(ROOT)),
+            "note": (design.get("registration") or {}).get(
+                "note", "Proposal-only design; admission remains pending."
+            ),
+        })
+    return out
+
+
+def _doe_registers() -> list:
+    """Data-population registers remain family references, not experiment campaigns."""
+    base = ROOT / "experiments" / "doe"
+    out = []
+    if not base.exists():
+        return out
+    for design_path in sorted(base.glob("*/DESIGN.json")):
+        design = json.loads(design_path.read_text())
+        if design.get("member_kind") != "register":
+            continue
+        out.append({
+            "member_id": design.get("campaign_id"),
+            "kind": "register",
+            "state": design.get("status", "register"),
+            "design_record": str(design_path.relative_to(ROOT)),
+            "note": design.get("method") or (design.get("population") or {}).get(
+                "source_of_record", "Observational data register."
+            ),
+        })
     return out
 
 
@@ -624,6 +674,8 @@ def collect_doe() -> dict:
         ],
     }
     campaigns = _doe_campaigns()
+    candidates = _doe_candidates()
+    registers = _doe_registers()
     executed = [c for c in campaigns if c["state"] == "executed"]
     payload["family"] = {
         "spec": "docs/ops/DOE-FAMILY.md",
@@ -643,6 +695,8 @@ def collect_doe() -> dict:
                 "note": "Existing member. Its payload lives on the MVT surface (mvt-feed.json); this surface carries the pointer only, per the separation spec.",
             },
             *campaigns,
+            *registers,
+            *candidates,
             {
                 "member_id": "pilot-2-dispatch-topology-x-quota-policy",
                 "kind": "campaign_candidate",
@@ -664,6 +718,12 @@ def collect_doe() -> dict:
         if c["state"] == "admitted_design_only":
             gaps.append(
                 f"Campaign {c['campaign_id']} is admitted (design record committed) but has no run records yet — defined, not run.")
+    for candidate in candidates:
+        gaps.append(
+            f"Campaign candidate {candidate['member_id']} remains proposal-only and is excluded from active campaign runs.")
+    for register in registers:
+        gaps.append(
+            f"Register {register['member_id']} is a data-population register, not an experiment campaign.")
     if not executed:
         gaps.append(
             "No executed DoE family campaign yet: the first executed campaign (pilot 1 or 2) is the family's proof deliverable (#1865). The Delphi executed_comparisons above are a required presentation of a Delphi record, not DoE results.")

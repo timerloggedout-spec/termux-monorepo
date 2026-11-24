@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-23 (policy realign post-#784)  
 **Status:** ACTIVE  
-**Directive:** BIUDL · Continuous Fully Automated Agentic Development · Agent auto-promote on dual-gate + task outcome  
+**Directive:** BIUDL · Continuous Fully Automated Agentic Development · Agent auto-promote on applicable scope gates + task outcome  
 **Owner surface:** timerloggedout-spec/termux-monorepo  
 **Directed at:** Repository development first; complementary Orgs + Enterprise phased until self-sustaining.
 
@@ -44,7 +44,7 @@ Rules:
 
 **Upstream:** https://github.com/Yeachan-Heo/My-Jogyo
 
-Why first-class: end-to-end research automation, hypothesis → experiment → finding → adversarial review, two-gate completion, structured markers mapping to evidence-led + dual-gate culture.
+Why first-class: end-to-end research automation, hypothesis → experiment → finding → adversarial review, repository baseline plus owning domain checks, and structured markers mapping to evidence-led delivery.
 
 No forced full clone on every runner. Sparse / on-demand only.
 
@@ -56,7 +56,7 @@ No forced full clone on every runner. Sparse / on-demand only.
 |-----------------|-------------|
 | Dual-gate | New metadata / gitlink changes use repo-gate and their owning domain checks |
 | evidence-led-monorepo-ops | Inventory + integrity checks |
-| adaptive-wait | Submodule / sparse-checkout jobs stay behind dual gates |
+| adaptive-wait | Submodule / sparse-checkout jobs use repo-gate and applicable domain checks |
 | review-loop | Continuous feedback; no synchronous HITL checkpoint when authority permits |
 | help-wanted / tribute | Research-template work claimable like other lanes |
 | credential-router | No hardcoded provider keys |
@@ -66,7 +66,7 @@ No forced full clone on every runner. Sparse / on-demand only.
 ## 5. Orgs / Enterprise phase
 
 1. Metadata + SOURCE map only
-2. Own dual-gate green
+2. Own repo-gate and applicable domain checks
 3. Own evidence lane
 4. No monorepo secret hard-dependency
 5. Then promotion out of `16_Org_Phased/`
@@ -89,9 +89,9 @@ Promote when all applicable scope gates are green and the task outcome is verifi
 
 - Full recursive submodule update as default CI behavior
 - Treating `refTemplates` as the complete historical environment
-- Promoting any pin without dual-gate + task-outcome evidence
+- Promote pins after repo-gate, applicable domain checks, and task-outcome evidence
 - Hard-coding model / provider keys
-- Treating Copilot / human review as a synchronous promote gate when dual-gate already passes
+- Treat Copilot / human review as advisory when all applicable scope gates pass
 
 ---
 

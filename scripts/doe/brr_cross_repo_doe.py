@@ -195,6 +195,12 @@ def validate_dataset(dataset: dict[str, Any]) -> None:
             commit_shas = candidate.get("commit_shas")
             _require(isinstance(commit_shas, list) and all(_is_sha(sha) for sha in commit_shas),
                      "commit_shas must be a list of full commit SHAs")
+            _require(len(set(commit_shas)) == len(commit_shas),
+                     "commit_shas must be unique")
+            commit_count = candidate.get("unique_commit_count")
+            if commit_count is not None:
+                _require(commit_count == len(commit_shas),
+                         "unique_commit_count must match the complete commit_shas list")
             for field in ("pull_request_numbers", "issue_numbers"):
                 numbers = candidate.get(field)
                 _require(isinstance(numbers, list)
@@ -298,6 +304,9 @@ def _case_metrics(ranked_ids: list[str], gold_ids: list[str], k: int = 5) -> dic
         if target_id in gold_ids:
             reciprocal_rank = 1.0 / rank
             break
+    verified = [
+        row for row in []  # metrics are populated by evaluate_dataset with candidate state
+    ]
     return {
         "precision_at_5": precision,
         "recall_at_5": recall,
@@ -419,7 +428,19 @@ def evaluate_dataset(dataset: dict[str, Any]) -> dict[str, Any]:
                         + [edge["evidence_ref"] for edge in candidate["graph_edges"]]
                     )
                 }),
-                "metrics": _case_metrics(ranked_ids, case["gold_target_ids"]),
+                "metrics": {
+                    **_case_metrics(ranked_ids, case["gold_target_ids"]),
+                    "untestable_fraction": (
+                        sum(1 for row in verified
+                            if row["regression_verdict"] in {"untestable", "no-benchmark", "unknown"})
+                        / len(verified) if verified else 0.0
+                    ),
+                    "unresolved_fraction": (
+                        sum(1 for row in verified
+                            if row["disposition"] in {"unresolved-local-ref", "unrelated-or-unavailable-history"})
+                        / len(verified) if verified else 0.0
+                    ),
+                },
             })
 
     summaries: dict[str, dict[str, float]] = {}
@@ -429,7 +450,7 @@ def evaluate_dataset(dataset: dict[str, Any]) -> dict[str, Any]:
             metric: statistics.mean(row["metrics"][metric] for row in rows)
             for metric in (
                 "precision_at_5", "recall_at_5", "f1_at_5",
-                "mean_reciprocal_rank",
+                "mean_reciprocal_rank", "untestable_fraction", "unresolved_fraction",
             )
         }
         summaries[arm]["candidate_only_leads"] = float(
@@ -442,6 +463,7 @@ def evaluate_dataset(dataset: dict[str, Any]) -> dict[str, Any]:
         "baseline_sha": dataset["baseline_sha"],
         "candidate_sha": dataset["candidate_sha"],
         "coverage_state": dataset["coverage"]["state"],
+        "complete_source_coverage_rate": 1.0 if dataset["coverage"]["state"] == "COMPLETE" else 0.0,
         "repositories": sorted(dataset["coverage"]["repositories"]),
         "query_count": len(dataset["cases"]),
         "task_families": sorted({case["task_family"] for case in dataset["cases"]}),
@@ -486,6 +508,8 @@ def build_experiment_records(result: dict[str, Any], baseline_sha: str,
                 "f1_at_5": metrics["f1_at_5"],
                 "mean_reciprocal_rank": metrics["mean_reciprocal_rank"],
                 "candidate_only_leads": len(row["candidate_only_ids"]),
+                "untestable_fraction": metrics["untestable_fraction"],
+                "unresolved_fraction": metrics["unresolved_fraction"],
             },
             "provenance": "github",
             "confidence": "high" if result["coverage_state"] == "COMPLETE" else "low",

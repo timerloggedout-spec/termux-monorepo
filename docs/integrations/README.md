@@ -5,6 +5,7 @@ Integration Intelligence is the governed catalog and evidence boundary for exter
 ## Canonical files
 
 - [Integration portfolio](INTEGRATION-PORTFOLIO.md) — dated readiness audit, evidence, blockers, and adoption roadmap.
+- [Mobile Agent Testers runbook](../ops/MOBILE-AGENT-TESTERS-INTEGRATION.md) — persona-driven mobile exploratory QA, StudySprint pilot, encrypted evidence collection, and normalization.
 
 - [Integration registry](INTEGRATION-REGISTRY.md) — human-readable capabilities, priorities, and adoption states.
 - [Machine-readable registry](registry.json) — structured inventory for automation and cockpit consumers.

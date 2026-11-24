@@ -533,7 +533,7 @@ owner paste; never edit a row from memory alone.*
 
 ## 11. Provider lifecycle correction — 2026-11-23
 
-**Authority:** owner retirement decision plus the repository evidence below. The machine-readable lifecycle source is `ops/mesh/provider-lifecycle.json` (`mesh.provider-lifecycle/v1`).
+**Authority:** owner retirement decision plus the repository evidence below. Operational lifecycle belongs to `docs/ops/DEVOPS-REGISTER.md` §4A; deployment lane identity belongs to `docs/DEPLOYMENT-LANES.md`.
 
 | Provider | Superseding lifecycle | Evidence and execution boundary |
 |---|---|---|

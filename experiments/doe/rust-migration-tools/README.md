@@ -30,7 +30,7 @@ The primary decision is quality-constrained: each tool must pass the same indepe
 
 The GitReverse approach is a development-process reference for work happening in `termux-monorepo`. The next Rust.rs implementation/version is developed initially in this existing migration lane. GitReverse is not a sibling campaign, comparison arm, or research-seed entry.
 
-A future implementation enters a new design version only after its source commit, capability contract, integration boundary, Siglary profile where applicable, and fixture compatibility are pinned. Keep reconstruction-quality outcomes separate from the Rust hot-path performance cohort.
+Apply the admission rule above when registering a future implementation as a new design version. Keep reconstruction-quality outcomes separate from the Rust hot-path performance cohort.
 
 ## Execution status
 

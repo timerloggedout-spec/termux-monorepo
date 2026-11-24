@@ -83,7 +83,7 @@ jobs:
             const comments = await github.paginate(github.rest.issues.listComments, {
               owner, repo, issue_number: issue.number, per_page: 100
             });
-            const prior = comments.find(comment => comment.body && comment.body.includes(marker));
+            const prior = comments.find(comment => comment.user && comment.user.type === "Bot" && comment.body && comment.body.includes(marker));
             let comment;
             if (prior) {
               const response = await github.rest.issues.updateComment({
@@ -134,36 +134,44 @@ jobs:
                 });
               }
 
-              const path = "ops/delphi/selection-catalogue.json";
-              const file = await github.rest.repos.getContent({
-                owner, repo, path, ref: branch
+              const manifestPath = "ops/delphi/selection-catalogue.json";
+              const manifestFile = await github.rest.repos.getContent({
+                owner, repo, path: manifestPath, ref: branch
               });
-              if (Array.isArray(file.data) || !file.data.content) {
-                throw new Error("Selection catalogue path is not a file");
+              if (Array.isArray(manifestFile.data) || !manifestFile.data.content) {
+                throw new Error("Selection catalogue manifest path is not a file");
               }
-              const catalogue = JSON.parse(Buffer.from(file.data.content, "base64").toString("utf8"));
+              const catalogue = JSON.parse(Buffer.from(manifestFile.data.content, "base64").toString("utf8"));
               if (catalogue.schema !== "delphi.selection-catalogue.v1" ||
                   catalogue.policy.execution !== false ||
                   catalogue.policy.cross_silo_score_aggregation !== false) {
                 throw new Error("Selection catalogue contract mismatch");
               }
-              const alreadyRecorded = catalogue.entries.some(entry =>
-                entry.selection_id === record.selection_id &&
-                entry.record_sha256 === record.record_sha256
-              );
-              if (!alreadyRecorded) catalogue.entries.push(record);
-              catalogue.entries.sort((a, b) =>
-                a.selection_id.localeCompare(b.selection_id) ||
-                a.record_sha256.localeCompare(b.record_sha256)
-              );
-              const nextContent = JSON.stringify(catalogue, null, 2) + "\n";
-              const oldContent = Buffer.from(file.data.content, "base64").toString("utf8");
-              if (nextContent !== oldContent) {
+
+              const recordPath = `ops/delphi/selection-catalogue/${record.selection_id}/${record.record_sha256}.json`;
+              let existingRecord = null;
+              try {
+                const current = await github.rest.repos.getContent({
+                  owner, repo, path: recordPath, ref: branch
+                });
+                if (Array.isArray(current.data) || !current.data.content) {
+                  throw new Error("Selection record path is not a file");
+                }
+                existingRecord = current.data;
+              } catch (error) {
+                if (error.status !== 404) throw error;
+              }
+              const recordContent = JSON.stringify(record, null, 2) + "\n";
+              if (existingRecord) {
+                const priorContent = Buffer.from(existingRecord.content, "base64").toString("utf8");
+                if (priorContent !== recordContent) {
+                  throw new Error("Immutable selection record content mismatch");
+                }
+              } else {
                 await github.rest.repos.createOrUpdateFileContents({
-                  owner, repo, path,
-                  message: `data(delphi): catalogue intake #${issue.number} (DORI-002)`,
-                  content: Buffer.from(nextContent).toString("base64"),
-                  sha: file.data.sha,
+                  owner, repo, path: recordPath,
+                  message: `data(delphi): catalogue selection #${issue.number} (DORI-002)`,
+                  content: Buffer.from(recordContent).toString("base64"),
                   branch
                 });
               }
@@ -193,8 +201,9 @@ jobs:
                     `Source intake: #${issue.number}`,
                     `Selection ID: ${record.selection_id}`,
                     `Record SHA-256: ${record.record_sha256}`,
+                    `Catalogue record: ${recordPath}`,
                     "",
-                    "This PR appends a reference-only Delphi selection catalogue revision.",
+                    "This PR adds one immutable reference-only Delphi selection record.",
                     "Execution remains false. No experiment, provider call, or live routing action is authorized."
                   ].join("\n")
                 });

@@ -1,25 +1,26 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-24T07:12:18Z",
+ "generated_at": "2026-11-24T07:28:25Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 7,
+   "queued": 6,
    "in_progress": 0,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "Orchestration Regression Guard": 1,
     "repo gate": 2,
-    "PR scope guard": 4
+    "PR scope guard": 3,
+    "Orchestration Regression Guard": 1
    }
   },
   "2": {
    "tier": 2,
-   "queued": 1,
+   "queued": 2,
    "in_progress": 2,
-   "oldest_queued_at": "2026-11-24T07:08:29Z",
+   "oldest_queued_at": "2026-11-24T07:24:32Z",
    "by_workflow_queued": {
+    "pages build and deployment": 1,
     "tribute-dashboard-deploy": 1
    }
   },
@@ -32,39 +33,43 @@
   },
   "4": {
    "tier": 4,
-   "queued": 70,
-   "in_progress": 13,
+   "queued": 80,
+   "in_progress": 19,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "lane events recorder": 8,
-    "n8n SHE bridge": 1,
-    "Agent Throughput Evidence": 25,
-    "Audit Cycle \u2014 Single PR Feed-Forward": 2,
-    "Foresight Evidence Spine": 1,
-    "quota-usage-series-refresh": 1,
-    "Agent Readability Source Contract": 1,
-    "DO Statement Style": 4,
-    "Sweep Accountability": 4,
-    "termux smoke": 3,
-    "Repository development evaluation": 1,
-    "Workflow Surface Policy": 1,
-    "Agent PR Jules Handoff": 2,
-    "PR production ledger": 3,
-    "Action Effectiveness Ledger": 1,
-    "Peer review orchestrator": 2,
-    "PR evidence evaluation": 1,
+    "Agent review \u2192 auto Jules": 8,
+    "Agent Throughput Evidence": 12,
+    "Context Relationship + Lead/Lag Audit": 3,
+    "PR production ledger": 4,
+    "lane events recorder": 14,
     "Lane matrix event-driven inventory": 1,
+    "CellCog review": 1,
+    "Action Effectiveness Ledger": 2,
+    "PR Change Effectiveness Ledger": 2,
+    "archwiz dangle check": 1,
+    "Agent PR Jules Handoff": 2,
+    "DO Statement Style": 3,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 2,
+    "Agent Readability Source Contract": 1,
+    "termux smoke": 2,
+    "quota-served-probe": 1,
+    "hitl-control-plane-verify": 2,
+    "quota-allocation-planner": 1,
+    "Foresight Evidence Spine": 1,
+    "quota-analysis": 1,
+    "Sweep Accountability": 3,
+    "n8n SHE bridge": 2,
+    "PR evidence evaluation": 4,
+    "Peer review orchestrator": 4,
     "RECON INTEL discovery": 1,
     "Agent feedback \u2192 Linear subtasks": 1,
-    "Context Relationship + Lead/Lag Audit": 4,
-    "PR Change Effectiveness Ledger": 1,
     "Advisory GitHub Actions lint": 1
    }
   }
  },
  "totals": {
-  "queued": 78,
-  "in_progress": 15
+  "queued": 88,
+  "in_progress": 21
  },
  "wedged_ancient": [
   {
@@ -108,105 +113,21 @@
    "workflow": "termux smoke",
    "created_at": "2026-11-11T20:48:59Z",
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247290"
-  },
-  {
-   "id": 43098247303,
-   "workflow": "Quota Dispatch Tree",
-   "created_at": "2026-11-11T20:48:59Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247303"
-  },
-  {
-   "id": 43098247273,
-   "workflow": "hitl-control-plane-verify",
-   "created_at": "2026-11-11T20:48:59Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247273"
-  },
-  {
-   "id": 43098247239,
-   "workflow": "Context Relationship + Lead/Lag Audit",
-   "created_at": "2026-11-11T20:48:59Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247239"
-  },
-  {
-   "id": 43098247233,
-   "workflow": "Sweep Accountability",
-   "created_at": "2026-11-11T20:48:59Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247233"
-  },
-  {
-   "id": 43097183084,
-   "workflow": "doe-nc1-continuous-log",
-   "created_at": "2026-11-11T20:37:41Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43097183084"
-  },
-  {
-   "id": 43096831186,
-   "workflow": "Quota Dispatch Tree",
-   "created_at": "2026-11-11T20:34:15Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831186"
-  },
-  {
-   "id": 43096831303,
-   "workflow": "termux smoke",
-   "created_at": "2026-11-11T20:34:15Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831303"
-  },
-  {
-   "id": 43096831325,
-   "workflow": "Foresight Evidence Spine",
-   "created_at": "2026-11-11T20:34:15Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831325"
-  },
-  {
-   "id": 43096831370,
-   "workflow": "hitl-control-plane-verify",
-   "created_at": "2026-11-11T20:34:15Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831370"
-  },
-  {
-   "id": 43096831128,
-   "workflow": "Sweep Accountability",
-   "created_at": "2026-11-11T20:34:15Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831128"
-  },
-  {
-   "id": 43096831290,
-   "workflow": "repo gate",
-   "created_at": "2026-11-11T20:34:15Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831290"
-  },
-  {
-   "id": 43096831100,
-   "workflow": "Context Relationship + Lead/Lag Audit",
-   "created_at": "2026-11-11T20:34:15Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831100"
-  },
-  {
-   "id": 43096831285,
-   "workflow": "graph-matrix-probe",
-   "created_at": "2026-11-11T20:34:15Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831285"
-  },
-  {
-   "id": 43096831306,
-   "workflow": "repo-tracking-collect",
-   "created_at": "2026-11-11T20:34:15Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831306"
   }
  ],
  "wedged_excluded_from_counts": true,
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 7,
-   "2": 3,
+   "1": 6,
+   "2": 4,
    "3": 0,
    "4": 0
   },
   "explicit_total": 10,
-  "default_t4": 83,
+  "default_t4": 99,
   "unmatched": 0,
-  "ancient_excluded": 21,
+  "ancient_excluded": 7,
   "operator_excluded": 0
  },
  "operator_excluded": []

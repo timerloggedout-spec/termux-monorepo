@@ -30,7 +30,7 @@ Provider findings are model-generated observations. The provider's duplicate gro
 
 StudySprint Android package: org.timerloggedout.studysprint.
 
-The app uses a native Android WebView shell with a bundled web surface. The inspected app tree exposes Today, Plan, Reviews, and Reader. The inspected StudySprint target is Android-only; skip iOS personas for this pilot.
+The app uses a native Android WebView shell with a bundled web surface. The inspected app tree exposes Today, Plan, Reviews, and Reader. Scope this pilot to Android personas; the inspected StudySprint target is Android-only.
 
 ### Build inputs
 
@@ -49,7 +49,7 @@ Run the provider workflow in timerloggedout-spec/mobile-agent-testers_fork. The 
 | android_build | Custom SDK-direct build command below |
 | apk_path | android/studysprint.apk |
 
-The custom build runs from app_dir; android/build.sh changes into its own directory and produces android/studysprint.apk. The SDK-direct build requires JDK 17, Android platform 34, build-tools 34.0.0, and Python 3. The hosted runner must expose ANDROID_HOME or ANDROID_SDK_ROOT and cmdline-tools/sdkmanager; install the pinned SDK components before invoking the build. The committed StudySprint development keystore is a development identity only; production signing credentials stay outside this workflow.
+The custom build runs from app_dir; android/build.sh changes into its own directory and produces android/studysprint.apk. StudySprint has no package.json; the provider's custom BUILD_COMMAND path bypasses framework auto-detection and invokes the SDK-direct Android build. The SDK-direct build requires JDK 17, Android platform 34, build-tools 34.0.0, and Python 3. The hosted runner must expose ANDROID_HOME or ANDROID_SDK_ROOT and cmdline-tools/sdkmanager; install the pinned SDK components before invoking the build. The committed StudySprint development keystore is a development identity only; production signing credentials stay outside this workflow.
 
 Use this custom android_build command:
 

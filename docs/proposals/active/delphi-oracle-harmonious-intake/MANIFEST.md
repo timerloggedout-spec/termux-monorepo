@@ -11,6 +11,8 @@ reviewers:
     role: operator-authorizer
     status: accepted
 related_issues:
+  - 1567
+  - 1571
   - 1572
   - 1959
   - 1963

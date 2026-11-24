@@ -13,7 +13,7 @@ reviewers:
   - id: ChatGPT
     role: author+executor
     status: executing
-related_prs: []
+related_prs: [5843]
 related_branches:
   - master-staging
   - termux-smoke

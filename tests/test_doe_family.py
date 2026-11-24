@@ -213,3 +213,15 @@ def test_rust_migration_study_remains_unadmitted_candidate():
     assert candidate["state"] == "proposed_not_admitted"
     assert candidate["runs"] == 0
     assert candidate["results"] is None
+
+
+def test_collector_keeps_unadmitted_design_out_of_campaign_collection():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "surface_feeds", ROOT / "scripts/dashboards/surface_feeds.py")
+    feeds = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(feeds)
+    campaigns = {c["campaign_id"] for c in feeds._doe_campaigns()}
+    candidates = {c["campaign_id"] for c in feeds._doe_candidates()}
+    assert "rust-migration-tools" not in campaigns
+    assert "rust-migration-tools" in candidates

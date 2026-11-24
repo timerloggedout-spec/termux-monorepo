@@ -301,6 +301,9 @@ class DelphiIntakeContractTests(unittest.TestCase):
         self.assertIn("execution", workflow)
         self.assertIn("false", workflow)
         self.assertIn("pulls.create", workflow)
+        self.assertIn("record_path=", workflow)
+        self.assertIn('.replace(/</g, "&lt;")', workflow)
+        self.assertIn("selection-catalogue/", workflow)
 
 
 if __name__ == "__main__":

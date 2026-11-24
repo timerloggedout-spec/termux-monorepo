@@ -104,6 +104,38 @@ class QuotaPollTest(unittest.TestCase):
         with patch.dict(os.environ, {"OPENROUTER_KEY_OBSERVE": "1"}, clear=True):
             self.assertIsNone(_qp.openrouter_key_reader(None))
 
+    def test_dockerhub_anonymous_reader_uses_non_consuming_head_headers(self):
+        token = {"token": "temporary-registry-token"}
+        class Headers(dict):
+            pass
+        class Response:
+            headers = Headers({"ratelimit-limit": "100;w=21600",
+                               "ratelimit-remaining": "73;w=21600"})
+            def __enter__(self): return self
+            def __exit__(self, *args): return False
+        with patch.object(_qp, "_get", return_value=token) as token_call, \
+             patch.object(_qp.urllib.request, "urlopen", return_value=Response()) as open_call:
+            result = _qp.dockerhub_anonymous_reader(None)
+        self.assertEqual(result["used"], 27)
+        self.assertEqual(result["limit"], 100)
+        self.assertEqual(result["extra"]["remaining"], 73)
+        self.assertEqual(result["extra"]["scope"], "anonymous-runner-egress")
+        self.assertEqual(open_call.call_args.args[0].get_method(), "HEAD")
+        self.assertIn("Bearer temporary-registry-token",
+                      open_call.call_args.args[0].get_header("Authorization"))
+        self.assertIn("ratelimitpreview/test", token_call.call_args.args[0])
+
+    def test_dockerhub_anonymous_reader_fails_closed_without_rate_headers(self):
+        class Response:
+            headers = {}
+            def __enter__(self): return self
+            def __exit__(self, *args): return False
+        with patch.object(_qp, "_get", return_value={"token": "temporary"}), \
+             patch.object(_qp.urllib.request, "urlopen", return_value=Response()):
+            self.assertIsNone(_qp.dockerhub_anonymous_reader(None))
+        with patch.object(_qp, "_get", return_value={}):
+            self.assertIsNone(_qp.dockerhub_anonymous_reader(None))
+
     def test_multiplier(self):
         self.assertEqual(multiplier(None, 5, 0.5, 0.9), 1.0)
         self.assertEqual(multiplier(100, 95, 0.5, 0.9), 0.0)

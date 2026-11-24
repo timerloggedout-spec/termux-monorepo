@@ -462,7 +462,7 @@ def evaluate_dataset(dataset: dict[str, Any]) -> dict[str, Any]:
                 "evidence_refs": sorted({
                     ref
                     for candidate in case["candidates"]
-                    if candidate["target_id"] in set(ranked_ids[:5]) | set(candidate_only)
+                    if candidate["target_id"] in set(ranked_ids[:5]) | set(candidate_only) | set(candidate_edge_ids)
                     for ref in (
                         candidate["evidence_refs"]
                         + [edge["evidence_ref"] for edge in candidate["graph_edges"]]
@@ -475,6 +475,7 @@ def evaluate_dataset(dataset: dict[str, Any]) -> dict[str, Any]:
                             if row["regression_verdict"] in {"untestable", "no-benchmark", "unknown"})
                         / len(verified) if verified else 0.0
                     ),
+                    "candidate_graph_edge_leads": float(len(candidate_edge_ids)),
                     "unresolved_fraction": (
                         sum(1 for row in verified
                             if row["disposition"] in {"unresolved-local-ref", "unrelated-or-unavailable-history"})
@@ -491,6 +492,7 @@ def evaluate_dataset(dataset: dict[str, Any]) -> dict[str, Any]:
             for metric in (
                 "precision_at_5", "recall_at_5", "f1_at_5",
                 "mean_reciprocal_rank", "untestable_fraction", "unresolved_fraction",
+                "candidate_graph_edge_leads",
             )
         }
         summaries[arm]["candidate_only_leads"] = float(
@@ -549,6 +551,7 @@ def build_experiment_records(result: dict[str, Any], baseline_sha: str,
                 "f1_at_5": metrics["f1_at_5"],
                 "mean_reciprocal_rank": metrics["mean_reciprocal_rank"],
                 "candidate_only_leads": len(row["candidate_only_ids"]),
+                "candidate_graph_edge_leads": metrics["candidate_graph_edge_leads"],
                 "untestable_fraction": metrics["untestable_fraction"],
                 "unresolved_fraction": metrics["unresolved_fraction"],
             },

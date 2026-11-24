@@ -99,11 +99,15 @@ def validate_dataset(dataset: dict[str, Any]) -> None:
     sources = dataset.get("sources")
     _require(isinstance(sources, list) and sources, "sources must be a non-empty list")
     sourced_repositories: set[str] = set()
+    source_pairs: set[tuple[str, str]] = set()
+    source_kinds: set[str] = set()
     for source in sources:
         _require(isinstance(source, dict), "source entry must be an object")
         _require(source.get("kind") in SOURCE_KINDS, "invalid source kind")
         _require(source.get("repository") in repositories, "source repository outside coverage")
         sourced_repositories.add(source["repository"])
+        source_pairs.add((source["kind"], source["repository"]))
+        source_kinds.add(source["kind"])
         _require(_is_sha(source.get("sha")), "source sha must be 40 lowercase hex")
         _require(_is_timestamp(source.get("observed_at")), "invalid source observed_at")
         _require(source.get("coverage") in COVERAGE_STATES, "invalid source coverage")
@@ -114,6 +118,13 @@ def validate_dataset(dataset: dict[str, Any]) -> None:
 
     _require(set(repositories).issubset(sourced_repositories),
              "every covered repository needs at least one source receipt")
+    _require(all((kind, repo) in source_pairs
+                 for repo in repositories for kind in ("brr", "commits")),
+             "every covered repository needs BRR and commit source receipts")
+    _require({"regressions", "gold_set"}.issubset(source_kinds),
+             "regression and adjudicated gold-set source receipts are required")
+    _require(bool({"context_graph", "cross_plane_graph"} & source_kinds),
+             "at least one context or cross-plane graph source is required")
 
     cases = dataset.get("cases")
     _require(isinstance(cases, list) and cases, "cases must be a non-empty list")
@@ -302,7 +313,11 @@ def _decision(cases: list[dict[str, Any]], dataset: dict[str, Any],
         [_percentile(bootstrap_means, 0.025), _percentile(bootstrap_means, 0.975)]
         if bootstrap_means else [0.0, 0.0]
     )
-    repositories = set(dataset["coverage"]["repositories"])
+    repositories = {
+        target_id.split("::", 1)[0]
+        for case in dataset["cases"]
+        for target_id in case["gold_target_ids"]
+    }
     task_families = {case["task_family"] for case in dataset["cases"]}
     sample_met = len(dataset["cases"]) >= 30 and len(repositories) >= 3 and len(task_families) >= 3
     coverage_complete = dataset["coverage"]["state"] == "COMPLETE"

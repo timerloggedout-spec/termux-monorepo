@@ -30,3 +30,39 @@ def mvt_shuffle(variants: list[Any], n: int, seed: int | None = None) -> list[An
     """Randomized assignment for multi-variate testing. Duplicates allowed."""
     rng = random.Random(seed)
     return [rng.choice(variants) for _ in range(n)]
+
+
+def randomized_blocked_assignments(
+    variants: list[Any], blocks: list[tuple[Any, ...]], seed: int | None = None
+) -> list[dict[str, Any]]:
+    """Assign every treatment exactly once in each randomized block."""
+    if not variants or len(set(variants)) != len(variants):
+        raise ValueError("variants must be non-empty and unique")
+    if len(set(blocks)) != len(blocks):
+        raise ValueError("block identifiers must be unique")
+    rng = random.Random(seed)
+    assignments = [
+        {"block": list(block), "treatments": rng.sample(variants, k=len(variants))}
+        for block in blocks
+    ]
+    validate_blocked_assignments(assignments, variants, blocks)
+    return assignments
+
+
+def validate_blocked_assignments(
+    assignments: list[dict[str, Any]],
+    variants: list[Any],
+    expected_blocks: list[tuple[Any, ...]],
+) -> None:
+    """Reject missing, duplicated, extra, or unbalanced treatment blocks."""
+    if not variants or len(set(variants)) != len(variants):
+        raise ValueError("variants must be non-empty and unique")
+    seen_blocks = []
+    for assignment in assignments:
+        block = tuple(assignment.get("block", []))
+        treatments = assignment.get("treatments", [])
+        if len(treatments) != len(variants) or set(treatments) != set(variants):
+            raise ValueError(f"block {block!r} must contain each treatment exactly once")
+        seen_blocks.append(block)
+    if len(seen_blocks) != len(set(seen_blocks)) or set(seen_blocks) != set(expected_blocks):
+        raise ValueError("assignments must cover every expected block exactly once")

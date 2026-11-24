@@ -1,6 +1,6 @@
 {
  "schema": "que-queue-feed/v1",
- "generated_at": "2026-11-24T21:22:50Z",
+ "generated_at": "2026-11-24T21:37:50Z",
  "provenance": {
   "producer": "optimizations-assurance (QUE lead) via que-feed-collect",
   "design_input": "Stagefoil \u2014 the desk-flow template brand (Registry issuance PR #4817) \u2014 agent-browser-clerk pattern (D2 candidate B learnings); the Desk as interactive-flow + routing template, agent-operated",
@@ -11,7 +11,7 @@
    "1": {
     "tier": 1,
     "queued": 3,
-    "in_progress": 3,
+    "in_progress": 2,
     "oldest_queued_at": "2026-11-20T07:43:25Z",
     "by_workflow_queued": {
      "repo gate": 1,
@@ -20,11 +20,10 @@
    },
    "2": {
     "tier": 2,
-    "queued": 2,
+    "queued": 1,
     "in_progress": 1,
-    "oldest_queued_at": "2026-11-24T21:21:34Z",
+    "oldest_queued_at": "2026-11-24T21:36:14Z",
     "by_workflow_queued": {
-     "pages build and deployment": 1,
      "tribute-dashboard-deploy": 1
     }
    },
@@ -37,21 +36,23 @@
    },
    "4": {
     "tier": 4,
-    "queued": 22,
-    "in_progress": 14,
+    "queued": 35,
+    "in_progress": 16,
     "oldest_queued_at": "2026-11-20T07:43:25Z",
     "by_workflow_queued": {
-     "lane events recorder": 6,
-     "Sweep Accountability": 1,
+     "Gemini review after peers": 2,
      "DO Statement Style": 3,
-     "Agent Throughput Evidence": 2,
-     "Audit Cycle \u2014 Single PR Feed-Forward": 1,
-     "quota-served-probe": 1,
-     "que-cadence-kick": 1,
-     "quota-allocation-planner": 1,
-     "quota-analysis": 1,
-     "hitl-control-plane-verify": 1,
+     "Sweep Accountability": 2,
+     "Agent Throughput Evidence": 7,
      "Reviewer metrics collect": 1,
+     "Audit Cycle \u2014 Single PR Feed-Forward": 2,
+     "lane events recorder": 7,
+     "Agent Readability Source Contract": 1,
+     "PR evidence evaluation": 1,
+     "Agent review \u2192 auto Jules": 3,
+     "termux smoke": 1,
+     "archwiz dangle check": 1,
+     "RECON INTEL discovery": 1,
      "Agent PR Jules Handoff": 1,
      "PR Change Effectiveness Ledger": 1,
      "Advisory GitHub Actions lint": 1
@@ -59,8 +60,8 @@
    }
   },
   "totals": {
-   "queued": 27,
-   "in_progress": 18
+   "queued": 39,
+   "in_progress": 19
   },
   "wedged_ancient": [
    {
@@ -217,13 +218,13 @@
   "tier_basis": {
    "population": "actions-runs (queued \u2227 in_progress)",
    "explicit": {
-    "1": 6,
-    "2": 3,
+    "1": 5,
+    "2": 2,
     "3": 0,
     "4": 0
    },
-   "explicit_total": 9,
-   "default_t4": 36,
+   "explicit_total": 7,
+   "default_t4": 51,
    "unmatched": 0,
    "ancient_excluded": 25,
    "operator_excluded": 1
@@ -1658,67 +1659,67 @@
  },
  "source_freshness": {
   "schema": "que.source-freshness/v1",
-  "generated_at": "2026-11-24T21:22:50Z",
+  "generated_at": "2026-11-24T21:37:50Z",
   "rule": "FRESH iff age \u2264 cadence + tolerance; freshness(x) \u00acinferred from freshness(y)",
   "counts": {
-   "STALE": 1,
-   "FRESH": 3,
+   "FRESH": 2,
+   "STALE": 2,
    "UNVERIFIABLE": 1
   },
   "sources": {
    "que-feed-collect": {
     "source_ref": "ops/que/feeds/que-queue-feed.json",
-    "generated_at": "2026-11-24T21:22:50Z",
-    "observed_at": "2026-11-24T21:22:50Z",
+    "generated_at": "2026-11-24T21:37:50Z",
+    "observed_at": "2026-11-24T21:37:50Z",
     "expected_cadence_min": 10,
     "tolerance_min": 5,
-    "previous_cycle_at": "2026-11-24T21:06:18Z",
-    "cycle_gap_min": 16.5,
-    "health": "STALE",
+    "previous_cycle_at": "2026-11-24T21:22:50Z",
+    "cycle_gap_min": 15.0,
+    "health": "FRESH",
     "health_basis": "gap since previous cycle watermark",
-    "sha": "468b90dd29dd859b6544e19239927856ed997214",
-    "run_id": "45490378942"
+    "sha": "6206fcbe3489ddb36d690a48359e4b4f07ae39ec",
+    "run_id": "45492960916"
    },
    "dispatch-state-feed": {
     "source_ref": "ops/challenge/dispatch-state-feed.json",
-    "observed_at": "2026-11-24T21:22:50Z",
+    "observed_at": "2026-11-24T21:37:50Z",
     "expected_cadence_min": 15,
     "tolerance_min": 15,
-    "sha": "468b90dd29dd859b6544e19239927856ed997214",
+    "sha": "6206fcbe3489ddb36d690a48359e4b4f07ae39ec",
     "generated_at": "2026-11-24T21:06:17Z",
-    "age_min": 16.6,
-    "health": "FRESH"
+    "age_min": 31.6,
+    "health": "STALE"
    },
    "stall-gap-feed": {
     "source_ref": "ops/que/feeds/stall-gap-feed.json",
-    "observed_at": "2026-11-24T21:22:50Z",
+    "observed_at": "2026-11-24T21:37:50Z",
     "expected_cadence_min": 15,
     "tolerance_min": 15,
-    "sha": "468b90dd29dd859b6544e19239927856ed997214",
+    "sha": "6206fcbe3489ddb36d690a48359e4b4f07ae39ec",
     "generated_at": "2026-11-24T21:06:17Z",
-    "age_min": 16.6,
-    "health": "FRESH"
+    "age_min": 31.6,
+    "health": "STALE"
    },
    "opportunity-priority": {
     "source_ref": "ops/que/feeds/opportunity-priority.json",
-    "observed_at": "2026-11-24T21:22:50Z",
+    "observed_at": "2026-11-24T21:37:50Z",
     "expected_cadence_min": 720,
     "tolerance_min": 0,
-    "sha": "468b90dd29dd859b6544e19239927856ed997214",
+    "sha": "6206fcbe3489ddb36d690a48359e4b4f07ae39ec",
     "generated_at": "2026-11-24T11:00:12Z",
-    "age_min": 622.6,
+    "age_min": 637.6,
     "health": "FRESH"
    },
    "governor-events": {
     "source_ref": "ops/que/events/governor-events-*.jsonl",
-    "observed_at": "2026-11-24T21:22:50Z",
+    "observed_at": "2026-11-24T21:37:50Z",
     "generated_at": "2026-11-22T02:33:40Z",
-    "age_min": 4009.2,
+    "age_min": 4024.2,
     "expected_cadence_min": null,
     "tolerance_min": null,
     "health": "UNVERIFIABLE",
     "health_basis": "emitter cadence \u00acdeclared (source-specific)",
-    "sha": "468b90dd29dd859b6544e19239927856ed997214"
+    "sha": "6206fcbe3489ddb36d690a48359e4b4f07ae39ec"
    }
   }
  }

@@ -38,8 +38,8 @@ Workflow: `.github/workflows/repo-gate.yml`
 
 ### Design rules
 
-- **stdlib only** — no pip, cargo, node, or network
-- **index-based** — reads `git ls-files`, never the working tree
+- **stdlib only** — Python standard library execution with local repository inputs
+- **index-based** — reads `git ls-files` as the canonical change index
 - **device-friendly** — same command works on Termux and in CI
 - **HARD checks** scoped to changed files
 - **RATCHET** on whole-repository debt counters

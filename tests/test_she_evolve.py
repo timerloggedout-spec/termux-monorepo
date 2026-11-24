@@ -14,7 +14,7 @@ from she.evolve import (
 )
 from she.incident import Incident, IncidentState
 from she.sandbox import plan_repair_sandbox
-from she.verify import DUAL_GATES, plan_verification
+from she.verify import BASE_GATES, plan_verification
 
 FIXED = datetime(2026, 8, 28, 5, 0, tzinfo=UTC)
 
@@ -38,18 +38,18 @@ def _inc(**overrides) -> Incident:
 
 
 class SheEvolveTests(TestCase):
-    def test_dual_gates_required(self):
+    def test_repo_gate_required(self):
         plan = plan_evolution(_inc())
-        self.assertTrue(DUAL_GATES.issubset(plan.required_gates))
+        self.assertTrue(BASE_GATES.issubset(plan.required_gates))
         self.assertFalse(plan.promotion_ready)
         self.assertFalse(plan.live)
         self.assertFalse(plan.mutates_source)
         self.assertEqual(len(plan.hypotheses), len(plan.experiments))
         self.assertGreaterEqual(len(plan.hypotheses), 3)
-        self.assertIn("dual_gates_required", plan.constraints)
+        self.assertIn("repo_gate_required", plan.constraints)
         for exp in plan.experiments:
             self.assertTrue(exp.branch.startswith("she/evolve/"))
-            self.assertTrue(DUAL_GATES.issubset(exp.required_gates))
+            self.assertTrue(BASE_GATES.issubset(exp.required_gates))
 
     def test_security_observe_only(self):
         inc = _inc(
@@ -75,12 +75,12 @@ class SheEvolveTests(TestCase):
         self.assertFalse(restored.live)
         self.assertFalse(restored.promotion_ready)
         self.assertFalse(restored.mutates_source)
-        self.assertTrue(DUAL_GATES.issubset(restored.required_gates))
+        self.assertTrue(BASE_GATES.issubset(restored.required_gates))
 
     def test_from_mapping_rejects_dropped_dual_gate(self):
         data = plan_evolution(_inc()).to_mapping()
         data["required_gates"] = [t for t in data["required_gates"] if t != "repo-gate"]
-        with self.assertRaisesRegex(EvolveError, "dual gates"):
+        with self.assertRaisesRegex(EvolveError, "repo gate"):
             EvolutionPlan.from_mapping(data)
 
     def test_rejects_mismatched_child_plans(self):

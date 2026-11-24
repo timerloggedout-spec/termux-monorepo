@@ -93,10 +93,10 @@ def test_run_records_conform_to_experiment_schema():
         (ROOT / "docs/ops/corpus/EXPERIMENT.schema.json").read_text())
     feed = _doe_feed()
     records = sorted(
-        (ROOT / campaign["design_record"].replace("DESIGN.json", "records")).glob("*.json")
+        path
         for campaign in feed["data"]["campaigns"]
+        for path in (ROOT / campaign["design_record"].replace("DESIGN.json", "records")).glob("*.json")
     )
-    records = [path for group in records for path in (group if isinstance(group, list) else [group])]
     for rec_path in records:
         rec = json.loads(rec_path.read_text())
         jsonschema.validate(rec, schema)

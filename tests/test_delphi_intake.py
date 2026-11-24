@@ -22,6 +22,8 @@ def body(sections=None):
         "Request category": "Conduct research or evidence review",
         "Delphi methodology": "Oracle recommends",
         "Round profile": "Adaptive with declared stopping criteria",
+        "Round maximum / custom count": "3",
+        "Stopping criteria / stability definition": "Stop on predeclared stability or maximum rounds; preserve dissent.",
         "Question Matrix strategy": "Shared matrix across all rounds",
         "Selection disposition": "Deliberation only",
         "Research question / objectives": "Which research capabilities improve validated outcomes?",
@@ -170,6 +172,8 @@ def test_missing_baseline_issue_is_preserved_as_null(tmp_path):
     import shutil
 
     root = tmp_path
+    (root / "ops").mkdir()
+    (root / "docs").mkdir()
     for relative in ("ops/delphi", "ops/doe", "docs/proposals"):
         shutil.copytree(ROOT / relative, root / relative)
     participants_path = root / "ops/delphi/research-participants.json"
@@ -212,3 +216,44 @@ def test_catalogue_contract_keeps_execution_disabled():
     record = intake.normalize_intake(ISSUE, body(), ROOT)
     assert record["execution"] is False
     assert record["research_selection"]["comparison_policy"].startswith("within_segment_only")
+
+def test_one_pass_rubric_requires_single_pass_profile():
+    record = intake.normalize_intake(
+        ISSUE,
+        body({
+            "Delphi methodology": "One-pass rubric (not a multi-round Delphi study)",
+            "Round profile": "Single-pass (one assessment)",
+            "Stopping criteria / stability definition": "",
+        }),
+        ROOT,
+    )
+    assert record["delphi"]["round_maximum"] == 1
+
+
+def test_adaptive_rounds_require_stopping_criteria():
+    with pytest.raises(ValueError, match="require declared stopping criteria"):
+        intake.normalize_intake(
+            ISSUE,
+            body({"Stopping criteria / stability definition": ""}),
+            ROOT,
+        )
+
+
+def test_fixed_four_or_five_round_profile_requires_matching_maximum():
+    with pytest.raises(ValueError, match="requires a round maximum of 4 or 5"):
+        intake.normalize_intake(
+            ISSUE,
+            body({"Round profile": "Fixed 4–5 rounds", "Round maximum / custom count": "3"}),
+            ROOT,
+        )
+
+
+def test_workflow_isolated_from_quota_gate_and_keeps_execution_disabled():
+    workflow = (ROOT / ".github/workflows/delphi-oracle-intake.yml").read_text()
+    form = (ROOT / ".github/ISSUE_TEMPLATE/delphi-oracle-intake.yml").read_text()
+    assert "issues:" in workflow and "opened, edited" in workflow
+    assert "delphi:rfp" not in form
+    assert "delphi:selection-review" in workflow
+    assert "heads/master" in workflow
+    assert "execution" in workflow and "false" in workflow
+    assert "pulls.create" in workflow

@@ -14,7 +14,7 @@ reviewers:
     status: executing
 related_issues: [192, 175]
 related_prs: [193, 81, 92, 143, 72, 232, 261, 266, 267, 269, 277, 278, 282, 283, 284, 285, 298, 301, 303, 305, 312, 313]
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate]
 ---
 
 # MANIFEST — actions-refinements

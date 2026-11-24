@@ -147,3 +147,10 @@ Baseline (fleet record): Jules DOWN (entry builds created 3 / completed 0 / erro
 3. Neon lane-events current row count / last successful write. 4. Browser-profile portability + restore procedure.
 5. Arm-health gating in dispatch routing. 6. Whether Fly A (`hindsight-termux`) or Fly B (`hindsight-deepagent`) is the live Fly app.
 7. VM workspace backup — scoped, design only: `docs/ops/VM-WORKSPACE-BACKUP-SCOPING-2026-11-01.md`; build owner-gated; counts as untested until that doc's §4 drill spec runs.
+ 
+## Provider lifecycle supersession — 2026-11-23
+
+The Fly and Koyeb deployment divergence and failover rows above are preserved as the 2026-11-01 incident baseline. Both hosting providers are now **RETIRED**. Deployment, configuration, diagnostics, and provider-probe execution are disabled; Hindsight telemetry retain/verify scripts block retired hostnames before HTTP.
+
+The current Hindsight service endpoint and durable state-store location require a fresh provider-specific receipt. Cloudflare Workers, Vercel Functions, and Supabase Edge Functions remain separate candidate/runtime surfaces; a replacement Hindsight service and state-store pairing requires its own implementation and validation record.
+

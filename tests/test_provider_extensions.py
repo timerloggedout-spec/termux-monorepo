@@ -11,7 +11,7 @@ from llm_api_hub.server import research_providers as providers
 def _admission(path, provider, model):
     path.write_text(json.dumps({"schema": providers.SCHEMA, "entries": [{
         "provider": provider, "model": model, "free_account_verified": True,
-        "terms_accepted": True, "data_class": "public",
+        "operator_authorized": True, "data_class": "public",
         "expires_at": (datetime.now(timezone.utc) + timedelta(hours=1)).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
     }]}))
 

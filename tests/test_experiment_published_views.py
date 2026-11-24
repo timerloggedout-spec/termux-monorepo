@@ -97,3 +97,9 @@ def test_generated_and_development_manifest_titles_match():
     builder = (ROOT / "scripts" / "build_dashboard_manifest.py").read_text(encoding="utf-8")
     assert page["title"] == "RFP & DoE Views"
     assert '"experiment-views.html": "RFP & DoE Views"' in builder
+
+
+def test_preview_manifest_hashes_the_declared_source_revision():
+    workflow = (ROOT / ".github" / "workflows" / "rfp-published-views.yml").read_text(encoding="utf-8")
+    assert "ref: ${{ github.event.pull_request.head.sha }}" in workflow
+    assert 'test "$(git rev-parse HEAD)" = "$SOURCE_SHA"' in workflow

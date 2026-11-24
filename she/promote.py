@@ -20,7 +20,7 @@ from typing import Any
 from she.evolve import EvolutionPlan
 from she.incident import Incident, IncidentState
 from she.repair_pr import RepairPRPlan, plan_repair_pr
-from she.verify import DUAL_GATES, VerificationPlan, apply_check_results, plan_verification
+from she.verify import BASE_GATES, VerificationPlan, apply_check_results, plan_verification
 
 DECISIONS: frozenset[str] = frozenset({"hold", "promote", "observe-only"})
 
@@ -66,8 +66,8 @@ class PromotionDecision:
         if self.decision not in DECISIONS:
             raise PromotionError(f"unknown decision: {self.decision!r}")
         needed = set(self.required_gates)
-        if not DUAL_GATES.issubset(needed):
-            raise PromotionError("dual gates repo-gate + termux-smoke must be required")
+        if not BASE_GATES.issubset(needed):
+            raise PromotionError("repo-gate must be required")
         if self.rollback_sha != self.sha:
             raise PromotionError("rollback_sha must match sha")
         if not self.incident_id:
@@ -158,7 +158,7 @@ def plan_promotion(
             f"promotion not applicable for terminal state {incident.state.value}"
         )
     if _is_security(incident):
-        gates = tuple(sorted(DUAL_GATES | {"security-checks"}))
+        gates = tuple(sorted(set(verification.required_gates()) | {"security-checks"}))
         return PromotionDecision(
             incident_id=incident.incident_id,
             sha=incident.sha,
@@ -170,7 +170,7 @@ def plan_promotion(
             mutates_source=False,
             reasons=("security_dependabot_observe_only",),
             constraints=(
-                "dual_gates_required",
+                "repo_gate_required",
                 "no_live_merge",
                 "http_200_is_not_pass",
                 "subset_required_gates",
@@ -203,12 +203,12 @@ def plan_promotion(
     repair = repair or plan_repair_pr(incident, verification=verification)
     _bind(incident, verification, repair, evolution)
 
-    needed = set(verification.required_gates()) | set(repair.required_tests) | DUAL_GATES
+    needed = set(verification.required_gates()) | set(repair.required_tests) | BASE_GATES
     if evolution is not None:
         needed |= set(evolution.required_gates)
     needed_t = tuple(sorted(needed))
-    if not DUAL_GATES.issubset(needed_t):
-        raise PromotionError("dual gates must remain required")
+    if not BASE_GATES.issubset(needed_t):
+        raise PromotionError("repo-gate must remain required")
 
     reasons: list[str] = []
     if repair.live or verification.live:
@@ -245,7 +245,7 @@ def plan_promotion(
         mutates_source=False,
         reasons=tuple(reasons) or (("all_required_gates_pass",) if ready else ("held",)),
         constraints=(
-            "dual_gates_required",
+            "repo_gate_required",
             "no_live_merge",
             "http_200_is_not_pass",
             "rollback_sha_bound",

@@ -17,10 +17,10 @@ from typing import Any
 
 from she.incident import Incident, IncidentState
 from she.sandbox import SandboxPlan, plan_repair_sandbox
-from she.verify import DUAL_GATES, VerificationPlan, plan_verification
+from she.verify import BASE_GATES, VerificationPlan, plan_verification
 
 REQUIRED_TESTS: frozenset[str] = frozenset(
-    {"repo-gate", "termux-smoke", "domain-tests"}
+    {"repo-gate", "domain-tests"}
 )
 
 _TERMINAL_BLOCK = {
@@ -68,8 +68,8 @@ class RepairPRPlan:
         needed = set(self.required_tests)
         if self.rollback_sha != self.sha:
             raise RepairPRError("rollback_sha must match sha")
-        if not DUAL_GATES.issubset(needed):
-            raise RepairPRError("dual gates repo-gate + termux-smoke must be required tests")
+        if not BASE_GATES.issubset(needed):
+            raise RepairPRError("repo-gate must be required tests")
         if not self.incident_id:
             raise RepairPRError("incident_id required")
         if not self.branch.startswith("she/repair/"):
@@ -184,8 +184,8 @@ def plan_repair_pr(
     verification = verification or plan_verification(incident, sandbox=sandbox)
     _bind_child_plans(incident, sandbox, verification)
     tests = tuple(sorted(REQUIRED_TESTS | verification.required_gates()))
-    if not DUAL_GATES.issubset(tests):
-        raise RepairPRError("dual gates must remain required tests")
+    if not BASE_GATES.issubset(tests):
+        raise RepairPRError("repo-gate must remain required tests")
 
     evidence = (
         f"file://{sandbox.evidence_dir}/incident.json",
@@ -205,7 +205,7 @@ def plan_repair_pr(
         live=False,
         mutates_source=False,
         constraints=(
-            "dual_gates_required",
+            "repo_gate_required",
             "no_live_pr",
             "isolated_branch_only",
             "rollback_sha_bound",

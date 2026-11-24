@@ -338,7 +338,10 @@ def normalize_intake(issue: dict[str, Any], body: str, root: Path) -> dict[str, 
     resolved_reference_count = len(
         set(confirmed_project_ids) | set(confirmed_reference_items)
     )
-    target_requirement_met = resolved_reference_count >= required_reference_count
+    target_requirement_met = (
+        resolved_reference_count >= required_reference_count
+        if required_reference_count else None
+    )
     if required_reference_count and not target_requirement_met and not doe_target_selection_pending:
         raise ValueError(
             f"request requires {required_reference_count} confirmed target reference(s)"

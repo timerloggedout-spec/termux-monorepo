@@ -13,7 +13,7 @@ reviewers:
   - id: ChatGPT
     role: author+executor
     status: executing
-related_issues: [1622, 5552]
+related_issues: [1622, 5552, 5640]
 related_prs: [5807, 4020, 1626, 3908, 3628, 2663, 5630]
 related_branches:
   - fix/mesh-provider-lifecycle-master-20261124

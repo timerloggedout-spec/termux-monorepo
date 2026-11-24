@@ -7,8 +7,13 @@
   "status": "admitted_design_only",
   "moniker": "doe-expert",
   "owner": "brr-cross-repo-doe",
-  "related_issues": [5552, 5640],
-  "related_prs": [5630],
+  "related_issues": [
+    5552,
+    5640
+  ],
+  "related_prs": [
+    5630
+  ],
   "hypothesis": {
     "statement": "A fused ranking over verified BRR ancestry, commit lineage, regression verdicts, and context-graph relationships discovers relevant cross-repository branches and commits more accurately than lexical-only, BRR/commit-only, or context-graph-only retrieval.",
     "primary_threshold": "Fused macro F1@5 exceeds the best single-source arm by at least 0.05 absolute, with a paired 95% bootstrap confidence interval whose lower bound is greater than 0.",
@@ -28,7 +33,23 @@
       "canonical context-relationship graph and cross-plane graph"
     ],
     "identity": "owner/repository::branch@commit_sha",
-    "gold_set": "human-adjudicated target IDs per frozen discovery query"
+    "gold_set": "human-adjudicated target IDs per frozen discovery query",
+    "discovery_seeds": [
+      {
+        "query": "gitReverse",
+        "resolution": "Resolve an exact repository/branch/commit identity from verified BRR and commit evidence; keep unresolved until exact evidence is present."
+      },
+      {
+        "query": "fast-anything",
+        "repository": "timerloggedout-spec/fast-anything_fork",
+        "resolution": "Repository identity verified; branch and commit relevance remain measured inputs."
+      },
+      {
+        "query": "rust-anything",
+        "repository": "timerloggedout-spec/rust-anything_fork",
+        "resolution": "Repository identity verified; branch and commit relevance remain measured inputs."
+      }
+    ]
   },
   "design": {
     "type": "blocked_repeated_measures_four_arm_comparison",

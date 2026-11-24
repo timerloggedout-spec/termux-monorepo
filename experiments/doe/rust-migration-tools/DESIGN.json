@@ -42,9 +42,10 @@
       "replicate"
     ],
     "assignment": {
-      "mechanism": "mvt_shuffle",
+      "mechanism": "seeded_permutation_without_replacement",
       "seed": 20261122,
-      "unit": "randomized treatment order within each task_id × replicate block"
+      "unit": "randomized permutation of every declared treatment within each task_id × replicate block",
+      "validation": "Before dispatch, validate the complete cohort: every expected task_id × replicate block appears exactly once and contains every declared treatment exactly once; reject missing, duplicate, extra, or unbalanced blocks."
     },
     "replication": "6 frozen tasks × 3 treatments × 3 independent repetitions = 54 planned observations; task replication and repeated executions remain separately identified.",
     "unit_of_observation": "one executed task under one treatment and repetition = one EXPERIMENT record",

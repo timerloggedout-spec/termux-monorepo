@@ -160,8 +160,10 @@ def _is_security(incident: Incident) -> bool:
 def _is_termux(incident: Incident) -> bool:
     source = (incident.source or "").lower()
     fp = (incident.fingerprint or "").lower()
+    classification = (incident.classification or "").lower()
     provenance = (incident.event_provenance or "").lower()
-    return any("termux" in value for value in (source, fp, classification, provenance))
+    return any("termux" in value or "android-device" in value
+               for value in (source, fp, classification, provenance))
 
 
 def plan_verification(
@@ -240,7 +242,7 @@ def apply_check_results(
     results: Mapping[str, Mapping[str, Any]],
 ) -> VerificationPlan:
     """Record outcomes onto an existing plan. Cannot drop required gates."""
-    _validate_checks(plan.checks)
+    _validate_checks(plan.checks, plan.metadata)
     by_gate = {c.gate: c for c in plan.checks}
     updated: list[CheckSpec] = []
     for gate, spec in by_gate.items():
@@ -257,7 +259,7 @@ def apply_check_results(
                 notes=str(payload.get("notes") or spec.notes),
             )
         )
-    _validate_checks(tuple(updated))
+    _validate_checks(tuple(updated), plan.metadata)
     required_pass = all(c.outcome == "pass" for c in updated if c.required)
     any_fail = any(c.outcome == "fail" for c in updated if c.required)
     promotion_ready = required_pass and not any_fail and not plan.live

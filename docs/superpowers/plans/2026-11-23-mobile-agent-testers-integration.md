@@ -29,7 +29,7 @@ Verification: all workflow input names match the inspected external YAML; app ID
 - Retain only bounded metadata and a SHA-256 reference to source evidence.
 - Redact common email/phone/token patterns; omit report prose, screenshots, and raw transcripts.
 
-Verification: stdlib-only unit tests, deterministic output, malformed input handling, schema-shape assertions.
+Verification: repo-gate runs the stdlib-only adapter unit tests, deterministic output, malformed input handling, schema-shape assertions.
 
 ## Task 4 — Catalog and integration docs
 

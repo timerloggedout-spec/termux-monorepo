@@ -133,6 +133,36 @@ class DelphiIntakeContractTests(unittest.TestCase):
         ])
         self.assertEqual(cohort["arms"], ["baseline"])
 
+    def test_existing_proposal_requests_require_a_target_reference(self):
+        with self.assertRaisesRegex(ValueError, "require a target proposal or project reference"):
+            self.normalize({"Request category": "Evaluate an existing proposal"})
+        record = self.normalize({
+            "Request category": "Evaluate an existing proposal",
+            "Target proposal / project references": "#1572",
+        })
+        self.assertEqual(record["request"]["target_reference_items"], ["#1572"])
+
+    def test_comparison_and_reconciliation_require_two_distinct_references(self):
+        with self.assertRaisesRegex(ValueError, "at least two distinct references"):
+            self.normalize({
+                "Request category": "Compare alternatives",
+                "Target proposal / project references": "#1572",
+            })
+        with self.assertRaisesRegex(ValueError, "at least two distinct references"):
+            self.normalize({
+                "Request category": "Harmoniously reconcile multiple projects",
+                "Related research projects": checked(
+                    "aws-free-tier-strands-delphi-oracle — Delphi Oracle Strands Project"
+                ),
+            })
+        record = self.normalize({
+            "Request category": "Compare alternatives",
+            "Target proposal / project references": "#1572; #1959",
+        })
+        self.assertEqual(
+            record["request"]["target_reference_items"], ["#1572", "#1959"]
+        )
+
     def test_specific_selection_requires_at_least_one_catalogue_item(self):
         with self.assertRaisesRegex(ValueError, "requires at least one"):
             self.normalize({"Research selection mode": checked("Specific selection")})
@@ -162,6 +192,10 @@ class DelphiIntakeContractTests(unittest.TestCase):
                 "Request optional human WebView oversight"
             ),
             "Request category": "Harmoniously reconcile multiple projects",
+            "Related research projects": checked(
+                "aws-free-tier-strands-delphi-oracle — Delphi Oracle Strands Project",
+                "continuous-capability-evolution-lab — Continuous Capability Evolution Laboratory",
+            ),
             "Harmonious Reconciliation dimensions": checked(
                 "Dependencies and integration points",
                 "Existing decisions and unresolved dissent",
@@ -181,7 +215,7 @@ class DelphiIntakeContractTests(unittest.TestCase):
         self.assertEqual(len(record["reconciliation"]["dimensions"]), 2)
         self.assertEqual(
             record["reconciliation"]["additional_references"],
-            "",
+            [],
         )
         self.assertIs(record["execution"], False)
 

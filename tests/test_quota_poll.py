@@ -106,12 +106,16 @@ class QuotaPollTest(unittest.TestCase):
 
     def test_dockerhub_anonymous_reader_uses_non_consuming_head_headers(self):
         token = {"token": "temporary-registry-token"}
+
         class Headers(dict):
             pass
+
         class Response:
             headers = Headers({"ratelimit-limit": "100;w=21600",
                                "ratelimit-remaining": "73;w=21600"})
+
             def __enter__(self): return self
+
             def __exit__(self, *args): return False
         with patch.object(_qp, "_get", return_value=token) as token_call, \
              patch.object(_qp.urllib.request, "urlopen", return_value=Response()) as open_call:
@@ -128,10 +132,24 @@ class QuotaPollTest(unittest.TestCase):
     def test_dockerhub_anonymous_reader_fails_closed_without_rate_headers(self):
         class Response:
             headers = {}
+
             def __enter__(self): return self
+
             def __exit__(self, *args): return False
+
         with patch.object(_qp, "_get", return_value={"token": "temporary"}), \
              patch.object(_qp.urllib.request, "urlopen", return_value=Response()):
+            self.assertIsNone(_qp.dockerhub_anonymous_reader(None))
+
+        class MalformedResponse:
+            headers = {"ratelimit-limit": "unlimited", "ratelimit-remaining": "0;w=21600"}
+
+            def __enter__(self): return self
+
+            def __exit__(self, *args): return False
+
+        with patch.object(_qp, "_get", return_value={"token": "temporary"}), \
+             patch.object(_qp.urllib.request, "urlopen", return_value=MalformedResponse()):
             self.assertIsNone(_qp.dockerhub_anonymous_reader(None))
         with patch.object(_qp, "_get", return_value={}):
             self.assertIsNone(_qp.dockerhub_anonymous_reader(None))

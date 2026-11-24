@@ -320,11 +320,33 @@ def normalize_intake(issue: dict[str, Any], body: str, root: Path) -> dict[str, 
         for item in re.split(r"[,;\n]+", target_references)
         if item.strip()
     ))
-    resolved_reference_count = len(set(project_ids) | set(target_reference_items))
-    if request_category in {"Evaluate an existing proposal", "Refine an existing proposal"} and resolved_reference_count < 1:
-        raise ValueError("existing-proposal requests require a target proposal or project reference")
-    if request_category in {"Compare alternatives", "Harmoniously reconcile multiple projects"} and resolved_reference_count < 2:
-        raise ValueError("comparison and reconciliation requests require at least two distinct references")
+    required_reference_count = (
+        1
+        if request_category in {"Evaluate an existing proposal", "Refine an existing proposal"}
+        else 2
+        if request_category in {"Compare alternatives", "Harmoniously reconcile multiple projects"}
+        else 0
+    )
+    doe_target_selection_pending = mode == "DoE Decides" and required_reference_count > 0
+    confirmed_project_ids = [] if mode == "DoE Decides" else project_ids
+    confirmed_reference_items = [] if mode == "DoE Decides" else target_reference_items
+    candidate_project_ids = project_ids if mode == "DoE Decides" else []
+    candidate_reference_items = target_reference_items if mode == "DoE Decides" else []
+    resolved_reference_count = len(
+        set(confirmed_project_ids) | set(confirmed_reference_items)
+    )
+    target_requirement_met = resolved_reference_count >= required_reference_count
+    if required_reference_count and not target_requirement_met and not doe_target_selection_pending:
+        raise ValueError(
+            f"request requires {required_reference_count} confirmed target reference(s)"
+        )
+    reconciliation_status = (
+        "pending_doe_selection"
+        if doe_target_selection_pending
+        else "targets_resolved"
+        if required_reference_count
+        else "not_required"
+    )
     methodology = _single(fields, "methodology", required=True)
     round_profile = _single(fields, "round_profile", required=True)
     matrix_strategy = _single(fields, "matrix_strategy", required=True)
@@ -402,6 +424,8 @@ def normalize_intake(issue: dict[str, Any], body: str, root: Path) -> dict[str, 
             "category": request_category,
             "target_references": target_references,
             "target_reference_items": target_reference_items,
+            "confirmed_target_reference_items": confirmed_reference_items,
+            "candidate_reference_items": candidate_reference_items,
             "research_question": _text_field(fields, "research_question", required=True),
             "evidence_references": _text_field(fields, "evidence_references"),
             "constraints": _text_field(fields, "constraints"),
@@ -422,8 +446,13 @@ def normalize_intake(issue: dict[str, Any], body: str, root: Path) -> dict[str, 
         },
         "reconciliation": {
             "dimensions": reconciliation,
-            "project_references": project_ids,
-            "additional_references": target_reference_items,
+            "project_references": confirmed_project_ids,
+            "candidate_project_references": candidate_project_ids,
+            "additional_references": confirmed_reference_items,
+            "candidate_references": candidate_reference_items,
+            "target_requirement": required_reference_count,
+            "target_requirement_met": target_requirement_met,
+            "status": reconciliation_status,
             "mode": "harmonious_reconciliation" if request_category == "Harmoniously reconcile multiple projects" else "standard",
         },
         "delphi": {

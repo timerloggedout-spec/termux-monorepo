@@ -44,7 +44,7 @@ Git history is the audit ledger. The generated PR board is a derived view.
 
 | Lane | Meaning |
 |------|---------|
-| EXTRACT | Re-cut onto live master; do not wholesale-merge |
+| EXTRACT | Re-cut onto live master as independently reviewable workstreams |
 | CANDIDATE | On master; applicable scope gates may promote when green |
 | NEED_EVIDENCE | Wrong-base / draft / dirty — missing rebase or checks |
 | SUPERSEDE | Session-record artifact, bot-only artifact, or explicitly superseded item |
@@ -59,18 +59,18 @@ Agents must:
 
 - **Read** generated status + live GitHub API for current SHA
 - **Write** product or durable policy only
-- **Close** leftover `ops(session): … LANE-MATRIX` PRs as not-planned / superseded
-- **Never** treat HOLD / OBSERVE / WAIT as idle parking when product work exists
+- **Disposition** leftover `ops(session): … LANE-MATRIX` PRs as not-planned / superseded
+- Treat HOLD / OBSERVE / WAIT as active dispositions while product work proceeds
 
 Event-driven classifier marks session-record titles **SUPERSEDE**. Age buckets are snapshot metadata only; crossing an age threshold never changes disposition.
 
 ## Known durable lanes (update only when the fact is durable)
 
-- #48 remainder EXTRACT; core already on master via #805. Dirty vs `master-staging` is a hard block. Do not retarget.
+- #48 remainder EXTRACT; core already on master via #805. Dirty vs `master-staging` = blocked; extract the remainder onto current master.
 - #809 / #806 need rebase onto live `master` before any promote attempt.
 - #69 superseded by #784. #810 / #812 are historical pulses.
 - #772 documents Vercel mergeable_state noise.
 - #814 landed the board-vs-ledger policy.
-- #184 names-only credential inventory. Do not paste secret values.
+- #184 names-only credential inventory; keep secret values in approved stores.
 
 Agent-Identity: Grok (Administrator)

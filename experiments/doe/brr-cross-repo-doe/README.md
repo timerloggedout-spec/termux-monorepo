@@ -50,7 +50,7 @@ The evaluator accepts an offline JSON snapshot conforming to `dataset.schema.jso
 
 Candidate records preserve the full unique commit SHA list, PR numbers, issue numbers, regression verdict and untestable/no-benchmark reason, plus graph-edge confidence and evidence URLs.
 
-Each source carries an immutable SHA, observation timestamp, coverage state, and evidence URL. A complete dataset includes BRR and commit receipts for every covered repository, plus regression, graph, and adjudicated gold-set receipts. Each query carries adjudicated gold target IDs. Candidate graph edges remain separate from verified evidence and never count as verified hits.
+Each source carries an immutable SHA, observation timestamp, coverage state, and evidence URL. Every covered repository requires BRR, commit, regression, context/cross-plane graph, and adjudicated gold-set receipts. Each source is scoped to its target repository; its URL identifies the immutable source artifact. Each query carries adjudicated gold target IDs. Candidate graph edges remain separate from verified evidence and never count as verified hits.
 
 ## Execution
 

@@ -5,6 +5,7 @@ on:
     types: [opened, edited]
 
 permissions:
+  actions: write
   contents: write
   issues: write
   pull-requests: write
@@ -209,6 +210,11 @@ jobs:
                 pr = created.data;
               }
               cataloguePrUrl = pr.html_url;
+              if (!mergedPr) {
+                await github.rest.actions.createWorkflowDispatch({
+                  owner, repo, workflow_id: "repo-gate.yml", ref: branch
+                });
+              }
             }
 
             const finalBody = summary + (cataloguePrUrl

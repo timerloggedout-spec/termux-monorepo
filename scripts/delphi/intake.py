@@ -25,6 +25,36 @@ PROJECT_IDS = (
     "delphi-desk-builder-io",
 )
 DEFAULT_PANEL = ("OPERATOR", "builder", "reviewer", "Scout", "cost_auditor")
+REQUEST_CATEGORIES = {
+    "Evaluate an existing proposal", "Create a new proposal", "Refine an existing proposal",
+    "Conduct research or evidence review", "Compare alternatives",
+    "Harmoniously reconcile multiple projects", "Improve or evaluate Delphi methodology",
+    "Oracle recommends classification",
+}
+METHODOLOGIES = {
+    "Oracle recommends", "Classical Delphi", "Modified Delphi", "Policy Delphi",
+    "Decision Delphi", "Fuzzy Delphi", "RAND/UCLA appropriateness",
+    "One-pass rubric (not a multi-round Delphi study)",
+}
+ROUND_PROFILES = {
+    "Adaptive with declared stopping criteria", "Fixed 2 rounds", "Fixed 3 rounds",
+    "Fixed 4–5 rounds", "Custom round count", "Single-pass (one assessment)",
+}
+MATRIX_STRATEGIES = {
+    "Shared matrix across all rounds", "Per-round expansion",
+    "Alternating-round expansion", "Evidence-triggered expansion", "Custom schedule",
+}
+RECONCILIATION_DIMENSIONS = {
+    "Objectives and strategic alignment", "Duplicate or overlapping proposals",
+    "Requirements and constraints", "Dependencies and integration points",
+    "Evidence and research findings", "Conflicting assumptions",
+    "Existing decisions and unresolved dissent", "Implementation sequencing",
+}
+PANEL_OPTIONS = set(DEFAULT_PANEL) | {
+    "Human experts", "Project stakeholders",
+    "Model participants (eligible, separately attributed)",
+}
+WEBVIEW_OPTION = "Request optional human WebView oversight"
 MODE_HEADINGS = {
     "Request category": "request_category",
     "Target proposal / project references": "target_references",
@@ -37,6 +67,8 @@ MODE_HEADINGS = {
     "Harmonious Reconciliation dimensions": "reconciliation_dimensions",
     "Delphi methodology": "methodology",
     "Round profile": "round_profile",
+    "Round maximum / custom count": "round_maximum",
+    "Stopping criteria / stability definition": "stopping_criteria",
     "Question Matrix strategy": "matrix_strategy",
     "Per-round Question Matrix schedule": "matrix_schedule",
     "Panel roles and participants": "panel",
@@ -245,14 +277,53 @@ def normalize_intake(issue: dict[str, Any], body: str, root: Path) -> dict[str, 
     round_profile = _single(fields, "round_profile", required=True)
     matrix_strategy = _single(fields, "matrix_strategy", required=True)
     disposition = _single(fields, "selection_disposition", required=True)
+    if request_category not in REQUEST_CATEGORIES:
+        raise ValueError(f"unknown request category: {request_category}")
+    if methodology not in METHODOLOGIES:
+        raise ValueError(f"unknown Delphi methodology: {methodology}")
+    if round_profile not in ROUND_PROFILES:
+        raise ValueError(f"unknown round profile: {round_profile}")
+    if matrix_strategy not in MATRIX_STRATEGIES:
+        raise ValueError(f"unknown Question Matrix strategy: {matrix_strategy}")
     allowed_dispositions = {"Selection review", "Registry catalogue", "Both", "Deliberation only"}
     if disposition not in allowed_dispositions:
         raise ValueError(f"unknown selection disposition: {disposition}")
 
+    raw_round_maximum = _single(fields, "round_maximum") or "3"
+    if not raw_round_maximum.isdigit() or not 2 <= int(raw_round_maximum) <= 10:
+        raise ValueError("round maximum must be an integer from 2 through 10")
+    round_maximum = int(raw_round_maximum)
+    stopping_criteria = _single(fields, "stopping_criteria")
+    if round_profile == "Fixed 2 rounds":
+        round_maximum = 2
+    elif round_profile == "Fixed 3 rounds":
+        round_maximum = 3
+    elif round_profile == "Fixed 4–5 rounds" and round_maximum not in {4, 5}:
+        raise ValueError("Fixed 4–5 rounds requires a round maximum of 4 or 5")
+    elif round_profile == "Custom round count" and not _single(fields, "round_maximum"):
+        raise ValueError("Custom round count requires a round maximum")
+    elif round_profile == "Adaptive with declared stopping criteria" and not stopping_criteria:
+        raise ValueError("adaptive rounds require declared stopping criteria")
+    if methodology == "One-pass rubric (not a multi-round Delphi study)":
+        if round_profile != "Single-pass (one assessment)":
+            raise ValueError("one-pass rubric requires the Single-pass round profile")
+        round_maximum = 1
+    elif round_profile == "Single-pass (one assessment)":
+        raise ValueError("Single-pass round profile requires the one-pass rubric methodology")
+
     matrix_schedule = _single(fields, "matrix_schedule")
     reconciliation = _checked(fields.get("reconciliation_dimensions", ""))
+    unknown_dimensions = sorted(set(reconciliation) - RECONCILIATION_DIMENSIONS)
+    if unknown_dimensions:
+        raise ValueError("unknown reconciliation dimensions: " + ", ".join(unknown_dimensions))
     panel = _checked(fields.get("panel", "")) or list(DEFAULT_PANEL)
-    webview = bool(_checked(fields.get("webview_oversight", "")))
+    unknown_panel = sorted(set(panel) - PANEL_OPTIONS)
+    if unknown_panel:
+        raise ValueError("unknown panel participants: " + ", ".join(unknown_panel))
+    webview_values = _checked(fields.get("webview_oversight", ""))
+    if set(webview_values) - {WEBVIEW_OPTION}:
+        raise ValueError("unknown WebView oversight option")
+    webview = bool(webview_values)
     issue_number = issue.get("number")
     if not isinstance(issue_number, int):
         raise ValueError("issue metadata must include an integer issue number")
@@ -299,6 +370,8 @@ def normalize_intake(issue: dict[str, Any], body: str, root: Path) -> dict[str, 
         "delphi": {
             "methodology": methodology,
             "round_profile": round_profile,
+            "round_maximum": round_maximum,
+            "stopping_criteria": stopping_criteria,
             "question_matrix": {
                 "strategy": matrix_strategy,
                 "per_round_schedule": matrix_schedule,

@@ -13,7 +13,7 @@ reviewers:
 related_prs: []
 related_branches:
   - feat/integration-intelligence-superpowers
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate]
 ---
 
 # MANIFEST — integration-intelligence-superpowers

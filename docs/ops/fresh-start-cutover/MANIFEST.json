@@ -1,0 +1,68 @@
+{
+ "manifest": "fresh-start-cutover/1",
+ "generated_at": "2026-11-24T16:04:54.379528+00:00",
+ "owner_orders": [
+  "2026-11-24 07:48 PT (cutover)",
+  "2026-11-24 08:04 PT (publish to git + manifest in monorepo)"
+ ],
+ "source_lane": "Marketing - Oversight - Channels & Referrals (side chat 81cbe17c-08cd-4c20-b2fc-40e01f76e56c)",
+ "files": [
+  {
+   "path": "docs/ops/fresh-start-cutover/PLAN.md",
+   "sha256": "1b02601de7b5b01074b73e073cf387e258521ca32ced84fbaf0ce5b8af38b2dd",
+   "bytes": 7334,
+   "role": "cutover plan of record"
+  },
+  {
+   "path": "docs/ops/fresh-start-cutover/passive_burn.py",
+   "sha256": "bfd7cf4c4279fac92019dbaa231393d6ecd3e094df2473bceab9975fbc4c41ca",
+   "bytes": 4773,
+   "role": "passive-burn measurement script (SQL + arithmetic, reproducible)"
+  },
+  {
+   "path": "docs/ops/fresh-start-cutover/MANIFEST.json",
+   "sha256": "self (excluded)",
+   "bytes": null,
+   "role": "this manifest"
+  }
+ ],
+ "state_of_record": {
+  "side_chats_archived_2026_11_24": 153,
+  "previously_archived": 2,
+  "active_after": [
+   "main 9a88e77a-c58d-43f4-bdd3-848a7d0420db",
+   "marketing-oversight 81cbe17c (archived on owner order after this publish)"
+  ],
+  "archive_note": "archive != delete; histories intact; unarchive anytime; owner 08:01 PT: leave the rest archived",
+  "crons_preserved": "47 enabled user/goal jobs + heartbeat + runtime system jobs; scheduled deliveries into archived chats redirect to main",
+  "passive_burn_baseline": {
+   "window_pst": "2026-11-24 04:19 -> 07:20 (refill reset -> first owner contact)",
+   "tokens_total": 28350880,
+   "main_chat_handoffs": 4235132,
+   "detached_background_agents": 24115748,
+   "agents": 102
+  },
+  "vm_census_gb": {
+   "home": 62,
+   "workspace": 51,
+   "scratch": 31.7,
+   "memory_mb": 46
+  },
+  "rules_of_record": [
+   "ToS re-reads at pass time struck - token waste (owner 2026-11-24)",
+   "Nothing dropped: bulk routes to owning repo git LFS / per-repo storage (owner 2026-11-24)",
+   "QDesk = monorepo queue desk (dispatch layer), NOT a challenge entry; mislabel = massive DoE score penalty + termination contribution (owner 2026-11-24)",
+   "Seats monitor repo clones (QUE #5183); participation runs through clones only",
+   "Diff-check automation replaces manual pass verification (spec routed to affiliate lane 2026-11-24)"
+  ],
+  "pending_gates": [
+   "Phase 1: secondary export lane + CONFIRM EXPORT receipt - not yet run",
+   "RE review leg (Foundry RE Toolkits + AppID RE family) - not yet routed",
+   "Phase 4 deletion: gated on confirmed export; archive state stands meanwhile"
+  ],
+  "pointers": {
+   "hindsight": "attribution layer of record (Provenance + HindSight weighting); census via vm-mlops-daily cron, published as GitHub data",
+   "temporal": "temporal-selfhost-keepalive cron (15m); Infra Temporal surfaces in-repo"
+  }
+ }
+}

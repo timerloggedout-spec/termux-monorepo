@@ -57,6 +57,16 @@ class ShePromoteTests(TestCase):
         self.assertFalse(plan.live)
         self.assertIn("all_required_gates_pass", plan.reasons)
 
+    def test_termux_scope_is_preserved_in_promotion(self):
+        inc = _inc(
+            source="github.termux-smoke",
+            event_provenance="workflow_run:termux-smoke:failure",
+            fingerprint="termux-smoke:runtime",
+        )
+        plan = plan_promotion(inc)
+        self.assertIn("termux-smoke", plan.required_gates)
+        self.assertTrue(plan.metadata["termux_related"])
+
     def test_inconclusive_cannot_promote(self):
         results = dict(_PASS)
         results["repo-gate"] = {"outcome": "inconclusive"}
@@ -91,7 +101,7 @@ class ShePromoteTests(TestCase):
         self.assertFalse(restored.live)
         self.assertTrue(BASE_GATES.issubset(restored.required_gates))
 
-    def test_from_mapping_rejects_dropped_dual_gate(self):
+    def test_from_mapping_rejects_dropped_repo_gate(self):
         data = plan_promotion(_inc()).to_mapping()
         data["required_gates"] = [g for g in data["required_gates"] if g != "repo-gate"]
         with self.assertRaisesRegex(PromotionError, "repo gate"):

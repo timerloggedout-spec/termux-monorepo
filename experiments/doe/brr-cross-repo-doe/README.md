@@ -48,7 +48,7 @@ The evaluator accepts an offline JSON snapshot conforming to `dataset.schema.jso
 
 `owner/repository::branch@commit_sha`
 
-Each source carries an immutable SHA, observation timestamp, coverage state, and evidence URL. Each query carries adjudicated gold target IDs. Candidate graph edges remain separate from verified evidence and never count as verified hits.
+Each source carries an immutable SHA, observation timestamp, coverage state, and evidence URL. A complete dataset includes BRR and commit receipts for every covered repository, plus regression, graph, and adjudicated gold-set receipts. Each query carries adjudicated gold target IDs. Candidate graph edges remain separate from verified evidence and never count as verified hits.
 
 ## Execution
 

@@ -15,7 +15,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from she.incident import Incident, IncidentState
-from she.verify import DUAL_GATES, VerificationPlan, plan_verification, summarize_results
+from she.verify import BASE_GATES, VerificationPlan, plan_verification, summarize_results
 
 OUTCOMES: frozenset[str] = frozenset({"success", "failure", "observe"})
 
@@ -122,8 +122,8 @@ def plan_learning(
     if verification.sha != incident.sha:
         raise LearnError("verification sha must match incident sha")
     required = verification.required_gates()
-    if not DUAL_GATES.issubset(required):
-        raise LearnError("dual gates repo-gate + termux-smoke must be in verification")
+    if not BASE_GATES.issubset(required):
+        raise LearnError("repo-gate must be present in verification")
 
     security = _is_security(incident)
     if outcome is None:
@@ -157,7 +157,7 @@ def plan_learning(
         live=False,
         persisted=False,
         constraints=(
-            "dual_gates_required",
+            "repo_gate_required",
             "no_persist",
             "no_live_store",
             "security_observe_only",

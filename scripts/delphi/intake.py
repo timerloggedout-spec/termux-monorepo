@@ -1,8 +1,8 @@
 """Normalize the separate Delphi Oracle general-intake Issue Form.
 
 This module is deterministic, stdlib-only, and read-only. It resolves selections
-against the repository's existing research/DoE/proposal registries. It never
-runs a Delphi study or authorizes execution.
+against the repository's existing research/DoE/proposal registries. It produces
+selection records while execution remains false.
 """
 from __future__ import annotations
 
@@ -34,7 +34,7 @@ REQUEST_CATEGORIES = {
 METHODOLOGIES = {
     "Oracle recommends", "Classical Delphi", "Modified Delphi", "Policy Delphi",
     "Decision Delphi", "Fuzzy Delphi", "RAND/UCLA appropriateness",
-    "One-pass rubric (not a multi-round Delphi study)",
+    "One-pass rubric — single assessment",
 }
 ROUND_PROFILES = {
     "Adaptive with declared stopping criteria", "Fixed 2 rounds", "Fixed 3 rounds",
@@ -231,7 +231,7 @@ def normalize_intake(issue: dict[str, Any], body: str, root: Path) -> dict[str, 
         if method_ids and match.group(1) in method_ids:
             continue
         if catalogues["method_rfps"][match.group(1)] != match.group(2).strip():
-            raise ValueError(f"methodology RFP label does not match registry: {label}")
+            raise ValueError(f"methodology RFP label/registry mismatch: {label}")
         method_ids.append(match.group(1))
     project_ids = _checkbox_ids(
         _checked(fields.get("research_projects", "")),
@@ -360,7 +360,7 @@ def normalize_intake(issue: dict[str, Any], body: str, root: Path) -> dict[str, 
             ],
             "projects": project_ids,
             "arms": arms,
-            "comparison_policy": "within_segment_only; no cross-silo score aggregation",
+            "comparison_policy": "within_segment_only; cross_silo_aggregation=false",
         },
         "reconciliation": {
             "dimensions": reconciliation,

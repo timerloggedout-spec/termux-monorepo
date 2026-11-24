@@ -18,7 +18,17 @@ ISSUE = {
 }
 
 
-def body(sections=None):
+RENDERED_TEXT_FIELDS = {
+    "Target proposal / project references",
+    "Stopping criteria / stability definition",
+    "Per-round Question Matrix schedule",
+    "Research question / objectives",
+    "Evidence references",
+    "Constraints and desired outcome",
+}
+
+
+def body(sections=None, render_text=True):
     sections = sections or {}
     defaults = {
         "Request category": "Conduct research or evidence review",
@@ -31,16 +41,22 @@ def body(sections=None):
         "Research question / objectives": "Which research capabilities improve validated outcomes?",
     }
     defaults.update(sections)
-    return "\n\n".join(f"### {key}\n\n{value}" for key, value in defaults.items())
-
+    rendered = []
+    for key, value in defaults.items():
+        if render_text and key in RENDERED_TEXT_FIELDS and value:
+            value = f"```text\n{value}\n```"
+        rendered.append(f"### {key}\n\n{value}")
+    return "\n\n".join(rendered)
 
 def checked(*values):
     return "\n".join(f"- [x] {value}" for value in values)
 
 
 class DelphiIntakeContractTests(unittest.TestCase):
-    def normalize(self, sections=None, issue=None, root=ROOT):
-        return intake.normalize_intake(issue or ISSUE, body(sections), root)
+    def normalize(self, sections=None, issue=None, root=ROOT, render_text=True):
+        return intake.normalize_intake(
+            issue or ISSUE, body(sections, render_text=render_text), root
+        )
 
     def test_prior_default_is_all_twelve_baseline_participants_only(self):
         record = self.normalize()
@@ -146,6 +162,14 @@ class DelphiIntakeContractTests(unittest.TestCase):
             {"issue_number": 1959, "surface_id": "doe-criteria-loop"}
         ])
         self.assertEqual(cohort["arms"], ["baseline"])
+
+    def test_markdown_headings_inside_free_text_remain_part_of_the_answer(self):
+        question = "Which methods work?\n\n### Background\nThe panel needs evidence across three workstreams."
+        record = self.normalize(
+            {"Research question / objectives": question},
+            render_text=False,
+        )
+        self.assertEqual(record["request"]["research_question"], question)
 
     def test_existing_proposal_requests_require_a_target_reference(self):
         with self.assertRaisesRegex(ValueError, "require a target proposal or project reference"):

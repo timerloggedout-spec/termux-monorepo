@@ -107,7 +107,7 @@ Issue #192 has verified GitHub-native cross-references to Issue #175, PR #193, t
 
 - Disposition: **integrated**
 - Evidence: PR #282 merged the AR-10 provider-request evidence hardening at `e916cec2766b6bbc96214767780e0c246ad9b628`. PR #283 merged the AR-14 Jules reliability correction at `64268789a37453958013ce91d45613398b7e9b5d` after contract, gate, smoke, registry, and hosted-review evidence.
-- Decision: AR-14 removes the push trigger instead of creating a no-op job for every repository change, pins the maintained MIT-licensed Jules Action at `bff7875eaa123cac6742b7cfc51005b95ba4d566` (v1.0.0), moves API-key availability detection into a controlled step, requires a trusted label actor, serializes per-issue execution, and adds injection-boundary contract tests.
+- Decision: AR-14 removes the push trigger instead of creating a no-op job for every repository change, pins the maintained Jules Action at `bff7875eaa123cac6742b7cfc51005b95ba4d566` (v1.0.0), moves API-key availability detection into a controlled step, requires a trusted label actor, serializes per-issue execution, and adds injection-boundary contract tests.
 - Safety: The correction preserves only issue-label and trusted-mention request paths. It does not check out PR or issue code, evaluate body/comment text as code, write repository branches, change workflow permissions outside its existing issue-comment scope, or merge any provider-created pull request.
 
 ### 2026-08-21 — Manus AI — AR-15 peer-orchestrator reliability correction

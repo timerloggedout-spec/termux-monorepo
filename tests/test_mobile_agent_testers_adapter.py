@@ -11,7 +11,7 @@ class MobileAgentTestersAdapterTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.root = Path(self.temp.name)
-        self.findings = self.root / "results-anna" / "anna" / "results" / "findings.json"
+        self.findings = self.root / "results-anna" / "results" / "anna" / "findings.json"
         self.findings.parent.mkdir(parents=True)
         self.findings.write_text(json.dumps({
             "score": 8,

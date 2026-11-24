@@ -49,4 +49,5 @@ Use the [snapshot contract](../../../ops/SHE-DASHBOARD-SNAPSHOT-CONTRACT.md) and
 - [PRD](../../../ops/SHE-DASHBOARD-PRD.md)
 - [Snapshot contract](../../../ops/SHE-DASHBOARD-SNAPSHOT-CONTRACT.md)
 - [Architecture diagram](../../../ops/SHE-DASHBOARD-ARCHITECTURE.mmd)
+- [UI/UX control-plane contract](../../../ops/SHE-DASHBOARD-UI-UX-CONTROL-PLANE.md)
 - [Repository architecture](../../../../architecture.md)

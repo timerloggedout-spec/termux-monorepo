@@ -70,7 +70,7 @@ jobs:
               `- Registry catalogue: ${record.disposition.catalogue_write}`,
               "- Execution: **false**",
               "",
-              "The research cohort remains segmented; this record creates no cross-silo aggregate and dispatches no experiment.",
+              "The research cohort remains segmented; scores stay silo-local and experiment dispatch remains disabled.",
               "",
               "<details><summary>Canonical selection record</summary>",
               "",
@@ -139,7 +139,7 @@ jobs:
                 owner, repo, path: manifestPath, ref: branch
               });
               if (Array.isArray(manifestFile.data) || !manifestFile.data.content) {
-                throw new Error("Selection catalogue manifest path is not a file");
+                throw new Error("Selection catalogue manifest path must resolve to a file");
               }
               const catalogue = JSON.parse(Buffer.from(manifestFile.data.content, "base64").toString("utf8"));
               if (catalogue.schema !== "delphi.selection-catalogue.v1" ||
@@ -155,7 +155,7 @@ jobs:
                   owner, repo, path: recordPath, ref: branch
                 });
                 if (Array.isArray(current.data) || !current.data.content) {
-                  throw new Error("Selection record path is not a file");
+                  throw new Error("Selection record path must resolve to a file");
                 }
                 existingRecord = current.data;
               } catch (error) {
@@ -204,7 +204,7 @@ jobs:
                     `Catalogue record: ${recordPath}`,
                     "",
                     "This PR adds one immutable reference-only Delphi selection record.",
-                    "Execution remains false. No experiment, provider call, or live routing action is authorized."
+                    "Execution remains false; this record contains selection metadata and registry references only."
                   ].join("\n")
                 });
                 pr = created.data;

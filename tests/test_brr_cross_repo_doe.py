@@ -1,5 +1,8 @@
+import json
 import tempfile
 import unittest
+
+import jsonschema
 from pathlib import Path
 
 from scripts.doe import brr_cross_repo_doe as evaluator
@@ -338,7 +341,10 @@ class TestBRRCrossRepositoryDoE(unittest.TestCase):
             "candidate_sha", "suite", "treatment", "status", "outcome",
             "metrics", "provenance", "confidence", "evidence_refs",
         }
+        schema_path = Path(__file__).resolve().parents[1] / "docs/ops/corpus/EXPERIMENT.schema.json"
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
         for record in records:
+            jsonschema.validate(record, schema)
             self.assertEqual(set(record), required)
             self.assertTrue(any("feature/parser-regression" in ref for ref in record["evidence_refs"]))
             self.assertEqual(record["status"], "observed")

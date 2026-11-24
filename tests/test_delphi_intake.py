@@ -107,7 +107,7 @@ def test_multiple_selection_modes_fail_closed():
     with pytest.raises(ValueError, match="select exactly one"):
         intake.normalize_intake(
             ISSUE,
-            body({"Research selection mode": checked("All", "Prior default — 12 baseline research participants")}),
+            body({"Research selection mode": checked("All", "Prior default")}),
             ROOT,
         )
 
@@ -165,16 +165,24 @@ def test_selection_review_and_catalogue_dispositions_are_independent():
     assert both["disposition"]["catalogue_write"] is True
 
 
-def test_missing_baseline_issue_is_preserved_as_null():
+def test_missing_baseline_issue_is_preserved_as_null(tmp_path):
+    import json
+    import shutil
+
+    root = tmp_path
+    for relative in ("ops/delphi", "ops/doe", "docs/proposals"):
+        shutil.copytree(ROOT / relative, root / relative)
+    participants_path = root / "ops/delphi/research-participants.json"
+    participants = json.loads(participants_path.read_text())
+    participants["participants"][0]["filings"]["baseline"] = None
+    participants_path.write_text(json.dumps(participants))
     record = intake.normalize_intake(
         ISSUE,
         body({
             "Research selection mode": checked("Specific selection"),
-            "Research participants": checked(
-                "research.3rdcore-research-project-template — Lightning and Hydra"
-            ),
+            "Research participants": checked("research.jogyo-research-lab — Primary exemplar"),
         }),
-        ROOT,
+        root,
     )
     participant = record["research_selection"]["participants"][0]
     assert participant["baseline_issue"] is None

@@ -59,6 +59,7 @@ def make_dataset(coverage_state="COMPLETE"):
             },
             {
                 "kind": "gold_set",
+                "adjudication_status": "human_adjudicated",
                 "repository": repo_a,
                 "sha": SHA_A,
                 "observed_at": "2026-11-23T11:00:00Z",

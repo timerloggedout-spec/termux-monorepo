@@ -1,5 +1,5 @@
 version: 1
-updated_at: '2026-11-21T00:00:00Z'
+updated_at: '2026-11-23T00:00:00Z'
 updated_by: ChatGPT
 proposals:
   - id: repository-architecture-entry
@@ -1389,5 +1389,39 @@ proposals:
     related_branches:
       - feat/repository-provisioner-workflow
     gates_required:
+      - repo-gate
+      - termux-smoke
+
+  - id: mesh-provider-lifecycle
+    title: "Mesh provider lifecycle reconciliation and retired-provider regression guard"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/mesh-provider-lifecycle/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues:
+      - 1622
+      - 5552
+    related_prs:
+      - 5807
+      - 4020
+      - 1626
+      - 3908
+      - 3628
+      - 2663
+      - 5630
+    related_branches:
+      - fix/mesh-provider-lifecycle-20261123
+      - docs/mesh-extended-utilization-20261123-v2
+      - feat/mesh-resiliency-admission
+      - research/mesh-resiliency-provider-evidence-20261024
+    gates_required:
+      - proposal-lifecycle
       - repo-gate
       - termux-smoke

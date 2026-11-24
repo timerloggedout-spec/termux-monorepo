@@ -45,7 +45,8 @@ def body(sections=None, render_text=True):
     rendered = []
     for key, value in defaults.items():
         if render_text and key in RENDERED_TEXT_FIELDS and value:
-            value = f"```text\n{value}\n```"
+            fence = "````" if "```" in value else "```"
+            value = f"{fence}text\n{value}\n{fence}"
         rendered.append(f"### {key}\n\n{value}")
     return "\n\n".join(rendered)
 
@@ -179,6 +180,11 @@ class DelphiIntakeContractTests(unittest.TestCase):
             {"issue_number": 1959, "surface_id": "doe-criteria-loop"}
         ])
         self.assertEqual(cohort["arms"], ["baseline"])
+
+    def test_nested_code_fences_remain_inside_rendered_text(self):
+        question = "Explain the example.\n\n```python\nprint('delphi')\n```\n\n### Background\nContext."
+        record = self.normalize({"Research question / objectives": question})
+        self.assertEqual(record["request"]["research_question"], question)
 
     def test_markdown_headings_inside_free_text_remain_part_of_the_answer(self):
         question = "Which methods work?\n\n### Background\nThe panel needs evidence across three workstreams."

@@ -41,7 +41,7 @@ registry.yaml → pick todo item → branch from master-staging
 ## Repo orientation
 
 - Multi-agent Termux monorepo (CLI tools, agents, recovery tooling, ArchWiz, DeepSeek/Mistral wrappers, etc.).
-- Read `CLAUDE.md` first for the full agent contract.
+- Read `CLAUDE.md` first; it is the sole root agent entry point and repository-wide contract.
 - Security: see `SECURITY.md` and `docs/SECURITY-REMEDIATION.md`. Credential rotation requires human Operator authorization.
 - Existing free-tier agentic stack:
   - **Jules** — asynchronous coding agent (already wired; auto-summoned on CodeRabbit/Devin reviews).

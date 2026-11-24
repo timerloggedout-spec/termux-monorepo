@@ -217,9 +217,11 @@ jobs:
               }
               cataloguePrUrl = pr.html_url;
               if (!mergedPr) {
-                await github.rest.actions.createWorkflowDispatch({
-                  owner, repo, workflow_id: "repo-gate.yml", ref: branch
-                });
+                for (const workflow_id of ["repo-gate.yml", "termux-smoke.yml"]) {
+                  await github.rest.actions.createWorkflowDispatch({
+                    owner, repo, workflow_id, ref: branch
+                  });
+                }
               }
             }
 

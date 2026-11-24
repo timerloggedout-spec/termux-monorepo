@@ -51,6 +51,7 @@
 - Create: `.github/ISSUE_TEMPLATE/delphi-oracle-intake.yml`
 - Create: `scripts/delphi/intake.py`
 - Create: `tests/test_delphi_intake.py`
+- Modify: `tests/test_termux_smoke.py`
 
 **Interfaces:**
 - `parse_issue_body(body: str) -> dict[str, str]`
@@ -64,6 +65,7 @@
 - [ ] Add form checkbox groups for 12 participants, four DoE components, related RFPs, projects, and panel/reconciliation choices.
 - [ ] Add dropdowns for request, method, rounds, matrix strategy, and disposition.
 - [ ] Run focused tests and form/catalogue consistency checks.
+- [ ] Include intake contract suite in the existing Termux smoke test discovery.
 
 ### Task 3: Review and registry catalogue workflow
 

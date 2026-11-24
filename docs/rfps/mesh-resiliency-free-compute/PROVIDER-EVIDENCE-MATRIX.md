@@ -46,5 +46,5 @@ The following historical candidates are retired from this mesh's execution short
 | Fly.io | App/VM hosting | **RETIRED** | Hindsight trial ended; config application required a payment method; billing state remains historically unverified. | Preserve pricing/quota evidence and prior commits; exclude from workload placement and failover candidates. |
 | Koyeb | Managed app/container | **RETIRED** | Hindsight deployment credential absent; last recorded deployment attempts date to 2026-09-30. | Preserve pricing/quota evidence and prior commits; exclude from workload placement and failover candidates. |
 
-The active lifecycle record is `ops/mesh/provider-lifecycle.json`. Historical evidence rows remain useful for audit and comparison; they carry no deployment admission.
+The active lifecycle sources are `docs/ops/DEVOPS-REGISTER.md` §4A and `docs/DEPLOYMENT-LANES.md`. Historical evidence rows remain useful for audit and comparison; they carry no deployment admission.
 

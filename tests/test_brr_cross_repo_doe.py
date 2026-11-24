@@ -245,6 +245,17 @@ class TestBRRCrossRepositoryDoE(unittest.TestCase):
             }
         ]
         self.assertEqual(evaluator.score_candidate(candidate, "parser regression", "context_graph"), 0.0)
+        dataset["cases"][0]["candidates"][0]["graph_edges"] = [
+            {
+                "relationship": "SIMILAR_TO",
+                "confidence": "candidate",
+                "evidence_ref": "https://github.com/timerloggedout-spec/parser-a/issues/13",
+            }
+        ]
+        result = evaluator.evaluate_dataset(dataset)
+        row = next(item for item in result["cases"] if item["arm"] == "context_graph")
+        self.assertIn(dataset["cases"][0]["candidates"][0]["target_id"], row["candidate_edge_ids"])
+        self.assertIn("https://github.com/timerloggedout-spec/parser-a/issues/13", row["evidence_refs"])
 
     def test_evaluation_is_deterministic_for_a_frozen_dataset(self):
         dataset = make_dataset()

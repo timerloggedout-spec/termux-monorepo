@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Quota poller: registry + live readings -> ForeSight records, HindSight retains, 3L0 weights.
 
-Stdlib only. Reads ops/quota/registry.json; polls a live source only when its
-credential env var is present; never prints or stores secret values.
+Stdlib only. Reads ops/quota/registry.json; uses configured credentials or a
+documented public token flow for live sources; secret values stay in process.
 Outputs (to --out dir): quota-records.jsonl, hindsight-retain.jsonl,
 routing-weights.json, and one QUOTA line per live reading on stdout.
 """

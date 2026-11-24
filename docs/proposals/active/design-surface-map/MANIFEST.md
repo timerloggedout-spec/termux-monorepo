@@ -13,7 +13,7 @@ reviewers:
   - id: ChatGPT
     role: author+executor
     status: executing
-related_prs: []
+related_prs: [5837]
 related_branches:
   - docs/design-surface-map-clean
 gates_required: [repo-gate, termux-smoke]
@@ -54,6 +54,7 @@ Create a dedicated `docs/design/` estate for user-facing design surfaces, separa
 - [ ] Closed + moved to `closed/` when terminal
 
 ## Links
+- Pull request: https://github.com/timerloggedout-spec/termux-monorepo/pull/5837
 
 - ITEMS: ./ITEMS.md
 - Source: ./source.md

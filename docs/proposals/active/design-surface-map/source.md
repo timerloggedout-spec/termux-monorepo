@@ -16,7 +16,7 @@ Establish a repository-native design documentation estate that maps user-facing 
 - `docs/architecture/AGENT-TEAM-CONTROL-PLANE.md` owns agent orchestration behavior.
 - `docs/architecture/termux-agentic-hub.md` owns the Termux Agentic Hub capability boundary.
 - `docs/integrations/README.md` and `docs/ops/SKILLS-INVENTORY.md` provide developer/integration surface references.
-- `docs/ops/CHART-STANDARD`, palette, and interaction references remain individually authoritative where linked.
+- `docs/ops/DASHBOARD-CHART-STANDARD.md`, palette, and interaction references remain individually authoritative where linked.
 
 ## Scope
 

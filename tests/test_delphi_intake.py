@@ -66,6 +66,41 @@ class DelphiIntakeContractTests(unittest.TestCase):
             "within_segment_only; cross_silo_aggregation=false",
         )
 
+    def test_explicit_prior_default_matches_empty_selection_mode(self):
+        empty = self.normalize()
+        explicit = self.normalize({
+            "Research selection mode": checked("Prior default")
+        })
+        self.assertEqual(
+            empty["research_selection"]["participants"],
+            explicit["research_selection"]["participants"],
+        )
+        self.assertEqual(
+            empty["research_selection"]["arms"],
+            explicit["research_selection"]["arms"],
+        )
+
+    def test_doe_decides_without_candidate_checks_exposes_full_candidate_pool(self):
+        record = self.normalize({
+            "Research selection mode": checked("DoE Decides")
+        })
+        cohort = record["research_selection"]
+        self.assertEqual(cohort["status"], "pending_doe_decision")
+        self.assertEqual(len(cohort["participants"]), 12)
+        self.assertEqual(len(cohort["doe_components"]), 4)
+        self.assertEqual(len(cohort["methodology_rfps"]), 5)
+        self.assertEqual(len(cohort["projects"]), 3)
+
+    def test_specific_selection_can_choose_the_selected_research_arm(self):
+        record = self.normalize({
+            "Research selection mode": checked("Specific selection"),
+            "Research participants": checked(
+                "research.jogyo-research-lab — Primary exemplar"
+            ),
+            "Research arms": checked("selected"),
+        })
+        self.assertEqual(record["research_selection"]["arms"], ["selected"])
+
     def test_doe_decides_records_candidates_without_making_a_selection(self):
         record = self.normalize({
             "Research selection mode": checked("DoE Decides"),
@@ -196,6 +231,25 @@ class DelphiIntakeContractTests(unittest.TestCase):
             "Delphi methodology": "One-pass rubric — single assessment",
             "Round profile": "Single-pass (one assessment)",
             "Stopping criteria / stability definition": "",
+        })
+        self.assertEqual(record["delphi"]["round_maximum"], 1)
+
+    def test_valid_fixed_and_custom_round_counts_are_preserved(self):
+        fixed = self.normalize({
+            "Round profile": "Fixed 4–5 rounds",
+            "Round maximum / custom count": "5",
+        })
+        custom = self.normalize({
+            "Round profile": "Custom round count",
+            "Round maximum / custom count": "7",
+        })
+        self.assertEqual(fixed["delphi"]["round_maximum"], 5)
+        self.assertEqual(custom["delphi"]["round_maximum"], 7)
+
+    def test_oracle_recommendation_can_choose_single_pass(self):
+        record = self.normalize({
+            "Delphi methodology": "Oracle recommends",
+            "Round profile": "Single-pass (one assessment)",
         })
         self.assertEqual(record["delphi"]["round_maximum"], 1)
 

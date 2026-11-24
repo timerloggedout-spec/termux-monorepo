@@ -140,8 +140,8 @@ def dockerhub_anonymous_reader(now):
     remaining_raw = headers.get("ratelimit-remaining") or headers.get("RateLimit-Remaining")
     if not limit_raw or not remaining_raw:
         return None
-    limit_match = re.fullmatch(r"\\s*(\\d+)\\s*(?:;\\s*w=(\\d+))?\\s*", limit_raw)
-    remaining_match = re.fullmatch(r"\\s*(\\d+)\\s*(?:;\\s*w=(\\d+))?\\s*", remaining_raw)
+    limit_match = re.fullmatch(r"\s*(\d+)\s*(?:;\s*w=(\d+))?\s*", limit_raw)
+    remaining_match = re.fullmatch(r"\s*(\d+)\s*(?:;\s*w=(\d+))?\s*", remaining_raw)
     if not limit_match or not remaining_match:
         return None
     limit, remaining = int(limit_match.group(1)), int(remaining_match.group(1))

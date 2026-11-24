@@ -169,11 +169,19 @@ jobs:
               }
 
               const existing = await github.rest.pulls.list({
-                owner, repo, state: "open", head: `${owner}:${branch}`,
+                owner, repo, state: "all", head: `${owner}:${branch}`,
                 base: "master", per_page: 100
               });
-              let pr = existing.data[0];
-              if (!pr) {
+              const mergedPr = existing.data.find(item => item.merged_at);
+              let pr = existing.data.find(item => item.state === "open");
+              if (mergedPr) {
+                pr = mergedPr;
+              } else if (!pr && existing.data[0]) {
+                const reopened = await github.rest.pulls.update({
+                  owner, repo, pull_number: existing.data[0].number, state: "open"
+                });
+                pr = reopened.data;
+              } else if (!pr) {
                 const created = await github.rest.pulls.create({
                   owner, repo,
                   title: `data(delphi): catalogue selection from #${issue.number}`,
@@ -186,7 +194,7 @@ jobs:
                     `Selection ID: ${record.selection_id}`,
                     `Record SHA-256: ${record.record_sha256}`,
                     "",
-                    "This PR adds or revises a reference-only Delphi selection catalogue entry.",
+                    "This PR appends a reference-only Delphi selection catalogue revision.",
                     "Execution remains false. No experiment, provider call, or live routing action is authorized."
                   ].join("\n")
                 });

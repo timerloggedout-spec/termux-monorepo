@@ -13,7 +13,8 @@ reviewers:
   - id: ChatGPT
     role: author+executor
     status: executing
-related_prs: []
+related_prs:
+  - 5833
 related_branches:
   - feat/mobile-agent-testers-integration
 related_repos:
@@ -63,7 +64,7 @@ The Termux device fleet remains a separate provider for physical-device work. Th
 - [ ] Evidence adapter and sanitized fixtures implemented
 - [ ] Registry and catalog updated
 - [ ] Focused tests pass
-- [ ] PR cites Implements: MAT-001
+- [x] PR cites Implements: MAT-001
 - [ ] Proposal lifecycle, repo gate, and Termux smoke pass on the same PR head
 - [ ] Provider run evidence and cost recorded before validation
 - [ ] Close only after all gates are terminal

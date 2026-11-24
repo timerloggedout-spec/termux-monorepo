@@ -37,10 +37,10 @@ Operator directive received 2026-11-24: "Build whatever you want as a separate v
 
 - Preserve `.github/ISSUE_TEMPLATE/delphi-rfp.yml` as the quota/provider-specific intake.
 - Reuse `ops/delphi/research-silos.json`, `ops/delphi/research-participants.json`, `ops/doe/component-registry.json`, `ops/delphi/rfp-segments.json`, and the proposal registry as catalog authorities.
-- Preserve one segment per research silo; never aggregate or leak scores across silo boundaries.
-- Preserve the research lane's prior default: all 12 baseline research participants, with no evolutionary variants or DoE component selection.
+- Keep one segment per research silo; preserve independent attribution and silo-local comparison.
+- Preserve the research lane's prior default: all 12 baseline research participants; variants and DoE components remain unselected.
 - Selection creates review/catalogue records only. `execution: false` is immutable in this intake.
-- Registry catalogue updates flow through a branch and PR; intake automation does not commit directly to master.
+- Registry catalogue updates flow through a branch and PR; merged PRs update master.
 - Human WebView oversight is optional and metadata-only in this slice.
 
 ## Scope

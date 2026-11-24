@@ -1,5 +1,7 @@
 # Deterministic DAG planning and dependency admission
 
+**Related method catalog:** [DAG algorithm and Markov method catalog](DAG-ALGORITHM-AND-MARKOV-CATALOG.md) — ordering alternatives, graph-analysis methods, backend candidates, visualization/merge references, and consolidated setup commands.
+
 ## Status
 
 Reference implementation only. This module plans a static dependency graph and

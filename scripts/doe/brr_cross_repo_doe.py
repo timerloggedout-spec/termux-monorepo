@@ -128,13 +128,15 @@ def validate_dataset(dataset: dict[str, Any]) -> None:
 
     _require(set(repositories).issubset(sourced_repositories),
              "every covered repository needs at least one source receipt")
-    _require(all((kind, repo) in source_pairs
-                 for repo in repositories for kind in ("brr", "commits")),
-             "every covered repository needs BRR and commit source receipts")
-    _require({"regressions", "gold_set"}.issubset(source_kinds),
-             "regression and adjudicated gold-set source receipts are required")
-    _require(bool({"context_graph", "cross_plane_graph"} & source_kinds),
-             "at least one context or cross-plane graph source is required")
+    for covered_repo in repositories:
+        _require(all((kind, covered_repo) in source_pairs
+                     for kind in ("brr", "commits", "regressions", "gold_set")),
+                 f"{covered_repo} needs BRR, commit, regression, and gold-set receipts")
+        _require(
+            any((kind, covered_repo) in source_pairs
+                for kind in ("context_graph", "cross_plane_graph")),
+            f"{covered_repo} needs a context or cross-plane graph receipt",
+        )
 
     cases = dataset.get("cases")
     _require(isinstance(cases, list) and cases, "cases must be a non-empty list")

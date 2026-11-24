@@ -16,7 +16,6 @@ from pathlib import Path
 from typing import Any
 
 SCHEMA = "delphi.oracle-intake.v1"
-CATALOGUE_SCHEMA = "delphi.selection-catalogue.v1"
 SELECTION_MODES = {"DoE Decides", "All", "Specific selection", "Prior default"}
 ARMS = ("baseline", "rnd", "selected", "control")
 PROJECT_IDS = (
@@ -304,12 +303,13 @@ def normalize_intake(issue: dict[str, Any], body: str, root: Path) -> dict[str, 
         raise ValueError("Custom round count requires a round maximum")
     elif round_profile == "Adaptive with declared stopping criteria" and not stopping_criteria:
         raise ValueError("adaptive rounds require declared stopping criteria")
-    if methodology == "One-pass rubric — single assessment":
-        if round_profile != "Single-pass (one assessment)":
-            raise ValueError("one-pass rubric requires the Single-pass round profile")
+    one_pass_method = methodology == "One-pass rubric — single assessment"
+    if one_pass_method and round_profile != "Single-pass (one assessment)":
+        raise ValueError("one-pass rubric requires the Single-pass round profile")
+    if round_profile == "Single-pass (one assessment)":
+        if methodology not in {"One-pass rubric — single assessment", "Oracle recommends"}:
+            raise ValueError("Single-pass profile requires a one-pass or Oracle-recommended method")
         round_maximum = 1
-    elif round_profile == "Single-pass (one assessment)":
-        raise ValueError("Single-pass round profile requires the one-pass rubric methodology")
 
     matrix_schedule = _single(fields, "matrix_schedule")
     reconciliation = _checked(fields.get("reconciliation_dimensions", ""))

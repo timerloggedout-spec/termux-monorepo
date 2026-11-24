@@ -67,5 +67,6 @@ jobs:
           assert manifest["source_sha"]
           assert len(manifest["pages"]) == 1
           assert manifest["pages"][0]["id"] == "experiment-views"
+          assert manifest["pages"][0]["title"] == "RFP & DoE Views"
           assert manifest["pages"][0]["content_sha256"]
           PY

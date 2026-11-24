@@ -39,6 +39,7 @@ REGRESSION_VERDICTS = {
 }
 TOKEN_RE = re.compile(r"[a-z0-9]+")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+REPO_RE = re.compile(r"^[^/\\s]+/[^/\\s]+$")
 CASE_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$")
 BOOTSTRAP_REPLICATES = 2000
 BOOTSTRAP_SEED = 56402026
@@ -90,11 +91,11 @@ def validate_dataset(dataset: dict[str, Any]) -> None:
     _require(isinstance(coverage, dict), "coverage must be an object")
     _only_keys(coverage, {"state", "repositories", "next_page"}, "coverage")
     coverage_state = coverage.get("state")
-    _require(coverage_state in COVERAGE_STATES, "invalid coverage state")
+    _require(isinstance(coverage_state, str) and coverage_state in COVERAGE_STATES, "invalid coverage state")
     repositories = coverage.get("repositories")
     _require(
         isinstance(repositories, list) and repositories
-        and all(isinstance(repo, str) and "/" in repo for repo in repositories),
+        and all(isinstance(repo, str) and REPO_RE.fullmatch(repo) for repo in repositories),
         "coverage.repositories must list owner/repository identities",
     )
     _require(len(set(repositories)) == len(repositories), "duplicate coverage repository")
@@ -112,14 +113,14 @@ def validate_dataset(dataset: dict[str, Any]) -> None:
     for source in sources:
         _require(isinstance(source, dict), "source entry must be an object")
         _only_keys(source, {"kind", "repository", "sha", "observed_at", "coverage", "url"}, "source")
-        _require(source.get("kind") in SOURCE_KINDS, "invalid source kind")
+        _require(isinstance(source.get("kind"), str) and source["kind"] in SOURCE_KINDS, "invalid source kind")
         _require(source.get("repository") in repositories, "source repository outside coverage")
         sourced_repositories.add(source["repository"])
         source_pairs.add((source["kind"], source["repository"]))
         source_kinds.add(source["kind"])
         _require(_is_sha(source.get("sha")), "source sha must be 40 lowercase hex")
         _require(_is_timestamp(source.get("observed_at")), "invalid source observed_at")
-        _require(source.get("coverage") in COVERAGE_STATES, "invalid source coverage")
+        _require(isinstance(source.get("coverage"), str) and source["coverage"] in COVERAGE_STATES, "invalid source coverage")
         _require(_is_https(source.get("url")), "source URL must use HTTPS")
         if coverage_state == "COMPLETE":
             _require(source["coverage"] == "COMPLETE",
@@ -145,11 +146,12 @@ def validate_dataset(dataset: dict[str, Any]) -> None:
         _require(isinstance(case_id, str) and CASE_ID_RE.fullmatch(case_id), "case_id must be a safe slug (1-80 characters)")
         _require(case_id not in case_ids, "duplicate case_id")
         case_ids.add(case_id)
-        _require(case.get("task_family") in TASK_FAMILIES, "invalid task_family")
+        _require(isinstance(case.get("task_family"), str) and case["task_family"] in TASK_FAMILIES, "invalid task_family")
         _require(isinstance(case.get("query"), str) and case["query"].strip(),
                  "query must be non-empty")
         gold = case.get("gold_target_ids")
         _require(isinstance(gold, list) and gold, "gold_target_ids must be non-empty")
+        _require(all(isinstance(target_id, str) and target_id for target_id in gold), "gold target IDs must be non-empty strings")
         _require(len(set(gold)) == len(gold), "duplicate gold target id")
 
         candidates = case.get("candidates")
@@ -172,20 +174,20 @@ def validate_dataset(dataset: dict[str, Any]) -> None:
             _require(target_id not in candidate_ids, "duplicate candidate target_id")
             candidate_ids.add(target_id)
             evidence_status = candidate.get("evidence_status")
-            _require(evidence_status in {"verified", "candidate"},
+            _require(isinstance(evidence_status, str) and evidence_status in {"verified", "candidate"},
                      "evidence_status must be verified or candidate")
             if evidence_status == "verified":
                 verified_ids.add(target_id)
-            _require(candidate.get("disposition") in DISPOSITIONS,
+            _require(isinstance(candidate.get("disposition"), str) and candidate["disposition"] in DISPOSITIONS,
                      "invalid BRR disposition")
             for field in ("ahead_of_default", "behind_default", "unique_commit_count"):
                 value = candidate.get(field)
                 _require(value is None or (type(value) is int and value >= 0),
                          f"{field} must be a non-negative integer or null")
-            _require(candidate.get("pr_state") in {"open", "closed", "merged", "none", "unknown"},
+            _require(isinstance(candidate.get("pr_state"), str) and candidate["pr_state"] in {"open", "closed", "merged", "none", "unknown"},
                      "invalid pr_state")
             verdict = candidate.get("regression_verdict")
-            _require(verdict in REGRESSION_VERDICTS, "invalid regression_verdict")
+            _require(isinstance(verdict, str) and verdict in REGRESSION_VERDICTS, "invalid regression_verdict")
             regression_reason = candidate.get("regression_reason")
             _require(regression_reason is None or isinstance(regression_reason, str),
                      "regression_reason must be text or null")
@@ -204,7 +206,8 @@ def validate_dataset(dataset: dict[str, Any]) -> None:
             for field in ("pull_request_numbers", "issue_numbers"):
                 numbers = candidate.get(field)
                 _require(isinstance(numbers, list)
-                         and all(type(number) is int and number >= 1 for number in numbers),
+                         and all(type(number) is int and number >= 1 for number in numbers)
+                         and len(set(numbers)) == len(numbers),
                          f"{field} must be a list of positive integers")
             _require(isinstance(candidate.get("title"), str), "candidate title must be text")
             subjects = candidate.get("commit_subjects")
@@ -217,7 +220,7 @@ def validate_dataset(dataset: dict[str, Any]) -> None:
                 _only_keys(edge, {"relationship", "confidence", "evidence_ref"}, "graph edge")
                 _require(isinstance(edge.get("relationship"), str) and edge["relationship"],
                          "graph relationship is required")
-                _require(edge.get("confidence") in {"verified", "candidate"},
+                _require(isinstance(edge.get("confidence"), str) and edge["confidence"] in {"verified", "candidate"},
                          "invalid graph edge confidence")
                 _require(_is_https(edge.get("evidence_ref")),
                          "graph edge evidence_ref must use HTTPS")

@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-24T04:13:41Z)
+# Lane matrix status (2026-11-24T04:14:40Z)
 
-- Master: `affb3dc40865a173af721cf316603cf6993a4f0b`
+- Master: `a3435e6675714d3dfce9bc2955a5e0b12a9683e9`
 - Open PRs: **548**
 - Oldest: #47 (110.52d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -38,7 +38,7 @@
 | #605 | 66.43 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
 | #684 | 64.41 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
 | #769 | 61.86 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
-| #969 | 53.76 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
+| #969 | 53.77 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
 | #990 | 52.9 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
 | #1020 | 51.64 | CANDIDATE | state:unknown | feat: close provider continuity and executable rou |
 | #1274 | 35.79 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
@@ -58,7 +58,7 @@
 | #1626 | 30.92 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
 | #1645 | 30.16 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
 | #1650 | 30.08 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
-| #1694 | 28.11 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
+| #1694 | 28.12 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
 | #1734 | 27.71 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
 | #1735 | 27.7 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
 | #1966 | 26.97 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |

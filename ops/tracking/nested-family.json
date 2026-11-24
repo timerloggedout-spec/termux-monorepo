@@ -1,6 +1,6 @@
 {
  "schema": "nested-family/v1",
- "generated_at": "2026-11-24T17:39:56Z",
+ "generated_at": "2026-11-24T17:51:26Z",
  "generated_by": "scripts/tracking/nested_family.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/NESTED-FAMILY.md",
@@ -11,8 +11,8 @@
   {
    "id": "records",
    "path": "experiments/doe/routed-dispatch/records/*.json",
-   "records_read": 41,
-   "records_used": 41
+   "records_read": 42,
+   "records_used": 42
   },
   {
    "id": "campaign-records",
@@ -23,19 +23,19 @@
   {
    "id": "stamps",
    "path": "experiments/doe/routed-dispatch/stamps/*.json",
-   "records_read": 40,
+   "records_read": 41,
    "records_used": 0
   },
   {
    "id": "intake",
    "path": "ops/3l0/intake.jsonl",
-   "records_read": 41,
+   "records_read": 42,
    "records_used": 0
   },
   {
    "id": "desk-usage",
    "path": "ops/challenge/desk-feed.json#traversals[].provider_usage",
-   "records_read": 66,
+   "records_read": 67,
    "records_used": 17
   }
  ],
@@ -149,19 +149,19 @@
   "providers": 19,
   "models": 27,
   "roles": 6,
-  "tasks": 62,
-  "dispatches": 45,
+  "tasks": 63,
+  "dispatches": 46,
   "registry_providers": 96,
   "zero_dispatch_providers": 87,
   "by_outcome": {
    "(prose state \u2014 verbatim in tasks)": 4,
    "passed": 26,
-   "failed": 10,
+   "failed": 11,
    "observed": 5
   },
   "by_source": {
    "desk-usage": 17,
-   "records": 41,
+   "records": 42,
    "campaign-records": 4
   }
  },
@@ -1650,7 +1650,7 @@
      "contexts": [
       "build-dispatch multi-arm (#5151)"
      ],
-     "task_count": 3,
+     "task_count": 4,
      "tasks": [
       {
        "task_class": "entry-build",
@@ -1729,12 +1729,38 @@
        },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/build-dispatch-44666207835-gemini-cli.json"
+      },
+      {
+       "task_class": "entry-build",
+       "role": "builder",
+       "moniker": "providers-dispatch-fix",
+       "context": "build-dispatch multi-arm (#5151)",
+       "dispatch_id": "build-dispatch-45451090594-gemini-cli",
+       "run_id": "45451090594",
+       "workflow": "build-dispatch.yml",
+       "session_id": null,
+       "ts": "2026-11-24T17:42:04Z",
+       "outcome": {
+        "status": "failed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": "ed64aec90f3b08b16a653864909bb94f4c20fd3dd9d5e611dd6cdb77cee43b65",
+       "first_pass": null,
+       "origin": "live",
+       "pr": null,
+       "field_sources": {
+        "run_id": "stamps",
+        "workflow": "stamps"
+       },
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/build-dispatch-45451090594-gemini-cli.json"
       }
      ]
     }
    ],
    "model_count": 1,
-   "task_count": 3,
+   "task_count": 4,
    "zero_dispatch": false
   },
   {

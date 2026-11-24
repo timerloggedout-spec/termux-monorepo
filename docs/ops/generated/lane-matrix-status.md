@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-24T04:13:06Z)
+# Lane matrix status (2026-11-24T04:13:41Z)
 
-- Master: `e2235823b7b3cbebb20116070f0b2bfb1b39f3ae`
+- Master: `affb3dc40865a173af721cf316603cf6993a4f0b`
 - Open PRs: **548**
 - Oldest: #47 (110.52d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -32,9 +32,9 @@
 | #5723 | 3.46 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted review relay and record  |
 | #5724 | 3.46 | EXTRACT | state:unknown, minesweeper-title | fix(jules): replace hosted PR handoff with receipt |
 | #47 | 110.52 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
-| #81 | 108.26 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
+| #81 | 108.27 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
 | #103 | 107.13 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
-| #527 | 69.84 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
+| #527 | 69.85 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
 | #605 | 66.43 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
 | #684 | 64.41 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
 | #769 | 61.86 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
@@ -44,7 +44,7 @@
 | #1274 | 35.79 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
 | #1441 | 33.85 | CANDIDATE | state:unknown | feat(triage): reconcile official quota before disp |
 | #1469 | 33.63 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
-| #1470 | 33.62 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
+| #1470 | 33.63 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
 | #1495 | 33.08 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
 | #1513 | 32.83 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 32.83 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |

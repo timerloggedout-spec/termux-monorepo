@@ -8,7 +8,7 @@
 
 ## Validation
 
-- python3 -m unittest tests.test_mobile_agent_testers_adapter -v
+- python3 -m unittest discover -s tests -p 'test_mobile_agent_testers_adapter.py' -v
 - python3 scripts/proposals/validate_registry.py
 - python3 scripts/ci/repo_gate.py
 - python3 scripts/ci/termux_smoke.py

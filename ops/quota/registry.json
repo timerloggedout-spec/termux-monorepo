@@ -3296,7 +3296,7 @@
    "live": "GET https://auth.docker.io/token?service=registry.docker.io&scope=repository:ratelimitpreview/test:pull then HEAD https://registry-1.docker.io/v2/ratelimitpreview/test/manifests/latest; parse ratelimit-limit and ratelimit-remaining",
    "planned_use": {
     "safety": 0.85,
-    "note": "Measures the anonymous egress-IP bucket seen by the polling runner, not Docker Personal account usage or total account pulls. HEAD probe is documented as non-consuming. Missing headers remain unknown; never infer unlimited."
+    "note": "Measures the anonymous egress-IP bucket seen by the polling runner, excludes Docker Personal account usage and total account pull accounting. HEAD probe is documented as non-consuming. Missing headers remain unknown; preserve uncertainty for unlimited or exempt sources."
    },
    "limit_diagnostic": {
     "class": "live-read",
@@ -3335,7 +3335,7 @@
    "doc_quote": "Free Personal accounts may opt in to a 7-day free trial, with the option to subscribe.",
    "live": "Docker Build Cloud dashboard; no account usage API registered",
    "planned_use": {
-    "note": "Conditional one-time trial, not a recurring free tier or standing compute entitlement. Build Cloud is a remote builder, available only in US East."
+    "note": "Conditional one-time trial; classify as temporary access rather than recurring free compute. Build Cloud is a remote builder, available only in US East."
    }
   }
  ]

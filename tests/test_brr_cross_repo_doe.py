@@ -307,6 +307,22 @@ class TestBRRCrossRepositoryDoE(unittest.TestCase):
         self.assertEqual(evaluator.regression_signal(regressed), 1.0)
         self.assertEqual(evaluator.regression_signal(dict(untestable, regression_verdict="green")), 0.0)
 
+    def test_every_covered_repository_requires_brr_and_commit_receipts(self):
+        dataset = make_dataset()
+        dataset["sources"] = [
+            source for source in dataset["sources"]
+            if not (source["repository"] == "timerloggedout-spec/parser-c"
+                    and source["kind"] == "commits")
+        ]
+        with self.assertRaises(ValueError):
+            evaluator.validate_dataset(dataset)
+
+    def test_case_id_is_safe_for_record_output_paths(self):
+        dataset = make_dataset()
+        dataset["cases"][0]["case_id"] = "../escape"
+        with self.assertRaises(ValueError):
+            evaluator.validate_dataset(dataset)
+
     def test_invalid_identity_and_missing_evidence_fail_closed(self):
         dataset = make_dataset()
         dataset["cases"][0]["candidates"][0]["target_id"] = "same-name-branch"

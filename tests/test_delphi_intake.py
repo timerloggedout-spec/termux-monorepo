@@ -144,6 +144,10 @@ class DelphiIntakeContractTests(unittest.TestCase):
         self.assertIs(record["panel"]["human_webview_oversight"], True)
         self.assertEqual(record["reconciliation"]["mode"], "harmonious_reconciliation")
         self.assertEqual(len(record["reconciliation"]["dimensions"]), 2)
+        self.assertEqual(
+            record["reconciliation"]["additional_references"],
+            "",
+        )
         self.assertIs(record["execution"], False)
 
     def test_selection_review_and_catalogue_dispositions_are_independent(self):
@@ -225,6 +229,12 @@ class DelphiIntakeContractTests(unittest.TestCase):
         self.assertTrue(
             record["research_selection"]["comparison_policy"].startswith("within_segment_only")
         )
+        manifest = json.loads(
+            (ROOT / "ops/delphi/selection-catalogue.json").read_text()
+        )
+        self.assertEqual(manifest["schema"], "delphi.selection-catalogue.v1")
+        self.assertIs(manifest["policy"]["execution"], False)
+        self.assertIn("<record_sha256>.json", manifest["entry_pattern"])
 
     def test_workflow_isolated_from_quota_gate_and_keeps_execution_disabled(self):
         workflow = (ROOT / ".github/workflows/delphi-oracle-intake.yml").read_text()

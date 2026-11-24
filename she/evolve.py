@@ -17,7 +17,7 @@ from typing import Any
 from she.incident import Incident, IncidentState
 from she.repair_pr import REQUIRED_TESTS, plan_repair_pr
 from she.sandbox import SandboxPlan, plan_repair_sandbox
-from she.verify import BASE_GATES, VerificationPlan, plan_verification
+from she.verify import BASE_GATES, TERMUX_SCOPE_GATES, VerificationPlan, plan_verification
 
 HYPOTHESIS_KINDS: frozenset[str] = frozenset(
     {
@@ -317,6 +317,7 @@ def plan_evolution(
             "classification": incident.classification,
             "fingerprint": incident.fingerprint,
             "source": incident.source,
+            "termux_related": bool(verification.metadata.get("termux_related")),
             "state": incident.state.value,
             "repository": incident.repository,
             "sandbox_branch": sandbox.branch,

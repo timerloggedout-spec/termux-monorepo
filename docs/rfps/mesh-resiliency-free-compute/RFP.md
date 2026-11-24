@@ -283,5 +283,5 @@ Fly.io and Koyeb move to **RETIRED** in the repository's provider lifecycle regi
 
 The current workload comparison focuses on verified or explicitly pending lanes: GitHub Actions, Vercel, Cloudflare Workers/D1, Neon, Supabase, Render, static publication, and separately evaluated function candidates. Function runtimes and VM hosts remain distinct workload classes.
 
-Lifecycle authority: `ops/mesh/provider-lifecycle.json`. Provider selection follows workload fit, source-SHA provenance, health, state dependencies, quota evidence, and failure-domain independence.
+Lifecycle authority: `docs/ops/DEVOPS-REGISTER.md` §4A and `docs/DEPLOYMENT-LANES.md`. Provider selection follows workload fit, source-SHA provenance, health, state dependencies, quota evidence, and failure-domain independence.
 

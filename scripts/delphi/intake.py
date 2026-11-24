@@ -80,21 +80,61 @@ MODE_HEADINGS = {
 
 
 def parse_issue_body(body: str) -> dict[str, str]:
-    """Parse GitHub Issue Forms' rendered Markdown sections by heading."""
+    """Parse known form headings while preserving free-text Markdown and fences."""
     sections: dict[str, list[str]] = {}
+    field_order = list(MODE_HEADINGS)
+    next_field = 0
     current: str | None = None
+    fence: str | None = None
+
     for line in body.splitlines():
-        match = re.match(r"^###\s+(.+?)\s*$", line)
-        if match:
-            current = match.group(1)
+        stripped = line.strip()
+        fence_match = re.match(r"^(```+|~~~+)", stripped)
+        if fence is not None:
+            if current is not None:
+                sections[current].append(line)
+            if fence_match and fence_match.group(1).startswith(fence):
+                fence = None
+            continue
+        if fence_match:
+            fence = fence_match.group(1)[:3]
+            if current is not None:
+                sections[current].append(line)
+            continue
+
+        heading = re.match(r"^###s+(.+?)s*$", line)
+        if (
+            heading
+            and next_field < len(field_order)
+            and heading.group(1) == field_order[next_field]
+        ):
+            current = heading.group(1)
             sections[current] = []
+            next_field += 1
         elif current is not None:
             sections[current].append(line)
+
     return {
-        MODE_HEADINGS[name]: "\n".join(lines).strip()
+        MODE_HEADINGS[name]: "
+".join(lines).strip()
         for name, lines in sections.items()
-        if name in MODE_HEADINGS
     }
+
+
+def _strip_outer_text_fence(value: str) -> str:
+    lines = value.strip().splitlines()
+    if (
+        len(lines) >= 2
+        and re.fullmatch(r"```[A-Za-z0-9_-]*", lines[0].strip())
+        and lines[-1].strip() == "```"
+    ):
+        return "
+".join(lines[1:-1]).strip()
+    return value.strip()
+
+
+def _text_field(fields: dict[str, str], name: str, required: bool = False) -> str:
+    return _strip_outer_text_fence(_single(fields, name, required=required))
 
 
 def _checked(value: str) -> list[str]:

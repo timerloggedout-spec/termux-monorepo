@@ -251,7 +251,7 @@ def normalize_intake(issue: dict[str, Any], body: str, root: Path) -> dict[str, 
         selection_authority = "submitter"
     elif mode == "Prior default":
         participant_ids = sorted(catalogues["participants"])
-        component_ids, method_ids, project_ids = [], [], []
+        component_ids, method_ids = [], []
         arms = ["baseline"]
         selection_status = "prior_default_baseline"
         selection_authority = "submitter"

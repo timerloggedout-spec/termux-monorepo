@@ -15,7 +15,7 @@ reviewers:
     status: posted
 related_prs: []
 related_branches: []
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate]
 ---
 
 # MANIFEST — Linguist README machine-parity enhancement

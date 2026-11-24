@@ -12,5 +12,5 @@ jobs:
       - name: Publish retirement receipt
         run: |
           echo "::notice title=retired-provider::Fly.io Hindsight configuration and restart operations retired on 2026-11-23."
-          echo "Lifecycle authority: ops/mesh/provider-lifecycle.json"
+          echo "Lifecycle evidence: docs/ops/DEVOPS-REGISTER.md §4A and docs/DEPLOYMENT-LANES.md"
           echo "Historical configuration and provider-selection commits remain preserved in Git."

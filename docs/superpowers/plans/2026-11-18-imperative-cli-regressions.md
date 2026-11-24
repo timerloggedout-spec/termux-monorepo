@@ -155,3 +155,37 @@ the verified disposition instead. Adversarial critique: green jobs do not grant
 authority or establish integration. Both owner-authored PRs remain unmerged;
 #5543 remains open until integration. This documentation follow-up requires its
 own local gates and new-head GitHub observation, separate from the SHAs above.
+
+## Repository-location isolation review — 2026-11-24
+
+Live PR #5425 head `8bd79a8dbdb14e550c6137e620b3f323e96244a6` has both
+required GitHub gates SUCCESS. New review
+[4626094040](https://github.com/timerloggedout-spec/termux-monorepo/pull/5425#discussion_r4626094040)
+identifies inherited `GIT_DIR` redirecting fixture configuration into another
+repository. Register the follow-up under AR-33 before editing tests.
+
+Maintainer critique: `cwd` alone does not select a Git repository; fixture-local
+signing configuration is safe only after repository-location isolation.
+Adversarial critique: fixing fixture commands but not the checker subprocess
+still allows validation against an unrelated repository. Preserve
+`GIT_CONFIG_GLOBAL` so the existing ambient-signing test remains meaningful.
+
+Reproduce only with temporary sentinel repositories, never the real checkout.
+The first regression attempt fails all five cases; its index-absence assertion
+was too strong because the baseline empty commit already creates an index.
+Correct the assertion to compare baseline index bytes and object-store content,
+in addition to config bytes, HEAD and absence of redirected worktree writes.
+Then a temporary test-module mutation returning the unsanitized environment
+fails all five cases (RED). A second mutation restoring ambient environment
+only for the checker fails three cases (GIT_DIR, GIT_COMMON_DIR and
+GIT_OBJECT_DIRECTORY), proving checker-side sensitivity. Preserve these failed
+attempts as evidence, not production checker defects.
+
+Use one scrubbed environment for fixture Git commands and the checker; remove
+repository-location/index/object/discovery variables, retaining global signing
+configuration. Production checker, workflows, credentials, real-repository
+signing and history remain unchanged. Working-tree focused command
+`PYTHONPATH=/home/user/style-test-deps python3 -m pytest -q tests/test_check_do_statement_style.py`
+returns `30 passed` (GREEN). Local combined gates and new committed-SHA GitHub
+checks require separate receipts. AR-33 remains in_review, not integrated;
+owner-specific merge consent is still required.

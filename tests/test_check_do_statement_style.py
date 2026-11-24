@@ -72,12 +72,27 @@ def test_preserves_baseline_action_verbs(monkeypatch):
     } <= module["IMPERATIVE"]
 
 
+def fixture_git_env():
+    """Keep ambient signing config, but never inherit another repository's paths."""
+    env = os.environ.copy()
+    for key in (
+        "GIT_DIR", "GIT_WORK_TREE", "GIT_COMMON_DIR", "GIT_INDEX_FILE",
+        "GIT_OBJECT_DIRECTORY", "GIT_ALTERNATE_OBJECT_DIRECTORIES", "GIT_PREFIX",
+        "GIT_SHALLOW_FILE", "GIT_NAMESPACE", "GIT_CEILING_DIRECTORIES",
+        "GIT_DISCOVERY_ACROSS_FILESYSTEM",
+    ):
+        env.pop(key, None)
+    return env
+
+
 def run_push_check(tmp_path, subject, *, body="", instruction="Preserve checks.\n", script=SCRIPT, merge=False,
                    mainline_subject="test(ci): add mainline coverage", mainline_body=""):
     """Exercise the public CLI with a real, credential-free Git commit range."""
+    env = fixture_git_env()
+
     def git(*args):
         return subprocess.run(
-            ["git", *args], cwd=tmp_path, check=True, capture_output=True, text=True,
+            ["git", *args], cwd=tmp_path, env=env, check=True, capture_output=True, text=True,
         ).stdout.strip()
 
     git("init", "--initial-branch=main")
@@ -102,7 +117,6 @@ def run_push_check(tmp_path, subject, *, body="", instruction="Preserve checks.\
     after = git("rev-parse", "HEAD")
     event = tmp_path / "push.json"
     event.write_text(json.dumps({"before": before, "after": after}), encoding="utf-8")
-    env = os.environ.copy()
     env.update(GITHUB_EVENT_NAME="push", GITHUB_EVENT_PATH=str(event), GITHUB_BASE_REF="")
     return subprocess.run(
         [sys.executable, str(script)], cwd=tmp_path, env=env,
@@ -204,3 +218,47 @@ def test_real_push_checks_mainline_inside_merge_range(tmp_path, location):
         assert "commit.body" in result.stdout
         assert "lead with the intended DO action" in result.stdout
     assert "action verb after its scope: Merge side" not in result.stdout
+
+
+@pytest.mark.parametrize("location", ["GIT_DIR", "GIT_WORK_TREE", "GIT_COMMON_DIR", "GIT_INDEX_FILE", "GIT_OBJECT_DIRECTORY"])
+def test_real_push_isolates_inherited_repository_location(tmp_path, monkeypatch, location):
+    external = tmp_path / "external"
+    external.mkdir()
+    # Create the sentinel before injecting location variables; never point at the real checkout.
+    env = fixture_git_env()
+
+    def external_git(*args):
+        return subprocess.run(["git", *args], cwd=external, env=env,
+                              check=True, capture_output=True, text=True).stdout.strip()
+    external_git("init", "--initial-branch=main")
+    external_git("config", "user.name", "External Sentinel")
+    external_git("config", "user.email", "sentinel@example.invalid")
+    external_git("-c", "commit.gpgSign=false", "commit", "--allow-empty", "-m", "test: add sentinel")
+    external_git("config", "commit.gpgSign", "true")
+    before_head = external_git("rev-parse", "HEAD")
+    before_config = (external / ".git" / "config").read_bytes()
+    before_index = (external / ".git" / "index").read_bytes()
+    before_objects = {str(p.relative_to(external)): p.read_bytes()
+                      for p in (external / ".git" / "objects").rglob("*") if p.is_file()}
+    locations = {
+        "GIT_DIR": external / ".git",
+        "GIT_WORK_TREE": external,
+        "GIT_COMMON_DIR": external / ".git",
+        "GIT_INDEX_FILE": external / ".git" / "index",
+        "GIT_OBJECT_DIRECTORY": external / ".git" / "objects",
+    }
+    monkeypatch.setenv(location, str(locations[location]))
+    repo = tmp_path / "fixture"
+    repo.mkdir()
+    try:
+        result = run_push_check(repo, "test(ci): add isolated fixture coverage")
+    finally:
+        assert (external / ".git" / "config").read_bytes() == before_config
+        assert external_git("rev-parse", "HEAD") == before_head
+        assert not (external / "docs").exists()
+        assert (external / ".git" / "index").read_bytes() == before_index
+        assert {str(p.relative_to(external)): p.read_bytes()
+                for p in (external / ".git" / "objects").rglob("*") if p.is_file()} == before_objects
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert "DO-statement style: PASS" in result.stdout
+    assert (repo / ".git" / "objects").is_dir()

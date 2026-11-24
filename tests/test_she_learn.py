@@ -7,7 +7,7 @@ from unittest import TestCase, main
 
 from she.incident import Incident, IncidentState
 from she.learn import LearnError, LearningRecord, plan_learning
-from she.verify import DUAL_GATES, apply_check_results, plan_verification
+from she.verify import BASE_GATES, apply_check_results, plan_verification
 
 FIXED = datetime(2026, 8, 28, 3, 0, tzinfo=UTC)
 
@@ -37,7 +37,7 @@ class SheLearnTests(TestCase):
         self.assertFalse(record.reusable)
         self.assertFalse(record.live)
         self.assertFalse(record.persisted)
-        self.assertIn("dual_gates_required", record.constraints)
+        self.assertIn("repo_gate_required", record.constraints)
 
     def test_success_reusable_only_when_verified(self):
         inc = _inc()
@@ -52,7 +52,7 @@ class SheLearnTests(TestCase):
         record = plan_learning(inc, verification=verified)
         self.assertEqual(record.outcome, "success")
         self.assertTrue(record.reusable)
-        self.assertTrue(DUAL_GATES.issubset(verified.required_gates()))
+        self.assertTrue(BASE_GATES.issubset(verified.required_gates()))
 
     def test_security_observe_only(self):
         inc = _inc(

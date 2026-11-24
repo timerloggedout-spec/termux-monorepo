@@ -99,3 +99,33 @@ def test_lane_slices_carried_verbatim():
     assert gh["lane_slices"] == [{"project": "repo-replay",
                                   "claim": 6519135715}]
     assert gh["slices"] == []  # focus slices stay distinct
+
+
+def test_retired_provider_pool_has_zero_allocation():
+    reg = {"services": [
+        {"id": "fly.free_tier", "provider": "fly", "limit": 0,
+         "live": "none", "lifecycle": "retired"},
+    ]}
+    alloc = {"pools": [{
+        "id": "fly", "services": ["fly.free_tier"],
+        "allocations": [
+            {"focus": "winning", "pct": 100, "mode": "standing"},
+            {"focus": "research", "pct": 0, "mode": "leftover-only"},
+        ],
+        "slices": [{"project": "legacy-hindsight", "claim": "historic"}],
+    }]}
+    out = planner.plan(reg, alloc, {"readings": []})
+    pool = out["pools"][0]
+    assert pool["class"] == "C"
+    assert pool["state"] == "retired"
+    assert pool["lifecycle"] == "retired"
+    assert pool["pacing_multiplier"] == 0.0
+    assert pool["slices"] == [
+        {"focus": "winning", "share_pct": 0, "mode": "none",
+         "priority": 99, "flow_per_min": None},
+        {"focus": "research", "share_pct": 0, "mode": "none",
+         "priority": 1, "flow_per_min": None},
+    ]
+    assert pool["lane_slices"] == []
+    assert pool["matching"]["flag"] == "retired-provider"
+    assert pool["release_to"] is None

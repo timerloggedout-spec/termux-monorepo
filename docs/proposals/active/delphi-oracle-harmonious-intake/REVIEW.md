@@ -25,8 +25,10 @@
 
 - Reviewer: Devin Review
 - Initial result: 8 actionable findings on PR #5848.
-- Resolution status: implementation updates in progress on feat/delphi-oracle-harmonious-intake-v2.
-- Evidence: PR review comments; final verification and re-review will be recorded against the promotion PR.
+- Resolution: YAML scalar quoting; ordered Markdown/fence-aware parsing; rendered-text normalization; DoE candidate/target separation; disposition-synchronized review labels; actionable validation comments; dual catalogue gate dispatch; proposal-local gate registration.
+- Regression coverage: 32 intake contract tests, including registry locality, Markdown, nested fences, DoE pending targets, review-label cleanup, and validation workflow contracts.
+- Status: corrections committed on feat/delphi-oracle-harmonious-intake-v2; exact-head verification and independent re-review pending.
+- Evidence: PR #5848 review comments and branch test suite; promotion PR records final verification.
 
 ## Evidence rule
 

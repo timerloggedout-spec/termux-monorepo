@@ -10,8 +10,8 @@
 ## Validation commands
 
 ```bash
-python3 -m unittest tests.test_brr_cross_repo_doe -v
-python3 -m py_compile experiments/doe/brr-cross-repo-doe/evaluate.py
+python3 -m unittest discover -s tests -p 'test_brr_cross_repo_doe.py' -v
+python3 -m py_compile scripts/doe/brr_cross_repo_doe.py
 python3 scripts/proposals/validate_registry.py
 python3 scripts/ci/repo_gate.py
 python3 scripts/ci/termux_smoke.py

@@ -60,11 +60,12 @@
 **Files:**
 - Create: `scripts/doe/brr_cross_repo_doe.py`
 - Create: `tests/test_brr_cross_repo_doe.py`
+- Modify: `.github/workflows/repo-gate.yml`
 
 **Interface:**
 - `evaluate_dataset(dataset: dict) -> dict`
 - `validate_dataset(dataset: dict) -> None`
-- `build_experiment_records(result: dict, baseline_sha: str, observed_at: str) -> list[dict]`
+- `build_experiment_records(result: dict, baseline_sha: str, candidate_sha: str, observed_at: str) -> list[dict]`
 
 - [ ] Write tests for deterministic ranking, repository-qualified identity, verified/candidate separation, partial coverage, and untestable regression states.
 - [ ] Implement deterministic offline evaluation using only supplied frozen evidence.

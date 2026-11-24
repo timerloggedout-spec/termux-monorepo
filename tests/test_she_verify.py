@@ -58,6 +58,23 @@ class SheVerifyTests(TestCase):
         self.assertIn("termux-smoke", termux.required_gates())
         self.assertTrue(termux.metadata["termux_related"])
 
+    def test_termux_scope_requires_termux_result_for_readiness(self):
+        termux = plan_verification(_inc(
+            source="github.termux-smoke",
+            event_provenance="workflow_run:termux-smoke:failure",
+            fingerprint="termux-smoke:runtime",
+        ))
+        results = {
+            "repo-gate": {"outcome": "pass"},
+            "domain-tests": {"outcome": "pass"},
+            "regression-invariants": {"outcome": "pass"},
+        }
+        pending = apply_check_results(termux, results)
+        self.assertFalse(pending.promotion_ready)
+        results["termux-smoke"] = {"outcome": "pass"}
+        ready = apply_check_results(termux, results)
+        self.assertTrue(ready.promotion_ready)
+
     def test_security_requires_security_checks(self):
         inc = _inc(
             classification="dependabot-high",
@@ -114,7 +131,7 @@ class SheVerifyTests(TestCase):
         restored = VerificationPlan.from_mapping(json.loads(json.dumps(plan.to_mapping())))
         self.assertTrue(BASE_GATES.issubset(restored.required_gates()))
 
-    def test_from_mapping_rejects_dropped_dual_gate(self):
+    def test_from_mapping_rejects_dropped_repo_gate(self):
         data = plan_verification(_inc()).to_mapping()
         data["checks"] = [c for c in data["checks"] if c["gate"] != "repo-gate"]
         with self.assertRaisesRegex(VerificationError, "repo gate"):

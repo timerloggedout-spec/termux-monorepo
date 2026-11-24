@@ -20,7 +20,7 @@ Add a separate general-purpose Delphi Oracle Issue Form for existing-proposal ev
 - Single-choice fields use dropdown menus.
 - Multi-choice fields use checkboxes.
 - Research selection mode is a checkbox group; the normalizer accepts exactly one selected mode. An empty group resolves to the documented prior default.
-- The new form uses a distinct `[delphi:intake]` title prefix; the `delphi:rfp` label remains exclusive to the legacy quota gate.
+- The new form uses a distinct `[delphi:intake]` title prefix; the `delphi:rfp` label remains exclusive to the legacy quota gate. Intake automation accepts issue authors with OWNER, MEMBER, or COLLABORATOR association.
 
 ## Research selection modes
 

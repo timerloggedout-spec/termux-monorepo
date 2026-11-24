@@ -36,20 +36,16 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/delphi/intake.py --output "$RUNNER_TEMP/delphi-intake.json"
-          {
-            echo "record<<DORI_RECORD"
-            cat "$RUNNER_TEMP/delphi-intake.json"
-            echo
-            echo "DORI_RECORD"
-          } >> "$GITHUB_OUTPUT"
+          echo "record_path=$RUNNER_TEMP/delphi-intake.json" >> "$GITHUB_OUTPUT"
 
       - name: Record selection review and catalogue disposition
         uses: actions/github-script@v7
         env:
-          NORMALIZED_RECORD: ${{ steps.normalize.outputs.record }}
+          RECORD_PATH: ${{ steps.normalize.outputs.record_path }}
         with:
           script: |
-            const record = JSON.parse(process.env.NORMALIZED_RECORD);
+            const fs = require("fs");
+            const record = JSON.parse(fs.readFileSync(process.env.RECORD_PATH, "utf8"));
             const issue = context.payload.issue;
             const owner = context.repo.owner;
             const repo = context.repo.repo;
@@ -74,9 +70,12 @@ jobs:
               "",
               "<details><summary>Canonical selection record</summary>",
               "",
-              "```json",
-              JSON.stringify(record, null, 2),
-              "```",
+              "<pre>",
+              JSON.stringify(record, null, 2)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;"),
+              "</pre>",
               "</details>"
             ].join("\n");
 

@@ -89,3 +89,11 @@ def test_development_manifest_registers_the_page():
     manifest = json.loads((APP / "version-manifest.json").read_text(encoding="utf-8"))
     assert any(page["id"] == "experiment-views" and page["file"] == "experiment-views.html"
                for page in manifest["pages"])
+
+
+def test_generated_and_development_manifest_titles_match():
+    manifest = json.loads((APP / "version-manifest.json").read_text(encoding="utf-8"))
+    page = next(page for page in manifest["pages"] if page["id"] == "experiment-views")
+    builder = (ROOT / "scripts" / "build_dashboard_manifest.py").read_text(encoding="utf-8")
+    assert page["title"] == "RFP & DoE Views"
+    assert '"experiment-views.html": "RFP & DoE Views"' in builder

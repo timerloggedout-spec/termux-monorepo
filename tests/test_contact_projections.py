@@ -17,7 +17,7 @@ SPEC.loader.exec_module(contact_projections)
 
 
 def test_display_projection_transforms_prose_but_preserves_markdown_destinations_and_fences() -> None:
-    source = """# Agent workflow\n\nRead [agent path](docs/icm/AGENTS.md).\n\n```bash\nagent path\n```\n"""
+    source = """# Agent workflow\n\nRead [agent path](docs/icm/CLAUDE.md).\n\n```bash\nagent path\n```\n"""
 
     rendered = contact_projections.render(
         source,
@@ -26,7 +26,7 @@ def test_display_projection_transforms_prose_but_preserves_markdown_destinations
     )
 
     assert "# 4g3n7 w0rkfl0w" in rendered
-    assert "[4g3n7 p47h](docs/icm/AGENTS.md)" in rendered
+    assert "[4g3n7 p47h](docs/icm/CLAUDE.md)" in rendered
     assert "```bash\nagent path\n```" in rendered
     assert "source=README.hum.md" in rendered
 
@@ -77,7 +77,7 @@ def test_repository_has_no_agents_named_entrypoint_or_projection() -> None:
     retired_paths = (
         "AGENTS.md",
         "AGENTS.hum.md",
-        "docs/icm/AGENTS.md",
+        "docs/icm/CLAUDE.md",
         "docs/icm/AGENTS.hum.md",
         "docs/icm/maintenance/AGENTS.md",
         "docs/icm/maintenance/AGENTS.hum.md",

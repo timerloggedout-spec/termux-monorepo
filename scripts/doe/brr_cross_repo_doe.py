@@ -158,7 +158,7 @@ def validate_dataset(dataset: dict[str, Any]) -> None:
         verified_ids: set[str] = set()
         for candidate in candidates:
             _require(isinstance(candidate, dict), "candidate must be an object")
-            _only_keys(candidate, {"target_id", "repository", "branch", "sha", "evidence_status", "disposition", "ahead_of_default", "behind_default", "unique_commit_count", "pr_state", "regression_verdict", "title", "commit_subjects", "graph_edges", "evidence_refs"}, "candidate")
+            _only_keys(candidate, {"target_id", "repository", "branch", "sha", "evidence_status", "disposition", "ahead_of_default", "behind_default", "unique_commit_count", "pr_state", "regression_verdict", "title", "commit_subjects", "commit_shas", "pull_request_numbers", "issue_numbers", "regression_reason", "graph_edges", "evidence_refs"}, "candidate")
             repository = candidate.get("repository")
             branch = candidate.get("branch")
             sha = candidate.get("sha")
@@ -184,8 +184,22 @@ def validate_dataset(dataset: dict[str, Any]) -> None:
                          f"{field} must be a non-negative integer or null")
             _require(candidate.get("pr_state") in {"open", "closed", "merged", "none", "unknown"},
                      "invalid pr_state")
-            _require(candidate.get("regression_verdict") in REGRESSION_VERDICTS,
-                     "invalid regression_verdict")
+            verdict = candidate.get("regression_verdict")
+            _require(verdict in REGRESSION_VERDICTS, "invalid regression_verdict")
+            regression_reason = candidate.get("regression_reason")
+            _require(regression_reason is None or isinstance(regression_reason, str),
+                     "regression_reason must be text or null")
+            if verdict in {"untestable", "no-benchmark"}:
+                _require(isinstance(regression_reason, str) and regression_reason.strip(),
+                         "untestable/no-benchmark verdicts require a reason")
+            commit_shas = candidate.get("commit_shas")
+            _require(isinstance(commit_shas, list) and all(_is_sha(sha) for sha in commit_shas),
+                     "commit_shas must be a list of full commit SHAs")
+            for field in ("pull_request_numbers", "issue_numbers"):
+                numbers = candidate.get(field)
+                _require(isinstance(numbers, list)
+                         and all(type(number) is int and number >= 1 for number in numbers),
+                         f"{field} must be a list of positive integers")
             _require(isinstance(candidate.get("title"), str), "candidate title must be text")
             subjects = candidate.get("commit_subjects")
             _require(isinstance(subjects, list) and all(isinstance(x, str) for x in subjects),
@@ -229,6 +243,8 @@ def _lexical_signal(candidate: dict[str, Any], query: str) -> float:
         candidate["branch"],
         candidate["title"],
         *candidate["commit_subjects"],
+        *[f"pr {number}" for number in candidate["pull_request_numbers"]],
+        *[f"issue {number}" for number in candidate["issue_numbers"]],
     ]).lower()
     present = set(TOKEN_RE.findall(text))
     return len(query_tokens & present) / len(query_tokens)

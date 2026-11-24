@@ -39,7 +39,7 @@ REGRESSION_VERDICTS = {
 }
 TOKEN_RE = re.compile(r"[a-z0-9]+")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
-REPO_RE = re.compile(r"^[^/\\s]+/[^/\\s]+$")
+REPO_RE = re.compile(r"^[^/\s]+/[^/\s]+$")
 CASE_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$")
 BOOTSTRAP_REPLICATES = 2000
 BOOTSTRAP_SEED = 56402026

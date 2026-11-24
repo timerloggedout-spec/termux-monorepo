@@ -361,6 +361,8 @@ class DelphiIntakeContractTests(unittest.TestCase):
         form = (ROOT / ".github/ISSUE_TEMPLATE/delphi-oracle-intake.yml").read_text()
         self.assertIn("issues:", workflow)
         self.assertIn("opened, edited", workflow)
+        self.assertIn('["OWNER","MEMBER","COLLABORATOR"]', workflow)
+        self.assertIn("author_association", workflow)
         self.assertNotIn("delphi:rfp", form)
         self.assertIn("delphi:selection-review", workflow)
         self.assertIn("heads/master", workflow)

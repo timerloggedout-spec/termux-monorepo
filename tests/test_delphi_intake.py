@@ -411,7 +411,7 @@ class DelphiIntakeContractTests(unittest.TestCase):
         self.assertIn("pulls.create", workflow)
         self.assertIn("actions: write", workflow)
         self.assertIn("createWorkflowDispatch", workflow)
-        self.assertIn('workflow_id: "repo-gate.yml"', workflow)
+        self.assertIn('"repo-gate.yml", "termux-smoke.yml"', workflow)
         self.assertIn("record_path=", workflow)
         self.assertIn('.replace(/</g, "&lt;")', workflow)
         self.assertIn("selection-catalogue/", workflow)

@@ -312,7 +312,7 @@ def normalize_intake(issue: dict[str, Any], body: str, root: Path) -> dict[str, 
         selection_authority = "submitter"
 
     request_category = _single(fields, "request_category", required=True)
-    target_references = _single(fields, "target_references")
+    target_references = _text_field(fields, "target_references")
     target_reference_items = list(dict.fromkeys(
         item.strip()
         for item in re.split(r"[,;\n]+", target_references)
@@ -345,7 +345,7 @@ def normalize_intake(issue: dict[str, Any], body: str, root: Path) -> dict[str, 
     round_maximum = int(raw_round_maximum)
     if round_profile != "Single-pass (one assessment)" and not 2 <= round_maximum <= 10:
         raise ValueError("round maximum must be an integer from 2 through 10")
-    stopping_criteria = _single(fields, "stopping_criteria")
+    stopping_criteria = _text_field(fields, "stopping_criteria")
     if round_profile == "Fixed 2 rounds":
         round_maximum = 2
     elif round_profile == "Fixed 3 rounds":
@@ -364,7 +364,7 @@ def normalize_intake(issue: dict[str, Any], body: str, root: Path) -> dict[str, 
             raise ValueError("Single-pass profile requires a one-pass or Oracle-recommended method")
         round_maximum = 1
 
-    matrix_schedule = _single(fields, "matrix_schedule")
+    matrix_schedule = _text_field(fields, "matrix_schedule")
     reconciliation = _checked(fields.get("reconciliation_dimensions", ""))
     unknown_dimensions = sorted(set(reconciliation) - RECONCILIATION_DIMENSIONS)
     if unknown_dimensions:
@@ -400,9 +400,9 @@ def normalize_intake(issue: dict[str, Any], body: str, root: Path) -> dict[str, 
             "category": request_category,
             "target_references": target_references,
             "target_reference_items": target_reference_items,
-            "research_question": _single(fields, "research_question", required=True),
-            "evidence_references": _single(fields, "evidence_references"),
-            "constraints": _single(fields, "constraints"),
+            "research_question": _text_field(fields, "research_question", required=True),
+            "evidence_references": _text_field(fields, "evidence_references"),
+            "constraints": _text_field(fields, "constraints"),
         },
         "research_selection": {
             "mode": mode,

@@ -105,12 +105,12 @@ def _validate_entry(entry: Mapping[str, Any], provider: str, model: str, now: da
     allowed_account_types = {"free", "free_tier", "free_account", "active_free"}
     account_type = entry.get("account_type")
     if not isinstance(account_type, str) or account_type not in allowed_account_types:
-        raise ProviderAdmissionError(403, "native provider account class is not verified free", "provider_not_admitted")
+        raise ProviderAdmissionError(403, "native provider account class requires a verified free tier", "provider_not_admitted")
     for field in ("plan", "account_status"):
         if field in entry:
             value = entry[field]
             if not isinstance(value, str) or value not in allowed_account_types:
-                raise ProviderAdmissionError(403, "native provider account is not verified free", "provider_not_admitted")
+                raise ProviderAdmissionError(403, "native provider account requires a verified free tier", "provider_not_admitted")
     raw = entry.get("expires_at")
     if not isinstance(raw, str) or not re.fullmatch(r"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z", raw):
         raise ProviderAdmissionError(403, "native provider admission is expired or invalid", "provider_not_admitted")

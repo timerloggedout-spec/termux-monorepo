@@ -10,10 +10,10 @@ Collaborators are addressed by **Role**, **Name**, and **Moniker** — not by a 
 
 This repository is a **Continuous Fully Automated Agentic Development Environment**.
 
-- Agents **execute to completion** on authorized lanes: implement, push, open/update PR, re-fetch checks, and **auto-promote when dual gates are green and the task outcome is verified**.
+- Agents **execute to completion** on authorized lanes: implement, push, open/update PR, re-fetch checks, and **auto-promote when all required scope gates are green and the task outcome is verified**.
 - **Adaptive-wait is concurrent work**, not idle handoff. While jobs run, do non-conflicting progress; do not emit operator CLI homework as a substitute for automation.
-- **Dual-gate is automated evidence**, not a human gatekeeping ritual. Promote on green + verified outcome (see `docs/ops/REFTEMPLATES-CONSOLIDATION.md`).
-- **HITL** is reserved for human-only edges in `docs/proposals/AGENTIC-PERMISSIONS.md` (credentials, history rewrite, Class 3/4 material). It is not the default development loop.
+- **Scope-aware validation is automated evidence.** Promote on required-gate success and verified outcome (see `docs/ops/REFTEMPLATES-CONSOLIDATION.md`).
+- **HITL** applies to human-only edges in `docs/proposals/AGENTIC-PERMISSIONS.md` (credentials, history rewrite, Class 3/4 material); automated execution is the default development loop.
 - Size ≠ quality; mega-PRs stay **EXTRACT**.
 
 Canonical chart: [`docs/architecture/AGENT-TEAM-CONTROL-PLANE.md`](docs/architecture/AGENT-TEAM-CONTROL-PLANE.md) + `.mmd`.
@@ -45,7 +45,7 @@ BIUDL is the compounding development motion: a broad system view selects a focus
 1a. [`architecture.md`](architecture.md) — repository-wide system taxonomy, directory map, and data-flow entry
 2. [`docs/proposals/registry.yaml`](docs/proposals/registry.yaml) — what is active
 3. [`docs/proposals/PROCESS.md`](docs/proposals/PROCESS.md) — post / debate / consensus / close
-4. [`docs/ARCHW1Z-GATE.md`](docs/ARCHW1Z-GATE.md) — dual gates (automated)
+4. [`docs/ARCHW1Z-GATE.md`](docs/ARCHW1Z-GATE.md) — repository and scope-specific gates
 5. [`docs/proposals/AGENTIC-PERMISSIONS.md`](docs/proposals/AGENTIC-PERMISSIONS.md) — human-only edges
 6. [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) — adaptive wait + ops skills
 7. [`docs/ops/LANE-MATRIX.md`](docs/ops/LANE-MATRIX.md) — living session SSOT (rewrite every admin cycle)
@@ -58,14 +58,14 @@ Then route the task with **[`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md)** — one 
 - Run `python3 scripts/ci/repo_gate.py` for every repository integration change.
 - Run `python3 scripts/ci/termux_smoke.py` for Termux runtime, Android device, and Termux operational changes.
 - Select additional domain gates from the owning proposal and changed subsystem.
-- Do not invent work outside `docs/proposals/active/<id>/ITEMS.md` — add a row first.
+- Register every work item in `docs/proposals/active/<id>/ITEMS.md` before execution.
 - Cite `Implements: <ITEM-ID>` on PRs/commits.
-- **No** wholesale merge of NO-GO mega-PRs (#2, #6) — extract-only.
-- **No** Class 3/4 artifacts in git (session stores, browser profiles, tokens).
-- Unposted chat is not consensus — write Review log or `DEBATE.md`.
-- **Recon before relay/build** (owner order, 2026-10-27): do recon so you know what you're touching & building. Verify decisive claims against the live record (repo contents, API, run/issue records) before relaying a report or amending a mission from it — a lane's report is an input, not evidence.
-- **Agent auto-promote** when dual-gate green **and** task outcome verified. Do not block the loop on operator CLI steps that Actions / Codespaces / self-host surfaces can run.
-- Credential inventory is **names-only** in issues (see #184). Never paste secret values.
+- Extract NO-GO mega-PR work into independently reviewable slices.
+- Store Class 3/4 artifacts in approved secure storage; keep git limited to reviewed source and metadata.
+- Record consensus in the proposal Review log or `DEBATE.md`.
+- **Recon before relay/build** (owner order, 2026-10-27): inspect the live repository, API, run, and issue records before relaying decisive claims or amending a mission. Use lane reports as leads for verification.
+- **Agent auto-promote** when all required scope gates are green and the task outcome is verified. Route executable operator work through Actions / Codespaces / self-host surfaces.
+- Record credential names only in issues (see #184); route secret values through approved secret stores.
 
 ## Preferred execution loop
 
@@ -81,7 +81,7 @@ registry.yaml → pick todo item → branch from master
 After dispatch / commit / merge attempt:
 
 1. **WAIT** is a stage — re-check jobs → steps → logs → artifacts.
-2. **Do concurrent non-conflicting work** until COMPLETE; do not treat `queued`/`in_progress` as terminal and do not park the lane on human shell commands.
+2. **Do concurrent non-conflicting work** until COMPLETE; classify `queued`/`in_progress` as pending and route human shell actions through approved automation.
 3. Stall classes: admission / queue / execution / effect / pagination / routing loop.
 4. Promote when all required scope gates are green **and** the task outcome is verified (FA-ADE auto-promote).
 
@@ -132,7 +132,7 @@ Credential rotation and history rewrite require Operator (human) authorization. 
 
 **Collaborator-Identity:** Grok (Administrator)
 **Style:** BIUDL · Continuous Fully Automated Agentic Development (FA-ADE) · agent auto-promote on dual-gate + task outcome · adaptive-wait · evidence-led
-**Status change (2026-09-24):** FA-ADE realign — agents execute to completion; dual-gate is automated evidence; HITL only on AGENTIC-PERMISSIONS edges.
+**Status change (2026-09-24):** FA-ADE realign — agents execute to completion; scope-aware gates provide automated evidence; HITL only on AGENTIC-PERMISSIONS edges.
 **Status change (2026-09-25):** Collaborator / Role / Name / Moniker vocabulary affirmed; dependency-phase nav + #184 Projects note linked from `docs/agentic/`.
 **Prior (2026-09-21):** Root `AGENTS.md` folded into this file and marked deprecated.
 
@@ -144,14 +144,14 @@ Full text: `docs/ops/TOOL-ACQUISITION-ROUTES.md`. Summary for every install/down
 
 ## Superpowers engineering workflow
 
-Repository-local skill: `.agents/skills/superpowers/SKILL.md`. Load it for feature work, bug fixes, refactors, and non-trivial engineering changes. The upstream Superpowers methodology supplements this file; it does not override proposal authorization, ICM source ownership, `AGENTIC-PERMISSIONS.md`, dual gates, or adaptive WAIT.
+Repository-local skill: `.agents/skills/superpowers/SKILL.md`. Load it for feature work, bug fixes, refactors, and non-trivial engineering changes. The upstream Superpowers methodology supplements this file; it does not override proposal authorization, ICM source ownership, `AGENTIC-PERMISSIONS.md`, scope-aware gates, or adaptive WAIT.
 
 Integration catalog and event contract: `docs/integrations/README.md`. Design and execution plan: `docs/superpowers/specs/2026-11-02-integration-intelligence-design.md` and `docs/superpowers/plans/2026-11-02-integration-intelligence.md`.
 
 
 ## Continuous Capability Evolution Laboratory (CEEL)
 
-Start at docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md and follow its proposal work ledger. CEEL is the event-driven discovery and comparison lane across FOSS, external platforms and internal capabilities. It reuses the Integration Intelligence registry/event contract, DoE family/experiment schema, ATES, Delphi Oracle/EGM and proposal/dual-gate lifecycle. It creates no parallel scheduler, telemetry ledger, registry or merge authority. The initial platform cohort is Langfuse, PromptLayer, PostHog and Braintrust plus the native repository baseline; external capability claims remain unverified until pinned evidence exists. GitHub-native events are primary; bounded reconciliation is fallback. Weekly reporting is not the sensing mechanism.
+Start at docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md and follow its proposal work ledger. CEEL is the event-driven discovery and comparison lane across FOSS, external platforms and internal capabilities. It reuses the Integration Intelligence registry/event contract, DoE family/experiment schema, ATES, Delphi Oracle/EGM and proposal/scope-gate lifecycle. Use the existing scheduler, telemetry ledger, registry, and merge authority across the integrated lane. The initial platform cohort is Langfuse, PromptLayer, PostHog and Braintrust plus the native repository baseline; external capability claims remain unverified until pinned evidence exists. GitHub-native events are primary; bounded reconciliation is fallback. Weekly reporting is not the sensing mechanism.
 
 
 ## Linguist / Siglary communication contract

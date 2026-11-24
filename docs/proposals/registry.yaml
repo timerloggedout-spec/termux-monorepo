@@ -1391,3 +1391,26 @@ proposals:
     gates_required:
       - repo-gate
       - termux-smoke
+
+  - id: delphi-oracle-harmonious-intake
+    title: "Delphi Oracle — Harmonious Reconciliation and Research Selection Intake"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/delphi-oracle-harmonious-intake/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_issues:
+      - 1572
+      - 1959
+      - 1963
+    related_prs:
+      - 1630
+    related_branches:
+      - feat/delphi-oracle-harmonious-intake-20261124
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke

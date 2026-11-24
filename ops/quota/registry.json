@@ -3282,60 +3282,54 @@
    }
   },
   {
-   "id": "dockerhub.anonymous_pulls",
+   "id": "dockerhub.personal_pulls_hourly",
    "provider": "dockerhub",
    "lane": "ops",
-   "metric": "Docker Hub anonymous image pulls (runner egress identity)",
+   "metric": "Docker Personal authenticated image pull cap (hourly)",
    "limit": 100,
-   "unit": "pulls/6h",
-   "window": "rolling 6 hours",
-   "reset": "rolling; provider headers expose window; reset timestamp unavailable",
-   "zone": "provider-defined",
-   "source": "https://docs.docker.com/docker-hub/usage/pulls/",
-   "doc_quote": "Unauthenticated Users: 100 per IPv4 address or IPv6 /64 subnet; HEAD returns ratelimit-limit and ratelimit-remaining without consuming a pull.",
-   "live": "GET https://auth.docker.io/token?service=registry.docker.io&scope=repository:ratelimitpreview/test:pull then HEAD https://registry-1.docker.io/v2/ratelimitpreview/test/manifests/latest; parse ratelimit-limit and ratelimit-remaining",
+   "unit": "pulls/hour/user",
+   "window": "hourly",
+   "reset": "hourly; Docker pricing FAQ says pulls pause until the hour resets",
+   "zone": "account",
+   "source": "https://www.docker.com/pricing/",
+   "doc_quote": "Docker Personal includes 100 Docker Hub pulls/hr; the pricing FAQ says free accounts pause until the hour resets.",
+   "live": "Docker Hub Usage page; authenticated account-specific hourly observation pending",
    "planned_use": {
-    "safety": 0.85,
-    "note": "Measures the anonymous egress-IP bucket seen by the polling runner, excludes Docker Personal account usage and total account pull accounting. HEAD probe is documented as non-consuming. Missing headers remain unknown; preserve uncertainty for unlimited or exempt sources."
-   },
-   "limit_diagnostic": {
-    "class": "live-read",
-    "basis": "Docker official pull-limit preview endpoint; anonymous token + HEAD headers; actual limit and remaining are response-derived",
-    "as_of": "2026-11-23"
+    "note": "Preserve the published hourly cap as its own window alongside the six-hour pull limit. Account usage requires authenticated account evidence."
    }
   },
   {
-   "id": "dockerhub.personal_private_repositories",
+   "id": "dockerhub.personal_pulls_6h",
    "provider": "dockerhub",
    "lane": "ops",
-   "metric": "Docker Personal private repository entitlement",
+   "metric": "Docker Personal authenticated image pull cap (six-hour)",
+   "limit": 200,
+   "unit": "pulls/6h/user",
+   "window": "rolling 6 hours",
+   "reset": "rolling; provider headers expose window, not reset timestamp",
+   "zone": "account",
+   "source": "https://docs.docker.com/docker-hub/usage/pulls/",
+   "doc_quote": "Personal (authenticated): 200 pulls per 6 hours.",
+   "live": "Authenticated Docker Hub token + manifest HEAD; account credentials and account-specific observation pending",
+   "planned_use": {
+    "note": "Preserve the six-hour authenticated Personal cap as a separate window from the published hourly cap. The anonymous reader measures runner egress only."
+   }
+  },
+  {
+   "id": "docker.scout_enabled_repositories",
+   "provider": "docker",
+   "lane": "ops",
+   "metric": "Docker Personal Docker Scout enabled repositories",
    "limit": 1,
-   "unit": "private repositories/account",
+   "unit": "repositories/account",
    "window": "point-in-time",
    "reset": "n/a",
    "zone": "account",
    "source": "https://www.docker.com/pricing/",
-   "doc_quote": "Docker Personal includes 1 private Docker Hub repository and unlimited public repositories.",
-   "live": "Docker Hub account Usage/Billing page; account entitlement API reader pending",
+   "doc_quote": "Docker Personal includes 1 Docker Scout-enabled repository.",
+   "live": "Docker Hub / Scout account dashboard; account entitlement reader pending",
    "planned_use": {
-    "note": "Documented entitlement only; account plan and actual private-repository count require account-side evidence. Public repositories are unlimited subject to fair use."
-   }
-  },
-  {
-   "id": "docker.build_cloud_trial",
-   "provider": "docker",
-   "lane": "ops",
-   "metric": "Docker Build Cloud Personal trial",
-   "limit": 7,
-   "unit": "days/trial",
-   "window": "one-time trial",
-   "reset": "expires after 7 days; paid subscription required for continued access",
-   "zone": "account",
-   "source": "https://docs.docker.com/build-cloud/",
-   "doc_quote": "Free Personal accounts may opt in to a 7-day free trial, with the option to subscribe.",
-   "live": "Docker Build Cloud dashboard; account usage API reader pending",
-   "planned_use": {
-    "note": "Conditional one-time trial; classify as temporary access rather than recurring free compute. Build Cloud is a remote builder, available only in US East."
+    "note": "Documented feature entitlement; actual account selection and usage require dashboard evidence."
    }
   }
  ]

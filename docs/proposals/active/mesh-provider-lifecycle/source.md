@@ -16,7 +16,7 @@
 - GitHub branch search on 2026-11-24 returned 27 mesh-named branches and 19 VM-named branches. These are branch names, not runtime counts.
 - PR #5807 records Cloudflare Workers/D1 account inventory and six extended utilization candidates; PR #4020 contains an offline deployment-admission scaffold; PR #1626 records initial official provider evidence.
 - PR #3908, #3628, and #2663 preserve the Fly/Koyeb Hindsight deployment and configuration lineage.
-- PR #5630 hardens BRR's read-only regression and promotion boundary. Issue #5552 records the outstanding private 4,103-branch registry cycle and consumer acceptance.
+- PR #5630 hardens BRR's read-only regression and promotion boundary. Issue #5552 records the outstanding private 4,103-branch registry cycle and consumer acceptance. Issue #5640 explicitly requires BRR delta, commits export, regression suite, and the existing context-relationship graph to join through current substrates.
 
 ## Evidence limits
 

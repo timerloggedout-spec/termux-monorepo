@@ -64,6 +64,10 @@ The form captures selected projects and reconciliation dimensions: objectives, d
 - Human WebView oversight is optional.
 - `execution: false` is immutable in every normalized record. Selection and catalogue operations remain governance records; separate authorization governs experiments, provider calls, live routing, and implementation.
 
+## Execution and human-oversight boundary
+
+This separate intake version normalizes requests and records method, rounds, Question Matrix, panel, and reconciliation configuration for review and catalogue reference. It does not invoke the existing Delphi gate engine or start a Delphi round. The optional WebView checkbox records a human-oversight request; the actual panel session remains an explicit review handoff. Every normalized record fixes execution to false. Selection review and catalogue publication are the workflow's promotion outputs.
+
 ## Disposition
 
 - Selection review: emit an idempotent issue comment and apply the `delphi:selection-review` label; remove the label when the disposition changes away from review.

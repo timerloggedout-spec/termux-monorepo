@@ -47,6 +47,14 @@ def make_dataset(coverage_state="COMPLETE"):
                 "coverage": source_coverage,
                 "url": "https://github.com/timerloggedout-spec/parser-b",
             },
+            {
+                "kind": "context_graph",
+                "repository": repo_c,
+                "sha": SHA_A,
+                "observed_at": "2026-11-23T11:00:00Z",
+                "coverage": source_coverage,
+                "url": "https://github.com/timerloggedout-spec/parser-c",
+            },
         ],
         "cases": [
             {
@@ -173,6 +181,9 @@ class TestBRRCrossRepositoryDoE(unittest.TestCase):
         first = evaluator.evaluate_dataset(dataset)
         second = evaluator.evaluate_dataset(dataset)
         self.assertEqual(first, second)
+        for case_id in {row["case_id"] for row in first["cases"]}:
+            rows = [row for row in first["cases"] if row["case_id"] == case_id]
+            self.assertEqual([row["arm"] for row in rows], rows[0]["assignment_order"])
 
     def test_experiment_records_retain_source_and_target_evidence(self):
         dataset = make_dataset()

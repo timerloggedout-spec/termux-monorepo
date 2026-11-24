@@ -2,6 +2,26 @@ version: 1
 updated_at: '2026-11-21T00:00:00Z'
 updated_by: ChatGPT
 proposals:
+  - id: master-staging-reconciliation
+    title: Master–staging ancestry reconciliation and Termux smoke scope isolation
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/master-staging-reconciliation/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues: []
+    related_prs: []
+    related_branches:
+      - reconcile/master-staging-20261124
+    gates_required:
+      - repo-gate
+      - termux-smoke
   - id: repository-architecture-entry
     title: Repository architecture entry, system taxonomy, and data-flow map
     author: ChatGPT

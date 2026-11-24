@@ -48,7 +48,7 @@ Create a dedicated `docs/design/` estate for user-facing design surfaces, separa
 - [x] Registered in `docs/proposals/registry.yaml`
 - [x] ITEMS.md itemized
 - [x] Operator authorization recorded
-- [ ] Documentation structure and local links validated
+- [x] Documentation structure and local links validated — recursive Git tree check: 17 Markdown files, zero missing local targets
 - [ ] Repo gate and Termux smoke checked
 - [ ] PR checks green on the final head SHA
 - [ ] Closed + moved to `closed/` when terminal

@@ -22,6 +22,12 @@ on:
       - "skyhook/**"
       - "archwiz/termux_*.py"
       - "archwiz/termux/**"
+      - "**/*termux*"
+      - "**/termux/**"
+      - "docs/proposals/active/termux-*/**"
+      - "docs/proposals/active/demo-portal/**"
+      - "docs/proposals/active/archwiz-ui-protocol/**"
+      - "docs/proposals/active/ratatui-tokio-terminal-dashboard/**"
   push:
     branches: [master, master-staging, termux-smoke]
     paths:
@@ -35,6 +41,12 @@ on:
       - "skyhook/**"
       - "archwiz/termux_*.py"
       - "archwiz/termux/**"
+      - "**/*termux*"
+      - "**/termux/**"
+      - "docs/proposals/active/termux-*/**"
+      - "docs/proposals/active/demo-portal/**"
+      - "docs/proposals/active/archwiz-ui-protocol/**"
+      - "docs/proposals/active/ratatui-tokio-terminal-dashboard/**"
   workflow_dispatch:
 
 permissions:

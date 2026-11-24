@@ -5,7 +5,7 @@
 ## Current evidence
 
 - Tribute Dashboard has a shared stylesheet at [`apps/tribute-dashboard/dashboard.css`](../../../apps/tribute-dashboard/dashboard.css) and implementation guidance in its [README](../../../apps/tribute-dashboard/README.md).
-- Repository palette guidance lives in [PALETTE.md](../../ops/PALETTE.md) and [PALETTE-UX-ACCESSIBILITY.md](../../ops/PALETTE-UX-ACCESSIBILITY.md).
+- SHE's [UI/UX control-plane contract](../../ops/SHE-DASHBOARD-UI-UX-CONTROL-PLANE.md) defines its global shell, responsive layout, and status treatment; these are SHE-owned decisions, not automatically global tokens.
 - Dashboard-specific visual conventions belong to their owning dashboard and chart standards.
 
 ## Reuse rules

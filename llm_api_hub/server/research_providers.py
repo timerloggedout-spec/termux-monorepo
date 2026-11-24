@@ -18,7 +18,7 @@ except ImportError:
     import provider_extensions  # type: ignore
     import typhoon_protocol  # type: ignore
 
-SCHEMA = "research-provider-admission/v1"
+SCHEMA = "provider-route-admission/v2"
 ENDPOINTS = {
     "groq": ("https://api.groq.com/openai/v1/chat/completions", ("GROQ_API_KEY",)),
     "huggingface": ("https://router.huggingface.co/v1/chat/completions", ("HUGGINGFACE_TOKEN", "HUGGING_FACE_HUB_TOKEN", "HF_API_TOKEN", "HF_TOKEN")),
@@ -100,7 +100,7 @@ def admitted_models() -> list[str]:
 def _validate_entry(entry: Mapping[str, Any], provider: str, model: str, now: datetime) -> None:
     if entry.get("provider") != provider or entry.get("model") != model:
         raise ProviderAdmissionError(403, "native provider model is not admitted", "provider_not_admitted")
-    if entry.get("free_account_verified") is not True or entry.get("terms_accepted") is not True or entry.get("data_class") != "public":
+    if entry.get("free_account_verified") is not True or entry.get("operator_authorized") is not True or entry.get("data_class") != "public":
         raise ProviderAdmissionError(403, "native provider admission requirements are not satisfied", "provider_not_admitted")
     for field in ("account_type", "plan", "account_status"):
         if field in entry:

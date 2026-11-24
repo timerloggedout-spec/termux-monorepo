@@ -50,11 +50,6 @@ def main():
     print(json.dumps(out))
 
 
-def fly(key):
-    q = {"query": "query { viewer { email } organizations { nodes { slug name type } } }"}
-    return get("https://api.fly.io/graphql", {**bearer(key), "Content-Type": "application/json"},
-               data=json.dumps(q).encode())
-
 
 PROVIDERS = {
     "groq": lambda k: get("https://api.groq.com/openai/v1/models", bearer(k)),
@@ -77,7 +72,6 @@ PROVIDERS = {
     "vercel": lambda k: get("https://api.vercel.com/v2/user", bearer(k)),
     "supabase": lambda k: get("https://api.supabase.com/v1/projects", bearer(k)),
     "pinecone": lambda k: get("https://api.pinecone.io/indexes", {"Api-Key": k}),
-    "fly": fly,
 }
 
 if __name__ == "__main__":

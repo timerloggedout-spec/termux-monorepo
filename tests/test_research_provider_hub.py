@@ -71,6 +71,16 @@ def test_invalid_or_unverified_policy_denied(client, monkeypatch, tmp_path, over
     assert response.status_code == 403
 
 
+
+def test_missing_account_type_denied(client, monkeypatch, tmp_path):
+    monkeypatch.setenv("GROQ_API_KEY", "secret")
+    policy = entry()
+    policy.pop("account_type")
+    monkeypatch.setenv("LLM_API_HUB_PROVIDER_POLICY", str(policy_file(tmp_path, [policy])))
+    response = client.post("/v1/chat/completions", json=request_body())
+    assert response.status_code == 403
+
+
 def test_absent_malformed_or_trial_policy_denied_and_not_listed(client, monkeypatch, tmp_path):
     monkeypatch.setenv("GROQ_API_KEY", "secret")
     monkeypatch.delenv("LLM_API_HUB_PROVIDER_POLICY", raising=False)

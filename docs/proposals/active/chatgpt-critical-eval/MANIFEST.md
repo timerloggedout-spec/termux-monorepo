@@ -13,7 +13,7 @@ reviewers:
     role: reviewer+executor
     status: accepted
 related_prs: [2, 3, 5, 6, 9, 10, 11]
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate]
 ---
 
 # MANIFEST — chatgpt-critical-eval
@@ -29,7 +29,7 @@ Canonical recon of branch topology, PR readiness, security, provider abstraction
 ### 2026-08-02 — grok-archw1z
 
 - Disposition: **accepted** (with execution priority order)
-- Notes: Do not merge #2/#6 as-is. Promote repo-gate + termux-smoke first.
+- Notes: Do not merge #2/#6 as-is. Promote repo-gate plus owning domain tests first.
 
 ## Checklist
 

@@ -121,10 +121,10 @@ def test_retired_provider_pool_has_zero_allocation():
     assert pool["lifecycle"] == "retired"
     assert pool["pacing_multiplier"] == 0.0
     assert pool["slices"] == [
-        {"focus": "winning", "share_pct": 0, "mode": "none",
-         "priority": 99, "flow_per_min": None},
         {"focus": "research", "share_pct": 0, "mode": "none",
          "priority": 1, "flow_per_min": None},
+        {"focus": "winning", "share_pct": 0, "mode": "none",
+         "priority": 99, "flow_per_min": None},
     ]
     assert pool["lane_slices"] == []
     assert pool["matching"]["flag"] == "retired-provider"

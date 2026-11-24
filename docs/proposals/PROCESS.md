@@ -32,7 +32,7 @@ docs/proposals/
 
 ## Consensus
 
-Item-scoped. See `docs/CONSENSUS.md` tiers. P0 needs second mind or Operator. Unposted chat is not consensus.
+Item-scoped. See `docs/CONSENSUS.md` tiers. P0 needs a second mind or Operator. Record consensus in the proposal Review log or `DEBATE.md`.
 
 ## Closing
 
@@ -54,7 +54,7 @@ All ITEMS terminal + Review log outcome + move active/ → closed/ + registry up
 3. Branch off current master
 4. PR → master with Implements: <ITEM-ID>
 5. Update ITEMS.md + registry when possible
-6. Never close P0 security without Operator evidence
+6. Close P0 security after recording Operator evidence
 ```
 
 ## Automation

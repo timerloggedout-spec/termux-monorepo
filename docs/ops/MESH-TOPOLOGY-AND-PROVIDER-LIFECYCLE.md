@@ -1,12 +1,12 @@
 # Mesh topology and provider lifecycle
 
-**Canonical lifecycle contract:** `ops/mesh/provider-lifecycle.json` · `mesh.provider-lifecycle/v1`  
+**Lifecycle authorities:** `docs/ops/DEVOPS-REGISTER.md` §4A and `docs/DEPLOYMENT-LANES.md`; this document is a read-only synthesis.  
 **As of:** 2026-11-23  
 **Scope:** compute mesh, deployment mesh, provider/function lanes, VM nodes, and branch reconciliation.
 
 ## Executive ruling
 
-The repository has several related mesh architectures, not 20+ deployed mesh versions. Provider lifecycle is now centralized in one versioned registry. Historical records remain searchable; retired providers stay excluded from execution admission.
+The repository has several related mesh architectures. Provider lifecycle remains with the existing deployment and operations authorities; historical records remain searchable and retired providers stay excluded from execution admission.
 
 Fly.io and Koyeb are **RETIRED** for this mesh. Their deployment workflows emit retirement receipts and run through manual dispatch only. Their old quota records, deployment history, and commits remain as provenance.
 
@@ -23,7 +23,7 @@ Fly.io and Koyeb are **RETIRED** for this mesh. Their deployment workflows emit 
 | Receiver Mesh | `receiver-mesh-prototype-20261029` lineage | Prototype | Event-receiver experiment; separate from compute request routing |
 | BRR | Private `compute-exports/brr/2026-11-17/registry.json` | 2026-11-17 registry snapshot | Read-only branch reconciliation, branch class, ahead/behind, and feature discovery |
 
-The mesh request protocol, VM node manifest, deployment admission contract, and BRR registry describe different objects. Their version numbers are not interchangeable.
+The mesh request protocol, VM node manifest, deployment admission contract, and BRR registry describe different objects. Treat their version numbers as separate namespaces.
 
 ## VM count and contract count
 
@@ -32,9 +32,9 @@ The compute allocation names **two VM nodes**:
 - **Muse VM:** Temporal, staging index, registry cadence, CLF lab replication, and other assigned batch work.
 - **Hark VM:** request drain, DoE execution, exports, evaluation, and workspace backup.
 
-The Hark node manifest uses `resiliency-node/v1`; the request protocol uses `mesh request schema v1`; the Hark workspace backup registry is separately versioned. These are contract versions for two nodes, not additional VM instances.
+The Hark node manifest uses `resiliency-node/v1`; the request protocol uses `mesh request schema v1`; the Hark workspace backup registry is separately versioned. These are contract versions for the two identified VM nodes.
 
-GitHub branch-name search on 2026-11-23 returned **27 mesh-named branches** and **19 VM-named branches**. These counts include historical, experimental, and competing work branches. They do not establish 27 live meshes or 19 deployed VMs.
+GitHub branch-name search on 2026-11-23 returned **27 mesh-named branches** and **19 VM-named branches**. These counts include historical, experimental and competing work branches; deployed-system counts require runtime evidence.
 
 ## Provider lifecycle
 
@@ -56,12 +56,12 @@ The registry separates provider capability from account connection, quota record
 
 ## Are function providers replacing VMs?
 
-Functions are a separate workload class, not a replacement for the VM plane.
+Functions are a separate workload class alongside the VM plane.
 
 - **Cloudflare Workers:** deployed edge-function execution is evidenced. D1 supplies a separate database capability.
 - **Vercel Functions:** platform capability belongs to the active Vercel application-hosting lane; a distinct deployed function inventory is not established here.
 - **Supabase Edge Functions:** quota capability is registered; deployed function inventory remains unverified.
-- **Leapcell and Appwrite:** function/serverless candidates in PR #5807; candidate status is not production integration.
+- **Leapcell and Appwrite:** function/serverless candidates in PR #5807; candidate status remains separate from production integration.
 - **Deno Deploy, AWS Lambda, Azure Functions, and Cloud Run:** candidate or quota-research surfaces; account eligibility and deployed workloads require their own evidence.
 
 Use VMs for persistent or checkpointed workloads that need a host-level execution environment. Use functions for bounded request/event work with compatible runtime, state, duration, and network constraints. Use databases as state services; they do not become compute nodes by virtue of appearing in the mesh.
@@ -80,14 +80,14 @@ BRR is the read-only discovery and reconciliation layer for branch work. The acc
 | [PR #2663](https://github.com/timerloggedout-spec/termux-monorepo/pull/2663) | Historical Fly/Koyeb configured-instance mapping |
 | [PR #5630](https://github.com/timerloggedout-spec/termux-monorepo/pull/5630) and [issue #5552](https://github.com/timerloggedout-spec/termux-monorepo/issues/5552) | BRR regression hardening and outstanding full-cycle/consumer acceptance |
 
-The full 4,103-branch private BRR registry and its append-only cycle artifact were unavailable to this session. The related-work list above is a bounded GitHub evidence search, not a claim that the private BRR cycle has completed.
+The full 4,103-branch private BRR registry and its append-only cycle artifact remain outside this session's access. The related-work list above is a bounded GitHub evidence search; the private BRR cycle remains pending.
 
 ## Regression controls
 
-1. Provider lifecycle lives in `ops/mesh/provider-lifecycle.json`.
+1. Provider lifecycle remains in the existing deployment-lane SSOT and DevOps register; the infrastructure CMDB design defines the reconciliation model.
 2. Provider workflow discovery preserves lifecycle state; retired workflows carry a `RETIRED` name and manual-dispatch-only trigger.
 3. `scripts/ci/validate_mesh_provider_lifecycle.py` checks registry uniqueness, lifecycle eligibility, retired workflow triggers, and retired provider operations.
-4. Quota records and historical PRs remain available as provenance; they do not grant execution eligibility.
+4. Quota records and historical PRs remain available as provenance; execution eligibility follows the current deployment and operations records.
 5. Provider promotion requires exact workload identity, source SHA, health, protocol, state dependency, quota evidence, and independent failure-domain evidence.
 
 Run the focused contract:

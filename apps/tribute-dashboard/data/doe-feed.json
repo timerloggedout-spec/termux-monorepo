@@ -186,6 +186,24 @@
           "results": null
         },
         {
+          "campaign_id": "brr-cross-repo-doe",
+          "kind": "campaign",
+          "design_record": "experiments/doe/brr-cross-repo-doe/DESIGN.json",
+          "factors": {
+            "retrieval_strategy": [
+              "lexical",
+              "branch_commit",
+              "context_graph",
+              "fused"
+            ]
+          },
+          "design_type": "blocked_repeated_measures_four_arm_comparison",
+          "primary_outcome": "macro F1@5 against the adjudicated verified gold target set",
+          "runs": 0,
+          "state": "admitted_design_only",
+          "results": null
+        },
+        {
           "campaign_id": "cb-1-chronomancer-emission",
           "issue": null,
           "kind": "campaign",
@@ -417,24 +435,6 @@
           "results": null
         },
         {
-          "campaign_id": "brr-cross-repo-doe",
-          "kind": "campaign",
-          "design_record": "experiments/doe/brr-cross-repo-doe/DESIGN.json",
-          "factors": {
-            "retrieval_strategy": [
-              "lexical",
-              "branch_commit",
-              "context_graph",
-              "fused"
-            ]
-          },
-          "design_type": "blocked_repeated_measures_four_arm_comparison",
-          "primary_outcome": "macro F1@5 against the adjudicated verified gold target set",
-          "runs": 0,
-          "state": "admitted_design_only",
-          "results": null
-        },
-        {
           "member_id": "pilot-2-dispatch-topology-x-quota-policy",
           "kind": "campaign_candidate",
           "state": "proposal_only_not_admitted",
@@ -472,6 +472,24 @@
         "primary_outcome": null,
         "runs": 3,
         "state": "executed",
+        "results": null
+      },
+      {
+        "campaign_id": "brr-cross-repo-doe",
+        "kind": "campaign",
+        "design_record": "experiments/doe/brr-cross-repo-doe/DESIGN.json",
+        "factors": {
+          "retrieval_strategy": [
+            "lexical",
+            "branch_commit",
+            "context_graph",
+            "fused"
+          ]
+        },
+        "design_type": "blocked_repeated_measures_four_arm_comparison",
+        "primary_outcome": "macro F1@5 against the adjudicated verified gold target set",
+        "runs": 0,
+        "state": "admitted_design_only",
         "results": null
       },
       {
@@ -701,24 +719,6 @@
         "factors": null,
         "design_type": null,
         "primary_outcome": null,
-        "runs": 0,
-        "state": "admitted_design_only",
-        "results": null
-      },
-      {
-        "campaign_id": "brr-cross-repo-doe",
-        "kind": "campaign",
-        "design_record": "experiments/doe/brr-cross-repo-doe/DESIGN.json",
-        "factors": {
-          "retrieval_strategy": [
-            "lexical",
-            "branch_commit",
-            "context_graph",
-            "fused"
-          ]
-        },
-        "design_type": "blocked_repeated_measures_four_arm_comparison",
-        "primary_outcome": "macro F1@5 against the adjudicated verified gold target set",
         "runs": 0,
         "state": "admitted_design_only",
         "results": null

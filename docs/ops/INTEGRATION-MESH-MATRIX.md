@@ -530,3 +530,17 @@ persists in cache).
 
 *End of matrix. Update rule: refresh from a poll diff or a fresh #184-style
 owner paste; never edit a row from memory alone.*
+
+## 11. Provider lifecycle correction — 2026-11-23
+
+**Authority:** owner retirement decision plus the repository evidence below. The machine-readable lifecycle source is `ops/mesh/provider-lifecycle.json` (`mesh.provider-lifecycle/v1`).
+
+| Provider | Superseding lifecycle | Evidence and execution boundary |
+|---|---|---|
+| Fly.io | **RETIRED** | Historical Hindsight deployment and configuration workflows now emit retirement receipts through manual dispatch. The prior trial-ended/card-required result and unverified billing state remain historical evidence. |
+| Koyeb | **RETIRED** | Historical Hindsight deployment workflow now emits a retirement receipt through manual dispatch. The prior missing `KOYEB_API_TOKEN` and September 2026 run history remain historical evidence. |
+
+The integration census retains provider history and lifecycle classification as separate fields. Generated workflow catalogs may continue to list these workflow paths; the workflow names and lifecycle registry identify their retired state.
+
+Current workload classes remain distinct: Vercel application hosting, Cloudflare Workers/D1 edge and data services, Neon/Supabase database services, Render's image-backed utility path, and GitHub Actions orchestration. The topology/version index lives in `docs/ops/MESH-TOPOLOGY-AND-PROVIDER-LIFECYCLE.md`.
+

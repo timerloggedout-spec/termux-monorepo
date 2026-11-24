@@ -14,7 +14,7 @@ reviewers:
     role: author-executor
     status: executing
 related_issues: [5552, 5640]
-related_prs: [5630]
+related_prs: [5630, 5832]
 related_branches:
   - feat/brr-cross-repo-doe-20261123
 gates_required: [proposal-lifecycle, repo-gate, termux-smoke]
@@ -68,6 +68,7 @@ This campaign is observational and decision-support only. It cannot merge, push,
 
 - [x] Proposal registered and work item itemized
 - [x] Operator directive recorded
+- [x] PR opened: #5832
 - [ ] Independent review recorded
 - [ ] Offline evaluator tests pass on the exact PR head
 - [ ] Canonical EXPERIMENT schema validation passes

@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-24T08:27:54Z)
+# Lane matrix status (2026-11-24T08:31:11Z)
 
-- Master: `de6d5777c5c1e3b403819909d1954a617aee3586`
+- Master: `7310254604f49f46700724bde599f5ea01075a07`
 - Open PRs: **551**
 - Oldest: #47 (110.7d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -23,14 +23,14 @@
 | PR | Days | Lane | Reasons | Title |
 |---:|-----:|------|---------|-------|
 | #1436 | 34.08 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): salvage operational Hindsight das |
-| #2702 | 23.67 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
-| #4069 | 21.17 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
-| #4621 | 20.48 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
+| #2702 | 23.68 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
+| #4069 | 21.18 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
+| #4621 | 20.49 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
 | #4898 | 19.83 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
 | #5034 | 17.73 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
 | #5722 | 3.64 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted routes and bind local Do |
 | #5723 | 3.64 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted review relay and record  |
-| #5724 | 3.63 | EXTRACT | state:unknown, minesweeper-title | fix(jules): replace hosted PR handoff with receipt |
+| #5724 | 3.64 | EXTRACT | state:unknown, minesweeper-title | fix(jules): replace hosted PR handoff with receipt |
 | #47 | 110.7 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
 | #81 | 108.44 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
 | #103 | 107.31 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
@@ -48,15 +48,15 @@
 | #1495 | 33.25 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
 | #1513 | 33.01 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 33.01 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
-| #1516 | 33.0 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
-| #1531 | 32.99 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
+| #1516 | 33.01 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
+| #1531 | 33.0 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
 | #1537 | 32.98 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 32.31 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 31.23 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
 | #1616 | 31.22 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
-| #1617 | 31.21 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
+| #1617 | 31.22 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
 | #1626 | 31.1 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
-| #1645 | 30.33 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
+| #1645 | 30.34 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
 | #1650 | 30.26 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
 | #1694 | 28.29 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
 | #1734 | 27.88 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |

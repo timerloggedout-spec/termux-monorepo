@@ -119,3 +119,10 @@ A fresh Agent Ready scan of the published documentation site completed (scan `3f
 SiteTriage reported HTTP 200 and a hostname-matching TLS certificate for the published Mintlify URL, expiring 2026-12-30. It also observed resolver disagreement for the Mintlify subdomain (Cloudflare and Google returned different A records while Quad9 returned none); recheck after DNS TTL propagation before treating this as persistent. The shared `mintlify.app` email-auth result is provider-domain context, not repository-owned DNS remediation.
 
 The latest Mintlify deployment observed during this pass was live at commit `0cdc0a906380722a2dcebbb9a016ecdfa22d4dd3`. The current PR's Mintlify deployment check was skipped, so this branch has **not** been published or verified live.
+
+
+## Follow-up integration audit — 2026-11-23
+
+**Mobile Agent Testers** — the timerloggedout-spec fork and its agent-testers.yml workflow were inspected. It provides Android emulator / iOS Simulator persona fan-out, custom build inputs, analytics host blocking, encrypted build/persona artifacts, and trusted local collection. The StudySprint Android target is compatible with the custom build-command path; the app-specific brief is proposed in tester-fork PR [#1](https://github.com/timerloggedout-spec/mobile-agent-testers_fork/pull/1). The repository adapter and runbook are being added under proposal mobile-agent-testers-integration. Status: discovered; repo adapter implementation pending CI; no provider run or model spend has occurred. Android is the initial StudySprint target; iOS is outside the inspected app surface. The existing deterministic emulator gate and Termux physical-device queue remain separate providers.
+
+Evidence: [tester fork](https://github.com/timerloggedout-spec/mobile-agent-testers_fork), [workflow](https://github.com/timerloggedout-spec/mobile-agent-testers_fork/blob/main/.github/workflows/agent-testers.yml), [StudySprint runbook](../ops/MOBILE-AGENT-TESTERS-INTEGRATION.md).

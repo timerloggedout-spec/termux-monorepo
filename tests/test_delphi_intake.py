@@ -1,6 +1,7 @@
 """Contract tests for the separate Delphi Oracle general-intake path."""
 from pathlib import Path
 import json
+import re
 import shutil
 import tempfile
 import unittest
@@ -419,6 +420,8 @@ class DelphiIntakeContractTests(unittest.TestCase):
         self.assertIn("DoE Decides", form)
         self.assertIn("Prior default", form)
         self.assertIn("Specific selection", form)
+        form_labels = re.findall(r"^\\s+label:\\s+(.+)$", form, re.M)
+        self.assertEqual(form_labels, list(intake.MODE_HEADINGS))
 
     def test_catalogue_contract_keeps_execution_disabled(self):
         record = self.normalize()

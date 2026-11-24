@@ -22,21 +22,20 @@ Optional: `CLAUDE.md`, `CONTRIBUTING.md`.
 ## Hard Rules
 
 - Target **`master`** for integration work.
-- Both gates must pass before merge:
-  - `python3 scripts/ci/repo_gate.py`
-  - `python3 scripts/ci/termux_smoke.py`
-- Do not invent work outside `docs/proposals/active/<id>/ITEMS.md` — add a row first.
+- Run `python3 scripts/ci/repo_gate.py` for every repository integration change.
+- Run `python3 scripts/ci/termux_smoke.py` for Termux runtime, Android device, and Termux operational changes.
+- Register every work item in `docs/proposals/active/<id>/ITEMS.md` before execution.
 - Cite `Implements: <ITEM-ID>` on PRs/commits.
-- **No** wholesale merge of PR #6 (TER-9) or PR #2 (Rust CI) — see disposition comments.
-- **No** Class 3/4 artifacts in git (session stores, browser profiles, tokens).
-- Unposted chat is not consensus — write Review log or DEBATE.md.
+- Extract NO-GO mega-PR work into independently reviewable slices; see disposition comments for PR #6 (TER-9) and PR #2 (Rust CI).
+- Store Class 3/4 artifacts in approved secure storage; keep git limited to reviewed source and metadata.
+- Record consensus in the proposal Review log or `DEBATE.md`.
 - PR body rewrites: follow `docs/PR-SUMMARY-PROCESS.md` roster (not a single-agent monopoly).
 
 ## Preferred Execution Loop
 
 ```text
 registry.yaml → pick todo item → branch from master
-  → implement → PR with Implements: ID → gates green → merge
+  → implement → PR with Implements: ID → required scope gates green → merge
   → update ITEMS.md status
 ```
 

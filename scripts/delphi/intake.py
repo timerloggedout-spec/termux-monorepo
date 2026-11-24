@@ -300,9 +300,11 @@ def normalize_intake(issue: dict[str, Any], body: str, root: Path) -> dict[str, 
         raise ValueError(f"unknown selection disposition: {disposition}")
 
     raw_round_maximum = _single(fields, "round_maximum") or "3"
-    if not raw_round_maximum.isdigit() or not 2 <= int(raw_round_maximum) <= 10:
-        raise ValueError("round maximum must be an integer from 2 through 10")
+    if not raw_round_maximum.isdigit():
+        raise ValueError("round maximum must be an integer")
     round_maximum = int(raw_round_maximum)
+    if round_profile != "Single-pass (one assessment)" and not 2 <= round_maximum <= 10:
+        raise ValueError("round maximum must be an integer from 2 through 10")
     stopping_criteria = _single(fields, "stopping_criteria")
     if round_profile == "Fixed 2 rounds":
         round_maximum = 2

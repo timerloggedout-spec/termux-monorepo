@@ -51,6 +51,18 @@ class SheEvolveTests(TestCase):
             self.assertTrue(exp.branch.startswith("she/evolve/"))
             self.assertTrue(BASE_GATES.issubset(exp.required_gates))
 
+    def test_termux_scope_is_preserved_in_experiments(self):
+        inc = _inc(
+            source="github.termux-smoke",
+            event_provenance="workflow_run:termux-smoke:failure",
+            fingerprint="termux-smoke:runtime",
+        )
+        plan = plan_evolution(inc)
+        self.assertIn("termux-smoke", plan.required_gates)
+        self.assertTrue(plan.metadata["termux_related"])
+        for experiment in plan.experiments:
+            self.assertIn("termux-smoke", experiment.required_gates)
+
     def test_security_observe_only(self):
         inc = _inc(
             classification="dependabot-high",
@@ -77,7 +89,7 @@ class SheEvolveTests(TestCase):
         self.assertFalse(restored.mutates_source)
         self.assertTrue(BASE_GATES.issubset(restored.required_gates))
 
-    def test_from_mapping_rejects_dropped_dual_gate(self):
+    def test_from_mapping_rejects_dropped_repo_gate(self):
         data = plan_evolution(_inc()).to_mapping()
         data["required_gates"] = [t for t in data["required_gates"] if t != "repo-gate"]
         with self.assertRaisesRegex(EvolveError, "repo gate"):

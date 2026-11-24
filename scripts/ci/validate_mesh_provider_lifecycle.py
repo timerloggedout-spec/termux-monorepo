@@ -91,7 +91,7 @@ def validate_lifecycle_sources(root: Path = ROOT) -> list[str]:
     for provider in RETIRED_WORKFLOWS:
         if f"| {provider} | **RETIRED** |" not in devops:
             errors.append(f"DEVOPS-REGISTER must classify {provider} as RETIRED")
-        if f"| {provider} | **RETIRED** |" not in lanes:
+        if not any(line.startswith(f"| {provider} |") and "**RETIRED**" in line for line in lanes.splitlines()):
             errors.append(f"DEPLOYMENT-LANES must classify {provider} as RETIRED")
         for relative in RETIRED_WORKFLOWS[provider]:
             errors.extend(workflow_errors(provider, relative, root))

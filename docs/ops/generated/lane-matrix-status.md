@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-24T04:20:33Z)
+# Lane matrix status (2026-11-24T04:21:53Z)
 
-- Master: `6b5ee34d23c96e58cb4e016ba977d4e20884b5fd`
+- Master: `5faf13a5b2c0639134c68a2c4060bb0752aff1b3`
 - Open PRs: **548**
 - Oldest: #47 (110.53d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -26,7 +26,7 @@
 | #2702 | 23.5 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
 | #4069 | 21.0 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
 | #4621 | 20.31 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
-| #4898 | 19.65 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
+| #4898 | 19.66 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
 | #5034 | 17.56 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
 | #5722 | 3.46 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted routes and bind local Do |
 | #5723 | 3.46 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted review relay and record  |
@@ -52,7 +52,7 @@
 | #1531 | 32.82 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
 | #1537 | 32.81 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 32.14 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
-| #1614 | 31.05 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
+| #1614 | 31.06 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
 | #1616 | 31.05 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 31.04 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
 | #1626 | 30.92 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |

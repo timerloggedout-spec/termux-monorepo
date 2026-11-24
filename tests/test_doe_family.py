@@ -225,3 +225,13 @@ def test_collector_keeps_unadmitted_design_out_of_campaign_collection():
     candidates = {c["campaign_id"] for c in feeds._doe_candidates()}
     assert "rust-migration-tools" not in campaigns
     assert "rust-migration-tools" in candidates
+
+
+def test_rust_migration_design_declares_balanced_randomization():
+    design = json.loads(
+        (CAMPAIGNS / "rust-migration-tools" / "DESIGN.json").read_text())
+    assignment = design["design"]["assignment"]
+    assert assignment["mechanism"] == "seeded_permutation_without_replacement"
+    assert "every expected task_id" in assignment["validation"]
+    assert "exactly once" in assignment["validation"]
+    assert design["automation"]["status"] == "not_implemented"

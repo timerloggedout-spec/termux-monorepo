@@ -20,7 +20,7 @@ CONFIDENCE = {"high", "medium", "low", "unknown"}
 DECISIONS = {"WATCH", "INVESTIGATE", "PROTOTYPE", "ADOPT", "REJECT", "HOLD"}
 PORTABILITY_TARGETS = {"arm64_linux", "x86_64_linux", "android", "termux", "offline_airgapped"}
 PROCUREMENT_REQUIRED = {
-    "resource_id", "project", "canonical_source", "license", "maintenance", "portability",
+    "resource_id", "project", "canonical_source", "maintenance", "portability",
     "offline_capability", "interoperability", "reproducibility", "provenance",
     "dependency_risk", "lock_in_risk", "security_surface", "resource_cost",
     "operational_fit", "horizon", "confidence", "decision_status", "version_or_commit",
@@ -88,7 +88,7 @@ def validate_procurement_record(record: Any) -> list[str]:
         return ["record: expected JSON object"]
     for key in sorted(PROCUREMENT_REQUIRED - set(record)):
         errors.append(f"{key}: required field missing")
-    for key in ("resource_id", "project", "license", "maintenance", "offline_capability",
+    for key in ("resource_id", "project", "maintenance", "offline_capability",
                 "interoperability", "reproducibility", "provenance", "dependency_risk",
                 "security_surface", "resource_cost", "operational_fit",
                 "version_or_commit"):
@@ -122,7 +122,7 @@ def validate_procurement_record(record: Any) -> list[str]:
             if not nonempty(portability.get(target)):
                 errors.append(f"portability.{target}: required target status missing")
     if record.get("decision_status") == "ADOPT":
-        for field in ("license", "maintenance", "version_or_commit", "offline_capability"):
+        for field in ("maintenance", "version_or_commit", "offline_capability"):
             if unverified(record.get(field)):
                 errors.append(f"ADOPT requires verified {field}; found {record.get(field)!r}")
         if isinstance(portability, dict):

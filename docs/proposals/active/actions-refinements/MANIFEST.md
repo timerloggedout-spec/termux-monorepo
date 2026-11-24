@@ -13,7 +13,7 @@ reviewers:
     role: executor
     status: executing
 related_issues: [192, 175]
-related_prs: [193, 81, 92, 143, 72, 232, 261, 266, 267, 269, 277, 278, 282, 283, 284, 285, 298, 301, 303, 305, 312, 313]
+related_prs: [193, 81, 92, 143, 72, 232, 261, 266, 267, 269, 277, 278, 282, 283, 284, 285, 298, 301, 303, 305, 312, 313, 5838]
 gates_required: [repo-gate, termux-smoke]
 ---
 
@@ -37,6 +37,15 @@ Issue #192 has verified GitHub-native cross-references to Issue #175, PR #193, t
 | Manus AI | author+executor | executing | 2026-08-19 | Created the evidence record and now implements the accepted, bounded AR-01 prerequisite. |
 
 ## Review Log
+
+### 2026-11-23 — ChatGPT / operator direction
+
+- Disposition: **submitted for review**
+- Evidence: AR-32, feature branch `refactor/legal-research-silo-20261123`, and PR #5838. The implementation disables license analysis in the dependency advisory, removes license requirements from both procurement validators and the ADOPT gate, migrates 26 legacy values into `research/legal-licensing/`, removes license metadata from provider snapshots, retains vulnerability findings, and replaces the provider route's legal-status assertion with explicit operator authorization and a required free account class; the provider runbook now documents exact workflow modes and permissions.
+- Scope: Production controls remain technical and evidence-based. The research silo captures public-source observations, provenance, freshness, and uncertainty. Qualified counsel owns legal interpretation.
+- Validation: Repository gate, Termux smoke, provider contract tests, workflow contract tests, and generated documentation validation run on the current PR head.
+- Promotion: Merge after required checks and review evidence pass.
+
 
 ### 2026-08-19 — Manus AI
 - Disposition: **posted**
@@ -107,7 +116,7 @@ Issue #192 has verified GitHub-native cross-references to Issue #175, PR #193, t
 
 - Disposition: **integrated**
 - Evidence: PR #282 merged the AR-10 provider-request evidence hardening at `e916cec2766b6bbc96214767780e0c246ad9b628`. PR #283 merged the AR-14 Jules reliability correction at `64268789a37453958013ce91d45613398b7e9b5d` after contract, gate, smoke, registry, and hosted-review evidence.
-- Decision: AR-14 removes the push trigger instead of creating a no-op job for every repository change, pins the maintained MIT-licensed Jules Action at `bff7875eaa123cac6742b7cfc51005b95ba4d566` (v1.0.0), moves API-key availability detection into a controlled step, requires a trusted label actor, serializes per-issue execution, and adds injection-boundary contract tests.
+- Decision: AR-14 removes the push trigger instead of creating a no-op job for every repository change, pins the maintained Jules Action at `bff7875eaa123cac6742b7cfc51005b95ba4d566` (v1.0.0), moves API-key availability detection into a controlled step, requires a trusted label actor, serializes per-issue execution, and adds injection-boundary contract tests.
 - Safety: The correction preserves only issue-label and trusted-mention request paths. It does not check out PR or issue code, evaluate body/comment text as code, write repository branches, change workflow permissions outside its existing issue-comment scope, or merge any provider-created pull request.
 
 ### 2026-08-21 — Manus AI — AR-15 peer-orchestrator reliability correction

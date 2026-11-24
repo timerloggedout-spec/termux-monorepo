@@ -124,6 +124,14 @@ Shallow gitlinks under `refTemplates/smods/` — reference only, not runtime con
 
 Gitlink ops: `workflow_dispatch` on `.github/workflows/ops-gitlink-lego-fork.yml` pattern (or specialized pin workflows). Gates never init submodules.
 
+## Independent implementation and legal-source research
+
+- Build original implementations from public specifications, templates, documented interfaces, observed behavior, and reproducible interoperability tests; preserve source provenance.
+- Route licensing, copyright, contract, and terms source observations to `research/legal-licensing/README.md`.
+- Keep legal research evidence-only. Route legal interpretation and rights determinations to qualified counsel.
+- Keep production gates technical: tests, vulnerability detection, secret scanning, dependency integrity, privacy controls, authentication, account/budget controls, and explicit operator authorization.
+- Treat `operator_authorized` as an operator-controlled runtime decision, not a legal conclusion.
+
 ## Security
 
 Credential rotation and history rewrite require Operator (human) authorization. See `docs/SECURITY-REMEDIATION.md`. Inventory and last-used evidence live in issue **#184** (names only).

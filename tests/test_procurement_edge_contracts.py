@@ -12,7 +12,6 @@ def procurement_record():
         "resource_id": "example-runtime",
         "project": "Example Runtime",
         "canonical_source": "https://example.org/",
-        "license": "Apache-2.0",
         "maintenance": "Release history reviewed 2026-10-17",
         "portability": {
             "arm64_linux": "VERIFY",
@@ -106,10 +105,19 @@ class ProcurementEdgeContractTests(unittest.TestCase):
         self.assertTrue(any("ADOPT requires verified version_or_commit" in error for error in errors))
         self.assertTrue(any("ADOPT requires explicit tested/verified status for portability.termux" in error for error in errors))
 
+    def test_adopt_accepts_technical_evidence_without_license_field(self):
+        record = procurement_record()
+        record.pop("license", None)
+        record["decision_status"] = "ADOPT"
+        record["maintenance"] = "Maintained; release reviewed 2026-10-17"
+        record["version_or_commit"] = "v1.2.3"
+        record["offline_capability"] = "Offline tested: pass"
+        record["portability"] = {key: "TESTED: PASS" for key in record["portability"]}
+        self.assertEqual(validate_procurement_record(record), [])
+
     def test_accepts_adopt_only_with_explicit_tested_target_statuses(self):
         record = procurement_record()
         record["decision_status"] = "ADOPT"
-        record["license"] = "Apache-2.0"
         record["maintenance"] = "Maintained; release reviewed 2026-10-17"
         record["version_or_commit"] = "v1.2.3"
         record["offline_capability"] = "Offline tested: pass"

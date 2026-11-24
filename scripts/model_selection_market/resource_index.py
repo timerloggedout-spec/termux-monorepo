@@ -14,7 +14,7 @@ from urllib.parse import parse_qsl, urlsplit
 
 SCHEMA_VERSION = "msm-resource-index-v1"
 REGISTRY_SCHEMA = "msm-resource-registry-v1"
-PROVIDER_SCHEMA = "msm-provider-recon-v1"
+PROVIDER_SCHEMA = "msm-provider-recon-v2"
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 HEX64_RE = re.compile(r"^[0-9a-f]{64}$")
 
@@ -61,7 +61,7 @@ def _url(value: Any, label: str) -> str:
 
 def _validate_provider(snapshot: Any) -> tuple[list[dict], set[str]]:
     if not isinstance(snapshot, dict) or snapshot.get("schema_version") != PROVIDER_SCHEMA:
-        _fail("provider snapshot must use msm-provider-recon-v1")
+        _fail("provider snapshot must use msm-provider-recon-v2")
     sources, candidates = snapshot.get("sources"), snapshot.get("model_candidates")
     if not isinstance(sources, list) or not isinstance(candidates, list):
         _fail("provider snapshot requires sources and model_candidates arrays")

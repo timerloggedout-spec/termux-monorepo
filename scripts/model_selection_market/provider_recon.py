@@ -16,12 +16,12 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
-SCHEMA_VERSION = "msm-provider-recon-v1"
+SCHEMA_VERSION = "msm-provider-recon-v2"
 MAX_RESPONSE_BYTES = 8 * 1024 * 1024
 TIMEOUT_SECONDS = 15
 REPOS = {
-    "mnfst/awesome-free-llm-apis": {"license": "UNVERIFIED_UPSTREAM_LICENSE", "files": ("data.json",)},
-    "tashfeenahmed/freellmapi": {"license": "UNVERIFIED_UPSTREAM_LICENSE", "files": ("package.json", "server/src/providers/index.ts")},
+    "mnfst/awesome-free-llm-apis": {"files": ("data.json",)},
+    "tashfeenahmed/freellmapi": {"files": ("package.json", "server/src/providers/index.ts")},
 }
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 MAX_PROVIDER_SOURCE_BYTES = 512 * 1024
@@ -308,7 +308,7 @@ def build_snapshot(fetcher=fetch_bytes) -> dict[str, Any]:
             data = fetcher(url)
             source_files[path] = {"url": url, "sha256": hashlib.sha256(data).hexdigest()}
             raw[path] = data
-        sources.append({"repo": repo, "commit_sha": sha, "license_designation": config["license"], "files": source_files})
+        sources.append({"repo": repo, "commit_sha": sha, "files": source_files})
         if repo.startswith("mnfst/"):
             rows = _claims_mnfst(_json(raw["data.json"], "data.json"))
             candidates.extend({**row, "source_repo": repo} for row in rows)

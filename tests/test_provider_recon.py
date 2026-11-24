@@ -28,7 +28,8 @@ class ProviderReconTests(unittest.TestCase):
         a = recon.build_snapshot(fetch)
         b = recon.build_snapshot(fetch)
         self.assertEqual(a, b)
-        self.assertEqual(a["schema_version"], "msm-provider-recon-v1")
+        self.assertEqual(a["schema_version"], "msm-provider-recon-v2")
+        self.assertTrue(all("license_designation" not in source for source in a["sources"]))
         self.assertEqual([x["commit_sha"] for x in a["sources"]], [shas[r] for r in recon.REPOS])
         for src in a["sources"]:
             for entry in src["files"].values():

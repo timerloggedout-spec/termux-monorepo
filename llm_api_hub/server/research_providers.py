@@ -18,7 +18,7 @@ except ImportError:
     import provider_extensions  # type: ignore
     import typhoon_protocol  # type: ignore
 
-SCHEMA = "research-provider-admission/v1"
+SCHEMA = "provider-route-admission/v2"
 ENDPOINTS = {
     "groq": ("https://api.groq.com/openai/v1/chat/completions", ("GROQ_API_KEY",)),
     "huggingface": ("https://router.huggingface.co/v1/chat/completions", ("HUGGINGFACE_TOKEN", "HUGGING_FACE_HUB_TOKEN", "HF_API_TOKEN", "HF_TOKEN")),
@@ -100,12 +100,16 @@ def admitted_models() -> list[str]:
 def _validate_entry(entry: Mapping[str, Any], provider: str, model: str, now: datetime) -> None:
     if entry.get("provider") != provider or entry.get("model") != model:
         raise ProviderAdmissionError(403, "native provider model is not admitted", "provider_not_admitted")
-    if entry.get("free_account_verified") is not True or entry.get("terms_accepted") is not True or entry.get("data_class") != "public":
+    if entry.get("free_account_verified") is not True or entry.get("operator_authorized") is not True or entry.get("data_class") != "public":
         raise ProviderAdmissionError(403, "native provider admission requirements are not satisfied", "provider_not_admitted")
-    for field in ("account_type", "plan", "account_status"):
+    allowed_account_types = {"free", "free_tier", "free_account", "active_free"}
+    account_type = entry.get("account_type")
+    if not isinstance(account_type, str) or account_type not in allowed_account_types:
+        raise ProviderAdmissionError(403, "native provider account class is not verified free", "provider_not_admitted")
+    for field in ("plan", "account_status"):
         if field in entry:
             value = entry[field]
-            if not isinstance(value, str) or value not in {"free", "free_tier", "free_account", "active_free"}:
+            if not isinstance(value, str) or value not in allowed_account_types:
                 raise ProviderAdmissionError(403, "native provider account is not verified free", "provider_not_admitted")
     raw = entry.get("expires_at")
     if not isinstance(raw, str) or not re.fullmatch(r"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z", raw):

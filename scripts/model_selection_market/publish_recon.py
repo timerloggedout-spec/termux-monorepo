@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any
 
 SNAPSHOT_PATH = "data/model-selection-market/provider-recon.json"
-SCHEMA = "msm-provider-recon-v1"
+SCHEMA = "msm-provider-recon-v2"
 REPO = "timerloggedout-spec/termux-monorepo"
 GATES = ("repo-gate.yml", "termux-smoke.yml")
 

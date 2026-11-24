@@ -105,7 +105,7 @@ B3 is a scheduled/manual, metadata-only operations report with read-only agent p
 
 ## B6 — Advisory Workflow Lint
 
-B6 adds four advisory controls: actionlint for changed automation surfaces, dependency review for declared dependency deltas, CodeQL for Python, JavaScript/TypeScript, and GitHub Actions sources, and Scorecard for repository posture. Actionlint and dependency review have `contents: read` only. CodeQL isolates `security-events: write` to its SARIF-uploading analysis job. Scorecard isolates `security-events: write` and `id-token: write` to its publisher job and permits the upstream Docker tag only after a read-only preflight verifies its reviewed registry digest. No control gains repository-content, PR, issue, comment, action, secret, or direct-push authority; all remain non-required in this batch. Their baselines and promotion decisions are recorded in [B6 actionlint advisory](B6-ACTIONLINT-ADVISORY.md), [B6 dependency-review advisory](B6-DEPENDENCY-REVIEW-ADVISORY.md), [B6 CodeQL advisory](B6-CODEQL-ADVISORY.md), and [B6 Scorecard advisory](B6-SCORECARD-ADVISORY.md).
+B6 adds four advisory controls: actionlint for changed automation surfaces, dependency vulnerability review for declared dependency deltas and its own workflow-source changes (license analysis disabled), CodeQL for Python, JavaScript/TypeScript, and GitHub Actions sources, and Scorecard for repository posture. Actionlint and dependency vulnerability review have `contents: read` only. CodeQL isolates `security-events: write` to its SARIF-uploading analysis job. Scorecard isolates `security-events: write` and `id-token: write` to its publisher job and permits the upstream Docker tag only after a read-only preflight verifies its reviewed registry digest. No control gains repository-content, PR, issue, comment, action, secret, or direct-push authority; all remain non-required in this batch. Their baselines and promotion decisions are recorded in [B6 actionlint advisory](B6-ACTIONLINT-ADVISORY.md), [B6 dependency-vulnerability advisory](B6-DEPENDENCY-REVIEW-ADVISORY.md), [B6 CodeQL advisory](B6-CODEQL-ADVISORY.md), and [B6 Scorecard advisory](B6-SCORECARD-ADVISORY.md).
 
 ## Promotion and Document Inventory
 
@@ -116,7 +116,7 @@ B6 adds four advisory controls: actionlint for changed automation surfaces, depe
 | `ITEMS.md` | AR-01 through AR-08 work-item boundaries. | Remains the item-level authority; B4 remains blocked and AR-08 is documentation-only pending review. |
 | [B1 policy](B1-WORKFLOW-SURFACE-POLICY.md) and [B2 evidence](B2-WORKFLOW-SURFACE-EVIDENCE.md) | Deterministic routing and artifact contracts. | Implemented and carried forward by promotion. |
 | [B3 pilot](B3-AGENTIC-OPERATIONS-PILOT.md) | Read-only agentic workflow, lock file, and bounded output contract. | Implemented and carried forward by promotion. |
-| B6 evidence records | Actionlint, dependency review, CodeQL, and Scorecard advisory controls. | Implemented and verified; Scorecard default-branch run #32332605273 passed its digest preflight and publisher jobs. |
+| B6 evidence records | Actionlint, dependency vulnerability review, CodeQL, and Scorecard advisory controls. | Implemented and verified; Scorecard default-branch run #32332605273 passed its digest preflight and publisher jobs. |
 
 ## References
 

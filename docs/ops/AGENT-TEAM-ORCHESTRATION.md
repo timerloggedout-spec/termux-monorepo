@@ -35,7 +35,7 @@ Required contributor coverage has two separate populations:
 
 **Provider API and research-service lanes** — OpenRouter, FELO, Hugging Face, OmniRoute, Groq, Mistral API, Cerebras, NVIDIA NIM, Aion, LLM7, ModelScope, SiliconFlow, Kilo, OVHcloud, SambaNova, Cloudflare Workers AI, Cohere, and Ollama Cloud. The machine-readable contributor roster tracks these independently from agent roles. Z.ai remains a candidate with an unverified catalog contract, not a completed adapter. Firecrawl's fixed-URL keyless scrape is a public-research service, not an inference provider.
 
-The six-hour [provider availability workflow](../../.github/workflows/provider-availability.yml) follows the canonical catalog-adapter registry. It performs catalog-only probes for configured expanded providers and public LLM7/OVHcloud/ModelScope catalogs; only OpenRouter and Gemini retain inference probes. Unconfigured credentialed providers are not contacted. A passing catalog probe does not prove account entitlement, accepted terms, free quota, inference health, or routing admission. New provider lanes must not be inserted into the agent routing candidate pools unless a real execution adapter and explicit admission contract exist.
+The six-hour [provider availability workflow](../../.github/workflows/provider-availability.yml) follows the canonical catalog-adapter registry. It performs catalog-only probes for configured expanded providers and public LLM7/OVHcloud/ModelScope catalogs; only OpenRouter and Gemini retain inference probes. Unconfigured credentialed providers are not contacted. A passing catalog probe does not prove account entitlement, operator authorization, free quota, inference health, or routing admission. Keep legal-source observations in `research/legal-licensing/`. New provider lanes must not be inserted into the agent routing candidate pools unless a real execution adapter and explicit admission contract exist.
 
 Contributor provenance must retain the provider/model/adapter/role dimensions alongside workflow run/job/step, triggering event, PR/issue, SHA, and attribution confidence. A model response incorporated into a commit does not establish provider authorship. PAT owner, commit author, workflow actor, and model provider are separate fields.
 
@@ -216,7 +216,7 @@ Promotional/free capacity is an experiment opportunity, not a hardcoded route. T
 - start/end time if published
 - discovery timestamp
 - source URL
-- eligibility/terms
+- account and operator-authorization evidence
 
 The scheduler should exploit a verified promotional window while it is open, but must degrade gracefully when it expires. No workflow should require a promotional model by name.
 

@@ -32,7 +32,7 @@ It then requires one unambiguous live catalog record for the exact allowlisted m
 
 A successful receipt additionally requires the expected synthetic reply, matching model identity, and explicit zero usage cost. Only sanitized booleans, fixed reason codes, the public model ID, and request counts are persisted. Neither account metadata nor inference response bodies are artifacts. See [OpenRouter key metadata](https://openrouter.ai/docs/api-reference/limits) and [provider routing and maximum prices](https://openrouter.ai/docs/guides/routing/provider-selection).
 
-This smoke is not production admission, a quota reservation, a free-capacity guarantee, accepted new terms, or permission for recurring inference. It does not write `LLM_API_HUB_PROVIDER_POLICY`, routing weights, provider keys, or account settings. Native production admission remains exact-model, current, public-data-only, and fail-closed.
+This smoke records one bounded inference observation. Production admission, quota reservations, recurring capacity, and operator authorization remain separate controls. Legal-source research lives in `research/legal-licensing/`. It does not write `LLM_API_HUB_PROVIDER_POLICY`, routing weights, provider keys, or account settings. Native production admission remains exact-model, current, public-data-only, and fail-closed.
 
 ## Scheduled health is not inference authorization
 

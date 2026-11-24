@@ -33,9 +33,9 @@ INTENT
       ↓
 PROJECT + AUTHORITY
  ├─ owned / internal
- ├─ open source (license recorded)
- ├─ explicit written authorization (reference recorded)
- └─ otherwise → stop / research-only
+ ├─ public documentation / specifications / templates
+ ├─ operator-authorized interoperability target (scope recorded)
+ └─ unclear target scope → bounded research intake
       ↓
 GAME SHAPE
  ├─ 2D / 2.5D / 3D / mixed
@@ -46,7 +46,7 @@ GAME SHAPE
 PLATFORM + ENGINE
  ├─ web / Android / iOS / desktop / VR-AR / authorized console
  ├─ existing engine? → preserve its version and conventions
- └─ new project? → choose by target, team capability, license and build path
+ └─ new project? → choose by target, team capability, availability and build path
       ↓
 SPECIALIST CONTEXTS
  ├─ game design & systems
@@ -61,7 +61,7 @@ SPECIALIST CONTEXTS
  └─ ML / telemetry / interoperability
       ↓
 TOOL PROFILE + WORK PACKAGES
- ├─ tool versions, licenses, capabilities, availability
+ ├─ tool versions, source provenance, capabilities, availability
  ├─ dependencies and exclusive file ownership
  └─ parallelize only independent packages
       ↓
@@ -86,12 +86,12 @@ Genre is a **facet**, not a fixed team identity. A strategy game can need networ
 | Candidate | Best-fit context | Agent/tool integration | Important boundary |
 |---|---|---|---|
 | **Godot 4** | Open-source 2D/3D, desktop/mobile, rapid prototypes. | Editor CLI, headless import/export, GdUnit4 CLI tests. | Pin engine/export-template versions; graphical checks still need a render-capable runner. |
-| **Unity 6+** | Broad 2D/3D/mobile/VR production and established asset ecosystems. | Unity CLI, official agent skills and MCP mode; editor automation. | Unity's MCP mode requires Unity 6+; licenses and package versions must be recorded. |
+| **Unity 6+** | Broad 2D/3D/mobile/VR production and established asset ecosystems. | Unity CLI, official agent skills and MCP mode; editor automation. | Unity's MCP mode requires Unity 6+; source provenance and package versions must be recorded. Legal-source observations live in `research/legal-licensing/`. |
 | **Unreal Engine 5** | High-fidelity 3D, complex worlds, C++/Blueprint workflows. | Unreal Automation Framework, commandlets, Python/editor scripting where supported. | Large resource footprint; schedule heavy builds/renders on remote runners. |
 | **Phaser 4** | 2D browser games, playables and web-first experiences. | JavaScript/TypeScript, npm/pnpm/bun scaffolds, browser automation. | Phaser is 2D; use another engine/library for full 3D or console-native targets. |
 | **Custom/runtime-specific** | Existing project or constrained embedded/experimental target. | Existing build/test scripts and explicit adapters. | Do not introduce a new engine solely to satisfy a generic agent preference. |
 
-Selection is evidence-based. The intake records the chosen engine and version, alternatives considered, target platform, licensing, export path, CI runner needs and migration risk. The repository does not assume an engine is installed because it appears in this table.
+Selection is evidence-based. The intake records the chosen engine and version, alternatives considered, target platform, export path, CI runner needs, source provenance, and migration risk. Licensing-source observations belong in `research/legal-licensing/`; legal interpretation is a qualified-counsel responsibility. The repository does not assume an engine is installed because it appears in this table.
 
 ## 4. Specialist contexts and matched tooling
 
@@ -106,14 +106,14 @@ Tool names below are candidate tool profiles. A task must resolve each selected 
 | **2D Art & UI Assets** | Sprites, tiles, icons, atlases, UI assets and image processing. | Krita; Aseprite/LibreSprite; ImageMagick; TexturePacker or engine atlas tools. | Dimensions/alpha/atlas checks; asset references resolve; visual review. |
 | **3D Art & Environment** | Meshes, materials, scenes, environment assembly, import/export. | Blender + Python API/background mode; glTF tooling; mesh validators. | Batch export; scale/orientation/material checks; target-engine import proof. |
 | **Animation & Rigging** | Skeletons, retargeting, clips, blend trees and animation state. | Blender; engine animation graph/state-machine tools; glTF animation. | Skeleton/clip integrity; transition tests; in-engine capture. |
-| **Audio Engineering** | SFX, music integration, spatial audio, buses, mixing and runtime audio. | Audacity; FFmpeg; engine audio; FMOD/Wwise when license and project fit are verified. | Format/sample-rate checks; event/bus resolution; runtime playback and mix review. |
+| **Audio Engineering** | SFX, music integration, spatial audio, buses, mixing and runtime audio. | Audacity; FFmpeg; engine audio; FMOD/Wwise when technical fit and availability are verified. | Format/sample-rate checks; event/bus resolution; runtime playback and mix review. |
 | **Physics & Simulation** | Collision, rigid bodies, vehicles, navigation constraints and simulation. | Engine physics; Box2D/Jolt/Bullet where suitable; deterministic simulation harnesses. | Fixed-seed replay; collision edge cases; stability and performance envelope. |
 | **AI & NPC Systems** | Behavior trees, utility AI, pathfinding, tactical planning and opponent policies. | Engine navigation/AI; behavior-tree tools; Python experiment harness. | Scenario success, stuck-state detection, policy regression and bounded runtime. |
 | **Networking & Multiplayer** | Replication, authority, matchmaking, lobby/session flow and server simulation. | ENet/WebSockets; Nakama/Colyseus when appropriate; Wireshark; network emulation. | Controlled test server; synchronization/reconnect tests; latency/loss evidence. |
 | **UI/UX & Accessibility** | Menus, HUD, interaction, keyboard/controller/touch, localization and assistive paths. | Engine UI toolkit; Playwright for browser games; axe-core; screenshot/interaction harnesses. | Keyboard/controller navigation; contrast/text scaling; focus and accessibility regression. |
 | **Tools & Content Pipeline** | Editors, importers, procedural tools, validators and asset build pipelines. | Blender Python; engine editor scripting; Python/Node CLI; JSON Schema. | Deterministic output; schema validation; idempotence; fixture-based tests. |
 | **Platform & Performance** | Mobile lifecycle, device input, memory, CPU/GPU, thermal and frame pacing. | Android Studio Profiler; Perfetto; Tracy; RenderDoc; platform profilers. | Device/build matrix; p50/p95 frame time; memory/thermal budgets; resume/suspend tests. |
-| **Build, Release & CI/CD** | Reproducible builds, packaging, signing integration, versioning and release automation. | Engine exporters; GitHub Actions; artifact manifests; SBOM/license tools. | Rebuild parity; artifact hash; clean install/launch; release checklist. |
+| **Build, Release & CI/CD** | Reproducible builds, packaging, signing integration, versioning and release automation. | Engine exporters; GitHub Actions; artifact manifests; SBOM/dependency inventory tools. | Rebuild parity; artifact hash; clean install/launch; release checklist. |
 | **ML, Vision & Telemetry** | Training/evaluation environments, screen/state perception, action control, replay analysis. | Unity ML-Agents; Gymnasium; Stable-Baselines3; PettingZoo; OpenCV; ONNX Runtime; Hugging Face datasets/Spaces. | Fixed benchmark tasks/seeds; train/eval separation; policy and telemetry receipts. |
 | **Interoperability / Reverse Engineering** | Authorized format compatibility, protocol mapping, dependency/asset analysis and migration. | Ghidra; JADX; Apktool; Frida; mitmproxy; format-specific parsers. | Registered target, provenance, authorization, bounded capture, static/dynamic cross-validation. |
 
@@ -123,7 +123,7 @@ Every tool profile records:
 
 - stable `tool_profile_id`, profile version and canonical upstream;
 - supported specialist contexts, platform and engine versions;
-- license/terms and whether commercial or hosted access is required;
+- public-source statements about hosting, account prerequisites, and technical availability; route legal-source observations to `research/legal-licensing/`;
 - executable name/API/adapter and reproducible invocation;
 - verified version or explicit `not_established` state;
 - inputs, outputs, evidence types and artifact retention policy;
@@ -146,7 +146,7 @@ Default decomposition:
 5. **Build verifier** runs static checks, engine import/build/export and deterministic tests.
 6. **Playtest agent** executes approved scenarios against the built artifact and returns traces/replay/capture evidence.
 7. **Independent QA/accessibility reviewer** reproduces outcomes without relying on the builder's self-report.
-8. **Release reviewer** checks artifact provenance, license/attribution, platform requirements and rollback/recovery.
+8. **Release reviewer** checks artifact provenance, source attribution, platform requirements and rollback/recovery.
 
 Initial fan-out is bounded to **three independent specialist packages** unless the issue explicitly justifies a larger dependency-safe wave and the manager approves it. Shared scene files, project manifests and engine configuration have one declared writer at a time.
 
@@ -169,13 +169,13 @@ Use the narrowest applicable checks first, but do not mistake a lower-level pass
 
 | Level | Verification | Example evidence |
 |---|---|---|
-| **V0 — Contract/static** | Schema, source, asset references, lint, type checks, dependency/license checks. | Validator output, source diff, asset manifest. |
+| **V0 — Contract/static** | Schema, source, asset references, lint, type checks, dependency integrity checks. | Validator output, source diff, asset manifest. |
 | **V1 — Logic/unit** | Pure logic, state transitions, physics helpers, save/load, deterministic rules. | Unit test report, fixed-seed output. |
 | **V2 — Engine/import/build** | Engine project import, resource compilation, shader compile, build/export. | Engine version, build log, artifact hash. |
 | **V3 — Runtime interaction** | Launch actual build; scripted input; scene transitions; UI and gameplay actions. | Runtime log, trace, screenshots/video, interaction receipt. |
 | **V4 — Scenario/playtest** | Objective completion, exploratory coverage, regression replay, accessibility paths. | Scenario report, replay reference, defect reproduction. |
 | **V5 — Platform/performance** | Device/browser matrix, memory/frame-time/thermal/network budgets, lifecycle. | Profile capture, p50/p95 metrics, platform matrix. |
-| **V6 — Release readiness** | Independent review, provenance/license, packaging, rollback, release checklist. | Reviewer verdict, signed/hashed artifact manifest, release receipt. |
+| **V6 — Release readiness** | Independent review, provenance/source attribution, packaging, rollback, release checklist. | Reviewer verdict, signed/hashed artifact manifest, release receipt. |
 
 A code-only review cannot certify visual fidelity, interaction behavior or a successful playthrough. Visual/runtime feedback is a required evidence leg for tasks that change visual or interactive behavior.
 
@@ -217,7 +217,7 @@ DoE owns specialist population improvement. Game Development supplies stable tas
 
 ## 9. Safety, scope and stop conditions
 
-Only project-owned, open-source, or explicitly authorized targets are eligible. Use controlled test accounts and project-controlled servers. No DRM/anti-cheat bypass, cracking, warez, unauthorized target probing, third-party exploitation or real-money wagering. Do not commit credentials, private captures, personal data or unlicensed assets.
+Use project-owned targets, public specifications/templates, and operator-authorized interoperability targets. Use controlled test accounts and project-controlled servers. No DRM/anti-cheat bypass, cracking, warez, unauthorized target probing, third-party exploitation or real-money wagering. Do not commit credentials, private captures, personal data or assets without source provenance or owner authorization.
 
 Stop and request review when authorization is unclear, an artifact cannot be identified, the tool profile is unverified, a build changes external state, a work package exceeds its scope, a runner lacks required resources, or the verifier cannot reproduce the result.
 

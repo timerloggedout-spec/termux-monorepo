@@ -1,5 +1,5 @@
 name: Provider batch production contracts
-# No scheduler or routing activation. Manual observations run trusted master only.
+# PR/master triggers run offline contracts; manual observations use trusted default-branch code.
 on:
   workflow_dispatch:
     inputs:

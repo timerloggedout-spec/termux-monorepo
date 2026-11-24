@@ -11,7 +11,6 @@ The B6 pilot performs a narrow GitHub Actions syntax, expression, and ShellCheck
 | Criterion | Review result |
 |---|---|
 | Tool | `rhysd/actionlint` v1.7.12 at immutable commit `914e7df21a07ef503a81201c76d2b11c789d3fca`. |
-| License | MIT. |
 | Maintenance signal | The repository was not archived and had GitHub activity in July–August 2026 when reviewed. |
 | Invocation | The workflow fetches and verifies the exact source revision, then builds `./cmd/actionlint`. It uses neither a mutable action tag nor `curl | bash`. |
 | First-party dependencies | `actions/checkout` v5 and `actions/setup-go` v5 use immutable 40-character commit SHAs. Checkout disables persisted credentials. |

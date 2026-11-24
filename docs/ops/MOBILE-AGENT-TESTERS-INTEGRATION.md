@@ -10,7 +10,7 @@
 | Mobile Agent Testers | Exploratory persona journeys, accessibility/layout observations, bug reproduction | Advisory finding source |
 | Termux device registry + pull queue | Persistent physical-device task admission, leases, receipts, and telemetry | Existing physical-device control plane |
 
-The providers stay separate. Findings converge through the existing Integration Intelligence event schema; the adapter does not create another scheduler or control devices.
+Keep the providers separate. Route findings through the existing Integration Intelligence event schema; preserve existing scheduler and device-control ownership.
 
 ## Verified provider contract
 
@@ -69,7 +69,7 @@ The external workflow input values are public run metadata. Put credentials and 
 2. grace + layla: 200% font and Arabic RTL after the app's localization support is confirmed.
 3. lucia + kenji: tablet layout and Japanese locale after the first batches are reviewed.
 
-The provider's persona library includes device/OS profiles that may fall back to Pixel 6 when a named AVD profile is unavailable. Treat the actual device profile in the collected report as the evidence, not the requested persona label.
+The provider's persona library includes device/OS profiles that may fall back to Pixel 6 when a named AVD profile is unavailable. Record the actual device profile in the collected report as evidence; use the requested persona label as planning metadata.
 
 ### Suggested test objectives
 
@@ -131,8 +131,8 @@ The adapter reads */results/*/findings.json. It emits one event per issue with a
 - Use the provider's analytics host blocklist and synthetic app data.
 - Public GitHub Actions logs/artifacts are public surfaces; rely on the provider's encryption flow and verify every artifact name/status.
 - Set a per-run model budget and a small persona batch.
-- Do not dispatch paid runs automatically from pull-request events.
-- Do not connect this provider to the Termux physical-device queue. Physical-device tasks remain allowlisted and lease/receipt controlled.
+- Dispatch paid runs manually after per-run budget approval.
+- Keep this provider separate from the Termux physical-device queue; keep physical-device tasks allowlisted and lease/receipt controlled.
 
 ## Failure and triage
 
@@ -140,7 +140,7 @@ The adapter reads */results/*/findings.json. It emits one event per issue with a
 |---|---|
 | APK build fails | Inspect encrypted build log on trusted collector; preserve deterministic emulator lane |
 | AVD profile unavailable | Record fallback profile from result metadata |
-| Persona auth/model failure | Mark run incomplete; do not treat missing findings as clean |
+| Persona auth/model failure | Classify missing findings as incomplete coverage |
 | Empty or malformed findings | Adapter skips malformed files and reports diagnostics to stderr |
 | AI-only observation | Keep validation_status=pending; human/deterministic reproduction required |
 | Confirmed regression | Add deterministic regression test, then rerun emulator and repository gates |

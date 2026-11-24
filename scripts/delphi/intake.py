@@ -333,8 +333,8 @@ def normalize_intake(issue: dict[str, Any], body: str, root: Path) -> dict[str, 
     doe_target_selection_pending = mode == "DoE Decides" and required_reference_count > 0
     confirmed_project_ids = [] if mode == "DoE Decides" else project_ids
     confirmed_reference_items = [] if mode == "DoE Decides" else target_reference_items
-    candidate_project_ids = project_ids if mode == "DoE Decides" else []
-    candidate_reference_items = target_reference_items if mode == "DoE Decides" else []
+    candidate_project_ids = project_ids if doe_target_selection_pending else []
+    candidate_reference_items = target_reference_items if doe_target_selection_pending else []
     resolved_reference_count = len(
         set(confirmed_project_ids) | set(confirmed_reference_items)
     )

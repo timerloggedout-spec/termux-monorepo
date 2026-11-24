@@ -24,9 +24,9 @@ Evaluate whether a learner can understand the current study state, move between 
 - Distinguish an app defect from a missing feature, unsupported locale, test-environment failure, or persona expectation.
 - Mark uncertain observations as uncertain.
 - Preserve each persona's independent finding; duplicate grouping is only a hypothesis.
-- Use no real email, personal account, real learner data, or external service account.
-- Do not alter device settings outside the assigned persona profile.
-- Do not clear app data, uninstall, or change production state.
+- Use only synthetic email addresses, test accounts, learner content, and local app state.
+- Keep device settings within the assigned persona profile.
+- Preserve the app installation and isolated emulator state throughout the run.
 
 ## StudySprint-specific checks
 
@@ -35,7 +35,7 @@ Evaluate whether a learner can understand the current study state, move between 
 - Check that long text and large font sizes remain readable and actionable.
 - Check that dark mode maintains readable contrast.
 - Check Reader content for clipping and scroll behavior.
-- Report unsupported languages as coverage gaps, not confirmed translation defects.
+- Classify unsupported languages as coverage gaps; reserve confirmed translation defects for supported locales.
 
 ## Final output
 

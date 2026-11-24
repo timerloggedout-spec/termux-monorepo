@@ -276,3 +276,12 @@ Publish a decision record with chosen topology, rejected alternatives, score/unc
 ## 16. Change control
 
 Update this RFP through reviewable commits. Any scoring-weight change must state why and preserve the prior version. Provider terms and quota snapshots are append-only observations; do not silently rewrite history. A recommendation is valid only for the workload profile, evidence timestamps, and policy version it evaluated.
+
+## 17. Provider lifecycle correction — 2026-11-23
+
+Fly.io and Koyeb move to **RETIRED** in the repository's provider lifecycle registry. Their former Hindsight workflows now publish retirement receipts through manual dispatch. The prior provider terms, quota rows, deployment attempts, and configuration commits remain historical evidence.
+
+The current workload comparison focuses on verified or explicitly pending lanes: GitHub Actions, Vercel, Cloudflare Workers/D1, Neon, Supabase, Render, static publication, and separately evaluated function candidates. Function runtimes and VM hosts remain distinct workload classes.
+
+Lifecycle authority: `ops/mesh/provider-lifecycle.json`. Provider selection follows workload fit, source-SHA provenance, health, state dependencies, quota evidence, and failure-domain independence.
+

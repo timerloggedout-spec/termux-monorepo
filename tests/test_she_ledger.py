@@ -7,7 +7,7 @@ from unittest import TestCase, main
 
 from she.incident import Incident, IncidentState
 from she.ledger import EvidenceLedger, LedgerError, plan_ledger
-from she.verify import DUAL_GATES, plan_verification
+from she.verify import BASE_GATES, plan_verification
 
 FIXED = datetime(2026, 8, 28, 18, 0, tzinfo=UTC)
 
@@ -46,7 +46,7 @@ class SheLedgerTests(TestCase):
         self.assertFalse(ledger.live)
         self.assertFalse(ledger.persisted)
         self.assertFalse(ledger.mutates_source)
-        self.assertTrue(DUAL_GATES.issubset(ledger.required_gates))
+        self.assertTrue(BASE_GATES.issubset(ledger.required_gates))
         kinds = [e.kind for e in ledger.entries]
         self.assertEqual(kinds, ["incident", "verification", "promotion", "learning"])
 
@@ -63,7 +63,7 @@ class SheLedgerTests(TestCase):
         )
         ledger = plan_ledger(inc)
         self.assertEqual(ledger.promotion_decision, "observe-only")
-        self.assertTrue(DUAL_GATES.issubset(ledger.required_gates))
+        self.assertTrue(BASE_GATES.issubset(ledger.required_gates))
         self.assertIn("security-checks", ledger.required_gates)
         self.assertTrue(ledger.metadata["security"])
 
@@ -80,12 +80,12 @@ class SheLedgerTests(TestCase):
         self.assertEqual(restored.promotion_decision, "hold")
         self.assertFalse(restored.persisted)
         self.assertFalse(restored.live)
-        self.assertTrue(DUAL_GATES.issubset(restored.required_gates))
+        self.assertTrue(BASE_GATES.issubset(restored.required_gates))
 
     def test_from_mapping_rejects_dropped_dual_gate(self):
         data = plan_ledger(_inc()).to_mapping()
         data["required_gates"] = [g for g in data["required_gates"] if g != "repo-gate"]
-        with self.assertRaisesRegex(LedgerError, "dual gates"):
+        with self.assertRaisesRegex(LedgerError, "repo gate"):
             EvidenceLedger.from_mapping(data)
 
     def test_rejects_mismatched_verification(self):

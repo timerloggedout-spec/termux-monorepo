@@ -1,6 +1,6 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-24T14:18:23Z",
+ "read_at": "2026-11-24T14:20:17Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
   {
@@ -1956,10 +1956,36 @@
  ],
  "open": [
   {
+   "number": 5841,
+   "title": "chore(docs): remove AGENTS entrypoint and projections",
+   "merged_at": null,
+   "updated_at": "2026-11-24T14:20:15Z",
+   "created_at": "2026-11-24T14:18:52Z",
+   "merge_commit_sha": "884c91dacbf6c304430c732b333d3b73bb253894",
+   "head_ref": "chore/remove-agents-file-footprint",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5841",
+   "merged": false
+  },
+  {
+   "number": 3890,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "merged_at": null,
+   "updated_at": "2026-11-24T14:18:58Z",
+   "created_at": "2026-11-02T13:39:06Z",
+   "merge_commit_sha": "5d9f554671fe527a8779795a49c51262800e2f1d",
+   "head_ref": "telemetry-ingest/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
+   "merged": false
+  },
+  {
    "number": 3916,
    "title": "chore(reviewer-metrics): regenerate provider x context map",
    "merged_at": null,
-   "updated_at": "2026-11-24T14:17:17Z",
+   "updated_at": "2026-11-24T14:18:25Z",
    "created_at": "2026-11-02T13:54:36Z",
    "merge_commit_sha": "77254a1b4213d3e7da5e5643c832316bd02d8314",
    "head_ref": "reviewer-metrics/refresh",
@@ -1979,19 +2005,6 @@
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2310",
-   "merged": false
-  },
-  {
-   "number": 3890,
-   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-   "merged_at": null,
-   "updated_at": "2026-11-24T14:13:35Z",
-   "created_at": "2026-11-02T13:39:06Z",
-   "merge_commit_sha": "27e857b36402ba1ef8d568a4bd61a905ff857eba",
-   "head_ref": "telemetry-ingest/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
    "merged": false
   },
   {
@@ -4548,19 +4561,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5330",
-   "merged": false
-  },
-  {
-   "number": 5376,
-   "title": "Exclude deferred and QDesk tasks from provider dispatch",
-   "merged_at": null,
-   "updated_at": "2026-11-13T19:27:24Z",
-   "created_at": "2026-11-13T19:21:10Z",
-   "merge_commit_sha": "f62a76ee45af877010176810e2d4ddf1bd552781",
-   "head_ref": "fix/dispatch-executor-admission-boundary-master-20261113",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5376",
    "merged": false
   }
  ],

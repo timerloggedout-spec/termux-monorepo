@@ -200,6 +200,14 @@ def test_blocked_assignment_is_a_permutation_per_block():
         pass
     else:
         raise AssertionError("duplicate treatment assignment must be rejected")
+    try:
+        doe.validate_blocked_assignments(
+            [{"block": list(blocks[0]), "treatments": treatments}],
+            treatments, blocks)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("missing expected blocks must be rejected")
 
 
 def test_rust_migration_study_remains_unadmitted_candidate():

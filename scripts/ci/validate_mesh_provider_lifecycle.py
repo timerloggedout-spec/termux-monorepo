@@ -1,123 +1,111 @@
 #!/usr/bin/env python3
-"""Validate the canonical mesh provider lifecycle and retired workflow guards."""
+"""Validate provider retirement against existing deployment and operations authorities."""
 
 from __future__ import annotations
 
-import json
 import re
 import sys
 from pathlib import Path
-from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
-REGISTRY = ROOT / "ops/mesh/provider-lifecycle.json"
-ALLOWED_STATES = {
-    "active",
-    "active-capacity-constrained",
-    "active-partial",
-    "integrated-partial",
-    "repo-wired-health-pending",
-    "configured-publication-unverified",
-    "allocated",
-    "compute-enabled",
-    "retired",
+DEVOPS_REGISTER = Path("docs/ops/DEVOPS-REGISTER.md")
+DEPLOYMENT_LANES = Path("docs/DEPLOYMENT-LANES.md")
+RETIRED_WORKFLOWS = {
+    "Fly.io": (
+        ".github/workflows/deploy-hindsight.yml",
+        ".github/workflows/fly-hindsight-config.yml",
+    ),
+    "Koyeb": (
+        ".github/workflows/koyeb-hindsight-deploy.yml",
+    ),
 }
-FORBIDDEN_RETIRED_MARKERS = (
-    "FLY_API_TOKEN",
-    "secrets.FLY_IO_ORG_TOKEN",
-    "fly deploy",
-    "fly secrets set",
-    "fly machine restart",
-    "KOYEB_TOKEN",
-    "KOYEB_API_TOKEN",
-    "secrets.KOYEB_API_TOKEN",
-    "app.koyeb.com/v1",
-    "curl -X DELETE",
-    "curl -sf -X DELETE",
-)
+FORBIDDEN_OPERATIONS = {
+    "Fly.io": (
+        "FLY_API_TOKEN",
+        "secrets.FLY_IO_ORG_TOKEN",
+        "fly deploy",
+        "fly secrets",
+        "fly machine",
+        "fly volumes",
+    ),
+    "Koyeb": (
+        "KOYEB_API_TOKEN",
+        "secrets.KOYEB_API_TOKEN",
+        "api.koyeb.com",
+        "app.koyeb.com",
+        "curl -x delete",
+        "curl --request delete",
+    ),
+}
 
 
-def _workflow_triggers(content: str) -> set[str]:
-    lines = content.splitlines()
+def workflow_triggers(content: str) -> set[str]:
+    """Read top-level trigger keys from the workflow's YAML text."""
     active = False
     triggers: set[str] = set()
-    for line in lines:
+    for line in content.splitlines():
         if line == "on:":
             active = True
             continue
-        if active and line and not line.startswith((" ", "\t", "#")):
+        if active and line and not line.startswith((" ", "\\t", "#")):
             break
         if active:
-            match = re.match(r"^  ([A-Za-z0-9_-]+):(?:\s|$)", line)
+            match = re.match(r"^  ([A-Za-z0-9_-]+):(?:\\s|$)", line)
             if match:
                 triggers.add(match.group(1))
     return triggers
 
 
-def validate_registry(document: dict[str, Any], root: Path = ROOT) -> list[str]:
+def workflow_errors(provider: str, relative: str, root: Path = ROOT) -> list[str]:
+    path = root / relative
+    if not path.is_file():
+        return [f"{provider}: retired workflow missing: {relative}"]
+    content = path.read_text(encoding="utf-8")
     errors: list[str] = []
-    if document.get("schema") != "mesh.provider-lifecycle/v1":
-        errors.append("schema must equal mesh.provider-lifecycle/v1")
-    providers = document.get("providers")
-    if not isinstance(providers, list):
-        return errors + ["providers must be an array"]
+    name = next((line for line in content.splitlines() if line.startswith("name:")), "")
+    if not name.startswith("name: RETIRED"):
+        errors.append(f"{provider}: workflow name must carry RETIRED: {relative}")
+    if workflow_triggers(content) != {"workflow_dispatch"}:
+        errors.append(f"{provider}: workflow triggers must equal workflow_dispatch: {relative}")
+    lowered = content.lower()
+    for marker in FORBIDDEN_OPERATIONS[provider]:
+        if marker.lower() in lowered:
+            errors.append(f"{provider}: active provider operation remains ({marker}): {relative}")
+    return errors
 
-    seen: set[str] = set()
-    for provider in providers:
-        if not isinstance(provider, dict):
-            errors.append("provider entries must be objects")
-            continue
-        provider_id = provider.get("id")
-        if not isinstance(provider_id, str) or not provider_id:
-            errors.append("provider id must be a non-empty string")
-            continue
-        if provider_id in seen:
-            errors.append(f"duplicate provider id: {provider_id}")
-        seen.add(provider_id)
 
-        state = provider.get("state")
-        if state not in ALLOWED_STATES:
-            errors.append(f"{provider_id}: unsupported lifecycle state {state!r}")
-        eligible = provider.get("execution_eligible")
-        if not isinstance(eligible, bool):
-            errors.append(f"{provider_id}: execution_eligible must be boolean")
-        if state == "retired":
-            if eligible is not False:
-                errors.append(f"{provider_id}: retired providers require execution_eligible=false")
-            workflows = provider.get("retired_workflows", [])
-            if not isinstance(workflows, list) or not workflows:
-                errors.append(f"{provider_id}: retired providers require retired_workflows")
-                continue
-            for relative in workflows:
-                path = root / relative
-                if not path.is_file():
-                    errors.append(f"{provider_id}: retired workflow missing: {relative}")
-                    continue
-                content = path.read_text(encoding="utf-8")
-                name = next((line for line in content.splitlines() if line.startswith("name:")), "")
-                if not name.startswith("name: RETIRED"):
-                    errors.append(f"{provider_id}: workflow name must carry RETIRED: {relative}")
-                triggers = _workflow_triggers(content)
-                if triggers != {"workflow_dispatch"}:
-                    errors.append(f"{provider_id}: retired workflow triggers must equal workflow_dispatch: {relative}")
-                for marker in FORBIDDEN_RETIRED_MARKERS:
-                    if marker.lower() in content.lower():
-                        errors.append(f"{provider_id}: retired workflow contains active provider operation marker {marker!r}: {relative}")
+def validate_lifecycle_sources(root: Path = ROOT) -> list[str]:
+    """Validate the existing SSOTs and the retired workflow execution boundary."""
+    errors: list[str] = []
+    devops_path = root / DEVOPS_REGISTER
+    lanes_path = root / DEPLOYMENT_LANES
+    if not devops_path.is_file():
+        return [f"missing lifecycle authority: {DEVOPS_REGISTER}"]
+    if not lanes_path.is_file():
+        return [f"missing deployment authority: {DEPLOYMENT_LANES}"]
+
+    devops = devops_path.read_text(encoding="utf-8")
+    lanes = lanes_path.read_text(encoding="utf-8")
+    if "## §4A Superseding provider lifecycle disposition — 2026-11-23" not in devops:
+        errors.append("DEVOPS-REGISTER requires the 2026-11-23 lifecycle supersession section")
+    for provider in RETIRED_WORKFLOWS:
+        if f"| {provider} | **RETIRED** |" not in devops:
+            errors.append(f"DEVOPS-REGISTER must classify {provider} as RETIRED")
+        if f"| {provider} | **RETIRED** |" not in lanes:
+            errors.append(f"DEPLOYMENT-LANES must classify {provider} as RETIRED")
+        for relative in RETIRED_WORKFLOWS[provider]:
+            errors.extend(workflow_errors(provider, relative, root))
     return errors
 
 
 def main() -> int:
-    try:
-        document = json.loads(REGISTRY.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        print(f"FAIL: cannot read provider lifecycle registry: {exc}", file=sys.stderr)
-        return 1
-    errors = validate_registry(document)
+    errors = validate_lifecycle_sources()
     if errors:
         for error in errors:
             print(f"FAIL: {error}", file=sys.stderr)
         return 1
-    print(f"PASS: {len(document['providers'])} providers and {len(document.get('compute_nodes', []))} compute nodes")
+    workflow_count = sum(len(paths) for paths in RETIRED_WORKFLOWS.values())
+    print(f"PASS: 2 retired providers; {workflow_count} dispatch-only retirement workflows")
     return 0
 
 

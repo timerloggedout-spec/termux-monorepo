@@ -5,7 +5,11 @@
   "policy": {
     "execution": false,
     "cross_silo_score_aggregation": false,
-    "write_path": "per-selection immutable record and pull request to master"
+    "write_path": "per-selection immutable record and pull request to master",
+    "promotion_gates": [
+      "repo-gate",
+      "termux-smoke"
+    ]
   },
   "entry_pattern": "ops/delphi/selection-catalogue/<selection_id>/<record_sha256>.json"
 }

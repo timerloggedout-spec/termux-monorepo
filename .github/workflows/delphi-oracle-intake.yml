@@ -155,9 +155,10 @@ jobs:
             }
 
             const reviewLabel = "delphi:selection-review";
-            const currentLabels = (issue.labels || []).map(label =>
-              typeof label === "string" ? label : label.name
-            );
+            const labelResponse = await github.rest.issues.listLabelsOnIssue({
+              owner, repo, issue_number: issue.number, per_page: 100
+            });
+            const currentLabels = labelResponse.data.map(label => label.name);
             if (record.disposition.selection_review) {
               try {
                 await github.rest.issues.createLabel({

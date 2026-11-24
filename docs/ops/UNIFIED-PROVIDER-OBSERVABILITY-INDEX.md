@@ -60,8 +60,8 @@ Provider/model catalog ──► eligibility + quota policy ──► model-rout
 
 Provider discovery, model eligibility, quota, health, and inference are separate states:
 
-1. **Discovery:** preserve provider/model ID, exact source URL, protocol, source type, observed-at timestamp, capability evidence, terms/data classification, region/account prerequisites, and confidence.
-2. **Eligibility:** require an explicit allowlist, capability fit, region/data-class compatibility, accepted terms, and a credential present in approved secret storage.
+1. **Discovery:** preserve provider/model ID, exact source URL, protocol, source type, observed-at timestamp, capability evidence, region/account prerequisites, and confidence. Store legal-source observations separately in `research/legal-licensing/`.
+2. **Eligibility:** require an explicit operator authorization, capability fit, region/data-class compatibility, a verified no-cost account where applicable, and a credential present in approved secret storage.
 3. **Quota:** use only documented provider headers or authenticated account APIs. Record source, scope, observed UTC time, units, reset basis, and authority. `unknown` is a first-class value; catalog pricing or advertised free tier is not remaining balance.
 4. **Health:** catalog success is not inference health. Probes are separate, minimal, authorized, non-sensitive, bounded, and timestamped.
 5. **Invocation:** record the exact provider/model/protocol actually used and the fallback reason. Do not silently rewrite the selected provider.

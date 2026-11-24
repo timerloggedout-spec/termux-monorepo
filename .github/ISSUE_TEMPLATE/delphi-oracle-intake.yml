@@ -151,8 +151,27 @@ body:
         - Fixed 3 rounds
         - Fixed 4–5 rounds
         - Custom round count
+        - Single-pass (one assessment)
     validations:
       required: true
+
+  - type: input
+    id: round_maximum
+    attributes:
+      label: Round maximum / custom count
+      description: Default 3. Set 4 or 5 for the fixed 4–5 profile, or 2–10 for a custom profile.
+      value: "3"
+      placeholder: "3"
+    validations:
+      required: false
+
+  - type: textarea
+    id: stopping_criteria
+    attributes:
+      label: Stopping criteria / stability definition
+      description: Required for adaptive rounds. Define consensus, stability, maximum-round, and persistent-dissent handling.
+      placeholder: "Stop on predeclared stability or maximum rounds; preserve unresolved dissent."
+      render: text
 
   - type: dropdown
     id: matrix_strategy

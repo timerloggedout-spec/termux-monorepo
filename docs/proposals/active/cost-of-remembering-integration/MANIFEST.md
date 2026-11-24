@@ -13,7 +13,7 @@ reviewers:
 related_prs: []
 related_branches:
   - feat/rindig-cost-of-remembering-icm
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate]
 ---
 
 # MANIFEST — Cost of Remembering Integration

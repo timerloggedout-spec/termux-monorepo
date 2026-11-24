@@ -11,7 +11,11 @@ the gate evidence, callers decide on it.
 """
 from __future__ import annotations
 
-import argparse, json, os, urllib.request
+import argparse, json, os, sys, urllib.request
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from deepcli.provider_guard import retired_hindsight_endpoint_reason
 from urllib.parse import quote
 
 
@@ -34,6 +38,17 @@ def _call(opener, req):
 
 
 def verify(base, bank, key, query="telemetry ingest coverage providers", opener=None):
+    blocked_reason = retired_hindsight_endpoint_reason(base)
+    if blocked_reason:
+        return {
+            "blocked_reason": blocked_reason,
+            "health": {"status": None, "error": blocked_reason},
+            "bank_stats": {"status": None, "error": blocked_reason},
+            "llm_stats": {"status": None, "error": blocked_reason},
+            "recall_probe": {"status": None, "error": blocked_reason},
+            "memories_total": None,
+            "recall_hits": None,
+        }
     opener = opener or urllib.request.urlopen
     root = base.rstrip("/")
     b = quote(str(bank), safe="")

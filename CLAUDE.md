@@ -2,18 +2,18 @@
 
 **Primary Collaborator entry for this repository.** Load this first.
 
-Root `AGENTS.md` is **deprecated** (Linguist / CedrLang / Jules compression stub only). Do not start from it. All hard rules and routing live here and in the governance sequence below.
+Use this file as the primary collaborator entry. `AGENTS.md` remains a Linguist / CedrLang / Jules compression projection; all hard rules and routing live here and in the governance sequence below.
 
-Collaborators are addressed by **Role**, **Name**, and **Moniker** — not by a generic `AGENTS.md` catalog.
+Address collaborators by **Role**, **Name**, and **Moniker** through the repository role catalog.
 
 ## Posture — Fully Automated Agentic Development Environment (FA-ADE)
 
 This repository is a **Continuous Fully Automated Agentic Development Environment**.
 
 - Agents **execute to completion** on authorized lanes: implement, push, open/update PR, re-fetch checks, and **auto-promote when all required scope gates are green and the task outcome is verified**.
-- **Adaptive-wait is concurrent work**, not idle handoff. While jobs run, do non-conflicting progress; do not emit operator CLI homework as a substitute for automation.
+- **Adaptive-wait is concurrent work**: keep non-conflicting progress active while jobs run and route operator CLI actions through automation.
 - **Scope-aware validation is automated evidence.** Promote on required-gate success and verified outcome (see `docs/ops/REFTEMPLATES-CONSOLIDATION.md`).
-- **HITL** applies to human-only edges in `docs/proposals/AGENTIC-PERMISSIONS.md` (credentials, history rewrite, Class 3/4 material); automated execution is the default development loop.
+- **HITL** handles human-only edges in `docs/proposals/AGENTIC-PERMISSIONS.md` (credentials, history rewrite, Class 3/4 material); automated execution is the default development loop.
 - Size ≠ quality; mega-PRs stay **EXTRACT**.
 
 Canonical chart: [`docs/architecture/AGENT-TEAM-CONTROL-PLANE.md`](docs/architecture/AGENT-TEAM-CONTROL-PLANE.md) + `.mmd`.
@@ -103,7 +103,7 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 | Skills + adaptive wait | `docs/ops/SKILLS-INVENTORY.md` |
 | Session / lane SSOT | `docs/ops/LANE-MATRIX.md` |
 | Dependency-phase system | `docs/agentic/README.md` |
-| Credential names inventory | issue #184 (no values) |
+| Credential names inventory | issue #184 (names-only) |
 | BIUDL control plane | `docs/architecture/AGENT-TEAM-CONTROL-PLANE.md` |
 | Continuous capability discovery / DoE | `docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md` |
 | FA-ADE / auto-promote | `docs/ops/REFTEMPLATES-CONSOLIDATION.md` |
@@ -113,7 +113,7 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 
 ## ICM + RinDig reference pins (smods)
 
-Shallow gitlinks under `refTemplates/smods/` — reference only, not runtime control plane:
+Shallow gitlinks under `refTemplates/smods/` — reference inputs; runtime control remains in the owning integration layer:
 
 | Pin | Role |
 |-----|------|
@@ -122,7 +122,7 @@ Shallow gitlinks under `refTemplates/smods/` — reference only, not runtime con
 | `AuditEngine_fork` | Audit adapt surface |
 | `icm-architect_fork` | ICM hierarchy / cards method |
 
-Gitlink ops: `workflow_dispatch` on `.github/workflows/ops-gitlink-lego-fork.yml` pattern (or specialized pin workflows). Gates never init submodules.
+Gitlink ops: `workflow_dispatch` on `.github/workflows/ops-gitlink-lego-fork.yml` pattern (or specialized pin workflows). Gate workflows leave submodules uninitialized.
 
 ## Security
 
@@ -139,19 +139,19 @@ Credential rotation and history rewrite require Operator (human) authorization. 
 ## Tool acquisition routes (owner, 2026-11-01)
 
 Full text: `docs/ops/TOOL-ACQUISITION-ROUTES.md`. Summary for every install/download task:
-① Exec network calls ride an approval system — "Site always allowed" is decided per host by card (precedents: api.github.com, api.mistral.ai, mcp.deepwiki.com). ② Silent failure mode: downloads from non-whitelisted hosts (storage.googleapis.com, googlechromelabs.github.io) die at write (curl rc23/EPERM, 0-byte) with ∅ card generated — never report "platform-impossible"; correct report = "host not whitelisted ∧ no card engaged; route via ③/④". ③ Browser-channel downloads persist (~/workspace/browser_downloads). ④ GitHub-artifact route via api.github.com (precedent dd04486c). ⑤ Precedent: go.tgz 66.9MB + Go tree landed 2026-10-27.
+① Route exec network calls through the approval system; evaluate each host through its access card (precedents: api.github.com, api.mistral.ai, mcp.deepwiki.com). ② For a blocked download, record the host and approval-card state, then select the browser-channel or GitHub-artifact route. ③ Browser-channel downloads persist (~/workspace/browser_downloads). ④ GitHub-artifact downloads use api.github.com (precedent dd04486c). ⑤ Precedent: go.tgz 66.9MB + Go tree landed 2026-10-27.
 
 
 ## Superpowers engineering workflow
 
-Repository-local skill: `.agents/skills/superpowers/SKILL.md`. Load it for feature work, bug fixes, refactors, and non-trivial engineering changes. The upstream Superpowers methodology supplements this file; it does not override proposal authorization, ICM source ownership, `AGENTIC-PERMISSIONS.md`, scope-aware gates, or adaptive WAIT.
+Repository-local skill: `.agents/skills/superpowers/SKILL.md`. Load it for feature work, bug fixes, refactors, and non-trivial engineering changes. Apply upstream Superpowers methodology within proposal authorization, ICM source ownership, `AGENTIC-PERMISSIONS.md`, scope-aware gates, and adaptive WAIT.
 
 Integration catalog and event contract: `docs/integrations/README.md`. Design and execution plan: `docs/superpowers/specs/2026-11-02-integration-intelligence-design.md` and `docs/superpowers/plans/2026-11-02-integration-intelligence.md`.
 
 
 ## Continuous Capability Evolution Laboratory (CEEL)
 
-Start at docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md and follow its proposal work ledger. CEEL is the event-driven discovery and comparison lane across FOSS, external platforms and internal capabilities. It reuses the Integration Intelligence registry/event contract, DoE family/experiment schema, ATES, Delphi Oracle/EGM and proposal/scope-gate lifecycle. Use the existing scheduler, telemetry ledger, registry, and merge authority across the integrated lane. The initial platform cohort is Langfuse, PromptLayer, PostHog and Braintrust plus the native repository baseline; external capability claims remain unverified until pinned evidence exists. GitHub-native events are primary; bounded reconciliation is fallback. Weekly reporting is not the sensing mechanism.
+Start at docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md and follow its proposal work ledger. CEEL is the event-driven discovery and comparison lane across FOSS, external platforms and internal capabilities. It reuses the Integration Intelligence registry/event contract, DoE family/experiment schema, ATES, Delphi Oracle/EGM and proposal/scope-gate lifecycle. Use the existing scheduler, telemetry ledger, registry, and merge authority across the integrated lane. The initial platform cohort is Langfuse, PromptLayer, PostHog and Braintrust plus the native repository baseline; verify external capability claims through pinned evidence. GitHub-native events are primary; bounded reconciliation is fallback. Event-driven sensing supplies observations, and weekly reporting supplies a summary.
 
 
 ## Linguist / Siglary communication contract

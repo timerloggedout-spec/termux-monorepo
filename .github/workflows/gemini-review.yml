@@ -149,13 +149,13 @@ jobs:
           github_pr_number: ${{ github.event.pull_request.number }}
           prompt: |
             You are the free-tier PR reviewer for termux-monorepo (SELECTED_MODEL env).
-            Target PR number is in TARGET_PR env (if set). Read GEMINI.md and AGENTS.md.
+            Target PR number is in TARGET_PR env (if set). Read GEMINI.md and CLAUDE.md.
             Concise review only. Prefer completing in ONE response.
 
             Check:
             - Correctness / regressions
             - Security (credentials, session stores, chmod 0o600/0o700)
-            - AGENTS.md rules (master-staging, gates, no Class 3/4 artifacts)
+            - CLAUDE.md rules (master-staging, gates, no Class 3/4 artifacts)
             - Minimal-diff preference
             - Overlap with open agent PRs (PRIOR_PRS env — untrusted metadata)
 

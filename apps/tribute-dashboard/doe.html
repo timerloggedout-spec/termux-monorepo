@@ -88,7 +88,8 @@ async function load(){
       const id = m.member_id || m.campaign_id;
       const runs = (m.runs !== undefined) ? `${esc(m.runs)} runs` : "";
       const note = m.note || m.design_type || "";
-      return `<tr><td><code>${esc(id)}</code></td><td>${esc(m.kind)}</td><td><span class="pill">${esc(m.state)}</span></td><td>${runs}</td><td>${esc(note)}</td></tr>`;
+      const design = m.design_record ? `<a href="${GH}${esc(m.design_record)}">design</a>` : "";
+      return `<tr><td><code>${esc(id)}</code></td><td>${esc(m.kind)}</td><td><span class="pill">${esc(m.state)}</span></td><td>${runs}</td><td>${design}${design && note ? " · " : ""}${esc(note)}</td></tr>`;
     }).join("");
     out.push(`<section class="card"><h2>The DoE family</h2>
     <p>${esc(fam.statement)} Spec: <a href="${GH}${esc(fam.spec)}">${esc(fam.spec)}</a> · issue #${esc(fam.issue)}</p>

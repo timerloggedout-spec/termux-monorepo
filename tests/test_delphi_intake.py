@@ -369,6 +369,43 @@ class DelphiIntakeContractTests(unittest.TestCase):
                 "Round maximum / custom count": "3",
             })
 
+    def test_rendered_no_response_text_fields_resolve_empty(self):
+        record = self.normalize({
+            "Round profile": "Fixed 3 rounds",
+            "Target proposal / project references": "_No response_",
+            "Stopping criteria / stability definition": "_No response_",
+            "Per-round Question Matrix schedule": "_No response_",
+            "Evidence references": "_No response_",
+            "Constraints and desired outcome": "_No response_",
+        })
+        self.assertEqual(record["request"]["target_reference_items"], [])
+        self.assertEqual(record["request"]["evidence_references"], "")
+        self.assertEqual(record["request"]["constraints"], "")
+        self.assertEqual(record["delphi"]["stopping_criteria"], "")
+        self.assertEqual(record["delphi"]["question_matrix"]["per_round_schedule"], "")
+
+    def test_form_quotes_colon_bearing_yaml_description(self):
+        form = (ROOT / ".github/ISSUE_TEMPLATE/delphi-oracle-intake.yml").read_text()
+        self.assertIn(
+            'description: "Select exactly one. Leave empty to use the prior default:',
+            form,
+        )
+
+    def test_proposal_gate_changes_remain_scoped_to_intake_entry(self):
+        registry = (ROOT / "docs/proposals/registry.yaml").read_text()
+        strands_start = registry.index("  - id: aws-free-tier-strands-delphi-oracle")
+        strands_end = registry.index("\n  - id:", strands_start + 1)
+        strands = registry[strands_start:strands_end]
+        self.assertIn("- proposal-lifecycle", strands)
+        self.assertIn("- repo-gate", strands)
+        self.assertNotIn("- termux-smoke", strands)
+        intake_start = registry.index("  - id: delphi-oracle-harmonious-intake")
+        intake_end = registry.find("\n  - id:", intake_start + 1)
+        intake = registry[intake_start:intake_end if intake_end >= 0 else None]
+        self.assertIn("- proposal-lifecycle", intake)
+        self.assertIn("- repo-gate", intake)
+        self.assertIn("- termux-smoke", intake)
+
     def test_form_exposes_all_source_catalogue_checkbox_options(self):
         form = (ROOT / ".github/ISSUE_TEMPLATE/delphi-oracle-intake.yml").read_text()
         catalogues = intake.load_catalogues(ROOT)

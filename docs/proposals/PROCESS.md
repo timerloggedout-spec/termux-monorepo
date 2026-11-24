@@ -38,20 +38,21 @@ Item-scoped. See `docs/CONSENSUS.md` tiers. P0 needs second mind or Operator. Un
 
 All ITEMS terminal + Review log outcome + move active/ → closed/ + registry update.
 
-## Gate coupling
+## Scope-aware gate coupling
 
-1. repo-gate green
-2. termux-smoke green
-3. Item IDs cited
-4. No unresolved critical PR threads
+1. `repo-gate` green for repository integration changes
+2. `termux-smoke` green for Termux runtime, Android device, and Termux operational work
+3. Owning domain tests green when required by the proposal
+4. Item IDs cited
+5. Critical PR review threads resolved or dispositioned
 
 ## Agent entrypoint
 
 ```text
 1. Read AGENTS.md then registry.yaml
 2. Pick highest-priority accepted/executing todo item
-3. Branch off master-staging
-4. PR → master-staging with Implements: <ITEM-ID>
+3. Branch off current master
+4. PR → master with Implements: <ITEM-ID>
 5. Update ITEMS.md + registry when possible
 6. Never close P0 security without Operator evidence
 ```

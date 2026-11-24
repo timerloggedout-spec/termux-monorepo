@@ -12,7 +12,7 @@
    "credits": {
     "available": "paid credits purchasable only",
     "claimed": "n/a",
-    "balance": 0.0,
+    "balance": 0,
     "source": "GET /api/v1/credits: total_credits 0, total_usage 0.206466965 (account level)"
    },
    "replenishment": {
@@ -508,7 +508,9 @@
     "gate": "not-established"
    },
    "verdict": "free",
-   "flags": []
+   "flags": [
+    "retired-provider"
+   ]
   },
   {
    "provider": "koyeb",
@@ -528,7 +530,9 @@
     "gate": "not-established"
    },
    "verdict": "not-established",
-   "flags": []
+   "flags": [
+    "retired-provider"
+   ]
   },
   {
    "provider": "platform201",

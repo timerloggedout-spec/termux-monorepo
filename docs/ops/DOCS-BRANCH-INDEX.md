@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-11-23T18:07:52Z` UTC  
+**Generated:** `2026-11-24T17:47:22Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 327 docs-lane branch(es)
+**Count:** 331 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -123,6 +123,9 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/delphi-method-governance-mined`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/delphi-method-governance-mined) | `b68290b8f9b2` | — | — | orphan lane |
 | [`docs/delphi-status-crossover`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/delphi-status-crossover) | `05870344d952` | — | — | orphan lane |
 | [`docs/delphi-tie-correction`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/delphi-tie-correction) | `d376a1ccb38f` | — | — | orphan lane |
+| [`docs/design-surface-map`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/design-surface-map) | `8aad49e91423` | — | — | orphan lane |
+| [`docs/design-surface-map-clean`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/design-surface-map-clean) | `8c8fa39e8a77` | [#5837](https://github.com/timerloggedout-spec/termux-monorepo/pull/5837)→`master` | — | PR without registry link |
+| [`docs/design-surface-map-v2`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/design-surface-map-v2) | `472bea203609` | — | — | orphan lane |
 | [`docs/device-access-opaque-ids`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/device-access-opaque-ids) | `c245e05aaaa4` | — | — | orphan lane |
 | [`docs/do-phrasing-framing-framework-20261024`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/do-phrasing-framing-framework-20261024) | `78b162ae8c77` | — | — | orphan lane |
 | [`docs/dup-crossrefs-deployment-ctxindex`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/dup-crossrefs-deployment-ctxindex) | `b37f02ca672e` | — | — | orphan lane |
@@ -171,6 +174,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/integration-mesh-matrix-refresh-2026-10-23`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/integration-mesh-matrix-refresh-2026-10-23) | `bffa965f9f14` | — | — | orphan lane |
 | [`docs/integration-portfolio-expansion-20261105`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/integration-portfolio-expansion-20261105) | `0e805e6e6520` | — | `timerloggedout-spec` | registered; no open PR |
 | [`docs/issue-192-action-integration-intake`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/issue-192-action-integration-intake) | `b749928140f7` | — | — | orphan lane |
+| [`docs/kahn-algorithm-catalog-20261124`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/kahn-algorithm-catalog-20261124) | `f5e09839ee9e` | — | — | orphan lane |
 | [`docs/kai9000-orchestrator-correlated`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/kai9000-orchestrator-correlated) | `a92e6f15da7f` | — | — | orphan lane |
 | [`docs/kai9000-provenance-correct`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/kai9000-provenance-correct) | `73dad86dd7b2` | — | — | orphan lane |
 | [`docs/kali-registered-environment`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/kali-registered-environment) | `7e2f6936948f` | — | — | orphan lane |

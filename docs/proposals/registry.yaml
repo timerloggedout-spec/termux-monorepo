@@ -1391,3 +1391,28 @@ proposals:
     gates_required:
       - repo-gate
       - termux-smoke
+
+  - id: brr-cross-repo-doe
+    title: 'BRR Cross-Repository DoE — branch, commit, regression, and graph relevance'
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/brr-cross-repo-doe/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues:
+      - 5552
+      - 5640
+    related_prs:
+      - 5630
+    related_branches:
+      - feat/brr-cross-repo-doe-20261123
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke

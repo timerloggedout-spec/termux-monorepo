@@ -304,9 +304,6 @@ def _case_metrics(ranked_ids: list[str], gold_ids: list[str], k: int = 5) -> dic
         if target_id in gold_ids:
             reciprocal_rank = 1.0 / rank
             break
-    verified = [
-        row for row in []  # metrics are populated by evaluate_dataset with candidate state
-    ]
     return {
         "precision_at_5": precision,
         "recall_at_5": recall,

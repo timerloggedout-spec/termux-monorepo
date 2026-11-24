@@ -3289,7 +3289,7 @@
    "limit": 100,
    "unit": "pulls/6h",
    "window": "rolling 6 hours",
-   "reset": "rolling; provider headers expose window, not reset timestamp",
+   "reset": "rolling; provider headers expose window; reset timestamp unavailable",
    "zone": "provider-defined",
    "source": "https://docs.docker.com/docker-hub/usage/pulls/",
    "doc_quote": "Unauthenticated Users: 100 per IPv4 address or IPv6 /64 subnet; HEAD returns ratelimit-limit and ratelimit-remaining without consuming a pull.",
@@ -3316,7 +3316,7 @@
    "zone": "account",
    "source": "https://www.docker.com/pricing/",
    "doc_quote": "Docker Personal includes 1 private Docker Hub repository and unlimited public repositories.",
-   "live": "Docker Hub account Usage/Billing page; no public account entitlement API registered",
+   "live": "Docker Hub account Usage/Billing page; account entitlement API reader pending",
    "planned_use": {
     "note": "Documented entitlement only; account plan and actual private-repository count require account-side evidence. Public repositories are unlimited subject to fair use."
    }
@@ -3333,7 +3333,7 @@
    "zone": "account",
    "source": "https://docs.docker.com/build-cloud/",
    "doc_quote": "Free Personal accounts may opt in to a 7-day free trial, with the option to subscribe.",
-   "live": "Docker Build Cloud dashboard; no account usage API registered",
+   "live": "Docker Build Cloud dashboard; account usage API reader pending",
    "planned_use": {
     "note": "Conditional one-time trial; classify as temporary access rather than recurring free compute. Build Cloud is a remote builder, available only in US East."
    }

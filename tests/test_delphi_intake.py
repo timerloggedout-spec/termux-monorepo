@@ -142,6 +142,16 @@ class DelphiIntakeContractTests(unittest.TestCase):
         })
         self.assertEqual(record["request"]["target_reference_items"], ["#1572"])
 
+    def test_harmonious_reconciliation_requires_a_dimension(self):
+        with self.assertRaisesRegex(ValueError, "requires at least one selected dimension"):
+            self.normalize({
+                "Request category": "Harmoniously reconcile multiple projects",
+                "Related research projects": checked(
+                    "aws-free-tier-strands-delphi-oracle — Delphi Oracle Strands Project",
+                    "continuous-capability-evolution-lab — Continuous Capability Evolution Laboratory",
+                ),
+            })
+
     def test_comparison_and_reconciliation_require_two_distinct_references(self):
         with self.assertRaisesRegex(ValueError, "at least two distinct references"):
             self.normalize({

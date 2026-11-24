@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-24T05:30:12Z)
+# Lane matrix status (2026-11-24T05:31:04Z)
 
-- Master: `0850cb157f469202af42938e488f2ca8f244f933`
+- Master: `7abea48d40773b39e463f89f05233ec76e4d3192`
 - Open PRs: **549**
 - Oldest: #47 (110.57d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -46,7 +46,7 @@
 | #1469 | 33.68 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
 | #1470 | 33.68 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
 | #1495 | 33.13 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
-| #1513 | 32.88 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
+| #1513 | 32.89 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 32.88 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
 | #1516 | 32.88 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
 | #1531 | 32.87 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |

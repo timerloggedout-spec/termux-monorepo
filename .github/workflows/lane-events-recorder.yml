@@ -59,7 +59,9 @@ jobs:
           sparse-checkout: |
             .github/actions/lane-event
             scripts/ops/lane_event.py
+            scripts/ops/cockroach_lane_event.py
             ops/lane-events
+            ops/cockroachdb
             docs/ops/generated/tribute-status.json
           sparse-checkout-cone-mode: false
 
@@ -111,3 +113,4 @@ jobs:
           events-file: lane-events.jsonl
           database-url: ${{ secrets.LANE_EVENTS_DATABASE_URL }}
           neon-api-key: ${{ secrets.NEON_API_KEY }}
+          cockroach-database-url: ${{ secrets.COCKROACH_DATABASE_URL }}

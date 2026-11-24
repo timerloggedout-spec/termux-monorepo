@@ -294,6 +294,7 @@ class DelphiIntakeContractTests(unittest.TestCase):
         record = self.normalize({
             "Delphi methodology": "Oracle recommends",
             "Round profile": "Single-pass (one assessment)",
+            "Round maximum / custom count": "1",
         })
         self.assertEqual(record["delphi"]["round_maximum"], 1)
 

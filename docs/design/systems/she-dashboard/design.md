@@ -31,7 +31,7 @@ Use shared [visual language](../../_shared/visual-language.md) and [data visuali
 
 ## 6. Accessibility
 
-Record keyboard, focus, screen-reader, contrast, and responsive verification against the deployed SHE surface. The source inventory currently provides accessibility guidance but not a complete SHE-specific audit.
+The SHE UI/UX control-plane contract defines keyboard navigation, visible focus, semantic headings, accessible tables, text chart summaries, non-color status cues, reduced motion, and high-contrast partial/unverified states. Verify deployed implementation and test evidence for each requirement.
 
 ## 7. Evidence and system states
 

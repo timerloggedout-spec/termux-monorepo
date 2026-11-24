@@ -275,7 +275,7 @@ def normalize_intake(issue: dict[str, Any], body: str, root: Path) -> dict[str, 
     target_references = _single(fields, "target_references")
     target_reference_items = list(dict.fromkeys(
         item.strip()
-        for item in re.split(r"[,;\\n]+", target_references)
+        for item in re.split(r"[,;\n]+", target_references)
         if item.strip()
     ))
     resolved_reference_count = len(set(project_ids) | set(target_reference_items))

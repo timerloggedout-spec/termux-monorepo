@@ -256,7 +256,7 @@ class TestBRRCrossRepositoryDoE(unittest.TestCase):
         for record in records:
             self.assertEqual(set(record), required)
             self.assertTrue(any("feature/parser-regression" in ref for ref in record["evidence_refs"]))
-            self.assertEqual(record["status"], "passed")
+            self.assertEqual(record["status"], "observed")
 
     def test_partial_source_coverage_blocks_experiment_records(self):
         dataset = make_dataset("PARTIAL")

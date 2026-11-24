@@ -71,7 +71,7 @@ The form captures selected projects and reconciliation dimensions: objectives, d
 - Both: perform both independent operations.
 - Deliberation only: preserve the normalized record without requesting review or catalogue PR.
 
-Catalogue writes flow through a branch and PR against `master`; merged PRs publish catalogue revisions.
+Catalogue contract: `ops/delphi/selection-catalogue.json`. Each immutable revision lives at `ops/delphi/selection-catalogue/<selection_id>/<record_sha256>.json`. Catalogue writes flow through a per-revision branch and PR against `master`; merged PRs publish catalogue records.
 
 ## Canonical record
 

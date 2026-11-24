@@ -98,10 +98,12 @@ def validate_dataset(dataset: dict[str, Any]) -> None:
 
     sources = dataset.get("sources")
     _require(isinstance(sources, list) and sources, "sources must be a non-empty list")
+    sourced_repositories: set[str] = set()
     for source in sources:
         _require(isinstance(source, dict), "source entry must be an object")
         _require(source.get("kind") in SOURCE_KINDS, "invalid source kind")
         _require(source.get("repository") in repositories, "source repository outside coverage")
+        sourced_repositories.add(source["repository"])
         _require(_is_sha(source.get("sha")), "source sha must be 40 lowercase hex")
         _require(_is_timestamp(source.get("observed_at")), "invalid source observed_at")
         _require(source.get("coverage") in COVERAGE_STATES, "invalid source coverage")
@@ -109,6 +111,9 @@ def validate_dataset(dataset: dict[str, Any]) -> None:
         if coverage_state == "COMPLETE":
             _require(source["coverage"] == "COMPLETE",
                      "complete dataset requires complete source coverage")
+
+    _require(set(repositories).issubset(sourced_repositories),
+             "every covered repository needs at least one source receipt")
 
     cases = dataset.get("cases")
     _require(isinstance(cases, list) and cases, "cases must be a non-empty list")
@@ -343,7 +348,8 @@ def evaluate_dataset(dataset: dict[str, Any]) -> dict[str, Any]:
             row["target_id"] for row in verified
             if any(edge["confidence"] == "candidate" for edge in row["graph_edges"])
         )
-        for arm in ARMS:
+        assignment_order = _assignment_order(case["case_id"])
+        for arm in assignment_order:
             scored = [
                 (score_candidate(row, case["query"], arm), row["target_id"])
                 for row in verified
@@ -357,7 +363,7 @@ def evaluate_dataset(dataset: dict[str, Any]) -> dict[str, Any]:
                 "case_id": case["case_id"],
                 "task_family": case["task_family"],
                 "arm": arm,
-                "assignment_order": _assignment_order(case["case_id"]),
+                "assignment_order": assignment_order,
                 "ranked_target_ids": ranked_ids,
                 "candidate_only_ids": candidate_only,
                 "candidate_edge_ids": candidate_edge_ids,

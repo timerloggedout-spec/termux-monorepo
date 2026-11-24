@@ -13,9 +13,9 @@ reviewers:
   - id: ChatGPT
     role: author+executor
     status: executing
-related_prs: []
+related_prs: [5836]
 related_branches:
-  - docs/design-surface-map
+  - docs/design-surface-map-v2
 gates_required: [repo-gate, termux-smoke]
 ---
 
@@ -48,7 +48,7 @@ Create a dedicated `docs/design/` estate for user-facing design surfaces, separa
 - [x] Registered in `docs/proposals/registry.yaml`
 - [x] ITEMS.md itemized
 - [x] Operator authorization recorded
-- [x] Documentation structure and local links validated — recursive Git tree check: 17 Markdown files, zero missing local targets
+- [x] Documentation structure and local links validated — recursive Git tree check: 18 Markdown files, zero missing local targets
 - [ ] Repo gate and Termux smoke checked
 - [ ] PR checks green on the final head SHA
 - [ ] Closed + moved to `closed/` when terminal

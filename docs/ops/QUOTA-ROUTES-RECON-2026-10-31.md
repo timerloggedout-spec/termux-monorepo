@@ -60,3 +60,10 @@ vercel-class connector reads exist only for vercel (READY above) and neon (verif
 ## Standing rules (unchanged)
 
 A row is `api-verified` only with a dated firsthand read. `unclaimed-allocation` flags only on evidence. Any card requirement ⇒ `parked-card`, reported, ∅ purchase. Documented limits are entitlements, never balances.
+ 
+## Lifecycle supersession — 2026-11-23
+
+The 2026-10-31 credential and probe census remains a historical snapshot. Fly.io and Koyeb are **RETIRED** from mesh execution. Fly is removed from `allocation-verification-probe.yml` and `scripts/ops/allocation_probe.py`; Fly/Koyeb API targets are removed from the current latency target list.
+
+Their quota records retain historical entitlement evidence with `lifecycle: retired`; allocation shares are zeroed; the generated allocation plan carries `state: retired` and zero focus slices; the allocation-verification feed carries the `retired-provider` flag. The historical Fly API-verified/free-tier observation remains intact as an observation dated to its source run.
+

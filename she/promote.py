@@ -20,7 +20,7 @@ from typing import Any
 from she.evolve import EvolutionPlan
 from she.incident import Incident, IncidentState
 from she.repair_pr import RepairPRPlan, plan_repair_pr
-from she.verify import BASE_GATES, VerificationPlan, apply_check_results, plan_verification
+from she.verify import BASE_GATES, TERMUX_SCOPE_GATES, VerificationPlan, apply_check_results, plan_verification
 
 DECISIONS: frozenset[str] = frozenset({"hold", "promote", "observe-only"})
 
@@ -68,6 +68,8 @@ class PromotionDecision:
         needed = set(self.required_gates)
         if not BASE_GATES.issubset(needed):
             raise PromotionError("repo-gate must be required")
+        if self.metadata.get("termux_related") and not TERMUX_SCOPE_GATES.issubset(needed):
+            raise PromotionError("termux-smoke must be required for Termux scope")
         if self.rollback_sha != self.sha:
             raise PromotionError("rollback_sha must match sha")
         if not self.incident_id:
@@ -150,13 +152,14 @@ def plan_promotion(
 ) -> PromotionDecision:
     """Plan a promotion decision. Does not merge.
 
-    Dual gates always required (subset). Security/Dependabot stay observe-only.
+    The repository gate is universal; Termux smoke follows incident scope. Security/Dependabot stay observe-only.
     HTTP 200 / inconclusive / pending cannot promote. from_mapping is fail-closed.
     """
     if incident.state in _TERMINAL_BLOCK:
         raise PromotionError(
             f"promotion not applicable for terminal state {incident.state.value}"
         )
+    verification = verification or plan_verification(incident)
     if _is_security(incident):
         gates = tuple(sorted(set(verification.required_gates()) | {"security-checks"}))
         return PromotionDecision(
@@ -178,6 +181,7 @@ def plan_promotion(
             metadata={
                 "classification": incident.classification,
                 "fingerprint": incident.fingerprint,
+                "termux_related": bool(verification.metadata.get("termux_related")),
                 "live_flag_honored": live_promote_enabled(),
             },
         )
@@ -257,6 +261,7 @@ def plan_promotion(
             "classification": incident.classification,
             "fingerprint": incident.fingerprint,
             "source": incident.source,
+            "termux_related": bool(verification.metadata.get("termux_related")),
             "state": incident.state.value,
             "repair_branch": repair.branch,
             "verification_ready": verification.promotion_ready,

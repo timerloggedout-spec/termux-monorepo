@@ -24,6 +24,8 @@ class MobileAgentTestersAdapterTests(unittest.TestCase):
                     "description": "raw private report text must stay local",
                 },
                 {"title": "Keyboard covers Save", "severity": "minor", "screen": "Plan"},
+                None,
+                {"title": "", "severity": "minor"},
             ],
         }), encoding="utf-8")
 
@@ -37,6 +39,7 @@ class MobileAgentTestersAdapterTests(unittest.TestCase):
         )
         self.assertEqual(diagnostics, [])
         self.assertEqual(len(events), 2)
+        self.assertEqual(len(diagnostics), 2)
         event = events[0]
         self.assertEqual(event["schema_version"], "1.0.0")
         self.assertEqual(event["integration_id"], "mobile-agent-testers")
@@ -95,6 +98,8 @@ class MobileAgentTestersAdapterTests(unittest.TestCase):
         self.assertNotIn("user@example.com", value)
         self.assertNotIn("555", value)
         self.assertLessEqual(len(value), 80)
+        token = "ghp_" + ("A" * 36)
+        self.assertNotIn(token, safe_text(token, 100))
 
 
 if __name__ == "__main__":

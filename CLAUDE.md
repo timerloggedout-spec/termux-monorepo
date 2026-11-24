@@ -54,7 +54,7 @@ Then route the task with **[`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md)** — one 
 
 ## Hard rules
 
-- Target **`master`** for integration work (base for small PRs may be `master-staging` when that lane is active).
+- Target **`master`** for integration work. Use `master-staging` as a source reference for bounded extraction.
 - Run `python3 scripts/ci/repo_gate.py` for every repository integration change.
 - Run `python3 scripts/ci/termux_smoke.py` for Termux runtime, Android device, and Termux operational changes.
 - Select additional domain gates from the owning proposal and changed subsystem.

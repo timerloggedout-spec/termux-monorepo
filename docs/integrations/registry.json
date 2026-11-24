@@ -520,7 +520,7 @@
       "repo_skill_path": null,
       "repo_adapter_state": "repo_adapter_planned",
       "authority": "exploratory-observation-only",
-      "write_boundary": "Read-only app interaction in isolated hosted emulators/simulators. Findings are advisory; no repository writes, physical-device control, private-key use in CI, or paid dispatch without a per-run budget.",
+      "write_boundary": "Isolated hosted emulator interactions with evidence-only ingestion. Physical-device control remains in the Termux fleet; private-key decryption remains on trusted local collectors; paid dispatch requires per-run budget approval.",
       "next_step": "Run a budgeted Android pilot, locally collect/decrypt reports, and validate findings through deterministic regressions.",
       "sensitivity": "confidential-test-evidence"
     }

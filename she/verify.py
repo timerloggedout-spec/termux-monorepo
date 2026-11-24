@@ -186,8 +186,12 @@ def plan_verification(
     termux_related = _is_termux(incident)
     checks = [
         CheckSpec(gate="repo-gate", required=True),
-        CheckSpec(gate="termux-smoke", required=termux_related,
-                  notes="required for Termux runtime/device scope" if termux_related else "outside Termux scope"),
+        *(
+            [CheckSpec(gate="termux-smoke", required=True,
+                       notes="Termux runtime/device scope")]
+            if termux_related
+            else []
+        ),
         CheckSpec(gate="domain-tests", required=True),
         CheckSpec(
             gate="security-checks",

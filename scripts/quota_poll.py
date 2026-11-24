@@ -111,7 +111,6 @@ def neon_reader(now):
             "neon.storage": {"used": round(st, 3), "elapsed": None}}
 
 
-
 def dockerhub_anonymous_reader(now):
     """Read Docker Hub's anonymous pull bucket with the documented HEAD probe.
 
@@ -145,13 +144,17 @@ def dockerhub_anonymous_reader(now):
     if not limit_match or not remaining_match:
         return None
     limit, remaining = int(limit_match.group(1)), int(remaining_match.group(1))
-    window = limit_match.group(2) or remaining_match.group(2)
+    limit_window, remaining_window = limit_match.group(2), remaining_match.group(2)
+    if limit_window and remaining_window and limit_window != remaining_window:
+        return None
+    window = limit_window or remaining_window
     if limit <= 0 or remaining > limit or (window and int(window) <= 0):
         return None
     return {"used": limit - remaining, "limit": limit, "elapsed": None,
             "extra": {"remaining": remaining, "scope": "anonymous-runner-egress",
                       "window_seconds": int(window) if window else None,
                       "basis": "Docker Hub documented non-consuming HEAD rate-limit headers"}}
+
 
 def openrouter_reader(now):
     key = os.environ.get("OPENROUTER_API_KEY")

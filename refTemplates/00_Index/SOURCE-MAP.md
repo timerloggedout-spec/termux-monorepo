@@ -37,3 +37,9 @@ AuditEngine_fork, batteries_fork, content-agent-routing-promptbase_fork, cost-of
 Cited inspiration sources are catalogued separately in [smods/INSPIRATION-SOURCES.md](../smods/INSPIRATION-SOURCES.md). Notary, ShipProof, and the unresolved Transcend showcase candidate are metadata-only citations, not gitlinks or runtime dependencies.
 
 Pins intentional; no auto-advance without dual-gate green. New live pins require a real customized fork, immutable reviewed pin, compatibility evidence, and passing gates.
+
+## 10_Infrastructure (metadata-only candidates)
+
+| Slot | Preferred SOURCE | Disposition |
+|------|------------------|-------------|
+| osx-forge | https://github.com/credkellar/OSx | Pattern candidate; Docker Hub overview reviewed, upstream source inspection pending |

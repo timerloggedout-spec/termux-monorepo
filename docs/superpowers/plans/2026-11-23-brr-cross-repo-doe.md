@@ -58,7 +58,7 @@
 ### Task 3: Implement the offline evaluator
 
 **Files:**
-- Create: `experiments/doe/brr-cross-repo-doe/evaluate.py`
+- Create: `scripts/doe/brr_cross_repo_doe.py`
 - Create: `tests/test_brr_cross_repo_doe.py`
 
 **Interface:**

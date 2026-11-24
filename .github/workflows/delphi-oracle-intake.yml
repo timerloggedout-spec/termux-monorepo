@@ -147,13 +147,14 @@ jobs:
                   catalogue.policy.cross_silo_score_aggregation !== false) {
                 throw new Error("Selection catalogue contract mismatch");
               }
-              const index = catalogue.entries.findIndex(entry =>
-                entry.selection_id === record.selection_id
+              const alreadyRecorded = catalogue.entries.some(entry =>
+                entry.selection_id === record.selection_id &&
+                entry.record_sha256 === record.record_sha256
               );
-              if (index >= 0) catalogue.entries[index] = record;
-              else catalogue.entries.push(record);
+              if (!alreadyRecorded) catalogue.entries.push(record);
               catalogue.entries.sort((a, b) =>
-                a.selection_id.localeCompare(b.selection_id)
+                a.selection_id.localeCompare(b.selection_id) ||
+                a.record_sha256.localeCompare(b.record_sha256)
               );
               const nextContent = JSON.stringify(catalogue, null, 2) + "\n";
               const oldContent = Buffer.from(file.data.content, "base64").toString("utf8");

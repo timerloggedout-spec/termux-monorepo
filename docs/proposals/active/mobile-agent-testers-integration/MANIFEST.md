@@ -14,7 +14,7 @@ reviewers:
     role: author+executor
     status: executing
 related_prs:
-  - 5833
+  - 5834
 related_branches:
   - feat/mobile-agent-testers-integration
 related_repos:

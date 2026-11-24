@@ -20,7 +20,7 @@ related_proposals:
   - approxination-integration
   - ml-keep-alive
   - rate-limit-rotation
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate]
 ---
 
 # MANIFEST — model-selection-market

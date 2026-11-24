@@ -44,6 +44,8 @@ from typing import Any, Awaitable, Callable, Mapping, MutableMapping, Sequence
 
 import httpx
 
+from .provider_guard import retired_hindsight_endpoint_reason
+
 __all__ = [
     "HindsightClient",
     "HindsightError",
@@ -99,6 +101,11 @@ class HindsightClient:
         )
     )
     _client: httpx.AsyncClient | None = field(default=None, init=False, repr=False)
+
+    def __post_init__(self) -> None:
+        reason = retired_hindsight_endpoint_reason(self.base_url)
+        if reason:
+            raise HindsightError(reason)
 
     # -- plumbing ---------------------------------------------------------
 

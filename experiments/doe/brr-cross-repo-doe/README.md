@@ -38,7 +38,7 @@ Seed discovery targets include the exact term `gitReverse` (repository/branch/co
 
 Primary: macro F1@5 against the frozen, human-adjudicated gold target IDs. Precision@5 uses a fixed denominator of five (missing ranks count as misses); recall@5 divides hits by the gold target count; F1@5 is their harmonic mean.
 
-Secondary: precision@5, recall@5, mean reciprocal rank, candidate-only leads, source coverage, unresolved/untestable fraction, and ranking latency.
+Secondary: precision@5, recall@5, mean reciprocal rank, candidate-only target leads, candidate graph-edge leads (reported separately), source coverage, and unresolved/untestable fraction.
 
 The fused arm becomes a champion candidate only when the preregistered sample and coverage requirements are met, its F1@5 improvement is at least 0.05 absolute, the paired 95% bootstrap interval has a lower bound above zero, and verified precision@5 does not regress. Adoption remains subject to independent review and existing gates.
 

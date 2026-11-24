@@ -7,7 +7,7 @@
 
 ## Validation
 
-- `python3 -m pytest -q tests/test_delphi_intake.py tests/test_delphi_gate.py`
+- `python3 -B -m unittest discover -s tests -p 'test_delphi_intake.py' -v`
 - `python3 scripts/proposals/validate_registry.py`
 - `python3 scripts/ci/repo_gate.py`
 - `python3 scripts/ci/termux_smoke.py`

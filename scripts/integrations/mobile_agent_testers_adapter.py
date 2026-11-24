@@ -20,9 +20,10 @@ SEVERITIES = {"blocker", "major", "minor", "cosmetic"}
 EMAIL_RE = re.compile(r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b", re.I)
 PHONE_RE = re.compile(r"(?<!\w)\+?\d[\d(). -]{7,}\d(?!\w)")
 TOKEN_RE = re.compile(
-    r"\b(?:bearer|token|api[_ -]?key|secret)\s*[:=]?\s*[A-Za-z0-9._~+/=-]{8,}",
+    r"\b(?:bearer|token|api[_ -]?key|secret|password)\s*[:=]?\s*[A-Za-z0-9._~+/=-]{8,}",
     re.I,
 )
+SECRET_VALUE_RE = re.compile(r"\b(?:gh[pousr]_[A-Za-z0-9]{20,}|sk-[A-Za-z0-9_-]{20,}|eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,})\b")
 CONTROL_RE = re.compile(r"[\x00-\x1f\x7f]")
 PERSONA_RE = re.compile(r"^[A-Za-z0-9_-]{1,64}$")
 SHA_RE = re.compile(r"^[0-9a-f]{7,64}$")

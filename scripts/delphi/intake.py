@@ -272,6 +272,17 @@ def normalize_intake(issue: dict[str, Any], body: str, root: Path) -> dict[str, 
         selection_authority = "submitter"
 
     request_category = _single(fields, "request_category", required=True)
+    target_references = _single(fields, "target_references")
+    target_reference_items = list(dict.fromkeys(
+        item.strip()
+        for item in re.split(r"[,;\\n]+", target_references)
+        if item.strip()
+    ))
+    resolved_reference_count = len(set(project_ids) | set(target_reference_items))
+    if request_category in {"Evaluate an existing proposal", "Refine an existing proposal"} and resolved_reference_count < 1:
+        raise ValueError("existing-proposal requests require a target proposal or project reference")
+    if request_category in {"Compare alternatives", "Harmoniously reconcile multiple projects"} and resolved_reference_count < 2:
+        raise ValueError("comparison and reconciliation requests require at least two distinct references")
     methodology = _single(fields, "methodology", required=True)
     round_profile = _single(fields, "round_profile", required=True)
     matrix_strategy = _single(fields, "matrix_strategy", required=True)
@@ -343,7 +354,8 @@ def normalize_intake(issue: dict[str, Any], body: str, root: Path) -> dict[str, 
         },
         "request": {
             "category": request_category,
-            "target_references": _single(fields, "target_references"),
+            "target_references": target_references,
+            "target_reference_items": target_reference_items,
             "research_question": _single(fields, "research_question", required=True),
             "evidence_references": _single(fields, "evidence_references"),
             "constraints": _single(fields, "constraints"),
@@ -365,7 +377,7 @@ def normalize_intake(issue: dict[str, Any], body: str, root: Path) -> dict[str, 
         "reconciliation": {
             "dimensions": reconciliation,
             "project_references": project_ids,
-            "additional_references": _single(fields, "target_references"),
+            "additional_references": target_reference_items,
             "mode": "harmonious_reconciliation" if request_category == "Harmoniously reconcile multiple projects" else "standard",
         },
         "delphi": {

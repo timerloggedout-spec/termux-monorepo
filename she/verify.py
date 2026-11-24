@@ -27,7 +27,8 @@ VERIFICATION_GATES: frozenset[str] = frozenset(
     }
 )
 
-DUAL_GATES: frozenset[str] = frozenset({"repo-gate", "termux-smoke"})
+BASE_GATES: frozenset[str] = frozenset({"repo-gate"})
+TERMUX_SCOPE_GATES: frozenset[str] = frozenset({"termux-smoke"})
 
 CHECK_OUTCOMES: frozenset[str] = frozenset(
     {"pending", "pass", "fail", "inconclusive"}
@@ -80,7 +81,7 @@ class CheckSpec:
         )
 
 
-def _validate_checks(checks: tuple[CheckSpec, ...]) -> None:
+def _validate_checks(checks: tuple[CheckSpec, ...], metadata: Mapping[str, Any] | None = None) -> None:
     if not checks:
         raise VerificationError("verification plan cannot have empty checks")
     seen: set[str] = set()
@@ -93,8 +94,13 @@ def _validate_checks(checks: tuple[CheckSpec, ...]) -> None:
         if spec.outcome not in CHECK_OUTCOMES:
             raise VerificationError(f"unknown outcome: {spec.outcome!r}")
     required = {c.gate for c in checks if c.required}
-    if not DUAL_GATES.issubset(required):
-        raise VerificationError("dual gates repo-gate + termux-smoke must be required")
+    if not BASE_GATES.issubset(required):
+        raise VerificationError("repo-gate must be required")
+    termux_related = bool((metadata or {}).get("termux_related"))
+    if termux_related and not TERMUX_SCOPE_GATES.issubset(required):
+        raise VerificationError("termux-smoke must be required for Termux scope")
+    if not termux_related and TERMUX_SCOPE_GATES.intersection(required):
+        raise VerificationError("termux-smoke is reserved for Termux scope")
 
 
 @dataclass(frozen=True)
@@ -110,7 +116,7 @@ class VerificationPlan:
     metadata: dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        _validate_checks(self.checks)
+        _validate_checks(self.checks, self.metadata)
         if self.promotion_ready and self.live:
             raise VerificationError("live plans cannot be promotion_ready")
 
@@ -154,7 +160,8 @@ def _is_security(incident: Incident) -> bool:
 def _is_termux(incident: Incident) -> bool:
     source = (incident.source or "").lower()
     fp = (incident.fingerprint or "").lower()
-    return "termux" in source or fp.startswith("termux-smoke:")
+    provenance = (incident.event_provenance or "").lower()
+    return any("termux" in value for value in (source, fp, classification, provenance))
 
 
 def plan_verification(
@@ -164,10 +171,9 @@ def plan_verification(
 ) -> VerificationPlan:
     """Plan healing-evidence checks. Does not execute workflows.
 
-    Dual gates are always required. Security incidents also require
-    security-checks. Termux-sourced incidents keep termux-smoke required
-    (already dual-gate). Domain and regression stay required so a green
-    workflow HTTP 200 cannot masquerade as a task PASS.
+    The repository gate is always required. Termux smoke is required only
+    for Termux runtime/device incidents. Security incidents also require
+    security-checks. Domain and regression checks remain required.
     """
     if incident.state in _TERMINAL_BLOCK:
         raise VerificationError(
@@ -175,9 +181,11 @@ def plan_verification(
         )
 
     security = _is_security(incident)
+    termux_related = _is_termux(incident)
     checks = [
         CheckSpec(gate="repo-gate", required=True),
-        CheckSpec(gate="termux-smoke", required=True),
+        CheckSpec(gate="termux-smoke", required=termux_related,
+                  notes="required for Termux runtime/device scope" if termux_related else "outside Termux scope"),
         CheckSpec(gate="domain-tests", required=True),
         CheckSpec(
             gate="security-checks",
@@ -191,8 +199,8 @@ def plan_verification(
         CheckSpec(gate="regression-invariants", required=True),
     ]
     required = {c.gate for c in checks if c.required}
-    if not DUAL_GATES.issubset(required):
-        raise VerificationError("dual gates must remain required")
+    if not BASE_GATES.issubset(required):
+        raise VerificationError("repo-gate must remain required")
 
     if sandbox is not None:
         evidence_dir = sandbox.evidence_dir
@@ -207,7 +215,8 @@ def plan_verification(
         promotion_ready=False,
         live=False,
         constraints=(
-            "dual_gates_required",
+            "repo_gate_required",
+            "termux_smoke_scope_conditional",
             "no_live_dispatch",
             "http_200_is_not_pass",
             "append_only_evidence",
@@ -217,6 +226,7 @@ def plan_verification(
             "classification": incident.classification,
             "fingerprint": incident.fingerprint,
             "source": incident.source,
+            "termux_related": termux_related,
             "state": incident.state.value,
             "evidence_dir": evidence_dir,
             "sandbox_branch": sandbox_branch,

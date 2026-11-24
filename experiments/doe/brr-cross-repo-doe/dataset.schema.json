@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "brr-cross-repo-doe-dataset/v1",
+  "title": "BRR Cross-Repository DoE Frozen Dataset",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "observed_at",
+    "baseline_sha",
+    "candidate_sha",
+    "coverage",
+    "sources",
+    "cases"
+  ],
+  "properties": {
+    "schema": { "const": "brr-cross-repo-doe-dataset/v1" },
+    "observed_at": { "type": "string", "format": "date-time" },
+    "baseline_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "candidate_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "repositories", "next_page"],
+      "properties": {
+        "state": {
+          "enum": ["COMPLETE", "PARTIAL", "FAILED", "UNVERIFIED"]
+        },
+        "repositories": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "pattern": "^[^/]+/[^/]+$" }
+        },
+        "next_page": { "type": ["integer", "null"], "minimum": 1 }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "repository", "sha", "observed_at", "coverage", "url"],
+        "properties": {
+          "kind": {
+            "enum": ["brr", "commits", "regressions", "context_graph", "cross_plane_graph", "gold_set"]
+          },
+          "repository": { "type": "string", "pattern": "^[^/]+/[^/]+$" },
+          "sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+          "observed_at": { "type": "string", "format": "date-time" },
+          "coverage": {
+            "enum": ["COMPLETE", "PARTIAL", "FAILED", "UNVERIFIED"]
+          },
+          "url": { "type": "string", "format": "uri", "pattern": "^https://" }
+        }
+      }
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["case_id", "task_family", "query", "gold_target_ids", "candidates"],
+        "properties": {
+          "case_id": { "type": "string", "minLength": 1 },
+          "task_family": {
+            "enum": ["branch_recovery", "commit_lineage", "regression_context", "cross_reference_reconstruction"]
+          },
+          "query": { "type": "string", "minLength": 1 },
+          "gold_target_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "candidates": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "target_id",
+                "repository",
+                "branch",
+                "sha",
+                "evidence_status",
+                "disposition",
+                "ahead_of_default",
+                "behind_default",
+                "unique_commit_count",
+                "pr_state",
+                "regression_verdict",
+                "title",
+                "commit_subjects",
+                "graph_edges",
+                "evidence_refs"
+              ],
+              "properties": {
+                "target_id": { "type": "string", "minLength": 1 },
+                "repository": { "type": "string", "pattern": "^[^/]+/[^/]+$" },
+                "branch": { "type": "string", "minLength": 1 },
+                "sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+                "evidence_status": { "enum": ["verified", "candidate"] },
+                "disposition": {
+                  "enum": [
+                    "identical",
+                    "behind-only",
+                    "ahead-only",
+                    "diverged",
+                    "unresolved-local-ref",
+                    "unrelated-or-unavailable-history"
+                  ]
+                },
+                "ahead_of_default": { "type": ["integer", "null"], "minimum": 0 },
+                "behind_default": { "type": ["integer", "null"], "minimum": 0 },
+                "unique_commit_count": { "type": ["integer", "null"], "minimum": 0 },
+                "pr_state": { "enum": ["open", "closed", "merged", "none", "unknown"] },
+                "regression_verdict": {
+                  "enum": ["green", "regressed", "untestable", "no-benchmark", "unknown"]
+                },
+                "title": { "type": "string" },
+                "commit_subjects": { "type": "array", "items": { "type": "string" } },
+                "graph_edges": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["relationship", "confidence", "evidence_ref"],
+                    "properties": {
+                      "relationship": { "type": "string", "minLength": 1 },
+                      "confidence": { "enum": ["verified", "candidate"] },
+                      "evidence_ref": { "type": "string", "format": "uri", "pattern": "^https://" }
+                    }
+                  }
+                },
+                "evidence_refs": {
+                  "type": "array",
+                  "items": { "type": "string", "format": "uri", "pattern": "^https://" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

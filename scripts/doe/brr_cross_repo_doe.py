@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import hashlib
 import json
 import random
 import re
@@ -360,6 +361,15 @@ def evaluate_dataset(dataset: dict[str, Any]) -> dict[str, Any]:
                 "ranked_target_ids": ranked_ids,
                 "candidate_only_ids": candidate_only,
                 "candidate_edge_ids": candidate_edge_ids,
+                "evidence_refs": sorted({
+                    ref
+                    for candidate in case["candidates"]
+                    if candidate["target_id"] in set(ranked_ids[:5]) | set(candidate_only)
+                    for ref in (
+                        candidate["evidence_refs"]
+                        + [edge["evidence_ref"] for edge in candidate["graph_edges"]]
+                    )
+                }),
                 "metrics": _case_metrics(ranked_ids, case["gold_target_ids"]),
             })
 
@@ -404,11 +414,7 @@ def build_experiment_records(result: dict[str, Any], baseline_sha: str,
     for row in result["cases"]:
         metrics = row["metrics"]
         evidence_refs = set(source_refs)
-        evidence_refs.update(
-            ref
-            for source in result["sources"]
-            for ref in [source["url"]]
-        )
+        evidence_refs.update(row["evidence_refs"])
         records.append({
             "schema_version": "1.0",
             "experiment_id": f"{CAMPAIGN}-{row['case_id']}-{row['arm']}",
@@ -441,7 +447,7 @@ def build_experiment_records(result: dict[str, Any], baseline_sha: str,
 
 def _assignment_order(case_id: str) -> list[str]:
     """Stable per-case randomized order; result tables remain arm-keyed."""
-    digest = __import__("hashlib").sha256(case_id.encode("utf-8")).digest()
+    digest = hashlib.sha256(case_id.encode("utf-8")).digest()
     seed = BOOTSTRAP_SEED ^ int.from_bytes(digest[:8], "big")
     arms = list(ARMS)
     random.Random(seed).shuffle(arms)

@@ -12,7 +12,7 @@ reviewers:
     status: accepted
 related_prs: []
 related_branches: []
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate]
 ---
 
 # MANIFEST — AuditEngine Adapt

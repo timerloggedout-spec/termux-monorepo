@@ -6,4 +6,4 @@ The catalogue contract is `selection-catalogue.json`. Each selected intake revis
 
 Each record carries its source issue, selected research cohort, methodology, Question Matrix configuration, reconciliation scope, panel, disposition, and `execution: false`.
 
-Catalogue entries land through per-selection pull requests to `master`. The directory structure keeps concurrent selections isolated and preserves prior revisions. Research comparisons remain within their registered segments.
+Catalogue entries land through per-selection pull requests to `master`. Each catalogue PR dispatches `repo-gate` and `termux-smoke` against the exact branch head. The directory structure keeps concurrent selections isolated and preserves prior revisions. Research comparisons remain within their registered segments.

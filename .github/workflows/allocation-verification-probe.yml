@@ -129,12 +129,6 @@ jobs:
           PROBE_PROVIDER: pinecone
           PROBE_KEY: ${{ secrets.PINECONE_API_KEY }}
         run: python3 scripts/ops/allocation_probe.py >> rows.ndjson
-      - name: probe fly
-        continue-on-error: true
-        env:
-          PROBE_PROVIDER: fly
-          PROBE_KEY: ${{ secrets.FLY_IO_ORG_TOKEN }}
-        run: python3 scripts/ops/allocation_probe.py >> rows.ndjson
       - name: Upload probe rows
         if: always()
         uses: actions/upload-artifact@v4

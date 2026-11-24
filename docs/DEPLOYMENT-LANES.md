@@ -30,7 +30,7 @@ source of truth.
 | **Vercel** | Application hosting and persistent MCP/demo deployment | `mcp-hub` and `demo-portal/public` are live lanes above; provider currently reports `build-rate-limit` on some Git-connected project checks. PR #1310 merged the path selector and the connected Vercel project settings for `mcp-hub`, `tribute-dash`, `tribute-oversight`, and `termux-monorepo` were updated to invoke it. | **LIVE, CAPACITY CONSTRAINED / SELECTOR CONFIGURED, EFFECT NOT YET VERIFIED** — keep one Vercel project per independently deployable root; next provider-eligible Git event must prove unrelated changes are skipped and relevant changes build. |
 | **GitHub Pages** | Static publication for the project hub, matrix, and Help-Wanted dashboard | `.github/workflows/tribute-dashboard-deploy.yml` configures `gh-pages` and mirrors static routes into `timerloggedout-spec.github.io`; the `gh-pages` branch exists. The latest run/deployment evidence was not returned in the current RECON pass. | **CONFIGURED / PUBLICATION UNVERIFIED** — workflow and branch exist; verify the published URLs and source SHA before declaring LIVE. Static-only fallback; not a compatible replacement for MCP/application services. |
 | **Render** | Candidate application/service hosting surface | The current deployment-lane SSOT has no Render project or production lane recorded | **AVAILABLE/CANDIDATE, UNPROVEN HERE** — do not describe a Render deployment as live until its project, root, branch, URL, and verification evidence are recorded |
-| **Cloudflare / Cloudflare Pages** | Candidate static/edge publication and front-door/WAF surface | No live Cloudflare project is recorded in the deployment-lane SSOT | **AVAILABLE/CANDIDATE, UNPROVEN HERE** — record the exact product (Pages, Workers, etc.), project, source/root, branch, domain, and verification evidence before promotion |
+| **Cloudflare Workers + D1** | Edge function runtime and managed database | PR #5807 records a 2026-11-23 connected-account inventory of 2 deployed Workers and 3 D1 databases; Queues inventory returned 0 and R2 activation remains pending. | **WORKERS/D1 DEPLOYED / USAGE PARTIAL** — keep Workers, D1, Queues, R2, and Pages as distinct products; account usage evidence remains attributed to PR #5807. |
 | **Hex** | Analytics / Moneyball evidence layer, not primary application hosting | `docs/ops/HEX-MONEYBALL-INTEGRATION.md` and `hex-moneyball-evidence.yml` define the evidence contract | **INTEGRATED EVIDENCE SURFACE** — GitHub Actions remains execution/orchestration; durable audit retention remains outside Hex where required |
 | **GitHub Wiki / DeepWiki / Devin Wiki** | Documentation and discovery surfaces | Root README and `wiki/` publisher define their distinct trust boundaries | **DOCUMENTATION SURFACES** — generated/discovery content never becomes implementation authority without repository evidence |
 
@@ -96,3 +96,25 @@ explicitly named lane and one recorded source boundary.
 5. If the lane duplicates an existing surface, document why it is a fallback,
    preview, experiment, or deliberate multi-provider redundancy rather than
    silently becoming another production source.
+
+
+## Retired hosting references — 2026-11-24
+
+| Provider | Product class | Lifecycle | Authority |
+|---|---|---|---|
+| Fly.io | Historical Hindsight app/VM hosting | **RETIRED** | `docs/ops/DEVOPS-REGISTER.md` §4A; manual-dispatch retirement receipt replaces deploy/config operations. |
+| Koyeb | Historical Hindsight app/container hosting | **RETIRED** | `docs/ops/DEVOPS-REGISTER.md` §4A; manual-dispatch retirement receipt replaces push deployment operations. |
+
+## Function and data-service classification
+
+| Product | Capability class | Evidence state |
+|---|---|---|
+| Cloudflare Workers | Edge/serverless functions | 2 deployed Workers recorded by PR #5807; account usage is partial. |
+| Vercel Functions | Serverless capability within the active Vercel hosting lane | Platform capability; distinct deployed-function inventory is unverified. |
+| Supabase Edge Functions | Serverless capability | Capability/integration recorded; deployed function inventory is unverified. |
+| Neon | PostgreSQL database | Database service; not a compute worker. |
+| Supabase Database | PostgreSQL/database service | Database service; not a compute worker. |
+
+A provider capability, connected account, quota row, deployed resource, and
+successful workload execution are separate evidence states. Function runtimes
+complement VM execution; they do not replace VM nodes by default.

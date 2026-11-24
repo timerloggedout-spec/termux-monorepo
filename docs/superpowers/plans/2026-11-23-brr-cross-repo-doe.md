@@ -39,9 +39,9 @@
 - Modify: `docs/proposals/registry.yaml`
 - Modify: `docs/proposals/README.md`
 
-- [ ] Register proposal `brr-cross-repo-doe` and item `BRRDOE-001`.
-- [ ] Record operator authorization, reuse boundaries, and blocked private-source runtime dependency.
-- [ ] Commit each write to the feature branch.
+- [x] Register proposal `brr-cross-repo-doe` and item `BRRDOE-001`.
+- [x] Record operator authorization, reuse boundaries, and blocked private-source runtime dependency.
+- [x] Commit each write to the feature branch.
 
 ### Task 2: Preregister the DoE campaign
 
@@ -51,14 +51,15 @@
 - Create: `experiments/doe/brr-cross-repo-doe/dataset.schema.json`
 - Modify: `docs/ops/DOE-FAMILY.md`
 
-- [ ] Define four retrieval arms: lexical baseline, BRR ancestry, context graph, fused evidence.
-- [ ] Define blocked tasks, primary and secondary outcomes, decision rule, source identity, automation dependency, and honest design-only state.
-- [ ] Register the campaign as design-only until the VM export and automation receipts are available.
-- [ ] Commit each write to the feature branch.
+- [x] Define four retrieval arms: lexical baseline, BRR ancestry, context graph, fused evidence.
+- [x] Define blocked tasks, primary and secondary outcomes, decision rule, source identity, automation dependency, and honest design-only state.
+- [x] Register the campaign as design-only until the VM export and automation receipts are available.
+- [x] Commit each write to the feature branch.
 
 ### Task 3: Implement the offline evaluator
 
 **Files:**
+- Create: `scripts/doe/__init__.py`
 - Create: `scripts/doe/brr_cross_repo_doe.py`
 - Create: `tests/test_brr_cross_repo_doe.py`
 - Modify: `.github/workflows/repo-gate.yml`
@@ -68,9 +69,9 @@
 - `validate_dataset(dataset: dict) -> None`
 - `build_experiment_records(result: dict, baseline_sha: str, candidate_sha: str, observed_at: str) -> list[dict]`
 
-- [ ] Write tests for deterministic ranking, repository-qualified identity, verified/candidate separation, partial coverage, and untestable regression states.
-- [ ] Implement deterministic offline evaluation using only supplied frozen evidence.
-- [ ] Emit records conforming to the canonical experiment schema.
+- [x] Write tests for deterministic ranking, repository-qualified identity, verified/candidate separation, partial coverage, untestable regression states, source completeness, and immutable artifacts.
+- [x] Implement deterministic offline evaluation using only supplied frozen evidence.
+- [x] Emit records conforming to the canonical experiment schema.
 - [ ] Run focused tests and the owning validation suite in GitHub Actions.
 
 ### Task 4: Integrate and verify
@@ -79,6 +80,6 @@
 - Modify: `docs/proposals/active/brr-cross-repo-doe/ITEMS.md`
 
 - [ ] Validate JSON, schema conformance, Python syntax, proposal registry, and repository gates.
-- [ ] Open a PR with `Implements: BRRDOE-001`.
+- [x] Open PR [#5832](https://github.com/timerloggedout-spec/termux-monorepo/pull/5832) with `Implements: BRRDOE-001`.
 - [ ] Re-fetch checks against the exact PR head SHA; preserve blocked runtime inputs as explicit gaps.
-- [ ] Update the item ledger with commit, PR, and check evidence.
+- [x] Update the item ledger with commit and PR evidence; exact-head check results remain pending.

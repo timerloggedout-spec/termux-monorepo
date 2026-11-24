@@ -1,12 +1,12 @@
-# Lane matrix status (2026-11-24T14:32:47Z)
+# Lane matrix status (2026-11-24T14:36:46Z)
 
-- Master: `f67183d7cd3cf77838256d4406aa75bb267476a8`
-- Open PRs: **554**
+- Master: `89efff17b816f970fcc34e6580f80c02684ef904`
+- Open PRs: **555**
 - Oldest: #47 (110.95d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
 | Lane | Count |
 |------|------:|
-| CANDIDATE | 196 |
+| CANDIDATE | 197 |
 | EXTRACT | 9 |
 | NEED_EVIDENCE | 163 |
 | SUPERSEDE | 186 |
@@ -14,7 +14,7 @@
 | Age bucket | Count |
 |------------|------:|
 | ancient | 27 |
-| fresh | 105 |
+| fresh | 106 |
 | mid | 176 |
 | stale | 246 |
 
@@ -27,18 +27,18 @@
 | #4069 | 21.43 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
 | #4621 | 20.74 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
 | #4898 | 20.08 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
-| #5034 | 17.98 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
+| #5034 | 17.99 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
 | #5722 | 3.89 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted routes and bind local Do |
 | #5723 | 3.89 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted review relay and record  |
 | #5724 | 3.89 | EXTRACT | state:unknown, minesweeper-title | fix(jules): replace hosted PR handoff with receipt |
 | #47 | 110.95 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
-| #81 | 108.69 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
-| #103 | 107.56 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
+| #81 | 108.7 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
+| #103 | 107.57 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
 | #527 | 70.28 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
 | #605 | 66.86 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
 | #684 | 64.84 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
 | #769 | 62.29 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
-| #969 | 54.19 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
+| #969 | 54.2 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
 | #990 | 53.33 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
 | #1020 | 52.07 | CANDIDATE | state:unknown | feat: close provider continuity and executable rou |
 | #1274 | 36.22 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
@@ -53,14 +53,14 @@
 | #1537 | 33.23 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 32.56 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 31.48 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
-| #1616 | 31.47 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
+| #1616 | 31.48 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 31.47 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
 | #1626 | 31.35 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
 | #1645 | 30.59 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
-| #1650 | 30.51 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
-| #1694 | 28.54 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
+| #1650 | 30.52 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
+| #1694 | 28.55 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
 | #1734 | 28.14 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
-| #1735 | 28.13 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
+| #1735 | 28.14 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
 | #1966 | 27.4 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
 
 Writer only: does not merge. Dual-gate remains promote authority. HOLD/WAIT/OBSERVE are invalid parking. Age alone ≠ promote.

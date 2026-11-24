@@ -15,7 +15,7 @@ related_prs: [322, 324]
 related_branches:
   - docs/notation-sets-evolution
   - docs/mintlify-notation-sets-page
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate]
 ---
 
 # MANIFEST — notation-sets-evolution

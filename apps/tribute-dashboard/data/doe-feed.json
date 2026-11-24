@@ -33,6 +33,16 @@
      "name": "mvt_shuffle",
      "signature": "mvt_shuffle(variants, n, seed)",
      "doc": "Randomized assignment for multi-variate testing. Duplicates allowed."
+    },
+    {
+     "name": "randomized_blocked_assignments",
+     "signature": "randomized_blocked_assignments(variants, blocks, seed)",
+     "doc": "Assign every treatment exactly once in each randomized block."
+    },
+    {
+     "name": "validate_blocked_assignments",
+     "signature": "validate_blocked_assignments(assignments, variants, expected_blocks)",
+     "doc": "Reject missing, duplicated, extra, or unbalanced treatment blocks."
     }
    ]
   },
@@ -430,10 +440,26 @@
      "note": "Design classes per docs/ops/DOE-TAXONOMY.md. Implemented generators: full factorial (full_factorial), Taguchi L9 fractional orthogonal array (taguchi_l9). Skill-named, no generator: fractional factorial, Plackett-Burman, sequential/adaptive. Candidates: foldover, central composite, Box-Behnken, RSM, mixture, split-plot, Latin hypercube. mvt_shuffle is an assignment mechanism, not a design class."
     },
     {
+     "campaign_id": "game-development-specialist-evolution",
+     "kind": "campaign_candidate",
+     "state": "proposed_not_admitted",
+     "design_record": "experiments/doe/game-development-specialist-evolution/DESIGN.json",
+     "runs": 0,
+     "results": null
+    },
+    {
      "campaign_id": "rust-migration-tools",
      "kind": "campaign_candidate",
      "state": "proposed_not_admitted",
      "design_record": "experiments/doe/rust-migration-tools/DESIGN.json",
+     "runs": 0,
+     "results": null
+    },
+    {
+     "campaign_id": "rust-zero-drift-evolution",
+     "kind": "campaign_candidate",
+     "state": "proposed_not_admitted",
+     "design_record": "experiments/doe/rust-zero-drift-evolution/DESIGN.json",
      "runs": 0,
      "results": null
     }
@@ -698,10 +724,26 @@
   ],
   "candidates": [
    {
+    "campaign_id": "game-development-specialist-evolution",
+    "kind": "campaign_candidate",
+    "state": "proposed_not_admitted",
+    "design_record": "experiments/doe/game-development-specialist-evolution/DESIGN.json",
+    "runs": 0,
+    "results": null
+   },
+   {
     "campaign_id": "rust-migration-tools",
     "kind": "campaign_candidate",
     "state": "proposed_not_admitted",
     "design_record": "experiments/doe/rust-migration-tools/DESIGN.json",
+    "runs": 0,
+    "results": null
+   },
+   {
+    "campaign_id": "rust-zero-drift-evolution",
+    "kind": "campaign_candidate",
+    "state": "proposed_not_admitted",
+    "design_record": "experiments/doe/rust-zero-drift-evolution/DESIGN.json",
     "runs": 0,
     "results": null
    }
@@ -717,6 +759,8 @@
   "Campaign ww-3-you-com is admitted (design record committed) but has no run records yet — defined, not run.",
   "Pilot 2 (#1850) is proposal-only: no design record or run evidence, so it is not yet a family member.",
   "The DSPy optimizer lane is design-only. Campaigns defined-but-not-run render as exactly that.",
-  "Campaign candidate rust-migration-tools is explicitly not admitted and remains outside the campaign collection."
+  "Campaign candidate game-development-specialist-evolution is explicitly not admitted and remains outside the campaign collection.",
+  "Campaign candidate rust-migration-tools is explicitly not admitted and remains outside the campaign collection.",
+  "Campaign candidate rust-zero-drift-evolution is explicitly not admitted and remains outside the campaign collection."
  ]
 }

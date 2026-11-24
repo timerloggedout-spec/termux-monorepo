@@ -11,6 +11,7 @@ import hashlib
 import json
 import re
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -48,7 +49,7 @@ def digest_file(path: Path) -> str:
 
 
 def finding_files(run_dir: Path) -> Iterable[Path]:
-    # Mirrors the provider's own collector layout: <persona>/results/findings.json.
+    # Mirrors the provider collector layout: <artifact>/results/<persona>/findings.json.
     yield from sorted(run_dir.glob("*/results/*/findings.json"))
 
 
@@ -176,14 +177,25 @@ def normalize(
     return events, diagnostics
 
 
+def iso_datetime(value: str) -> str:
+    """Accept only timezone-aware ISO-8601 timestamps for schema date-time fields."""
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("timestamp must be ISO-8601") from exc
+    if parsed.tzinfo is None:
+        raise argparse.ArgumentTypeError("timestamp must include a timezone")
+    return value
+
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run-dir", required=True, type=Path, help="trusted, locally decrypted run directory")
     parser.add_argument("--run-id", required=True, help="immutable provider workflow run ID")
     parser.add_argument("--repository", default="timerloggedout-spec/termux-monorepo")
     parser.add_argument("--commit", help="tested source commit SHA")
-    parser.add_argument("--started-at", help="provider run start time (ISO-8601)")
-    parser.add_argument("--completed-at", help="provider run completion time (ISO-8601)")
+    parser.add_argument("--started-at", type=iso_datetime, help="provider run start time (timezone-aware ISO-8601)")
+    parser.add_argument("--completed-at", type=iso_datetime, help="provider run completion time (timezone-aware ISO-8601)")
     parser.add_argument(
         "--execution-status",
         choices=("succeeded", "failed", "cancelled", "blocked", "unknown"),

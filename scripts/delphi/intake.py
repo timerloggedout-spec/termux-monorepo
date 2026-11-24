@@ -304,7 +304,7 @@ def normalize_intake(issue: dict[str, Any], body: str, root: Path) -> dict[str, 
         raise ValueError("Custom round count requires a round maximum")
     elif round_profile == "Adaptive with declared stopping criteria" and not stopping_criteria:
         raise ValueError("adaptive rounds require declared stopping criteria")
-    if methodology == "One-pass rubric (not a multi-round Delphi study)":
+    if methodology == "One-pass rubric — single assessment":
         if round_profile != "Single-pass (one assessment)":
             raise ValueError("one-pass rubric requires the Single-pass round profile")
         round_maximum = 1

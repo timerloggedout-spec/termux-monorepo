@@ -1,6 +1,6 @@
 # StudySprint — mobile exploratory QA brief
 
-You are testing the StudySprint Android app as one assigned persona. Use only synthetic study content and the already-installed app.
+Read the tester provider's AGENT_BRIEF.md first. Its tools, safety rules, and final-report contract apply in full. You are testing the StudySprint Android app as one assigned persona. Use only synthetic study content and the isolated emulator data. Dispatch this Android-only app with ios_personas=none.
 
 ## Product map
 
@@ -39,4 +39,4 @@ Evaluate whether a learner can understand the current study state, move between 
 
 ## Final output
 
-Write report.md and findings.json using the provider's required schema. Each issue must include a concise title, severity (blocker, major, minor, or cosmetic), and screen. Keep the evidence local to the encrypted provider result bundle.
+Follow the provider AGENT_BRIEF.md output contract exactly. Write results/<persona>/report.md and results/<persona>/findings.json using the assigned PERSONA ID. The JSON object includes score and an issues array; each issue includes title, severity (blocker, major, minor, or cosmetic), and screen, with optional screenshots. Save screenshots and raw evidence under results/<persona>/ so the provider workflow includes them in its encrypted result bundle.

@@ -298,7 +298,7 @@ def score_candidate(candidate: dict[str, Any], query: str, arm: str) -> float:
 def _case_metrics(ranked_ids: list[str], gold_ids: list[str], k: int = 5) -> dict[str, float]:
     top = ranked_ids[:k]
     hits = sum(1 for target_id in top if target_id in set(gold_ids))
-    precision = hits / min(k, len(ranked_ids)) if ranked_ids else 0.0
+    precision = hits / k
     recall = hits / len(gold_ids) if gold_ids else 0.0
     f1 = (2 * precision * recall / (precision + recall)
           if precision + recall else 0.0)

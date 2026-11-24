@@ -1,6 +1,6 @@
 """SHE P0.11 — append-only evidence ledger (observer-only, no persist).
 
-Binds incident identity, dual-gate verification outcomes, promotion
+Binds incident identity, scope-selected verification outcomes, promotion
 decision, and learning record into one inspectable mapping. This module
 plans the ledger. It does not write a store, call the network, or mutate git.
 
@@ -17,7 +17,7 @@ from typing import Any
 from she.incident import Incident, IncidentState
 from she.learn import LearningRecord, plan_learning
 from she.promote import PromotionDecision, plan_promotion
-from she.verify import BASE_GATES, VerificationPlan, apply_check_results, plan_verification, summarize_results
+from she.verify import BASE_GATES, TERMUX_SCOPE_GATES, VerificationPlan, apply_check_results, plan_verification, summarize_results
 
 ENTRY_KINDS: frozenset[str] = frozenset(
     {"incident", "verification", "promotion", "learning"}
@@ -105,6 +105,8 @@ class EvidenceLedger:
         needed = set(self.required_gates)
         if not BASE_GATES.issubset(needed):
             raise LedgerError("repo-gate must be required")
+        if self.metadata.get("termux_related") and not TERMUX_SCOPE_GATES.issubset(needed):
+            raise LedgerError("termux-smoke must be required for Termux scope")
         kinds = [e.kind for e in self.entries]
         if "incident" not in kinds:
             raise LedgerError("ledger must include an incident entry")

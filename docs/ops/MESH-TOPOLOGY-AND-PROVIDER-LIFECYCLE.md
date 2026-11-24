@@ -15,6 +15,8 @@ Fly.io and Koyeb are **RETIRED** for this mesh. Their deployment workflows emit 
 | Plane | Canonical artifact | Version / vintage | Actual responsibility |
 |---|---|---|---|
 | Integration Mesh | `docs/ops/INTEGRATION-MESH-MATRIX.md` | Ninth census pass, 2026-11-02; snapshot document, no schema version | Connector, GitHub App, workflow, credential-name, and integration reach |
+| Integration Intelligence portfolio | `docs/integrations/registry.json` | Schema 1.0.0, updated 2026-11-11 | 36 catalog records: 32 planned adapters, 2 implemented adapters, 1 native repository integration, 1 not applicable |
+| Inference quota mesh | `ops/quota/registry.json` and `docs/ops/INTEGRATION-MESH-MATRIX.md` | 27 provider quota families in the 2026-11-02 census | Model inference endpoints/quota families; separate from app hosting and VM compute |
 | Compute Mesh | `ops/mesh/REQUESTS-SCHEMA.md` | Request protocol v1, 2026-11-18 | Append-only request and completion records; allowlisted VM/Actions work |
 | Compute Mesh topology | `docs/architecture/flows/compute-mesh.md` | Living map, readback 2026-11-23 | Cross-repo request, VM ledger, DoE result, and consumer edges |
 | VM node manifest | `ops/vm-backup/hark-sandbox-node.json` | `resiliency-node/v1` | Hark node identity, capacity, allowlist, and request transport |

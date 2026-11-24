@@ -131,7 +131,7 @@ Credential rotation and history rewrite require Operator (human) authorization. 
 ---
 
 **Collaborator-Identity:** Grok (Administrator)
-**Style:** BIUDL · Continuous Fully Automated Agentic Development (FA-ADE) · agent auto-promote on dual-gate + task outcome · adaptive-wait · evidence-led
+**Style:** BIUDL · Continuous Fully Automated Agentic Development (FA-ADE) · agent auto-promote on required scope gates + task outcome · adaptive-wait · evidence-led
 **Status change (2026-09-24):** FA-ADE realign — agents execute to completion; scope-aware gates provide automated evidence; HITL only on AGENTIC-PERMISSIONS edges.
 **Status change (2026-09-25):** Collaborator / Role / Name / Moniker vocabulary affirmed; dependency-phase nav + #184 Projects note linked from `docs/agentic/`.
 **Prior (2026-09-21):** Root `AGENTS.md` folded into this file and marked deprecated.

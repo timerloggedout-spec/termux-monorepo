@@ -47,7 +47,7 @@ Operator directive received 2026-11-24: "Build whatever you want as a separate v
 
 ## Scope
 
-- Separate GitHub Issue Form and event-driven intake workflow.
+- Separate GitHub Issue Form and event-driven intake workflow restricted to OWNER, MEMBER, and COLLABORATOR issue authors.
 - Deterministic issue-body parser, canonical selection record, catalogue validation, and focused tests.
 - Research selection modes: DoE Decides, All, Specific selection, Prior default.
 - Checkbox catalogues for the 12 research participants, four DoE components, related method RFPs, and related research projects.

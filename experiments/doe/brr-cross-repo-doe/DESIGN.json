@@ -1,0 +1,136 @@
+{
+  "campaign_id": "brr-cross-repo-doe",
+  "family": "doe",
+  "member_kind": "campaign",
+  "surface": "doe",
+  "suite_type": "replay",
+  "status": "admitted_design_only",
+  "moniker": "doe-expert",
+  "owner": "brr-cross-repo-doe",
+  "related_issues": [5552, 5640],
+  "related_prs": [5630],
+  "hypothesis": {
+    "statement": "A fused ranking over verified BRR ancestry, commit lineage, regression verdicts, and context-graph relationships discovers relevant cross-repository branches and commits more accurately than lexical-only, BRR/commit-only, or context-graph-only retrieval.",
+    "primary_threshold": "Fused macro F1@5 exceeds the best single-source arm by at least 0.05 absolute, with a paired 95% bootstrap confidence interval whose lower bound is greater than 0.",
+    "guardrails": [
+      "Verified target precision@5 does not regress against the best single-source arm.",
+      "Candidate graph edges are reported separately and never count as verified hits.",
+      "Incomplete source coverage blocks a promotion verdict.",
+      "Untestable and no-benchmark regression states remain explicit and never count as green."
+    ]
+  },
+  "subject": {
+    "system": "Cross-repository branch and commit relevance discovery",
+    "source_contracts": [
+      "branch-reconciliation-registry/v1 (BRR v2 exports remain source-owned)",
+      "QUE #5552 BRR regression feature-progress map",
+      "QUE #5640 BRR + commits + regression + comment/context graph join",
+      "canonical context-relationship graph and cross-plane graph"
+    ],
+    "identity": "owner/repository::branch@commit_sha",
+    "gold_set": "human-adjudicated target IDs per frozen discovery query"
+  },
+  "design": {
+    "type": "blocked_repeated_measures_four_arm_comparison",
+    "unit_of_observation": "one frozen query evaluated under one retrieval arm",
+    "blocks": [
+      "repository",
+      "task_family"
+    ],
+    "task_families": [
+      "branch_recovery",
+      "commit_lineage",
+      "regression_context",
+      "cross_reference_reconstruction"
+    ],
+    "minimum_confirmatory_cohort": {
+      "queries": 30,
+      "repositories": 3,
+      "task_families": 3
+    },
+    "assignment": "Every query is evaluated by every arm; arm execution order is deterministically shuffled within query using the preregistered seed.",
+    "seed": 56402026,
+    "arms": [
+      {
+        "id": "lexical",
+        "description": "Lexical-only baseline over repository, branch, commit-subject, PR/issue title metadata."
+      },
+      {
+        "id": "branch_commit",
+        "description": "BRR ancestry/disposition and commit-lineage signals; no context-graph expansion."
+      },
+      {
+        "id": "context_graph",
+        "description": "Verified context/comment graph edges only; candidate edges are listed separately."
+      },
+      {
+        "id": "fused",
+        "description": "Equal-weight combination of lexical, branch/commit, verified graph, and regression signals."
+      }
+    ],
+    "ranking": {
+      "lexical": "query-token overlap divided by the number of unique query tokens",
+      "branch_commit": "0.6 * normalized BRR signal + 0.4 * normalized commit signal",
+      "context_graph": "min(verified graph edge count, 4) / 4",
+      "fused": "mean(lexical, branch_commit, context_graph, regression)",
+      "regression": "regressed=1.0; untestable=0.5; no-benchmark=0.25; green=0.0; unknown=0.0"
+    },
+    "candidate_handling": "Only evidence_status=verified participates in ranking and gold-hit metrics. Evidence_status=candidate is emitted as a separate candidate list with its source references."
+  },
+  "outcomes": {
+    "primary": "macro F1@5 against the adjudicated verified gold target set",
+    "secondary": [
+      "macro precision@5",
+      "macro recall@5",
+      "mean reciprocal rank",
+      "candidate-only leads per query",
+      "complete source coverage rate",
+      "unresolved/untestable fraction",
+      "ranking latency_ms"
+    ]
+  },
+  "decision_rule": {
+    "text": "The fused arm is a champion candidate only after at least 30 adjudicated queries across at least 3 repositories and 3 task families, complete source coverage, a paired 95% bootstrap interval for F1@5 improvement over the best single-source arm with lower bound > 0, absolute improvement >= 0.05, and no verified precision@5 regression. The strategy remains observational until independent review and the existing proposal/dual-gate lifecycle authorize adoption.",
+    "bootstrap": {
+      "replicates": 2000,
+      "seed": 56402026,
+      "interval": "percentile 95%"
+    }
+  },
+  "automation": {
+    "state": "pending_existing_cycle_export",
+    "trigger_owner": "existing vm-brr-delta / BRR v2 export cycle and the existing #5552/#5640 joined evidence path",
+    "execution": "offline replay over immutable exported source snapshots; one EXPERIMENT record per query x arm",
+    "records_home": "experiments/doe/brr-cross-repo-doe/records/",
+    "summary_home": "experiments/doe/brr-cross-repo-doe/SUMMARY.json",
+    "new_scheduler": false,
+    "new_collector": false,
+    "new_queue": false,
+    "reason": "The private VM-published BRR v2 registry and joined records are not available in this session. Campaign remains design-only until existing source exports and their exact SHA/coverage receipts are available."
+  },
+  "source_requirements": {
+    "coverage_state": "COMPLETE",
+    "required_sources": [
+      "BRR v2 registry export with repository identity, branch tip SHA, disposition, ahead/behind counts, and coverage receipt",
+      "commit export bound to the same repository and branch tip SHA",
+      "regression feature-progress map with green/regressed/untestable/no-benchmark verdicts",
+      "context/comment graph with verified/candidate edge status and evidence URLs",
+      "frozen query set with adjudicated gold target IDs"
+    ],
+    "sha_binding": "Every source record binds to an immutable source SHA and collection timestamp; all joined rows retain repository-qualified identity."
+  },
+  "constraints": [
+    "BRR remains read-only and retains branch-reconciliation-registry/v1.",
+    "Reuse existing BRR, commit, regression, graph, QUE, QDesk, and DoE infrastructure.",
+    "No second scheduler, queue, collector, graph store, dashboard, or promotion engine.",
+    "No branch mutation, merge, close, retarget, push, delete, or archive action.",
+    "Missing, private, stale, partial, or untestable evidence remains explicit.",
+    "No raw discussion bodies, secrets, credentials, browser state, or session data."
+  ],
+  "registration": {
+    "preregistered_in_repo": true,
+    "recorded": "2026-11-23",
+    "note": "Design committed before evaluator execution. No live BRR run or champion is claimed."
+  },
+  "records_home": "experiments/doe/brr-cross-repo-doe/records/"
+}

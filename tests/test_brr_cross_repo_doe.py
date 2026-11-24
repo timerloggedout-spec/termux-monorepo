@@ -1,4 +1,6 @@
+import tempfile
 import unittest
+from pathlib import Path
 
 from scripts.doe import brr_cross_repo_doe as evaluator
 
@@ -253,6 +255,24 @@ class TestBRRCrossRepositoryDoE(unittest.TestCase):
             rows = [row for row in first["cases"] if row["case_id"] == case_id]
             self.assertEqual([row["arm"] for row in rows], rows[0]["assignment_order"])
 
+    def test_ranked_scores_preserve_component_breakdown(self):
+        result = evaluator.evaluate_dataset(make_dataset())
+        row = next(item for item in result["cases"] if item["arm"] == "fused")
+        self.assertEqual(row["ranked_scores"][0]["target_id"], row["ranked_target_ids"][0])
+        self.assertEqual(
+            set(row["ranked_scores"][0]["components"]),
+            {"lexical", "branch_commit", "context_graph", "regression"},
+        )
+        self.assertEqual(len(result["dataset_sha256"]), 64)
+
+    def test_immutable_artifacts_allow_identical_replay_and_reject_replacement(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "dataset.json"
+            evaluator.write_immutable_json(path, {"snapshot": "same"})
+            evaluator.write_immutable_json(path, {"snapshot": "same"})
+            with self.assertRaises(ValueError):
+                evaluator.write_immutable_json(path, {"snapshot": "changed"})
+
     def test_experiment_records_retain_source_and_target_evidence(self):
         dataset = make_dataset()
         result = evaluator.evaluate_dataset(dataset)
@@ -260,6 +280,7 @@ class TestBRRCrossRepositoryDoE(unittest.TestCase):
             result, dataset["baseline_sha"], dataset["candidate_sha"], dataset["observed_at"]
         )
         self.assertEqual(len(records), 4)
+        self.assertIn(result["dataset_sha256"][:12], records[0]["experiment_id"])
         required = {
             "schema_version", "experiment_id", "observed_at", "baseline_sha",
             "candidate_sha", "suite", "treatment", "status", "outcome",

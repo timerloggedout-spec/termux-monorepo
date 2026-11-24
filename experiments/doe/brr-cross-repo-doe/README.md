@@ -51,11 +51,11 @@ Each source carries an immutable SHA, observation timestamp, coverage state, and
 ## Execution
 
 ```bash
-python3 experiments/doe/brr-cross-repo-doe/evaluate.py \
+python3 scripts/doe/brr_cross_repo_doe.py \
   --dataset path/to/frozen-dataset.json \
   --output-dir experiments/doe/brr-cross-repo-doe/records \
   --summary experiments/doe/brr-cross-repo-doe/SUMMARY.json
-python3 -m unittest tests.test_brr_cross_repo_doe -v
+python3 -m unittest discover -s tests -p 'test_brr_cross_repo_doe.py' -v
 ```
 
 The runner is offline and deterministic for a frozen dataset. It does not fetch GitHub or private-store data and does not mutate repositories.

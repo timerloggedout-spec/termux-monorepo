@@ -14,10 +14,10 @@
 
 - Preserve `.github/ISSUE_TEMPLATE/delphi-rfp.yml` and the legacy quota gate.
 - Use the existing research participant, silo, DoE component, proposal, and RFP-segment registries as authorities.
-- Preserve independent research segments; do not aggregate cross-silo scores.
+- Preserve independent research segments; keep score comparison silo-local.
 - Prior default = 12 baseline research participants only.
 - Every normalized selection has `execution: false`.
-- Registry catalogue writes open a PR to `master`; intake automation does not write directly to master.
+- Registry catalogue writes open a PR to `master`; merged PRs publish catalogue records.
 - Python implementation uses the standard library only and supports Python 3.9+.
 - Optional WebView oversight remains optional and metadata-only.
 
@@ -81,7 +81,7 @@
 - [ ] Write workflow contract tests for issue-only trigger, permissions, idempotent marker, and execution=false.
 - [ ] Implement normalized comment update/create and selection-review label.
 - [ ] Implement per-issue catalogue branch and PR creation/update against master.
-- [ ] Ensure no `delphi:rfp` label is added by the new form/workflow.
+- [ ] Verify the new form/workflow uses the selection-review route and leaves the legacy `delphi:rfp` gate unchanged.
 - [ ] Run focused tests.
 
 ### Task 4: Verification, documentation, and promotion

@@ -276,23 +276,47 @@ def _graph_signal(candidate: dict[str, Any]) -> float:
     return min(verified_edges, 4) / 4
 
 
+def score_components(candidate: dict[str, Any], query: str) -> dict[str, float]:
+    """Return the four preregistered signal values for one target."""
+    if candidate.get("evidence_status") != "verified":
+        return {"lexical": 0.0, "branch_commit": 0.0, "context_graph": 0.0, "regression": 0.0}
+    return {
+        "lexical": _lexical_signal(candidate, query),
+        "branch_commit": _branch_commit_signal(candidate),
+        "context_graph": _graph_signal(candidate),
+        "regression": regression_signal(candidate),
+    }
+
+
 def score_candidate(candidate: dict[str, Any], query: str, arm: str) -> float:
     """Score one verified target under one preregistered retrieval arm."""
-    if candidate.get("evidence_status") != "verified":
-        return 0.0
-    lexical = _lexical_signal(candidate, query)
-    branch_commit = _branch_commit_signal(candidate)
-    graph = _graph_signal(candidate)
-    regression = regression_signal(candidate)
+    components = score_components(candidate, query)
     if arm == "lexical":
-        return lexical
+        return components["lexical"]
     if arm == "branch_commit":
-        return branch_commit
+        return components["branch_commit"]
     if arm == "context_graph":
-        return graph
+        return components["context_graph"]
     if arm == "fused":
-        return statistics.mean((lexical, branch_commit, graph, regression))
+        return statistics.mean(components.values())
     raise ValueError(f"unknown retrieval arm: {arm}")
+
+
+def dataset_snapshot_sha256(dataset: dict[str, Any]) -> str:
+    """Hash canonical dataset bytes for immutable cohort identity."""
+    payload = json.dumps(dataset, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def write_immutable_json(path: Path, value: dict[str, Any]) -> None:
+    """Create a JSON artifact once; identical replays are idempotent."""
+    payload = json.dumps(value, indent=2, sort_keys=True) + "\n"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if path.exists():
+        if path.read_text(encoding="utf-8") != payload:
+            raise ValueError(f"immutable artifact already exists with different bytes: {path}")
+        return
+    path.write_text(payload, encoding="utf-8")
 
 
 def _case_metrics(ranked_ids: list[str], gold_ids: list[str], k: int = 5) -> dict[str, float]:
@@ -386,6 +410,7 @@ def _decision(cases: list[dict[str, Any]], dataset: dict[str, Any],
 def evaluate_dataset(dataset: dict[str, Any]) -> dict[str, Any]:
     """Evaluate all cases under all four arms using a frozen dataset."""
     validate_dataset(dataset)
+    snapshot_sha = dataset_snapshot_sha256(dataset)
     result_cases: list[dict[str, Any]] = []
     for case in dataset["cases"]:
         verified = [
@@ -402,8 +427,15 @@ def evaluate_dataset(dataset: dict[str, Any]) -> dict[str, Any]:
         )
         assignment_order = _assignment_order(case["case_id"])
         for arm in assignment_order:
+            components_by_id = {
+                row["target_id"]: score_components(row, case["query"])
+                for row in verified
+            }
             scored = [
-                (score_candidate(row, case["query"], arm), row["target_id"])
+                (components_by_id[row["target_id"]][arm]
+                 if arm != "fused"
+                 else statistics.mean(components_by_id[row["target_id"]].values()),
+                 row["target_id"])
                 for row in verified
             ]
             ranked_ids = [
@@ -417,6 +449,14 @@ def evaluate_dataset(dataset: dict[str, Any]) -> dict[str, Any]:
                 "arm": arm,
                 "assignment_order": assignment_order,
                 "ranked_target_ids": ranked_ids,
+                "ranked_scores": [
+                    {
+                        "target_id": target_id,
+                        "score": score,
+                        "components": components_by_id[target_id],
+                    }
+                    for score, target_id in sorted(scored, key=lambda pair: (-pair[0], pair[1]))
+                ],
                 "candidate_only_ids": candidate_only,
                 "candidate_edge_ids": candidate_edge_ids,
                 "evidence_refs": sorted({
@@ -459,6 +499,7 @@ def evaluate_dataset(dataset: dict[str, Any]) -> dict[str, Any]:
     return {
         "schema": "brr-cross-repo-doe-results/v1",
         "campaign_id": CAMPAIGN,
+        "dataset_sha256": snapshot_sha,
         "observed_at": dataset["observed_at"],
         "baseline_sha": dataset["baseline_sha"],
         "candidate_sha": dataset["candidate_sha"],
@@ -488,7 +529,7 @@ def build_experiment_records(result: dict[str, Any], baseline_sha: str,
         evidence_refs.update(row["evidence_refs"])
         records.append({
             "schema_version": "1.0",
-            "experiment_id": f"{CAMPAIGN}-{row['case_id']}-{row['arm']}",
+            "experiment_id": f"{CAMPAIGN}-{result['dataset_sha256'][:12]}-{row['case_id']}-{row['arm']}",
             "observed_at": observed_at,
             "baseline_sha": baseline_sha,
             "candidate_sha": candidate_sha,
@@ -543,10 +584,11 @@ def main() -> int:
         dataset["observed_at"],
     )
     args.output_dir.mkdir(parents=True, exist_ok=True)
+    snapshot_path = args.output_dir / f"dataset-{result['dataset_sha256'][:12]}.json"
+    write_immutable_json(snapshot_path, dataset)
     for record in records:
         path = args.output_dir / f"{record['experiment_id']}.json"
-        path.write_text(json.dumps(record, indent=2, sort_keys=True) + "\n",
-                        encoding="utf-8")
+        write_immutable_json(path, record)
     args.summary.parent.mkdir(parents=True, exist_ok=True)
     args.summary.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n",
                             encoding="utf-8")

@@ -1,3 +1,14 @@
+
+# Lifecycle update — 2026-11-23
+
+**Fly.io and Koyeb Hindsight hosting are RETIRED.** The deployment, configuration, SSH, and diagnostic workflows now publish retirement receipts. The historical provider configuration and failover record below remain as provenance.
+
+The shared `HINDSIGHT_BASE_URL` execution path now blocks Fly `.fly.dev` and Koyeb `.koyeb.app` endpoints, plus the provider API hosts. Provenance collection continues; Hindsight retain/verify steps record a lifecycle block and skip provider network calls when the secret points to a retired host.
+
+Hindsight Cloud, Cloudflare Workers, Vercel Functions, and Supabase Edge Functions remain separate service/runtime options with workload-specific compatibility and deployment evidence. The repository records Cloudflare Workers as reported deployed in PR #5807; Vercel Functions capability and Supabase Edge Functions quota are catalogued; a replacement Hindsight deployment remains pending an explicit provider and state-store decision.
+
+## Historical route and failover record
+
 # HindSight extraction route — multi-arm fleet inference (#5553)
 
 Route of record for HindSight fact extraction. Replaces the single-homed
@@ -19,7 +30,7 @@ invariants are unchanged (326/326 held during the outage).
 Extraction is small-model fact extraction; every arm fits free-tier capacity.
 OpenRouter is one arm among many — last in probe order, never the sole route.
 
-## Failover
+## Historical failover mechanics
 
 `fly-hindsight-config.yml` action `apply` (arm `auto`, the default) probes
 each arm's provider endpoint with a live chat completion, in table order.
@@ -41,9 +52,9 @@ recall as the verification receipt.
 
 ## Surfaces
 
-- Live route: Fly app `hindsight-termux`, configured by
+- Historical route: Fly app `hindsight-termux`, formerly configured by
   `.github/workflows/fly-hindsight-config.yml` (this route).
 - `deploy/fly/fly.toml` (`hindsight-deepagent`) default env is aligned to
   arm 1 as the fallback default; applied secrets remain authoritative.
-- Koyeb deploy workflow is a standby surface, not the live route; it still
+- Historical Koyeb deployment was a standby surface; its former configuration
   pins OpenRouter and is out of scope for this exit.

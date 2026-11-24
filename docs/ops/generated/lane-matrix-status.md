@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-24T14:19:39Z)
+# Lane matrix status (2026-11-24T14:20:43Z)
 
-- Master: `99a64ca6d05884e1a3eb5b3bd5a5ffcbb986aa5e`
+- Master: `70de9b1bbe64af185717e49d50a0406259df4c91`
 - Open PRs: **554**
 - Oldest: #47 (110.94d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -53,11 +53,11 @@
 | #1537 | 33.22 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 32.55 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 31.47 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
-| #1616 | 31.46 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
+| #1616 | 31.47 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 31.46 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
 | #1626 | 31.34 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
 | #1645 | 30.58 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
-| #1650 | 30.5 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
+| #1650 | 30.51 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
 | #1694 | 28.54 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
 | #1734 | 28.13 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
 | #1735 | 28.12 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |

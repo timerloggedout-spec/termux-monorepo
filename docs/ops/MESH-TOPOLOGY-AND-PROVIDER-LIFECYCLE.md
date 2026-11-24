@@ -79,6 +79,7 @@ BRR is the read-only discovery and reconciliation layer for branch work. The acc
 | [PR #3628](https://github.com/timerloggedout-spec/termux-monorepo/pull/3628) | Historical Fly Hindsight model mapping |
 | [PR #2663](https://github.com/timerloggedout-spec/termux-monorepo/pull/2663) | Historical Fly/Koyeb configured-instance mapping |
 | [PR #5630](https://github.com/timerloggedout-spec/termux-monorepo/pull/5630) and [issue #5552](https://github.com/timerloggedout-spec/termux-monorepo/issues/5552) | BRR regression hardening and outstanding full-cycle/consumer acceptance |
+| [Issue #5640](https://github.com/timerloggedout-spec/termux-monorepo/issues/5640) | Explicit join requirement: BRR delta + commits export + regression suite + existing context-relationship graph; no new page or parallel graph surface |
 
 The full 4,103-branch private BRR registry and its append-only cycle artifact remain outside this session's access. The related-work list above is a bounded GitHub evidence search; the private BRR cycle remains pending.
 

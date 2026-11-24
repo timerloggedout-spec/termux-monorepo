@@ -54,8 +54,9 @@ The custom build runs from app_dir; android/build.sh changes into its own direct
 Use this custom android_build command:
 
 ~~~bash
-export ANDROID_SDK_ROOT="$ANDROID_HOME"
-export ANDROID_HOME="$ANDROID_SDK_ROOT"
+SDK_ROOT="$(printenv ANDROID_SDK_ROOT || printenv ANDROID_HOME || printf '%s' /opt/android-sdk)"
+export ANDROID_HOME="$SDK_ROOT"
+export ANDROID_SDK_ROOT="$SDK_ROOT"
 yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null 2>&1 || true
 "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" "platforms;android-34" "build-tools;34.0.0"
 bash android/build.sh
@@ -95,7 +96,7 @@ gh workflow run agent-testers.yml \
   -f android_personas=anna,malik \
   -f ios_personas=none \
   -f brief=briefs/studysprint.md \
-  -f android_build='export ANDROID_SDK_ROOT="$ANDROID_HOME"; export ANDROID_HOME="$ANDROID_SDK_ROOT"; yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null 2>&1 || true; "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" "platforms;android-34" "build-tools;34.0.0"; bash android/build.sh' \
+  -f android_build='SDK_ROOT="$(printenv ANDROID_SDK_ROOT || printenv ANDROID_HOME || printf '%s' /opt/android-sdk)"; export ANDROID_HOME="$SDK_ROOT"; export ANDROID_SDK_ROOT="$SDK_ROOT"; yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null 2>&1 || true; "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" "platforms;android-34" "build-tools;34.0.0"; bash android/build.sh' \
   -f apk_path=android/studysprint.apk
 ~~~
 

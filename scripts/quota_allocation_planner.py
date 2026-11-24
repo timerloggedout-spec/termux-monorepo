@@ -34,6 +34,8 @@ SLICE_ASSIGNMENT_HOLDS = set()
 def pool_class(services):
     """A if any service has a numeric limit; B if all null but at
     least one carries live/counter semantics; C otherwise."""
+    if services and all(s.get("lifecycle") == "retired" for s in services):
+        return "C"
     if any(s.get("limit") is not None for s in services):
         return "A"
     if any((s.get("live") or "none") != "none" for s in services):
@@ -93,20 +95,23 @@ def plan(registry, allocations, readings, countdowns=None, now=None,
     pools_out, triggers = [], []
     for pool in allocations["pools"]:
         services = [reg[s] for s in pool["services"] if s in reg]
+        retired = bool(services) and all(s.get("lifecycle") == "retired" for s in services)
         cls = pool_class(services)
-        # numeric reading: first service in the pool with used+limit
-        used = limit = state = None
-        flow = None
-        for s in services:
-            r = read.get(s["id"])
-            if r:
-                state = r.get("status")
-                if r.get("used") is not None and r.get("limit") is not None:
-                    used, limit = r["used"], r["limit"]
-                    mins = window_minutes(s)
-                    flow = (limit / mins) if mins else None
-                    break
-        if flow is None:
+        # Retired provider pools retain their evidence while carrying zero
+        # allocation and zero execution pacing.
+        used = limit = flow = None
+        state = "retired" if retired else None
+        if not retired:
+            for s in services:
+                r = read.get(s["id"])
+                if r:
+                    state = r.get("status")
+                    if r.get("used") is not None and r.get("limit") is not None:
+                        used, limit = r["used"], r["limit"]
+                        mins = window_minutes(s)
+                        flow = (limit / mins) if mins else None
+                        break
+        if flow is None and not retired:
             # flow target derives from the REGISTRY entitlement (limit +
             # window), independent of readings — readings carry used=null
             # by design, so a registry-side derivation is the norm.
@@ -116,16 +121,16 @@ def plan(registry, allocations, readings, countdowns=None, now=None,
                     if mins:
                         flow = s["limit"] / mins
                         break
-        mult = pacing_multiplier(used, limit, None)
+        mult = 0.0 if retired else pacing_multiplier(used, limit, None)
         # Winning forecast under linear pacing: Winning holds ~100%
         # standing, so its forecast consumption = remaining budget it
         # can still draw; stranded is therefore 0 unless a reading
         # shows the pool already partly consumed AND the window is
         # nearly over — v1 keeps the honest bound: without a window
         # clock, stranded stays None (not established).
-        stranded = stranded_estimate(used, limit, None)
+        stranded = None if retired else stranded_estimate(used, limit, None)
         release_to = None
-        if stranded:
+        if stranded and not retired:
             for focus in FOCUS_LADDER:
                 if focus == "boinc-donations" and not pool["id"].startswith("github"):
                     continue
@@ -138,10 +143,10 @@ def plan(registry, allocations, readings, countdowns=None, now=None,
         for a in sorted(pool.get("allocations", []),
                         key=lambda a: order.get(a["focus"], 99)):
             slices.append({
-                "focus": a["focus"], "share_pct": a["pct"],
-                "mode": a.get("mode"),
+                "focus": a["focus"], "share_pct": 0 if retired else a["pct"],
+                "mode": "none" if retired else a.get("mode"),
                 "priority": order.get(a["focus"], 99),
-                "flow_per_min": (flow * a["pct"] / 100.0) if flow is not None else None,
+                "flow_per_min": (flow * a["pct"] / 100.0) if flow is not None and not retired else None,
             })
         # Self-count layer (owner ruling 2026-11-03): tallies of the
         # fleet's own recorded events (ops/quota/self-counts.json)
@@ -149,9 +154,11 @@ def plan(registry, allocations, readings, countdowns=None, now=None,
         # is a labeled HEURISTIC above the counts - it is derived
         # from them, never a reading, and revises as counts accrue.
         pool_self_counts, pool_matching = None, {
-            "layer": "heuristic", "flag": "no-data",
-            "rule": "v1: self-counted activity vs lane-slice claims"}
-        if self_counts:
+            "layer": "lifecycle" if retired else "heuristic",
+            "flag": "retired-provider" if retired else "no-data",
+            "rule": "retired provider pools carry zero allocation" if retired
+                    else "v1: self-counted activity vs lane-slice claims"}
+        if self_counts and not retired:
             totals = {"dispatches": 0, "usage_stamps": 0,
                       "wall_events": 0}
             covered = False
@@ -199,6 +206,7 @@ def plan(registry, allocations, readings, countdowns=None, now=None,
             "id": pool["id"], "class": cls,
             "services": pool["services"],
             "limit": limit, "used": used, "state": state,
+            "lifecycle": "retired" if retired else "active-or-unclassified",
             "pacing_multiplier": mult,
             "target_flow_per_min": flow,
             "slices": slices,
@@ -206,7 +214,7 @@ def plan(registry, allocations, readings, countdowns=None, now=None,
             # enrollment, convergence-executed) carried verbatim so
             # the plan reflects who holds what; distinct from the
             # focus slices above.
-            "lane_slices": pool.get("slices", []),
+            "lane_slices": [] if retired else pool.get("slices", []),
             "stranded": stranded, "release_to": release_to,
             "self_counts": pool_self_counts,
             "matching": pool_matching,

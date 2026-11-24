@@ -63,7 +63,7 @@ class DelphiIntakeContractTests(unittest.TestCase):
         self.assertEqual(cohort["arms"], ["baseline", "rnd", "selected", "control"])
         self.assertEqual(
             cohort["comparison_policy"],
-            "within_segment_only; no cross-silo score aggregation",
+            "within_segment_only; cross_silo_aggregation=false",
         )
 
     def test_doe_decides_records_candidates_without_making_a_selection(self):
@@ -113,7 +113,7 @@ class DelphiIntakeContractTests(unittest.TestCase):
             self.normalize({
                 "Research selection mode": checked("Specific selection"),
                 "Research participants": checked(
-                    "research.not-registered — invented participant"
+                    "research.unregistered — invented participant"
                 ),
             })
 
@@ -189,7 +189,7 @@ class DelphiIntakeContractTests(unittest.TestCase):
 
     def test_one_pass_rubric_requires_single_pass_profile(self):
         record = self.normalize({
-            "Delphi methodology": "One-pass rubric (not a multi-round Delphi study)",
+            "Delphi methodology": "One-pass rubric — single assessment",
             "Round profile": "Single-pass (one assessment)",
             "Stopping criteria / stability definition": "",
         })

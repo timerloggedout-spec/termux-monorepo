@@ -3,3 +3,7 @@
 Metadata category (from recreate/refTemplates-skeleton).
 
 Infra, deploy, runner patterns. Expand-only; live pins under `../smods/` when required.
+
+## Metadata-only candidates
+
+- [osx-forge](./osx-forge/README.md) — immutable-core OS builder and reproducible build-plan patterns; source inspection pending.

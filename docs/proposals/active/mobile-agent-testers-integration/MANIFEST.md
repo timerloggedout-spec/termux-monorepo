@@ -34,18 +34,18 @@ Integrate the forked Mobile Agent Testers workflow as an ephemeral, persona-driv
 
 - Deterministic emulator tests remain the regression gate; agent exploration is advisory discovery.
 - Existing physical Termux devices remain governed by the device registry and pull-queue contract.
-- The external tester fork remains an execution provider, not a second scheduler or source of truth.
-- Android is the first supported StudySprint pilot; the inspected StudySprint target has no iOS app.
+- The external tester fork remains an execution provider; the existing repository scheduler and registries remain authoritative.
+- Android is the first supported StudySprint pilot; the inspected StudySprint target is Android-only.
 - Public Actions artifacts stay encrypted. Decryption and evidence normalization occur on a trusted local machine.
 - Private keys, model credentials, API keys, real learner data, and decrypted raw reports stay outside Git and CI.
-- Paid model inference requires an explicit per-run budget; this integration does not auto-dispatch paid runs.
+- Paid model inference requires explicit per-run budget approval; provider dispatch remains manual.
 - Provider findings remain unverified observations until reproduced by deterministic tests or a human reviewer.
 
 ## Architecture
 
 StudySprint build → existing emulator smoke → optional Mobile Agent Testers personas → encrypted provider artifacts → trusted local collection → normalized Integration Intelligence JSONL → existing evidence / review lanes.
 
-The Termux device fleet remains a separate provider for physical-device work. The adapter emits evidence only; it does not enqueue arbitrary shell tasks or control phones.
+The Termux device fleet remains a separate provider for physical-device work. The adapter emits evidence only; device task admission and phone control remain with the existing Termux fleet.
 
 ## Review log
 

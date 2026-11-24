@@ -27,18 +27,18 @@ decision. No issue is used as a generic state container.
 Do **not** open `ops/session-lane-matrix-*` PRs to restamp this file.
 Git history is the audit ledger. The generated PR board is a derived view.
 
-## Dual-gate contract (promote authority)
+## Scope-aware promote contract
 
-1. `hygiene + portability gate` / `repo gate` SUCCESS on **this** SHA
-2. `agentic termux smoke` / `termux smoke` SUCCESS on **this** SHA
-3. Vercel rate-limits are **non-gate** (#772)
-4. Copilot / CodeRabbit / Qodo / Devin = advisory only
-5. Age, file count, and comment volume are context only; age never changes lane state
-6. Mega-merge is allowed when dual-gate SUCCESS **and** mergeable on the candidate SHA
-7. CodeRabbit ~100-file limit is advisory review capacity, not a promote ban
-8. `mergeable_state=dirty` or a merge conflict **blocks** promote until rebase/re-extract
-9. Dual-gate SUCCESS on an older head does not authorize a newer SHA
-10. Combined commit status is not dual-gate; bind the named jobs
+1. `repo-gate` SUCCESS on the candidate SHA for repository integration changes
+2. `termux-smoke` SUCCESS on the candidate SHA when the changed workstream covers Termux runtime, Android device integration, or Termux operations
+3. Owning domain tests SUCCESS when required by the proposal or changed subsystem
+4. Vercel rate-limits are **non-gate** (#772)
+5. Copilot / CodeRabbit / Qodo / Devin = advisory only
+6. Age, file count, and comment volume are context only; age never changes lane state
+7. Promotion requires every applicable gate to pass on the candidate SHA
+8. `mergeable_state=dirty` or a merge conflict blocks promotion until rebase/re-extraction
+9. A gate result on an older head does not authorize a newer SHA
+10. Combined commit status is not a scope-gate result; bind the named jobs
 
 ## Lane vocabulary (sweep v2)
 

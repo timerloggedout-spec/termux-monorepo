@@ -131,6 +131,21 @@ class DelphiIntakeContractTests(unittest.TestCase):
         })
         self.assertEqual(record["research_selection"]["arms"], ["selected"])
 
+    def test_doe_reconciliation_records_candidates_as_pending_targets(self):
+        record = self.normalize({
+            "Request category": "Harmoniously reconcile multiple projects",
+            "Research selection mode": checked("DoE Decides"),
+            "Harmonious Reconciliation dimensions": checked(
+                "Objectives and strategic alignment"
+            ),
+        })
+        reconciliation = record["reconciliation"]
+        self.assertEqual(reconciliation["status"], "pending_doe_selection")
+        self.assertIs(reconciliation["target_requirement_met"], False)
+        self.assertEqual(reconciliation["project_references"], [])
+        self.assertEqual(len(reconciliation["candidate_project_references"]), 3)
+        self.assertEqual(len(reconciliation["candidate_references"]), 0)
+
     def test_doe_decides_records_candidates_without_making_a_selection(self):
         record = self.normalize({
             "Research selection mode": checked("DoE Decides"),

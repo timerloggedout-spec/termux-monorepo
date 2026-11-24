@@ -16,7 +16,7 @@ reviewers:
 related_prs: []
 related_branches:
   - feat/temporal-langsmith-adapter
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate]
 ---
 
 # MANIFEST — Temporal + LangSmith Trajectories Adapter
@@ -33,7 +33,7 @@ Official Temporal Python `LangSmithPlugin` connects Worker-boundary traces so tr
 ## Boundary
 
 - Self-host path is primary. Cloud Free Tier only after operator confirms account.
-- Capability-gated: no hard dependency for dual-gate paths.
+- Capability-gated: no hard dependency for scope-gate paths.
 - No secrets committed (`LANGSMITH_API_KEY`, Temporal Cloud keys stay external).
 - OTEL + ATES remain P0 canonical; LangSmith/Temporal are adapters/substrate.
 - Extract-only; no mega-PR fold into mcp-hub / Vercel.

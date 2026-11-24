@@ -1,27 +1,24 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-24T02:24:41Z",
+ "generated_at": "2026-11-24T03:04:32Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 8,
-   "in_progress": 1,
+   "queued": 4,
+   "in_progress": 0,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "repo gate": 2,
-    "PR scope guard": 5,
+    "PR scope guard": 3,
     "Orchestration Regression Guard": 1
    }
   },
   "2": {
    "tier": 2,
-   "queued": 1,
-   "in_progress": 1,
-   "oldest_queued_at": "2026-11-24T02:23:51Z",
-   "by_workflow_queued": {
-    "tribute-dashboard-deploy": 1
-   }
+   "queued": 0,
+   "in_progress": 2,
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "3": {
    "tier": 3,
@@ -32,37 +29,33 @@
   },
   "4": {
    "tier": 4,
-   "queued": 53,
-   "in_progress": 17,
+   "queued": 18,
+   "in_progress": 12,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "repo-tracking-collect": 1,
+    "Quota Dispatch Tree": 1,
+    "Peer review orchestrator": 1,
     "PR Change Effectiveness Ledger": 2,
-    "PR production ledger": 4,
-    "Workflow Surface Policy": 1,
-    "termux smoke": 3,
-    "Agent PR Jules Handoff": 3,
-    "Action Effectiveness Ledger": 4,
-    "DO Statement Style": 5,
-    "Audit Cycle \u2014 Single PR Feed-Forward": 2,
-    "Lane matrix event-driven inventory": 2,
-    "Repository development evaluation": 1,
     "RECON INTEL discovery": 1,
-    "DeepSeek CI \u2013 Agentic Automation": 2,
-    "lane events recorder": 2,
-    "Sweep Accountability": 3,
-    "Agent Throughput Evidence": 11,
-    "Context Relationship + Lead/Lag Audit": 2,
-    "PR evidence evaluation": 1,
+    "termux smoke": 1,
+    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
+    "graph-matrix-probe": 1,
+    "quota-allocation-planner": 1,
+    "Foresight Evidence Spine": 1,
     "Agent Readability Source Contract": 1,
-    "delphi-ledger-feed-collect": 1,
-    "Advisory GitHub Actions lint": 1
+    "hitl-control-plane-verify": 1,
+    "que-cadence-kick": 1,
+    "quota-served-probe": 1,
+    "quota-analysis": 1,
+    "Agent PR Jules Handoff": 1,
+    "Advisory GitHub Actions lint": 1,
+    "DO Statement Style": 1
    }
   }
  },
  "totals": {
-  "queued": 62,
-  "in_progress": 19
+  "queued": 22,
+  "in_progress": 14
  },
  "wedged_ancient": [
   {
@@ -220,13 +213,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 9,
+   "1": 4,
    "2": 2,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 11,
-  "default_t4": 70,
+  "explicit_total": 6,
+  "default_t4": 30,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

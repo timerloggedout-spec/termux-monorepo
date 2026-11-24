@@ -1,6 +1,6 @@
 """SHE P0.6 — verification planner (healing evidence, no live dispatch).
 
-Converts dual gates, domain tests, security checks, and regression invariants
+Selects repository, Termux-scope, domain, security, and regression checks
 into an explicit evidence contract for an incident. This module plans checks;
 it does not run Actions, mutate git, or call the network.
 

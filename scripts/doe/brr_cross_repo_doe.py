@@ -109,7 +109,6 @@ def validate_dataset(dataset: dict[str, Any]) -> None:
     _require(isinstance(sources, list) and sources, "sources must be a non-empty list")
     sourced_repositories: set[str] = set()
     source_pairs: set[tuple[str, str]] = set()
-    source_kinds: set[str] = set()
     for source in sources:
         _require(isinstance(source, dict), "source entry must be an object")
         _only_keys(source, {"kind", "repository", "sha", "observed_at", "coverage", "url"}, "source")
@@ -117,7 +116,6 @@ def validate_dataset(dataset: dict[str, Any]) -> None:
         _require(source.get("repository") in repositories, "source repository outside coverage")
         sourced_repositories.add(source["repository"])
         source_pairs.add((source["kind"], source["repository"]))
-        source_kinds.add(source["kind"])
         _require(_is_sha(source.get("sha")), "source sha must be 40 lowercase hex")
         _require(_is_timestamp(source.get("observed_at")), "invalid source observed_at")
         _require(isinstance(source.get("coverage"), str) and source["coverage"] in COVERAGE_STATES, "invalid source coverage")

@@ -1,6 +1,6 @@
 # Provider setup: remaining human inputs
 
-This checklist covers decisions automation cannot establish safely. No provider was signed up for, no terms accepted, and no credential or route was activated in this task. A catalog listing, key name, or green contract test is not account-entitlement evidence.
+This checklist covers decisions automation cannot establish safely. No provider signup, credential activation, or route activation occurred in this task. A catalog listing, key name, or green contract test is not account-entitlement evidence.
 
 ## What is already implemented
 
@@ -8,9 +8,9 @@ The completed transport batch covers all **117 exact directory model claims acro
 
 [Production run 39396483576](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39396483576) verified 702 catalog entries, 30 exact pinned matches, operator-authenticated feedback with repository-admin permissions and a successful **keyless Firecrawl public-source scrape**. That research path requires no signup/contact and is not a remaining human blocker. It used no credentials or paid fallback. Provider inference and the live Origin/DeepAgent worker remain separate and unestablished.
 
-## Account, signup, terms, and no-cost admission
+## Account, signup, and no-cost admission
 
-The user authorized account setup and use of the existing issue #184 credentials. Routine setup may proceed on official provider surfaces when an appropriate Agent-owned contact and sufficient account information are available. This session has no usable signup credential or Agent-owned contact; the user's identification-only profile email must not be substituted. Email/phone verification, real-name checks, first-time OAuth permission grants, or missing account facts are human handoff points, not reasons to fabricate an account. Confirm owner/organization, region, exact model and endpoint, current price/credit status, quota limits, and permitted public-data use. Record applicable terms and data-use/retention/training conditions rather than inferring acceptance from a key. Trial, promotional credit, evaluation-only, or uncertain billing is not permanent no-cost admission. If spending cannot be technically prevented, leave the route disabled.
+The user authorized account setup and use of the existing issue #184 credentials. Routine setup may proceed on official provider surfaces when an appropriate Agent-owned contact and sufficient account information are available. This session has no usable signup credential or Agent-owned contact; the user's identification-only profile email must not be substituted. Email/phone verification, real-name checks, first-time OAuth permission grants, or missing account facts are human handoff points, not reasons to fabricate an account. Confirm owner/organization, region, exact model and endpoint, current price/credit status, quota limits, and public-data scope. Route provider legal-source observations to the isolated [legal/licensing research silo](../../research/legal-licensing/README.md); qualified counsel owns legal interpretation. Trial, promotional credit, evaluation-only, or uncertain billing remains distinct from a verified no-cost account. If spending cannot be technically prevented, leave the route disabled.
 
 Agent-profile/contact discovery is unavailable in this execution session. The remaining account inputs are:
 
@@ -20,9 +20,9 @@ Agent-profile/contact discovery is unavailable in this execution session. The re
 | Missing provider credentials, especially a current HF token | Current names-only inventory and runtime alias checks did not find them | Bind on the authorized secret surface; rerun catalogs without exposing values |
 | SambaNova key and confirmed no-payment-method account | Its separate native adapter is implemented, but a public free-tier table is not account verification | Establish the actual free account, then test only its admitted exact production model |
 | ModelScope owner/identity decision | Official API documentation requires Alibaba account binding and real-name verification | Authorized owner completes identity-dependent steps; do not invent an Agent identity |
-| Provider/model account evidence | Catalog visibility does not establish no-cost status, accepted terms, quota or permitted data use | Record bounded exact-model admission, then separately test public/synthetic inference |
+| Provider/model account evidence | Catalog visibility does not establish no-cost account status, quota, or account-level data controls | Record bounded exact-model admission, then separately test public/synthetic inference |
 
-Before proposing runtime admission, provide an auditable, redacted record of provider/model, verification date, account class (never account secrets), exact terms/source links, data classification, no-cost constraint and its scope, capability evidence, applicable quotas, and expiry/recheck date. Do not include keys, personal data, raw account screenshots, or confidential prompts in Git. Use only public/synthetic inputs unless a separate data review permits more. The existing `research-provider-admission/v1` fields are operator assertions, not a provider-verification mechanism; see [provider batch](PROVIDER-BATCH-IMPLEMENTATION.md#explicit-account-admission) and [research safety boundaries](FREE-LLM-PROVIDER-RECON.md#security-privacy-and-terms-risks).
+Before proposing runtime admission, provide an auditable, redacted record of provider/model, verification date, account class (never account secrets), data classification, no-cost constraint and its scope, capability evidence, applicable quotas, and expiry/recheck date. Store legal-source links and source statements in the isolated research silo. Do not include keys, personal data, raw account screenshots, or confidential prompts in Git. Use only public/synthetic inputs unless a separate data review permits more. The `provider-route-admission/v2` `operator_authorized` field records explicit operator intent; it is not a legal assessment or provider-verification mechanism. See [provider batch](PROVIDER-BATCH-IMPLEMENTATION.md#explicit-account-admission) and the [legal/licensing research silo](../../research/legal-licensing/README.md).
 
 ## Hugging Face secret alias parity
 

@@ -66,6 +66,20 @@ class DelphiIntakeContractTests(unittest.TestCase):
             "within_segment_only; cross_silo_aggregation=false",
         )
 
+    def test_prior_default_keeps_independent_reconciliation_project_references(self):
+        record = self.normalize({
+            "Research selection mode": checked("Prior default"),
+            "Related research projects": checked(
+                "aws-free-tier-strands-delphi-oracle — Delphi Oracle Strands Project"
+            ),
+        })
+        cohort = record["research_selection"]
+        self.assertEqual(len(cohort["participants"]), 12)
+        self.assertEqual(cohort["arms"], ["baseline"])
+        self.assertEqual(cohort["doe_components"], [])
+        self.assertEqual(cohort["methodology_rfps"], [])
+        self.assertEqual(cohort["projects"], ["aws-free-tier-strands-delphi-oracle"])
+
     def test_explicit_prior_default_matches_empty_selection_mode(self):
         empty = self.normalize()
         explicit = self.normalize({
@@ -223,6 +237,13 @@ class DelphiIntakeContractTests(unittest.TestCase):
         self.assertIs(record["panel"]["human_webview_oversight"], True)
         self.assertEqual(record["reconciliation"]["mode"], "harmonious_reconciliation")
         self.assertEqual(len(record["reconciliation"]["dimensions"]), 2)
+        self.assertEqual(
+            record["reconciliation"]["project_references"],
+            [
+                "aws-free-tier-strands-delphi-oracle",
+                "continuous-capability-evolution-lab",
+            ],
+        )
         self.assertEqual(
             record["reconciliation"]["additional_references"],
             [],

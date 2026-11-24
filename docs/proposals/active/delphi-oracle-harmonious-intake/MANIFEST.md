@@ -48,11 +48,11 @@ Operator directive received 2026-11-24: "Build whatever you want as a separate v
 ## Scope
 
 - Separate GitHub Issue Form and event-driven intake workflow restricted to OWNER, MEMBER, and COLLABORATOR issue authors.
-- Deterministic issue-body parser, canonical selection record, catalogue validation, and focused tests.
+- Ordered issue-body parser that preserves Markdown and rendered text, canonical selection record, catalogue validation, and focused tests.
 - Research selection modes: DoE Decides, All, Specific selection, Prior default.
 - Checkbox catalogues for the 12 research participants, four DoE components, related method RFPs, and related research projects.
 - Matrix schedule, per-round schedule, Delphi method, round profile, reconciliation dimensions, panel, optional oversight, and disposition.
-- Idempotent selection-review comment and catalogue PR workflow.
+- Idempotent selection-review comment and disposition-synchronized label.\n- Actionable issue feedback for invalid submissions.\n- Per-revision catalogue PRs with repo-gate and Termux smoke dispatch on the catalogue branch.
 - Documentation, proposal work ledger, and CI coverage.
 
 ## Non-goals

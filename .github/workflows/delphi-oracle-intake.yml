@@ -18,6 +18,7 @@ jobs:
   normalize:
     if: >-
       github.event_name == 'issues' &&
+      contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association) &&
       contains(github.event.issue.body || '', '### Research selection mode') &&
       contains(github.event.issue.body || '', '### Request category')
     runs-on: ubuntu-latest

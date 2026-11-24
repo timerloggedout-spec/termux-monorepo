@@ -10,7 +10,7 @@
 | Integration | Priority | Session evidence | Repository adapter / integration state | Intended role |
 |---|---:|---|---|---|
 | Superpowers | P0 | Skill installed in this session and repository-local skill exists | Native skill implemented | Engineering methodology |
-| Mobile Agent Testers | P1 | Fork workflow and encrypted artifact contract inspected | Adapter planned; first StudySprint pilot pending | Persona-driven exploratory mobile QA |
+| Mobile Agent Testers | P1 | Fork workflow and encrypted artifact contract inspected | Adapter implemented; CI validation pending; first StudySprint pilot pending | Persona-driven exploratory mobile QA |
 | API Impact Mapper | P0 | Connector tools exposed; a SHA-bound advisory PR lane exists | Planned; PR #4019 advisory lane remains proposed pending validation | API evolution and PR impact analysis |
 | Context7 | P0 | Documentation tools exposed | Planned | Version-aware upstream documentation |
 | Mintlify | P0 | Authenticated deployment and repository source verified | Native repository integration | Published developer documentation |

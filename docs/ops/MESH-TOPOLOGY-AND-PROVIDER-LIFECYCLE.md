@@ -75,13 +75,15 @@ BRR is the read-only discovery and reconciliation layer for branch work. The acc
 | Work | Relationship |
 |---|---|
 | [PR #5807](https://github.com/timerloggedout-spec/termux-monorepo/pull/5807) | Current utilization extension; Cloudflare Workers/D1 inventory, Render path, and function candidates |
-| [PR #4020](https://github.com/timerloggedout-spec/termux-monorepo/pull/4020) | Deployment admission evaluator; offline policy scaffold, no live failover |
+| [PR #4020](https://github.com/timerloggedout-spec/termux-monorepo/pull/4020) and [PR #4083](https://github.com/timerloggedout-spec/termux-monorepo/pull/4083) | Deployment admission evaluator and fresh-master refresh; offline policy scaffold, no live failover |
 | [PR #1626](https://github.com/timerloggedout-spec/termux-monorepo/pull/1626) | Initial source-backed mesh provider evidence |
 | [PR #3908](https://github.com/timerloggedout-spec/termux-monorepo/pull/3908) | Historical Fly/Koyeb deploy-plane census |
 | [PR #3628](https://github.com/timerloggedout-spec/termux-monorepo/pull/3628) | Historical Fly Hindsight model mapping |
 | [PR #2663](https://github.com/timerloggedout-spec/termux-monorepo/pull/2663) | Historical Fly/Koyeb configured-instance mapping |
 | [PR #5630](https://github.com/timerloggedout-spec/termux-monorepo/pull/5630) and [issue #5552](https://github.com/timerloggedout-spec/termux-monorepo/issues/5552) | BRR regression hardening and outstanding full-cycle/consumer acceptance |
 | [Issue #5640](https://github.com/timerloggedout-spec/termux-monorepo/issues/5640) | Explicit join requirement: BRR delta + commits export + regression suite + existing context-relationship graph; no new page or parallel graph surface |
+
+The prior implementation branch `fix/mesh-provider-lifecycle-20261123` compared at 63 commits ahead / 31 behind and carried unrelated quota/allocation rewrites; the extended-utilization branch `docs/mesh-extended-utilization-20261123-v2` compared at 20 ahead / 965 behind. This PR extracts the lifecycle slice onto a clean master-based branch instead of promoting either divergent branch wholesale. The current PR branch has since fallen behind generated master feed commits; those changes are outside its 19-file source scope.
 
 The full 4,103-branch private BRR registry and its append-only cycle artifact remain outside this session's access. The related-work list above is a bounded GitHub evidence search; the private BRR cycle remains pending.
 

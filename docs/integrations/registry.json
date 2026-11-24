@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "registry_id": "termux-monorepo.integration-intelligence",
   "repository": "timerloggedout-spec/termux-monorepo",
-  "updated_at": "2026-11-11",
+  "updated_at": "2026-11-23",
   "authority": "repository-maintained-inventory",
   "capability_scope": "Session-scoped audit of explicitly requested integrations; see INTEGRATION-PORTFOLIO.md for observed access, blockers, and next validation steps. CEEL candidate integrations are inventory-only until independently validated.",
   "integrations": [
@@ -509,6 +509,20 @@
       "write_boundary": "No dataset upload, prompt/completion transfer, scoring mutation or deployment until data classification, retention, scopes and cost ceiling are approved.",
       "next_step": "Verify dataset/version lineage, scorer reproducibility, experiment export and cost controls using sanitized fixtures.",
       "sensitivity": "evaluation-dataset-and-score-metadata"
+    },
+    {
+      "id": "mobile-agent-testers",
+      "name": "Mobile Agent Testers",
+      "category": "mobile-exploratory-qa",
+      "priority": "P1",
+      "discovery_state": "discovered",
+      "session_evidence": "The timerloggedout-spec fork and its agent-testers.yml workflow were inspected. The workflow supports Android/iOS persona matrices, custom app builds, encrypted result artifacts, and trusted local collection.",
+      "repo_skill_path": null,
+      "repo_adapter_state": "repo_adapter_planned",
+      "authority": "exploratory-observation-only",
+      "write_boundary": "Read-only app interaction in isolated hosted emulators/simulators. Findings are advisory; no repository writes, physical-device control, private-key use in CI, or paid dispatch without a per-run budget.",
+      "next_step": "Merge the StudySprint persona brief into the tester fork, run a budgeted Android pilot, locally collect/decrypt reports, and validate findings through deterministic regressions.",
+      "sensitivity": "confidential-test-evidence"
     }
   ]
 }

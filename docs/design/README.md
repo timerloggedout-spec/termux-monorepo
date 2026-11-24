@@ -55,8 +55,8 @@ Each system owns a `design.md` following the [template](../design/_template/desi
 
 ## Ownership and source-of-truth rules
 
-- Domain source documents, code, schemas, protocols, and tests retain authority for their respective facts.
-- A design entry summarizes and links; it does not fork or silently supersede an owning specification.
+- Preserve domain source documents, code, schemas, protocols, and tests as the authority for their respective facts.
+- Use each design entry to summarize and link; preserve the owning specification as authoritative.
 - Record design decisions with source links and status: **confirmed**, **proposed**, **candidate**, or **unknown**.
 - Keep architecture-plane references separate from experience taxonomy.
 - Add a system entry when a distinct user/operator experience has an identifiable owner and source trail.

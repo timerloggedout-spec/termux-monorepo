@@ -47,10 +47,10 @@ def workflow_triggers(content: str) -> set[str]:
         if line == "on:":
             active = True
             continue
-        if active and line and not line.startswith((" ", "\\t", "#")):
+        if active and line and not line[0].isspace() and not line.startswith("#"):
             break
         if active:
-            match = re.match(r"^  ([A-Za-z0-9_-]+):(?:\\s|$)", line)
+            match = re.match(r"^  ([A-Za-z0-9_-]+):", line)
             if match:
                 triggers.add(match.group(1))
     return triggers

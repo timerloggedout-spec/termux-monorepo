@@ -20,17 +20,18 @@ is created; update it whenever a lane's purpose or Root Directory changes.
 
 ## Publication and evidence surface matrix
 
-Vercel is the only currently documented **live application-hosting lane** in
-this repository. The other surfaces below are deliberately tracked here so
-future publication work does not silently create a second, conflicting
-source of truth.
+Vercel remains the primary documented **live application-hosting lane** for
+the MCP/demo projects. Cloudflare Workers/D1 provide separate edge and data
+services; Render carries a narrow image-backed README utility service; GitHub
+Pages remains a static-publication lane. These surfaces retain separate
+product, source, and health identities.
 
 | Surface | Role | Current repository evidence | Status / rule |
 |---|---|---|---|
 | **Vercel** | Application hosting and persistent MCP/demo deployment | `mcp-hub` and `demo-portal/public` are live lanes above; provider currently reports `build-rate-limit` on some Git-connected project checks. PR #1310 merged the path selector and the connected Vercel project settings for `mcp-hub`, `tribute-dash`, `tribute-oversight`, and `termux-monorepo` were updated to invoke it. | **LIVE, CAPACITY CONSTRAINED / SELECTOR CONFIGURED, EFFECT NOT YET VERIFIED** — keep one Vercel project per independently deployable root; next provider-eligible Git event must prove unrelated changes are skipped and relevant changes build. |
-| **GitHub Pages** | Static publication for the project hub, matrix, and Help-Wanted dashboard | `.github/workflows/tribute-dashboard-deploy.yml` configures `gh-pages` and mirrors static routes into `timerloggedout-spec.github.io`; the `gh-pages` branch exists. The latest run/deployment evidence was not returned in the current RECON pass. | **CONFIGURED / PUBLICATION UNVERIFIED** — workflow and branch exist; verify the published URLs and source SHA before declaring LIVE. Static-only fallback; not a compatible replacement for MCP/application services. |
-| **Render** | Candidate application/service hosting surface | The current deployment-lane SSOT has no Render project or production lane recorded | **AVAILABLE/CANDIDATE, UNPROVEN HERE** — do not describe a Render deployment as live until its project, root, branch, URL, and verification evidence are recorded |
-| **Cloudflare / Cloudflare Pages** | Candidate static/edge publication and front-door/WAF surface | No live Cloudflare project is recorded in the deployment-lane SSOT | **AVAILABLE/CANDIDATE, UNPROVEN HERE** — record the exact product (Pages, Workers, etc.), project, source/root, branch, domain, and verification evidence before promotion |
+| **GitHub Pages** | Static publication for the project hub, matrix, and Help-Wanted dashboard | `.github/workflows/tribute-dashboard-deploy.yml` configures `gh-pages` and mirrors static routes into `timerloggedout-spec.github.io`; the `gh-pages` branch exists. Current publication URL/source-SHA evidence remains pending. | **CONFIGURED / PUBLICATION UNVERIFIED** — static-only publication lane; verify URL and source SHA before promotion. |
+| **Render** | Image-backed README utility service | `ops/render-image/README.md`, `ops/render-image/Dockerfile`, `.github/workflows/readme-extractor-image.yml`, and `scripts/quota_poll.py` define image build, GHCR publication, service contract, and optional quota reader. | **REPOSITORY-WIRED / PROVIDER HEALTH PENDING** — confirm workspace, service identity, URL, latest deploy, source digest, and usage before declaring provider health LIVE. |
+| **Cloudflare Workers + D1** | Edge API and data-plane services | PR #5807 records a 2026-11-23 connected-account inventory of 2 deployed Workers and 3 D1 databases, with GraphQL Analytics activity; `tmx-device-queue` is the repo-backed pull-queue rendezvous. Queues inventory returned 0; R2 activation remains pending; Billing Read scope is required for financial usage. | **WORKERS/D1 DEPLOYED / USAGE PARTIAL** — keep Workers, D1, Queues, R2, and Pages as distinct products; account usage remains in private oversight.
 | **Hex** | Analytics / Moneyball evidence layer, not primary application hosting | `docs/ops/HEX-MONEYBALL-INTEGRATION.md` and `hex-moneyball-evidence.yml` define the evidence contract | **INTEGRATED EVIDENCE SURFACE** — GitHub Actions remains execution/orchestration; durable audit retention remains outside Hex where required |
 | **GitHub Wiki / DeepWiki / Devin Wiki** | Documentation and discovery surfaces | Root README and `wiki/` publisher define their distinct trust boundaries | **DOCUMENTATION SURFACES** — generated/discovery content never becomes implementation authority without repository evidence |
 
@@ -40,15 +41,14 @@ Use these states consistently:
 
 - **LIVE** — a concrete deployment is currently documented and independently
   verifiable from repository/provider evidence.
-- **CANDIDATE / NOT ENABLED** — the platform is an approved option, but no
-  production lane has been established in this repository.
+- **CANDIDATE / PENDING ACTIVATION** — the platform is an approved option,
+  while the production lane remains unestablished in this repository.
 - **AVAILABLE/CANDIDATE, UNPROVEN HERE** — the operator may have access to the
-  platform, but this repository does not yet contain enough evidence to call
-  a deployment live.
+  platform, while repository evidence remains insufficient for a LIVE status.
 - **INTEGRATED EVIDENCE SURFACE** — the platform participates in analytics,
   evaluation, or evidence handling rather than serving the application.
-- **DOCUMENTATION SURFACE** — publishing/discovery only; never an authorization
-  boundary for source changes.
+- **DOCUMENTATION SURFACE** — publishing/discovery only; source-change authority
+  remains with repository governance.
 
 ## Deployment identity requirements
 
@@ -96,3 +96,13 @@ explicitly named lane and one recorded source boundary.
 5. If the lane duplicates an existing surface, document why it is a fallback,
    preview, experiment, or deliberate multi-provider redundancy rather than
    silently becoming another production source.
+
+
+## Retired hosting references — 2026-11-23
+
+| Provider | Historical workload | Lifecycle | Operational authority |
+|---|---|---|---|
+| Fly.io | Hindsight app/VM hosting | **RETIRED** | `docs/ops/DEVOPS-REGISTER.md` §4A; retirement receipts replace deployment and configuration workflows. |
+| Koyeb | Hindsight app/container hosting | **RETIRED** | `docs/ops/DEVOPS-REGISTER.md` §4A; retirement receipt replaces the former push deployment workflow. |
+
+Historical provider quota and deployment records remain available for provenance. Current workload admission follows the deployment lane identity, operational status, source SHA, health, and independent failure-domain evidence.

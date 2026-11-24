@@ -156,6 +156,41 @@ class TestBRRCrossRepositoryDoE(unittest.TestCase):
         self.assertEqual(evaluator.score_candidate(candidate, "parser regression", "context_graph"), 0.0)
         self.assertEqual(evaluator.score_candidate(candidate, "parser regression", "fused"), 0.0)
 
+    def test_verified_target_candidate_edges_remain_outside_graph_score(self):
+        dataset = make_dataset()
+        candidate = dataset["cases"][0]["candidates"][0]
+        candidate["graph_edges"] = [
+            {
+                "relationship": "SIMILAR_TO",
+                "confidence": "candidate",
+                "evidence_ref": "https://github.com/timerloggedout-spec/parser-a/issues/13",
+            }
+        ]
+        self.assertEqual(evaluator.score_candidate(candidate, "parser regression", "context_graph"), 0.0)
+
+    def test_evaluation_is_deterministic_for_a_frozen_dataset(self):
+        dataset = make_dataset()
+        first = evaluator.evaluate_dataset(dataset)
+        second = evaluator.evaluate_dataset(dataset)
+        self.assertEqual(first, second)
+
+    def test_experiment_records_retain_source_and_target_evidence(self):
+        dataset = make_dataset()
+        result = evaluator.evaluate_dataset(dataset)
+        records = evaluator.build_experiment_records(
+            result, dataset["baseline_sha"], dataset["candidate_sha"], dataset["observed_at"]
+        )
+        self.assertEqual(len(records), 4)
+        required = {
+            "schema_version", "experiment_id", "observed_at", "baseline_sha",
+            "candidate_sha", "suite", "treatment", "status", "outcome",
+            "metrics", "provenance", "confidence", "evidence_refs",
+        }
+        for record in records:
+            self.assertEqual(set(record), required)
+            self.assertTrue(any("feature/parser-regression" in ref for ref in record["evidence_refs"]))
+            self.assertEqual(record["status"], "passed")
+
     def test_partial_source_coverage_blocks_experiment_records(self):
         dataset = make_dataset("PARTIAL")
         result = evaluator.evaluate_dataset(dataset)

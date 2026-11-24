@@ -175,5 +175,13 @@
     "recorded": "2026-11-23",
     "note": "Design committed before evaluator execution. No live BRR run or champion is claimed."
   },
-  "records_home": "experiments/doe/brr-cross-repo-doe/records/"
+  "records_home": "experiments/doe/brr-cross-repo-doe/records/",
+  "factors": {
+    "retrieval_strategy": [
+      "lexical",
+      "branch_commit",
+      "context_graph",
+      "fused"
+    ]
+  }
 }

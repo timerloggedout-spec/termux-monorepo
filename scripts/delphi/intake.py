@@ -83,6 +83,7 @@ def parse_issue_body(body: str) -> dict[str, str]:
     """Parse known form headings while preserving free-text Markdown and fences."""
     sections: dict[str, list[str]] = {}
     field_order = list(MODE_HEADINGS)
+    field_positions = {label: index for index, label in enumerate(field_order)}
     next_field = 0
     current: str | None = None
     fence: str | None = None
@@ -105,12 +106,12 @@ def parse_issue_body(body: str) -> dict[str, str]:
         heading = re.match(r"^###s+(.+?)s*$", line)
         if (
             heading
-            and next_field < len(field_order)
-            and heading.group(1) == field_order[next_field]
+            and heading.group(1) in field_positions
+            and field_positions[heading.group(1)] >= next_field
         ):
             current = heading.group(1)
             sections[current] = []
-            next_field += 1
+            next_field = field_positions[current] + 1
         elif current is not None:
             sections[current].append(line)
 

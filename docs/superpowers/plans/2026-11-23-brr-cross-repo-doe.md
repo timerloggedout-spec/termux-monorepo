@@ -48,6 +48,7 @@
 **Files:**
 - Create: `experiments/doe/brr-cross-repo-doe/DESIGN.json`
 - Create: `experiments/doe/brr-cross-repo-doe/README.md`
+- Create: `experiments/doe/brr-cross-repo-doe/dataset.schema.json`
 - Modify: `docs/ops/DOE-FAMILY.md`
 
 - [ ] Define four retrieval arms: lexical baseline, BRR ancestry, context graph, fused evidence.

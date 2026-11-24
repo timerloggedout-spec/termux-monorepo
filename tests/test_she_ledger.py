@@ -67,6 +67,16 @@ class SheLedgerTests(TestCase):
         self.assertIn("security-checks", ledger.required_gates)
         self.assertTrue(ledger.metadata["security"])
 
+    def test_termux_scope_is_preserved_in_ledger(self):
+        inc = _inc(
+            source="github.termux-smoke",
+            event_provenance="workflow_run:termux-smoke:failure",
+            fingerprint="termux-smoke:runtime",
+        )
+        ledger = plan_ledger(inc)
+        self.assertIn("termux-smoke", ledger.required_gates)
+        self.assertTrue(ledger.metadata["termux_related"])
+
     def test_terminal_rejected(self):
         inc = _inc()
         inc.transition(IncidentState.QUARANTINED, by="policy")
@@ -82,7 +92,7 @@ class SheLedgerTests(TestCase):
         self.assertFalse(restored.live)
         self.assertTrue(BASE_GATES.issubset(restored.required_gates))
 
-    def test_from_mapping_rejects_dropped_dual_gate(self):
+    def test_from_mapping_rejects_dropped_repo_gate(self):
         data = plan_ledger(_inc()).to_mapping()
         data["required_gates"] = [g for g in data["required_gates"] if g != "repo-gate"]
         with self.assertRaisesRegex(LedgerError, "repo gate"):

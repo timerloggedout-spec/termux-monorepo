@@ -1,0 +1,204 @@
+import unittest
+
+from scripts.doe import brr_cross_repo_doe as evaluator
+
+
+SHA_A = "a" * 40
+SHA_B = "b" * 40
+SHA_BASE = "c" * 40
+
+
+def target_id(repository, branch, sha):
+    return f"{repository}::{branch}@{sha}"
+
+
+def make_dataset(coverage_state="COMPLETE"):
+    repo_a = "timerloggedout-spec/parser-a"
+    repo_b = "timerloggedout-spec/parser-b"
+    repo_c = "timerloggedout-spec/parser-c"
+    target_a = target_id(repo_a, "feature/parser-regression", SHA_A)
+    target_b = target_id(repo_b, "feature/parser-regression", SHA_B)
+    target_c = target_id(repo_c, "candidate/parser-regression", SHA_A)
+    source_coverage = "COMPLETE" if coverage_state == "COMPLETE" else "PARTIAL"
+    return {
+        "schema": "brr-cross-repo-doe-dataset/v1",
+        "observed_at": "2026-11-23T12:00:00Z",
+        "baseline_sha": SHA_BASE,
+        "candidate_sha": SHA_A,
+        "coverage": {
+            "state": coverage_state,
+            "repositories": [repo_a, repo_b, repo_c],
+            "next_page": None if coverage_state == "COMPLETE" else 2,
+        },
+        "sources": [
+            {
+                "kind": "brr",
+                "repository": repo_a,
+                "sha": SHA_A,
+                "observed_at": "2026-11-23T11:00:00Z",
+                "coverage": source_coverage,
+                "url": "https://github.com/timerloggedout-spec/parser-a",
+            },
+            {
+                "kind": "context_graph",
+                "repository": repo_b,
+                "sha": SHA_B,
+                "observed_at": "2026-11-23T11:00:00Z",
+                "coverage": source_coverage,
+                "url": "https://github.com/timerloggedout-spec/parser-b",
+            },
+        ],
+        "cases": [
+            {
+                "case_id": "case-001",
+                "task_family": "regression_context",
+                "query": "find parser regression branch",
+                "gold_target_ids": [target_a],
+                "candidates": [
+                    {
+                        "target_id": target_a,
+                        "repository": repo_a,
+                        "branch": "feature/parser-regression",
+                        "sha": SHA_A,
+                        "evidence_status": "verified",
+                        "disposition": "diverged",
+                        "ahead_of_default": 3,
+                        "behind_default": 2,
+                        "unique_commit_count": 4,
+                        "pr_state": "open",
+                        "regression_verdict": "regressed",
+                        "title": "parser regression branch",
+                        "commit_subjects": ["fix parser regression"],
+                        "graph_edges": [
+                            {
+                                "relationship": "CROSS_REFERENCES",
+                                "confidence": "verified",
+                                "evidence_ref": "https://github.com/timerloggedout-spec/parser-a/issues/12",
+                            }
+                        ],
+                        "evidence_refs": [
+                            "https://github.com/timerloggedout-spec/parser-a/tree/feature/parser-regression"
+                        ],
+                    },
+                    {
+                        "target_id": target_b,
+                        "repository": repo_b,
+                        "branch": "feature/parser-regression",
+                        "sha": SHA_B,
+                        "evidence_status": "verified",
+                        "disposition": "behind-only",
+                        "ahead_of_default": 0,
+                        "behind_default": 5,
+                        "unique_commit_count": 0,
+                        "pr_state": "none",
+                        "regression_verdict": "green",
+                        "title": "documentation update",
+                        "commit_subjects": ["update docs"],
+                        "graph_edges": [],
+                        "evidence_refs": [
+                            "https://github.com/timerloggedout-spec/parser-b/tree/feature/parser-regression"
+                        ],
+                    },
+                    {
+                        "target_id": target_c,
+                        "repository": repo_c,
+                        "branch": "candidate/parser-regression",
+                        "sha": SHA_A,
+                        "evidence_status": "candidate",
+                        "disposition": "ahead-only",
+                        "ahead_of_default": 2,
+                        "behind_default": 0,
+                        "unique_commit_count": 2,
+                        "pr_state": "open",
+                        "regression_verdict": "untestable",
+                        "title": "parser regression candidate",
+                        "commit_subjects": ["parser regression experiment"],
+                        "graph_edges": [
+                            {
+                                "relationship": "MENTIONS",
+                                "confidence": "candidate",
+                                "evidence_ref": "https://github.com/timerloggedout-spec/parser-c/issues/8",
+                            }
+                        ],
+                        "evidence_refs": [
+                            "https://github.com/timerloggedout-spec/parser-c/tree/candidate/parser-regression"
+                        ],
+                    },
+                ],
+            }
+        ],
+    }
+
+
+class TestBRRCrossRepositoryDoE(unittest.TestCase):
+    def test_repository_qualified_identity_distinguishes_same_branch_names(self):
+        a = evaluator.target_identity("timerloggedout-spec/a", "feature/x", SHA_A)
+        b = evaluator.target_identity("timerloggedout-spec/b", "feature/x", SHA_A)
+        self.assertNotEqual(a, b)
+        self.assertEqual(a, f"timerloggedout-spec/a::feature/x@{SHA_A}")
+
+    def test_fused_ranking_prefers_verified_relevant_target_and_excludes_candidate(self):
+        result = evaluator.evaluate_dataset(make_dataset())
+        case = next(row for row in result["cases"] if row["arm"] == "fused")
+        self.assertEqual(case["ranked_target_ids"][0], target_id(
+            "timerloggedout-spec/parser-a", "feature/parser-regression", SHA_A
+        ))
+        self.assertNotIn(
+            target_id("timerloggedout-spec/parser-c", "candidate/parser-regression", SHA_A),
+            case["ranked_target_ids"],
+        )
+        self.assertEqual(len(case["candidate_only_ids"]), 1)
+        self.assertEqual(case["metrics"]["f1_at_5"], 1.0)
+
+    def test_candidate_graph_edges_do_not_score_as_verified_context(self):
+        dataset = make_dataset()
+        candidate = dataset["cases"][0]["candidates"][2]
+        self.assertEqual(evaluator.score_candidate(candidate, "parser regression", "context_graph"), 0.0)
+        self.assertEqual(evaluator.score_candidate(candidate, "parser regression", "fused"), 0.0)
+
+    def test_partial_source_coverage_blocks_experiment_records(self):
+        dataset = make_dataset("PARTIAL")
+        result = evaluator.evaluate_dataset(dataset)
+        records = evaluator.build_experiment_records(
+            result, dataset["baseline_sha"], dataset["candidate_sha"], dataset["observed_at"]
+        )
+        self.assertTrue(records)
+        self.assertTrue(all(record["status"] == "blocked" for record in records))
+        self.assertTrue(all(record["outcome"] == "partial_coverage" for record in records))
+
+    def test_untestable_regression_is_explicit_and_scores_below_regressed(self):
+        untestable = {
+            "disposition": "identical",
+            "ahead_of_default": 0,
+            "unique_commit_count": 0,
+            "pr_state": "none",
+            "regression_verdict": "untestable",
+            "graph_edges": [],
+            "evidence_status": "verified",
+            "repository": "timerloggedout-spec/a",
+            "branch": "main",
+            "sha": SHA_A,
+            "target_id": target_id("timerloggedout-spec/a", "main", SHA_A),
+            "title": "",
+            "commit_subjects": [],
+            "behind_default": 0,
+            "evidence_refs": ["https://github.com/timerloggedout-spec/a"],
+        }
+        regressed = dict(untestable, regression_verdict="regressed")
+        self.assertEqual(evaluator.regression_signal(untestable), 0.5)
+        self.assertEqual(evaluator.regression_signal(regressed), 1.0)
+        self.assertEqual(evaluator.regression_signal(dict(untestable, regression_verdict="green")), 0.0)
+
+    def test_invalid_identity_and_missing_evidence_fail_closed(self):
+        dataset = make_dataset()
+        dataset["cases"][0]["candidates"][0]["target_id"] = "same-name-branch"
+        with self.assertRaises(ValueError):
+            evaluator.validate_dataset(dataset)
+        dataset = make_dataset()
+        dataset["cases"][0]["candidates"][0]["evidence_refs"] = []
+        with self.assertRaises(ValueError):
+            evaluator.validate_dataset(dataset)
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -2,7 +2,7 @@
 
 Campaign: `brr-cross-repo-doe`  
 Design: `DESIGN.json`  
-Evaluator: `evaluate.py`  
+Evaluator: [`scripts/doe/brr_cross_repo_doe.py`](../../../scripts/doe/brr_cross_repo_doe.py)  
 Dataset contract: `dataset.schema.json`  
 Proposal: `docs/proposals/active/brr-cross-repo-doe/`
 

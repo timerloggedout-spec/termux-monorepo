@@ -1,15 +1,15 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-24T17:25:20Z",
+ "generated_at": "2026-11-24T17:28:00Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-24T17:25:20Z",
-   "merged": 0,
-   "open": 0
+   "read_at": "2026-11-24T17:27:59Z",
+   "merged": 150,
+   "open": 200
   },
   "lane_events": {
-   "read_at": "2026-11-24T17:25:20Z",
+   "read_at": "2026-11-24T17:27:59Z",
    "status": "error:HTTPError",
    "count": null,
    "events_in_snapshot": 0
@@ -46,8 +46,10 @@
   },
   "by_state": {
    "closed": 1,
-   "unknown": 20,
-   "landed": 1
+   "unknown": 8,
+   "landed": 1,
+   "in-flight": 10,
+   "active": 2
   }
  },
  "rows": [
@@ -63,9 +65,10 @@
    "evidence": [
     "coordinator submission=none",
     "coordinator event D0 status=closed",
-    "desk-feed traversal D0 pr=#1702"
+    "desk-feed traversal D0 pr=#1702",
+    "open PRs: #5851"
    ],
-   "updated_at": "2026-11-24T17:25:20Z"
+   "updated_at": "2026-11-24T17:28:00Z"
   },
   {
    "lane": "challenge-entries-d1",
@@ -81,7 +84,7 @@
     "coordinator event D1 status=submitted - PUBLISHED 2026-11-03; in edit window until the Nov 4 23:59 PT freeze",
     "desk-feed traversal D1 pr=#2626"
    ],
-   "updated_at": "2026-11-24T17:25:20Z"
+   "updated_at": "2026-11-24T17:28:00Z"
   },
   {
    "lane": "challenge-entries-d2",
@@ -96,7 +99,7 @@
     "coordinator submission=DRAFT saved on lablab (NOT submitted) - 76%",
     "coordinator event D2 status=registered - PICK DECIDED (B Quarantine Browser Clerk); build sequence firing 2026-11-04; landing Nov 7, wall Nov 8 15:00 PT"
    ],
-   "updated_at": "2026-11-24T17:25:20Z"
+   "updated_at": "2026-11-24T17:28:00Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -104,13 +107,18 @@
    "domain": "challenges",
    "project_id": "d3-listinglens",
    "state": "landed",
-   "last_merge": null,
+   "last_merge": {
+    "pr": 5251,
+    "sha": "860582e0d0b5",
+    "at": "2026-11-12T15:23:47Z",
+    "title": "D3 project harmonized: assets.clips_url + terminal status"
+   },
    "next": "Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09 \u00b7 ROUTE \u0394 (D3 seat, 2026-11-01): batch B1\u2013B5 trigger route = DeepSeek + command-dispatch until recovery probe PASS (Jules DOWN (created 3/completed 0/errored 3, Swarm 2026-11-01; opportunistic OFF) \u2227 Gemini-CLI build leg OUT); producer-naming req unchanged \u00b7 LANDING TARGET Nov 8 (wall: submission Nov 9 23:59 PT). OWNER BUFFER RULE (2026-11-02): wall \u2260 landing \u2014 desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, \u2205 build dispatch into it.",
    "next_basis": "record",
    "evidence": [
     "desk-feed traversal D3 pr=#2616"
    ],
-   "updated_at": "2026-11-24T17:25:20Z"
+   "updated_at": "2026-11-24T17:28:00Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -125,74 +133,106 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-24T17:25:20Z"
+   "updated_at": "2026-11-24T17:28:00Z"
   },
   {
    "lane": "challenge-entries-d5",
    "project": "D5 Aha! AI Builder Day",
    "domain": "challenges",
    "project_id": "d5-aha",
-   "state": "unknown",
-   "last_merge": null,
+   "state": "in-flight",
+   "last_merge": {
+    "pr": 5582,
+    "sha": "c4159225e3da",
+    "at": "2026-11-17T16:29:57Z",
+    "title": "D5 AppID landed: Termux Fleet Understudy 5803279"
+   },
    "next": "kickoff 2026-11-17 09:00 PT \u00b7 on Registry issuance \u21d2 repo+AppID dispatch (AppID lane 7075f9c0) \u21d2 spec \u21d2 Desk QUE filing \u21d2 Swarm build (claim-free construction; submission claim OFF \u2014 ruling issued; reinstatement pre-wall re-opens it; appeal in flight) \u00b7 landing Nov 18 EOD \u00b7 wall 2026-11-19 12:00 PT SUBMIT-ONCE (claim gated) \u00b7 awards 2026-11-20 11:30 PT",
    "next_basis": "record",
-   "evidence": [],
-   "updated_at": "2026-11-24T17:25:20Z"
+   "evidence": [
+    "open PRs: #5563"
+   ],
+   "updated_at": "2026-11-24T17:28:00Z"
   },
   {
    "lane": "challenge-entries-amd",
    "project": "C11 AMD AI League / Academy",
    "domain": "challenges",
    "project_id": "c11-amd",
-   "state": "unknown",
-   "last_merge": null,
+   "state": "in-flight",
+   "last_merge": {
+    "pr": 5312,
+    "sha": "ec92552eced8",
+    "at": "2026-11-13T07:05:43Z",
+    "title": "docs(guides): evidence index \u2014 AMD Academy C3 completion (1/5)"
+   },
    "next": "Routes after M3 or when builders idle \u00b7 LANDING TARGET Nov 28 (league wall Dec 1 11:00 PT; M4 target Nov 9 stands). OWNER BUFFER RULE (2026-11-02): wall \u2260 landing \u2014 desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, \u2205 build dispatch into it.",
    "next_basis": "record",
    "evidence": [
     "coordinator submission=none",
-    "coordinator event C11 status=active"
+    "coordinator event C11 status=active",
+    "open PRs: #5429, #5428, #5426"
    ],
-   "updated_at": "2026-11-24T17:25:20Z"
+   "updated_at": "2026-11-24T17:28:00Z"
   },
   {
    "lane": "challenge-entries",
    "project": "Challenge OSINT + opportunity ledger",
    "domain": "opportunities",
    "project_id": "challenge-osint",
-   "state": "unknown",
-   "last_merge": null,
-   "next": "NOT_ESTABLISHED",
-   "next_basis": "none",
-   "evidence": [],
-   "updated_at": "2026-11-24T17:25:20Z"
+   "state": "in-flight",
+   "last_merge": {
+    "pr": 5558,
+    "sha": "bca4313025b0",
+    "at": "2026-11-17T14:18:40Z",
+    "title": "docs(registry): opportunity moniker issuance \u2014 A/C/D remap register (QUE #5556)"
+   },
+   "next": "land/close PR #5758 \u2014 docs(ops): expand Devpost + GitLab challenge OSINT observatory",
+   "next_basis": "open-pr",
+   "evidence": [
+    "open PRs: #5758, #2235"
+   ],
+   "updated_at": "2026-11-24T17:28:00Z"
   },
   {
    "lane": "quota",
    "project": "Quota registry / allocations / dispatch-tree",
    "domain": "quota",
    "project_id": "quota-system",
-   "state": "unknown",
-   "last_merge": null,
-   "next": "NOT_ESTABLISHED",
-   "next_basis": "none",
+   "state": "in-flight",
+   "last_merge": {
+    "pr": 5797,
+    "sha": "b8f70c7e0a86",
+    "at": "2026-11-23T11:11:55Z",
+    "title": "ops(quota): Update bucket headroom polling and rate evidence"
+   },
+   "next": "land/close PR #5831 \u2014 feat(mesh): meter Docker Hub pull quota for self-hosted workers",
+   "next_basis": "open-pr",
    "evidence": [
-    "quota registry services=172"
+    "quota registry services=172",
+    "open PRs: #5831, #5034, #5808, #5782, #5767"
    ],
-   "updated_at": "2026-11-24T17:25:20Z"
+   "updated_at": "2026-11-24T17:28:00Z"
   },
   {
    "lane": "doe",
    "project": "DoE campaigns (lab-1 / pilot-1 / live waves)",
    "domain": "doe",
    "project_id": "doe-campaigns",
-   "state": "unknown",
-   "last_merge": null,
-   "next": "NOT_ESTABLISHED",
-   "next_basis": "none",
+   "state": "in-flight",
+   "last_merge": {
+    "pr": 5648,
+    "sha": "c9648146400d",
+    "at": "2026-11-19T09:11:31Z",
+    "title": "feat(mesh): register clf-doe request kind in schema allowlist"
+   },
+   "next": "land/close PR #5832 \u2014 feat(doe): add BRR cross-repository relevance campaign",
+   "next_basis": "open-pr",
    "evidence": [
-    "doe DESIGN.json campaigns=19"
+    "doe DESIGN.json campaigns=19",
+    "open PRs: #5832, #5793, #5813, #5814, #5790"
    ],
-   "updated_at": "2026-11-24T17:25:20Z"
+   "updated_at": "2026-11-24T17:28:00Z"
   },
   {
    "lane": "doe-nc1",
@@ -204,57 +244,73 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-24T17:25:20Z"
+   "updated_at": "2026-11-24T17:28:00Z"
   },
   {
    "lane": "tier-1",
    "project": "Tier-1 classifier engine",
    "domain": "classifiers",
    "project_id": "classifiers-tier1",
-   "state": "unknown",
+   "state": "in-flight",
    "last_merge": null,
-   "next": "NOT_ESTABLISHED",
-   "next_basis": "none",
-   "evidence": [],
-   "updated_at": "2026-11-24T17:25:20Z"
+   "next": "land/close PR #5681 \u2014 feat(capabilities): nested skill/plugin/tool discovery and progressive activation",
+   "next_basis": "open-pr",
+   "evidence": [
+    "open PRs: #5681"
+   ],
+   "updated_at": "2026-11-24T17:28:00Z"
   },
   {
    "lane": "contribution-desk",
    "project": "Contribution Desk + desk-feed",
    "domain": "desk",
    "project_id": "desk",
-   "state": "unknown",
-   "last_merge": null,
+   "state": "active",
+   "last_merge": {
+    "pr": 5215,
+    "sha": "25215ce21f8c",
+    "at": "2026-11-12T10:36:15Z",
+    "title": "fix(tracking): repo-tracking-collect crash on string desk-feed evidence [skip render]"
+   },
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [
     "desk-feed traversals=13 generated_at=2026-11-17T14:36:00Z"
    ],
-   "updated_at": "2026-11-24T17:25:20Z"
+   "updated_at": "2026-11-24T17:28:00Z"
   },
   {
    "lane": "web-design-viz",
    "project": "Fleet landing + dashboard/viz surfaces",
    "domain": "webdev-viz",
    "project_id": "webdev-viz",
-   "state": "unknown",
+   "state": "in-flight",
    "last_merge": null,
-   "next": "NOT_ESTABLISHED",
-   "next_basis": "none",
-   "evidence": [],
-   "updated_at": "2026-11-24T17:25:20Z"
+   "next": "land/close PR #5673 \u2014 C13 Covenant \u2014 draft package landing (QUE #5671)",
+   "next_basis": "open-pr",
+   "evidence": [
+    "open PRs: #5673, #4069"
+   ],
+   "updated_at": "2026-11-24T17:28:00Z"
   },
   {
    "lane": "marketing",
    "project": "FB Pages MVT + challenge promo",
    "domain": "marketing",
    "project_id": "marketing-fb-mvt",
-   "state": "unknown",
-   "last_merge": null,
-   "next": "NOT_ESTABLISHED",
-   "next_basis": "none",
-   "evidence": [],
-   "updated_at": "2026-11-24T17:25:20Z"
+   "state": "in-flight",
+   "last_merge": {
+    "pr": 5456,
+    "sha": "dacd20c4c57c",
+    "at": "2026-11-15T13:42:20Z",
+    "title": "feat(tribute): add public publishing and promotion surfaces"
+   },
+   "next": "land/close PR #5721 \u2014 Skills selective-promote: #5667 payload to master (QUE #5669)",
+   "next_basis": "open-pr",
+   "evidence": [
+    "open PRs: #5721, #5800, #5781, #5780, #5630"
+   ],
+   "updated_at": "2026-11-24T17:28:00Z"
   },
   {
    "lane": "marketing-social",
@@ -266,33 +322,39 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-24T17:25:20Z"
+   "updated_at": "2026-11-24T17:28:00Z"
   },
   {
    "lane": "swarm",
    "project": "Swarm App + F1 token migration wave",
    "domain": "swarm",
    "project_id": "swarm-f1",
-   "state": "unknown",
-   "last_merge": null,
+   "state": "active",
+   "last_merge": {
+    "pr": 5359,
+    "sha": "5e57dcd3d1e8",
+    "at": "2026-11-13T17:17:46Z",
+    "title": "chore(msm): consolidate royalty and simulation evidence into Swarms branch"
+   },
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-24T17:25:20Z"
+   "updated_at": "2026-11-24T17:28:00Z"
   },
   {
    "lane": "providers",
    "project": "Provider registry / catalog / availability",
    "domain": "providers",
    "project_id": "providers-registry",
-   "state": "unknown",
+   "state": "in-flight",
    "last_merge": null,
-   "next": "NOT_ESTABLISHED",
-   "next_basis": "none",
+   "next": "land/close PR #3916 \u2014 chore(reviewer-metrics): regenerate provider x context map",
+   "next_basis": "open-pr",
    "evidence": [
-    "quota registry services=172"
+    "quota registry services=172",
+    "open PRs: #3916, #5854, #5839, #5834, #5827"
    ],
-   "updated_at": "2026-11-24T17:25:20Z"
+   "updated_at": "2026-11-24T17:28:00Z"
   },
   {
    "lane": "providers-phrases",
@@ -304,7 +366,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-24T17:25:20Z"
+   "updated_at": "2026-11-24T17:28:00Z"
   },
   {
    "lane": "repo-replay",
@@ -316,7 +378,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-24T17:25:20Z"
+   "updated_at": "2026-11-24T17:28:00Z"
   },
   {
    "lane": "ops",
@@ -328,19 +390,26 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-24T17:25:20Z"
+   "updated_at": "2026-11-24T17:28:00Z"
   },
   {
    "lane": "telemetry",
    "project": "HindSight + Provenance telemetry ingest",
    "domain": "providers",
    "project_id": "telemetry-ingest",
-   "state": "unknown",
-   "last_merge": null,
-   "next": "NOT_ESTABLISHED",
-   "next_basis": "none",
-   "evidence": [],
-   "updated_at": "2026-11-24T17:25:20Z"
+   "state": "in-flight",
+   "last_merge": {
+    "pr": 5684,
+    "sha": "79943221cc5f",
+    "at": "2026-11-20T06:23:04Z",
+    "title": "fix(5553): fly-hindsight-config \u2014 use provisioned FLY_IO_ORG_TOKEN"
+   },
+   "next": "land/close PR #3890 \u2014 chore(telemetry): refresh HindSight+Provenance ingest",
+   "next_basis": "open-pr",
+   "evidence": [
+    "open PRs: #3890, #5750, #5663, #5427"
+   ],
+   "updated_at": "2026-11-24T17:28:00Z"
   }
  ],
  "doe_join": {
@@ -856,7 +925,7 @@
   ]
  },
  "gaps": [
-  "pr feed source status=error:HTTPError: HTTP Error 403: Forbidden: last-merge/open state NOT_ESTABLISHED this run",
-  "lane-events source status=error:HTTPError: events contribute no evidence this run"
+  "lane-events source status=error:HTTPError: events contribute no evidence this run",
+  "merged PRs unclassified by seed match rules: 111/150 (extend ops/tracking/projects.json match rules)"
  ]
 }

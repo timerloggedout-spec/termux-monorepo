@@ -378,3 +378,15 @@ J: agent-continuous-ops · actions-queue-reaper
 K: ml-pr-lane-classify · registration-monikers
 L: doe-cb1-acceptance · doe-live1-audit · doe-live3-autodispatch · doe-nc1-eval · doe-phrase-dispatch · continuous-evaluation · historical-evaluation-correlation · team-mvt · refTemplates-eval
 M: tribute-execute · tribute-scout · tribute-status-refresh · tribute-system1 · tribute-participation · tribute-llm-assist · tribute-diff-gate · tribute-audit-staleness
+
+## §4A Superseding provider lifecycle disposition — 2026-11-23
+
+This dated decision supersedes the 2026-11-02 deploy-plane rows for execution eligibility. Historical census rows remain intact.
+
+| Provider | Lifecycle | Current workflow behavior | Evidence retained |
+|---|---|---|---|
+| Fly.io | **RETIRED** | `deploy-hindsight.yml` and `fly-hindsight-config.yml` emit retirement receipts through manual dispatch; provider mutation and restart operations are removed from these workflows. | Trial-ended/card-required config run 41410355692; historical deploy run and Fly quota record. |
+| Koyeb | **RETIRED** | `koyeb-hindsight-deploy.yml` emits a retirement receipt through manual dispatch; its former push deployment trigger and provider API operations are removed. | Missing `KOYEB_API_TOKEN`; last recorded workflow runs 2026-09-30; historical quota record. |
+
+Lifecycle authority: `ops/mesh/provider-lifecycle.json`. The focused validator `scripts/ci/validate_mesh_provider_lifecycle.py` checks retired provider eligibility, workflow labels, dispatch triggers, and provider-operation markers.
+

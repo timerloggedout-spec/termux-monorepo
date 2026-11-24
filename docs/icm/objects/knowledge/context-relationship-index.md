@@ -53,4 +53,4 @@ Citations: `config/context_relationships/schema.json`, `config/context_relations
 
 - Process: [`../../processes/context-relationship-reconnaissance.md`](../../processes/context-relationship-reconnaissance.md)
 - Process: [`../../processes/change-and-validate.md`](../../processes/change-and-validate.md)
-- Source: [`AGENTS.md`](../../../../AGENTS.md)
+- Source: [`CLAUDE.md`](../../../../CLAUDE.md)

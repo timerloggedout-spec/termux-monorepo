@@ -2,7 +2,7 @@
 
 Structured lifecycle: **ingest → register → itemize → review → execute → close**.
 
-**Also read:** `AGENTIC-PERMISSIONS.md` · `registry.yaml` · root `AGENTS.md` · `docs/CONSENSUS.md`
+**Also read:** `AGENTIC-PERMISSIONS.md` · `registry.yaml` · root `CLAUDE.md` · `docs/CONSENSUS.md`
 
 ## Directory layout
 
@@ -32,7 +32,7 @@ docs/proposals/
 
 ## Consensus
 
-Item-scoped. See `docs/CONSENSUS.md` tiers. P0 needs second mind or Operator. Unposted chat is not consensus.
+Item-scoped. See `docs/CONSENSUS.md` tiers. P0 needs a second mind or Operator. Record consensus in the proposal; chat alone is not the durable record.
 
 ## Closing
 
@@ -40,23 +40,21 @@ All ITEMS terminal + Review log outcome + move active/ → closed/ + registry up
 
 ## Gate coupling
 
-1. repo-gate green
-2. termux-smoke green
+1. `repo_gate.py` green
+2. `termux_smoke.py` green
 3. Item IDs cited
 4. No unresolved critical PR threads
 
 ## Agent entrypoint
 
 ```text
-1. Read AGENTS.md then registry.yaml
-2. Pick highest-priority accepted/executing todo item
-3. Branch off master-staging
-4. PR → master-staging with Implements: <ITEM-ID>
+1. Read CLAUDE.md then registry.yaml
+2. Pick the highest-priority accepted/executing todo item
+3. Branch from the active integration base defined by CLAUDE.md
+4. Open a PR with Implements: <ITEM-ID>
 5. Update ITEMS.md + registry when possible
-6. Never close P0 security without Operator evidence
+6. Keep human-only security decisions with the Operator
 ```
-<<<<<<< HEAD
-=======
 
 ## Automation
 
@@ -69,4 +67,3 @@ All ITEMS terminal + Review log outcome + move active/ → closed/ + registry up
 
 Large external proposals may live on a **docs/** branch with a **pointer** on master
 (see `corrected_cloud_offload_evaluation.md` → `active/kimi-cloud-offload/`).
->>>>>>> pr238

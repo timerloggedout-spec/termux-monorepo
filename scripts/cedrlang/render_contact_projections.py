@@ -104,7 +104,6 @@ def _target_for(source: Path) -> Path:
 def discover(root: Path) -> list[Projection]:
     sources = [
         root / "README.hum.md",
-        root / "AGENTS.hum.md",
         root / "CLAUDE.hum.md",
     ]
     sources.extend(sorted((root / "docs" / "icm").rglob("*.hum.md")))

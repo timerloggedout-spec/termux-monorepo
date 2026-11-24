@@ -6,8 +6,7 @@ This monorepo is developed with **humans and agents** on Termux and CI.
 
 | Audience | Entry |
 |----------|--------|
-| Agents | [`AGENTS.md`](AGENTS.md) |
-| Claude-family | [`CLAUDE.md`](CLAUDE.md) |
+| Humans and agents | [`CLAUDE.md`](CLAUDE.md) |
 | Everyone | [`docs/proposals/PROCESS.md`](docs/proposals/PROCESS.md) |
 | Permissions | [`docs/proposals/AGENTIC-PERMISSIONS.md`](docs/proposals/AGENTIC-PERMISSIONS.md) |
 | Operator checklist | [`docs/ARCHW1Z-OPERATOR-CHECKLIST.md`](docs/ARCHW1Z-OPERATOR-CHECKLIST.md) |

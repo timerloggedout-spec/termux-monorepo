@@ -7,13 +7,15 @@ def read(relative_path):
     return (ROOT / relative_path).read_text()
 
 
-def test_agents_routes_nontrivial_work_to_context_reconnaissance_and_skill():
-    content = read("AGENTS.md")
+def test_claude_icm_catalog_routes_context_reconnaissance():
+    catalog = read("docs/icm/CLAUDE.md")
+    process = read("docs/icm/processes/context-relationship-reconnaissance.md")
+    skill = read(".agents/skills/context-relationship-graph/SKILL.md")
 
-    assert "context-relationship-reconnaissance.md" in content
-    assert ".agents/skills/context-relationship-graph/SKILL.md" in content
-    assert "verified evidence" in content
-    assert "scored **candidates**" in content
+    assert "context-relationship-reconnaissance.md" in catalog
+    assert "verified relationship evidence" in process
+    assert "candidate" in process
+    assert "metadata-only" in skill
 
 
 def test_icm_catalogs_register_the_new_object_and_process():

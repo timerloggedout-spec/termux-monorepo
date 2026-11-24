@@ -20,7 +20,7 @@ A tool outage, quota limit, stale record, or missing external tracker item chang
 ## Active protocols and migration
 
 - `CLAUDE.md` is the agent entry point.
-- `AGENTS.md` remains a compatibility surface while its name and protocol migration proceeds in parallel. Apply relevant scoped guidance and record conflicts for reconciliation; do not treat a stale pointer or generated projection as higher authority than this entry point and current operator direction.
+- Use this file as the repository-wide agent contract. Subsystem-specific guidance lives in the closest scoped `CLAUDE.md` or subsystem README.
 - Linear is an optional execution mirror. Reuse a current `TER-*` issue when the integration is healthy and a matching issue exists. When Linear is unavailable, rate-limited, or blocks issue creation, record the state in `docs/ops/INTEGRATION-DRIFT-2026-11-19.md`, keep the proposal and item record current, and continue with GitHub and repository evidence. Report Linear synchronization as pending until verified.
 - Jules / `google-labs-code/jules-action` automation is retired in this repository effective 2026-11-01. Use currently configured agent routes and repository-owned workflows; evaluate replacements by capability rather than assuming feature parity.
 
@@ -36,6 +36,7 @@ A tool outage, quota limit, stale record, or missing external tracker item chang
 | Linear adapter protocol | `docs/LINEAR-AGENT-PROTOCOL.md` |
 | Integration drift | `docs/ops/INTEGRATION-DRIFT-2026-11-19.md` |
 | Accessibility integration | `docs/accessibility/INTEGRATION.md` |
+| Technical reference | `docs/REPOSITORY-TECHNICAL-REFERENCE.md` |
 | Session source of truth | `docs/schemas/session-ssot.md` |
 | Provider capabilities | `docs/schemas/provider-capabilities.md` |
 

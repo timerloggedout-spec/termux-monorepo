@@ -63,7 +63,7 @@
         "additionalProperties": false,
         "required": ["case_id", "task_family", "query", "gold_target_ids", "candidates"],
         "properties": {
-          "case_id": { "type": "string", "minLength": 1 },
+          "case_id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$" },
           "task_family": {
             "enum": ["branch_recovery", "commit_lineage", "regression_context", "cross_reference_reconstruction"]
           },

@@ -22,3 +22,10 @@ Scope: reconcile the permanent `master-staging` integration spine with canonical
 - Use small, evidence-backed commits.
 - Validate the exact resulting SHA and workflow runs before promotion.
 - Record committed, executed, validated, and promoted as separate states.
+
+## Current execution gate — 2026-11-24
+
+- Proposal and branch are committed.
+- Linear TER issue creation is blocked by the workspace free-issue limit.
+- Execution remains on hold until an existing authorized TER issue is linked or the workspace issue limit is raised.
+- The branch-sync PR and workflow changes remain uncreated; this preserves the review gate and avoids an untracked repository change.

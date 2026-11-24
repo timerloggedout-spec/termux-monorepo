@@ -34,18 +34,18 @@ Git history is the audit ledger. The generated PR board is a derived view.
 3. Owning domain tests SUCCESS when required by the proposal or changed subsystem
 4. Vercel rate-limits are **non-gate** (#772)
 5. Copilot / CodeRabbit / Qodo / Devin = advisory only
-6. Age, file count, and comment volume are context only; age never changes lane state
+6. Treat age, file count, and comment volume as context; lane state follows evidence
 7. Promotion requires every applicable gate to pass on the candidate SHA
 8. `mergeable_state=dirty` or a merge conflict blocks promotion until rebase/re-extraction
-9. A gate result on an older head does not authorize a newer SHA
-10. Combined commit status is not a scope-gate result; bind the named jobs
+9. Bind each gate result to the exact candidate SHA
+10. Bind named job conclusions as the scope-gate result
 
 ## Lane vocabulary (sweep v2)
 
 | Lane | Meaning |
 |------|---------|
 | EXTRACT | Re-cut onto live master; do not wholesale-merge |
-| CANDIDATE | On master; dual-gate may promote if green |
+| CANDIDATE | On master; applicable scope gates may promote when green |
 | NEED_EVIDENCE | Wrong-base / draft / dirty — missing rebase or checks |
 | SUPERSEDE | Session-record artifact, bot-only artifact, or explicitly superseded item |
 

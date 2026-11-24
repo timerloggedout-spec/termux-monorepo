@@ -135,7 +135,8 @@ def _strip_outer_text_fence(value: str) -> str:
 
 
 def _text_field(fields: dict[str, str], name: str, required: bool = False) -> str:
-    return _strip_outer_text_fence(_single(fields, name, required=required))
+    value = _strip_outer_text_fence(fields.get(name, ""))
+    return _single({name: value}, name, required=required)
 
 
 def _checked(value: str) -> list[str]:

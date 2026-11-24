@@ -55,9 +55,9 @@ Then route the task with **[`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md)** — one 
 ## Hard rules
 
 - Target **`master`** for integration work (base for small PRs may be `master-staging` when that lane is active).
-- Both gates must pass before promote (automated CI + local parity):
-  - `python3 scripts/ci/repo_gate.py`
-  - `python3 scripts/ci/termux_smoke.py`
+- Run `python3 scripts/ci/repo_gate.py` for every repository integration change.
+- Run `python3 scripts/ci/termux_smoke.py` for Termux runtime, Android device, and Termux operational changes.
+- Select additional domain gates from the owning proposal and changed subsystem.
 - Do not invent work outside `docs/proposals/active/<id>/ITEMS.md` — add a row first.
 - Cite `Implements: <ITEM-ID>` on PRs/commits.
 - **No** wholesale merge of NO-GO mega-PRs (#2, #6) — extract-only.
@@ -72,7 +72,7 @@ Then route the task with **[`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md)** — one 
 ```text
 registry.yaml → pick todo item → branch from master
   → implement (automate surfaces: GHA, Codespaces, Docker, Render where applicable)
-  → PR with Implements: ID → dual gates green → auto-promote
+  → PR with Implements: ID → required scope gates green → auto-promote
   → update ITEMS.md status
 ```
 
@@ -83,7 +83,7 @@ After dispatch / commit / merge attempt:
 1. **WAIT** is a stage — re-check jobs → steps → logs → artifacts.
 2. **Do concurrent non-conflicting work** until COMPLETE; do not treat `queued`/`in_progress` as terminal and do not park the lane on human shell commands.
 3. Stall classes: admission / queue / execution / effect / pagination / routing loop.
-4. Promote when dual gates green **and** task outcome verified (FA-ADE auto-promote).
+4. Promote when all required scope gates are green **and** the task outcome is verified (FA-ADE auto-promote).
 
 Canonical skill: `.agents/skills/adaptive-feedback-cycle/SKILL.md`
 Companion: `.github/skills/production-reconciliation/SKILL.md` (WAIT → VALIDATE → RE-FETCH)

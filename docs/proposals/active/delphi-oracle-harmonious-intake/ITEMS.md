@@ -15,4 +15,4 @@
 
 ## Evidence boundary
 
-The current environment exposes GitHub repository operations but no local repository checkout, shell-backed Termux device, or Termux `get_device_info` action. Local repository gates will be executed by GitHub Actions; queued/running jobs will remain pending until terminal evidence is fetched.
+The current environment exposes GitHub repository operations. A local checkout, shell-backed Termux device, and Termux `get_device_info` action are unavailable; GitHub Actions will provide repository-gate evidence, with terminal job results fetched before promotion.

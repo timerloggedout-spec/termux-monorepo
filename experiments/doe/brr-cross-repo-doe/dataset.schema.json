@@ -112,6 +112,11 @@
             "type": "string",
             "format": "uri",
             "pattern": "^https://"
+          },
+          "adjudication_status": {
+            "enum": [
+              "human_adjudicated"
+            ]
           }
         }
       }

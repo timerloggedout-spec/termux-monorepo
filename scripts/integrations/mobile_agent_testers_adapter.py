@@ -34,6 +34,7 @@ def safe_text(value: Any, limit: int) -> str:
     text = EMAIL_RE.sub("[redacted-email]", text)
     text = PHONE_RE.sub("[redacted-phone]", text)
     text = TOKEN_RE.sub("[redacted-secret]", text)
+    text = SECRET_VALUE_RE.sub("[redacted-secret]", text)
     return " ".join(text.split())[:limit]
 
 
@@ -103,7 +104,7 @@ def make_event(
         },
         "provenance": {
             "provider": "Mobile Agent Testers",
-            "capture_method": "encrypted GitHub Actions artifact; locally decrypted",
+            "capture_method": f"encrypted GitHub Actions artifact; locally decrypted; persona={persona}",
             "attribution": "provider_reported",
             "model_id": None,
             "adapter_version": ADAPTER_VERSION,
@@ -193,8 +194,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         parser.error("--commit must be a 7–64 character lowercase hexadecimal SHA")
     if not re.fullmatch(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$", args.repository):
         parser.error("--repository must use owner/name form")
-    if not args.run_id.strip():
-        parser.error("--run-id must be non-empty")
+    if not re.fullmatch(r"^[A-Za-z0-9._-]{1,128}$", args.run_id):
+        parser.error("--run-id must contain only letters, digits, dot, underscore, or hyphen")
     return args
 
 

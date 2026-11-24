@@ -117,6 +117,7 @@ class QuotaPollTest(unittest.TestCase):
             def __enter__(self): return self
 
             def __exit__(self, *args): return False
+
         with patch.object(_qp, "_get", return_value=token) as token_call, \
              patch.object(_qp.urllib.request, "urlopen", return_value=Response()) as open_call:
             result = _qp.dockerhub_anonymous_reader(None)
@@ -151,6 +152,7 @@ class QuotaPollTest(unittest.TestCase):
         with patch.object(_qp, "_get", return_value={"token": "temporary"}), \
              patch.object(_qp.urllib.request, "urlopen", return_value=MalformedResponse()):
             self.assertIsNone(_qp.dockerhub_anonymous_reader(None))
+
         with patch.object(_qp, "_get", return_value={}):
             self.assertIsNone(_qp.dockerhub_anonymous_reader(None))
 

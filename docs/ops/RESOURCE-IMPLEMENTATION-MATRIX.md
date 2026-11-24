@@ -28,9 +28,9 @@ These rows document supplied references and implementation next actions, not ver
 | [FreeLLMAPI](https://github.com/tashfeenahmed/freellmapi) | Proxy template / inference and discovery | Existing static import/register reference extraction; adapt ideas to native catalog and policy rather than running upstream proxy code. Supplied twice, one registry identity. |
 | [GitHub awesome-free query](https://www.google.com/search?q=site%3Agithub.com+awesome+free) | Search / discovery | Preserve the query; triage results into reviewed canonical registry records, not automatic execution. |
 | [Awesome free ChatGPT](https://github.com/LiLittleCat/awesome-free-chatgpt/blob/main/README_en.md) | Directory / discovery | Separate web-only tools from officially authorized APIs. |
-| [Awesome free models](https://github.com/12britz/awesome-free-models) | Directory / discovery | Verify model licenses, modalities and actual hosting terms. |
-| [Awesome legal](https://github.com/ankane/awesome-legal) | Directory / policy | Reference for legal and license research, not legal advice or blanket approval. |
-| [Awesome free tools](https://github.com/abdessamadbettal/awesome-free-tools) | Directory / discovery | Review maintenance, license and primary-source terms for each candidate. |
+| [Awesome free models](https://github.com/12britz/awesome-free-models) | Directory / discovery | Record model IDs, modalities, API facts and freshness; route legal-source questions to `research/legal-licensing/`. |
+| [Awesome legal](https://github.com/ankane/awesome-legal) | Directory / research | Isolated source-discovery reference indexed by `research/legal-licensing/`; counsel owns legal interpretation. |
+| [Awesome free tools](https://github.com/abdessamadbettal/awesome-free-tools) | Directory / discovery | Record maintenance, source identity, capabilities and primary-source facts; store legal observations in the research silo. |
 | [Awesome free services](https://github.com/hql287/awesome-free-services) | Directory / discovery, compute and storage | Distinguish permanent free tiers, trials, credits and paid services. |
 | [Awesome Free Developer Services](https://github.com/kebbbnnn/Awesome-Free-Developer-Services) | Directory / discovery | Verify existence, maintenance and official service terms before adding a pinned collector. |
 | [Web Awesome discussion 1353](https://github.com/shoelace-style/webawesome/discussions/1353) | Discussion / presentation | Review UI ideas and component licensing before schema-specific adaptation. |

@@ -1,52 +1,45 @@
-import json
 import tempfile
 import unittest
 from pathlib import Path
 
 from scripts.ci.validate_mesh_provider_lifecycle import (
+    RETIRED_WORKFLOWS,
     ROOT,
-    REGISTRY,
-    validate_registry,
+    validate_lifecycle_sources,
+    workflow_errors,
 )
 
 
 class MeshProviderLifecycleTests(unittest.TestCase):
-    def setUp(self):
-        self.document = json.loads(REGISTRY.read_text(encoding="utf-8"))
+    def test_existing_authorities_and_retired_workflows_satisfy_contract(self):
+        self.assertEqual(validate_lifecycle_sources(ROOT), [])
 
-    def test_master_registry_satisfies_lifecycle_contract(self):
-        self.assertEqual(validate_registry(self.document, ROOT), [])
-
-    def test_retired_provider_cannot_remain_execution_eligible(self):
-        self.document["providers"][0]["state"] = "retired"
-        self.document["providers"][0]["retired_workflows"] = []
-        self.assertTrue(any("execution_eligible=false" in item for item in validate_registry(self.document, ROOT)))
-
-    def test_duplicate_provider_ids_fail(self):
-        self.document["providers"].append(dict(self.document["providers"][0]))
-        self.assertTrue(any("duplicate provider id" in item for item in validate_registry(self.document, ROOT)))
-
-    def test_retired_workflow_requires_retired_name_and_dispatch_only(self):
+    def test_retired_workflow_requires_dispatch_only_trigger(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            workflow = root / ".github/workflows/retired.yml"
-            workflow.parent.mkdir(parents=True)
+            workflow = root / "retired.yml"
             workflow.write_text(
                 "name: Active Fly deploy\non:\n  push:\njobs:\n  deploy:\n    steps:\n      - run: echo deploy\n",
                 encoding="utf-8",
             )
-            provider = {
-                "id": "fly",
-                "state": "retired",
-                "execution_eligible": False,
-                "retired_workflows": [".github/workflows/retired.yml"],
-            }
-            errors = validate_registry(
-                {"schema": "mesh.provider-lifecycle/v1", "providers": [provider]},
-                root,
-            )
+            errors = workflow_errors("Fly.io", "retired.yml", root)
             self.assertTrue(any("name must carry RETIRED" in item for item in errors))
             self.assertTrue(any("triggers must equal workflow_dispatch" in item for item in errors))
+
+    def test_retired_workflow_rejects_provider_mutation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            workflow = root / "retired.yml"
+            workflow.write_text(
+                "name: RETIRED — Fly.io\non:\n  workflow_dispatch:\njobs:\n  retirement:\n    steps:\n      - run: fly deploy\n",
+                encoding="utf-8",
+            )
+            errors = workflow_errors("Fly.io", "retired.yml", root)
+            self.assertTrue(any("active provider operation remains" in item for item in errors))
+
+    def test_retirement_workflow_inventory_is_bounded(self):
+        self.assertEqual(len(RETIRED_WORKFLOWS["Fly.io"]), 2)
+        self.assertEqual(len(RETIRED_WORKFLOWS["Koyeb"]), 1)
 
 
 if __name__ == "__main__":

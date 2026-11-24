@@ -39,7 +39,7 @@ The form exposes four checkbox choices:
 | DoE Decides | Record an eligible candidate pool for DoE selection; leave the decision pending and execution false |
 | All | Include all 12 research participants, all four DoE components, linked methodology RFPs/projects, and all four research arms |
 | Specific selection | Include only the checked participants, components, methodology RFPs, and projects; baseline is the arm default |
-| Prior default | Include the 12 baseline research participants only; exclude variants, DoE components, and method RFPs |
+| Prior default | Include the 12 baseline research participants; exclude variants, DoE components, and method RFPs. Independently checked project references remain available for reconciliation |
 
 An empty selection-mode group resolves to Prior default. The 12 research silos remain independent segments; cross-silo aggregation stays disabled and comparisons remain silo-local. Arms are `baseline`, `rnd`, `selected`, and `control`. Absent source issue IDs remain explicit nulls while catalogue identity stays valid.
 

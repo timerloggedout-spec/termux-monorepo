@@ -1,0 +1,204 @@
+name: Delphi Oracle harmonious intake
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: delphi-oracle-intake-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  normalize:
+    if: >-
+      github.event_name == 'issues' &&
+      contains(github.event.issue.body || '', '### Research selection mode') &&
+      contains(github.event.issue.body || '', '### Request category')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Normalize intake against canonical research registries
+        id: normalize
+        run: |
+          set -euo pipefail
+          python3 scripts/delphi/intake.py --output "$RUNNER_TEMP/delphi-intake.json"
+          {
+            echo "record<<DORI_RECORD"
+            cat "$RUNNER_TEMP/delphi-intake.json"
+            echo
+            echo "DORI_RECORD"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Record selection review and catalogue disposition
+        uses: actions/github-script@v7
+        env:
+          NORMALIZED_RECORD: ${{ steps.normalize.outputs.record }}
+        with:
+          script: |
+            const record = JSON.parse(process.env.NORMALIZED_RECORD);
+            const issue = context.payload.issue;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const marker = "<!-- delphi-oracle-intake-record:v1 -->";
+            const summary = [
+              marker,
+              "## Delphi Oracle intake normalized",
+              "",
+              `- Selection: \`${record.selection_id}\``,
+              `- Research mode: **${record.research_selection.mode}** (${record.research_selection.status})`,
+              `- Participants: ${record.research_selection.participants.length}`,
+              `- DoE components: ${record.research_selection.doe_components.length}`,
+              `- Methodology RFPs: ${record.research_selection.methodology_rfps.length}`,
+              `- Research projects: ${record.research_selection.projects.length}`,
+              `- Arms: ${record.research_selection.arms.join(", ")}`,
+              `- Question Matrix: ${record.delphi.question_matrix.strategy}`,
+              `- Selection review: ${record.disposition.selection_review}`,
+              `- Registry catalogue: ${record.disposition.catalogue_write}`,
+              "- Execution: **false**",
+              "",
+              "The research cohort remains segmented; this record creates no cross-silo aggregate and dispatches no experiment.",
+              "",
+              "<details><summary>Canonical selection record</summary>",
+              "",
+              "```json",
+              JSON.stringify(record, null, 2),
+              "```",
+              "</details>"
+            ].join("\n");
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner, repo, issue_number: issue.number, per_page: 100
+            });
+            const prior = comments.find(comment => comment.body && comment.body.includes(marker));
+            let comment;
+            if (prior) {
+              const response = await github.rest.issues.updateComment({
+                owner, repo, comment_id: prior.id, body: summary
+              });
+              comment = response.data;
+            } else {
+              const response = await github.rest.issues.createComment({
+                owner, repo, issue_number: issue.number, body: summary
+              });
+              comment = response.data;
+            }
+
+            if (record.disposition.selection_review) {
+              try {
+                await github.rest.issues.createLabel({
+                  owner, repo, name: "delphi:selection-review",
+                  color: "5319e7",
+                  description: "Normalized Delphi Oracle selection awaiting review"
+                });
+              } catch (error) {
+                if (error.status !== 422) throw error;
+              }
+              const currentLabels = (issue.labels || []).map(label =>
+                typeof label === "string" ? label : label.name
+              );
+              if (!currentLabels.includes("delphi:selection-review")) {
+                await github.rest.issues.addLabels({
+                  owner, repo, issue_number: issue.number,
+                  labels: ["delphi:selection-review"]
+                });
+              }
+            }
+
+            let cataloguePrUrl = "";
+            if (record.disposition.catalogue_write) {
+              const base = await github.rest.git.getRef({
+                owner, repo, ref: "heads/master"
+              });
+              const baseSha = base.data.object.sha;
+              const branch = `delphi/selection-catalogue-${issue.number}-${record.record_sha256.slice(0, 8)}`;
+              try {
+                await github.rest.git.getRef({ owner, repo, ref: `heads/${branch}` });
+              } catch (error) {
+                if (error.status !== 404) throw error;
+                await github.rest.git.createRef({
+                  owner, repo, ref: `refs/heads/${branch}`, sha: baseSha
+                });
+              }
+
+              const path = "ops/delphi/selection-catalogue.json";
+              const file = await github.rest.repos.getContent({
+                owner, repo, path, ref: branch
+              });
+              if (Array.isArray(file.data) || !file.data.content) {
+                throw new Error("Selection catalogue path is not a file");
+              }
+              const catalogue = JSON.parse(Buffer.from(file.data.content, "base64").toString("utf8"));
+              if (catalogue.schema !== "delphi.selection-catalogue.v1" ||
+                  catalogue.policy.execution !== false ||
+                  catalogue.policy.cross_silo_score_aggregation !== false) {
+                throw new Error("Selection catalogue contract mismatch");
+              }
+              const index = catalogue.entries.findIndex(entry =>
+                entry.selection_id === record.selection_id
+              );
+              if (index >= 0) catalogue.entries[index] = record;
+              else catalogue.entries.push(record);
+              catalogue.entries.sort((a, b) =>
+                a.selection_id.localeCompare(b.selection_id)
+              );
+              const nextContent = JSON.stringify(catalogue, null, 2) + "\n";
+              const oldContent = Buffer.from(file.data.content, "base64").toString("utf8");
+              if (nextContent !== oldContent) {
+                await github.rest.repos.createOrUpdateFileContents({
+                  owner, repo, path,
+                  message: `data(delphi): catalogue intake #${issue.number} (DORI-002)`,
+                  content: Buffer.from(nextContent).toString("base64"),
+                  sha: file.data.sha,
+                  branch
+                });
+              }
+
+              const existing = await github.rest.pulls.list({
+                owner, repo, state: "open", head: `${owner}:${branch}`,
+                base: "master", per_page: 100
+              });
+              let pr = existing.data[0];
+              if (!pr) {
+                const created = await github.rest.pulls.create({
+                  owner, repo,
+                  title: `data(delphi): catalogue selection from #${issue.number}`,
+                  head: branch,
+                  base: "master",
+                  body: [
+                    "Implements: DORI-002",
+                    "",
+                    `Source intake: #${issue.number}`,
+                    `Selection ID: ${record.selection_id}`,
+                    `Record SHA-256: ${record.record_sha256}`,
+                    "",
+                    "This PR adds or revises a reference-only Delphi selection catalogue entry.",
+                    "Execution remains false. No experiment, provider call, or live routing action is authorized."
+                  ].join("\n")
+                });
+                pr = created.data;
+              }
+              cataloguePrUrl = pr.html_url;
+            }
+
+            const finalBody = summary + (cataloguePrUrl
+              ? `\n\n**Registry catalogue PR:** ${cataloguePrUrl}`
+              : "");
+            if (finalBody !== comment.body) {
+              await github.rest.issues.updateComment({
+                owner, repo, comment_id: comment.id, body: finalBody
+              });
+            }

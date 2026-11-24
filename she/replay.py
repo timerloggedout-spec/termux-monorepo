@@ -17,7 +17,7 @@ from typing import Any
 from she.attest import Attestation, digest_mapping, plan_attestation
 from she.incident import Incident, IncidentState
 from she.ledger import EvidenceLedger, plan_ledger
-from she.verify import BASE_GATES
+from she.verify import BASE_GATES, TERMUX_SCOPE_GATES
 
 VERDICTS = frozenset({"match", "mismatch", "observe-only", "hold"})
 
@@ -68,6 +68,8 @@ class ReplayVerdict:
         needed = set(self.required_gates)
         if not BASE_GATES.issubset(needed):
             raise ReplayError("repo-gate must be required")
+        if self.metadata.get("termux_related") and not TERMUX_SCOPE_GATES.issubset(needed):
+            raise ReplayError("termux-smoke must be required for Termux scope")
         if self.verdict not in VERDICTS:
             raise ReplayError(f"unsupported verdict: {self.verdict!r}")
         if len(self.expected_digest) != 64 or len(self.observed_digest) != 64:
@@ -204,6 +206,7 @@ def plan_replay(
             "classification": incident.classification,
             "fingerprint": incident.fingerprint,
             "source": incident.source,
+            "termux_related": bool(ledger.metadata.get("termux_related")),
             "state": incident.state.value,
             "security": security,
             "matched": matched,

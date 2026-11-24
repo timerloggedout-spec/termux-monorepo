@@ -153,3 +153,9 @@ app_bot leg is transport (publisher), not authorship. Window re-score:
 547 single-leg · 52 unattributed · 0 corroborated · 0 disputed —
 details + remaining gap (per-PR token-history join) in
 `ops/telemetry/attribution-rescore-1.4.json`.
+## Provider lifecycle guard — 2026-11-23
+
+The Hindsight deployment paths on Fly.io and Koyeb are retired. `deepcli/provider_guard.py` is the shared host-admission function used by the Hindsight client and telemetry retain/verify scripts. It blocks `.fly.dev`, `.koyeb.app`, `api.fly.io`, and `app.koyeb.com` before HTTP execution.
+
+The Provenance sink continues to build and publish independently. Hindsight proof records `blocked_reason`, returns `ok=0`, and gates verification/full-populate when `HINDSIGHT_BASE_URL` resolves to a retired host. Hindsight Cloud, Workers, Vercel, Supabase, and local development hosts pass the provider-host check; service compatibility and deployment evidence remain separate acceptance gates.
+

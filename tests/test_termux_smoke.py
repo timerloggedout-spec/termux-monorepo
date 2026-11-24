@@ -7,10 +7,9 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from test_delphi_intake import DelphiIntakeContractTests
-
-
 def load_tests(loader, standard_tests, pattern):
+    from test_delphi_intake import DelphiIntakeContractTests
+
     standard_tests.addTests(
         loader.loadTestsFromTestCase(DelphiIntakeContractTests)
     )

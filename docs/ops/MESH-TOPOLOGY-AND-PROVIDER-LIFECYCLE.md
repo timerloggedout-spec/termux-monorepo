@@ -19,7 +19,7 @@ Fly.io and Koyeb are **RETIRED** for this mesh. Their deployment workflows emit 
 | Compute Mesh topology | `docs/architecture/flows/compute-mesh.md` | Living map, readback 2026-11-23 | Cross-repo request, VM ledger, DoE result, and consumer edges |
 | VM node manifest | `ops/vm-backup/hark-sandbox-node.json` | `resiliency-node/v1` | Hark node identity, capacity, allowlist, and request transport |
 | VM allocation | `ops/compute/ALLOCATION.md` | Allocation record dated 2026-11-18 | Muse/Hark workload placement and compute capacity |
-| Deployment admission | `scripts/ci/deployment_admission.py` on PR #4020 | `deployment-admission-input/v1` and `deployment-admission-decision/v1` | Offline quota admission and verified-alternate policy; PR remains open and does not prove live failover |
+| Deployment admission | `scripts/ci/deployment_admission.py` on PR #4020 | `deployment-admission-input/v1` and `deployment-admission-decision/v1` | Offline quota admission and verified-alternate policy; PR remains open and live failover remains unverified |
 | Receiver Mesh | `receiver-mesh-prototype-20261029` lineage | Prototype | Event-receiver experiment; separate from compute request routing |
 | BRR | Private `compute-exports/brr/2026-11-17/registry.json` | 2026-11-17 registry snapshot | Read-only branch reconciliation, branch class, ahead/behind, and feature discovery |
 
@@ -38,7 +38,7 @@ GitHub branch-name search on 2026-11-23 returned **27 mesh-named branches** and 
 
 ## Provider lifecycle
 
-The machine-readable registry is authoritative for lifecycle admission. Current classifications:
+The existing deployment-lane SSOT and DevOps register are authoritative for deployment identity and operational status. The infrastructure CMDB design governs field-level reconciliation. Current classifications:
 
 | Provider | Product/workload class | Lifecycle | Evidence interpretation |
 |---|---|---|---|
@@ -52,14 +52,14 @@ The machine-readable registry is authoritative for lifecycle admission. Current 
 | Fly.io | Historical Hindsight app/VM hosting | **Retired** | Trial-ended/card blocker; billing evidence remains historical |
 | Koyeb | Historical Hindsight app/container hosting | **Retired** | Missing deploy credential; last workflow runs in September 2026 |
 
-The registry separates provider capability from account connection, quota record, deployed resource, and successful workload execution.
+The source records separate provider capability, account connection, quota record, deployed resource, and successful workload execution.
 
 ## Are function providers replacing VMs?
 
 Functions are a separate workload class alongside the VM plane.
 
 - **Cloudflare Workers:** deployed edge-function execution is evidenced. D1 supplies a separate database capability.
-- **Vercel Functions:** platform capability belongs to the active Vercel application-hosting lane; a distinct deployed function inventory is not established here.
+- **Vercel Functions:** platform capability belongs to the active Vercel application-hosting lane; a distinct deployed function inventory requires evidence.
 - **Supabase Edge Functions:** quota capability is registered; deployed function inventory remains unverified.
 - **Leapcell and Appwrite:** function/serverless candidates in PR #5807; candidate status remains separate from production integration.
 - **Deno Deploy, AWS Lambda, Azure Functions, and Cloud Run:** candidate or quota-research surfaces; account eligibility and deployed workloads require their own evidence.
@@ -86,7 +86,7 @@ The full 4,103-branch private BRR registry and its append-only cycle artifact re
 
 1. Provider lifecycle remains in the existing deployment-lane SSOT and DevOps register; the infrastructure CMDB design defines the reconciliation model.
 2. Provider workflow discovery preserves lifecycle state; retired workflows carry a `RETIRED` name and manual-dispatch-only trigger.
-3. `scripts/ci/validate_mesh_provider_lifecycle.py` checks registry uniqueness, lifecycle eligibility, retired workflow triggers, and retired provider operations.
+3. `scripts/ci/validate_mesh_provider_lifecycle.py` checks the existing status authorities, retired workflow triggers, and retired provider operations.
 4. Quota records and historical PRs remain available as provenance; execution eligibility follows the current deployment and operations records.
 5. Provider promotion requires exact workload identity, source SHA, health, protocol, state dependency, quota evidence, and independent failure-domain evidence.
 

@@ -42,7 +42,7 @@ Shared references capture reusable conventions and link to their owners. System 
 
 ## Per-system design record
 
-Each system owns a `design.md` following the [template](../design/_template/design.md). The record covers:
+Each system owns a `design.md` following the [template](_template/design.md). The record covers:
 
 1. Purpose, users, and user outcomes.
 2. User-facing surfaces and entry points.

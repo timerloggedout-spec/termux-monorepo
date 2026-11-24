@@ -1,23 +1,26 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-24T14:02:12Z",
+ "generated_at": "2026-11-24T14:17:28Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 2,
-   "in_progress": 1,
+   "queued": 3,
+   "in_progress": 2,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "PR scope guard": 2
+    "PR scope guard": 3
    }
   },
   "2": {
    "tier": 2,
-   "queued": 0,
-   "in_progress": 2,
-   "oldest_queued_at": null,
-   "by_workflow_queued": {}
+   "queued": 2,
+   "in_progress": 1,
+   "oldest_queued_at": "2026-11-24T14:16:47Z",
+   "by_workflow_queued": {
+    "pages build and deployment": 1,
+    "tribute-dashboard-deploy": 1
+   }
   },
   "3": {
    "tier": 3,
@@ -28,20 +31,26 @@
   },
   "4": {
    "tier": 4,
-   "queued": 4,
-   "in_progress": 12,
+   "queued": 14,
+   "in_progress": 16,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
+    "Lane matrix event-driven inventory": 1,
+    "PR Change Effectiveness Ledger": 2,
+    "DO Statement Style": 4,
+    "PR evidence evaluation": 1,
+    "Action Effectiveness Ledger": 1,
+    "PR production ledger": 1,
+    "Peer review orchestrator": 1,
+    "Reviewer metrics collect": 1,
     "Agent PR Jules Handoff": 1,
-    "PR Change Effectiveness Ledger": 1,
-    "Advisory GitHub Actions lint": 1,
-    "DO Statement Style": 1
+    "Advisory GitHub Actions lint": 1
    }
   }
  },
  "totals": {
-  "queued": 6,
-  "in_progress": 15
+  "queued": 19,
+  "in_progress": 19
  },
  "wedged_ancient": [
   {
@@ -199,13 +208,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 3,
-   "2": 2,
+   "1": 5,
+   "2": 3,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 5,
-  "default_t4": 16,
+  "explicit_total": 8,
+  "default_t4": 30,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

@@ -133,6 +133,10 @@ def make_dataset(coverage_state="COMPLETE"):
                         "regression_verdict": "regressed",
                         "title": "parser regression branch",
                         "commit_subjects": ["fix parser regression"],
+                        "commit_shas": [SHA_A],
+                        "pull_request_numbers": [12],
+                        "issue_numbers": [13],
+                        "regression_reason": None,
                         "graph_edges": [
                             {
                                 "relationship": "CROSS_REFERENCES",
@@ -158,6 +162,10 @@ def make_dataset(coverage_state="COMPLETE"):
                         "regression_verdict": "green",
                         "title": "documentation update",
                         "commit_subjects": ["update docs"],
+                        "commit_shas": [],
+                        "pull_request_numbers": [],
+                        "issue_numbers": [],
+                        "regression_reason": None,
                         "graph_edges": [],
                         "evidence_refs": [
                             "https://github.com/timerloggedout-spec/parser-b/tree/feature/parser-regression"
@@ -177,6 +185,10 @@ def make_dataset(coverage_state="COMPLETE"):
                         "regression_verdict": "untestable",
                         "title": "parser regression candidate",
                         "commit_subjects": ["parser regression experiment"],
+                        "commit_shas": [SHA_A],
+                        "pull_request_numbers": [8],
+                        "issue_numbers": [8],
+                        "regression_reason": "baseline check absent at branch tip",
                         "graph_edges": [
                             {
                                 "relationship": "MENTIONS",
@@ -283,6 +295,10 @@ class TestBRRCrossRepositoryDoE(unittest.TestCase):
             "target_id": target_id("timerloggedout-spec/a", "main", SHA_A),
             "title": "",
             "commit_subjects": [],
+            "commit_shas": [],
+            "pull_request_numbers": [],
+            "issue_numbers": [],
+            "regression_reason": "missing test evidence",
             "behind_default": 0,
             "evidence_refs": ["https://github.com/timerloggedout-spec/a"],
         }

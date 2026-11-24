@@ -26,11 +26,11 @@ See [DESIGN.json](DESIGN.json). The planned design is a blocked full factorial w
 
 The primary decision is quality-constrained: each tool must pass the same independent held-out behavioral suite before runtime gains are considered. Report whole-application and per-call timing separately. Record failures, missing measurements, compilation, memory, tool/agent effort, and integration burden.
 
-## Extensible comparison track
+## Future Rust implementation extension
 
-GitReverse is registered as a sibling capability campaign in `DESIGN.json`, with upstream `filiksyos/gitreverse`, the in-progress internal implementation, and a structured human-reference baseline. Its reconstruction-quality outcomes remain separate from Rust hot-path speed outcomes.
+The GitReverse approach is a development-process reference for work happening in `termux-monorepo`. The next Rust.rs implementation/version is developed initially in this existing migration lane. GitReverse is not a sibling campaign, comparison arm, or research-seed entry.
 
-The Siglary relationship is recorded as an explicit source-recon gate. The campaign freezes Siglary-on/off as a factor only if the internal implementation supports a stable switch on one source revision; otherwise Siglary use is a treatment attribute or a separate cohort. The internal implementation's exact path, commit and Siglary version remain pending source verification.
+A future implementation enters a new design version only after its source commit, capability contract, integration boundary, Siglary profile where applicable, and fixture compatibility are pinned. Keep reconstruction-quality outcomes separate from the Rust hot-path performance cohort.
 
 ## Execution status
 

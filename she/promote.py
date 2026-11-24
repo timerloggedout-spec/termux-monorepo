@@ -150,16 +150,21 @@ def plan_promotion(
     evolution: EvolutionPlan | None = None,
     check_results: Mapping[str, Mapping[str, Any]] | None = None,
 ) -> PromotionDecision:
-    """Plan a promotion decision. Does not merge.
+    """Plan a promotion decision for the incident's validation scope.
 
-    The repository gate is universal; Termux smoke follows incident scope. Security/Dependabot stay observe-only.
-    HTTP 200 / inconclusive / pending cannot promote. from_mapping is fail-closed.
+    The repository gate is universal; Termux smoke follows incident scope.
+    Security/Dependabot remain observe-only. HTTP 200, inconclusive, and
+    pending outcomes keep promotion on hold. from_mapping is fail-closed.
     """
     if incident.state in _TERMINAL_BLOCK:
         raise PromotionError(
             f"promotion not applicable for terminal state {incident.state.value}"
         )
     verification = verification or plan_verification(incident)
+    if verification.incident_id != incident.incident_id:
+        raise PromotionError("verification incident_id must match incident")
+    if verification.sha != incident.sha:
+        raise PromotionError("verification sha must match incident sha")
     if _is_security(incident):
         gates = tuple(sorted(set(verification.required_gates()) | {"security-checks"}))
         return PromotionDecision(

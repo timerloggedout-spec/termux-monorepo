@@ -31,13 +31,20 @@ def test_family_members_match_design_records():
                   for m in fam["members"]}
     assert "mvt-campaigns" in member_ids
     assert "design-classes" in member_ids
-    # Every committed design record is a family campaign member.
-    design_ids = set()
+    # Explicitly unadmitted designs remain candidates, outside campaign intake.
+    admitted_ids = set()
+    candidate_ids = set()
     for design_path in CAMPAIGNS.glob("*/DESIGN.json"):
         design = json.loads(design_path.read_text())
-        design_ids.add(design["campaign_id"])
+        if (design.get("status") == "proposed_not_admitted"
+                or design.get("member_kind") == "campaign_candidate"):
+            candidate_ids.add(design["campaign_id"])
+        else:
+            admitted_ids.add(design["campaign_id"])
     campaign_ids = {c["campaign_id"] for c in feed["data"]["campaigns"]}
-    assert campaign_ids == design_ids
+    feed_candidate_ids = {c["campaign_id"] for c in feed["data"]["candidates"]}
+    assert campaign_ids == admitted_ids
+    assert feed_candidate_ids == candidate_ids
 
 
 def test_intake_rule_pilot2_not_admitted():

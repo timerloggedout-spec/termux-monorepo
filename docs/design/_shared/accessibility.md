@@ -4,8 +4,7 @@
 
 ## Existing references
 
-- [Palette UX accessibility guidance](../../ops/PALETTE-UX-ACCESSIBILITY.md)
-- [Repository palette](../../ops/PALETTE.md)
+- [SHE UI/UX accessibility and interaction contract](../../ops/SHE-DASHBOARD-UI-UX-CONTROL-PLANE.md)
 - [Tribute Dashboard stylesheet](../../../apps/tribute-dashboard/dashboard.css)
 
 ## Design record requirements

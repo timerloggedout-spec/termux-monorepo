@@ -208,6 +208,7 @@ This is a navigation taxonomy of major ownership zones, not a recursive inventor
 | Termux Agentic Hub | [termux-agentic-hub.md](docs/architecture/termux-agentic-hub.md) |
 | Agent evaluation | [AGENT-EVALUATION-FRAMEWORK.md](docs/architecture/AGENT-EVALUATION-FRAMEWORK.md) |
 | Routing and orchestration | [ROUTING-ORCHESTRATION-MAP.md](docs/ops/ROUTING-ORCHESTRATION-MAP.md) |
+| DAG / Kahn / Markov methods and setup | [DAG-ALGORITHM-AND-MARKOV-CATALOG.md](docs/architecture/DAG-ALGORITHM-AND-MARKOV-CATALOG.md) |
 | Evidence projection | [EVIDENCE-PROJECTION-SURFACE.md](docs/ops/EVIDENCE-PROJECTION-SURFACE.md) |
 | Evidence substrate | [AGENT-EVIDENCE-SUBSTRATE.md](docs/ops/AGENT-EVIDENCE-SUBSTRATE.md) |
 | Context relationship graph | [CONTEXT-RELATIONSHIP-INDEX.md](docs/ops/CONTEXT-RELATIONSHIP-INDEX.md) |

@@ -22,7 +22,7 @@ wiring · **(d)** inference-only, with the wiring that would promote it.
 | `provider-command-dispatch.yml` | dispatch / repository_dispatch | coderabbit, qodo, devin (review-arm class; not registry model providers) | 1 run, success 2026-10-18 |
 | `ai-studio-delphi-trigger.yml` | dispatch | google (AI Studio) | 1 run, success 2026-10-30 |
 | `provider-availability.yml` | schedule | probe roster | 93 runs, recent 30/30 success, last 2026-10-28 — probes availability, does not dispatch work |
-| llm_api_hub + MSM catalog | API / selection | catalog roster (16, below) | selection layer; admission-gated (`research-provider-admission/v1` policy) |
+| llm_api_hub + MSM catalog | API / selection | catalog roster (16, below) | selection layer; admission-gated (`provider-route-admission/v2` operator policy) |
 
 The batch roster = `llm_api_hub/server/research_providers.py` ENDPOINTS
 (14 native) + `provider_protocols` {cloudflare, cohere, ollama} +

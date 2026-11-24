@@ -36,7 +36,7 @@ refTemplates/
 Rules:
 - Metadata-first (README + SOURCE.txt + preferred fork URL).
 - Live gitlinks only when a pin is required for Actions / agent runtime.
-- Pin intentionally; promote when dual-gate green and task outcome verified.
+- Pin intentionally; run repo-gate and the applicable domain gates; apply termux-smoke only to Termux runtime/device changes.
 
 ---
 
@@ -54,7 +54,7 @@ No forced full clone on every runner. Sparse / on-demand only.
 
 | Cadence surface | Integration |
 |-----------------|-------------|
-| Dual-gate | New metadata / gitlink changes ride the same green path |
+| Dual-gate | New metadata / gitlink changes use repo-gate and their owning domain checks |
 | evidence-led-monorepo-ops | Inventory + integrity checks |
 | adaptive-wait | Submodule / sparse-checkout jobs stay behind dual gates |
 | review-loop | Continuous feedback; no synchronous HITL checkpoint when authority permits |
@@ -79,9 +79,9 @@ No forced full clone on every runner. Sparse / on-demand only.
 2. Create `refTemplates/00_Index/` + jogyo metadata.
 3. Expand skeleton categories as metadata-only.
 4. Wire inventory / integrity into Actions.
-5. Optional `smods/` pin when dual-gate ready.
+5. Optional `smods/` pin when repository and applicable domain gates are ready.
 
-Promote when dual gates green and task outcome verified. Agents auto-promote under full scoped authority (#184). Sovereignty cockpit = ArchWiz + chat for build-request projects.
+Promote when all applicable scope gates are green and the task outcome is verified. Agents auto-promote under full scoped authority (#184). Sovereignty cockpit = ArchWiz + chat for build-request projects.
 
 ---
 

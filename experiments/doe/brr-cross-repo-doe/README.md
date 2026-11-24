@@ -36,7 +36,7 @@ Seed discovery targets include the exact term `gitReverse` (repository/branch/co
 
 ## Outcomes and decision rule
 
-Primary: macro F1@5 against the frozen, human-adjudicated gold target IDs.
+Primary: macro F1@5 against the frozen, human-adjudicated gold target IDs. Precision@5 uses a fixed denominator of five (missing ranks count as misses); recall@5 divides hits by the gold target count; F1@5 is their harmonic mean.
 
 Secondary: precision@5, recall@5, mean reciprocal rank, candidate-only leads, source coverage, unresolved/untestable fraction, and ranking latency.
 

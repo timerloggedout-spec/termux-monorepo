@@ -67,6 +67,7 @@ Use this page as a human-readable index. The navigation configuration in `docs.j
 
 - [INTEGRATION PORTFOLIO](/docs/integrations/INTEGRATION-PORTFOLIO): INTEGRATION PORTFOLIO documentation.
 - [INTEGRATION REGISTRY](/docs/integrations/INTEGRATION-REGISTRY): INTEGRATION REGISTRY documentation.
+- [Mobile Agent Testers runbook](/docs/ops/MOBILE-AGENT-TESTERS-INTEGRATION): StudySprint persona QA, encrypted evidence collection, and event normalization.
 
 ## Related indexes
 

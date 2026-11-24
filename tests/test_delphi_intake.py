@@ -404,6 +404,7 @@ class DelphiIntakeContractTests(unittest.TestCase):
         self.assertIn("author_association", workflow)
         self.assertNotIn("delphi:rfp", form)
         self.assertIn("delphi:selection-review", workflow)
+        self.assertIn("removeLabel", workflow)
         self.assertIn("heads/master", workflow)
         self.assertIn("execution", workflow)
         self.assertIn("false", workflow)

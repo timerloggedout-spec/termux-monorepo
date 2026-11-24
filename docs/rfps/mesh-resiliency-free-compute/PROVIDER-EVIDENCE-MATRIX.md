@@ -36,3 +36,15 @@ For each observation add:
 - `source_url`, `source_title`, `captured_facts`, `next_recheck_at`
 
 Keep unverified fields as `unknown`. No scores or provider winner should be emitted from this seed worksheet alone.
+
+## Lifecycle disposition — 2026-11-23
+
+The following historical candidates are retired from this mesh's execution shortlist by owner direction:
+
+| Provider | Product class | Lifecycle | Evidence | Decision |
+|---|---|---|---|---|
+| Fly.io | App/VM hosting | **RETIRED** | Hindsight trial ended; config application required a payment method; billing state remains historically unverified. | Preserve pricing/quota evidence and prior commits; exclude from workload placement and failover candidates. |
+| Koyeb | Managed app/container | **RETIRED** | Hindsight deployment credential absent; last recorded deployment attempts date to 2026-09-30. | Preserve pricing/quota evidence and prior commits; exclude from workload placement and failover candidates. |
+
+The active lifecycle record is `ops/mesh/provider-lifecycle.json`. Historical evidence rows remain useful for audit and comparison; they carry no deployment admission.
+

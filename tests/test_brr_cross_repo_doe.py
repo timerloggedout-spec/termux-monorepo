@@ -148,7 +148,7 @@ class TestBRRCrossRepositoryDoE(unittest.TestCase):
             case["ranked_target_ids"],
         )
         self.assertEqual(len(case["candidate_only_ids"]), 1)
-        self.assertEqual(case["metrics"]["f1_at_5"], 1.0)
+        self.assertAlmostEqual(case["metrics"]["f1_at_5"], 2.0 / 3.0)
 
     def test_candidate_graph_edges_do_not_score_as_verified_context(self):
         dataset = make_dataset()

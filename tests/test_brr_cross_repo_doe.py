@@ -1,9 +1,9 @@
 import json
 import tempfile
 import unittest
+from pathlib import Path
 
 import jsonschema
-from pathlib import Path
 
 from scripts.doe import brr_cross_repo_doe as evaluator
 

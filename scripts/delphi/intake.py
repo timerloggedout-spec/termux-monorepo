@@ -90,15 +90,15 @@ def parse_issue_body(body: str) -> dict[str, str]:
 
     for line in body.splitlines():
         stripped = line.strip()
-        fence_match = re.match(r"^(```+|~~~+)", stripped)
+        fence_match = re.match(r"^(`{3,}|~{3,})", stripped)
         if fence is not None:
             if current is not None:
                 sections[current].append(line)
-            if fence_match and fence_match.group(1).startswith(fence):
+            if fence_match and fence_match.group(1)[0] == fence[0] and len(fence_match.group(1)) >= len(fence) and re.fullmatch(r"(`{3,}|~{3,})\\s*", stripped):
                 fence = None
             continue
         if fence_match:
-            fence = fence_match.group(1)[:3]
+            fence = fence_match.group(1)
             if current is not None:
                 sections[current].append(line)
             continue
@@ -124,11 +124,8 @@ def parse_issue_body(body: str) -> dict[str, str]:
 
 def _strip_outer_text_fence(value: str) -> str:
     lines = value.strip().splitlines()
-    if (
-        len(lines) >= 2
-        and re.fullmatch(r"```[A-Za-z0-9_-]*", lines[0].strip())
-        and lines[-1].strip() == "```"
-    ):
+    opening = re.fullmatch(r"(`{3,})[A-Za-z0-9_-]*", lines[0].strip()) if lines else None
+    if len(lines) >= 2 and opening and lines[-1].strip() == opening.group(1):
         return "
 ".join(lines[1:-1]).strip()
     return value.strip()

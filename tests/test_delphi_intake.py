@@ -67,6 +67,7 @@ class DelphiIntakeContractTests(unittest.TestCase):
         self.assertEqual(cohort["doe_components"], [])
         self.assertEqual(cohort["methodology_rfps"], [])
         self.assertEqual(cohort["projects"], [])
+        self.assertIsNone(record["reconciliation"]["target_requirement_met"])
         self.assertIs(record["execution"], False)
 
     def test_all_selects_full_registered_research_catalogue_and_all_arms(self):

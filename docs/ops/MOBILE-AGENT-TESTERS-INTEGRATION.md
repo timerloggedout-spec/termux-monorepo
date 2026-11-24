@@ -34,7 +34,7 @@ The app uses a native Android WebView shell with a bundled web surface. The insp
 
 ### Build inputs
 
-Run the provider workflow in timerloggedout-spec/mobile-agent-testers_fork with. The app-specific brief is mirrored in the fork by PR https://github.com/timerloggedout-spec/mobile-agent-testers_fork/pull/1. Until that brief lands on main, select its branch with the workflow dispatch ref shown below.
+Run the provider workflow in timerloggedout-spec/mobile-agent-testers_fork. The canonical brief is apps/studysprint/AGENT_BRIEF.md; its fork mirror is proposed in [PR #1](https://github.com/timerloggedout-spec/mobile-agent-testers_fork/pull/1). Until that brief lands on main, select its branch with the workflow dispatch ref shown below.
 
 | Input | Pilot value |
 |---|---|

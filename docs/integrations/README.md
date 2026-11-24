@@ -1,15 +1,15 @@
 # Integration Intelligence
 
-Integration Intelligence is the governed catalog and evidence boundary for external tools and research platforms used by `termux-monorepo`.
+Integration Intelligence is the governed catalog and evidence boundary for external tools and research platforms used by termux-monorepo.
 
 ## Canonical files
 
 - [Integration portfolio](INTEGRATION-PORTFOLIO.md) — dated readiness audit, evidence, blockers, and adoption roadmap.
-
 - [Integration registry](INTEGRATION-REGISTRY.md) — human-readable capabilities, priorities, and adoption states.
 - [Machine-readable registry](registry.json) — structured inventory for automation and cockpit consumers.
 - [Adapter contract](ADAPTER-CONTRACT.md) — read/write boundaries, event normalization, provenance, and validation.
 - [Event JSON Schema](schemas/integration-event.schema.json) — canonical normalized event envelope.
+- [Upstream Intelligence Pipeline](UPSTREAM-INTELLIGENCE-PIPELINE.md) — source classes, intelligence categories, deterministic-first classification, cost controls, impact mapping and routing.
 - [Superpowers design](../superpowers/specs/2026-11-02-integration-intelligence-design.md) and [implementation plan](../superpowers/plans/2026-11-02-integration-intelligence.md).
 - [CEEL architecture](../superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md), [platform comparison](PLATFORM-COMPARISON.md), [event contract](CEEL-EVENT-CONTRACT.md), and [capability opportunity graph](capability-opportunity-graph.json).
 
@@ -26,6 +26,6 @@ The registry intentionally separates:
 
 ## Operating loop
 
-`RECON → PLAN → IMPLEMENT → TEST → COMMIT → WAIT → WATCH → VALIDATE → RE-FETCH → COMPARE → RECORD → REPEAT`
+RECON → PLAN → IMPLEMENT → TEST → COMMIT → WAIT → WATCH → VALIDATE → RE-FETCH → COMPARE → RECORD → REPEAT
 
 No provider adapter may bypass the repository's proposal lifecycle, permission model, secret handling, or dual gates.

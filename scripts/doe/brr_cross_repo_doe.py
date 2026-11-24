@@ -39,6 +39,7 @@ REGRESSION_VERDICTS = {
 }
 TOKEN_RE = re.compile(r"[a-z0-9]+")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+CASE_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$")
 BOOTSTRAP_REPLICATES = 2000
 BOOTSTRAP_SEED = 56402026
 
@@ -60,8 +61,8 @@ def _is_timestamp(value: Any) -> bool:
     if not isinstance(value, str):
         return False
     try:
-        dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
-        return True
+        parsed = dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
+        return parsed.tzinfo is not None and parsed.utcoffset() is not None
     except ValueError:
         return False
 
@@ -71,9 +72,15 @@ def _require(condition: bool, message: str) -> None:
         raise ValueError(message)
 
 
+def _only_keys(value: dict[str, Any], allowed: set[str], label: str) -> None:
+    extra = set(value) - allowed
+    _require(not extra, f"{label} contains unsupported fields: {sorted(extra)}")
+
+
 def validate_dataset(dataset: dict[str, Any]) -> None:
     """Validate the frozen input contract and fail closed on weak evidence."""
     _require(isinstance(dataset, dict), "dataset must be an object")
+    _only_keys(dataset, {"schema", "observed_at", "baseline_sha", "candidate_sha", "coverage", "sources", "cases"}, "dataset")
     _require(dataset.get("schema") == DATASET_SCHEMA, "unsupported dataset schema")
     _require(_is_timestamp(dataset.get("observed_at")), "invalid dataset observed_at")
     _require(_is_sha(dataset.get("baseline_sha")), "baseline_sha must be 40 lowercase hex")
@@ -81,6 +88,7 @@ def validate_dataset(dataset: dict[str, Any]) -> None:
 
     coverage = dataset.get("coverage")
     _require(isinstance(coverage, dict), "coverage must be an object")
+    _only_keys(coverage, {"state", "repositories", "next_page"}, "coverage")
     coverage_state = coverage.get("state")
     _require(coverage_state in COVERAGE_STATES, "invalid coverage state")
     repositories = coverage.get("repositories")
@@ -103,6 +111,7 @@ def validate_dataset(dataset: dict[str, Any]) -> None:
     source_kinds: set[str] = set()
     for source in sources:
         _require(isinstance(source, dict), "source entry must be an object")
+        _only_keys(source, {"kind", "repository", "sha", "observed_at", "coverage", "url"}, "source")
         _require(source.get("kind") in SOURCE_KINDS, "invalid source kind")
         _require(source.get("repository") in repositories, "source repository outside coverage")
         sourced_repositories.add(source["repository"])
@@ -131,8 +140,9 @@ def validate_dataset(dataset: dict[str, Any]) -> None:
     case_ids: set[str] = set()
     for case in cases:
         _require(isinstance(case, dict), "case entry must be an object")
+        _only_keys(case, {"case_id", "task_family", "query", "gold_target_ids", "candidates"}, "case")
         case_id = case.get("case_id")
-        _require(isinstance(case_id, str) and case_id, "case_id is required")
+        _require(isinstance(case_id, str) and CASE_ID_RE.fullmatch(case_id), "case_id must be a safe slug (1-80 characters)")
         _require(case_id not in case_ids, "duplicate case_id")
         case_ids.add(case_id)
         _require(case.get("task_family") in TASK_FAMILIES, "invalid task_family")
@@ -148,6 +158,7 @@ def validate_dataset(dataset: dict[str, Any]) -> None:
         verified_ids: set[str] = set()
         for candidate in candidates:
             _require(isinstance(candidate, dict), "candidate must be an object")
+            _only_keys(candidate, {"target_id", "repository", "branch", "sha", "evidence_status", "disposition", "ahead_of_default", "behind_default", "unique_commit_count", "pr_state", "regression_verdict", "title", "commit_subjects", "graph_edges", "evidence_refs"}, "candidate")
             repository = candidate.get("repository")
             branch = candidate.get("branch")
             sha = candidate.get("sha")
@@ -183,6 +194,7 @@ def validate_dataset(dataset: dict[str, Any]) -> None:
             _require(isinstance(edges, list), "graph_edges must be a list")
             for edge in edges:
                 _require(isinstance(edge, dict), "graph edge must be an object")
+                _only_keys(edge, {"relationship", "confidence", "evidence_ref"}, "graph edge")
                 _require(isinstance(edge.get("relationship"), str) and edge["relationship"],
                          "graph relationship is required")
                 _require(edge.get("confidence") in {"verified", "candidate"},
@@ -449,7 +461,7 @@ def build_experiment_records(result: dict[str, Any], baseline_sha: str,
                 "arm": row["arm"],
                 "instance": None,
             },
-            "status": "passed" if result["coverage_state"] == "COMPLETE" else "blocked",
+            "status": "observed" if result["coverage_state"] == "COMPLETE" else "blocked",
             "outcome": "measured" if result["coverage_state"] == "COMPLETE"
                        else "partial_coverage",
             "metrics": {

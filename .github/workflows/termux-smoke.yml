@@ -7,7 +7,7 @@ name: termux smoke
 #     python3 scripts/ci/termux_smoke.py
 #     python3 scripts/ci/termux_smoke.py --with-optional
 #
-# No cargo, no node, no pip, no network required for the default path.
+# The default path uses Python standard-library checks and local repository inputs.
 
 on:
   pull_request:
@@ -63,5 +63,5 @@ jobs:
 
       - name: Optional agent-surface probes
         run: python3 scripts/ci/termux_smoke.py --with-optional
-        # Optional probes never fail the job unless --strict is used later.
+        # Optional probes contribute advisory evidence; --strict promotes their failures to job failures.
         continue-on-error: true

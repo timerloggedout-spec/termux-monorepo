@@ -34,7 +34,7 @@ The app uses a native Android WebView shell with a bundled web surface. The insp
 
 ### Build inputs
 
-Run the provider workflow in timerloggedout-spec/mobile-agent-testers_fork with:
+Run the provider workflow in timerloggedout-spec/mobile-agent-testers_fork with. The app-specific brief is mirrored in the fork by PR https://github.com/timerloggedout-spec/mobile-agent-testers_fork/pull/1. Until that brief lands on main, select its branch with the workflow dispatch ref shown below.
 
 | Input | Pilot value |
 |---|---|
@@ -149,4 +149,4 @@ The adapter reads */results/*/findings.json. It emits one event per issue with a
 
 DISCOVERED → repo_adapter_implemented → provider_run_pending → collected → observed → reproduced → validated → promoted
 
-Current state: adapter and runbook implementation in progress. Provider authentication, budget, first run, and end-to-end validation remain separate evidence-bearing steps.
+Current state: MAT-001 implementation in progress; StudySprint brief PR #1 is open on the tester fork. Provider authentication, budget, first run, and end-to-end validation remain separate evidence-bearing steps. Provider authentication, budget, first run, and end-to-end validation remain separate evidence-bearing steps.

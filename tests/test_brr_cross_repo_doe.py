@@ -390,6 +390,16 @@ class TestBRRCrossRepositoryDoE(unittest.TestCase):
         with self.assertRaises(ValueError):
             evaluator.validate_dataset(dataset)
 
+    def test_gold_set_requires_human_adjudication_receipt(self):
+        dataset = make_dataset()
+        source = next(
+            item for item in dataset["sources"]
+            if item["kind"] == "gold_set" and item["repository"] == "timerloggedout-spec/parser-b"
+        )
+        source.pop("adjudication_status")
+        with self.assertRaises(ValueError):
+            evaluator.validate_dataset(dataset)
+
     def test_case_id_is_safe_for_record_output_paths(self):
         dataset = make_dataset()
         dataset["cases"][0]["case_id"] = "../escape"

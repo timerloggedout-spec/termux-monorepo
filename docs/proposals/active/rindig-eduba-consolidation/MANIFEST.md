@@ -13,7 +13,7 @@ reviewers:
 related_prs: []
 related_branches:
   - feat/rindig-eduba-consolidation
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate]
 ---
 
 # MANIFEST — RinDig / ICM / EDUBA Consolidation

@@ -114,7 +114,8 @@
       "mean reciprocal rank",
       "candidate-only leads per query",
       "complete source coverage rate",
-      "unresolved/untestable fraction"
+      "unresolved/untestable fraction",
+      "candidate graph-edge leads per query, separately cited and excluded from verified hits"
     ],
     "metric_definitions": {
       "precision_at_5": "relevant verified targets in the first five ranks divided by 5; missing ranks count as non-relevant",

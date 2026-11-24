@@ -117,7 +117,7 @@ def dockerhub_anonymous_reader(now):
 
     Docker documents that HEAD returns rate-limit headers without consuming a
     pull. The reading is scoped to the runner's public egress IP / IPv6 /64;
-    it does not represent a Docker Personal account or private repository.
+    scope excludes Docker Personal account and private-repository accounting.
     """
     token_payload = _get(
         "https://auth.docker.io/token?" + urllib.parse.urlencode({

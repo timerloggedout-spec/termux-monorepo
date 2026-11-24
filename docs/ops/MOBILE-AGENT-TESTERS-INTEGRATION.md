@@ -26,6 +26,27 @@ The workflow builds an APK, encrypts it, fans out one emulator per persona, bloc
 
 Provider findings are model-generated observations. The provider's duplicate grouping is a hypothesis; retain each persona's finding provenance and reproduce candidates before treating them as confirmed defects.
 
+## One-time provider setup
+
+The fork's setup script provisions the per-repository encryption keypair and Actions secrets. Run it once on a trusted workstation before the first provider run:
+
+~~~bash
+git clone https://github.com/timerloggedout-spec/mobile-agent-testers_fork
+cd mobile-agent-testers_fork
+gh auth login
+bash setup.sh
+~~~
+
+Requirements: GitHub CLI, OpenSSL, authenticated write access to the tester fork, and either a Claude Code subscription token or an Anthropic API key. The script creates the private RSA key under ~/.mobile-agent-testers/, stores ARTIFACT_PASSPHRASE plus the selected model credential as repository Actions secrets, and commits the matching results_public.pem. Keep the private key on the trusted workstation; enter model credentials only in the local setup prompt. The fork's existing public-key file is a template artifact until setup.sh provisions a matching private key for this fork.
+
+After setup, confirm the repository secret names with:
+
+~~~bash
+gh secret list --repo timerloggedout-spec/mobile-agent-testers_fork
+~~~
+
+The expected names are ARTIFACT_PASSPHRASE and one of CLAUDE_CODE_OAUTH_TOKEN or ANTHROPIC_API_KEY. Keep secret values private.
+
 ## StudySprint pilot
 
 StudySprint Android package: org.timerloggedout.studysprint.

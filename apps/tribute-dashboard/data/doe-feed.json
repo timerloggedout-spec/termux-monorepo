@@ -1,7 +1,7 @@
 {
   "schema": "dashboard-surface-feed/v1",
   "surface": "doe",
-  "generated_at": "2026-11-24T04:41:13Z",
+  "generated_at": "2026-11-24T04:46:01Z",
   "sources": [
     "deepcli/deepcli/observatory/doe.py",
     ".agents/skills/multivariate-doe/SKILL.md",
@@ -435,6 +435,27 @@
           "results": null
         },
         {
+          "member_id": "phone-1-mcp-background-control",
+          "kind": "register",
+          "state": "population_landed",
+          "design_record": "experiments/doe/phone-1-mcp-background-control/DESIGN.json",
+          "note": "Observational register (cmp-register pattern): the population is the surveyed field of MCP phone-control systems, transcribed from the dossier report with per-unit source refs and evidence levels. Entries are evaluated on accrued evidence over time; architecture claims stay as-documented until a device-side exercise exists (none does — bounds were repo-side only)."
+        },
+        {
+          "member_id": "game-development-specialist-evolution",
+          "kind": "campaign_candidate",
+          "state": "proposal_only_not_admitted",
+          "design_record": "experiments/doe/game-development-specialist-evolution/DESIGN.json",
+          "note": "Design proposal only. No designed dispatches or run records exist. DoE oversight must review/admit and lock campaign-specific decision thresholds before cohort creation or execution."
+        },
+        {
+          "member_id": "rust-zero-drift-evolution",
+          "kind": "campaign_candidate",
+          "state": "proposal_only_not_admitted",
+          "design_record": "experiments/doe/rust-zero-drift-evolution/DESIGN.json",
+          "note": "Candidate design only. DoE oversight must review and admit the design, freeze the task cohort and decision thresholds, and verify the runner before designed dispatch. No run records exist."
+        },
+        {
           "member_id": "pilot-2-dispatch-topology-x-quota-policy",
           "kind": "campaign_candidate",
           "state": "proposal_only_not_admitted",
@@ -735,6 +756,9 @@
     "Campaign ww-3-you-com is admitted (design record committed) but has no run records yet — defined, not run.",
     "Pilot 2 (#1850) is proposal-only: no design record or run evidence, so it is not yet a family member.",
     "The DSPy optimizer lane is design-only. Campaigns defined-but-not-run render as exactly that.",
-    "Campaign brr-cross-repo-doe is admitted (design record committed) but has no run records yet — defined, not run."
+    "Campaign brr-cross-repo-doe is admitted (design record committed) but has no run records yet — defined, not run.",
+    "Campaign candidate game-development-specialist-evolution remains proposal-only and is excluded from active campaign runs.",
+    "Campaign candidate rust-zero-drift-evolution remains proposal-only and is excluded from active campaign runs.",
+    "Register phone-1-mcp-background-control is a data-population register, not an experiment campaign."
   ]
 }

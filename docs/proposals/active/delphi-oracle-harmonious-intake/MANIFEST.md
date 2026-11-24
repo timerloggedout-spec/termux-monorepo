@@ -10,6 +10,9 @@ reviewers:
   - id: timerloggedout-spec
     role: operator-authorizer
     status: accepted
+  - id: devin-ai-integration[bot]
+    role: independent-code-review
+    status: pending
 related_issues:
   - 1567
   - 1571

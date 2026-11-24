@@ -42,6 +42,16 @@ class SheRepairPRTests(TestCase):
         self.assertTrue(plan.branch.startswith("she/repair/"))
         self.assertIn("repo_gate_required", plan.constraints)
 
+    def test_termux_scope_is_preserved_in_repair_tests(self):
+        inc = _inc(
+            source="github.termux-smoke",
+            event_provenance="workflow_run:termux-smoke:failure",
+            fingerprint="termux-smoke:runtime",
+        )
+        plan = plan_repair_pr(inc)
+        self.assertIn("termux-smoke", plan.required_tests)
+        self.assertTrue(plan.metadata["termux_related"])
+
     def test_security_observe_only(self):
         inc = _inc(
             classification="dependabot-high",
@@ -63,7 +73,7 @@ class SheRepairPRTests(TestCase):
         self.assertFalse(restored.promotion_ready)
         self.assertFalse(restored.live)
 
-    def test_from_mapping_rejects_dropped_dual_gate(self):
+    def test_from_mapping_rejects_dropped_repo_gate(self):
         data = plan_repair_pr(_inc()).to_mapping()
         data["required_tests"] = [t for t in data["required_tests"] if t != "repo-gate"]
         with self.assertRaisesRegex(RepairPRError, "repo gate"):

@@ -15,7 +15,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from she.incident import Incident, IncidentState
-from she.verify import BASE_GATES, VerificationPlan, plan_verification, summarize_results
+from she.verify import BASE_GATES, TERMUX_SCOPE_GATES, TERMUX_SCOPE_GATES, VerificationPlan, plan_verification, summarize_results
 
 OUTCOMES: frozenset[str] = frozenset({"success", "failure", "observe"})
 
@@ -167,6 +167,7 @@ def plan_learning(
         metadata={
             "classification": incident.classification,
             "source": incident.source,
+            "termux_related": bool(ledger.metadata.get("termux_related")),
             "state": incident.state.value,
             "repository": incident.repository,
             "verification_ready": verification.promotion_ready,

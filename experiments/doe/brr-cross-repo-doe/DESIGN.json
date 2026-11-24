@@ -115,7 +115,13 @@
       "candidate-only leads per query",
       "complete source coverage rate",
       "unresolved/untestable fraction"
-    ]
+    ],
+    "metric_definitions": {
+      "precision_at_5": "relevant verified targets in the first five ranks divided by 5; missing ranks count as non-relevant",
+      "recall_at_5": "relevant verified targets in the first five ranks divided by the adjudicated gold target count",
+      "f1_at_5": "harmonic mean of precision_at_5 and recall_at_5",
+      "mean_reciprocal_rank": "reciprocal rank of the first verified gold target; zero when absent"
+    }
   },
   "decision_rule": {
     "text": "The fused arm is a champion candidate only after at least 30 adjudicated queries across at least 3 repositories and 3 task families, complete source coverage, a paired 95% bootstrap interval for F1@5 improvement over the best single-source arm with lower bound > 0, absolute improvement >= 0.05, and no verified precision@5 regression. The strategy remains observational until independent review and the existing proposal/dual-gate lifecycle authorize adoption.",

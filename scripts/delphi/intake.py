@@ -365,6 +365,7 @@ def normalize_intake(issue: dict[str, Any], body: str, root: Path) -> dict[str, 
         "reconciliation": {
             "dimensions": reconciliation,
             "project_references": project_ids,
+            "additional_references": _single(fields, "target_references"),
             "mode": "harmonious_reconciliation" if request_category == "Harmoniously reconcile multiple projects" else "standard",
         },
         "delphi": {

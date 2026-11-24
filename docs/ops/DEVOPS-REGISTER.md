@@ -388,5 +388,5 @@ This dated decision supersedes the 2026-11-02 deploy-plane rows for execution el
 | Fly.io | **RETIRED** | `deploy-hindsight.yml` and `fly-hindsight-config.yml` emit retirement receipts through manual dispatch; provider mutation and restart operations are removed from these workflows. | Trial-ended/card-required config run 41410355692; historical deploy run and Fly quota record. |
 | Koyeb | **RETIRED** | `koyeb-hindsight-deploy.yml` emits a retirement receipt through manual dispatch; its former push deployment trigger and provider API operations are removed. | Missing `KOYEB_API_TOKEN`; last recorded workflow runs 2026-09-30; historical quota record. |
 
-Lifecycle authority: `ops/mesh/provider-lifecycle.json`. The focused validator `scripts/ci/validate_mesh_provider_lifecycle.py` checks retired provider eligibility, workflow labels, dispatch triggers, and provider-operation markers.
+Lifecycle authority: `docs/ops/DEVOPS-REGISTER.md` §4A and `docs/DEPLOYMENT-LANES.md`. The focused validator `scripts/ci/validate_mesh_provider_lifecycle.py` checks the existing status authorities, workflow labels, dispatch triggers, and provider-operation markers.
 

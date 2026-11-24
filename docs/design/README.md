@@ -14,7 +14,7 @@ This directory uses a different organizing axis: **the experience presented to a
 
 | System | Design entry | Evidence status | Canonical source anchors |
 |---|---|---|---|
-| Tribute Dashboard | [systems/tribute-dashboard/design.md](systems/tribute-dashboard/design.md) | Implemented | [README](../..//apps/tribute-dashboard/README.md), [CSS](../../apps/tribute-dashboard/dashboard.css) |
+| Tribute Dashboard | [systems/tribute-dashboard/design.md](systems/tribute-dashboard/design.md) | Implemented | [README](../../apps/tribute-dashboard/README.md), [CSS](../../apps/tribute-dashboard/dashboard.css) |
 | SHE Dashboard | [systems/she-dashboard/design.md](systems/she-dashboard/design.md) | Specified / evolving | [PRD](../ops/SHE-DASHBOARD-PRD.md), [snapshot contract](../ops/SHE-DASHBOARD-SNAPSHOT-CONTRACT.md) |
 | Terminal Experience | [systems/terminal-experience/design.md](systems/terminal-experience/design.md) | In progress | [proposal items](../proposals/active/ratatui-tokio-terminal-dashboard/ITEMS.md) |
 | ArchWiz | [systems/archwiz/design.md](systems/archwiz/design.md) | Proposed / partially implemented | [UI protocol items](../proposals/active/archwiz-ui-protocol/ITEMS.md), [ICM ArchWiz card](../icm/objects/operations/archwiz.md) |

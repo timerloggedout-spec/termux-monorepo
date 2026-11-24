@@ -23,6 +23,9 @@ import argparse, json, os, sys, urllib.error, urllib.request
 from pathlib import Path
 from urllib.parse import quote
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from deepcli.provider_guard import retired_hindsight_endpoint_reason
+
 BATCH = 50
 
 
@@ -53,12 +56,19 @@ def load_state(path):
 
 
 def retain(payloads, base, bank, key, batch=BATCH, opener=None, state=None, max_items=None):
+    state = state if state is not None else {}
+    blocked_reason = retired_hindsight_endpoint_reason(base)
+    if blocked_reason:
+        return {"attempted": 0, "ok": 0, "failed": 0, "batches": 0,
+                "batches_failed": 0,
+                "endpoint": "blocked: retired provider",
+                "first_error": None, "skipped_unchanged": 0,
+                "blocked_reason": blocked_reason, "state": state}
     opener = opener or urllib.request.urlopen
     url = base.rstrip("/") + f"/v1/default/banks/{quote(str(bank), safe='')}/memories"
     summary = {"attempted": 0, "ok": 0, "failed": 0, "batches": 0, "batches_failed": 0,
                "endpoint": "POST /v1/default/banks/{bank_id}/memories",
                "first_error": None, "skipped_unchanged": 0}
-    state = state if state is not None else {}
     fresh = []
     for p in payloads:
         doc = document_id_for(p)

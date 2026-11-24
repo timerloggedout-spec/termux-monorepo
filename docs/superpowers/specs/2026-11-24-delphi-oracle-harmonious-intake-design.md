@@ -79,16 +79,18 @@ Each record includes schema/version, stable selection ID, source issue and actor
 
 ## Acceptance criteria
 
-1. Existing quota RFP form and gate remain unchanged.
-2. The new form uses dropdowns for single choice and checkboxes for multi-choice.
-3. DoE Decides, All, Specific selection, and Prior default resolve as specified.
-4. The prior default is the 12 baseline research participants.
-5. All 12 participants and four DoE components are selectable from source-aligned checkbox lists.
-6. Method RFPs and Strands/CEEL projects are selectable.
-7. Matrix strategy and optional round schedule persist.
-8. Reconciliation dimensions, panel, and optional WebView oversight persist.
-9. Review comments are idempotent; the review label follows the current disposition.\n10. Rendered text fields strip their outer fences; Markdown headings inside free-text answers remain part of the answer.\n11. Invalid intake submissions receive an actionable issue comment.
-10. Catalogue dispositions open a PR to `master`.
-11. Cross-silo score aggregation remains disabled.
-12. Every normalized record fixes `execution: false`.
-13. Focused tests, proposal validation, repo-gate, Termux smoke, and exact-head PR checks pass.
+1. Preserve the existing quota RFP form and gate.
+2. Use dropdowns for single choice and checkboxes for multi-choice.
+3. Resolve DoE Decides, All, Specific selection, and Prior default as specified.
+4. Resolve the prior default to the 12 baseline research participants.
+5. Expose all 12 participants and four DoE components through source-aligned checkbox lists.
+6. Expose all five methodology RFPs and related Strands / CEEL projects.
+7. Persist Matrix strategy and the optional per-round schedule.
+8. Persist reconciliation dimensions, panel composition, and optional WebView oversight.
+9. Keep review comments idempotent and synchronize the review label with disposition.
+10. Strip rendered text fences and preserve Markdown headings in free-text answers.
+11. Publish actionable issue comments for invalid intake submissions.
+12. Open per-revision catalogue PRs and dispatch both promotion gates at the PR head SHA.
+13. Preserve silo-local comparisons and disabled cross-silo score aggregation.
+14. Fix `execution: false` in every normalized record.
+15. Pass focused tests, proposal validation, repo-gate, Termux smoke, and exact-head PR checks.

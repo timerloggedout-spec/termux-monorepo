@@ -19,7 +19,7 @@ SHE is described by the repository architecture as a versioned, read-only dashbo
 
 ## 3. Information architecture
 
-The PRD is authoritative for audience and information architecture. This entry links to it rather than restating unverified page hierarchy.
+The PRD and [UI/UX control-plane contract](../../../ops/SHE-DASHBOARD-UI-UX-CONTROL-PLANE.md) define the audience, navigation, information architecture, responsive shell, evidence drawer, and user-visible state vocabulary. The design entry links to those authorities rather than duplicating their detailed decisions.
 
 ## 4. Journeys and interactions
 

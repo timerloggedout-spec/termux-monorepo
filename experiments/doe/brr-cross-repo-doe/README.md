@@ -62,7 +62,7 @@ python3 scripts/doe/brr_cross_repo_doe.py \
 python3 -m unittest discover -s tests -p 'test_brr_cross_repo_doe.py' -v
 ```
 
-The runner is offline and deterministic for a frozen dataset. It does not fetch GitHub or private-store data and does not mutate repositories.
+The runner is offline and deterministic for a frozen dataset. It does not fetch GitHub or private-store data and does not mutate repositories. It writes a SHA-256-addressed dataset snapshot and one immutable record per query × arm; identical replays are idempotent and conflicting rewrites fail closed. The summary includes ranked target IDs, scores, and per-signal breakdowns.
 
 ## Current state and limits
 

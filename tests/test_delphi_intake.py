@@ -434,6 +434,10 @@ class DelphiIntakeContractTests(unittest.TestCase):
         )
         self.assertEqual(manifest["schema"], "delphi.selection-catalogue.v1")
         self.assertIs(manifest["policy"]["execution"], False)
+        self.assertIs(manifest["policy"]["cross_silo_score_aggregation"], False)
+        self.assertEqual(
+            manifest["policy"]["promotion_gates"], ["repo-gate", "termux-smoke"]
+        )
         self.assertIn("<record_sha256>.json", manifest["entry_pattern"])
 
     def test_workflow_isolated_from_quota_gate_and_keeps_execution_disabled(self):

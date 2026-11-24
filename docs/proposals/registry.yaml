@@ -1391,3 +1391,26 @@ proposals:
     gates_required:
       - repo-gate
       - termux-smoke
+
+  - id: master-staging-reconciliation
+    title: "Master-staging reconciliation and scope-aware Termux validation"
+    author: ChatGPT
+    status: executing
+    priority: P0
+    path: active/master-staging-reconciliation/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-approver
+        status: accepted
+      - id: ChatGPT
+        role: author-executor
+        status: executing
+    related_issues: []
+    related_prs: []
+    related_branches:
+      - reconcile/master-staging-scope-20261124
+      - master-staging
+      - termux-smoke
+    gates_required:
+      - repo-gate
+      - termux-smoke

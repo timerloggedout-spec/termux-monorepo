@@ -44,7 +44,7 @@ Docker Engine / OCI containers remain the portable, self-hosted execution substr
 
 | Product | Free entitlement / limit | Evidence | MESH treatment |
 |---|---|---|---|
-| Docker Engine / Compose | Open-source self-hosted runtime; capacity is the operator's host capacity | https://github.com/moby/moby · https://github.com/docker/compose | Portable worker substrate; meter host CPU, RAM, disk, uptime and egress locally |
+| Docker Engine / Compose | Open-source self-hosted runtime; capacity is the operator's host capacity | https://github.com/moby/moby · https://github.com/docker/compose | Portable worker substrate; meter host CPU, RAM, disk, uptime and egress locally; Docker Desktop licensing follows Personal eligibility |
 | Docker Hub Personal | Unlimited public repos; 1 private repo/account; official pricing currently lists 100 pulls/hour/user | https://www.docker.com/pricing/ | Registry entitlement; plan/account-specific |
 | Docker Hub pull limiter | Official pull guide lists 200 pulls/6h for authenticated Personal and 100 pulls/6h per IPv4 or IPv6 /64 when unauthenticated | https://docs.docker.com/docker-hub/usage/pulls/ | Live anonymous runner-egress check via token + non-consuming HEAD; preserve account-vs-IP scope |
 | Docker Build Cloud | Personal account: optional 7-day trial; paid subscription required after trial; US East only | https://docs.docker.com/build-cloud/ | Conditional trial only; exclude from standing free-compute capacity |

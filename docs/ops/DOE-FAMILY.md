@@ -1572,3 +1572,10 @@ Awareness is event-driven. GitHub push, pull-request, release, issue, workflow-c
 The four initial platform factors are Langfuse, PromptLayer, PostHog and Braintrust. Their capabilities remain hypotheses until pinned documentation and runtime evidence exist. The native repository baseline is mandatory. Combination and interaction effects must be measured rather than assumed; the 2^4 full-factorial comparison has 16 cells when all four factors are executable.
 
 Every dispatched run continues to emit exactly one canonical experiment record under docs/ops/corpus/EXPERIMENT.schema.json. Candidate status, proposal status, execution state, outcome validation and promotion remain distinct. Delphi/EGM and repository dual gates retain their existing authority.
+ 
+## Provider lifecycle supersession — 2026-11-23
+
+The Fly `hindsight-termux`, Fly `hindsight-deepagent`, and Koyeb `hindsight-deepagent` instance rows above are historical configuration evidence. Fly.io and Koyeb are retired from execution and deployment admission. Their workflow paths now publish retirement receipts; the `HINDSIGHT_BASE_URL` client guard blocks their provider hosts.
+
+The function roles in the Hindsight schema describe LLM, embeddings, and reranker responsibilities. They are separate from serverless function runtimes such as Cloudflare Workers, Vercel Functions, and Supabase Edge Functions. A provider's function capability requires its own workload deployment and state-store evidence.
+

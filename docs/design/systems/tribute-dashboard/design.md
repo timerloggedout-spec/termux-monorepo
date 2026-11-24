@@ -31,7 +31,7 @@ The shared stylesheet is the implementation source for current dashboard visual 
 
 ## 6. Accessibility
 
-Use [shared accessibility guidance](../../_shared/accessibility.md) and [palette UX guidance](../../../ops/PALETTE-UX-ACCESSIBILITY.md). Surface-specific compliance evidence remains to be audited.
+Use [shared accessibility guidance](../../_shared/accessibility.md) and [SHE UI/UX accessibility contract](../../../ops/SHE-DASHBOARD-UI-UX-CONTROL-PLANE.md). Surface-specific compliance evidence remains to be audited.
 
 ## 7. Evidence and system states
 

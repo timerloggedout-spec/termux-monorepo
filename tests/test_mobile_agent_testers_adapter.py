@@ -4,7 +4,9 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.integrations.mobile_agent_testers_adapter import normalize, safe_text
+from argparse import ArgumentTypeError
+
+from scripts.integrations.mobile_agent_testers_adapter import iso_datetime, normalize, safe_text
 
 
 class MobileAgentTestersAdapterTests(unittest.TestCase):
@@ -92,6 +94,11 @@ class MobileAgentTestersAdapterTests(unittest.TestCase):
         events, diagnostics = normalize(self.root, run_id="run-2", repository="owner/repo")
         self.assertEqual(events, [])
         self.assertTrue(any("malformed" in item for item in diagnostics))
+
+    def test_timestamps_require_timezone_aware_iso8601(self):
+        self.assertEqual(iso_datetime("2026-11-23T21:00:00Z"), "2026-11-23T21:00:00Z")
+        with self.assertRaises(ArgumentTypeError):
+            iso_datetime("2026-11-23T21:00:00")
 
     def test_text_redaction_and_bounds(self):
         value = safe_text("mail user@example.com call +1 (555) 123-4567", 80)

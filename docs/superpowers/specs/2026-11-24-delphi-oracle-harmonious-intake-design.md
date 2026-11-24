@@ -41,7 +41,7 @@ The form exposes four checkbox choices:
 | Specific selection | Include only the checked participants, components, methodology RFPs, and projects; baseline is the arm default |
 | Prior default | Include the 12 baseline research participants only; exclude variants, DoE components, and method RFPs |
 
-An empty selection-mode group resolves to Prior default. The 12 research silos remain independent segments; cross-silo aggregation stays disabled and comparisons remain silo-local. Arms are `baseline`, `rnd`, `selected`, and `control`. Missing source issue IDs remain explicit nulls and do not invalidate catalogue identity.
+An empty selection-mode group resolves to Prior default. The 12 research silos remain independent segments; cross-silo aggregation stays disabled and comparisons remain silo-local. Arms are `baseline`, `rnd`, `selected`, and `control`. Absent source issue IDs remain explicit nulls while catalogue identity stays valid.
 
 The checkbox catalogue includes all 12 registered participants, four DoE components, methodology work (#1572, #1959, #1963), and the related Strands / CEEL projects.
 

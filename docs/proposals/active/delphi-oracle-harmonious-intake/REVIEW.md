@@ -4,7 +4,7 @@
 
 - Disposition: executing
 - VOTE: accept
-- Term: 2026-11-24
+- term: 2026-11-24
 - Voter: timerloggedout-spec
 - Scope: separate general-purpose Delphi Oracle intake, research selection, Harmonious Reconciliation, and immutable selection catalogue.
 - Evidence: operator instruction to build a separate version and continue through merge to master; confirmed Question Matrix design decision.

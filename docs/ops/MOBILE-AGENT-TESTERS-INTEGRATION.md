@@ -34,6 +34,7 @@ The fork's setup script provisions the per-repository encryption keypair and Act
 git clone https://github.com/timerloggedout-spec/mobile-agent-testers_fork
 cd mobile-agent-testers_fork
 gh auth login
+gh auth setup-git
 bash setup.sh
 ~~~
 
@@ -126,25 +127,30 @@ A provider run consumes model credits. Record the approved spend ceiling and mod
 ## Trusted evidence collection
 
 1. Fetch the completed provider run ID.
-2. On the trusted local workstation, run the fork's bash scripts/collect.sh <run-id>.
-3. Keep the private key and decrypted run directory local and access-controlled.
-4. Normalize findings with the adapter below; output is metadata-only JSONL.
+2. From the tester-fork checkout, collect and decrypt with Claude-based summary grouping disabled: `SUMMARY_GROUPING=0 bash scripts/collect.sh <run-id>`.
+3. Keep both repository checkouts side by side on the trusted workstation, with the private key and decrypted run directory access-controlled.
+4. From the termux-monorepo checkout, normalize the sibling fork's run directory with the adapter below; output is metadata-only JSONL.
 5. Review each event against source screenshots locally; confirm or reject findings.
 6. Reproduce confirmed candidates with apps/studysprint/android/emulator-smoke.sh or a targeted deterministic regression test.
 7. Feed confirmed regression evidence into the existing repo PR and dual-gate lifecycle.
 
-Example:
+Example, with both repositories checked out as sibling directories:
 
 ~~~bash
+cd /path/to/mobile-agent-testers_fork
+SUMMARY_GROUPING=0 bash scripts/collect.sh <run-id>
+
+cd /path/to/termux-monorepo
 python3 scripts/integrations/mobile_agent_testers_adapter.py \
-  --run-dir runs/<run-id> \
+  --run-dir ../mobile-agent-testers_fork/runs/<run-id> \
   --run-id <run-id> \
+  --expected-personas anna,malik \
   --repository timerloggedout-spec/termux-monorepo \
   --commit <tested-commit-sha> \
   --output mobile-agent-testers.jsonl
 ~~~
 
-The adapter reads */results/*/findings.json. It emits one event per issue with a stable event ID and idempotency key. It stores a SHA-256 digest reference to each source findings file and excludes raw report text, screenshots, transcript content, email addresses, phone numbers, and token-shaped strings from event output.
+Use an absolute `--run-dir` when the checkouts live elsewhere. `SUMMARY_GROUPING=0` keeps summary grouping local and merges identical titles only, so the collector avoids sending raw finding titles and screens to a second Claude session. The provider writes `results/<persona>/findings.json`; collection nests that path inside each downloaded artifact, which the adapter reads through `*/results/*/findings.json`. The adapter requires the exact dispatched persona set and returns incomplete status when expected evidence is missing or extra persona artifacts appear. A valid empty issues array represents a genuine zero-finding report. The adapter emits one event per issue with a stable event ID and idempotency key. It stores a SHA-256 digest reference to each source findings file and excludes raw report text, screenshots, transcript content, email addresses, phone numbers, and token-shaped strings from event output. The adapter preserves an existing destination; pass `--overwrite` only for an intentional replacement.
 
 ## Security and cost
 
@@ -163,7 +169,7 @@ The adapter reads */results/*/findings.json. It emits one event per issue with a
 | APK build fails | Inspect encrypted build log on trusted collector; preserve deterministic emulator lane |
 | AVD profile unavailable | Record fallback profile from result metadata |
 | Persona auth/model failure | Classify missing findings as incomplete coverage |
-| Empty or malformed findings | Adapter skips malformed files and reports diagnostics to stderr |
+| Missing or malformed findings | Adapter returns incomplete status when an expected persona is missing or malformed; a valid empty issues array represents a zero-finding run; diagnostics go to stderr |
 | AI-only observation | Keep validation_status=pending; human/deterministic reproduction required |
 | Confirmed regression | Add deterministic regression test, then rerun emulator and repository gates |
 

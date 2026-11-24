@@ -518,10 +518,10 @@
       "discovery_state": "discovered",
       "session_evidence": "The timerloggedout-spec fork and its agent-testers.yml workflow were inspected. The workflow supports Android/iOS persona matrices, custom app builds, encrypted result artifacts, and trusted local collection.",
       "repo_skill_path": null,
-      "repo_adapter_state": "repo_adapter_planned",
+      "repo_adapter_state": "repo_adapter_implemented",
       "authority": "exploratory-observation-only",
       "write_boundary": "Isolated hosted emulator interactions with evidence-only ingestion. Physical-device control remains in the Termux fleet; private-key decryption remains on trusted local collectors; paid dispatch requires per-run budget approval.",
-      "next_step": "Run the tester fork's local setup.sh to provision its encryption key and model secrets, approve a per-run budget, then execute the Android pilot and validate findings through deterministic regressions.",
+      "next_step": "Complete CI validation, provision the tester fork with setup.sh, approve a per-run budget, then run the Android pilot and validate findings through deterministic regressions.",
       "sensitivity": "confidential-test-evidence"
     }
   ]

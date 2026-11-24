@@ -9,8 +9,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import sys
+import tempfile
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Iterable
@@ -28,6 +30,7 @@ SECRET_VALUE_RE = re.compile(r"\b(?:gh[pousr]_[A-Za-z0-9]{20,}|sk-[A-Za-z0-9_-]{
 CONTROL_RE = re.compile(r"[\x00-\x1f\x7f]")
 PERSONA_RE = re.compile(r"^[A-Za-z0-9_-]{1,64}$")
 SHA_RE = re.compile(r"^[0-9a-f]{7,64}$")
+DATETIME_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$")
 
 
 def safe_text(value: Any, limit: int) -> str:
@@ -133,9 +136,11 @@ def normalize(
     started_at: str | None = None,
     completed_at: str | None = None,
     execution_status: str = "unknown",
-) -> tuple[list[dict[str, Any]], list[str]]:
+) -> tuple[list[dict[str, Any]], list[str], int, set[str]]:
     events: list[dict[str, Any]] = []
     diagnostics: list[str] = []
+    valid_files = 0
+    valid_personas: set[str] = set()
     for path in finding_files(run_dir):
         persona = path.parent.name
         if not PERSONA_RE.fullmatch(persona):
@@ -153,7 +158,16 @@ def normalize(
         if not isinstance(issues, list):
             diagnostics.append(f"skip findings without issue list: {path}")
             continue
-        source_digest = digest_file(path)
+        try:
+            source_digest = digest_file(path)
+        except OSError as exc:
+            diagnostics.append(f"skip unreadable findings file {path}: {type(exc).__name__}")
+            continue
+        if not issues:
+            valid_files += 1
+            valid_personas.add(persona)
+            continue
+        file_events: list[dict[str, Any]] = []
         for index, issue in enumerate(issues):
             if not isinstance(issue, dict):
                 diagnostics.append(f"skip non-object issue {index} in {path}")
@@ -173,12 +187,20 @@ def normalize(
             if event is None:
                 diagnostics.append(f"skip issue with empty title {index} in {path}")
                 continue
-            events.append(event)
-    return events, diagnostics
+            file_events.append(event)
+        if file_events:
+            valid_files += 1
+            valid_personas.add(persona)
+            events.extend(file_events)
+        else:
+            diagnostics.append(f"skip findings file without valid issue entries: {path}")
+    return events, diagnostics, valid_files, valid_personas
 
 
 def iso_datetime(value: str) -> str:
     """Accept only timezone-aware ISO-8601 timestamps for schema date-time fields."""
+    if not DATETIME_RE.fullmatch(value):
+        raise argparse.ArgumentTypeError("timestamp must include seconds and timezone in ISO-8601 form")
     try:
         parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
     except ValueError as exc:
@@ -188,10 +210,20 @@ def iso_datetime(value: str) -> str:
     return value
 
 
+def parse_personas(value: str) -> set[str]:
+    personas = [item.strip() for item in value.split(",") if item.strip()]
+    if not personas or len(personas) != len(set(personas)) or any(
+        not PERSONA_RE.fullmatch(persona) for persona in personas
+    ):
+        raise argparse.ArgumentTypeError("expected a comma-separated list of unique persona IDs")
+    return set(personas)
+
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run-dir", required=True, type=Path, help="trusted, locally decrypted run directory")
     parser.add_argument("--run-id", required=True, help="immutable provider workflow run ID")
+    parser.add_argument("--expected-personas", required=True, type=parse_personas, help="comma-separated persona IDs dispatched for this run")
     parser.add_argument("--repository", default="timerloggedout-spec/termux-monorepo")
     parser.add_argument("--commit", help="tested source commit SHA")
     parser.add_argument("--started-at", type=iso_datetime, help="provider run start time (timezone-aware ISO-8601)")
@@ -202,6 +234,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default="unknown",
     )
     parser.add_argument("--output", required=True, type=Path, help="JSONL destination")
+    parser.add_argument("--overwrite", action="store_true", help="replace an existing JSONL destination")
     args = parser.parse_args(argv)
     if args.commit and not SHA_RE.fullmatch(args.commit):
         parser.error("--commit must be a 7–64 character lowercase hexadecimal SHA")
@@ -217,7 +250,10 @@ def main(argv: list[str] | None = None) -> int:
     if not args.run_dir.is_dir():
         print(f"run directory does not exist: {args.run_dir}", file=sys.stderr)
         return 2
-    events, diagnostics = normalize(
+    if args.output.exists() and not args.overwrite:
+        print(f"output already exists: {args.output}; pass --overwrite to replace it", file=sys.stderr)
+        return 4
+    events, diagnostics, valid_files, valid_personas = normalize(
         args.run_dir,
         run_id=args.run_id,
         repository=args.repository,
@@ -226,13 +262,36 @@ def main(argv: list[str] | None = None) -> int:
         completed_at=args.completed_at,
         execution_status=args.execution_status,
     )
+    missing_personas = args.expected_personas - valid_personas
+    unexpected_personas = valid_personas - args.expected_personas
     for diagnostic in diagnostics:
         print(diagnostic, file=sys.stderr)
+    for persona in sorted(missing_personas):
+        print(f"missing valid findings for expected persona: {persona}", file=sys.stderr)
+    for persona in sorted(unexpected_personas):
+        print(f"unexpected findings persona: {persona}", file=sys.stderr)
+    if valid_files == 0 or missing_personas or unexpected_personas:
+        print("collection incomplete: expected persona evidence is incomplete; output preserved", file=sys.stderr)
+        return 3
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    with args.output.open("w", encoding="utf-8") as stream:
-        for event in events:
-            stream.write(json.dumps(event, sort_keys=True, separators=(",", ":")) + "\n")
-    print(f"wrote {len(events)} observed finding event(s) to {args.output}", file=sys.stderr)
+    fd, temp_name = tempfile.mkstemp(
+        prefix=f".{args.output.name}.",
+        suffix=".tmp",
+        dir=args.output.parent,
+    )
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as stream:
+            for event in events:
+                stream.write(json.dumps(event, sort_keys=True, separators=(",", ":")) + "\n")
+            stream.flush()
+            os.fsync(stream.fileno())
+        Path(temp_name).replace(args.output)
+    finally:
+        Path(temp_name).unlink(missing_ok=True)
+    print(
+        f"wrote {len(events)} observed finding event(s) from {valid_files} valid findings file(s) to {args.output}",
+        file=sys.stderr,
+    )
     return 0
 
 

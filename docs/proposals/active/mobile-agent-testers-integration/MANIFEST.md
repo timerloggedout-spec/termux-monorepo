@@ -72,4 +72,4 @@ The Termux device fleet remains a separate provider for physical-device work. Th
 
 - ITEMS: ./ITEMS.md
 - Design and execution plan: ../../../superpowers/plans/2026-11-23-mobile-agent-testers-integration.md
-- Runbook: ../../../../ops/MOBILE-AGENT-TESTERS-INTEGRATION.md
+- Runbook: ../../../ops/MOBILE-AGENT-TESTERS-INTEGRATION.md

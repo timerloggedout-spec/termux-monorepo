@@ -1,14 +1,15 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-24T01:07:18Z",
+ "generated_at": "2026-11-24T01:37:42Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 2,
-   "in_progress": 2,
+   "queued": 3,
+   "in_progress": 1,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
+    "Orchestration Regression Guard": 1,
     "PR scope guard": 2
    }
   },
@@ -28,11 +29,14 @@
   },
   "4": {
    "tier": 4,
-   "queued": 5,
-   "in_progress": 11,
+   "queued": 8,
+   "in_progress": 12,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "Quota Dispatch Tree": 1,
+    "lane events recorder": 1,
+    "Foresight Evidence Spine": 1,
+    "termux smoke": 1,
+    "quota-analysis": 1,
     "Agent PR Jules Handoff": 1,
     "PR Change Effectiveness Ledger": 1,
     "Advisory GitHub Actions lint": 1,
@@ -41,7 +45,7 @@
   }
  },
  "totals": {
-  "queued": 7,
+  "queued": 11,
   "in_progress": 15
  },
  "wedged_ancient": [
@@ -206,7 +210,7 @@
    "4": 0
   },
   "explicit_total": 6,
-  "default_t4": 16,
+  "default_t4": 20,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

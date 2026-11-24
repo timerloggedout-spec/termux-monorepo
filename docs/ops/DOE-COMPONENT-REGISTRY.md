@@ -3,6 +3,8 @@
 **Registry:** `ops/doe/component-registry.json` (schema
 `doe.component-registry.v1`). Owner order 2026-10-27 (Delphi lane).
 
+Method-level taxonomy and reproducible setup: [DAG algorithm and Markov method catalog](../architecture/DAG-ALGORITHM-AND-MARKOV-CATALOG.md). This registry remains the source for integrated-surface identity and status; the catalog does not merge component authorities.
+
 The fleet's algorithmic components are registered as **separate
 integrated surfaces**. Each component:
 

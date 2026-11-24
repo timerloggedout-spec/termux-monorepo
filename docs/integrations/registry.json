@@ -521,7 +521,7 @@
       "repo_adapter_state": "repo_adapter_planned",
       "authority": "exploratory-observation-only",
       "write_boundary": "Isolated hosted emulator interactions with evidence-only ingestion. Physical-device control remains in the Termux fleet; private-key decryption remains on trusted local collectors; paid dispatch requires per-run budget approval.",
-      "next_step": "Run a budgeted Android pilot, locally collect/decrypt reports, and validate findings through deterministic regressions.",
+      "next_step": "Run the tester fork's local setup.sh to provision its encryption key and model secrets, approve a per-run budget, then execute the Android pilot and validate findings through deterministic regressions.",
       "sensitivity": "confidential-test-evidence"
     }
   ]

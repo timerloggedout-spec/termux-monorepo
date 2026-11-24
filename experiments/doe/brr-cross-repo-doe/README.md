@@ -32,6 +32,8 @@ The campaign does not create another BRR collector, queue, scheduler, graph stor
 
 Each frozen query is evaluated by all four arms. Queries are blocked by repository and task family. The minimum confirmatory cohort is 30 adjudicated queries across at least 3 repositories and 3 task families.
 
+Seed discovery targets include the exact term `gitReverse` (repository/branch/commit identity remains unresolved until verified evidence is found), [fast-anything_fork](https://github.com/timerloggedout-spec/fast-anything_fork), and [rust-anything_fork](https://github.com/timerloggedout-spec/rust-anything_fork). Repository names seed searches; they do not count as verified branch or commit relationships.
+
 ## Outcomes and decision rule
 
 Primary: macro F1@5 against the frozen, human-adjudicated gold target IDs.

@@ -69,7 +69,7 @@
       "repositories": 3,
       "task_families": 3
     },
-    "assignment": "Every query is evaluated by every arm; arm execution order is deterministically shuffled within query using the preregistered seed.",
+    "assignment": "Every query is evaluated by every arm; execution order is deterministically shuffled within query using the preregistered seed. The replay is offline and stateless.",
     "seed": 56402026,
     "arms": [
       {
@@ -96,7 +96,15 @@
       "fused": "mean(lexical, branch_commit, context_graph, regression)",
       "regression": "regressed=1.0; untestable=0.5; no-benchmark=0.25; green=0.0; unknown=0.0"
     },
-    "candidate_handling": "Only evidence_status=verified participates in ranking and gold-hit metrics. Evidence_status=candidate is emitted as a separate candidate list with its source references."
+    "candidate_handling": "Only evidence_status=verified participates in ranking and gold-hit metrics. Evidence_status=candidate is emitted as a separate candidate list with its source references.",
+    "factors": {
+      "retrieval_strategy": [
+        "lexical",
+        "branch_commit",
+        "context_graph",
+        "fused"
+      ]
+    }
   },
   "outcomes": {
     "primary": "macro F1@5 against the adjudicated verified gold target set",

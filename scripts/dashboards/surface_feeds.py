@@ -511,6 +511,9 @@ def _doe_campaigns() -> list:
         return out
     for design_path in sorted(base.glob("*/DESIGN.json")):
         design = json.loads(design_path.read_text())
+        if (design.get("status") == "proposed_not_admitted"
+                or design.get("member_kind") == "campaign_candidate"):
+            continue
         camp_dir = design_path.parent
         records = sorted((camp_dir / "records").glob("*.json")) \
             if (camp_dir / "records").exists() else []
@@ -553,6 +556,28 @@ def _doe_campaigns() -> list:
                 "verdict": s.get("verdict"),
             }
         out.append(entry)
+    return out
+
+
+def _doe_candidates() -> list:
+    """Keep explicitly unadmitted designs visible outside campaign intake."""
+    base = ROOT / "experiments" / "doe"
+    out = []
+    if not base.exists():
+        return out
+    for design_path in sorted(base.glob("*/DESIGN.json")):
+        design = json.loads(design_path.read_text())
+        if (design.get("status") != "proposed_not_admitted"
+                and design.get("member_kind") != "campaign_candidate"):
+            continue
+        out.append({
+            "campaign_id": design.get("campaign_id"),
+            "kind": "campaign_candidate",
+            "state": "proposed_not_admitted",
+            "design_record": str(design_path.relative_to(ROOT)),
+            "runs": 0,
+            "results": None,
+        })
     return out
 
 
@@ -624,6 +649,7 @@ def collect_doe() -> dict:
         ],
     }
     campaigns = _doe_campaigns()
+    candidates = _doe_candidates()
     executed = [c for c in campaigns if c["state"] == "executed"]
     payload["family"] = {
         "spec": "docs/ops/DOE-FAMILY.md",
@@ -643,6 +669,7 @@ def collect_doe() -> dict:
                 "note": "Existing member. Its payload lives on the MVT surface (mvt-feed.json); this surface carries the pointer only, per the separation spec.",
             },
             *campaigns,
+            *candidates,
             {
                 "member_id": "pilot-2-dispatch-topology-x-quota-policy",
                 "kind": "campaign_candidate",
@@ -659,7 +686,11 @@ def collect_doe() -> dict:
         ],
     }
     payload["campaigns"] = campaigns
+    payload["candidates"] = candidates
     gaps = []
+    for candidate in candidates:
+        gaps.append(
+            f"Campaign candidate {candidate['campaign_id']} is explicitly not admitted; it remains outside the campaign collection.")
     for c in campaigns:
         if c["state"] == "admitted_design_only":
             gaps.append(

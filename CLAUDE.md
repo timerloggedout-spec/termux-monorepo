@@ -102,7 +102,7 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 | ICM task routing | `docs/icm/CLAUDE.md` |
 | Skills + adaptive wait | `docs/ops/SKILLS-INVENTORY.md` |
 | Session / lane SSOT | `docs/ops/LANE-MATRIX.md` |
-| Dependency-phase system | `docs/agentic/README.md` |
+| Dependency-phase system | `docs/agentic/README.md` |\n| DAG / Kahn / Markov method catalog | `docs/architecture/DAG-ALGORITHM-AND-MARKOV-CATALOG.md` |
 | Credential names inventory | issue #184 (no values) |
 | BIUDL control plane | `docs/architecture/AGENT-TEAM-CONTROL-PLANE.md` |
 | Continuous capability discovery / DoE | `docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md` |

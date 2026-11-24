@@ -1,0 +1,257 @@
+name: Delphi Oracle — Harmonious Research Intake
+description: General-purpose proposal, research, reconciliation, and Delphi study intake. The quota-specific Delphi RFP form remains separate.
+title: "[delphi:intake] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Delphi Oracle — general intake
+
+        Use this form for existing proposals, new proposals, refinements, research, comparisons, methodology work, and Harmonious Reconciliation.
+
+        **Execution is disabled for this intake.** Selection creates a review record or a registry-catalogue PR. The existing quota/provider RFP form remains separate.
+
+  - type: dropdown
+    id: request_category
+    attributes:
+      label: Request category
+      description: Choose the primary outcome sought.
+      options:
+        - Evaluate an existing proposal
+        - Create a new proposal
+        - Refine an existing proposal
+        - Conduct research or evidence review
+        - Compare alternatives
+        - Harmoniously reconcile multiple projects
+        - Improve or evaluate Delphi methodology
+        - Oracle recommends classification
+    validations:
+      required: true
+
+  - type: textarea
+    id: target_references
+    attributes:
+      label: Target proposal / project references
+      description: Add issue numbers, proposal IDs, project IDs, or URLs for existing work.
+      placeholder: "#1572, aws-free-tier-strands-delphi-oracle"
+      render: text
+
+  - type: checkboxes
+    id: research_selection_mode
+    attributes:
+      label: Research selection mode
+      description: Select exactly one. Leave empty to use the prior default: all 12 baseline research participants only.
+      options:
+        - label: DoE Decides
+        - label: All
+        - label: Specific selection
+        - label: Prior default
+
+  - type: checkboxes
+    id: research_participants
+    attributes:
+      label: Research participants
+      description: Twelve independent research segments. Each participant remains separately attributed.
+      options:
+        - label: research.jogyo-research-lab — Primary exemplar
+        - label: research.docxology-template — Reproducible monorepo pipeline
+        - label: research.yy-project-template — Classic research layout
+        - label: research.buoyancy99-research-template — ML research template
+        - label: research.yp-edu-research-project-template — KISS agent-ready
+        - label: research.seunghyukoh-research-template — AI research batteries
+        - label: research.irudik-repo-template — Academic multi-language
+        - label: research.jdingel-projecttemplate — Task-based research logbook
+        - label: research.3rdcore-research-project-template — Lightning and Hydra
+        - label: research.dicklesworthstone-agentic-flywheel — Agentic flywheel stack
+        - label: research.opencode-research-papers — OpenCode research papers
+        - label: research.cactus-needle — Needle research
+
+  - type: checkboxes
+    id: doe_components
+    attributes:
+      label: DoE components
+      description: Each component remains an individual segment and candidate factorial factor.
+      options:
+        - label: markov.trellis-lab — Markov trellis lab
+        - label: bayesian.routing — Bayesian routing and uncertainty
+        - label: kahn.dag — Kahn DAG planning
+        - label: gantt.dependency-phases — Gantt dependency phases
+
+  - type: checkboxes
+    id: methodology_rfps
+    attributes:
+      label: Related methodology RFPs
+      description: Select existing process-improvement research in this lane.
+      options:
+        - label: "#1567 — mvt-doe-tlm"
+        - label: "#1571 — web.visualization_layers"
+        - label: "#1572 — delphi.conversational_intake"
+        - label: "#1959 — doe-criteria-loop"
+        - label: "#1963 — delphi-method-self-application"
+
+  - type: checkboxes
+    id: research_projects
+    attributes:
+      label: Related research projects
+      description: Select existing projects for reconciliation or evidence linkage.
+      options:
+        - label: aws-free-tier-strands-delphi-oracle — Delphi Oracle Strands Project
+        - label: continuous-capability-evolution-lab — Continuous Capability Evolution Laboratory
+        - label: delphi-desk-builder-io — Delphi Desk decision-review cockpit
+
+  - type: checkboxes
+    id: research_arms
+    attributes:
+      label: Research arms
+      description: Applies to selected research participants. Prior default is baseline only; All includes all four arms.
+      options:
+        - label: baseline
+        - label: rnd
+        - label: selected
+        - label: control
+
+  - type: checkboxes
+    id: reconciliation_dimensions
+    attributes:
+      label: Harmonious Reconciliation dimensions
+      description: Select the dimensions to reconcile across the chosen projects.
+      options:
+        - label: Objectives and strategic alignment
+        - label: Duplicate or overlapping proposals
+        - label: Requirements and constraints
+        - label: Dependencies and integration points
+        - label: Evidence and research findings
+        - label: Conflicting assumptions
+        - label: Existing decisions and unresolved dissent
+        - label: Implementation sequencing
+
+  - type: dropdown
+    id: methodology
+    attributes:
+      label: Delphi methodology
+      options:
+        - Oracle recommends
+        - Classical Delphi
+        - Modified Delphi
+        - Policy Delphi
+        - Decision Delphi
+        - Fuzzy Delphi
+        - RAND/UCLA appropriateness
+        - One-pass rubric — single assessment
+    validations:
+      required: true
+
+  - type: dropdown
+    id: round_profile
+    attributes:
+      label: Round profile
+      options:
+        - Adaptive with declared stopping criteria
+        - Fixed 2 rounds
+        - Fixed 3 rounds
+        - Fixed 4–5 rounds
+        - Custom round count
+        - Single-pass (one assessment)
+    validations:
+      required: true
+
+  - type: input
+    id: round_maximum
+    attributes:
+      label: Round maximum / custom count
+      description: Default 3. Set 4 or 5 for the fixed 4–5 profile, or 2–10 for a custom profile.
+      value: "3"
+      placeholder: "3"
+    validations:
+      required: false
+
+  - type: textarea
+    id: stopping_criteria
+    attributes:
+      label: Stopping criteria / stability definition
+      description: Required for adaptive rounds. Define consensus, stability, maximum-round, and persistent-dissent handling.
+      placeholder: "Stop on predeclared stability or maximum rounds; preserve unresolved dissent."
+      render: text
+
+  - type: dropdown
+    id: matrix_strategy
+    attributes:
+      label: Question Matrix strategy
+      description: Choose one required strategy. Supply an optional per-round schedule below for custom or alternating expansion.
+      options:
+        - Shared matrix across all rounds
+        - Per-round expansion
+        - Alternating-round expansion
+        - Evidence-triggered expansion
+        - Custom schedule
+    validations:
+      required: true
+
+  - type: textarea
+    id: matrix_schedule
+    attributes:
+      label: Per-round Question Matrix schedule
+      description: Optional. Record round number, matrix version, question changes, and rationale.
+      placeholder: |
+        Round 1: QM-001 baseline questions
+        Round 2: add evidence-gap questions
+        Round 3: expand unresolved disagreement questions
+      render: text
+
+  - type: checkboxes
+    id: panel
+    attributes:
+      label: Panel roles and participants
+      description: Default panel uses the five existing internal roles when empty.
+      options:
+        - label: OPERATOR
+        - label: builder
+        - label: reviewer
+        - label: Scout
+        - label: cost_auditor
+        - label: Human experts
+        - label: Project stakeholders
+        - label: Model participants (eligible, separately attributed)
+
+  - type: checkboxes
+    id: webview_oversight
+    attributes:
+      label: Human WebView oversight
+      description: Optional human review panel; metadata only in this intake version.
+      options:
+        - label: Request optional human WebView oversight
+
+  - type: dropdown
+    id: selection_disposition
+    attributes:
+      label: Selection disposition
+      description: Selection review and registry catalogue are independent actions.
+      options:
+        - Selection review
+        - Registry catalogue
+        - Both
+        - Deliberation only
+    validations:
+      required: true
+
+  - type: textarea
+    id: research_question
+    attributes:
+      label: Research question / objectives
+      description: State the decision, uncertainty, or outcome this intake should address.
+      placeholder: What should Delphi Oracle establish, compare, reconcile, or decide?
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence_references
+    attributes:
+      label: Evidence references
+      description: Link existing research, source documents, issues, PRs, data, and prior findings.
+      render: text
+
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints and desired outcome
+      description: Capture relevant boundaries, risks, acceptance conditions, and expected deliverables.

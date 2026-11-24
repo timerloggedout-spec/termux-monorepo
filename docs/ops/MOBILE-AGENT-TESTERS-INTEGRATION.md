@@ -49,12 +49,12 @@ Run the provider workflow in timerloggedout-spec/mobile-agent-testers_fork. The 
 | android_build | Custom SDK-direct build command below |
 | apk_path | android/studysprint.apk |
 
-The custom build runs from app_dir; android/build.sh changes into its own directory and produces android/studysprint.apk. StudySprint has no package.json; the provider's custom BUILD_COMMAND path bypasses framework auto-detection and invokes the SDK-direct Android build. The SDK-direct build requires JDK 17, Android platform 34, build-tools 34.0.0, and Python 3. The hosted runner must expose ANDROID_HOME or ANDROID_SDK_ROOT and cmdline-tools/sdkmanager; install the pinned SDK components before invoking the build. The committed StudySprint development keystore is a development identity only; production signing credentials stay outside this workflow.
+The custom build runs from app_dir; android/build.sh changes into its own directory and produces android/studysprint.apk. StudySprint uses a native Android build script; the provider's custom BUILD_COMMAND path bypasses framework auto-detection and invokes that SDK-direct build. The SDK-direct build requires JDK 17, Android platform 34, build-tools 34.0.0, and Python 3. The hosted runner must expose ANDROID_HOME or ANDROID_SDK_ROOT and cmdline-tools/sdkmanager; install the pinned SDK components before invoking the build. The committed StudySprint development keystore is a development identity only; production signing credentials stay outside this workflow.
 
 Use this custom android_build command:
 
 ~~~bash
-SDK_ROOT="$(printenv ANDROID_SDK_ROOT || printenv ANDROID_HOME || printf '%s' /opt/android-sdk)"
+SDK_ROOT="$(printenv ANDROID_SDK_ROOT || printenv ANDROID_HOME || printf "%s" /opt/android-sdk)"
 export ANDROID_HOME="$SDK_ROOT"
 export ANDROID_SDK_ROOT="$SDK_ROOT"
 yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null 2>&1 || true
@@ -150,4 +150,4 @@ The adapter reads */results/*/findings.json. It emits one event per issue with a
 
 DISCOVERED → repo_adapter_implemented → provider_run_pending → collected → observed → reproduced → validated → promoted
 
-Current state: StudySprint brief PR #1 merged into the tester fork at 6b5c30a6ad1af4001d782ee96e56843fd6e04f97; MAT-001 awaits monorepo CI validation. Provider authentication, budget, first run, and end-to-end validation remain separate evidence-bearing steps. Provider authentication, budget, first run, and end-to-end validation remain separate evidence-bearing steps.
+Current state: StudySprint brief PR #1 merged into the tester fork at 6b5c30a6ad1af4001d782ee96e56843fd6e04f97; MAT-001 awaits monorepo CI validation. Provider authentication, budget, first run, and end-to-end validation remain separate evidence-bearing steps.

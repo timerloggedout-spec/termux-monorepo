@@ -47,9 +47,10 @@ Verification: JSON parse, link/path checks, proposal registry validator.
 - WAIT for proposal, repo, and Termux checks on the same immutable SHA.
 - Keep MAT-002 / MAT-003 queued until a bounded model budget and provider credentials are available.
 
-## Non-goals
+## Scope boundaries
 
-- No autonomous paid model runs.
-- No provider private-key handling in CI.
-- No production signing, learner-data access, app publication, physical device control, or changes to the device queue.
-- No promotion of unverified AI findings to defects.
+- Keep paid model runs manual and budgeted per run.
+- Keep provider private keys and decrypted artifacts on trusted local collectors.
+- Limit the pilot to synthetic data, development signing, and isolated hosted Android emulators.
+- Preserve physical-device control and task admission within the existing Termux device queue.
+- Promote AI-reported findings only after human review or deterministic reproduction.

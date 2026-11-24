@@ -111,7 +111,7 @@ def validate_dataset(dataset: dict[str, Any]) -> None:
     source_pairs: set[tuple[str, str]] = set()
     for source in sources:
         _require(isinstance(source, dict), "source entry must be an object")
-        _only_keys(source, {"kind", "repository", "sha", "observed_at", "coverage", "url"}, "source")
+        _only_keys(source, {"kind", "repository", "sha", "observed_at", "coverage", "url", "adjudication_status"}, "source")
         _require(isinstance(source.get("kind"), str) and source["kind"] in SOURCE_KINDS, "invalid source kind")
         _require(source.get("repository") in repositories, "source repository outside coverage")
         sourced_repositories.add(source["repository"])
@@ -120,6 +120,9 @@ def validate_dataset(dataset: dict[str, Any]) -> None:
         _require(_is_timestamp(source.get("observed_at")), "invalid source observed_at")
         _require(isinstance(source.get("coverage"), str) and source["coverage"] in COVERAGE_STATES, "invalid source coverage")
         _require(_is_https(source.get("url")), "source URL must use HTTPS")
+        if source["kind"] == "gold_set":
+            _require(source.get("adjudication_status") == "human_adjudicated",
+                     "gold-set source must carry human_adjudicated status")
         if coverage_state == "COMPLETE":
             _require(source["coverage"] == "COMPLETE",
                      "complete dataset requires complete source coverage")

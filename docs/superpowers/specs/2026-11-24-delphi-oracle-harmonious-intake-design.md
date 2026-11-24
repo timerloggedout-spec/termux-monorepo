@@ -36,18 +36,18 @@ The form exposes four checkbox choices:
 
 | Choice | Resolution |
 |---|---|
-| DoE Decides | Record an eligible candidate pool for DoE selection; leave the decision pending and execution false |
+| DoE Decides | Record an eligible candidate pool; keep reconciliation targets pending until DoE selects them; execution remains false |
 | All | Include all 12 research participants, all four DoE components, linked methodology RFPs/projects, and all four research arms |
 | Specific selection | Include only the checked participants, components, methodology RFPs, and projects; baseline is the arm default |
 | Prior default | Include the 12 baseline research participants; exclude variants, DoE components, and method RFPs. Independently checked project references remain available for reconciliation |
 
 An empty selection-mode group resolves to Prior default. The 12 research silos remain independent segments; cross-silo aggregation stays disabled and comparisons remain silo-local. Arms are `baseline`, `rnd`, `selected`, and `control`. Absent source issue IDs remain explicit nulls while catalogue identity stays valid.
 
-The checkbox catalogue includes all 12 registered participants, four DoE components, methodology work (#1572, #1959, #1963), and the related Strands / CEEL projects.
+The checkbox catalogue includes all 12 registered participants, four DoE components, five methodology RFPs (#1567, #1571, #1572, #1959, #1963), and the related Strands / CEEL projects.
 
 ## Harmonious Reconciliation
 
-The form captures selected projects and reconciliation dimensions: objectives, duplicate/overlapping proposals, requirements, dependencies, evidence, conflicting assumptions, decisions/dissent, and implementation sequencing. The normalizer records these as requested reconciliation inputs and preserves the distinction between evidence, candidates, and a confirmed decision.
+The form captures selected projects and reconciliation dimensions: objectives, duplicate/overlapping proposals, requirements, dependencies, evidence, conflicting assumptions, decisions/dissent, and implementation sequencing. Submitter-selected targets must meet the category threshold. DoE Decides records candidate projects and references separately, marks target selection pending, and leaves confirmed reconciliation references empty until the DoE decision.
 
 ## Delphi and Question Matrix
 
@@ -66,12 +66,12 @@ The form captures selected projects and reconciliation dimensions: objectives, d
 
 ## Disposition
 
-- Selection review: emit an idempotent issue comment and apply the `delphi:selection-review` label.
-- Registry catalogue: open/update a PR that appends or revises the source-linked record in `ops/delphi/selection-catalogue.json`.
+- Selection review: emit an idempotent issue comment and apply the `delphi:selection-review` label; remove the label when the disposition changes away from review.
+- Registry catalogue: open/update a PR containing one immutable source-linked JSON record under `ops/delphi/selection-catalogue/<selection_id>/<record_sha256>.json`.
 - Both: perform both independent operations.
 - Deliberation only: preserve the normalized record without requesting review or catalogue PR.
 
-Catalogue contract: `ops/delphi/selection-catalogue.json`. Each immutable revision lives at `ops/delphi/selection-catalogue/<selection_id>/<record_sha256>.json`. Catalogue writes flow through a per-revision branch and PR against `master`; merged PRs publish catalogue records.
+Catalogue contract: `ops/delphi/selection-catalogue.json`. Each immutable revision lives at `ops/delphi/selection-catalogue/<selection_id>/<record_sha256>.json`. Catalogue writes flow through a per-revision branch and PR against `master`; the workflow dispatches both `repo-gate.yml` and `termux-smoke.yml` on that branch so both promotion checks attach to its head SHA.
 
 ## Canonical record
 
@@ -87,7 +87,7 @@ Each record includes schema/version, stable selection ID, source issue and actor
 6. Method RFPs and Strands/CEEL projects are selectable.
 7. Matrix strategy and optional round schedule persist.
 8. Reconciliation dimensions, panel, and optional WebView oversight persist.
-9. Review comments are idempotent.
+9. Review comments are idempotent; the review label follows the current disposition.\n10. Rendered text fields strip their outer fences; Markdown headings inside free-text answers remain part of the answer.\n11. Invalid intake submissions receive an actionable issue comment.
 10. Catalogue dispositions open a PR to `master`.
 11. Cross-silo score aggregation remains disabled.
 12. Every normalized record fixes `execution: false`.

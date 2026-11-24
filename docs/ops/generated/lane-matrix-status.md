@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-24T04:15:45Z)
+# Lane matrix status (2026-11-24T04:17:06Z)
 
-- Master: `b17872d3b6f70e2a61a6177cfb42df51d5241a0a`
+- Master: `dbb880f221895ec676f36a09534507292d8b36e7`
 - Open PRs: **548**
 - Oldest: #47 (110.52d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -33,7 +33,7 @@
 | #5724 | 3.46 | EXTRACT | state:unknown, minesweeper-title | fix(jules): replace hosted PR handoff with receipt |
 | #47 | 110.52 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
 | #81 | 108.27 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
-| #103 | 107.13 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
+| #103 | 107.14 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
 | #527 | 69.85 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
 | #605 | 66.43 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
 | #684 | 64.41 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
@@ -60,7 +60,7 @@
 | #1650 | 30.09 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
 | #1694 | 28.12 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
 | #1734 | 27.71 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
-| #1735 | 27.7 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
+| #1735 | 27.71 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
 | #1966 | 26.97 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
 
 Writer only: does not merge. Dual-gate remains promote authority. HOLD/WAIT/OBSERVE are invalid parking. Age alone ≠ promote.

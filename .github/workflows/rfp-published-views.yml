@@ -1,0 +1,71 @@
+name: RFP Published Views
+
+on:
+  pull_request:
+    paths:
+      - "apps/tribute-dashboard/experiment-views.html"
+      - "apps/tribute-dashboard/experiment-views.js"
+      - "apps/tribute-dashboard/data/experiment-view-feed*"
+      - "apps/tribute-dashboard/data/doe-feed.json"
+      - "apps/tribute-dashboard/versioning.js"
+      - "apps/tribute-dashboard/version-manifest.json"
+      - "apps/tribute-dashboard/site-nav.js"
+      - "apps/tribute-dashboard/sitemap.xml"
+      - "scripts/build_dashboard_manifest.py"
+      - "tests/test_experiment_published_views.py"
+      - "tests/test_experiment_published_views.cjs"
+      - ".github/workflows/rfp-published-views.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate feed, renderers, and release manifest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install test runner
+        run: python -m pip install pytest jsonschema
+      - name: Validate feed and view contracts
+        run: python -m pytest tests/test_experiment_published_views.py -q
+      - name: Exercise method and view switching
+        run: node tests/test_experiment_published_views.cjs
+      - name: Validate JavaScript syntax
+        run: |
+          node --check apps/tribute-dashboard/experiment-views.js
+          node --check apps/tribute-dashboard/versioning.js
+          node --check apps/tribute-dashboard/site-nav.js
+      - name: Validate JSON inputs
+        run: |
+          python -m json.tool apps/tribute-dashboard/data/experiment-view-feed.json >/dev/null
+          python -m json.tool apps/tribute-dashboard/data/experiment-view-feed.schema.json >/dev/null
+          python -m json.tool apps/tribute-dashboard/data/doe-feed.json >/dev/null
+      - name: Build a preview release manifest
+        env:
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          out="$(mktemp -d)"
+          cp apps/tribute-dashboard/experiment-views.html "$out/"
+          python3 scripts/build_dashboard_manifest.py \
+            --root "$out" \
+            --channel preview \
+            --source-ref "${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}" \
+            --source-sha "$SOURCE_SHA" \
+            --version-prefix "1.0.1"
+          python3 - "$out/version-manifest.json" <<'PY'
+          import json, sys
+          manifest = json.load(open(sys.argv[1], encoding="utf-8"))
+          assert manifest["channel"] == "preview"
+          assert manifest["source_sha"]
+          assert len(manifest["pages"]) == 1
+          assert manifest["pages"][0]["id"] == "experiment-views"
+          assert manifest["pages"][0]["content_sha256"]
+          PY

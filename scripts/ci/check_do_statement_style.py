@@ -23,7 +23,7 @@ IMPERATIVE = {
     "compare", "create", "define", "deploy", "document", "enforce", "expand", "fix", "gate",
     "include", "inspect", "keep", "measure", "migrate", "move", "open", "preserve", "guard",
     "publish", "record", "reconcile", "refresh", "refine", "register", "remove", "rename", "repair",
-    "replace", "require", "restore", "route", "run", "set", "snapshot", "split", "sync",
+    "replace", "require", "restore", "route", "run", "set", "snapshot", "split", "sync", "support", "specify", "project", "expose", "budget", "exercise", "select", "stamp",
     "test", "update", "use", "validate", "verify", "wire", "collect", "generate", "regenerate", "rebuild",
 }
 STYLE_PATHS = [

@@ -39,3 +39,9 @@ Jobs: enable project Pages, publish project hub, mirror the user GitHub Pages da
 ## Sitemap boundary
 
 The XML sitemap contains only public dashboard destinations. Internal repository paths, Actions URLs, Vercel inspector URLs, and credential-bearing surfaces are deliberately excluded.
+
+## Versioned RFP and DoE views
+
+https://timerloggedout-spec.github.io/tribute/experiment-views.html
+
+The page is published through the existing Tribute PWA / GitHub Pages pipeline. It switches method-aware projections over one normalized feed and inherits the generated version manifest, page identity, source SHA, and content hash.

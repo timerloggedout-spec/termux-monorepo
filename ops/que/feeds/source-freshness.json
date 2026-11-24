@@ -1,6 +1,6 @@
 {
  "schema": "que.source-freshness/v1",
- "generated_at": "2026-11-24T18:03:26Z",
+ "generated_at": "2026-11-24T18:39:09Z",
  "rule": "FRESH iff age \u2264 cadence + tolerance; freshness(x) \u00acinferred from freshness(y)",
  "counts": {
   "STALE": 1,
@@ -10,57 +10,57 @@
  "sources": {
   "que-feed-collect": {
    "source_ref": "ops/que/feeds/que-queue-feed.json",
-   "generated_at": "2026-11-24T18:03:26Z",
-   "observed_at": "2026-11-24T18:03:26Z",
+   "generated_at": "2026-11-24T18:39:09Z",
+   "observed_at": "2026-11-24T18:39:09Z",
    "expected_cadence_min": 10,
    "tolerance_min": 5,
-   "previous_cycle_at": "2026-11-24T17:40:10Z",
-   "cycle_gap_min": 23.3,
+   "previous_cycle_at": "2026-11-24T18:03:26Z",
+   "cycle_gap_min": 35.7,
    "health": "STALE",
    "health_basis": "gap since previous cycle watermark",
-   "sha": "d1779e8ecda3a8388236a3d382b65ce6a3c72a48",
-   "run_id": "45455233891"
+   "sha": "db44ed317fe5830cf6bdcbe73a8b043f5f585193",
+   "run_id": "45461407911"
   },
   "dispatch-state-feed": {
    "source_ref": "ops/challenge/dispatch-state-feed.json",
-   "observed_at": "2026-11-24T18:03:26Z",
+   "observed_at": "2026-11-24T18:39:09Z",
    "expected_cadence_min": 15,
    "tolerance_min": 15,
-   "sha": "d1779e8ecda3a8388236a3d382b65ce6a3c72a48",
-   "generated_at": "2026-11-24T17:51:35Z",
-   "age_min": 11.9,
+   "sha": "db44ed317fe5830cf6bdcbe73a8b043f5f585193",
+   "generated_at": "2026-11-24T18:18:09Z",
+   "age_min": 21.0,
    "health": "FRESH"
   },
   "stall-gap-feed": {
    "source_ref": "ops/que/feeds/stall-gap-feed.json",
-   "observed_at": "2026-11-24T18:03:26Z",
+   "observed_at": "2026-11-24T18:39:09Z",
    "expected_cadence_min": 15,
    "tolerance_min": 15,
-   "sha": "d1779e8ecda3a8388236a3d382b65ce6a3c72a48",
-   "generated_at": "2026-11-24T17:51:35Z",
-   "age_min": 11.9,
+   "sha": "db44ed317fe5830cf6bdcbe73a8b043f5f585193",
+   "generated_at": "2026-11-24T18:18:09Z",
+   "age_min": 21.0,
    "health": "FRESH"
   },
   "opportunity-priority": {
    "source_ref": "ops/que/feeds/opportunity-priority.json",
-   "observed_at": "2026-11-24T18:03:26Z",
+   "observed_at": "2026-11-24T18:39:09Z",
    "expected_cadence_min": 720,
    "tolerance_min": 0,
-   "sha": "d1779e8ecda3a8388236a3d382b65ce6a3c72a48",
+   "sha": "db44ed317fe5830cf6bdcbe73a8b043f5f585193",
    "generated_at": "2026-11-24T11:00:12Z",
-   "age_min": 423.2,
+   "age_min": 459.0,
    "health": "FRESH"
   },
   "governor-events": {
    "source_ref": "ops/que/events/governor-events-*.jsonl",
-   "observed_at": "2026-11-24T18:03:26Z",
+   "observed_at": "2026-11-24T18:39:09Z",
    "generated_at": "2026-11-22T02:33:40Z",
-   "age_min": 3809.8,
+   "age_min": 3845.5,
    "expected_cadence_min": null,
    "tolerance_min": null,
    "health": "UNVERIFIABLE",
    "health_basis": "emitter cadence \u00acdeclared (source-specific)",
-   "sha": "d1779e8ecda3a8388236a3d382b65ce6a3c72a48"
+   "sha": "db44ed317fe5830cf6bdcbe73a8b043f5f585193"
   }
  }
 }

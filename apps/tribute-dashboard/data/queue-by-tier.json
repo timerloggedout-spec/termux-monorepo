@@ -1,23 +1,26 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-24T18:03:26Z",
+ "generated_at": "2026-11-24T18:39:09Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 2,
-   "in_progress": 1,
-   "oldest_queued_at": "2026-11-20T07:43:25Z",
+   "queued": 5,
+   "in_progress": 2,
+   "oldest_queued_at": "2026-11-24T18:36:23Z",
    "by_workflow_queued": {
-    "PR scope guard": 2
+    "PR scope guard": 4,
+    "repo gate": 1
    }
   },
   "2": {
    "tier": 2,
-   "queued": 0,
+   "queued": 1,
    "in_progress": 1,
-   "oldest_queued_at": null,
-   "by_workflow_queued": {}
+   "oldest_queued_at": "2026-11-24T18:36:09Z",
+   "by_workflow_queued": {
+    "pages build and deployment": 1
+   }
   },
   "3": {
    "tier": 3,
@@ -28,147 +31,57 @@
   },
   "4": {
    "tier": 4,
-   "queued": 77,
-   "in_progress": 13,
-   "oldest_queued_at": "2026-11-20T07:43:25Z",
+   "queued": 93,
+   "in_progress": 16,
+   "oldest_queued_at": "2026-11-24T18:35:14Z",
    "by_workflow_queued": {
-    "Agent Throughput Evidence": 40,
-    "lane events recorder": 32,
-    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
-    "Agent PR Jules Handoff": 1,
-    "PR Change Effectiveness Ledger": 1,
-    "Advisory GitHub Actions lint": 1,
-    "DO Statement Style": 1
+    "lane events recorder": 21,
+    "Agent Throughput Evidence": 27,
+    "n8n SHE bridge": 1,
+    "termux smoke": 1,
+    "DeepSeek CI \u2013 Agentic Automation": 1,
+    "Repository development evaluation": 1,
+    "Lane matrix event-driven inventory": 1,
+    "Sweep Accountability": 4,
+    "Peer review orchestrator": 3,
+    "Action Effectiveness Ledger": 3,
+    "CellCog review": 2,
+    "DO Statement Style": 3,
+    "Workflow Surface Policy": 1,
+    "RECON INTEL discovery": 2,
+    "PR production ledger": 5,
+    "Agent PR Jules Handoff": 2,
+    "Quota Dispatch Tree": 1,
+    "PR Change Effectiveness Ledger": 2,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 2,
+    "Reviewer metrics collect": 1,
+    "Gemini review after peers": 2,
+    "Agent review \u2192 auto Jules": 2,
+    "Agent feedback \u2192 Linear subtasks": 1,
+    "\u2699\ufe0f Dispatch Executor (admitted -> claim + fire)": 1,
+    "Context Relationship + Lead/Lag Audit": 2,
+    "PR evidence evaluation": 1
    }
   }
  },
  "totals": {
-  "queued": 79,
-  "in_progress": 15
+  "queued": 99,
+  "in_progress": 19
  },
- "wedged_ancient": [
-  {
-   "id": 43098247266,
-   "workflow": "repo gate",
-   "created_at": "2026-11-11T20:48:59Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247266"
-  },
-  {
-   "id": 43098247342,
-   "workflow": "Orchestration Regression Guard",
-   "created_at": "2026-11-11T20:48:59Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247342"
-  },
-  {
-   "id": 43098247319,
-   "workflow": "repo-tracking-collect",
-   "created_at": "2026-11-11T20:48:59Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247319"
-  },
-  {
-   "id": 43098247247,
-   "workflow": "Foresight Evidence Spine",
-   "created_at": "2026-11-11T20:48:59Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247247"
-  },
-  {
-   "id": 43098247311,
-   "workflow": "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher",
-   "created_at": "2026-11-11T20:48:59Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247311"
-  },
-  {
-   "id": 43098247260,
-   "workflow": "graph-matrix-probe",
-   "created_at": "2026-11-11T20:48:59Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247260"
-  },
-  {
-   "id": 43098247290,
-   "workflow": "termux smoke",
-   "created_at": "2026-11-11T20:48:59Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247290"
-  },
-  {
-   "id": 43098247303,
-   "workflow": "Quota Dispatch Tree",
-   "created_at": "2026-11-11T20:48:59Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247303"
-  },
-  {
-   "id": 43098247273,
-   "workflow": "hitl-control-plane-verify",
-   "created_at": "2026-11-11T20:48:59Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247273"
-  },
-  {
-   "id": 43098247239,
-   "workflow": "Context Relationship + Lead/Lag Audit",
-   "created_at": "2026-11-11T20:48:59Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247239"
-  },
-  {
-   "id": 43098247233,
-   "workflow": "Sweep Accountability",
-   "created_at": "2026-11-11T20:48:59Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247233"
-  },
-  {
-   "id": 43097183084,
-   "workflow": "doe-nc1-continuous-log",
-   "created_at": "2026-11-11T20:37:41Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43097183084"
-  },
-  {
-   "id": 43096831186,
-   "workflow": "Quota Dispatch Tree",
-   "created_at": "2026-11-11T20:34:15Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831186"
-  },
-  {
-   "id": 43096831303,
-   "workflow": "termux smoke",
-   "created_at": "2026-11-11T20:34:15Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831303"
-  },
-  {
-   "id": 43096831325,
-   "workflow": "Foresight Evidence Spine",
-   "created_at": "2026-11-11T20:34:15Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831325"
-  },
-  {
-   "id": 43096831370,
-   "workflow": "hitl-control-plane-verify",
-   "created_at": "2026-11-11T20:34:15Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831370"
-  },
-  {
-   "id": 43096831128,
-   "workflow": "Sweep Accountability",
-   "created_at": "2026-11-11T20:34:15Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831128"
-  },
-  {
-   "id": 43096831290,
-   "workflow": "repo gate",
-   "created_at": "2026-11-11T20:34:15Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831290"
-  }
- ],
+ "wedged_ancient": [],
  "wedged_excluded_from_counts": true,
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 3,
-   "2": 1,
+   "1": 7,
+   "2": 2,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 4,
-  "default_t4": 90,
+  "explicit_total": 9,
+  "default_t4": 109,
   "unmatched": 0,
-  "ancient_excluded": 18,
+  "ancient_excluded": 0,
   "operator_excluded": 0
  },
  "operator_excluded": []

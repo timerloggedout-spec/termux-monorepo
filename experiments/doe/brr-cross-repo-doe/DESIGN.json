@@ -152,7 +152,14 @@
       "context/comment graph with verified/candidate edge status and evidence URLs",
       "frozen query set with adjudicated gold target IDs"
     ],
-    "sha_binding": "Every source record binds to an immutable source SHA and collection timestamp; all joined rows retain repository-qualified identity."
+    "sha_binding": "Every source record binds to an immutable source SHA and collection timestamp; all joined rows retain repository-qualified identity.",
+    "per_repository": [
+      "BRR v2 registry receipt",
+      "commit lineage receipt",
+      "regression feature-progress receipt",
+      "context or cross-plane graph receipt",
+      "adjudicated gold-set receipt"
+    ]
   },
   "constraints": [
     "BRR remains read-only and retains branch-reconciliation-registry/v1.",

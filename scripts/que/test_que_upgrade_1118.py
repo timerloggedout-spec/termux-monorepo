@@ -29,6 +29,7 @@ def test_kick_decisions():
     d = k.decide([{"status": "queued", "created_at": _ts(40)},
                   {"status": "completed", "created_at": _ts(90)}], 12, NOW)
     assert d["action"] == "skip" and d["in_flight"] == 1
+    assert d["oldest_queued_wait_s"] == 2400.0
 
 
 def test_classify_basis_three_way():
@@ -98,3 +99,35 @@ def test_watchdog_score_row_stays_numeric():
     claims.sort(key=lambda c: (-(c["score"] or 0), c["issue"]))
     assert claims[0]["issue"] == 1
     assert hasattr(auto_claim, "plan")
+
+
+
+def test_cadence_api_metrics(monkeypatch):
+    class Response:
+        status = 200
+        headers = {
+            "X-RateLimit-Remaining": "4998",
+            "X-RateLimit-Limit": "5000",
+            "X-RateLimit-Resource": "core",
+        }
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def read(self):
+            return b'{"workflow_runs": []}'
+
+    k.API_CALLS = 0
+    k.API_STATUSES.clear()
+    k.API_ROUTES.clear()
+    k.API_LATENCIES_MS.clear()
+    k.RATE_LIMIT.clear()
+    monkeypatch.setattr(k.urllib.request, "urlopen", lambda *args, **kwargs: Response())
+    result = k.gh("GET", "/repos/o/r/actions/workflows/que-feed-collect.yml/runs?per_page=10", "token")
+    assert result == {"workflow_runs": []}
+    assert k.API_CALLS == 1
+    assert k.API_STATUSES == {"200": 1}
+    assert k.RATE_LIMIT["x-ratelimit-remaining"] == "4998"

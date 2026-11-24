@@ -77,7 +77,7 @@ def test_repository_has_no_agents_named_entrypoint_or_projection() -> None:
     retired_paths = (
         "AGENTS.md",
         "AGENTS.hum.md",
-        "docs/icm/CLAUDE.md",
+        "docs/icm/AGENTS.md",
         "docs/icm/AGENTS.hum.md",
         "docs/icm/maintenance/AGENTS.md",
         "docs/icm/maintenance/AGENTS.hum.md",

@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-24T08:34:02Z)
+# Lane matrix status (2026-11-24T08:38:16Z)
 
-- Master: `a414d36646a562915572f7d66b937314b3ee4173`
+- Master: `e741ad5882882068b7f74df779a33b07e5f3cf51`
 - Open PRs: **551**
 - Oldest: #47 (110.7d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -27,13 +27,13 @@
 | #4069 | 21.18 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
 | #4621 | 20.49 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
 | #4898 | 19.83 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
-| #5034 | 17.73 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
+| #5034 | 17.74 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
 | #5722 | 3.64 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted routes and bind local Do |
 | #5723 | 3.64 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted review relay and record  |
 | #5724 | 3.64 | EXTRACT | state:unknown, minesweeper-title | fix(jules): replace hosted PR handoff with receipt |
 | #47 | 110.7 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
 | #81 | 108.45 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
-| #103 | 107.31 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
+| #103 | 107.32 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
 | #527 | 70.03 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
 | #605 | 66.61 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
 | #684 | 64.59 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
@@ -46,21 +46,21 @@
 | #1469 | 33.81 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
 | #1470 | 33.81 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
 | #1495 | 33.26 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
-| #1513 | 33.01 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
+| #1513 | 33.02 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 33.01 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
 | #1516 | 33.01 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
 | #1531 | 33.0 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
 | #1537 | 32.98 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
-| #1557 | 32.31 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
+| #1557 | 32.32 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 31.23 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
-| #1616 | 31.22 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
+| #1616 | 31.23 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 31.22 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
 | #1626 | 31.1 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
 | #1645 | 30.34 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
-| #1650 | 30.26 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
+| #1650 | 30.27 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
 | #1694 | 28.3 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
 | #1734 | 27.89 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
-| #1735 | 27.88 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
+| #1735 | 27.89 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
 | #1966 | 27.15 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
 
 Writer only: does not merge. Dual-gate remains promote authority. HOLD/WAIT/OBSERVE are invalid parking. Age alone ≠ promote.

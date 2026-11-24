@@ -499,11 +499,9 @@ def collect_ates() -> dict:
 def _doe_campaigns() -> list:
     """Family campaign members, read from their committed records.
 
-    A campaign appears here only when its design record is committed
-    (intake rule, docs/ops/DOE-FAMILY.md). Its state is computed from
-    the records on disk: no records = admitted, design-only; records =
-    executed, with aggregates read from SUMMARY.json (the runner's
-    output over those same records).
+    Only admitted designs enter the campaign collection. Explicit
+    proposed_not_admitted designs are surfaced separately as candidates.
+    Campaign execution state is computed from records on disk.
     """
     base = ROOT / "experiments" / "doe"
     out = []

@@ -175,3 +175,41 @@ def test_configured_instance_identity():
            "status": "observed", "provenance": "manual",
            "confidence": "high"}
     jsonschema.validate(rec, schema)
+
+
+
+def test_blocked_assignment_is_a_permutation_per_block():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "doe_helpers", ROOT / "deepcli/deepcli/observatory/doe.py")
+    doe = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(doe)
+    treatments = ["native", "fast", "rust"]
+    blocks = [(f"task-{task}", replicate)
+              for task in range(6) for replicate in range(3)]
+    assignments = doe.randomized_blocked_assignments(
+        treatments, blocks, seed=20261122)
+    assert len(assignments) == 18
+    doe.validate_blocked_assignments(assignments, treatments, blocks)
+    assert all(set(a["treatments"]) == set(treatments) for a in assignments)
+    try:
+        doe.validate_blocked_assignments(
+            [{"block": list(blocks[0]), "treatments": ["native", "rust", "rust"]}],
+            treatments, blocks)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("duplicate treatment assignment must be rejected")
+
+
+def test_rust_migration_study_remains_unadmitted_candidate():
+    feed = _doe_feed()
+    candidate_ids = {c["campaign_id"] for c in feed["data"]["candidates"]}
+    campaign_ids = {c["campaign_id"] for c in feed["data"]["campaigns"]}
+    assert "rust-migration-tools" in candidate_ids
+    assert "rust-migration-tools" not in campaign_ids
+    candidate = next(c for c in feed["data"]["candidates"]
+                     if c["campaign_id"] == "rust-migration-tools")
+    assert candidate["state"] == "proposed_not_admitted"
+    assert candidate["runs"] == 0
+    assert candidate["results"] is None

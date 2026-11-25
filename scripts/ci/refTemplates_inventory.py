@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Inventory refTemplates slots and category candidates; emit deterministic JSONL.
 
-No network. Research-template contracts stay separate from capability metadata.
+Use local repository metadata. Keep research-template contracts separate from capability metadata.
 """
 from __future__ import annotations
 

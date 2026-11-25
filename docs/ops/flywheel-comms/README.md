@@ -42,9 +42,9 @@ The registry owns participant cadence, ownership, and status. The channel direct
 
 ### FLY-005 → FLY-006: general work moved to the work channel
 
-- **Source event:** FLY-005 message at `2026-11-25T19:21:00Z` records the owner-ordered channel split: FLY-005 remains exports and backup coordination; the Siglary/Linguist answer moves to FLY-006.
-- **Pointer:** FLY-005 message at `2026-11-25T19:28:30Z` points Cue to the full research, test record, and repository-adaptation map on FLY-006.
-- **Destination:** [FLY-006 protocol](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/WORK-COMMS.md) and [append-only work log](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/work-comms.jsonl).
+- **Source event:** [FLY-005 line 16](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/comms.jsonl#L16) at `2026-11-25T19:21:00Z` records the owner-ordered channel split: FLY-005 remains exports and backup coordination; the Siglary/Linguist answer moves to FLY-006.
+- **Pointer:** [FLY-005 line 17](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/comms.jsonl#L17) at `2026-11-25T19:28:30Z` points Cue to the full research, test record, and repository-adaptation map on FLY-006.
+- **Destination:** [FLY-006 protocol](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/WORK-COMMS.md) and [append-only work log](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/work-comms.jsonl), with the audit at [line 4](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/work-comms.jsonl#L4) and the Siglary/notation record at [line 5](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/work-comms.jsonl#L5).
 - **Work record:** [PR #5893 — FLY-006 sidecar/overlay adaptation audit](https://github.com/timerloggedout-spec/termux-monorepo/pull/5893), including the proposed report at [PR files](https://github.com/timerloggedout-spec/termux-monorepo/pull/5893/files).
 - **Receipt commit:** [a873f00b0ae8d83182b0ac4b157af10f1850f652](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/commit/a873f00b0ae8d83182b0ac4b157af10f1850f652) in the FLY-006 store.
 

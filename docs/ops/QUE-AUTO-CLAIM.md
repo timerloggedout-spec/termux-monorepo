@@ -23,11 +23,19 @@ frame — no new governor constants). Binding on this build's landing.
    15m}. A stall reaching 30m unclaimed emits a
    `stall_ceiling_breach` stall event on its exception escalation.
 2. **Claim classes** come from the filing's own stamp: an explicit
-   `claim-class:` line wins, then a named `executor of record:`,
-   then the SWARM-DISPATCH route (`build-dispatch` → executor class,
-   claimant `dispatch-executor`; `project-task-dispatch` → the
-   QDesk seat queue, claimant `qdesk-seat-queue`). No stamp naming a
-   class = unplaceable.
+   `claim-class:` assignment wins, then a named `executor of record:`,
+   then a SWARM-DISPATCH route stamp. `build-dispatch` maps to
+   executor / `dispatch-executor`; `project-task-dispatch` maps to
+   seat-queue / `qdesk-seat-queue`. The project-task intake workflow's
+   `[MUSEai]@{role:{project-task-dispatch}}` routing receipt and its
+   SWARM-admission comment's `route: project-task-dispatch.yml` are
+   route stamps, including when they appear in comments. A generated
+   project-task receipt is only a route default: it does not emit an
+   explicit claim-class or claimant assignment, and legacy generated
+   defaults are ignored when resolving a named or later explicit
+   assignment. Unmarked discussion text containing JSON route data is
+   not a route stamp. No stamp naming a class = unplaceable.
+   Project-task claims require the current `swarm-admitted` decision.
 3. **The claim is the claim_task.py effect** — a PRODUCER CLAIM
    comment naming the machine as claimant of record + the
    `dispatch-claimed` label in the same motion, with the
@@ -43,8 +51,11 @@ frame — no new governor constants). Binding on this build's landing.
 5. **Hard boundary.** Value-class / owner-gated work (labels
    `value-class` / `owner-gated` / `owner-hand`, or the
    `participation_set` / `countersign-required` / `owner-hand`
-   markers) is never auto-claimed; it escalates by design. No
-   admission/governor threshold changes beyond the countersigned
+   markers) is never auto-claimed; it escalates by design. A current
+   `deferred-by-tier` label or latest DEFERRED admission receipt
+   blocks auto-claim, even when intake has already added
+   `dispatch-queued`; the admission drain must first clear deferral.
+   No admission/governor threshold changes beyond the countersigned
    timing slots.
 6. **Lease + reclaim.** An auto-claim carries a lease (executor
    120m, seat-queue / named-executor 240m — claim-machinery windows,

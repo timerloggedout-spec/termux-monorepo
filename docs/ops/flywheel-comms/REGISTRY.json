@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "updated": "2026-11-25",
+  "policy": "docs/ops/flywheel-comms/POLICY.md",
+  "channels": [
+    {
+      "id": "FLY-001",
+      "name": "que-dispatch",
+      "store_repo": "timerloggedout-spec/termux-monorepo",
+      "path": "issues (project-task filings, stamps, routing receipts)",
+      "format": "GitHub issues: ###-field filings + comment stamps",
+      "participants": ["all seats", "QUE machinery (executor/watchdog)"],
+      "cadence": "GitHub Actions schedule + vm que-drain-drive 15m",
+      "owner_seat": "QDesk",
+      "status": "established",
+      "established_evidence": "QUE #5641 routing receipt, run 45446484039 (2026-11-24)"
+    },
+    {
+      "id": "FLY-002",
+      "name": "mesh-requests",
+      "store_repo": "timerloggedout-spec/muse-vm-workspace-backup",
+      "path": "compute-exports/mesh-probe/REQUESTS.jsonl",
+      "format": "JSONL append-only request/response",
+      "participants": ["muse-vm", "hark-vm"],
+      "cadence": "mesh-tailnet-probe-watch 1h",
+      "owner_seat": "muse-vm (mesh lane)",
+      "status": "established",
+      "established_evidence": "3 routed requests on record (#5554, #5714, #5715)"
+    },
+    {
+      "id": "FLY-003",
+      "name": "backup-relays-feed",
+      "store_repo": "timerloggedout-spec/termux-monorepo",
+      "path": "ops/tracking/backup-relays.jsonl",
+      "format": "JSONL append-only; published via GitHub automation to org pages",
+      "participants": ["vm exporters (muse-vm, cue)", "pages readers"],
+      "cadence": "per export event + daily repo-export-sync",
+      "owner_seat": "backup lane (muse-vm)",
+      "status": "established",
+      "established_evidence": "1,590 lines at 2026-11-25; cue relay commit 7564ade1"
+    },
+    {
+      "id": "FLY-004",
+      "name": "mesh-probe-state",
+      "store_repo": "timerloggedout-spec/muse-vm-workspace-backup",
+      "path": "compute-exports/mesh-probe/",
+      "format": "per-cycle state exports (heartbeat publication)",
+      "participants": ["muse-vm", "hark-vm"],
+      "cadence": "mesh-tailnet-probe-watch 1h",
+      "owner_seat": "muse-vm (mesh lane)",
+      "status": "established",
+      "established_evidence": "2026-11-25 cycle exports at 93202ed9, 14797e05, fcf07de6"
+    },
+    {
+      "id": "FLY-005",
+      "name": "cue-comms",
+      "store_repo": "timerloggedout-spec/muse-vm-workspace-backup",
+      "path": "cue/comms.jsonl (protocol: cue/COMMS.md)",
+      "format": "JSONL append-only {ts, from, to, body}",
+      "participants": ["muse-vm", "manus-cue"],
+      "cadence": "cue watch 900s; muse-vm cadence checks",
+      "owner_seat": "muse-vm + cue (joint)",
+      "status": "established",
+      "established_evidence": "opened 2026-11-25: muse-vm line at 50c780c2, cue ACK at 8d03661e"
+    }
+  ]
+}

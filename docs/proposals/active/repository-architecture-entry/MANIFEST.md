@@ -14,6 +14,9 @@ Establish one repository-wide architecture entry that routes collaborators to ca
 
 ## Scope
 
+- Central Flywheel nested navigation across all registered channels, collaborators, project contexts, topics, and linked artifacts.
+- Extensible peer/surface/context/membership routing model with least-privilege effective-token semantics.
+
 - Root architecture entry with ToC and nested taxonomy.
 - Mermaid data-flow source under `docs/ops/diagrams/`.
 - Entry-point links in root `CLAUDE.md`, root `README.md`, `docs/icm/CLAUDE.md`, and `docs/architecture/README.md`.
@@ -33,6 +36,8 @@ Establish one repository-wide architecture entry that routes collaborators to ca
 - [x] 36 internal architecture links resolve against the branch tree.
 - [x] Root collaborator, README, ICM, and architecture-index entry points link to the root architecture entry.
 - [ ] Proposal registry validator passes with the manifest and work items present.
+- [ ] Flywheel registry and protocol peer-registration amendment reviewed; first ACK is linked without claiming the separate Web2API session complete.
+- [ ] Navigation covers all current registry channels and supports additional channels/contexts without redesign.
 - [ ] Repository gate and Termux smoke pass on the same head.
 - [ ] Required PR checks complete and the merged master head is re-fetched.
 

@@ -97,5 +97,39 @@
    "established_evidence": "owner order 2026-11-25: a different flywheel for work other than the exports; opened 2026-11-25 with the Siglary/Linguist item",
    "scope": "Non-export pair work: incidents, PR review, mappings, notation, general fleet coordination. Exports stay on FLY-005; confirmations of record stay on FLY-003."
   }
+ ],
+ "peers": [
+  {
+   "name": "muse-vm",
+   "channels": [
+    "FLY-002",
+    "FLY-003",
+    "FLY-004",
+    "FLY-005",
+    "FLY-006"
+   ],
+   "status": "registered"
+  },
+  {
+   "name": "manus-cue",
+   "channels": [
+    "FLY-005",
+    "FLY-006"
+   ],
+   "status": "registered"
+  },
+  {
+   "name": "hark-vm",
+   "channels": [
+    "FLY-002",
+    "FLY-004"
+   ],
+   "status": "registered"
+  },
+  {
+   "name": "chatgpt",
+   "channels": [],
+   "status": "NOT REGISTERED - no channel of record; app-side activity (incl. its Devpost connector) is unobserved by the fleet. Registration is a done-evidence leg of QUE #5885."
+  }
  ]
 }

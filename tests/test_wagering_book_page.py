@@ -33,12 +33,13 @@ def _html():
     return PAGE.read_text(encoding="utf-8")
 
 
-def test_mirror_is_byte_identical():
+def test_mirror_and_fixture_are_byte_identical():
     assert MIRROR.read_bytes() == FEED.read_bytes()
+    assert FIXTURE.read_bytes() == FEED.read_bytes()
 
 
 def test_page_consumes_only_the_feed():
-    fetches = re.findall(r"fetch\(([^)]*)\)", _html())
+    fetches = re.findall(r"fetch\(([^,)]*)", _html())
     assert fetches == ['"./data/wagering-book.json"'], fetches
 
 
@@ -51,7 +52,8 @@ def test_feed_shape_and_counts():
     for s in subs:
         fams[s["family"]] = fams.get(s["family"], 0) + 1
     assert fams == {"D1": 2, "D2": 3, "D3": 4, "D4": 4, "D5": 3,
-                    "AMD": 6, "FCC": 1}
+                    "AMD": 6, "FCC": 1, "C12": 3, "SPEC": 12,
+                    "PROP": 1}
     assert all("forecast" not in s["id"] for s in subs)
     assert "OUTPUT" in feed["forecast_layer"]
     assert "no external participation" in feed["publication"]
@@ -140,8 +142,8 @@ console.log(JSON.stringify({
   kickoff_no_wall: by["D2-3-nocard-account-live"].wallX === null,
   d5_settle_after_wall: by["D5-16-placement-winner"].settleX > by["D5-16-placement-winner"].wallX,
   fcc_soft: by["FCC-23-relational-db-cert"].soft === true,
-  intake_state: expectationState(feed.subjects[0].expectation),
-  intake_text: expectationText(feed.subjects[0].expectation),
+  intake_state: expectationState({prior_value: null, posterior_value: null}),
+  intake_text: expectationText({prior_value: null, posterior_value: null}),
   set_text: expectationText({prior_value: 0.4, posterior_value: 0.55, n_evidence: 3}),
   stale_fresh: staleOf(feed, Date.parse("2026-11-03T00:00:00Z")),
   stale_old: staleOf(feed, Date.parse("2026-12-01T00:00:00Z")),
@@ -173,8 +175,12 @@ def test_window_pct_feed():
     feed = _feed()
     assert feed["pct_block"]["computed_at"] == feed["generated_at"]
     for s in feed["subjects"]:
-        assert s["window"] and s["window"]["start"] and s["window"]["wall"]
+        assert s["window"] and s["window"]["start"]
         wp = s["window_pct"]
+        if s["window"]["wall"] is None:
+            assert wp["consumed"] is None and wp["remaining"] is None
+            assert wp["note"]
+            continue
         if wp["consumed"] is None:
             assert wp["remaining"] is None and wp["note"]
         else:

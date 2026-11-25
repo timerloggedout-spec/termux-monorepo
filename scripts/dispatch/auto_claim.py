@@ -41,6 +41,14 @@ _CLAIM_CLASS_RE = re.compile(r"claim-class:\s*(executor|seat-queue|named:\s*\S+)
                              re.I)
 _EXECUTOR_OF_RECORD_RE = re.compile(r"executor of record:\s*([^\n·|]+)", re.I)
 _SWARM_ROUTE_RE = re.compile(r'"route":\s*"([^"]+)"')
+_ROUTE_STAMP_RE = re.compile(r"^\s*route:\s*([^\s#`<>|]+)\s*$",
+                             re.I | re.M)
+_ROUTE_CLAIMS = {
+    "build-dispatch": ("executor", "dispatch-executor"),
+    "build-dispatch.yml": ("executor", "dispatch-executor"),
+    "project-task-dispatch": ("seat-queue", "qdesk-seat-queue"),
+    "project-task-dispatch.yml": ("seat-queue", "qdesk-seat-queue"),
+}
 _LEASE_RE = re.compile(r"^- auto-claim: class=(\S+) claimant=(\S+) "
                        r"lease_expires=(\S+)", re.M)
 
@@ -68,10 +76,28 @@ def is_gated(issue, comments) -> str | None:
 
 def claim_class_of(issue, comments):
     """(claim_class, claimant) the filing's stamp names, else
-    (None, None). An explicit `claim-class:` line wins; then a named
-    executor of record; then the SWARM-DISPATCH route stamp
+    (None, None). Route stamps in the issue body or comments are always
+    validated first; unknown or conflicting routes fail closed. Among
+    valid stamps, an explicit `claim-class:` line wins, then a named
+    executor of record, then the SWARM-DISPATCH route
     (build-dispatch -> executor, project-task-dispatch -> the QDesk
     seat queue)."""
+    routes = []
+    for body in _bodies(issue, comments):
+        routes.extend(_SWARM_ROUTE_RE.findall(body))
+        routes.extend(_ROUTE_STAMP_RE.findall(body))
+    route_claim = None
+    if routes:
+        claims = []
+        for route in routes:
+            claim = _ROUTE_CLAIMS.get(route.strip().lower())
+            if claim is None:
+                return None, None
+            claims.append(claim)
+        if any(claim != claims[0] for claim in claims[1:]):
+            return None, None
+        route_claim = claims[0]
+
     for body in _bodies(issue, comments):
         m = _CLAIM_CLASS_RE.search(body)
         if m:
@@ -85,13 +111,7 @@ def claim_class_of(issue, comments):
         m = _EXECUTOR_OF_RECORD_RE.search(body)
         if m:
             return "named-executor", m.group(1).strip()
-    body = issue.get("body") or ""
-    m = _SWARM_ROUTE_RE.search(body)
-    if m:
-        if m.group(1) == "build-dispatch":
-            return "executor", "dispatch-executor"
-        return "seat-queue", "qdesk-seat-queue"
-    return None, None
+    return route_claim if route_claim is not None else (None, None)
 
 
 def failed_claim_count(comments) -> int:

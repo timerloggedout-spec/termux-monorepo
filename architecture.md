@@ -102,6 +102,7 @@ The monorepo is an Android/Termux-first execution environment, agent-development
 - Proposal lifecycle: `docs/proposals/registry.yaml`, `docs/proposals/PROCESS.md`, and `docs/proposals/active/`.
 - Validation: `scripts/ci/repo_gate.py`, `scripts/ci/termux_smoke.py`, and required GitHub Actions checks.
 - Security and authority: `docs/proposals/AGENTIC-PERMISSIONS.md` and `docs/SECURITY-REMEDIATION.md`.
+- Flywheel collaboration: [central channel and topic navigation](docs/ops/flywheel-comms/README.md), backed by the [Flywheel policy](docs/ops/flywheel-comms/POLICY.md) and [channel registry](docs/ops/flywheel-comms/REGISTRY.json).
 
 ## 3. Repository-wide data flow
 
@@ -128,7 +129,7 @@ The monorepo is an Android/Termux-first execution environment, agent-development
 
 ### 3.3 Stores and consumers
 
-EPS NDJSON, ATES JSONL, normalized integration events, Neon lane events, Neon receiver events, context-index artifacts, historical corpus artifacts, committed dashboard feeds, session SSOT, and SHE snapshots remain separate data products. Analytics consumers join validated observations only through an explicitly governed projection.
+EPS NDJSON, ATES JSONL, normalized integration events, Neon lane events, Neon receiver events, context-index artifacts, historical corpus artifacts, committed dashboard feeds, session SSOT, and SHE snapshots remain separate data products. Flywheel channel stores are separate append-only GitHub records; navigate them through the [central Flywheel hub](docs/ops/flywheel-comms/README.md), while each registered protocol and store retains its own authority. Analytics consumers join validated observations only through an explicitly governed projection.
 
 ArchWiz `DispatchPipeline` fans out to Session SSOT and the Codex index, plus a Linear sync hint that is log-only. Treat the hint as an observation, not a completed Linear synchronization.
 
@@ -166,6 +167,7 @@ This is a navigation taxonomy of major ownership zones, not a recursive inventor
 | `docs/architecture/` | Architecture specs, decisions, and architecture index |
 | `docs/icm/` | ICM system map: objects, processes, effects, maintenance |
 | `docs/ops/` | Operational contracts, telemetry, dashboards, runbooks, diagrams, evidence |
+| `docs/ops/flywheel-comms/` | Flywheel channel policy, registry, and central nested channel/topic navigation |
 | `docs/proposals/` | Proposal registry, active work packages, review lifecycle |
 | `docs/schemas/` | Shared schemas and capability contracts |
 | `docs/integrations/` | Integration catalog, adapter contracts, event schemas |
@@ -215,6 +217,7 @@ This is a navigation taxonomy of major ownership zones, not a recursive inventor
 | Integration mesh | [docs/integrations/README.md](docs/integrations/README.md) |
 | Provider capabilities | [provider-capabilities.md](docs/schemas/provider-capabilities.md) |
 | ICM map | [docs/icm/CLAUDE.md](docs/icm/CLAUDE.md) |
+| Flywheel channels and project artifacts | [docs/ops/flywheel-comms/README.md](docs/ops/flywheel-comms/README.md) |
 
 ## 6. Change-impact routing
 

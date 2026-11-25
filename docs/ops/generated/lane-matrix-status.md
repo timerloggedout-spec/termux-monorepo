@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-25T18:37:19Z)
+# Lane matrix status (2026-11-25T18:37:52Z)
 
-- Master: `9bb36147c8141397a515dde6375717baeea84c68`
+- Master: `efe2c40806207d2a91559a42d9e701b1c47219d8`
 - Open PRs: **563**
 - Oldest: #47 (112.12d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -32,7 +32,7 @@
 | #5723 | 5.06 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted review relay and record  |
 | #5724 | 5.06 | EXTRACT | state:unknown, minesweeper-title | fix(jules): replace hosted PR handoff with receipt |
 | #47 | 112.12 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
-| #81 | 109.86 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
+| #81 | 109.87 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
 | #103 | 108.73 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
 | #527 | 71.45 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
 | #605 | 68.03 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
@@ -44,7 +44,7 @@
 | #1274 | 37.39 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
 | #1441 | 35.45 | CANDIDATE | state:unknown | feat(triage): reconcile official quota before disp |
 | #1469 | 35.23 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
-| #1470 | 35.22 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
+| #1470 | 35.23 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
 | #1495 | 34.68 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
 | #1513 | 34.43 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 34.43 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |

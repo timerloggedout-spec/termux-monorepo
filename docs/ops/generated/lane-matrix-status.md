@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-25T05:18:24Z)
+# Lane matrix status (2026-11-25T05:19:24Z)
 
-- Master: `192676bc1bf341c42ff54795f60c3bc1843e027a`
+- Master: `a0cae0fd7e40ec7fb32b59acc57e0561f6e4701b`
 - Open PRs: **558**
 - Oldest: #47 (111.57d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -52,7 +52,7 @@
 | #1531 | 33.86 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
 | #1537 | 33.85 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 33.18 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
-| #1614 | 32.09 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
+| #1614 | 32.1 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
 | #1616 | 32.09 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 32.08 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
 | #1626 | 31.96 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |

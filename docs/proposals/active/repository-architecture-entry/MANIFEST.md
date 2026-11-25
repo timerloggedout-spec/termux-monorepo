@@ -15,6 +15,7 @@ Establish one repository-wide architecture entry that routes collaborators to ca
 ## Scope
 
 - Central Flywheel nested navigation across all registered channels, collaborators, project contexts, topics, and linked artifacts.
+- Machine-readable project/context/surface/membership index and versioned JSON Schema.
 - Extensible peer/surface/context/membership routing model with least-privilege effective-token semantics.
 
 - Root architecture entry with ToC and nested taxonomy.
@@ -39,6 +40,7 @@ Establish one repository-wide architecture entry that routes collaborators to ca
 - [ ] Flywheel registry and protocol peer-registration amendment reviewed; first ACK is linked without claiming the separate Web2API session complete.
 - [ ] Cross-project quota-admission RECON delivered through FLY-006 with source SHAs and validation boundaries.
 - [ ] Navigation covers all current registry channels and supports additional channels/contexts without redesign.
+- [ ] `CONTEXTS.json` parses, schema-validates, and resolves project/channel/peer/surface/context/topic/artifact references.
 - [ ] Repository gate and Termux smoke pass on the same head.
 - [ ] Required PR checks complete and the merged master head is re-fetched.
 

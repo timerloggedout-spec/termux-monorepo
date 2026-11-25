@@ -101,7 +101,7 @@ Report per-outcome estimates and uncertainty, practical thresholds set before ru
 
 Assess standalone contribution, combination contribution (including interaction terms), and downstream unlock (reusable capabilities, lower integration time, evaluation coverage, evidence quality and new experiments). Total burden includes maintenance effort, security exposure, complexity, data egress, retention, rate limits, failure modes and opportunity cost. Avoid opaque weighted scores; use a Pareto frontier. Any scalar ranking must state weights and be sensitivity-tested.
 
-Extract FOSS concepts after source-provenance, supply-chain, security and maintenance review. Route licensing determinations to the designated licensing duty owner. Record each adapted pattern as a new version/cohort, never silently fold it into an existing treatment.
+Extract FOSS concepts after source-provenance, supply-chain, security and maintenance review. Route licensing determinations to the designated licensing duty owner. Record each adapted pattern as a new version/cohort, preserving treatment boundaries.
 
 ## 10. Event-driven dynamic awareness
 

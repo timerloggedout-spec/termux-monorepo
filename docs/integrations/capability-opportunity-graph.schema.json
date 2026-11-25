@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/integrations/capability-opportunity-graph.schema.json",
   "title": "CEEL Capability Opportunity Graph",
-  "description": "Repository-maintained index of candidate capabilities, source provenance, internal consumers, evidence and relationships; not a runtime authority or parallel CMDB.",
+  "description": "Repository-maintained index of candidate capabilities, source provenance, internal consumers, evidence and relationships; not a runtime authority or parallel CMDB. Licensing metadata remains duty-owned by the designated licensing owner; CEEL records capability evidence and routes that responsibility separately.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -219,7 +219,8 @@
           "type": [
             "string",
             "null"
-          ]
+          ],
+          "description": "Duty-owned metadata maintained by the designated licensing owner; CEEL does not assess or update this field."
         },
         "risk_notes": {
           "type": "array",

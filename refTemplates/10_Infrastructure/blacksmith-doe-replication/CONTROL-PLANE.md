@@ -98,6 +98,8 @@ The control plane is grounded in the existing DoE records and implementation in 
 - [DoE Scoring Intake](../../../../docs/ops/DOE-SCORING-INTAKE.md) defines the evidence consumed by DoE scoring.
 - [DoE Proof Coverage](../../../../docs/ops/DOE-PROOF-COVERAGE.md) points to the canonical [proof index](../../../../experiments/doe/proofs/INDEX.md) and [proof manifest](../../../../experiments/doe/proofs/MANIFEST.json).
 - [Manager Tournament Contract](../../../../docs/research/MANAGER-TOURNAMENT-CONTRACT.md) defines the manager-policy comparison protocol.
+
+The manager-tournament contract applies to manager-policy cohorts. Other DoE family campaigns retain their own registered experiment contracts, schemas, and acceptance criteria.
 - `deepcli/deepcli/observatory/doe.py` provides the implemented factorial, Taguchi L9, and randomized assignment helpers; `deepcli/deepcli/observatory/tournament.py` provides campaign ranking helpers.
 
 These records remain the source authority. The organization dispatch/receipt adapter described in this document is a rollout design; its deployment and first end-to-end adjudication require separate evidence.

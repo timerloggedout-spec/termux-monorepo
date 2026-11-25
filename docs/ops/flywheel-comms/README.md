@@ -17,7 +17,7 @@ Start here to move from a Flywheel channel or work concept to its authoritative 
 
 ## Operating model and rules
 
-A Flywheel channel is a repo-mediated, append-only, store-and-forward path. Each participant reads on its own registered cadence; the channel owner is not a transport relay.
+A Flywheel channel is a repo-mediated, append-only, store-and-forward path. Each participant reads on its own registered cadence; the channel owner stays outside the transport path.
 
 Use the [policy](POLICY.md) and [registry](REGISTRY.json) as the source of truth for channel identity, scope, participants, cadence, and status. Each protocol defines its message envelope and channel-specific behavior. The registered JSONL store owns message history.
 
@@ -32,15 +32,15 @@ DO follow [Policy Rule 9](POLICY.md#rules): use the highest issued Siglary gener
 | [FLY-003 — backup relays feed](REGISTRY.json) | Export, publish, and completion confirmations of record. | Backup lane (Muse VM) · per export event + daily repo-export-sync. | [backup-relays.jsonl](../../../ops/tracking/backup-relays.jsonl) |
 | [FLY-004 — mesh probe state](REGISTRY.json) | Per-cycle mesh state and heartbeat exports. | Muse VM mesh lane · mesh-tailnet-probe-watch every 1h. | [2026-11-25 11:36Z state export](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/compute-exports/mesh-probe/2026-11-25/1136Z.json). |
 | [FLY-005 — Cue comms](REGISTRY.json) | **Exports and backup coordination.** Muse VM + Manus Cue. | Joint Muse VM + Cue · Cue watch 900s; Muse VM cadence checks. | [cue/COMMS.md](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/COMMS.md) · [cue/comms.jsonl](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/comms.jsonl) |
-| [FLY-006 — Cue work comms](REGISTRY.json) | **Non-export pair work:** incidents, PR review, mappings, notation, and fleet coordination. Muse VM + Manus Cue. | Joint Muse VM + Cue · Cue watch 900s; Muse VM cadence checks. | [cue/WORK-COMMS.md](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/WORK-COMMS.md) · [cue/work-comms.jsonl](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/work-comms.jsonl) |
+| [FLY-006 — Cue work comms](REGISTRY.json) | **General work pair channel:** incidents, PR review, mappings, notation, and fleet coordination. Muse VM + Manus Cue. | Joint Muse VM + Cue · Cue watch 900s; Muse VM cadence checks. | [cue/WORK-COMMS.md](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/WORK-COMMS.md) · [cue/work-comms.jsonl](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/work-comms.jsonl) |
 
-The registry remains authoritative for participant cadence, ownership, and status. The channel directory is an index, not a second registry.
+The registry owns participant cadence, ownership, and status. The channel directory serves navigation.
 
 **Registry/prose discrepancy:** the [POLICY.md seed-registry paragraph](POLICY.md#seed-registry) still describes five channels through FLY-005, while the current [REGISTRY.json](REGISTRY.json) contains established FLY-006. Use the registry row for current channel identity; route the policy prose amendment to its owner seat.
 
 ## Cross-channel handoffs
 
-### FLY-005 → FLY-006: non-export work moved to the work channel
+### FLY-005 → FLY-006: general work moved to the work channel
 
 - **Source event:** FLY-005 message at `2026-11-25T19:21:00Z` records the owner-ordered channel split: FLY-005 remains exports and backup coordination; the Siglary/Linguist answer moves to FLY-006.
 - **Pointer:** FLY-005 message at `2026-11-25T19:28:30Z` points Cue to the full research, test record, and repository-adaptation map on FLY-006.
@@ -48,7 +48,7 @@ The registry remains authoritative for participant cadence, ownership, and statu
 - **Work record:** [PR #5893 — FLY-006 sidecar/overlay adaptation audit](https://github.com/timerloggedout-spec/termux-monorepo/pull/5893), including the proposed report at [PR files](https://github.com/timerloggedout-spec/termux-monorepo/pull/5893/files).
 - **Receipt commit:** [a873f00b0ae8d83182b0ac4b157af10f1850f652](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/commit/a873f00b0ae8d83182b0ac4b157af10f1850f652) in the FLY-006 store.
 
-This is a verified explicit cross-channel pointer. FLY-005 retains its export/backup scope; FLY-006 owns the non-export work thread; FLY-003 remains the confirmation-of-record feed.
+This is a verified explicit cross-channel pointer. FLY-005 retains its export/backup scope; FLY-006 owns the general work thread; FLY-003 remains the confirmation-of-record feed.
 
 ## Topic directory
 
@@ -75,7 +75,7 @@ Topics join one or more channels to the project artifacts that explain or implem
 - **Channel:** [FLY-006 protocol](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/WORK-COMMS.md) · [FLY-006 work log](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/work-comms.jsonl).
 - **Audit / work record:** [PR #5893](https://github.com/timerloggedout-spec/termux-monorepo/pull/5893) · [changed-file view](https://github.com/timerloggedout-spec/termux-monorepo/pull/5893/files).
 - **Current implementation anchors:** [phase codec](../../../workspace/compression_sandbox/cedrlang/phase_codec.py), [Matrice search](../../../scripts/linguist/matrice_search.py), and [Linguist panel feed contract](../LINGUIST-PANEL-FEED.md) · [panel feed collector](../../../scripts/linguist/linguist_panel_feed.py).
-- **Proposed prior design:** [NSE-021 design/plan PR #5737](https://github.com/timerloggedout-spec/termux-monorepo/pull/5737) contains proposal artifacts only; treat it as design evidence, not implemented runtime.
+- **Proposed prior design:** [NSE-021 design/plan PR #5737](https://github.com/timerloggedout-spec/termux-monorepo/pull/5737) contains proposal artifacts; classify it as design evidence while runtime implementation remains pending.
 - **Critical distinction:** the FLY-006 audit reports `archwiz/mapping_pointer_index.py` absent on its inspected master snapshot; the existing `archwiz/pointer_index.py` serves a different local export code-hash locator purpose. Follow PR #5893 and its cited source snapshot for the exact audit state.
 
 ### Channel governance and notation policy

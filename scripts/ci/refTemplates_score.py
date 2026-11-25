@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -117,6 +118,30 @@ def score_capability_child(child: dict) -> dict:
     }
 
 
+
+def validate_rows(rows: list[dict]) -> list[str]:
+    """Validate the score contract and keep efficacy evidence separate."""
+    errors: list[str] = []
+    for index, row in enumerate(rows):
+        candidate_class = row.get("candidate_class")
+        if candidate_class == "capability_reference":
+            if row.get("score_scope") != "metadata_readiness_only":
+                errors.append(f"rows[{index}]: capability score scope must be metadata_readiness_only")
+            if row.get("efficacy_score") is not None:
+                errors.append(f"rows[{index}]: capability efficacy must remain unmeasured")
+            if row.get("validation_state") != "unmeasured":
+                errors.append(f"rows[{index}]: capability validation_state must remain unmeasured")
+            readiness = row.get("readiness_score")
+            if not isinstance(readiness, (int, float)) or not 0.0 <= readiness <= 1.0:
+                errors.append(f"rows[{index}]: readiness_score must be within 0..1")
+        elif candidate_class == "research_template":
+            if row.get("tier") not in {"A", "B", "C", "D"}:
+                errors.append(f"rows[{index}]: research tier must be A, B, C or D")
+        else:
+            errors.append(f"rows[{index}]: candidate_class is unsupported")
+    return errors
+
+
 def from_inventory(path: Path) -> list[dict]:
     rows: list[dict] = []
     for line in path.read_text(encoding="utf-8").splitlines():
@@ -155,6 +180,11 @@ def main() -> int:
     parser.add_argument("--output", type=Path, help="Scores JSONL out")
     args = parser.parse_args()
     rows = from_inventory(args.inventory) if args.inventory else walk_live()
+    failures = validate_rows(rows)
+    if failures:
+        for failure in failures:
+            print(f"FAIL: {failure}", file=sys.stderr)
+        return 1
     rows.sort(key=lambda row: (
         row["candidate_class"], row.get("category", ""), row["name"]
     ))

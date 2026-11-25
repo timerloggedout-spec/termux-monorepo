@@ -333,7 +333,8 @@ def _request(method: str, url: str, token: str, payload=None):
             raise RateLimitDeferred(
                 f"GitHub API {method} {url} -> HTTP {exc.code}; "
                 f"resource={resource}; defer_until="
-                f"{until:%Y-%m-%dT%H:%M:%SZ}; {body}"
+                f"{until:%Y-%m-%dT%H:%M:%SZ}; {body}",
+                until,
             ) from exc
         raise RuntimeError(
             f"GitHub API {method} {url} -> {exc.code}: {body}"

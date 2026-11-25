@@ -223,5 +223,7 @@ def test_failure_diagnostics_use_run_summary_without_issue_comment_posts():
     workflow = (Path(__file__).resolve().parents[2]
                 / ".github" / "workflows" / "dispatch-watchdog.yml").read_text()
     assert "GITHUB_STEP_SUMMARY" in workflow
+    assert "group: dispatch-watchdog-${{ github.repository }}" in workflow
+    assert "cancel-in-progress: false" in workflow
     assert "/issues/4164/comments" not in workflow
     assert "GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}" not in workflow

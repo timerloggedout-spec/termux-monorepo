@@ -26,6 +26,16 @@ class EnterpriseOrganizationWorkflowTests(unittest.TestCase):
         self.assertIn("confirmation", workflow)
         self.assertIn("apply", workflow)
 
+    def test_proposal_records_have_clean_whitespace(self) -> None:
+        paths = [
+            ROOT / "docs/proposals/active/enterprise-org-preservation/ITEMS.md",
+            ROOT / "docs/proposals/active/enterprise-org-preservation/MANIFEST.md",
+            ROOT / "docs/proposals/active/repository-provisioner/ITEMS.md",
+        ]
+        for path in paths:
+            lines = path.read_text(encoding="utf-8").splitlines()
+            self.assertEqual(lines, [line.rstrip() for line in lines], path.as_posix())
+
     def test_baseline_workflow_uses_read_only_permissions(self) -> None:
         workflow = (ROOT / ".github/workflows/enterprise-org-detachment-verify.yml").read_text(encoding="utf-8")
         self.assertIn("contents: read", workflow)

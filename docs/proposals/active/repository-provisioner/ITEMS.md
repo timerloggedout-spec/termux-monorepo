@@ -2,9 +2,9 @@
 
 ## RPW-001 — Manual GitHub repository creation and initialization
 
-**Priority:** P1  
-**Status:** executing  
-**Owner:** repository automation  
+**Priority:** P1
+**Status:** executing
+**Owner:** repository automation
 **Implements:** `.github/workflows/repository-provisioner.yml`
 
 ### Scope
@@ -30,9 +30,9 @@
 
 ## RPW-002 — Free organization-owned repository provisioning
 
-**Priority:** P0  
-**Status:** implementing  
-**Owner:** repository automation  
+**Priority:** P0
+**Status:** implementing
+**Owner:** repository automation
 **Implements:** `.github/workflows/repository-provisioner.yml`
 
 ### Scope

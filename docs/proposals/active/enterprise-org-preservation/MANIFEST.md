@@ -1,13 +1,13 @@
 # Enterprise organization preservation — manifest
 
-**ID:** enterprise-org-preservation  
-**Status:** executing  
-**Priority:** P0  
-**Owner:** ChatGPT — migration verification and documentation  
-**Operator authorization:** accepted for the preservation scope  
-**Deadline:** 2026-12-03  
-**Source organization:** `search-astute-ly`  
-**Enterprise account:** `AdAstraNeoNexus`  
+**ID:** enterprise-org-preservation
+**Status:** executing
+**Priority:** P0
+**Owner:** ChatGPT — migration verification and documentation
+**Operator authorization:** accepted for the preservation scope
+**Deadline:** 2026-12-03
+**Source organization:** `search-astute-ly`
+**Enterprise account:** `AdAstraNeoNexus`
 **Proposed Free destination:** `AsAstraNeoNexus`
 
 ## Objective

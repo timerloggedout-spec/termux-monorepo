@@ -1,8 +1,8 @@
 # Enterprise organization preservation — work items
 
-**Proposal:** enterprise-org-preservation  
-**Source:** `search-astute-ly`  
-**Enterprise:** `AdAstraNeoNexus`  
+**Proposal:** enterprise-org-preservation
+**Source:** `search-astute-ly`
+**Enterprise:** `AdAstraNeoNexus`
 **Proposed destination:** `AsAstraNeoNexus` (GitHub Free)
 
 | ID | Work item | Acceptance evidence | State |

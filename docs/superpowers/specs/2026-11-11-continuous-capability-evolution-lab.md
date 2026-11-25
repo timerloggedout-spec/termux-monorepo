@@ -45,7 +45,7 @@ Cross-surface data is referenced by stable IDs and source paths, not copied into
 
 A capability is a testable behavior or property, not a product name. Examples include prompt-version lineage, trace correlation, experiment assignment, evaluator reproducibility, schema migration analysis, or reusable workflow templates.
 
-Each opportunity records stable capability IDs; source project/repository/URL/release/tag/commit and retrieval time; source type; capability contract and intended outcome; internal consumers and owners; competing and complementary candidates; implementation maturity; security/privacy/license/supply-chain/maintenance risks; evidence references, confidence and freshness; experiment family/factor levels/cohort/decision; and downstream capabilities enabled.
+Each opportunity records stable capability IDs; source project/repository/URL/release/tag/commit and retrieval time; source type; capability contract and intended outcome; internal consumers and owners; competing and complementary candidates; implementation maturity; security/privacy/supply-chain/maintenance risks; evidence references, confidence and freshness; experiment family/factor levels/cohort/decision; and downstream capabilities enabled.
 
 The graph schema and seed graph are docs/integrations/capability-opportunity-graph.schema.json and docs/integrations/capability-opportunity-graph.json. This is an index/projection, not a new source-of-truth database.
 
@@ -99,9 +99,9 @@ Report per-outcome estimates and uncertainty, practical thresholds set before ru
 
 ## 9. Benefit compounding
 
-Assess standalone contribution, combination contribution (including interaction terms), and downstream unlock (reusable capabilities, lower integration time, evaluation coverage, evidence quality and new experiments). Total burden includes license/maintenance, security exposure, complexity, data egress, retention, rate limits, failure modes and opportunity cost. Avoid opaque weighted scores; use a Pareto frontier. Any scalar ranking must state weights and be sensitivity-tested.
+Assess standalone contribution, combination contribution (including interaction terms), and downstream unlock (reusable capabilities, lower integration time, evaluation coverage, evidence quality and new experiments). Total burden includes maintenance effort, security exposure, complexity, data egress, retention, rate limits, failure modes and opportunity cost. Avoid opaque weighted scores; use a Pareto frontier. Any scalar ranking must state weights and be sensitivity-tested.
 
-Extract FOSS templates only after license, provenance, supply-chain, security and maintenance review. Cherry-picked components are recorded as a new version/cohort, never silently folded into an existing treatment.
+Extract FOSS concepts after source-provenance, supply-chain, security and maintenance review. Route licensing determinations to the designated licensing duty owner. Record each adapted pattern as a new version/cohort, never silently fold it into an existing treatment.
 
 ## 10. Event-driven dynamic awareness
 
@@ -138,7 +138,7 @@ Never commit provider secrets, raw prompts/completions, customer traces, private
 |---|---|---|
 | 0 Foundation | proposal, source map, graph schema/validator, platform entries | JSON, graph tests, links and proposal registry validate |
 | 1 Event wiring | reuse existing GitHub event workflows | fixtures prove idempotency, signature handling and SHA binding |
-| 2 Capability inventory | FOSS/internal candidates classified | source revision, license, owner, consumer and unknowns recorded |
+| 2 Capability inventory | FOSS/internal candidates classified | source revision, owner, consumer and unknowns recorded |
 | 3 Adapter feasibility | official docs/version check and bounded auth/runtime proof | read-only contract tests; no secrets in artifacts |
 | 4 DoE screening | same cohort, native baseline and candidate treatments | preregistration, assignment integrity, receipts and cost cap |
 | 5 Combination study | full factorial or qualified screening | interaction estimates and uncertainty reported |
@@ -167,11 +167,11 @@ NFS is CEEL's discovery discipline. It searches for *capabilities and reusable p
 
 - Normalize the signal to a candidate capability contract before selecting a product.
 - Deduplicate against the opportunity graph using source identity, capability ID and semantic similarity; retain aliases and competing implementations rather than silently merging them.
-- Capture immutable source URL, repository, revision/tag, observed time, license and maintainer evidence.
+- Capture immutable source URL, repository, revision/tag, observed time and maintainer evidence.
 - Classify the candidate as implementation, maintained specification, research result, template, benchmark, generated artifact, duplicate/alias, historical, blocked or unknown.
 - Map the candidate to one or more internal consumers and identify the accountable owner.
 - Identify competing candidates and complements; state the hypothesis for each relationship.
-- Run license, security, privacy, supply-chain and maintenance triage before proposing code reuse.
+- Route licensing triage to the designated licensing duty owner. Run security, privacy, supply-chain and maintenance triage before proposing code reuse.
 - Estimate what evidence would disconfirm the capability claim and what minimal fixture or experiment could test it.
 - Route qualifying proposals through Delphi/EGM and the existing proposal lifecycle; do not dispatch arbitrary external instructions or code.
 

@@ -53,6 +53,9 @@ Pin the snapshot date, manifest SHA-256, tool/skill IDs, adapter version, task c
 
 Each namespace record also maps to the umbrella integration-registry entry, adapter contract and local capability policy. The namespace mapping state is `discovery_indexed`; execution-adapter state remains `unverified` until a named adapter passes admission and runtime validation.
 
+
+The manifest also exposes seven machine-readable `doe_factor_candidates` (provider namespace, tool selection, skill selection, orchestration treatment, context strategy, approval tier and task complexity). These are candidate dimensions for future controlled cohorts; the DoE component registry retains its existing algorithmic-component scope.
+
 ## Lifecycle and authority
 
 `DISCOVERED → MAPPED → ADMISSION_REVIEW → ADAPTER_IMPLEMENTED → TESTED → VALIDATED → PROMOTED`

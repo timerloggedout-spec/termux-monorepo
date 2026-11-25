@@ -1,6 +1,6 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-25T16:22:41Z",
+ "generated_at": "2026-11-25T16:41:16Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
@@ -9,8 +9,7 @@
    "in_progress": 1,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "Orchestration Regression Guard": 1,
-    "repo gate": 1,
+    "repo gate": 2,
     "PR scope guard": 2
    }
   },
@@ -30,15 +29,23 @@
   },
   "4": {
    "tier": 4,
-   "queued": 10,
-   "in_progress": 10,
+   "queued": 36,
+   "in_progress": 16,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "n8n SHE bridge": 1,
-    "termux smoke": 2,
-    "hitl-control-plane-verify": 1,
-    "Foresight Evidence Spine": 1,
+    "quota-served-probe": 1,
     "que-cadence-kick": 1,
+    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
+    "Agent Readability Source Contract": 1,
+    "Agent Throughput Evidence": 9,
+    "repo-tracking-collect": 1,
+    "lane events recorder": 5,
+    "Agent review \u2192 auto Jules": 2,
+    "n8n SHE bridge": 3,
+    "Context Relationship + Lead/Lag Audit": 2,
+    "Sweep Accountability": 3,
+    "RECON INTEL discovery": 2,
+    "termux smoke": 1,
     "Agent PR Jules Handoff": 1,
     "PR Change Effectiveness Ledger": 1,
     "Advisory GitHub Actions lint": 1,
@@ -47,8 +54,8 @@
   }
  },
  "totals": {
-  "queued": 14,
-  "in_progress": 13
+  "queued": 40,
+  "in_progress": 19
  },
  "wedged_ancient": [
   {
@@ -212,7 +219,7 @@
    "4": 0
   },
   "explicit_total": 7,
-  "default_t4": 20,
+  "default_t4": 52,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

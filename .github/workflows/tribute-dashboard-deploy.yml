@@ -8,6 +8,13 @@ on:
     branches: [master]
     paths:
       - "apps/tribute-dashboard/**"
+      - "ops/agentic-gambling/book/book-feed.json"
+      - "ops/agentic-gambling/book/challenges-book.json"
+      - "ops/agentic-gambling/book/ledger.jsonl"
+      - "ops/moneyball/wagering-book.json"
+      - "tests/fixtures/wagering-book.fixture.json"
+      - "scripts/moneyball/wagering_book_feed.py"
+      - "scripts/moneyball/validate_wagering_book_feed.py"
       - "docs/icm/_tv/screens/**"
       - "docs/icm/_tv/README.md"
       - "docs/icm/objects/knowledge/cost-of-remembering.md"
@@ -154,6 +161,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Regenerate and validate wagering book feed
+        run: |
+          set -euo pipefail
+          python3 scripts/moneyball/wagering_book_feed.py \
+            --root . \
+            --out ops/moneyball/wagering-book.json \
+            --mirror apps/tribute-dashboard/data/wagering-book.json \
+            --fixture tests/fixtures/wagering-book.fixture.json
+          python3 scripts/moneyball/validate_wagering_book_feed.py
       - name: Build and test static ICM CCTV board
         run: |
           set -euo pipefail
@@ -326,6 +342,15 @@ jobs:
     continue-on-error: true
     steps:
       - uses: actions/checkout@v4
+      - name: Regenerate and validate wagering book feed
+        run: |
+          set -euo pipefail
+          python3 scripts/moneyball/wagering_book_feed.py \
+            --root . \
+            --out ops/moneyball/wagering-book.json \
+            --mirror apps/tribute-dashboard/data/wagering-book.json \
+            --fixture tests/fixtures/wagering-book.fixture.json
+          python3 scripts/moneyball/validate_wagering_book_feed.py
       - name: Refresh offline provider quota coverage
         run: python3 scripts/provider_quota_coverage.py --output apps/tribute-dashboard/data/provider-quota-coverage.json
       - name: Refresh provenance-aware dashboard snapshot

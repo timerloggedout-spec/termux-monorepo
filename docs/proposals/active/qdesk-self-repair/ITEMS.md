@@ -5,6 +5,7 @@
 | QSR-1 | Registry entry (#5214) | Hark | executing |
 | QSR-2 | Kill switch QDESK_LOOP_ENABLED | Hark | executing |
 | QSR-3 | Metrics publish path ops/que/self-repair/metrics.json | Hark | queued |
+| QSR-4 | Auto-claim parser resolves only documented SWARM routes from issue bodies/comments; plain `.yml` route stamps are accepted and unknown/conflicting routes fail closed. | Cue | executing |
 
 ## Branch reconciliation (BRR) items
 

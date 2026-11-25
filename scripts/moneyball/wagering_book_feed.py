@@ -219,6 +219,7 @@ def main():
     ap.add_argument("--root", default=".")
     ap.add_argument("--out", required=True)
     ap.add_argument("--mirror", default=None)
+    ap.add_argument("--fixture", default=None)
     args = ap.parse_args()
     root = Path(args.root)
     bookfeed = json.loads(
@@ -236,6 +237,8 @@ def main():
     Path(args.out).write_text(text)
     if args.mirror:
         Path(args.mirror).write_text(text)
+    if args.fixture:
+        Path(args.fixture).write_text(text)
 
 
 if __name__ == "__main__":

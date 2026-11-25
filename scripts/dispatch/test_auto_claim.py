@@ -168,3 +168,40 @@ def test_plan_numeric_score_ties_are_deterministic():
     result = ac.plan(candidates, NOW)
     assert [item["issue"] for item in result["claims"]] == [10, 20, 30]
     assert all(item["score"] == 0.0 for item in result["claims"])
+
+
+def test_route_stamps_in_comments_are_resolved_only_for_known_routes():
+    project_route = comment("Admission record\nroute: project-task-dispatch.yml")
+    assert ac.claim_class_of(issue(), [project_route]) == \
+        ("seat-queue", "qdesk-seat-queue")
+
+    build_route = comment(SWARM_BUILD)
+    assert ac.claim_class_of(issue(), [build_route]) == \
+        ("executor", "dispatch-executor")
+
+    unknown = comment("route: experimental-dispatch.yml")
+    stamped = issue(body=SWARM_TASK)
+    assert ac.claim_class_of(stamped, [unknown]) == (None, None)
+    result = ac.plan([cand(number=41, body=SWARM_TASK,
+                           comments=[unknown])], NOW)
+    assert not result["claims"]
+    assert result["exceptions"][0]["kind"] == "unplaceable"
+
+
+def test_unknown_route_cannot_be_overridden_by_claim_metadata():
+    unknown = comment("route: experimental-dispatch.yml")
+    explicit = issue(body="claim-class: executor")
+    named = issue(body="executor of record: quota-specialist")
+    assert ac.claim_class_of(explicit, [unknown]) == (None, None)
+    assert ac.claim_class_of(named, [unknown]) == (None, None)
+
+    result = ac.plan([cand(number=42, body="claim-class: executor",
+                           comments=[unknown])], NOW)
+    assert not result["claims"]
+    assert result["exceptions"][0]["kind"] == "unplaceable"
+
+
+def test_conflicting_route_stamps_fail_closed():
+    body = issue(body=SWARM_BUILD)
+    comments = [comment("route: project-task-dispatch.yml")]
+    assert ac.claim_class_of(body, comments) == (None, None)

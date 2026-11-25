@@ -1,6 +1,6 @@
 {
  "schema": "moneyball.wagering-book/v2",
- "generated_at": "2026-11-04T09:55:36Z",
+ "generated_at": "2026-11-25T17:00:55Z",
  "book": {
   "opened": "2026-11-02",
   "subjects": 39
@@ -30,13 +30,13 @@
  ],
  "ledger_ref": {
   "path": "ops/agentic-gambling/book/ledger.jsonl",
-  "entries": 21,
+  "entries": 22,
   "note": "ops/agentic-gambling/book/ledger.jsonl \u2014 append-only, PRIVATE record of record. This feed is a read-only render extract at ledger truth; it does not move the ledger."
  },
  "upstream_feed": "ops/agentic-gambling/book/book-feed.json (schema agentic-gambling-book-feed/v1)",
  "publication": "Public view of the internal book (owner ruling 2026-11-02). Entries stay internal: observational stakes only, no external participation surface, no wallet movement. Published values equal the ledger of record by construction.",
  "sources": {
-  "book": "ops/agentic-gambling/book/challenges-book.json@2dd5e944bb45 (schema agentic-gambling-book/v1)",
+  "book": "ops/agentic-gambling/book/challenges-book.json@working-tree (schema agentic-gambling-book/v1)",
   "ledger": "ops/agentic-gambling/book/ledger.jsonl (append-only ledger of record, MoneyBall plane)",
   "register": "deadline-reminders/v1 (Tracking lane d6c12f3a; primary calendar, America/Los_Angeles) - anchors as bound in the book; derivation confirmed by Tracking 2026-11-02"
  },
@@ -51,7 +51,7 @@
  ],
  "pct_block": {
   "rule": "pct_consumed/pct_remaining computed at feed build from window anchors; stamped per subject; never hand-entered; degenerate windows carry null + pct_note",
-  "computed_at": "2026-11-04T09:55:36Z",
+  "computed_at": "2026-11-25T17:00:55Z",
   "upstream_computed_at": "2026-11-03T14:17:33Z",
   "method": "recomputed by this generator from the window anchors at build time; the upstream feed's stamped pct is proof-of-shape only"
  },
@@ -82,7 +82,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": 1.0,
     "posterior_range": [
      1,
@@ -97,9 +97,9 @@
     "wall": "2026-11-04T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 43.4,
-    "remaining": 56.6,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "consumed": 100.0,
+    "remaining": 0.0,
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -132,7 +132,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -144,9 +144,9 @@
     "wall": "2026-11-04T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 43.4,
-    "remaining": 56.6,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "consumed": 100.0,
+    "remaining": 0.0,
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -179,7 +179,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -193,7 +193,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": "degenerate window (instant/point subject) \u2014 no honest percentage"
    },
    "settlement": {
@@ -228,7 +228,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -240,9 +240,9 @@
     "wall": "2026-11-08T15:00:00-08:00"
    },
    "window_pct": {
-    "consumed": 0.0,
-    "remaining": 100.0,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "consumed": 100.0,
+    "remaining": 0.0,
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -276,7 +276,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 2,
@@ -288,9 +288,9 @@
     "wall": "2026-11-08T15:00:00-08:00"
    },
    "window_pct": {
-    "consumed": 0.0,
-    "remaining": 100.0,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "consumed": 100.0,
+    "remaining": 0.0,
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -325,7 +325,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -337,9 +337,9 @@
     "wall": "2026-11-08T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 0.0,
-    "remaining": 100.0,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "consumed": 100.0,
+    "remaining": 0.0,
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -374,7 +374,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -386,9 +386,9 @@
     "wall": "2026-11-08T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 0.0,
-    "remaining": 100.0,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "consumed": 100.0,
+    "remaining": 0.0,
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -423,7 +423,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -435,9 +435,9 @@
     "wall": "2026-11-09T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 0.0,
-    "remaining": 100.0,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "consumed": 100.0,
+    "remaining": 0.0,
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -471,7 +471,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -483,9 +483,9 @@
     "wall": "2026-11-09T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 0.0,
-    "remaining": 100.0,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "consumed": 100.0,
+    "remaining": 0.0,
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -520,7 +520,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -534,7 +534,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -569,7 +569,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -583,7 +583,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -618,7 +618,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -632,7 +632,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -666,7 +666,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -680,7 +680,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -713,7 +713,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -727,7 +727,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": "degenerate window (instant/point subject) \u2014 no honest percentage"
    },
    "settlement": {
@@ -762,7 +762,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -774,9 +774,9 @@
     "wall": "2026-11-19T12:00:00-08:00"
    },
    "window_pct": {
-    "consumed": 0.0,
-    "remaining": 100.0,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "consumed": 100.0,
+    "remaining": 0.0,
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -810,7 +810,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -822,9 +822,9 @@
     "wall": "2026-11-19T12:00:00-08:00"
    },
    "window_pct": {
-    "consumed": 0.0,
-    "remaining": 100.0,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "consumed": 100.0,
+    "remaining": 0.0,
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -856,7 +856,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -868,9 +868,9 @@
     "wall": "2026-11-07T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 34.7,
-    "remaining": 65.3,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "consumed": 100.0,
+    "remaining": 0.0,
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -902,7 +902,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -914,9 +914,9 @@
     "wall": "2026-11-09T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 26.0,
-    "remaining": 74.0,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "consumed": 100.0,
+    "remaining": 0.0,
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -951,7 +951,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -963,9 +963,9 @@
     "wall": "2026-11-19T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 4.2,
-    "remaining": 95.8,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "consumed": 100.0,
+    "remaining": 0.0,
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -1000,7 +1000,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -1012,9 +1012,9 @@
     "wall": "2026-11-25T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 0.0,
-    "remaining": 100.0,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "consumed": 82.8,
+    "remaining": 17.2,
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -1049,7 +1049,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -1063,7 +1063,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -1099,7 +1099,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -1113,7 +1113,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -1149,7 +1149,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -1163,7 +1163,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -1195,7 +1195,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -1207,9 +1207,9 @@
     "wall": "2026-11-15T23:45:00-08:00"
    },
    "window_pct": {
-    "consumed": 8.3,
-    "remaining": 91.7,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "consumed": 100.0,
+    "remaining": 0.0,
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -1241,7 +1241,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -1253,9 +1253,9 @@
     "wall": "2026-11-21T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 5.7,
-    "remaining": 94.3,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "consumed": 100.0,
+    "remaining": 0.0,
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -1287,7 +1287,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -1299,9 +1299,9 @@
     "wall": "2026-11-30T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 3.9,
-    "remaining": 96.1,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "consumed": 79.9,
+    "remaining": 20.1,
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {
@@ -1332,7 +1332,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -1346,7 +1346,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1377,7 +1377,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -1391,7 +1391,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1422,7 +1422,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -1436,7 +1436,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1467,7 +1467,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -1481,7 +1481,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1512,7 +1512,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -1526,7 +1526,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1557,7 +1557,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -1571,7 +1571,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1602,7 +1602,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -1616,7 +1616,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1647,7 +1647,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -1661,7 +1661,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1692,7 +1692,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -1706,7 +1706,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1737,7 +1737,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -1751,7 +1751,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1782,7 +1782,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -1796,7 +1796,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1827,7 +1827,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -1841,7 +1841,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1873,7 +1873,7 @@
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
-    "prior_basis": "NOT_ESTABLISHED at listing \u2014 no cited record supports a value; cited-record-only discipline (B1)",
+    "prior_basis": null,
     "posterior_value": null,
     "posterior_range": null,
     "n_evidence": 0,
@@ -1885,9 +1885,9 @@
     "wall": "2026-12-31T23:59:59-08:00"
    },
    "window_pct": {
-    "consumed": 0.1,
-    "remaining": 99.9,
-    "computed_at": "2026-11-04T09:55:36Z",
+    "consumed": 36.9,
+    "remaining": 63.1,
+    "computed_at": "2026-11-25T17:00:55Z",
     "note": null
    },
    "settlement": {

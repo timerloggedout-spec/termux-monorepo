@@ -24,7 +24,7 @@ Repeat `--surface` to select individual surfaces: `branch`, `pull-request`, `com
 ## AST and similarity
 
 - `--ast` adds the CRG file and Python symbol surfaces.
-- `--similarity` includes existing CRG edges classified as `candidate`; it preserves their candidate classification and evidence.
+- `--similarity` includes existing CRG edges classified as `candidate` and groups identical existing BLAKE3 file fingerprints as exact-match candidates; it preserves provenance and candidate classification.
 - Graph-backed surfaces require `--graph-index PATH`, pointing to the canonical CRG index directory containing `nodes.jsonl` and `edges.jsonl`.
 - `--max-results N` bounds graph nodes and similarity candidate edges (default: 1000).
 

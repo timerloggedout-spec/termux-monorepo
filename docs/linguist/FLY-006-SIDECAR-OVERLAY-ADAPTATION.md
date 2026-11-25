@@ -146,13 +146,13 @@ New overlay acceptance fixtures:
 ## Minimal integration sequence
 
 1. **Reconcile docs:** correct NSE-020's false implemented claim; link the recovered NSE-021 proposal/design/plan and mark them proposed until acceptance.
-2. **Land mapping pointer index:** schema + registry + resolver + verification tests; keep private payload encryption behind a separate interface.
-3. **Land overlay schema/validator:** no materialization until schema and source identity checks pass.
-4. **Land extractors:** Markdown AST first, then Tree-sitter comment nodes with language-specific fixtures.
-5. **Land renderer/materializer:** disposable tree only; preserve source and executable tokens.
-6. **Wire Matrice:** concept IDs and typed operator/glyph/chord references; use Matrice validation before overlay issuance.
-7. **Wire panel feed:** expose overlay counts, stale/fail-closed counts and actual round-trip outcomes from runtime evidence; keep count-only/private data excluded.
-8. **Operator acceptance gate:** add NSE-021 to the active items ledger and obtain explicit Operator acceptance before implementation. The recovered NSE-021 item currently gates execution on acceptance.
+2. **Operator acceptance gate:** add NSE-021 to the active items ledger and obtain explicit Operator acceptance before implementation. The recovered NSE-021 item currently gates execution on acceptance.
+3. **Land mapping pointer index:** schema + registry + resolver + verification tests; keep private payload encryption behind a separate interface.
+4. **Land overlay schema/validator:** no materialization until schema and source identity checks pass.
+5. **Land extractors:** Markdown AST first, then Tree-sitter comment nodes with language-specific fixtures.
+6. **Land renderer/materializer:** disposable tree only; preserve source and executable tokens.
+7. **Wire Matrice:** concept IDs and typed operator/glyph/chord references; use Matrice validation before overlay issuance.
+8. **Wire panel feed:** expose overlay counts, stale/fail-closed counts and actual round-trip outcomes from runtime evidence; keep count-only/private data excluded.
 9. **Screen treatments:** representation screening first; compare context placement and surface only for treatments that pass; reserve factorial interaction testing for finalists under the recovered design. Apply quality floors and held-out replication before promotion.
 10. **Promotion:** comment/documentation-only patch, exact-head repo-gate and termux-smoke, dual review.
 
@@ -165,12 +165,12 @@ New overlay acceptance fixtures:
 
 ## Source links
 
-- [NSE-020 Mapping Pointer / round-trip](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/proposals/active/notation-sets/NSE-020-MAPPING-POINTER-ROUNDTRIP.md)
-- [Round-trip implementation plan](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/proposals/active/notation-sets/ROUNDTRIP-IMPLEMENTATION.md)
-- [Linguist panel feed contract and gaps](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/LINGUIST-PANEL-FEED.md)
-- [Linguist panel feed collector](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/scripts/linguist/linguist_panel_feed.py)
-- [Phase codec](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/workspace/compression_sandbox/cedrlang/phase_codec.py)
-- [Matrice search tool](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/scripts/linguist/matrice_search.py)
+- [NSE-020 Mapping Pointer / round-trip](https://github.com/timerloggedout-spec/termux-monorepo/blob/8f8437b8e49c67f124755c5cd0f3678b2a67fdcf/docs/proposals/active/notation-sets/NSE-020-MAPPING-POINTER-ROUNDTRIP.md)
+- [Round-trip implementation plan](https://github.com/timerloggedout-spec/termux-monorepo/blob/8f8437b8e49c67f124755c5cd0f3678b2a67fdcf/docs/proposals/active/notation-sets/ROUNDTRIP-IMPLEMENTATION.md)
+- [Linguist panel feed contract and gaps](https://github.com/timerloggedout-spec/termux-monorepo/blob/8f8437b8e49c67f124755c5cd0f3678b2a67fdcf/docs/ops/LINGUIST-PANEL-FEED.md)
+- [Linguist panel feed collector](https://github.com/timerloggedout-spec/termux-monorepo/blob/8f8437b8e49c67f124755c5cd0f3678b2a67fdcf/scripts/linguist/linguist_panel_feed.py)
+- [Phase codec](https://github.com/timerloggedout-spec/termux-monorepo/blob/8f8437b8e49c67f124755c5cd0f3678b2a67fdcf/workspace/compression_sandbox/cedrlang/phase_codec.py)
+- [Matrice search tool](https://github.com/timerloggedout-spec/termux-monorepo/blob/8f8437b8e49c67f124755c5cd0f3678b2a67fdcf/scripts/linguist/matrice_search.py)
 - [NSE-021 design branch](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/nse-021-sidecar-comment-overlays-r2)
 - [NSE-021 original PR #5737](https://github.com/timerloggedout-spec/termux-monorepo/pull/5737)
 - [Merged Matrice/PDDL PR #5299](https://github.com/timerloggedout-spec/termux-monorepo/pull/5299)

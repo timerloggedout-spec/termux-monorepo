@@ -20,10 +20,24 @@ Load the maintenance catalog, the current stage contract, the stable factory fil
 
 Per-update inventory, proposals, verification records, and promotion records belong in stage `output/` folders. They are working artifacts and remain untracked except for `.gitkeep`; durable decisions belong in the approved map documentation or proposal records.
 
-## Human gates
+## Repository-native execution policy
 
-A human reads and approves the proposed map change before verification and promotion. A map update never grants authority to merge, force-push, change branch protections, rotate credentials, or operate the device.
+DO execute the authorized documentation scope as an **agent-executed, evidence-gated workflow** through inventory, design, verification, commit, PR/check observation, and promotion. Reserve human input for explicit authorization and policy boundaries.
+
+Use the repository's governing operating contract in root `CLAUDE.md`:
+- FA-ADE: execute authorized work to completion.
+- Adaptive WAIT: continue non-conflicting work while Actions jobs run; re-fetch and inspect jobs, steps, logs, and artifacts until terminal.
+- Dual gates: `python3 scripts/ci/repo_gate.py` and `python3 scripts/ci/termux_smoke.py`, plus the corresponding current-head CI evidence.
+- Auto-promote after both required gates are green **and** the task outcome is verified. Verify the task outcome independently; track commit existence, queued jobs, and workflow completion as separate state signals.
+
+Treat the four stages as sequential evidence boundaries. Advance each stage when its stated acceptance criteria pass. Record blockers as machine-verifiable failures or explicit `blocked` states; use the registered acceptance criteria as the progression rule.
+
+## Human-only boundaries
+
+HITL applies only to the edges enumerated by `docs/proposals/AGENTIC-PERMISSIONS.md` and any additional explicit repository policy: credential rotation or provider login, destructive history rewrite/force-push, protected-branch or GitHub App permission changes, device-side Termux state, and other actions requiring interactive or elevated authorization.
+
+Request human authorization when an action reaches one of those boundaries, when scope is materially ambiguous, or when canonical sources leave a policy conflict unresolved. Treat routine documentation proposals, inventory, self-review, verification, commits, PR updates, and evidence-based promotion as agent-executable work.
 
 ## External boundaries
 
-ICM is the context and documentation structure. Existing CI, GitHub review, MCP adapters, and runtime code remain their own systems. Do not represent real-time collaboration, high-concurrency behavior, or automated branching as pure folder sequencing when a separate control system owns them.
+Use ICM as the context and documentation structure. Route real-time collaboration, high-concurrency behavior, and automated branching through their owning CI, GitHub review, MCP adapter, or runtime control systems.

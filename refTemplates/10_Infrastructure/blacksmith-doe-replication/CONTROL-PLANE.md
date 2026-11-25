@@ -40,9 +40,9 @@ The source control plane pins `control_plane_sha`, `source_baseline_sha`, `suite
 
 ## Dispatch and execution boundary
 
-Use a source-owned GitHub App installation credential with repository-scoped access to dispatch approved runs into each organization. Keep the credential in the source repository's protected Actions environment. The source dispatch payload contains identifiers, immutable SHAs, and non-secret run parameters.
+Reuse the existing [Receiver Mesh](../../../docs/ops/RECEIVER-MESH.md) envelope, HMAC verification, dedupe, allowlist, dead-letter, and replay discipline as the design reference. Its documented state is PROTOTYPE: the Worker `RECEIVER_REPO` points to the source repository, and `RECEIVER_DISPATCH_TOKEN` is scoped to that repository alone. The source GitHub App inventory also records one source-repository installation with read-only permissions. These existing credentials do not authorize organization dispatch. Treat cross-organization dispatch as a separate capability: provision a narrowly scoped GitHub App installation for the selected target repositories, grant only the permissions required by the receiver workflow, and obtain approval from each installation owner. Keep the source receiver credentials separate and preserve their source-only scope. Store the new installation credential in a protected source Actions environment. The source dispatch payload contains identifiers, immutable SHAs, and non-secret run parameters.
 
-Each organization repository provides a thin receiver workflow:
+When deployed, each selected organization repository provides a thin receiver workflow:
 
 - Accept the approved tournament event and validate its payload schema.
 - Verify the source repository, allowed suite identifier, immutable source SHA, and target repository identity.
@@ -92,12 +92,14 @@ The source PR documents the architecture and reusable execution pattern. Organiz
 
 The control plane is grounded in the existing DoE records and implementation in `timerloggedout-spec/termux-monorepo`:
 
-- [DoE Family](../../../../docs/ops/DOE-FAMILY.md) defines the DoE family, campaign membership, and ownership boundaries.
-- [DoE Taxonomy](../../../../docs/ops/DOE-TAXONOMY.md) defines design classes and terminology.
-- [DoE Methods of the Epoch](../../../../docs/ops/DOE-METHODS-EPOCH-2026-11-03.md) records implemented methods, design discipline, and verdict criteria.
-- [DoE Scoring Intake](../../../../docs/ops/DOE-SCORING-INTAKE.md) defines the evidence consumed by DoE scoring.
-- [DoE Proof Coverage](../../../../docs/ops/DOE-PROOF-COVERAGE.md) points to the canonical [proof index](../../../../experiments/doe/proofs/INDEX.md) and [proof manifest](../../../../experiments/doe/proofs/MANIFEST.json).
-- [Manager Tournament Contract](../../../../docs/research/MANAGER-TOURNAMENT-CONTRACT.md) defines the manager-policy comparison protocol.
+- [DoE Family](../../../docs/ops/DOE-FAMILY.md) defines the DoE family, campaign membership, and ownership boundaries.
+- [DoE Taxonomy](../../../docs/ops/DOE-TAXONOMY.md) defines design classes and terminology.
+- [DoE Methods of the Epoch](../../../docs/ops/DOE-METHODS-EPOCH-2026-11-03.md) records implemented methods, design discipline, and verdict criteria.
+- [DoE Scoring Intake](../../../docs/ops/DOE-SCORING-INTAKE.md) defines the evidence consumed by DoE scoring.
+- [DoE Proof Coverage](../../../docs/ops/DOE-PROOF-COVERAGE.md) points to the canonical [proof index](../../../experiments/doe/proofs/INDEX.md) and [proof manifest](../../../experiments/doe/proofs/MANIFEST.json).
+- [Manager Tournament Contract](../../../docs/research/MANAGER-TOURNAMENT-CONTRACT.md) defines the manager-policy comparison protocol.
+- [Receiver Mesh](../../../docs/ops/RECEIVER-MESH.md) defines the current prototype's HMAC, dedupe, allowlist, dead-letter, and repository-dispatch envelope.
+- [GitHub App Process](../../../docs/ops/GITHUB-APP-PROCESS.md) and [GitHub App Credential Readiness](../../../docs/ops/GITHUB-APP-CREDENTIAL-READINESS.md) define installation scope, permission approval, and credential custody.
 
 The manager-tournament contract applies to manager-policy cohorts. Other DoE family campaigns retain their own registered experiment contracts, schemas, and acceptance criteria.
 - `deepcli/deepcli/observatory/doe.py` provides the implemented factorial, Taguchi L9, and randomized assignment helpers; `deepcli/deepcli/observatory/tournament.py` provides campaign ranking helpers.
@@ -110,6 +112,6 @@ These records remain the source authority. The organization dispatch/receipt ada
 - `search-astute-ly/termux-monorepo_enterprise` and `search-astute-ly/termux-monorepo_enterprise_too` are public forks of the source repository. Their `master` heads are identical (`6567e175ef1b1abe808fb76ca333d2f6ceeaccd8`) and their complete Git tree SHAs are identical (`9e13a7d3d3f454075c32b8018ae1df4238a3856d`). The GitHub page reports 33,369 commits behind upstream. Treat them as duplicate mirrors, not independent experimental treatments.
 - The source repository and both Search-Astute forks track the same root `.Xauthority` and `.bash_history` blobs (`17aef6f21bac696605551e441295f21788ee3b1a` and `2f6af338f9bdf8a04346c2eeac2e7391d480b00a`). The history contains 501 lines; a targeted scan found no common GitHub token, AWS key, bearer token, password-assignment, or private-key patterns. This bounded pattern scan does not establish complete secret clearance. The 57-byte binary `.Xauthority` artifact remains sensitive session material. Source cleanup is proposed in [PR #5866](https://github.com/timerloggedout-spec/termux-monorepo/pull/5866), which removes both files from the current tree and adds ignore rules. Historical blob removal across the source and forks, session rotation, and fork cleanup remain pending.
 - The linked GitHub organization-member inventory for `Research-Astute` exposes five repositories. None is a Termux-monorepo fork or an identifiable DoE execution receiver. `glowing-rotary-phone` is a one-file repository described as Research Staging; `manus-ui-research-hub` is the Manus UI research integration hub. Treat the Research-Astute DoE target as unresolved until its repository identity is verified.
-- Organization repository writes through the current GitHub connector returned HTTP 403. The authenticated browser profile exposed repository controls, while the attempted security-remediation browser runs ended in execution failure or budget exhaustion. These attempts made no verified organization-repository changes.
+- The source GitHub App inventory records one installation limited to the source repository with read-only permissions. Organization repository writes through the current GitHub connector returned HTTP 403. The authenticated browser profile exposed repository controls, while the attempted security-remediation browser runs ended in execution failure or budget exhaustion. These attempts made no verified organization-repository changes.
 
 This inventory is a dated observation. Refresh repository IDs, heads, tree SHAs, access, and security findings before dispatching a tournament.

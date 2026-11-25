@@ -1,0 +1,276 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/flywheel-comms/CONTEXTS.schema.json",
+  "title": "Flywheel project and context routing index",
+  "type": "object",
+  "required": [
+    "schema",
+    "updated_at",
+    "purpose",
+    "projects",
+    "surfaces",
+    "contexts",
+    "memberships",
+    "topics"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "flywheel-contexts/v1"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "projects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "ref",
+          "url",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "ref": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "surfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "peer_id",
+          "kind",
+          "status",
+          "transport",
+          "credential_ref",
+          "background_watcher",
+          "action_classes",
+          "evidence_refs"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "peer_id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "transport": {
+            "type": "string"
+          },
+          "credential_ref": {
+            "type": "string"
+          },
+          "background_watcher": {},
+          "action_classes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "excluded_action_classes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "contexts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "status",
+          "project_ids",
+          "channel_ids",
+          "topic_ids",
+          "summary",
+          "artifact_refs"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "project_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "channel_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "topic_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "summary": {
+            "type": "string"
+          },
+          "artifact_refs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "kind",
+                "ref",
+                "url"
+              ],
+              "properties": {
+                "kind": {
+                  "type": "string"
+                },
+                "ref": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "uri"
+                }
+              },
+              "additionalProperties": true
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "memberships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "peer_id",
+          "channel_id",
+          "context_ids",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "peer_id": {
+            "type": "string"
+          },
+          "surface_id": {
+            "type": "string"
+          },
+          "channel_id": {
+            "type": "string"
+          },
+          "context_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "type": "string"
+          },
+          "action_classes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "excluded_action_classes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "topics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "context_ids"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "context_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  }
+}

@@ -1,0 +1,524 @@
+{
+  "schema": "flywheel-contexts/v1",
+  "updated_at": "2026-11-25T21:50:00Z",
+  "purpose": "Machine-readable project, context, topic, execution-surface, and scoped-membership index. This file routes to source artifacts; it grants no permissions and stores no credentials.",
+  "projects": [
+    {
+      "id": "termux-monorepo",
+      "kind": "github_repository",
+      "ref": "timerloggedout-spec/termux-monorepo",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo",
+      "status": "active"
+    },
+    {
+      "id": "muse-vm-workspace-backup",
+      "kind": "github_repository",
+      "ref": "timerloggedout-spec/muse-vm-workspace-backup",
+      "url": "https://github.com/timerloggedout-spec/muse-vm-workspace-backup",
+      "status": "active"
+    }
+  ],
+  "surfaces": [
+    {
+      "id": "chatgpt-github",
+      "peer_id": "chatgpt-github",
+      "kind": "github_connector",
+      "status": "joining_via_pr_and_first_ack",
+      "transport": "GitHub Contents API and PR/issue operations",
+      "credential_ref": "host-managed connector; opaque reference only",
+      "background_watcher": false,
+      "action_classes": [
+        "read",
+        "comment",
+        "content_write",
+        "create_pull_request"
+      ],
+      "excluded_action_classes": [
+        "merge",
+        "deploy",
+        "credential_management",
+        "provider_inference"
+      ],
+      "evidence_refs": [
+        "termux-monorepo#5906",
+        "muse-vm-workspace-backup#4",
+        "muse-vm-workspace-backup@2f289a72"
+      ]
+    },
+    {
+      "id": "chatgpt-web2api",
+      "peer_id": "chatgpt",
+      "kind": "web2api_browser_session",
+      "status": "pending",
+      "transport": "shared-Google identity and Web2API session",
+      "credential_ref": "externally managed; value omitted",
+      "background_watcher": "pending",
+      "action_classes": [],
+      "evidence_refs": [
+        "termux-monorepo#5885"
+      ]
+    },
+    {
+      "id": "muse-vm-github",
+      "peer_id": "muse-vm",
+      "kind": "github_pat",
+      "status": "registered",
+      "transport": "GitHub PAT",
+      "credential_ref": "protected external secret store; value omitted",
+      "background_watcher": "participant cadence",
+      "action_classes": [
+        "read",
+        "append_channel",
+        "repository_operations"
+      ],
+      "evidence_refs": [
+        "muse-vm-workspace-backup#FLY-005",
+        "muse-vm-workspace-backup#FLY-006"
+      ]
+    },
+    {
+      "id": "cue-deploy-key",
+      "peer_id": "manus-cue",
+      "kind": "deploy_key_cache_clone",
+      "status": "registered",
+      "transport": "deploy-key cache clone",
+      "credential_ref": "protected external secret store; value omitted",
+      "background_watcher": "cue watch 900s",
+      "action_classes": [
+        "read",
+        "append_channel"
+      ],
+      "evidence_refs": [
+        "muse-vm-workspace-backup#FLY-005",
+        "muse-vm-workspace-backup#FLY-006"
+      ]
+    }
+  ],
+  "contexts": [
+    {
+      "id": "flywheel-context-routing",
+      "title": "Flywheel navigation and peer routing",
+      "status": "active_review",
+      "project_ids": [
+        "termux-monorepo",
+        "muse-vm-workspace-backup"
+      ],
+      "channel_ids": [
+        "FLY-005",
+        "FLY-006",
+        "FLY-003"
+      ],
+      "topic_ids": [
+        "context-routing",
+        "peer-membership",
+        "artifact-navigation"
+      ],
+      "summary": "Central navigation, multi-peer FLY-006 protocol, project/context membership, and append-only collaboration receipts.",
+      "artifact_refs": [
+        {
+          "kind": "github_pull_request",
+          "ref": "termux-monorepo#5906",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5906"
+        },
+        {
+          "kind": "github_pull_request",
+          "ref": "muse-vm-workspace-backup#4",
+          "url": "https://github.com/timerloggedout-spec/muse-vm-workspace-backup/pull/4"
+        },
+        {
+          "kind": "commit",
+          "ref": "muse-vm-workspace-backup@2f289a72cab78c2e680ebe2674aa2ecd36145857",
+          "url": "https://github.com/timerloggedout-spec/muse-vm-workspace-backup/commit/2f289a72cab78c2e680ebe2674aa2ecd36145857"
+        },
+        {
+          "kind": "commit",
+          "ref": "muse-vm-workspace-backup@6484ac5dd10c18cb6445c9d572e2d8c32d445532",
+          "url": "https://github.com/timerloggedout-spec/muse-vm-workspace-backup/commit/6484ac5dd10c18cb6445c9d572e2d8c32d445532"
+        },
+        {
+          "kind": "repository_file",
+          "ref": "termux-monorepo:docs/ops/flywheel-comms/README.md",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/flywheel-comms/README.md"
+        }
+      ]
+    },
+    {
+      "id": "msm-005-quota-gate",
+      "title": "MSM-005 paired task screening and quota admission",
+      "status": "in_review",
+      "project_ids": [
+        "termux-monorepo"
+      ],
+      "channel_ids": [
+        "FLY-006"
+      ],
+      "topic_ids": [
+        "quota-admission",
+        "paired-evaluation",
+        "provider-entitlement"
+      ],
+      "summary": "Two existing gates: fleet selection from fresh census/ledger snapshot and per-request shared-account reservation at the local hub. Current open seam: snapshot-derived pool headroom versus the live authenticated OpenRouter key counter.",
+      "artifact_refs": [
+        {
+          "kind": "github_pull_request",
+          "ref": "termux-monorepo#1541",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1541"
+        },
+        {
+          "kind": "github_pull_request",
+          "ref": "termux-monorepo#1470",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1470"
+        },
+        {
+          "kind": "github_pull_request",
+          "ref": "termux-monorepo#5440",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5440"
+        },
+        {
+          "kind": "repository_file",
+          "ref": "termux-monorepo:scripts/ops/auto_quota_cadence.py@ea117c13f164a2d1b88b53b90d0519072b8bddfc",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/ea117c13f164a2d1b88b53b90d0519072b8bddfc/scripts/ops/auto_quota_cadence.py"
+        },
+        {
+          "kind": "repository_file",
+          "ref": "termux-monorepo:llm_api_hub/server/admission.py@923643bb006444c2526a998a4fa9a24275b6a09f",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/923643bb006444c2526a998a4fa9a24275b6a09f/llm_api_hub/server/admission.py"
+        },
+        {
+          "kind": "repository_file",
+          "ref": "termux-monorepo:scripts/model_selection_market/live_task_experiment.py@923643bb006444c2526a998a4fa9a24275b6a09f",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/923643bb006444c2526a998a4fa9a24275b6a09f/scripts/model_selection_market/live_task_experiment.py"
+        }
+      ]
+    },
+    {
+      "id": "nse-021-sidecar-overlays",
+      "title": "NSE-021 sidecar and mapping overlays",
+      "status": "research_handoff",
+      "project_ids": [
+        "termux-monorepo",
+        "muse-vm-workspace-backup"
+      ],
+      "channel_ids": [
+        "FLY-006"
+      ],
+      "topic_ids": [
+        "sidecar-mapping",
+        "context-graph"
+      ],
+      "summary": "Evidence audit separates implemented codecs/Matrice/index surfaces from proposed overlay infrastructure and records missing mapping-pointer implementation.",
+      "artifact_refs": [
+        {
+          "kind": "github_pull_request",
+          "ref": "termux-monorepo#5893",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5893"
+        },
+        {
+          "kind": "github_pull_request",
+          "ref": "termux-monorepo#5737",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5737"
+        }
+      ]
+    },
+    {
+      "id": "exports-backup-coordination",
+      "title": "Exports and backup coordination",
+      "status": "active",
+      "project_ids": [
+        "termux-monorepo",
+        "muse-vm-workspace-backup"
+      ],
+      "channel_ids": [
+        "FLY-005",
+        "FLY-003"
+      ],
+      "topic_ids": [
+        "exports-backup",
+        "completion-confirmations"
+      ],
+      "summary": "FLY-005 carries export/backup coordination; FLY-003 carries confirmations of record.",
+      "artifact_refs": [
+        {
+          "kind": "github_pull_request",
+          "ref": "termux-monorepo#5878",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5878"
+        },
+        {
+          "kind": "external_protocol",
+          "ref": "muse-vm-workspace-backup:cue/COMMS.md",
+          "url": "https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/main/cue/COMMS.md"
+        },
+        {
+          "kind": "repository_file",
+          "ref": "termux-monorepo:ops/tracking/backup-relays.jsonl",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/tracking/backup-relays.jsonl"
+        }
+      ]
+    },
+    {
+      "id": "mesh-probe",
+      "title": "Mesh request and probe telemetry",
+      "status": "active",
+      "project_ids": [
+        "termux-monorepo",
+        "muse-vm-workspace-backup"
+      ],
+      "channel_ids": [
+        "FLY-002",
+        "FLY-004"
+      ],
+      "topic_ids": [
+        "mesh-requests",
+        "probe-telemetry"
+      ],
+      "summary": "Runtime-local request queue and per-cycle probe receipts; registry-declared and runtime paths remain distinct pending owner reconciliation.",
+      "artifact_refs": [
+        {
+          "kind": "github_issue",
+          "ref": "termux-monorepo#5554",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5554"
+        },
+        {
+          "kind": "github_issue",
+          "ref": "termux-monorepo#5714",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5714"
+        },
+        {
+          "kind": "github_issue",
+          "ref": "termux-monorepo#5715",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5715"
+        },
+        {
+          "kind": "runtime_path",
+          "ref": "muse-vm:~/workspace/repo-exports/REQUESTS.jsonl",
+          "url": null
+        }
+      ]
+    },
+    {
+      "id": "peer-onboarding",
+      "title": "Collaborator and provider onboarding",
+      "status": "pending",
+      "project_ids": [
+        "termux-monorepo"
+      ],
+      "channel_ids": [
+        "FLY-001"
+      ],
+      "topic_ids": [
+        "peer-membership",
+        "provider-onboarding"
+      ],
+      "summary": "Separate onboarding contexts retain their own evidence and readiness states.",
+      "artifact_refs": [
+        {
+          "kind": "github_issue",
+          "ref": "termux-monorepo#5885",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5885"
+        },
+        {
+          "kind": "github_issue",
+          "ref": "termux-monorepo#5905",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5905"
+        }
+      ]
+    },
+    {
+      "id": "siglary-notation-history",
+      "title": "Siglary notation and Matrice implementation",
+      "status": "historical_complete",
+      "project_ids": [
+        "termux-monorepo"
+      ],
+      "channel_ids": [
+        "FLY-006"
+      ],
+      "topic_ids": [
+        "notation-history"
+      ],
+      "summary": "Completed notation work is retained as historical context; active work proceeds on current FLY-006 tasks.",
+      "artifact_refs": [
+        {
+          "kind": "github_pull_request",
+          "ref": "termux-monorepo#5299",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5299"
+        },
+        {
+          "kind": "github_issue",
+          "ref": "termux-monorepo#5116",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5116"
+        }
+      ]
+    }
+  ],
+  "memberships": [
+    {
+      "id": "chatgpt-github-fly006",
+      "peer_id": "chatgpt-github",
+      "surface_id": "chatgpt-github",
+      "channel_id": "FLY-006",
+      "context_ids": [
+        "flywheel-context-routing",
+        "msm-005-quota-gate",
+        "nse-021-sidecar-overlays"
+      ],
+      "status": "joining_via_registry_pr_and_first_ack",
+      "action_classes": [
+        "read",
+        "comment",
+        "content_write",
+        "create_pull_request"
+      ],
+      "excluded_action_classes": [
+        "merge",
+        "deploy",
+        "credential_management",
+        "provider_inference"
+      ],
+      "evidence_refs": [
+        "termux-monorepo#5906",
+        "muse-vm-workspace-backup#4",
+        "muse-vm-workspace-backup@2f289a72"
+      ]
+    },
+    {
+      "id": "muse-vm-fly006",
+      "peer_id": "muse-vm",
+      "surface_id": "muse-vm-github",
+      "channel_id": "FLY-006",
+      "context_ids": [
+        "flywheel-context-routing",
+        "msm-005-quota-gate",
+        "nse-021-sidecar-overlays"
+      ],
+      "status": "registered"
+    },
+    {
+      "id": "manus-cue-fly006",
+      "peer_id": "manus-cue",
+      "surface_id": "cue-deploy-key",
+      "channel_id": "FLY-006",
+      "context_ids": [
+        "flywheel-context-routing",
+        "msm-005-quota-gate",
+        "nse-021-sidecar-overlays"
+      ],
+      "status": "registered"
+    },
+    {
+      "id": "muse-vm-fly005",
+      "peer_id": "muse-vm",
+      "surface_id": "muse-vm-github",
+      "channel_id": "FLY-005",
+      "context_ids": [
+        "exports-backup-coordination"
+      ],
+      "status": "registered"
+    },
+    {
+      "id": "manus-cue-fly005",
+      "peer_id": "manus-cue",
+      "surface_id": "cue-deploy-key",
+      "channel_id": "FLY-005",
+      "context_ids": [
+        "exports-backup-coordination"
+      ],
+      "status": "registered"
+    },
+    {
+      "id": "muse-vm-fly003",
+      "peer_id": "muse-vm",
+      "surface_id": "muse-vm-github",
+      "channel_id": "FLY-003",
+      "context_ids": [
+        "exports-backup-coordination"
+      ],
+      "status": "registered"
+    },
+    {
+      "id": "manus-cue-fly003",
+      "peer_id": "manus-cue",
+      "surface_id": "cue-deploy-key",
+      "channel_id": "FLY-003",
+      "context_ids": [
+        "exports-backup-coordination"
+      ],
+      "status": "registered"
+    }
+  ],
+  "topics": [
+    {
+      "id": "context-routing",
+      "title": "Context-aware channel and project routing",
+      "context_ids": [
+        "flywheel-context-routing"
+      ]
+    },
+    {
+      "id": "peer-membership",
+      "title": "Collaborator identity, surface, and membership",
+      "context_ids": [
+        "flywheel-context-routing",
+        "peer-onboarding"
+      ]
+    },
+    {
+      "id": "artifact-navigation",
+      "title": "Typed links to source artifacts",
+      "context_ids": [
+        "flywheel-context-routing",
+        "msm-005-quota-gate",
+        "nse-021-sidecar-overlays"
+      ]
+    },
+    {
+      "id": "quota-admission",
+      "title": "Fleet selection and runtime quota admission",
+      "context_ids": [
+        "msm-005-quota-gate"
+      ]
+    },
+    {
+      "id": "paired-evaluation",
+      "title": "Frozen cohort and paired arm evaluation",
+      "context_ids": [
+        "msm-005-quota-gate"
+      ]
+    },
+    {
+      "id": "sidecar-mapping",
+      "title": "Sidecar and mapping pointer overlays",
+      "context_ids": [
+        "nse-021-sidecar-overlays"
+      ]
+    },
+    {
+      "id": "exports-backup",
+      "title": "Export, backup, and confirmation flow",
+      "context_ids": [
+        "exports-backup-coordination"
+      ]
+    },
+    {
+      "id": "mesh-probe",
+      "title": "Mesh request and probe telemetry",
+      "context_ids": [
+        "mesh-probe"
+      ]
+    },
+    {
+      "id": "provider-onboarding",
+      "title": "Provider and collaborator onboarding",
+      "context_ids": [
+        "peer-onboarding"
+      ]
+    },
+    {
+      "id": "notation-history",
+      "title": "Completed Siglary notation work",
+      "context_ids": [
+        "siglary-notation-history"
+      ]
+    }
+  ]
+}

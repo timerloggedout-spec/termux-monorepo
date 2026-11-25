@@ -9,7 +9,10 @@
       "store_repo": "timerloggedout-spec/termux-monorepo",
       "path": "issues (project-task filings, stamps, routing receipts)",
       "format": "GitHub issues: ###-field filings + comment stamps",
-      "participants": ["all seats", "QUE machinery (executor/watchdog)"],
+      "participants": [
+        "all seats",
+        "QUE machinery (executor/watchdog)"
+      ],
       "cadence": "GitHub Actions schedule + vm que-drain-drive 15m",
       "owner_seat": "QDesk",
       "status": "established",
@@ -21,7 +24,10 @@
       "store_repo": "timerloggedout-spec/muse-vm-workspace-backup",
       "path": "compute-exports/mesh-probe/REQUESTS.jsonl",
       "format": "JSONL append-only request/response",
-      "participants": ["muse-vm", "hark-vm"],
+      "participants": [
+        "muse-vm",
+        "hark-vm"
+      ],
       "cadence": "mesh-tailnet-probe-watch 1h",
       "owner_seat": "muse-vm (mesh lane)",
       "status": "established",
@@ -33,7 +39,10 @@
       "store_repo": "timerloggedout-spec/termux-monorepo",
       "path": "ops/tracking/backup-relays.jsonl",
       "format": "JSONL append-only; published via GitHub automation to org pages",
-      "participants": ["vm exporters (muse-vm, cue)", "pages readers"],
+      "participants": [
+        "vm exporters (muse-vm, cue)",
+        "pages readers"
+      ],
       "cadence": "per export event + daily repo-export-sync",
       "owner_seat": "backup lane (muse-vm)",
       "status": "established",
@@ -45,7 +54,10 @@
       "store_repo": "timerloggedout-spec/muse-vm-workspace-backup",
       "path": "compute-exports/mesh-probe/",
       "format": "per-cycle state exports (heartbeat publication)",
-      "participants": ["muse-vm", "hark-vm"],
+      "participants": [
+        "muse-vm",
+        "hark-vm"
+      ],
       "cadence": "mesh-tailnet-probe-watch 1h",
       "owner_seat": "muse-vm (mesh lane)",
       "status": "established",
@@ -57,11 +69,16 @@
       "store_repo": "timerloggedout-spec/muse-vm-workspace-backup",
       "path": "cue/comms.jsonl (protocol: cue/COMMS.md)",
       "format": "JSONL append-only {ts, from, to, body}",
-      "participants": ["muse-vm", "manus-cue"],
+      "participants": [
+        "muse-vm",
+        "manus-cue"
+      ],
       "cadence": "cue watch 900s; muse-vm cadence checks",
       "owner_seat": "muse-vm + cue (joint)",
       "status": "established",
-      "established_evidence": "opened 2026-11-25: muse-vm line at 50c780c2, cue ACK at 8d03661e"
+      "established_evidence": "opened 2026-11-25: muse-vm line at 50c780c2, cue ACK at 8d03661e",
+      "access": "Collaborators of record: muse-vm (operator) + manus-cue (peer). Cue holds deploy-key WRITE on the store (exports, checkpoints, cue/ tree) and read on all export prefixes + compute-exports/mesh-probe telemetry. Owner rule 2026-11-25: collaborator access to Exports + Telemetry is important \u2014 access gaps are defects, named on this row.",
+      "upgrade": "2026-11-25: multi-route upgrade proposed to Cue via the channel \u2014 FLY-005 stays primary; redundant provider routes to be added as Cue confirms which it can terminate (Manus email fallback already noted)."
     }
   ]
 }

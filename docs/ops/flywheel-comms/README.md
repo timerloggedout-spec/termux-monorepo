@@ -36,6 +36,8 @@ DO follow [Policy Rule 9](POLICY.md#rules): use the highest issued Siglary gener
 
 The registry remains authoritative for participant cadence, ownership, and status. The channel directory is an index, not a second registry.
 
+**Registry/prose discrepancy:** the [POLICY.md seed-registry paragraph](POLICY.md#seed-registry) still describes five channels through FLY-005, while the current [REGISTRY.json](REGISTRY.json) contains established FLY-006. Use the registry row for current channel identity; route the policy prose amendment to its owner seat.
+
 ## Cross-channel handoffs
 
 ### FLY-005 → FLY-006: non-export work moved to the work channel

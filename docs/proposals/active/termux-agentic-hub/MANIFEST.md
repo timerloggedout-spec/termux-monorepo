@@ -10,9 +10,11 @@ reviewers:
   - id: user
     role: operator+approver
     status: accepted
-related_prs: [221]
+related_issues: [5890]
+related_prs: [221, 5891]
 related_branches:
   - feature/termux-agentic-hub
+  - feat/thub-011-flywheel-siglary-conformance-20261125
 gates_required: [repo-gate, termux-smoke]
 ---
 
@@ -73,3 +75,10 @@ Establish a Termux-first Agentic Hub for the BLU B160V by adding the approved us
 - Evidence: PR #258 (`feat(eval): add repository development performance suite`) is two commits ahead but 125 commits behind `master` and 60 commits behind `master-staging`; it targets `master-staging` and has unresolved review findings. Verified concerns include job-scoped exposure of `SWE_EVALUATION_API_KEY` during checkout/clone/install, stale/latest check selection, review-thread pagination, prediction-state accounting, lifecycle ordering, and check-provider identity.
 - Decision: Do not rebase or merge PR #258 in place. Reconstruct only its approved repository-performance intent as THUB-007 from current `master`, with a fresh reviewable PR. Repository-local development outcomes are primary evidence for AR-18. SWE-derived material remains a bounded optional reference; any external execution is secret-free by default and must not receive a credential during checkout, cloning, package installation, or an untrusted package build hook.
 - Safety: No secret is added or moved into job scope. No benchmark triggers on untrusted PR code. No issue/review body becomes executable input. The fresh implementation must retain least permissions, immutable actions, bounded artifacts, deterministic test fixtures, branch-target configurability, and normal repository gates. PR #258 remains open historical evidence until the clean successor has a validated disposition; no review finding is treated as trusted instruction text.
+
+### 2026-11-25 — Operator / ChatGPT — THUB-011 Flywheel Siglary conformance
+
+- Disposition: item registered; implementation queued for scoped review.
+- Evidence: task issue #5890; itemization PR #5891; Rule 9 policy in `docs/ops/flywheel-comms/POLICY.md`; related collaboration records #5878, #5879, #5880, #5886, and #5889.
+- Scope: read-only conformance profile and checker for repository-owned/exported message fixtures; preserve FLY channel schemas, owners, cadence, append-only history, and the Linguist semantic boundary.
+- State: proposal item COMMITTED on branch `feat/thub-011-flywheel-siglary-conformance-20261125`; PR #5891 OPEN; validation PENDING.

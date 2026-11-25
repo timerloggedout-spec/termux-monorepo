@@ -1,25 +1,24 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-25T23:08:20Z",
+ "generated_at": "2026-11-25T23:33:41Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 4,
-   "in_progress": 1,
-   "oldest_queued_at": "2026-11-20T07:43:25Z",
+   "queued": 3,
+   "in_progress": 0,
+   "oldest_queued_at": "2026-11-25T23:32:00Z",
    "by_workflow_queued": {
-    "repo gate": 2,
-    "PR scope guard": 2
+    "Orchestration Regression Guard": 1,
+    "repo gate": 2
    }
   },
   "2": {
    "tier": 2,
-   "queued": 2,
+   "queued": 1,
    "in_progress": 1,
-   "oldest_queued_at": "2026-11-25T23:07:26Z",
+   "oldest_queued_at": "2026-11-25T23:31:54Z",
    "by_workflow_queued": {
-    "pages build and deployment": 1,
     "tribute-dashboard-deploy": 1
    }
   },
@@ -32,43 +31,46 @@
   },
   "4": {
    "tier": 4,
-   "queued": 82,
-   "in_progress": 21,
-   "oldest_queued_at": "2026-11-20T07:43:25Z",
+   "queued": 93,
+   "in_progress": 11,
+   "oldest_queued_at": "2026-11-25T23:27:39Z",
    "by_workflow_queued": {
-    "Agent Throughput Evidence": 23,
-    "Context Relationship + Lead/Lag Audit": 22,
-    "DO Statement Style": 3,
-    "Sweep Accountability": 1,
-    "Issue Comment Router \u2014 modular fan-out reduction": 21,
-    "lane events recorder": 1,
-    "refTemplates continuous eval": 3,
-    "Reviewer metrics collect": 1,
+    "lane events recorder": 64,
+    "n8n SHE bridge": 1,
+    "Agent Readability Source Contract": 1,
     "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
+    "quota-allocation-planner": 1,
+    "que-cadence-kick": 1,
     "Foresight Evidence Spine": 1,
-    "termux smoke": 2,
-    "Agent PR Jules Handoff": 1,
+    "DO Statement Style": 2,
+    "termux smoke": 1,
+    "Agent Throughput Evidence": 12,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
     "PR Change Effectiveness Ledger": 1,
-    "Advisory GitHub Actions lint": 1
+    "Sweep Accountability": 1,
+    "Peer review orchestrator": 1,
+    "Workflow Surface Policy": 1,
+    "RECON INTEL discovery": 2,
+    "PR production ledger": 1
    }
   }
  },
  "totals": {
-  "queued": 88,
-  "in_progress": 23
+  "queued": 97,
+  "in_progress": 12
  },
  "wedged_ancient": [],
  "wedged_excluded_from_counts": true,
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 5,
-   "2": 3,
+   "1": 3,
+   "2": 2,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 8,
-  "default_t4": 103,
+  "explicit_total": 5,
+  "default_t4": 104,
   "unmatched": 0,
   "ancient_excluded": 0,
   "operator_excluded": 0

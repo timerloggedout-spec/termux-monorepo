@@ -69,7 +69,7 @@ def score_child(name: str, has_source: bool, has_readme: bool, source_preview: s
 
 
 def score_capability_child(child: dict) -> dict:
-    """Score source/metadata readiness; never infer runtime efficacy."""
+    """Score source/metadata readiness; report efficacy as unmeasured until controlled runs."""
     source_preview = child.get("source_preview")
     has_source = bool(child.get("has_source"))
     has_readme = bool(child.get("has_readme"))

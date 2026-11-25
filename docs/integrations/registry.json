@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "registry_id": "termux-monorepo.integration-intelligence",
   "repository": "timerloggedout-spec/termux-monorepo",
-  "updated_at": "2026-11-11",
+  "updated_at": "2026-11-25",
   "authority": "repository-maintained-inventory",
   "capability_scope": "Session-scoped audit of explicitly requested integrations; see INTEGRATION-PORTFOLIO.md for observed access, blockers, and next validation steps. CEEL candidate integrations are inventory-only until independently validated.",
   "integrations": [
@@ -509,6 +509,20 @@
       "write_boundary": "No dataset upload, prompt/completion transfer, scoring mutation or deployment until data classification, retention, scopes and cost ceiling are approved.",
       "next_step": "Verify dataset/version lineage, scorer reproducibility, experiment export and cost controls using sanitized fixtures.",
       "sensitivity": "evaluation-dataset-and-score-metadata"
+    },
+    {
+      "id": "chatgpt-session-capability-inventory",
+      "name": "ChatGPT Session Capability Inventory",
+      "category": "agent-capability-discovery",
+      "priority": "P0",
+      "discovery_state": "tool_connected_in_session",
+      "session_evidence": "2026-11-25 session export captured 571 skill descriptors across 78 source groups and 4,897 callable tool definitions across 128 namespaces (125 MCP provider namespaces and 3 native host namespaces). Full tool contracts and skill descriptors are versioned under ops/capabilities/chatgpt/snapshots/2026-11-25/.",
+      "repo_skill_path": null,
+      "repo_adapter_state": "repo_adapter_planned",
+      "authority": "discovery-and-experiment-candidate-only",
+      "write_boundary": "Inventory visibility grants discovery metadata only. Account authentication, provider scopes, local capability activation, external writes, paid inference, deployment, and production admission each retain their existing adapter and approval gates.",
+      "next_step": "Refresh dated session snapshots, compare pinned hashes, select bounded capability cohorts, and validate each selected operation through the adapter contract and DoE evidence lane.",
+      "sensitivity": "provider metadata and tool schemas; credential values and private payloads excluded"
     }
   ]
 }

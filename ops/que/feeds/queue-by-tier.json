@@ -1,23 +1,26 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-25T03:03:02Z",
+ "generated_at": "2026-11-25T03:31:05Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 2,
-   "in_progress": 1,
+   "queued": 7,
+   "in_progress": 0,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "PR scope guard": 2
+    "repo gate": 2,
+    "PR scope guard": 4,
+    "Orchestration Regression Guard": 1
    }
   },
   "2": {
    "tier": 2,
-   "queued": 1,
+   "queued": 2,
    "in_progress": 1,
-   "oldest_queued_at": "2026-11-25T03:02:27Z",
+   "oldest_queued_at": "2026-11-25T03:29:31Z",
    "by_workflow_queued": {
+    "pages build and deployment": 1,
     "tribute-dashboard-deploy": 1
    }
   },
@@ -30,22 +33,40 @@
   },
   "4": {
    "tier": 4,
-   "queued": 7,
-   "in_progress": 15,
+   "queued": 37,
+   "in_progress": 18,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "Agent Throughput Evidence": 2,
-    "Quota Dispatch Tree": 1,
-    "Agent PR Jules Handoff": 1,
-    "PR Change Effectiveness Ledger": 1,
-    "Advisory GitHub Actions lint": 1,
-    "DO Statement Style": 1
+    "repo-tracking-collect": 1,
+    "Sweep Accountability": 3,
+    "Agent Readability Source Contract": 2,
+    "Lane matrix event-driven inventory": 1,
+    "Action Effectiveness Ledger": 2,
+    "Context Relationship + Lead/Lag Audit": 1,
+    "archwiz dangle check": 1,
+    "termux smoke": 1,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
+    "DO Statement Style": 3,
+    "CellCog review": 1,
+    "Agent PR Jules Handoff": 2,
+    "Repository development evaluation": 1,
+    "PR production ledger": 2,
+    "DeepSeek CI \u2013 Agentic Automation": 1,
+    "PR Change Effectiveness Ledger": 2,
+    "RECON INTEL discovery": 1,
+    "lane events recorder": 4,
+    "Peer review orchestrator": 1,
+    "PR evidence evaluation": 1,
+    "Agent Throughput Evidence": 1,
+    "Agent review \u2192 auto Jules": 2,
+    "quota-allocation-planner": 1,
+    "Advisory GitHub Actions lint": 1
    }
   }
  },
  "totals": {
-  "queued": 10,
-  "in_progress": 17
+  "queued": 46,
+  "in_progress": 19
  },
  "wedged_ancient": [
   {
@@ -203,13 +224,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 3,
-   "2": 2,
+   "1": 7,
+   "2": 3,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 5,
-  "default_t4": 22,
+  "explicit_total": 10,
+  "default_t4": 55,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

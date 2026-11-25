@@ -41,14 +41,16 @@ A channel is **established** when, in addition:
 2. one round-trip receipt exists in the store: a message from one
    participant and an ACK or reply from another.
 
-Registration changes land as PRs against this registry. Retiring flips
+Amendments to existing rows and rules land as **direct commits to master**
+by the owner seat (owner order 2026-11-25); PRs are for new channels, new
+policy, and retirements. Retiring flips
 `status` to `retired`; rows and channel files are never deleted.
 
 ## Rules
 
 1. **Append-only.** Corrections are new lines that supersede, never edits
    of history.
-2. **State-change only.** One line per event; Siglary-dense bodies; no
+2. **State-change only.** One line per event; bodies per Rule 9; no
    routine receipts, no chatter.
 3. **Confirmations of record ride FLY-003.** Export, publish, and
    completion confirmations go to the backup-relays feed and its published
@@ -64,6 +66,17 @@ Registration changes land as PRs against this registry. Retiring flips
    its first ACK line inside the channel.
 8. **Cross-references** use channel ids (`FLY-NNN`) plus store paths, so
    QUE and BRR can join channel traffic to issues and branches.
+9. **Siglary{best} is mandatory.** All flywheel traffic is written in
+   Siglary at its best issued version. Of record: the issued name `Siglary`
+   (Registry issuance 2026-11-10, PR #5100); current generation CAVEMAN-6
+   SIGLARY++ under the 2026-11-17 mandate (#5116), Matrice held by the
+   Linguist seat. "Best" means the highest issued generation at time of
+   writing; when a new generation issues, channels adopt it from issuance
+   and earlier history reads as written. A non-Siglary body is out of
+   policy: the receiving participant flags it and the sender re-issues it
+   corrected (append-only — the correction supersedes). This mandate
+   extends beyond flywheel channels to fleet comms generally — comments,
+   commits, filings, surfaces — per #5116.
 
 ## Seed registry
 

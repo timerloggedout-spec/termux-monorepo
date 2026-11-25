@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-11-24T17:47:22Z` UTC  
+**Generated:** `2026-11-25T17:16:12Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 331 docs-lane branch(es)
+**Count:** 335 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -104,6 +104,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/condensa-correction-2026-11-10`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/condensa-correction-2026-11-10) | `70b6589f0db8` | — | — | orphan lane |
 | [`docs/connected-platform-recon-20261021`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/connected-platform-recon-20261021) | `b94d64c04931` | — | — | orphan lane |
 | [`docs/connector-audit-2026-11-17`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/connector-audit-2026-11-17) | `baf927ae71ad` | [#5667](https://github.com/timerloggedout-spec/termux-monorepo/pull/5667)→`master` | — | PR without registry link |
+| [`docs/context-continuity`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/context-continuity) | `46b43a8906e7` | — | — | orphan lane |
 | [`docs/context7-mintlify-agent-discoverability`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/context7-mintlify-agent-discoverability) | `35c1f2bd5bbe` | [#1617](https://github.com/timerloggedout-spec/termux-monorepo/pull/1617)→`master` | — | PR without registry link |
 | [`docs/context7-mintlify-mcp-workflow`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/context7-mintlify-mcp-workflow) | `4b9a610cf9de` | — | — | orphan lane |
 | [`docs/continuity-spof-census-2026-11-01`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/continuity-spof-census-2026-11-01) | `dc92a46f6878` | — | — | orphan lane |
@@ -133,7 +134,10 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/ereader-scoping-spec`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/ereader-scoping-spec) | `fd129f73596c` | — | — | orphan lane |
 | [`docs/fail-closed-image-pipeline-rebased`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/fail-closed-image-pipeline-rebased) | `738974c47a22` | — | — | orphan lane |
 | [`docs/findings-register-20261103`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/findings-register-20261103) | `f689161c3791` | — | — | orphan lane |
+| [`docs/flywheel-access-amendment`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/flywheel-access-amendment) | `90b153adfa48` | [#5878](https://github.com/timerloggedout-spec/termux-monorepo/pull/5878)→`master` | — | PR without registry link |
 | [`docs/flywheel-capability-overlap-audit`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/flywheel-capability-overlap-audit) | `f4ddde780d56` | [#1616](https://github.com/timerloggedout-spec/termux-monorepo/pull/1616)→`master` | — | PR without registry link |
+| [`docs/flywheel-comms-policy`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/flywheel-comms-policy) | `212627b4ebf4` | — | — | orphan lane |
+| [`docs/flywheel-siglary-mandate`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/flywheel-siglary-mandate) | `aa9ceeec442c` | [#5879](https://github.com/timerloggedout-spec/termux-monorepo/pull/5879)→`master` | — | PR without registry link |
 | [`docs/foresight-evidence-spine-2026-10-03-rebased`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/foresight-evidence-spine-2026-10-03-rebased) | `0b9bbffb143f` | — | — | orphan lane |
 | [`docs/free-inference-production-receipt`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/free-inference-production-receipt) | `7422b87bc9d6` | — | — | orphan lane |
 | [`docs/free-tier-recon-addendum-2026-11-04`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/free-tier-recon-addendum-2026-11-04) | `fb97dc2dac83` | — | — | orphan lane |

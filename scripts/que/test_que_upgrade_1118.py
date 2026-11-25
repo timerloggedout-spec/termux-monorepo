@@ -98,3 +98,54 @@ def test_watchdog_score_row_stays_numeric():
     claims.sort(key=lambda c: (-(c["score"] or 0), c["issue"]))
     assert claims[0]["issue"] == 1
     assert hasattr(auto_claim, "plan")
+
+
+def test_fold_publishes_every_ranked_dispatch_with_wall_and_delta(tmp_path, monkeypatch):
+    rows = [
+        {"issue": 1, "entry": "D5", "title": "claimed", "state": "claimed",
+         "age_min": 100, "tier": {"index": 0, "name": "BASE"},
+         "nearest_wall": None, "wall_in_min": None,
+         "claim": {"by": "seat", "at": _ts(20)}},
+        {"issue": 2, "entry": "D5", "title": "near wall", "state": "escalated",
+         "age_min": 50, "tier": {"index": 1, "name": "CUSHION"},
+         "nearest_wall": _ts(-60), "wall_in_min": 60, "claim": None},
+        {"issue": 3, "entry": "D5", "title": "older", "state": "escalated",
+         "age_min": 500, "tier": {"index": 0, "name": "BASE"},
+         "nearest_wall": _ts(-6000), "wall_in_min": 6000, "claim": None},
+    ]
+    # Simulate a pre-binding producer snapshot: scores are numeric,
+    # but the old advisory marker and stale rank block must be replaced.
+    for row in rows:
+        row.update({"score": 0.0, "components": {}, "rank": 99,
+                    "rank_method": task_ranking.METHOD})
+    root = tmp_path
+    source = root / "ops" / "challenge" / "dispatch-state-feed.json"
+    source.parent.mkdir(parents=True)
+    source.write_text(json.dumps({
+        "schema": "dispatch-state-feed/v1", "generated_at": _ts(5),
+        "counts": {"claimed": 1, "escalated": 2, "queued": 0},
+        "ranking": {"method": task_ranking.METHOD, "advisory": True,
+                    "claim_order": [1]},
+        "dispatches": rows,
+    }))
+    monkeypatch.setattr(q, "ROOT", root)
+    claims = q.queue_feed([], [], TIERS, NOW)["dispatch_claims"]
+    ranked = claims["ranked_dispatches"]
+    assert len(ranked) == 3 == claims["ranked"]
+    assert claims["ranked_scored"] == 3
+    assert len(claims["active_claims"]) == 1
+    assert claims["ranking"]["advisory"] is False
+    assert claims["ranking"]["binding"] is True
+    assert claims["ranking"]["claim_order"] == [2, 3]
+    by_issue = {row["issue"]: row for row in ranked}
+    assert by_issue[2]["score"] > by_issue[3]["score"]
+    assert by_issue[2]["claim_rank"] == 1
+    assert by_issue[2]["age_rank"] == 2
+    assert by_issue[2]["claim_delta_vs_age"] == 1
+    assert by_issue[3]["claim_rank"] == 2
+    assert by_issue[3]["age_rank"] == 1
+    assert by_issue[3]["claim_delta_vs_age"] == -1
+    assert by_issue[2]["components"]["wall"] >= 1000
+    assert by_issue[2]["nearest_wall"] == _ts(-60)
+    assert by_issue[2]["wall_in_min"] == 60
+    assert all(row["rank_method"] == task_ranking.METHOD for row in ranked)

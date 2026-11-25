@@ -91,13 +91,7 @@ The hub is a navigation layer, not a second task database or a copied artifact s
 
 ## 7. Registry evolution
 
-The current `REGISTRY.json` already separates `channels` from `peers`. The next additive schema revision can add:
-
-- `projects[]`: stable project identity and canonical repository/workspace references.
-- `contexts[]`: bounded context identity, objective, owning project(s), owner, status, and artifact roots.
-- `surfaces[]`: peer-owned execution surfaces with authentication mode, status, and protected credential-name references.
-- `memberships[]`: peer/surface/channel/context joins with allowed actions, validity, and evidence.
-- `topics[]`: cross-context tags and their canonical context/artifact references.
+The current `REGISTRY.json` remains the channel/peer authority. The additive [`CONTEXTS.json`](CONTEXTS.json) now carries project, context, surface, membership, and topic records under `flywheel-contexts/v1`; [`CONTEXTS.schema.json`](CONTEXTS.schema.json) defines the data contract. Membership action classes describe requested/observed scope and do not grant access.
 
 Migration rules:
 1. Preserve existing FLY-NNN IDs, channel paths, messages, and peer names.

@@ -293,10 +293,10 @@ def _defer_until(headers) -> datetime:
         retry_after = int(headers.get("Retry-After") or 0)
     except (TypeError, ValueError):
         retry_after = 0
-    if reset > int(now.timestamp()):
-        return datetime.fromtimestamp(reset, timezone.utc)
     if retry_after > 0:
         return now + timedelta(seconds=retry_after)
+    if reset > int(now.timestamp()):
+        return datetime.fromtimestamp(reset, timezone.utc)
     return now + timedelta(minutes=15)
 
 
@@ -352,8 +352,8 @@ def _rate_limit_preflight(token: str) -> dict:
         raise RuntimeError(
             "GitHub /rate_limit response lacks a valid core budget"
         ) from exc
-    if limit <= 0:
-        raise RuntimeError("GitHub /rate_limit returned a non-positive core limit")
+    if limit <= 0 or reset_epoch <= 0:
+        raise RuntimeError("GitHub /rate_limit returned invalid core limit/reset data")
     reserve = max(100, limit // 10)
     reset_at = datetime.fromtimestamp(reset_epoch, timezone.utc)
     print(f"GitHub core budget: {remaining}/{limit} remaining; "

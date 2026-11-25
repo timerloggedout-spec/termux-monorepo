@@ -33,7 +33,7 @@ jobs:
   sweep:
     runs-on: ubuntu-latest
     steps:
-      - name: Mint Termux Fleet Swarm token (own rate bucket)
+      - name: Mint Termux Fleet Swarm token (dedicated installation bucket; shared across this App's workflows)
         id: swarm
         uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e
         with:
@@ -44,6 +44,7 @@ jobs:
         with:
           token: ${{ steps.swarm.outputs.token }}
       - name: Sweep the dispatch queue
+        id: sweep
         env:
           GITHUB_TOKEN: ${{ steps.swarm.outputs.token }}
           WATCHDOG_FLAG_MIN: ${{ inputs.flag_min || '30' }}
@@ -55,7 +56,7 @@ jobs:
           echo "sweep exit: $ec" | tee -a /tmp/sweep.log
           test "$ec" = "0"
       - name: Commit the dispatch-state feed (only on change)
-        if: success() && inputs.dry_run != 'true'
+        if: success() && inputs.dry_run != 'true' && steps.sweep.outputs.deferred != 'true'
         run: |
           git config user.name "termux-fleet-swarm[bot]"
           git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
@@ -103,26 +104,18 @@ jobs:
           exit 1
       - name: Diagnose on failure
         if: failure()
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python3 - <<'PY'
-          import json, os, urllib.request
+          import os
           try:
-              log = open("/tmp/sweep.log").read()[-3000:]
+              log = open("/tmp/sweep.log", encoding="utf-8").read()[-5000:]
           except OSError:
-              log = "(sweep log absent — the failure happened before or outside the sweep step)"
-          body = ("[MUSEai]@{role:{dispatch-watchdog}} SWEEP FAILURE "
-                  "DIAGNOSTIC (self-report from the workflow run):\n\n```\n"
-                  + log + "\n```")
-          req = urllib.request.Request(
-              "https://api.github.com/repos/" +
-              os.environ["GITHUB_REPOSITORY"] +
-              "/issues/4164/comments",
-              data=json.dumps({"body": body}).encode(), method="POST")
-          req.add_header("Authorization",
-                         "Bearer " + os.environ["GITHUB_TOKEN"])
-          req.add_header("Content-Type", "application/json")
-          urllib.request.urlopen(req)
-          print("diagnostic posted to #4164")
+              log = "(sweep log absent — failure occurred before or outside the sweep step)"
+          summary = os.environ.get("GITHUB_STEP_SUMMARY")
+          if summary:
+              with open(summary, "a", encoding="utf-8") as fh:
+                  fh.write("### Dispatch watchdog failure\n\n```text\n"
+                           + log + "\n```\n")
+          print(log)
+          print("Failure evidence recorded in the workflow summary.")
           PY

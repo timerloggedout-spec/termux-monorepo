@@ -58,6 +58,7 @@ Establish one repository-wide architecture entry that routes collaborators to ca
 - FLY-005's 2026-11-25T19:28:30Z pointer resolves to FLY-006 protocol/store and PR #5893.
 - Root architecture and ICM entry points route to the hub; registry and append-only channel stores remain canonical.
 - Implementation branch: `docs/flywheel-central-navigation-20261125`.
+- Pull request: [#5897 — central nested channel and topic navigation](https://github.com/timerloggedout-spec/termux-monorepo/pull/5897), head `ca03ae5a176da0a5d200091274cb5a53827b9ee5` at filing.
 
 ## Architecture v2 — linked modules and snapshot audit
 

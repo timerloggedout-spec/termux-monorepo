@@ -15,9 +15,23 @@
 
 - python3 scripts/integrations/validate_capability_graph.py
 - python3 -m unittest discover -s tests -p 'test_capability_opportunity_graph.py' -v
+- python3 -m unittest discover -s tests -p 'test_refTemplates_capability_inventory.py' -v
 - python3 scripts/integrations/validate_portfolio.py
 - python3 scripts/proposals/validate_registry.py
 - python3 scripts/ci/repo_gate.py
 - python3 scripts/ci/termux_smoke.py
 
 GitHub object creation/retrieval is available in this session; a local checkout and shell runner are not. The PR's Actions runs are the executable validation evidence. Queued/running is not a pass.
+
+
+## CCEL-006 execution record — 2026-11-25
+
+- Branch: `feat/ceel-006-concept-competition-20261125`
+- Pull request: #5908
+- Candidate references: 8 metadata-first concept adaptations across five refTemplates categories.
+- Capability graph: 20 nodes, 27 edges; structural validation reports 0 unresolved endpoints or duplicate IDs/edges.
+- Inventory: categories 01–14; research-template scoring remains a separate profile under 15_.
+- Capability score: metadata readiness only; efficacy remains unmeasured until controlled runs.
+- Licensing: designated licensing duty owner retains that responsibility; CEEL records capability/source evidence and the handoff boundary.
+- Experiment order: ASSERT × ACS 2×2; then independent runtime, local inference, prompt/context and lifecycle comparisons.
+- CI / local test execution: PENDING same-head Actions evidence.

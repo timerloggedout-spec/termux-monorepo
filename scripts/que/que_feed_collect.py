@@ -319,7 +319,8 @@ def queue_feed(queued, in_progress, tiers_doc, at):
     body = tier_feed(queued, in_progress, tiers_doc, at)
     claims = {"source": "ops/challenge/dispatch-state-feed.json",
               "source_schema": None, "source_generated_at": None,
-              "counts": {}, "active_claims": [], "ranking": None}
+              "counts": {}, "active_claims": [], "ranked_dispatches": [],
+              "ranking": None}
     src = ROOT / "ops" / "challenge" / "dispatch-state-feed.json"
     if src.exists():
         d = json.loads(src.read_text())
@@ -337,37 +338,60 @@ def queue_feed(queued, in_progress, tiers_doc, at):
         # raw rows ⇒ 17 claims ∧ 0 scored. Fold the annotated rows
         # whenever any row lacks a numeric score.
         score_basis = "producer"
-        if rows and (ranking is None or any(
-                not isinstance(r.get("score"), (int, float))
-                for r in rows)):
+        if rows and (
+                not isinstance(ranking, dict)
+                or ranking.get("method") != task_ranking.METHOD
+                or ranking.get("advisory") is not False
+                or ranking.get("binding") is not True
+                or any(not isinstance(r.get("score"), (int, float))
+                       or r.get("rank_method") != task_ranking.METHOD
+                       for r in rows)):
             rows, derived = task_ranking.rank_dispatches(rows)
-            ranking = ranking or derived
+            ranking = derived
             score_basis = "fold-derived (que-task-rank/v1)"
         claims["ranking"] = ranking
         claims["score_basis"] = score_basis
         basis_counts = {"explicit": 0, "default": 0, "unmatched": 0}
+        ranked_basis_counts = {"explicit": 0, "default": 0, "unmatched": 0}
         for disp in rows:
+            basis = claim_tier_basis(disp)
+            ranked_basis_counts[basis] += 1
+            ranked_row = {
+                "issue": disp.get("issue"),
+                "entry": disp.get("entry"),
+                "title": disp.get("title"),
+                "state": disp.get("state"),
+                "age_min": disp.get("age_min"),
+                "score": disp.get("score"),
+                "components": disp.get("components"),
+                "score_components": disp.get("components"),
+                "rank": disp.get("rank"),
+                "claim_rank": disp.get("claim_rank"),
+                "age_rank": disp.get("age_rank"),
+                "claim_delta_vs_age": disp.get("claim_delta_vs_age"),
+                "nearest_wall": disp.get("nearest_wall"),
+                "wall_in_min": disp.get("wall_in_min"),
+                "rank_method": disp.get("rank_method", task_ranking.METHOD),
+                "tier": disp.get("tier"),
+                "tier_basis": basis,
+                "claim": disp.get("claim")}
+            claims["ranked_dispatches"].append(ranked_row)
             if disp.get("claim"):
-                basis = claim_tier_basis(disp)
                 basis_counts[basis] += 1
-                claims["active_claims"].append({
-                    "issue": disp.get("issue"),
-                    "entry": disp.get("entry"),
-                    "title": disp.get("title"),
-                    "state": disp.get("state"),
-                    "score": disp.get("score"),
-                    "score_components": disp.get("components"),
-                    "rank": disp.get("rank"),
-                    "rank_method": task_ranking.METHOD,
-                    "tier": disp.get("tier"),
-                    "tier_basis": basis,
-                    "claim": disp["claim"]})
+                claims["active_claims"].append(ranked_row)
+        claims["ranked"] = len(claims["ranked_dispatches"])
+        claims["ranked_scored"] = sum(
+            1 for c in claims["ranked_dispatches"]
+            if isinstance(c.get("score"), (int, float)))
         claims["scored"] = sum(
             1 for c in claims["active_claims"]
             if isinstance(c.get("score"), (int, float)))
         claims["tier_basis"] = {
             "population": "dispatch-issues (active claims)",
             **basis_counts}
+        claims["ranked_tier_basis"] = {
+            "population": "dispatch-issues (all source rows)",
+            **ranked_basis_counts}
     return {"schema": "que-queue-feed/v1", "generated_at": iso(at),
             "provenance": {
                 "producer": "optimizations-assurance (QUE lead) "

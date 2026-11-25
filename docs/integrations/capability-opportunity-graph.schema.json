@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/integrations/capability-opportunity-graph.schema.json",
   "title": "CEEL Capability Opportunity Graph",
-  "description": "Repository-maintained index of candidate capabilities, source provenance, internal consumers, evidence and relationships; not a runtime authority or parallel CMDB.",
+  "description": "Repository-maintained index of candidate capabilities, source provenance, internal consumers, evidence and relationships; not a runtime authority or parallel CMDB. Responsibility for licensing determinations is routed to the designated licensing duty owner and is outside this capability graph.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -214,12 +214,6 @@
           "items": {
             "type": "string"
           }
-        },
-        "license": {
-          "type": [
-            "string",
-            "null"
-          ]
         },
         "risk_notes": {
           "type": "array",

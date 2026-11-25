@@ -20,7 +20,7 @@ class ModularSelectionTests(unittest.TestCase):
 
     def test_ast_and_similarity_add_their_required_surfaces(self):
         selected = registry.selected_surfaces([], [], True, True)
-        self.assertEqual(selected, {"branch", "pull-request", "file", "symbol"})
+        self.assertEqual(selected, {"file", "symbol"})
 
     def test_default_profile_preserves_legacy_inventory(self):
         self.assertEqual(

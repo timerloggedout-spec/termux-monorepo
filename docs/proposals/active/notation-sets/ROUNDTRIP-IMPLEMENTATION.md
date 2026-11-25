@@ -63,7 +63,7 @@ The invariant is **byte/hash exact**, not merely semantic similarity. A decoder 
 
 ## Next recovery layers
 
-1. Reconcile `AGENTS.md` ↔ `AGENTS.hum.md` using a canonical source and exact round-trip fixtures.
+1. Maintain the seven active Agent machine-to-human pairs in `scripts/cedrlang/render_contact_projections.py`; preserve each ICM Claude/AGENTS alias byte-for-byte and keep the earlier root `AGENTS.md` projection as historical lineage only.
 2. Recover the INDEX Taxonomy mapper and connect Concept / Pointer / Alias / Relationship indexes.
 3. Reconcile `archwiz/pointer_index.py` with `cli-synthegration/synthegration_index.py` pointer/hash formats; retain full hashes as the canonical identity and short hashes only as display aliases.
 4. Recover Caveman-Micro/Caveman fork behavior and benchmark against the existing Grimoire/CedrLang path.

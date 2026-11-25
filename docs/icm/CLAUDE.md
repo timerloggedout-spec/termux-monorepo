@@ -4,6 +4,8 @@ This is the agent-navigable system map for `termux-monorepo`. It routes an edito
 
 Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect_fork/README.md) method: hierarchy scopes context, cards record change impact, and the filesystem makes the current documentation surface inspectable. For repository-wide orientation, read [`architecture.md`](../../architecture.md) before selecting a bounded ICM route.
 
+The local Claude and AGENTS machine aliases share this byte-identical content. Their separately registered human sources are `CLAUDE.hum.md` and `AGENTS.hum.md`; each pair uses the same identity projection.
+
 ## Where things live
 
 | Shelf | What it holds |
@@ -14,7 +16,7 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 | [`objects/operations/`](objects/operations/CONTEXT.md) | ArchWiz and the bounded operational tool surface, including file-backed visual review. |
 | [`objects/knowledge/`](objects/knowledge/CONTEXT.md) | Navigation, routing governance, pinned reference inputs, methodology references, indices, and generated-map boundaries. |
 | [`objects/governance/`](objects/governance/CONTEXT.md) | Branch, proposal, validation, and approval constraints. |
-| [`routing.md`](routing.md) | A separately owned nested provider-routing evidence resource; it is intentionally not a root alias. |
+| [`routing.md`](routing.md) | A separately owned nested provider-routing evidence resource with its own source and lifecycle. |
 | [`_tv/`](./_tv/README.md) | Initiated file-backed CCTV cards for human review; renderer and publication remain separate scopes. |
 | [`processes/`](processes/CONTEXT.md) | Real editor workflows with explicit inputs and outputs. |
 | [`effects/`](effects/CONTEXT.md) | A compact “if you change X, read Y” index. |
@@ -45,4 +47,4 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 
 ## One rule
 
-Read this static catalog, one relevant card or nested resource, and its cited sources. Do **not** crawl the monorepo or treat visual cards, generated maps, recovery notes, provider observations, or untracked device state as substitute sources of truth.
+Use this static catalog, one relevant card or nested resource, and its cited sources. Use visual cards, generated maps, recovery notes, provider observations, and untracked device state as navigation aids; rely on their cited source artifacts for authoritative facts.

@@ -31,7 +31,7 @@ Do not replay historical commits wholesale. Recover behaviors by provenance, iso
 
 ### Phase 2 — document projections
 
-Reconcile the codec with the `AGENTS.md` ↔ `AGENTS.hum.md` round-trip and the existing strict Markdown protection rules. The canonical source remains human-readable/semantic; compressed variants are projections.
+Register all seven active Agent machine surfaces against their unique sibling `*.hum.md` sources in `scripts/cedrlang/render_contact_projections.py`. The current projection preserves source bytes exactly until a reversible notation has approved round-trip evidence. Keep each local ICM Claude/AGENTS alias byte-identical; retain the historical root `AGENTS.md` projection as provenance and route active work through the registered per-Agent pairs.
 
 ### Phase 3 — taxonomy/index integration
 

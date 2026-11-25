@@ -182,11 +182,13 @@ This is the first implementation slice for restoring the Linguist/CedrLang diasp
 
 ## NSE-024 — Siglary mandate mapping and deterministic CI slice
 
-Route the repo-wide Siglary mandate through the existing Linguist Matrice and root `CLAUDE.md` pointer map. Preserve SG001–SG008 and the supplied operator meanings; record unresolved notation/class conflicts as candidate mappings. Add a stdlib validator for registry IDs, canonical pointers, and the AVOID vocabulary on newly authored source text. Keep semantic judgment, runtime routing, and chat behavior in their owning review lanes.
+Route the repo-wide Siglary mandate through the existing Linguist Matrice and root `CLAUDE.md` pointer map. Preserve SG001–SG008 and the supplied operator meanings; record unresolved notation/class conflicts as candidate mappings. Add a stdlib validator for registry IDs, canonical pointers, and the AVOID vocabulary on newly authored source text. Keep semantic judgment, runtime routing, and chat behavior in their owning review lanes. Extend the existing Linguist mapper with an explicit registry for each in-scope Agent machine surface and its own sibling `*.hum.md` source; retain byte-preserving identity until a reversible notation is approved.
 
 **Status:** executing; promotion awaits required checks and review.
 
-**Acceptance:** `CLAUDE.md` remains a compact routing map; the SG registry maps once; candidate notation stays visibly candidate; focused tests and the repository gate pass; review notes retain every unresolved design choice.
+**Acceptance:** `CLAUDE.md` routes to the correct Agent-specific human/programmatic surfaces; the SG registry maps once; candidate notation stays visibly candidate; focused tests and the repository gate pass; review notes retain every unresolved design choice.
+
+**Agent-pair acceptance:** Register exactly seven sibling pairs in the existing mapper: root `CLAUDE.hum.md` → `CLAUDE.md` and `GEMINI.hum.md` → `GEMINI.md`; `.codex/AGENTS.hum.md` → `.codex/AGENTS.md`; and, under both `docs/icm/` and `docs/icm/maintenance/`, separate `CLAUDE.hum.md` and `AGENTS.hum.md` sources paired with their matching machine files. Enforce registry uniqueness, exact deterministic identity parity under `--check`, repository containment, symlink rejection, credential-like source screening before any write, and atomic replacement with prior-target preservation on failure. Keep each ICM Claude/AGENTS alias pair byte-identical, keep the retired generic root fallback out of active routing, and retain historical records. Preserve SG001–SG008 meanings and candidate dispositions; keep identity projection until the Matrice approves a reversible notation. Add tests for these invariants and wire the mapper test and `--check` into repo-gate.
 
 ## TDQS-CI-001 — Read-only TDQS quality-lane coverage
 

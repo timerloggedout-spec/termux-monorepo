@@ -53,4 +53,4 @@ No decoder may guess ambiguous original characters from a compact surface.
 
 ## Follow-on
 
-Recover and integrate `AGENTS.md` ↔ `AGENTS.hum.md`, INDEX Taxonomy, Concept/Pointer/Alias/Relationship indexes, Caveman-Micro, Grimoire, ICM and README projections incrementally. Each recovered historical behavior gets a compatibility fixture before becoming canonical.
+Preserve the root `AGENTS.md` ↔ `AGENTS.hum.md` milestone as historical lineage. The current Agent-document layer registers seven active machine surfaces with unique sibling `*.hum.md` sources in `scripts/cedrlang/render_contact_projections.py`; keep ICM aliases byte-identical and use byte-preserving projection until a reversible codec is approved. Continue INDEX Taxonomy, Concept/Pointer/Alias/Relationship indexes, Caveman-Micro, Grimoire, ICM and README recovery incrementally, with compatibility fixtures for each historical behavior before canonical promotion.

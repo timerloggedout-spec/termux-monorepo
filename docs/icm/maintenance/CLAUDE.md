@@ -1,6 +1,8 @@
 # ICM Map Maintenance Pipeline
 
-This is the documentation-only maintenance pipeline for the `docs/icm/` System map. It turns a proposed map update into a reviewed, verified, and promotable documentation change without refactoring application code or treating generated/device artifacts as pipeline output.
+This is the documentation-only maintenance pipeline for the `docs/icm/` System map. It turns a proposed map update into a reviewed, verified, and promotable documentation change while keeping application code and generated/device artifacts outside the pipeline output.
+
+The local Claude and AGENTS machine aliases share this byte-identical content. Their separately registered human sources are `CLAUDE.hum.md` and `AGENTS.hum.md`; each pair uses the same identity projection.
 
 ## Where things live
 
@@ -24,4 +26,4 @@ This is the documentation-only maintenance pipeline for the `docs/icm/` System m
 
 ## One rule
 
-Nothing advances beyond `02_design` until a human has read the proposed documentation change. The maintenance pipeline may add or revise map documentation; it must not refactor application code.
+Human approval at `02_design` precedes progression to `03_verify` and `04_promote`. Keep application-code refactors outside this documentation-only pipeline.

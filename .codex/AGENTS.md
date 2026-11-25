@@ -1,37 +1,33 @@
 # ECC for Codex CLI
 
-This supplements the root `AGENTS.md` with a repo-local ECC baseline.
+This human source pairs with the Codex-specific instruction surface. The Linguist registry maps the source byte-for-byte; its current entry is `.codex/AGENTS.hum.md`.
 
-## Repo Skill
+## Repository skill
 
-- Repo-generated Codex skill: `.agents/skills/termux-monorepo/SKILL.md`
-- Claude-facing companion skill: `.claude/skills/termux-monorepo/SKILL.md`
-- Keep user-specific credentials and private MCPs in `~/.codex/config.toml`, not in this repo.
+- Use `.agents/skills/termux-monorepo/SKILL.md` for repository workflows.
+- Use `.claude/skills/termux-monorepo/SKILL.md` for Claude-specific companion guidance.
+- Store private credentials and MCP configuration in `~/.codex/config.toml`.
 
-## MCP Baseline
+## MCP baseline
 
-Treat `.codex/config.toml` as the default ECC-safe baseline for work in this repository.
-The generated baseline enables GitHub, Context7, Exa, Memory, Playwright, and Sequential Thinking.
+Use `.codex/config.toml` as the ECC-safe work baseline. Its generated defaults enable GitHub, Context7, Exa, Memory, Playwright, and Sequential Thinking.
 
-## Context7 research contract
+## Context7 research
 
-- Resolve a library/product to its Context7 ID before querying unless a valid ID/version was supplied.
-- Prefer official sources and the repository-pinned version; ask focused, concept-specific questions.
-- Cross-check consequential security, migration, compatibility, and deployment claims against primary documentation and repository config.
-- Adapt examples to local conventions and tests; do not treat retrieved snippets as implementation proof.
-- Never send secrets, credentials, private source, personal data, or confidential prompts to documentation lookup.
-- Record meaningful version/uncertainty details when technical guidance changes.
+- Resolve each library or product to a Context7 ID before querying unless the task supplies a valid ID and version.
+- Prefer official documentation and the repository-pinned version.
+- Cross-check security, migration, compatibility, and deployment claims against primary sources and repository configuration.
+- Adapt examples to local conventions and tests; use retrieved snippets as research inputs.
+- Exclude secrets, credentials, private source, personal data, and confidential prompts from documentation queries.
+- Record version and uncertainty details when technical guidance changes.
+- Follow [`docs/ops/CONTEXT7-MINTLIFY-INTEGRATION.md`](../docs/ops/CONTEXT7-MINTLIFY-INTEGRATION.md) for the shared workflow.
 
-See `docs/ops/CONTEXT7-MINTLIFY-INTEGRATION.md` for the full shared workflow.
+## Multi-agent support
 
-## Multi-Agent Support
+- Explorer: gather read-only evidence.
+- Reviewer: assess correctness, security, and regressions.
+- Docs researcher: verify APIs and release notes.
 
-- Explorer: read-only evidence gathering
-- Reviewer: correctness, security, and regression review
-- Docs researcher: API and release-note verification
+## Workflow files
 
-## Workflow Files
-
-- No dedicated workflow command files were generated for this repo.
-
-Use these workflow files as reusable task scaffolds when the detected repository workflows recur.
+Workflow command-file generation state: UNGENERATED. Reuse workflow files as task scaffolds when repository workflows recur.

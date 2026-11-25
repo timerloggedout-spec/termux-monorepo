@@ -17,11 +17,12 @@ The historical implementation discussion also identifies `REV_SYMBOL_MAP` and `R
 ### Implemented lineage
 
 - `workspace/compression_sandbox/cedrlang/cedrlang.py` — historical CedrLang compiler/decompiler and symbol/Grimoire mapping.
-- `AGENTS.md` / `AGENTS.hum.md` — historical compressed/human projection milestone.
+- Historical root `AGENTS.md` / `AGENTS.hum.md` projection milestone — provenance only; the root fallback is retired as an active route.
 - `.jules/Linguist.md` — performance/provenance learning ledger.
 - `workspace/llm_map/` and `archwiz/` — existing taxonomy, pointer, alias, concept, tool, and relationship index surfaces.
 - `phase_codec.py` — current master recovery seed for the PR #154 70% diaspora experiment.
 - `mapping_pointer_index.py` — current recovery contract for explicit mapping provenance.
+- `scripts/cedrlang/render_contact_projections.py` — active explicit registry for seven Agent machine surfaces and their unique sibling `*.hum.md` sources; byte-preserving identity remains the current projection.
 
 ### Proposed in PR #154 comments, not verified as historically deployed
 

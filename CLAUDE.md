@@ -1,163 +1,44 @@
-# CLAUDE.md
+# CLAUDE.md — Primary collaborator route
 
-**Primary Collaborator entry for this repository.** Load this first.
+This human source pairs with the root Claude instruction surface. `scripts/cedrlang/render_contact_projections.py` projects the source byte-for-byte until a reversible notation receives approval and round-trip evidence.
 
-Root `AGENTS.md` is **deprecated** (Linguist / CedrLang / Jules compression stub only). Do not start from it. All hard rules and routing live here and in the governance sequence below.
+## Agent-specific source routes
 
-Collaborators are addressed by **Role**, **Name**, and **Moniker** — not by a generic `AGENTS.md` catalog.
+| Role | Human source | Programmatic route |
+|---|---|---|
+| Claude | `CLAUDE.hum.md` | `CLAUDE.md` |
+| Gemini | `GEMINI.hum.md` | `GEMINI.md` |
+| Codex | `.codex/AGENTS.hum.md` | `.codex/AGENTS.md` |
+| ICM Claude | `docs/icm/CLAUDE.hum.md` | `docs/icm/CLAUDE.md` |
+| ICM AGENTS | `docs/icm/AGENTS.hum.md` | `docs/icm/AGENTS.md` |
+| ICM maintenance Claude | `docs/icm/maintenance/CLAUDE.hum.md` | `docs/icm/maintenance/CLAUDE.md` |
+| ICM maintenance AGENTS | `docs/icm/maintenance/AGENTS.hum.md` | `docs/icm/maintenance/AGENTS.md` |
 
-## Posture — Fully Automated Agentic Development Environment (FA-ADE)
+Load the root collaborator route first. Then follow [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md) to one owning ICM card and its cited sources. Each ICM machine alias keeps its own sibling human source and byte-identical local content.
 
-This repository is a **Continuous Fully Automated Agentic Development Environment**.
+## Governance route
 
-- Agents **execute to completion** on authorized lanes: implement, push, open/update PR, re-fetch checks, and **auto-promote when dual gates are green and the task outcome is verified**.
-- **Adaptive-wait is concurrent work**, not idle handoff. While jobs run, do non-conflicting progress; do not emit operator CLI homework as a substitute for automation.
-- **Dual-gate is automated evidence**, not a human gatekeeping ritual. Promote on green + verified outcome (see `docs/ops/REFTEMPLATES-CONSOLIDATION.md`).
-- **HITL** is reserved for human-only edges in `docs/proposals/AGENTIC-PERMISSIONS.md` (credentials, history rewrite, Class 3/4 material). It is not the default development loop.
-- Size ≠ quality; mega-PRs stay **EXTRACT**.
+1. Read [`docs/proposals/registry.yaml`](docs/proposals/registry.yaml) to identify active work.
+2. Follow [`docs/proposals/PROCESS.md`](docs/proposals/PROCESS.md) for proposal lifecycle.
+3. Apply [`docs/proposals/AGENTIC-PERMISSIONS.md`](docs/proposals/AGENTIC-PERMISSIONS.md) at human-authority boundaries.
+4. Use [`docs/ARCHW1Z-GATE.md`](docs/ARCHW1Z-GATE.md) for promotion evidence.
+5. Read [`docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md`](docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md) and the canonical Siglary/Matrice links it names.
+6. Use [`docs/proposals/active/notation-sets/SIGLARY-STANDARD.md`](docs/proposals/active/notation-sets/SIGLARY-STANDARD.md), [`docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md`](docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md), and [`scripts/ci/validate_siglary_mandate.py`](scripts/ci/validate_siglary_mandate.py) for canonical mapping and enforcement.
 
-Canonical chart: [`docs/architecture/AGENT-TEAM-CONTROL-PLANE.md`](docs/architecture/AGENT-TEAM-CONTROL-PLANE.md) + `.mmd`.
+## Execution contract
 
-Regression guard: `.github/workflows/orchestration-regression-guard.yml` asserts FA-ADE markers in this file remain aligned.
+- Target `master` for integration work; use `master-staging` when the active lane names it.
+- Run `python3 scripts/ci/repo_gate.py` and `python3 scripts/ci/termux_smoke.py` before promotion.
+- Register implementation scope in `docs/proposals/active/<id>/ITEMS.md` before execution.
+- Cite `Implements: <ITEM-ID>` in commits and pull requests.
+- Extract independently reviewable work from mega-PRs #2 and #6 when their status is `GO=FALSE`.
+- Route credentials, history rewrites, and Class 3/4 material through the human-only permissions in `docs/proposals/AGENTIC-PERMISSIONS.md`.
+- Record credential names in issue #184; retain secret values in approved secret storage.
+- Record consensus through a Review log or `DEBATE.md`.
+- Promote when both required gates pass on the exact candidate SHA and the task outcome is verified.
 
-## BIUDL — operating motion
+## Operating motion
 
-**BIUDL = Broad → Integrate → Validate → Develop → Learn.**
+Use BIUDL: Broad → Integrate → Validate → Develop → Learn. Execute authorized work to a verified outcome, run non-conflicting work during WAIT, and re-fetch evidence before promotion. Keep each change reviewable and cite its source, test, or run.
 
-```text
-BROAD
-  ↓
-INTEGRATE
-  ↓
-VALIDATE
-  ↓
-DEVELOP
-  ↓
-LEARN
-  └──────────────→ BROAD (improved baseline)
-```
-
-BIUDL is the compounding development motion: a broad system view selects a focused lane; the lane is integrated and validated with attributable evidence; proven work is developed into production; learning returns to the baseline.
-
-## Governance sequence (read in order)
-
-1. **This file** — orientation + hard rules + BIUDL + FA-ADE
-1a. [`architecture.md`](architecture.md) — repository-wide system taxonomy, directory map, and data-flow entry
-2. [`docs/proposals/registry.yaml`](docs/proposals/registry.yaml) — what is active
-3. [`docs/proposals/PROCESS.md`](docs/proposals/PROCESS.md) — post / debate / consensus / close
-4. [`docs/ARCHW1Z-GATE.md`](docs/ARCHW1Z-GATE.md) — dual gates (automated)
-5. [`docs/proposals/AGENTIC-PERMISSIONS.md`](docs/proposals/AGENTIC-PERMISSIONS.md) — human-only edges
-6. [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) — adaptive wait + ops skills
-7. [`docs/ops/LANE-MATRIX.md`](docs/ops/LANE-MATRIX.md) — living session SSOT (rewrite every admin cycle)
-
-Then route the task with **[`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md)** — one verified component or process card before loading deeper source.
-
-## Hard rules
-
-- Target **`master`** for integration work (base for small PRs may be `master-staging` when that lane is active).
-- Both gates must pass before promote (automated CI + local parity):
-  - `python3 scripts/ci/repo_gate.py`
-  - `python3 scripts/ci/termux_smoke.py`
-- Do not invent work outside `docs/proposals/active/<id>/ITEMS.md` — add a row first.
-- Cite `Implements: <ITEM-ID>` on PRs/commits.
-- **No** wholesale merge of NO-GO mega-PRs (#2, #6) — extract-only.
-- **No** Class 3/4 artifacts in git (session stores, browser profiles, tokens).
-- Unposted chat is not consensus — write Review log or `DEBATE.md`.
-- **Recon before relay/build** (owner order, 2026-10-27): do recon so you know what you're touching & building. Verify decisive claims against the live record (repo contents, API, run/issue records) before relaying a report or amending a mission from it — a lane's report is an input, not evidence.
-- **Agent auto-promote** when dual-gate green **and** task outcome verified. Do not block the loop on operator CLI steps that Actions / Codespaces / self-host surfaces can run.
-- Credential inventory is **names-only** in issues (see #184). Never paste secret values.
-
-## Preferred execution loop
-
-```text
-registry.yaml → pick todo item → branch from master
-  → implement (automate surfaces: GHA, Codespaces, Docker, Render where applicable)
-  → PR with Implements: ID → dual gates green → auto-promote
-  → update ITEMS.md status
-```
-
-## Adaptive WAIT (ops)
-
-After dispatch / commit / merge attempt:
-
-1. **WAIT** is a stage — re-check jobs → steps → logs → artifacts.
-2. **Do concurrent non-conflicting work** until COMPLETE; do not treat `queued`/`in_progress` as terminal and do not park the lane on human shell commands.
-3. Stall classes: admission / queue / execution / effect / pagination / routing loop.
-4. Promote when dual gates green **and** task outcome verified (FA-ADE auto-promote).
-
-Canonical skill: `.agents/skills/adaptive-feedback-cycle/SKILL.md`
-Companion: `.github/skills/production-reconciliation/SKILL.md` (WAIT → VALIDATE → RE-FETCH)
-Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
-
-## Quick pointers
-
-| Need | Path |
-|------|------|
-| Active work | `docs/proposals/registry.yaml` |
-| How to review / close | `docs/proposals/PROCESS.md` |
-| Gates | `docs/ARCHW1Z-GATE.md` |
-| Status | `docs/ARCHW1Z-STATUS.md` |
-| Permissions / human edges | `docs/proposals/AGENTIC-PERMISSIONS.md` |
-| Repository architecture | `architecture.md` |
-| ICM task routing | `docs/icm/CLAUDE.md` |
-| Skills + adaptive wait | `docs/ops/SKILLS-INVENTORY.md` |
-| Session / lane SSOT | `docs/ops/LANE-MATRIX.md` |
-| Dependency-phase system | `docs/agentic/README.md` |
-| Credential names inventory | issue #184 (no values) |
-| BIUDL control plane | `docs/architecture/AGENT-TEAM-CONTROL-PLANE.md` |
-| Continuous capability discovery / DoE | `docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md` |
-| FA-ADE / auto-promote | `docs/ops/REFTEMPLATES-CONSOLIDATION.md` |
-| Session SSOT schema | `docs/schemas/session-ssot.md` |
-| Provider caps | `docs/schemas/provider-capabilities.md` |
-| Siglary mandate + SG rule registry | `docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md` |
-| Siglary standard | `docs/proposals/active/notation-sets/SIGLARY-STANDARD.md` |
-| Linguist notation Matrice | `docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md` |
-| Deterministic rule-map check | `scripts/ci/validate_siglary_mandate.py` (repo-gate) |
-| Linguist / CedrLang / Jules stub only | `AGENTS.md` (deprecated redirect) |
-
-## ICM + RinDig reference pins (smods)
-
-Shallow gitlinks under `refTemplates/smods/` — reference only, not runtime control plane:
-
-| Pin | Role |
-|-----|------|
-| `content-agent-routing-promptbase_fork` | Layered `CLAUDE.md` → CONTEXT routing (one collaborator, selective load) |
-| `cost-of-remembering_fork` | Filesystem-memory cost evidence (~97% fewer tokens) |
-| `AuditEngine_fork` | Audit adapt surface |
-| `icm-architect_fork` | ICM hierarchy / cards method |
-
-Gitlink ops: `workflow_dispatch` on `.github/workflows/ops-gitlink-lego-fork.yml` pattern (or specialized pin workflows). Gates never init submodules.
-
-## Security
-
-Credential rotation and history rewrite require Operator (human) authorization. See `docs/SECURITY-REMEDIATION.md`. Inventory and last-used evidence live in issue **#184** (names only).
-
----
-
-**Collaborator-Identity:** Grok (Administrator)
-**Style:** BIUDL · Continuous Fully Automated Agentic Development (FA-ADE) · agent auto-promote on dual-gate + task outcome · adaptive-wait · evidence-led
-**Status change (2026-09-24):** FA-ADE realign — agents execute to completion; dual-gate is automated evidence; HITL only on AGENTIC-PERMISSIONS edges.
-**Status change (2026-09-25):** Collaborator / Role / Name / Moniker vocabulary affirmed; dependency-phase nav + #184 Projects note linked from `docs/agentic/`.
-**Prior (2026-09-21):** Root `AGENTS.md` folded into this file and marked deprecated.
-
-## Tool acquisition routes (owner, 2026-11-01)
-
-Full text: `docs/ops/TOOL-ACQUISITION-ROUTES.md`. Summary for every install/download task:
-① Exec network calls ride an approval system — "Site always allowed" is decided per host by card (precedents: api.github.com, api.mistral.ai, mcp.deepwiki.com). ② Silent failure mode: downloads from non-whitelisted hosts (storage.googleapis.com, googlechromelabs.github.io) die at write (curl rc23/EPERM, 0-byte) with ∅ card generated — never report "platform-impossible"; correct report = "host not whitelisted ∧ no card engaged; route via ③/④". ③ Browser-channel downloads persist (~/workspace/browser_downloads). ④ GitHub-artifact route via api.github.com (precedent dd04486c). ⑤ Precedent: go.tgz 66.9MB + Go tree landed 2026-10-27.
-
-
-## Superpowers engineering workflow
-
-Repository-local skill: `.agents/skills/superpowers/SKILL.md`. Load it for feature work, bug fixes, refactors, and non-trivial engineering changes. The upstream Superpowers methodology supplements this file; it does not override proposal authorization, ICM source ownership, `AGENTIC-PERMISSIONS.md`, dual gates, or adaptive WAIT.
-
-Integration catalog and event contract: `docs/integrations/README.md`. Design and execution plan: `docs/superpowers/specs/2026-11-02-integration-intelligence-design.md` and `docs/superpowers/plans/2026-11-02-integration-intelligence.md`.
-
-
-## Continuous Capability Evolution Laboratory (CEEL)
-
-Start at docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md and follow its proposal work ledger. CEEL is the event-driven discovery and comparison lane across FOSS, external platforms and internal capabilities. It reuses the Integration Intelligence registry/event contract, DoE family/experiment schema, ATES, Delphi Oracle/EGM and proposal/dual-gate lifecycle. It creates no parallel scheduler, telemetry ledger, registry or merge authority. The initial platform cohort is Langfuse, PromptLayer, PostHog and Braintrust plus the native repository baseline; external capability claims remain unverified until pinned evidence exists. GitHub-native events are primary; bounded reconciliation is fallback. Weekly reporting is not the sensing mechanism.
-
-
-## Linguist / Siglary communication contract
-
-Load `docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md` for repo-wide DO-first writing, CAVEMAN-6, and the registered operator set. Keep OPERATORS / GLYPHS / CHORDS distinct and preserve `N∅` as chat-only.
+The session and lane source of truth is [`docs/ops/LANE-MATRIX.md`](docs/ops/LANE-MATRIX.md). The ICM chart is [`docs/architecture/AGENT-TEAM-CONTROL-PLANE.md`](docs/architecture/AGENT-TEAM-CONTROL-PLANE.md). Reference pins live under `refTemplates/smods/` and remain read-only inputs.

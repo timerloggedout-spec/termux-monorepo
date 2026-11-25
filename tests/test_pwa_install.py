@@ -4,8 +4,9 @@ Pins the installability contract for the dashboard app: a valid
 manifest naming real icons, a service worker (network-first — pages ∧
 feeds are LIVE, the cache is an offline fallback only), the
 beforeinstallprompt pill in install.js, and the four head tags on
-every shell page. admin-graph.html is excluded by design
-(self-contained, zero outbound); previews are throwaway builds.
+every shell page. admin-graph.html stays self-contained and skips duplicate
+page-level shell tags while remaining inside the installable Tribute PWA scope;
+previews are throwaway builds.
 """
 import json
 import re
@@ -68,3 +69,14 @@ def test_scripts_parse():
         r = subprocess.run(["node", "--check", str(APP / f)],
                            capture_output=True, text=True)
         assert r.returncode == 0, f"{f}: {r.stderr[:200]}"
+
+
+def test_admin_graph_is_published_inside_installable_tribute_scope():
+    manifest = json.loads((APP / "manifest.webmanifest").read_text(encoding="utf-8"))
+    graph = APP / "admin-graph.html"
+    publisher = (APP.parents[1] / ".github" / "workflows" / "tribute-dashboard-deploy.yml").read_text(encoding="utf-8")
+    assert graph.is_file() and graph.stat().st_size > 0
+    assert manifest["display"] == "standalone"
+    assert manifest["scope"] == "./"
+    assert "cp -a apps/tribute-dashboard/. _tribute/" in publisher
+    assert "cp -a _tribute/. _user_site/tribute/" in publisher

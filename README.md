@@ -1,5 +1,7 @@
 # TERMUX MONOREPO
 
+> **📱 MOBILE FIRST — PHONE IS THE PRIMARY PRODUCT TARGET.** Design, build, test, and ship every web/PWA/admin surface for touch-first phone use; desktop is the responsive enhancement. [Repository mobile-first contract](docs/ops/ADMIN-GRAPH-MOBILE-FIRST.md).
+
 > **Latest public update:** [Releases are dropping soon. Find your place(s).](https://youtube.com/shorts/i0FusuYuRUs?is=ldjFTRznW8UjLRML) · [Browse the LoggedOut Timer video & demo library](https://timerloggedout-spec.github.io/videos.html).
 
 

@@ -126,6 +126,37 @@ def load_graph_projection(index_dir: Path, surfaces: set[str], clauses: list[str
                 candidates.append(edge)
                 if len(candidates) >= max_results:
                     break
+    fingerprint_groups: dict[tuple[str, str], list[dict[str, Any]]] = {}
+    if include_similarity:
+        for node in nodes:
+            attributes = node.get("attributes", {})
+            fingerprint = attributes.get("fingerprint") if isinstance(attributes, dict) else None
+            if not isinstance(fingerprint, dict):
+                continue
+            algorithm, digest = fingerprint.get("algorithm"), fingerprint.get("hash")
+            if isinstance(algorithm, str) and isinstance(digest, str) and digest:
+                fingerprint_groups.setdefault((algorithm, digest), []).append(node)
+    fingerprint_matches = []
+    for (algorithm, digest), members in sorted(fingerprint_groups.items()):
+        if len(members) < 2:
+            continue
+        fingerprint_matches.append({
+            "type": "EXACT_FILE_FINGERPRINT_MATCH",
+            "classification": "candidate",
+            "score": 1.0,
+            "fingerprint": {"algorithm": algorithm, "hash": digest},
+            "members": [
+                {
+                    "kind": member.get("kind"),
+                    "external_id": member.get("external_id"),
+                    "url": member.get("url"),
+                }
+                for member in members
+            ],
+        })
+        if len(fingerprint_matches) >= max_results:
+            break
+
     counts: dict[str, int] = {}
     for node in nodes:
         kind = str(node.get("kind", "unknown"))
@@ -137,6 +168,8 @@ def load_graph_projection(index_dir: Path, surfaces: set[str], clauses: list[str
         "nodes": nodes,
         "similarity_candidate_count": len(candidates),
         "similarity_candidates": candidates,
+        "fingerprint_match_count": len(fingerprint_matches),
+        "fingerprint_matches": fingerprint_matches,
     }
 
 

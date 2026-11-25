@@ -1,6 +1,6 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-25T10:17:30Z",
+ "generated_at": "2026-11-25T10:30:35Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
@@ -16,7 +16,7 @@
   "2": {
    "tier": 2,
    "queued": 0,
-   "in_progress": 2,
+   "in_progress": 1,
    "oldest_queued_at": null,
    "by_workflow_queued": {}
   },
@@ -29,11 +29,13 @@
   },
   "4": {
    "tier": 4,
-   "queued": 6,
-   "in_progress": 7,
+   "queued": 39,
+   "in_progress": 17,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "Quota Dispatch Tree": 1,
+    "Agent Throughput Evidence": 17,
+    "lane events recorder": 16,
+    "repo-tracking-collect": 1,
     "termux smoke": 1,
     "Agent PR Jules Handoff": 1,
     "PR Change Effectiveness Ledger": 1,
@@ -43,8 +45,8 @@
   }
  },
  "totals": {
-  "queued": 9,
-  "in_progress": 10
+  "queued": 42,
+  "in_progress": 19
  },
  "wedged_ancient": [
   {
@@ -203,12 +205,12 @@
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
    "1": 4,
-   "2": 2,
+   "2": 1,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 6,
-  "default_t4": 13,
+  "explicit_total": 5,
+  "default_t4": 56,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

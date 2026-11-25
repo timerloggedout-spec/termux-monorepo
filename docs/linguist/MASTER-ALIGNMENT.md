@@ -33,6 +33,8 @@ Do not replay historical commits wholesale. Recover behaviors by provenance, iso
 
 Register all seven active Agent machine surfaces against their unique sibling `*.hum.md` sources in `scripts/cedrlang/render_contact_projections.py`. The current projection preserves source bytes exactly until a reversible notation has approved round-trip evidence. Keep each local ICM Claude/AGENTS alias byte-identical; retain the historical root `AGENTS.md` projection as provenance and route active work through the registered per-Agent pairs.
 
+Related evidence: the [FLY-006 human-readable parity audit](https://github.com/timerloggedout-spec/termux-monorepo/blob/74e48656cd817e99c6665bc3822f4052fefd1130/docs/linguist/FLY-006-SIDECAR-OVERLAY-ADAPTATION.md#4-human-readable-parity) directly informs [PR #5889](https://github.com/timerloggedout-spec/termux-monorepo/pull/5889): #5889 records the seven Agent-doc source pairs and byte-preserving projection; the audit’s blob-hash provenance ledger and content-addressed overlay loader remain separate follow-on work.
+
 ### Phase 3 — taxonomy/index integration
 
 Connect INDEX Taxonomy, Concept/Pointer/Alias indexes, ICM relationship records, and the living lexicon without creating a monolithic replacement index.

@@ -19,10 +19,11 @@ Every change that wants to reach `master` should survive both gates.
 
 ---
 
-## Gate 1 — repo-gate (on `master-staging`)
+## Gate 1 — repo-gate + Siglary (on `master-staging`)
 
 ```bash
 python3 scripts/ci/repo_gate.py
+python3 scripts/ci/validate_siglary_mandate.py --base origin/master
 ```
 
 Workflow: `.github/workflows/repo-gate.yml`

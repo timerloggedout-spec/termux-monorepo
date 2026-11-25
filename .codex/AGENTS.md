@@ -1,37 +1,37 @@
 # ECC for Codex CLI
 
-This supplements the root `AGENTS.md` with a repo-local ECC baseline.
+This human source pairs with the Codex-specific instruction surface. The Linguist registry maps the source byte-for-byte; its current entry is `.codex/AGENTS.hum.md`.
 
-## Repo Skill
+## Siglary name mapping
 
-- Repo-generated Codex skill: `.agents/skills/termux-monorepo/SKILL.md`
-- Claude-facing companion skill: `.claude/skills/termux-monorepo/SKILL.md`
-- Keep user-specific credentials and private MCPs in `~/.codex/config.toml`, not in this repo.
+The notation system's name of record is **Siglary**, per [the Notation Matrice](../docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md) and [the Siglary Standard](../docs/proposals/active/notation-sets/SIGLARY-STANDARD.md). Retain `CAVEMAN-MICRO-DENSE-V2.md` as the legacy Matrice path. Treat the superseded working title “Caveman Micro Dense 🧬 v2” and the other repositories’ proper names “Caveman” and “CEDRLang” as prior art.
 
-## MCP Baseline
+## Repository skill
 
-Treat `.codex/config.toml` as the default ECC-safe baseline for work in this repository.
-The generated baseline enables GitHub, Context7, Exa, Memory, Playwright, and Sequential Thinking.
+- Use `.agents/skills/termux-monorepo/SKILL.md` for repository workflows.
+- Use `.claude/skills/termux-monorepo/SKILL.md` for Claude-specific companion guidance.
+- Store private credentials and MCP configuration in `~/.codex/config.toml`.
 
-## Context7 research contract
+## MCP baseline
 
-- Resolve a library/product to its Context7 ID before querying unless a valid ID/version was supplied.
-- Prefer official sources and the repository-pinned version; ask focused, concept-specific questions.
-- Cross-check consequential security, migration, compatibility, and deployment claims against primary documentation and repository config.
-- Adapt examples to local conventions and tests; do not treat retrieved snippets as implementation proof.
-- Never send secrets, credentials, private source, personal data, or confidential prompts to documentation lookup.
-- Record meaningful version/uncertainty details when technical guidance changes.
+Use `.codex/config.toml` as the ECC-safe work baseline. Its generated defaults enable GitHub, Context7, Exa, Memory, Playwright, and Sequential Thinking.
 
-See `docs/ops/CONTEXT7-MINTLIFY-INTEGRATION.md` for the full shared workflow.
+## Context7 research
 
-## Multi-Agent Support
+- Resolve each library or product to a Context7 ID before querying unless the task supplies a valid ID and version.
+- Prefer official documentation and the repository-pinned version.
+- Cross-check security, migration, compatibility, and deployment claims against primary sources and repository configuration.
+- Adapt examples to local conventions and tests; use retrieved snippets as research inputs.
+- Exclude secrets, credentials, private source, personal data, and confidential prompts from documentation queries.
+- Record version and uncertainty details when technical guidance changes.
+- Follow [`docs/ops/CONTEXT7-MINTLIFY-INTEGRATION.md`](../docs/ops/CONTEXT7-MINTLIFY-INTEGRATION.md) for the shared workflow.
 
-- Explorer: read-only evidence gathering
-- Reviewer: correctness, security, and regression review
-- Docs researcher: API and release-note verification
+## Multi-agent support
 
-## Workflow Files
+- Explorer: gather read-only evidence.
+- Reviewer: assess correctness, security, and regressions.
+- Docs researcher: verify APIs and release notes.
 
-- No dedicated workflow command files were generated for this repo.
+## Workflow files
 
-Use these workflow files as reusable task scaffolds when the detected repository workflows recur.
+Workflow command-file generation state: UNGENERATED. Reuse workflow files as task scaffolds when repository workflows recur.

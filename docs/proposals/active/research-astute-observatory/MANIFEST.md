@@ -10,7 +10,8 @@ reviewers:
   - id: timerloggedout-spec
     role: operator-authorizer
     status: accepted
-related_prs: []
+related_prs:
+  - 5872
 related_branches:
   - feat/research-astute-observatory-20261125b
 gates_required:

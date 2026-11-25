@@ -65,6 +65,31 @@ def test_rate_limit_403_defers_to_reset(monkeypatch):
     assert "resource=core" in str(caught.value)
 
 
+def test_secondary_limit_honors_retry_after_before_hourly_reset(monkeypatch):
+    reset = int((datetime.now(timezone.utc)
+                 + timedelta(hours=1)).timestamp())
+    headers = Message()
+    headers["X-RateLimit-Remaining"] = "2500"
+    headers["X-RateLimit-Reset"] = str(reset)
+    headers["Retry-After"] = "75"
+    error = urllib.error.HTTPError(
+        "https://api.github.com/repos/example/repo/issues",
+        403, "Forbidden", headers,
+        io.BytesIO(b'{"message":"You have exceeded a secondary rate limit"}'),
+    )
+
+    def fail_request(*_args, **_kwargs):
+        raise error
+
+    monkeypatch.setattr(dw.urllib.request, "urlopen", fail_request)
+    before = datetime.now(timezone.utc)
+    with pytest.raises(dw.RateLimitDeferred) as caught:
+        dw._request("GET", "https://api.github.com/repos/example/repo/issues",
+                    "installation-token")
+    assert timedelta(seconds=74) <= caught.value.defer_until - before \
+        <= timedelta(seconds=76)
+
+
 def test_permission_403_remains_a_hard_error(monkeypatch):
     headers = Message()
     headers["X-RateLimit-Remaining"] = "100"

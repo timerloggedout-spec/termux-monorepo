@@ -29,7 +29,7 @@ GitHub object creation/retrieval is available in this session; a local checkout 
 - Branch: `feat/ceel-006-concept-competition-20261125`
 - Pull request: #5908
 - Candidate references: 8 metadata-first concept adaptations across five refTemplates categories.
-- Capability graph: 20 nodes, 27 edges; structural validation reports 0 unresolved endpoints or duplicate IDs/edges.
+- Capability graph: 21 nodes, 31 edges; structural validation reports 0 unresolved endpoints or duplicate IDs/edges. The managed Foundry platform is recorded separately from its component projects.
 - Inventory: categories 01–14; research-template scoring remains a separate profile under 15_.
 - Capability score: metadata readiness only; efficacy remains unmeasured until controlled runs.
 - Licensing: designated licensing duty owner retains that responsibility; CEEL records capability/source evidence and the handoff boundary.

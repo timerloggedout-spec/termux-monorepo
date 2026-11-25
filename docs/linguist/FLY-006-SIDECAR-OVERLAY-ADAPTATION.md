@@ -153,7 +153,7 @@ New overlay acceptance fixtures:
 6. **Land renderer/materializer:** disposable tree only; preserve source and executable tokens.
 7. **Wire Matrice:** concept IDs and typed operator/glyph/chord references; use Matrice validation before overlay issuance.
 8. **Wire panel feed:** expose overlay counts, stale/fail-closed counts and actual round-trip outcomes from runtime evidence; keep count-only/private data excluded.
-9. **Screen treatments:** representation screening first; compare context placement and surface only for treatments that pass; reserve factorial interaction testing for finalists under the recovered design. Apply quality floors and held-out replication before promotion.
+9. **Pre-register and screen treatments:** create `experiments/doe/siglary-context-tournament/DESIGN.json`, `MANIFEST.json`, `tasks/`, and `assignments/` under the existing DoE family record contract; stratify task difficulty and surface, randomize treatment order, and record primary quality floors plus analysis/replication rules before execution. Then run representation screening → MVT placement/surface comparison → factorial interaction testing for finalists → held-out replication. Preserve failed, skipped, censored, and manually intervened runs.
 10. **Promotion:** comment/documentation-only patch, exact-head repo-gate and termux-smoke, dual review.
 
 ## FLY-006 handoff status

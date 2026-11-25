@@ -51,8 +51,17 @@ frame — no new governor constants). Binding on this build's landing.
    stamped in the claim comment). A claim with no execution state
    change (no non-watchdog comment) inside its window releases back
    to the pool: lease-release comment + label removal, and the
-   filing re-enters ranking for re-claim. Manual claims carry no
-   lease and are never reclaimed by this machinery.
+   filing re-enters ranking for re-claim. Manual claims use direct ownership
+   and remain authoritative across automated release effects.
+   A release is a terminal transition for its matching lease: the newest
+   claim/release event determines live ownership, while older claim
+   comments remain audit history. Release receipts carry the originating
+   claim timestamp, so a concurrent manual claim stays authoritative. Legacy receipts
+   close a lease only after its stamped expiry, protecting a fresh claim from
+   delayed effects emitted by an older watchdog run.
+   Stall resolution remains historical evidence after release; the
+   release itself opens a new lease-release stall event for the next claim.
+   Each lease emits at most one release receipt.
 7. **SIE gap feed.** Every auto-claim, failed placement, and lease
    release emits a record into `ops/que/feeds/stall-gap-feed.json`
    (schema `que.stall-gap/v1`, gap class `escalation-stall`, counts

@@ -33,6 +33,7 @@ jobs:
           fetch-depth: 1
           submodules: false
 
+      # QSR-LEASE-001: execute QUE lease lifecycle regressions on every PR smoke.
       - name: Smoke gate regression tests
         run: python3 -B -m unittest discover -s tests -p 'test_termux_smoke.py' -v
 
@@ -40,6 +41,9 @@ jobs:
         run: |
           python3 -m pip install --disable-pip-version-check --quiet PyYAML pytest
           python3 -m pytest -q tests/test_bucket_headroom.py tests/test_bucket_headroom_workflow.py
+
+      - name: Dispatch lease lifecycle regression tests
+        run: python3 -m pytest -q scripts/dispatch/test_auto_claim.py scripts/dispatch/test_dispatch_watchdog.py
 
       - name: Core smoke (required)
         run: python3 scripts/ci/termux_smoke.py

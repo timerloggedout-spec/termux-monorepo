@@ -168,10 +168,15 @@ def queued_since(issue: dict, comments: list) -> datetime:
 
 def has_claim(issue: dict, comments: list) -> bool:
     labels = {l["name"] for l in issue.get("labels") or []}
-    if "dispatch-claimed" in labels:
+    # The newest claim/release transition is authoritative. A released
+    # auto-claim remains in comment history and must not keep the task
+    # permanently claimed (or let a stale label replay the release).
+    if claim_of(comments) is not None:
         return True
-    return any(CLAIM_MARKER in (c.get("body") or "")
-               for c in comments)
+    if any(CLAIM_MARKER in (c.get("body") or "") for c in comments):
+        return False
+    # Preserve label-only/manual claims when claim history is absent.
+    return "dispatch-claimed" in labels
 
 
 def _posted(comments: list, marker: str) -> bool:
@@ -403,15 +408,41 @@ def _run_auto_claim(repo: str, token: str, now: datetime,
         ctx = ctx_by_issue[rel["issue"]]
         base = f"{API}/repos/{repo}/issues/{rel['issue']}"
         try:
+            fresh_comments = _get_all(f"{base}/comments", token)
+            fresh_claim = claim_of(fresh_comments)
+            fresh_body = latest_claim_body(fresh_comments)
+            if (not fresh_claim or fresh_claim.get("at") != rel.get("claim_at")
+                    or not auto_claim._LEASE_RE.search(fresh_body)):
+                ctx["verdict"]["action"] = "lease-release-skipped-newer-claim"
+                continue
             _request("POST", f"{base}/comments", token,
                      {"body": auto_claim.lease_release_comment(
                          claim_class=rel["claim_class"],
-                         claimant=rel["claimant"], now=now)})
+                         claimant=rel["claimant"], now=now,
+                         claim_at=rel.get("claim_at"))})
+            latest_comments = _get_all(f"{base}/comments", token)
+            latest_claim = claim_of(latest_comments)
+            latest_body = latest_claim_body(latest_comments)
+            if latest_claim and (
+                    latest_claim.get("at") != rel.get("claim_at")
+                    or not auto_claim._LEASE_RE.search(latest_body)):
+                ctx["verdict"]["action"] = "lease-released-manual-claim-preserved"
+                continue
             try:
                 _request("DELETE", f"{base}/labels/dispatch-claimed",
                          token)
             except Exception:
                 pass  # label may not be present; the release stands
+            final_comments = _get_all(f"{base}/comments", token)
+            final_claim = claim_of(final_comments)
+            final_body = latest_claim_body(final_comments)
+            if final_claim and (
+                    final_claim.get("at") != rel.get("claim_at")
+                    or not auto_claim._LEASE_RE.search(final_body)):
+                _request("POST", f"{base}/labels", token,
+                         {"labels": ["dispatch-claimed"]})
+                ctx["verdict"]["action"] = "lease-released-manual-claim-preserved"
+                continue
             ctx["verdict"]["action"] = "lease-released"
         except Exception as exc:
             ctx["verdict"]["action"] = f"ERROR: {exc}"
@@ -519,16 +550,23 @@ FEED_PATHS = ("ops/challenge/dispatch-state-feed.json",
 _FEED_STATES = {"claimed": "claimed", "escalated": "escalated"}
 
 
-def claim_of(comments: list) -> dict | None:
-    """The claim of record from the first PRODUCER CLAIM comment:
-    {by, at} -- by = the claiming role (header or `- role:` line, else
-    the `- producer:` line), at = the comment's `- claimed at:` stamp,
-    else the comment's own creation time. None when no claim comment
-    exists (a label-only claim carries no by/at of record)."""
-    for c in comments:
+def _claim_record(comments: list, active_only: bool) -> dict | None:
+    """Resolve the newest claim, optionally applying lease closure."""
+    for index in range(len(comments) - 1, -1, -1):
+        c = comments[index]
         body = c.get("body") or ""
         if CLAIM_MARKER not in body:
             continue
+        lease = auto_claim._LEASE_RE.search(body)
+        stamp = re.search(r"^-\s*claimed at:\s*(\S+)", body, re.M)
+        claim_at = stamp.group(1) if stamp else c.get("created_at")
+        if active_only and lease:
+            for later in comments[index + 1:]:
+                later_body = later.get("body") or ""
+                if (auto_claim.LEASE_RELEASE_MARKER in later_body
+                        and auto_claim.release_matches_lease(
+                            later_body, claim_at, lease.group(3))):
+                    return None
         by = None
         for pat in (r"@\{role:\{([^}]+)\}\}", r"^-\s*role:\s*(.+)$",
                     r"^-\s*producer:\s*(.+)$"):
@@ -536,13 +574,38 @@ def claim_of(comments: list) -> dict | None:
             if m:
                 by = m.group(1).strip()
                 break
-        m = re.search(r"^-\s*claimed at:\s*(\S+)", body, re.M)
-        out = {"by": by, "at": m.group(1) if m else c.get("created_at")}
+        out = {"by": by, "at": claim_at}
         if c.get("html_url"):
             out["ref"] = c["html_url"]
         return out
     return None
 
+
+def claim_of(comments: list) -> dict | None:
+    """Return current ownership; releases close only their matching auto lease.
+
+    Manual claims remain authoritative, while legacy release receipts close
+    the preceding automated lease when no correlation timestamp exists.
+    """
+    return _claim_record(comments, active_only=True)
+
+
+def stall_resolution_of(comments: list) -> dict | None:
+    """Return the latest historical claim that resolved the stall.
+
+    Lease release changes ownership, while preserving the earlier stall
+    resolution as audit evidence until a later claim resolves a new stall.
+    """
+    return _claim_record(comments, active_only=False)
+
+
+def latest_claim_body(comments: list) -> str:
+    """Return the newest claim receipt body for lease-type checks."""
+    for comment in reversed(comments):
+        body = comment.get("body") or ""
+        if CLAIM_MARKER in body:
+            return body
+    return ""
 
 def stall_events_of(comments: list) -> list:
     """Machine stall events: one {at, kind} per `stall-event:` line in
@@ -567,16 +630,28 @@ def feed_row(issue: dict, comments: list, verdict: dict,
     tier_index, tier_name = current_tier(tb, now)
     wall_iso, wall_in_min = task_ranking.nearest_wall(tb, now)
     claim = claim_of(comments)
+    resolution_claim = stall_resolution_of(comments)
     stalls = stall_events_of(comments)
-    if claim:
-        # QUE #5286 point 2: a claim resolves the STALL (never the
-        # task) -- open stall events close with the claim as their
-        # resolution ref, and the stall clock stops.
+    if resolution_claim:
+        # Claiming resolves the stall; lease release changes ownership
+        # but preserves that historical resolution. A later lease-release
+        # event remains open until a subsequent claim resolves it.
+        try:
+            claim_time = parse_ts(str(resolution_claim.get("at")))
+        except (TypeError, ValueError):
+            claim_time = None
         for event in stalls:
-            event["resolved"] = True
-            event["resolution"] = (
-                f"claim by {claim.get('by')} at {claim.get('at')}"
-                + (f" ({claim['ref']})" if claim.get("ref") else ""))
+            try:
+                event_time = parse_ts(str(event.get("at")))
+            except (TypeError, ValueError):
+                continue
+            if claim_time and event_time <= claim_time:
+                event["resolved"] = True
+                event["resolution"] = (
+                    f"claim by {resolution_claim.get('by')} at "
+                    f"{resolution_claim.get('at')}"
+                    + (f" ({resolution_claim['ref']})"
+                       if resolution_claim.get("ref") else ""))
     return {
         "issue": issue["number"],
         "title": issue.get("title"),

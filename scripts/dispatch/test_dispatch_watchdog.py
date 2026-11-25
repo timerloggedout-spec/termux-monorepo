@@ -58,6 +58,48 @@ def test_claim_by_label_and_by_comment():
         "claimed"
 
 
+
+def test_released_auto_claim_is_unclaimed_until_a_new_claim_receipt():
+    import auto_claim as ac
+
+    old_at = NOW - timedelta(minutes=300)
+    old_body = ac.auto_claim_comment(
+        claim_class="executor", claimant="dispatch-executor", rank=1,
+        score=10, now=old_at, trigger="escalation")
+    release_at = NOW - timedelta(minutes=170)
+    release_body = ac.lease_release_comment(
+        claim_class="executor", claimant="dispatch-executor",
+        now=release_at)
+    comments = [
+        _comment("ROUTING RECEIPT — task accepted", 310),
+        _comment("DISPATCH WATCHDOG — ESCALATION — prior stall", 305),
+        {"body": old_body, "created_at": old_at.strftime("%Y-%m-%dT%H:%M:%SZ")},
+        {"body": release_body, "created_at": release_at.strftime("%Y-%m-%dT%H:%M:%SZ")},
+    ]
+    issue = _issue(minutes_old=310, labels=("dispatch-claimed",))
+    assert claim_of(comments) is None
+    assert has_claim(issue, comments) is False
+    assert classify(issue, comments, NOW)["state"] == "escalated"
+
+    new_at = NOW - timedelta(minutes=10)
+    new_body = ac.auto_claim_comment(
+        claim_class="executor", claimant="dispatch-executor", rank=1,
+        score=10, now=new_at, trigger="escalation")
+    comments.append({
+        "body": new_body,
+        "created_at": new_at.strftime("%Y-%m-%dT%H:%M:%SZ"),
+    })
+    assert claim_of(comments)["at"] == new_at.strftime("%Y-%m-%dT%H:%M:%SZ")
+    assert has_claim(issue, comments) is True
+    legacy_release = ac.lease_release_comment(
+        claim_class="executor", claimant="dispatch-executor", now=NOW)
+    comments.append({
+        "body": legacy_release,
+        "created_at": NOW.strftime("%Y-%m-%dT%H:%M:%SZ"),
+    })
+    assert claim_of(comments)["at"] == new_at.strftime("%Y-%m-%dT%H:%M:%SZ")
+    assert classify(issue, comments, NOW)["state"] == "claimed"
+
 def test_thresholds_and_dedupe():
     young = classify(_issue(minutes_old=10),
                      [_comment("ROUTING RECEIPT", 10)], NOW)
@@ -377,3 +419,93 @@ def test_auto_claim_accepts_structured_task_ranking_result(monkeypatch):
     assert len(claim_posts) == 1
     assert "score 321.0" in claim_posts[0]
     assert gap_records[0]["kind"] == "auto_claimed"
+
+
+
+def test_release_receipt_preserves_a_newer_manual_claim():
+    import auto_claim as ac
+
+    old_at = NOW - timedelta(minutes=180)
+    old_body = ac.auto_claim_comment(
+        claim_class="executor", claimant="dispatch-executor", rank=1,
+        score=10, now=old_at, trigger="escalation")
+    manual = _comment("PRODUCER CLAIM — manual pickup", 0)
+    release = ac.lease_release_comment(
+        claim_class="executor", claimant="dispatch-executor", now=NOW,
+        claim_at=old_at.strftime("%Y-%m-%dT%H:%M:%SZ"))
+    comments = [
+        {"body": old_body, "created_at": old_at.strftime("%Y-%m-%dT%H:%M:%SZ")},
+        manual,
+        {"body": release, "created_at": NOW.strftime("%Y-%m-%dT%H:%M:%SZ")},
+    ]
+    active = claim_of(comments)
+    assert active is not None
+    assert active["at"] == manual["created_at"]
+    issue = _issue(minutes_old=300, labels=("dispatch-claimed",))
+    assert has_claim(issue, comments) is True
+    assert classify(issue, comments, NOW)["state"] == "claimed"
+
+
+def test_released_claim_keeps_prior_stall_resolution_and_opens_release_event():
+    import auto_claim as ac
+
+    claim_at = NOW - timedelta(minutes=130)
+    claim_body = ac.auto_claim_comment(
+        claim_class="executor", claimant="dispatch-executor", rank=1,
+        score=10, now=claim_at, trigger="escalation")
+    release_at = NOW - timedelta(minutes=5)
+    release_body = ac.lease_release_comment(
+        claim_class="executor", claimant="dispatch-executor",
+        now=release_at,
+        claim_at=claim_at.strftime("%Y-%m-%dT%H:%M:%SZ"))
+    comments = [
+        _comment("stall-event: escalation", 145),
+        {"body": claim_body, "created_at": claim_at.strftime("%Y-%m-%dT%H:%M:%SZ")},
+        {"body": release_body, "created_at": release_at.strftime("%Y-%m-%dT%H:%M:%SZ")},
+    ]
+    row = _row(_issue(number=88, minutes_old=150), comments)
+    assert row["claim"] is None
+    assert row["stall_events"][0]["resolved"] is True
+    assert row["stall_events"][1]["kind"] == "lease-release"
+    assert "resolved" not in row["stall_events"][1]
+
+
+
+def test_release_planning_rechecks_newer_manual_claim_before_effects(monkeypatch):
+    import dispatch_watchdog as dw
+    import auto_claim as ac
+
+    old_at = NOW - timedelta(minutes=180)
+    old_body = ac.auto_claim_comment(
+        claim_class="executor", claimant="dispatch-executor", rank=1,
+        score=10, now=old_at, trigger="escalation")
+    manual = _comment("PRODUCER CLAIM — manual pickup", 1)
+    original_comments = [
+        {"body": old_body, "created_at": old_at.strftime("%Y-%m-%dT%H:%M:%SZ")},
+    ]
+    fresh_comments = original_comments + [manual]
+    calls = []
+    monkeypatch.setattr(
+        dw.task_ranking, "nearest_wall", lambda _tb, _now: (None, None))
+    monkeypatch.setattr(
+        dw.task_ranking, "score_dispatch",
+        lambda _row: {"score": 10, "components": {}})
+    monkeypatch.setattr(dw, "_get_all", lambda _url, _token: fresh_comments)
+    monkeypatch.setattr(
+        dw, "_request",
+        lambda method, url, token, payload=None:
+            calls.append((method, url, payload)) or {})
+
+    context = {
+        "issue": {
+            "number": 89, "body": "", "labels": [{"name": "dispatch-claimed"}],
+            "user": {"login": "filer"},
+        },
+        "comments": original_comments,
+        "verdict": {"state": "claimed", "action": None,
+                    "age_min": 200.0, "tier": "BASE", "entry": None},
+    }
+    dw._run_auto_claim("owner/repo", "token", NOW, [context], {}, [])
+
+    assert context["verdict"]["action"] == "lease-release-skipped-newer-claim"
+    assert calls == []

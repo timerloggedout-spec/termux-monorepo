@@ -9,9 +9,9 @@ priority: P1
 reviewers:
   - {id: timerloggedout-spec, role: operator-authorizer, status: accepted}
   - {id: ChatGPT, role: author+executor, status: executing}
-related_issues: [5214]
-related_prs: [5207, 5523]
-related_branches: [feat/que-brr-clean-integration-2026-11-16]
+related_issues: [4164, 5214, 5286]
+related_prs: [5207, 5523, 5859]
+related_branches: [feat/que-brr-clean-integration-2026-11-16, fix/dispatch-lease-release-idempotency]
 gates_required: [repo-gate, proposal-lifecycle, termux-smoke]
 ---
 

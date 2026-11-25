@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """QUE auto-claim + auto-resolve (QUE #5286): close the escalation
-stall. Pure decision logic for the dispatch watchdog's claim leg;
-the watchdog performs the API effects.
+stall. QSR-LEASE-001: pure decision logic for the dispatch watchdog's
+claim leg; the watchdog performs the API effects.
 
 Timing decision of record (owner c.6843045932, QDesk decision
 c.6843060529, Cadence countersign c.6843070784 — binding on landing):
@@ -27,6 +27,7 @@ from datetime import datetime, timedelta, timezone
 AUTO_CLAIM_MARKER = "<!-- auto-claim:v1 -->"
 LEASE_RELEASE_MARKER = "<!-- auto-claim-lease-release:v1 -->"
 CLAIM_FAILED_MARKER = "auto-claim-failed:"
+PRODUCER_CLAIM_MARKER = "PRODUCER CLAIM"
 STANDARD_ESCALATE_MIN = 15       # timing decision: supersedes BASE 60
 STALL_CEILING_MIN = 30           # stall-to-claim ceiling (breach = event)
 WALL_ADMISSION_MIN = 48 * 60     # wall-bound <=48h claims on admission
@@ -99,20 +100,63 @@ def failed_claim_count(comments) -> int:
                for c in comments)
 
 
+def release_matches_lease(release_body, claim_at, lease_expires_s):
+    """Match a release receipt to one lease, including legacy receipts.
+
+    Correlated receipts match the claim timestamp exactly. For legacy
+    receipts, the embedded release time must reach the lease expiry before
+    it can close the newest claim; this protects a fresh lease from a late
+    release emitted by an older watchdog run.
+    """
+    release_claim = re.search(
+        r"^- claim-at:\s*(\S+)", release_body, re.M)
+    if release_claim:
+        return bool(claim_at and release_claim.group(1) == claim_at)
+    release_time = re.search(
+        r"\((\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z)\)\.",
+        release_body)
+    if release_time and lease_expires_s:
+        try:
+            released_at = datetime.strptime(
+                release_time.group(1), "%Y-%m-%dT%H:%M:%SZ").replace(
+                tzinfo=timezone.utc)
+            expires_at = datetime.strptime(
+                lease_expires_s, "%Y-%m-%dT%H:%M:%SZ").replace(
+                tzinfo=timezone.utc)
+        except ValueError:
+            return False
+        return released_at >= expires_at
+    return False
+
+
 def lease_of(comments):
-    """(claim_class, claimant, lease_expires datetime) parsed from
-    the auto-claim comment, else None. Manual claims carry no lease
-    and are never reclaimed by this machinery."""
-    for c in comments:
-        m = _LEASE_RE.search(c.get("body") or "")
-        if m:
-            try:
-                expires = datetime.strptime(
-                    m.group(3), "%Y-%m-%dT%H:%M:%SZ").replace(
-                    tzinfo=timezone.utc)
-            except ValueError:
+    """Return the latest active auto-claim lease, else None.
+
+    Release receipts correlate by the originating claim timestamp.
+    Legacy receipts close only after the newest lease has expired.
+    Manual claims carry no lease and remain authoritative across releases.
+    """
+    for index in range(len(comments) - 1, -1, -1):
+        body = comments[index].get("body") or ""
+        if PRODUCER_CLAIM_MARKER not in body:
+            continue
+        match = _LEASE_RE.search(body)
+        if not match:
+            return None
+        stamp = re.search(r"^- claimed at:\s*(\S+)", body, re.M)
+        claim_at = stamp.group(1) if stamp else None
+        try:
+            expires = datetime.strptime(
+                match.group(3), "%Y-%m-%dT%H:%M:%SZ").replace(
+                tzinfo=timezone.utc)
+        except ValueError:
+            return None
+        for later in comments[index + 1:]:
+            later_body = later.get("body") or ""
+            if LEASE_RELEASE_MARKER in later_body and release_matches_lease(
+                    later_body, claim_at, match.group(3)):
                 return None
-            return m.group(1), m.group(2), expires
+        return match.group(1), match.group(2), expires, claim_at
     return None
 
 
@@ -164,14 +208,17 @@ def auto_claim_comment(*, claim_class, claimant, rank, score, now,
     )
 
 
-def lease_release_comment(*, claim_class, claimant, now) -> str:
+def lease_release_comment(*, claim_class, claimant, now,
+                         claim_at=None) -> str:
     stamp = now.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    correlation = f"- claim-at: {claim_at}\n" if claim_at else ""
     return (
         f"[MUSEai]@{{role:{{dispatch-watchdog}}}} LEASE RELEASE — "
         f"the auto-claim by {claimant} ({claim_class} class) expired "
         f"with no execution state change inside its lease window "
         f"({stamp}). The claim is released back to the pool for "
         f"re-claim by rank; the stall reopens.\n\n"
+        f"{correlation}"
         f"stall-event: lease-release class={claim_class} "
         f"claimant={claimant}\n"
         f"{LEASE_RELEASE_MARKER}"
@@ -213,7 +260,8 @@ def plan(candidates, now):
                 if claimed_at and not has_execution_activity(comments, claimed_at):
                     releases.append({"issue": issue["number"],
                                      "claim_class": lease[0],
-                                     "claimant": lease[1]})
+                                     "claimant": lease[1],
+                                     "claim_at": lease[3]})
             continue
         escalated = verdict.get("action") == "escalate" or state == "escalated"
         admission = (cand.get("wall_in_min") is not None
@@ -267,7 +315,8 @@ def gap_records(plan_result, now):
         records.append({"at": stamp, "kind": "lease_released",
                         "issue": rel["issue"],
                         "claim_class": rel["claim_class"],
-                        "claimant": rel["claimant"]})
+                        "claimant": rel["claimant"],
+                        "claim_at": rel.get("claim_at")})
     return records
 
 

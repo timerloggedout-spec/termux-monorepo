@@ -25,6 +25,11 @@ on:
         required: false
         default: "false"
 
+concurrency:
+  group: dispatch-watchdog-${{ github.repository }}
+  cancel-in-progress: false
+  queue: max
+
 permissions:
   issues: write
   contents: write

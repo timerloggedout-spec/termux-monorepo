@@ -126,6 +126,54 @@ def test_lease_release_only_when_expired_and_idle():
     assert not ac.plan([manual], NOW)["releases"]  # manual claims: no lease
 
 
+
+def test_lease_of_uses_latest_claim_and_closes_released_lease():
+    old_at = NOW - timedelta(minutes=300)
+    old_body = ac.auto_claim_comment(
+        claim_class="executor", claimant="dispatch-executor", rank=1,
+        score=10, now=old_at, trigger="escalation")
+    release_at = NOW - timedelta(minutes=170)
+    release_body = ac.lease_release_comment(
+        claim_class="executor", claimant="dispatch-executor",
+        now=release_at, claim_at=old_at.strftime(TS))
+    history = [
+        {"body": old_body, "created_at": old_at.strftime(TS)},
+        {"body": release_body, "created_at": release_at.strftime(TS)},
+    ]
+    assert ac.lease_of(history) is None
+    released = cand(state="claimed", comments=history,
+                    claim={"at_dt": old_at})
+    assert ac.plan([released], NOW)["releases"] == []
+
+    new_at = NOW - timedelta(minutes=30)
+    new_body = ac.auto_claim_comment(
+        claim_class="executor", claimant="dispatch-executor", rank=1,
+        score=10, now=new_at, trigger="escalation")
+    history.append({"body": new_body, "created_at": new_at.strftime(TS)})
+    lease = ac.lease_of(history)
+    assert lease == (
+        "executor", "dispatch-executor",
+        new_at + timedelta(minutes=120), new_at.strftime(TS),
+    )
+    stale_release = ac.lease_release_comment(
+        claim_class="executor", claimant="dispatch-executor",
+        now=NOW, claim_at=old_at.strftime(TS))
+    history.append({"body": stale_release, "created_at": NOW.strftime(TS)})
+    assert ac.lease_of(history) == lease  # correlated old release cannot close a new lease
+    legacy_release = ac.lease_release_comment(
+        claim_class="executor", claimant="dispatch-executor", now=NOW)
+    history.append({"body": legacy_release, "created_at": NOW.strftime(TS)})
+    assert ac.lease_of(history) == lease  # late legacy release predates new expiry
+    malformed_release = {
+        "body": ac.LEASE_RELEASE_MARKER,
+        "created_at": NOW.strftime(TS),
+    }
+    history.append(malformed_release)
+    assert ac.lease_of(history) == lease  # malformed receipt remains audit-only
+
+    history.append(comment("PRODUCER CLAIM — manual pickup", minutes_ago=0))
+    assert ac.lease_of(history) is None
+
 def test_gap_records_and_feed_counts():
     plan = ac.plan([cand(number=7, body=SWARM_BUILD),
                     cand(number=8, body="unstamped")], NOW)

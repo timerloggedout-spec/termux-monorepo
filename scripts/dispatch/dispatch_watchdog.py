@@ -35,9 +35,10 @@ tier frame + a machine-readable `stall-event:` line, on the
 issue record where receipts and claims already live.
 
 Runs in Actions (.github/workflows/dispatch-watchdog.yml, every
-15 min + on dispatch) on the Termux Fleet Swarm App token (the
-default token's rate bucket is exhausted in this repo — see
-#4164). --flag-min / --escalate-min override the BASE tier only.
+15 min + on dispatch) on the Termux Fleet Swarm App installation token.
+That installation bucket is shared across workflows using the same App;
+see #4164 and docs/ops/DISPATCH-WATCHDOG-RATE-LIMIT.md.
+--flag-min / --escalate-min override the BASE tier only.
 """
 
 from __future__ import annotations
@@ -49,7 +50,7 @@ import re
 import sys
 import urllib.error
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                 "..", "que"))
@@ -68,6 +69,14 @@ DEFAULT_FEED = "ops/challenge/desk-feed.json"
 RECEIPT_MARKER = "ROUTING RECEIPT"
 FLAG_MARKER = "DISPATCH WATCHDOG — FLAG"
 ESCALATION_MARKER = "DISPATCH WATCHDOG — ESCALATION"
+
+class RateLimitDeferred(RuntimeError):
+    """A GitHub rate-limit response deferred this sweep to a later window."""
+
+    def __init__(self, message: str, defer_until: datetime | None = None):
+        super().__init__(message)
+        self.defer_until = defer_until
+
 
 
 def load_timeboxes(feed_path: str | None) -> dict:
@@ -274,6 +283,23 @@ def escalation_comment(issue: dict, age_min: float,
     )
 
 
+def _defer_until(headers) -> datetime:
+    now = datetime.now(timezone.utc)
+    try:
+        reset = int(headers.get("X-RateLimit-Reset") or 0)
+    except (TypeError, ValueError):
+        reset = 0
+    try:
+        retry_after = int(headers.get("Retry-After") or 0)
+    except (TypeError, ValueError):
+        retry_after = 0
+    if retry_after > 0:
+        return now + timedelta(seconds=retry_after)
+    if reset > int(now.timestamp()):
+        return datetime.fromtimestamp(reset, timezone.utc)
+    return now + timedelta(minutes=15)
+
+
 def _request(method: str, url: str, token: str, payload=None):
     data = json.dumps(payload).encode() if payload is not None \
         else None
@@ -286,13 +312,60 @@ def _request(method: str, url: str, token: str, payload=None):
     req.add_header("X-GitHub-Api-Version", "2022-11-28")
     req.add_header("Content-Type", "application/json")
     try:
-        with urllib.request.urlopen(req) as resp:
+        with urllib.request.urlopen(req, timeout=30) as resp:
             return json.loads(resp.read().decode() or "{}")
     except urllib.error.HTTPError as exc:
         body = exc.read().decode(errors="replace")[:400]
+        headers = exc.headers or {}
+        remaining = str(headers.get("X-RateLimit-Remaining") or "")
+        retry_after = headers.get("Retry-After")
+        rate_limited = (
+            exc.code == 429
+            or (exc.code == 403 and (
+                "rate limit" in body.lower()
+                or remaining == "0"
+                or retry_after is not None
+            ))
+        )
+        if rate_limited:
+            until = _defer_until(headers)
+            resource = headers.get("X-RateLimit-Resource") or "unknown"
+            raise RateLimitDeferred(
+                f"GitHub API {method} {url} -> HTTP {exc.code}; "
+                f"resource={resource}; defer_until="
+                f"{until:%Y-%m-%dT%H:%M:%SZ}; {body}"
+            ) from exc
         raise RuntimeError(
             f"GitHub API {method} {url} -> {exc.code}: {body}"
         ) from exc
+
+
+def _rate_limit_preflight(token: str) -> dict:
+    """Read the token's live core budget and preserve shared headroom."""
+    snapshot = _request("GET", f"{API}/rate_limit", token)
+    core = (snapshot.get("resources") or {}).get("core") or {}
+    try:
+        limit = int(core["limit"])
+        remaining = int(core["remaining"])
+        reset_epoch = int(core["reset"])
+    except (KeyError, TypeError, ValueError) as exc:
+        raise RuntimeError(
+            "GitHub /rate_limit response lacks a valid core budget"
+        ) from exc
+    if limit <= 0 or reset_epoch <= 0:
+        raise RuntimeError("GitHub /rate_limit returned invalid core limit/reset data")
+    reserve = max(100, limit // 10)
+    reset_at = datetime.fromtimestamp(reset_epoch, timezone.utc)
+    print(f"GitHub core budget: {remaining}/{limit} remaining; "
+          f"reserve={reserve}; reset={reset_at:%Y-%m-%dT%H:%M:%SZ}")
+    if remaining < reserve:
+        raise RateLimitDeferred(
+            f"preflight deferred: core remaining={remaining}/{limit}; "
+            f"reserve={reserve}; reset={reset_at:%Y-%m-%dT%H:%M:%SZ}",
+            reset_at,
+        )
+    return {"limit": limit, "remaining": remaining,
+            "reserve": reserve, "reset_at": reset_at}
 
 
 def _get_all(url: str, token: str) -> list:
@@ -311,18 +384,41 @@ def sweep(repo: str, token: str, now: datetime, flag_min: int,
           escalate_min: int, apply: bool = True,
           timeboxes: dict | None = None,
           feed_sink: list | None = None,
-          gap_sink: list | None = None) -> list:
+          gap_sink: list | None = None,
+          budget: dict | None = None) -> list:
     issues = _get_all(
         f"{API}/repos/{repo}/issues?state=open"
         f"&labels=dispatch-queued", token)
+    if budget is not None:
+        def page_count(count: int) -> int:
+            return count // 100 + 1 if count % 100 == 0 else (count + 99) // 100
+
+        planned_reads = page_count(len(issues))
+        planned_reads += sum(
+            page_count(int(issue.get("comments") or 0))
+            for issue in issues if int(issue.get("comments") or 0) > 0
+        )
+        remaining_after_plan = budget["remaining"] - planned_reads
+        if remaining_after_plan < budget["reserve"]:
+            raise RateLimitDeferred(
+                f"queue scan deferred: planned_reads={planned_reads}; "
+                f"remaining={budget['remaining']}; "
+                f"reserve={budget['reserve']}; "
+                f"reset={budget['reset_at']:%Y-%m-%dT%H:%M:%SZ}",
+                budget["reset_at"],
+            )
     results = []
     contexts = []
     for issue in issues:
         if "pull_request" in issue:
             continue
-        comments = _get_all(
-            f"{API}/repos/{repo}/issues/{issue['number']}/comments",
-            token)
+        comments = (
+            _get_all(
+                f"{API}/repos/{repo}/issues/{issue['number']}/comments",
+                token,
+            )
+            if int(issue.get("comments") or 0) > 0 else []
+        )
         verdict = classify(issue, comments, now, flag_min,
                            escalate_min, timeboxes=timeboxes)
         results.append(verdict)
@@ -354,6 +450,8 @@ def sweep(repo: str, token: str, now: datetime, flag_min: int,
                              issue, verdict["age_min"], verdict)})
                 _request("POST", f"{base}/labels", token,
                          {"labels": ["dispatch-escalated"]})
+        except RateLimitDeferred:
+            raise
         except Exception as exc:  # one bad action must not kill
             verdict["action"] = f"ERROR: {exc}"  # the whole sweep;
             verdict["state"] = "error"          # surface it instead
@@ -410,9 +508,13 @@ def _run_auto_claim(repo: str, token: str, now: datetime,
             try:
                 _request("DELETE", f"{base}/labels/dispatch-claimed",
                          token)
+            except RateLimitDeferred:
+                raise
             except Exception:
                 pass  # label may not be present; the release stands
             ctx["verdict"]["action"] = "lease-released"
+        except RateLimitDeferred:
+            raise
         except Exception as exc:
             ctx["verdict"]["action"] = f"ERROR: {exc}"
             ctx["verdict"]["state"] = "error"
@@ -433,6 +535,8 @@ def _run_auto_claim(repo: str, token: str, now: datetime,
             try:
                 _request("DELETE", f"{base}/labels/dispatch-escalated",
                          token)
+            except RateLimitDeferred:
+                raise
             except Exception:
                 pass  # label may not be present; the claim stands
             verdict["action"] = "auto-claimed"
@@ -455,6 +559,8 @@ def _run_auto_claim(repo: str, token: str, now: datetime,
                                   "quota_class": "escalation"
                                   if claim["trigger"] == "escalation"
                                   else "primary"}})
+                except RateLimitDeferred:
+                    raise
                 except Exception as exc:
                     try:
                         _request("POST", f"{base}/comments", token,
@@ -462,13 +568,19 @@ def _run_auto_claim(repo: str, token: str, now: datetime,
                                   "watchdog}} claim->execution bridge: "
                                   f"build-dispatch dispatch failed: "
                                   f"{exc}"})
+                    except RateLimitDeferred:
+                        raise
                     except Exception:
                         pass
+        except RateLimitDeferred:
+            raise
         except Exception as exc:
             try:
                 _request("POST", f"{base}/comments", token,
                          {"body": "[MUSEai]@{role:{dispatch-watchdog}} "
                                   f"auto-claim-failed: {exc}"})
+            except RateLimitDeferred:
+                raise
             except Exception:
                 pass
             verdict["action"] = f"ERROR: {exc}"
@@ -498,6 +610,8 @@ def _run_auto_claim(repo: str, token: str, now: datetime,
             _request("POST", f"{base}/labels", token,
                      {"labels": ["dispatch-escalated"]})
             verdict["action"] = "exception-escalated"
+        except RateLimitDeferred:
+            raise
         except Exception as exc2:
             verdict["action"] = f"ERROR: {exc2}"
             verdict["state"] = "error"
@@ -710,10 +824,26 @@ def main(argv=None) -> int:
     timeboxes = load_timeboxes(args.feed)
     feed_rows: list = []
     gap_records: list = []
-    results = sweep(args.repo, token, now, args.flag_min,
-                    args.escalate_min, apply=not args.dry_run,
-                    timeboxes=timeboxes, feed_sink=feed_rows,
-                    gap_sink=gap_records)
+    try:
+        budget = _rate_limit_preflight(token)
+        results = sweep(args.repo, token, now, args.flag_min,
+                        args.escalate_min, apply=not args.dry_run,
+                        timeboxes=timeboxes, feed_sink=feed_rows,
+                        gap_sink=gap_records, budget=budget)
+    except RateLimitDeferred as exc:
+        message = f"DEFERRED — {exc}"
+        print(f"::notice title=dispatch-watchdog::{message}")
+        print(message)
+        output = os.environ.get("GITHUB_OUTPUT")
+        if output:
+            with open(output, "a", encoding="utf-8") as fh:
+                fh.write("deferred=true\n")
+        summary = os.environ.get("GITHUB_STEP_SUMMARY")
+        if summary:
+            with open(summary, "a", encoding="utf-8") as fh:
+                fh.write("### Dispatch watchdog — deferred\n\n"
+                         + message + "\n")
+        return 0
     if not args.dry_run:
         stamped = write_feed(build_feed(feed_rows, now))
         print(f"dispatch-state feed: {'stamped (content changed)' if stamped else 'unchanged — no write'} "

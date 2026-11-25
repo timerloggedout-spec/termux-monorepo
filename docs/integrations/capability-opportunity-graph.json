@@ -906,6 +906,50 @@
         "candidate",
         "external-agent-pattern"
       ]
+    },
+    {
+      "id": "microsoft-foundry-managed-platform",
+      "kind": "external_platform",
+      "name": "Microsoft Foundry managed platform",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "official_documentation",
+        "locator": "https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry",
+        "revision": null,
+        "observed_at": "2026-11-25T23:30:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "foundry.agent.managed.platform",
+          "status": "documented"
+        },
+        {
+          "capability_id": "foundry.control.plane.rbac.policy",
+          "status": "documented"
+        },
+        {
+          "capability_id": "foundry.observability.evaluation",
+          "status": "documented"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "microsoft-foundry-managed-platform-docs-2026-11-25",
+          "status": "partial",
+          "reference": "https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry",
+          "notes": "Official platform overview describes managed agent/model/tool capabilities, unified management, RBAC, networking, policies, tracing and evaluation. Treat as a platform boundary reference, separate from component repositories."
+        }
+      ],
+      "owner": "ceel",
+      "internal_consumers": [
+        "Foundry platform boundary reference",
+        "manager-comparison"
+      ],
+      "tags": [
+        "managed-platform",
+        "foundry-boundary",
+        "reference-only"
+      ]
     }
   ],
   "edges": [
@@ -1069,6 +1113,30 @@
       "from": "agentic-factory-hack",
       "to": "microsoft-agent-framework",
       "relationship": "informs",
+      "status": "hypothesis"
+    },
+    {
+      "from": "microsoft-foundry-managed-platform",
+      "to": "microsoft-agent-framework",
+      "relationship": "complements",
+      "status": "hypothesis"
+    },
+    {
+      "from": "microsoft-foundry-managed-platform",
+      "to": "foundry-local",
+      "relationship": "complements",
+      "status": "hypothesis"
+    },
+    {
+      "from": "microsoft-foundry-managed-platform",
+      "to": "agent-governance-toolkit",
+      "relationship": "complements",
+      "status": "hypothesis"
+    },
+    {
+      "from": "microsoft-foundry-managed-platform",
+      "to": "microsoft-foundry-skills",
+      "relationship": "complements",
       "status": "hypothesis"
     }
   ]

@@ -1447,11 +1447,11 @@
     "measurement": "Use provider namespace, skill, tool choice, manager policy, context strategy and approval tier as candidate treatment factors. Measure actual task outcomes through existing DoE/MVT, action-effect, ATES/WTCV and 3L0 evidence; inventory counts are not quality scores."
   },
   "limitations": [
-    "The skill catalog exports URI and description metadata; full skill bodies remain available through each exact URI and are not duplicated in this snapshot.",
-    "A tool namespace being exposed in this session does not prove account authentication, entitlement, provider health, CI availability, Termux availability, or production readiness.",
-    "Plugin-directory search is relevance-based and non-exhaustive; this snapshot covers all tool definitions exposed to this session, not every plugin globally available to every user.",
-    "Plugin installation/connection states are included only where explicitly supplied by the session context; other account states remain unknown.",
-    "No credentials, tokens, secrets, prompts, completions, private conversation content, or account records are exported.",
-    "The inventory grants no new authority and activates no external tool inside hub_mcp."
+    "The skill catalog exports URI and description metadata; resolve full skill bodies on demand through each exact URI.",
+    "Session exposure records discoverability only; account authentication, entitlement, provider health, CI availability, Termux availability, and production readiness require independent evidence.",
+    "Plugin-directory search is relevance-based; this snapshot covers all tool definitions exposed to this session, while global directory coverage remains unverified.",
+    "Plugin installation/connection states are recorded where the session context explicitly supplies them; remaining account states are unknown.",
+    "The export contains catalog metadata and tool contracts; credential values, prompts, completions, private conversation content and account records remain excluded.",
+    "The inventory grants discovery metadata only; hub_mcp capability activation remains governed by its existing policy."
   ]
 }

@@ -1,15 +1,15 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-25T17:43:14Z",
+ "generated_at": "2026-11-25T20:15:00Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
    "queued": 1,
    "in_progress": 0,
-   "oldest_queued_at": "2026-11-25T17:41:42Z",
+   "oldest_queued_at": "2026-11-25T20:11:51Z",
    "by_workflow_queued": {
-    "repo gate": 1
+    "PR scope guard": 1
    }
   },
   "2": {
@@ -28,25 +28,35 @@
   },
   "4": {
    "tier": 4,
-   "queued": 90,
-   "in_progress": 10,
-   "oldest_queued_at": "2026-11-25T17:41:42Z",
+   "queued": 92,
+   "in_progress": 15,
+   "oldest_queued_at": "2026-11-25T20:11:49Z",
    "by_workflow_queued": {
-    "Jules on Issues (label / @jules)": 14,
-    "lane events recorder": 6,
-    "Agent Throughput Evidence": 33,
-    "Context Relationship + Lead/Lag Audit": 17,
-    "Issue Comment Router \u2014 modular fan-out reduction": 16,
+    "Agent Throughput Evidence": 32,
+    "lane events recorder": 12,
+    "Gemini review after peers": 2,
+    "Agent review \u2192 auto Jules": 8,
+    "Peer review orchestrator": 1,
+    "Agent feedback \u2192 Linear subtasks": 2,
+    "n8n SHE bridge": 1,
+    "Context Relationship + Lead/Lag Audit": 12,
+    "Issue Comment Router \u2014 modular fan-out reduction": 10,
+    "delphi-ledger-feed-collect": 1,
+    "delphi-rfp-feed-collect": 1,
+    "PR production ledger": 2,
     "DO Statement Style": 1,
+    "Agent PR Jules Handoff": 1,
+    "archwiz dangle check": 1,
+    "termux smoke": 1,
+    "RECON INTEL discovery": 1,
     "Sweep Accountability": 1,
-    "Gemini review after peers": 1,
-    "Lane matrix event-driven inventory": 1
+    "Action Effectiveness Ledger": 2
    }
   }
  },
  "totals": {
-  "queued": 91,
-  "in_progress": 11
+  "queued": 93,
+  "in_progress": 16
  },
  "wedged_ancient": [],
  "wedged_excluded_from_counts": true,
@@ -59,7 +69,7 @@
    "4": 0
   },
   "explicit_total": 2,
-  "default_t4": 100,
+  "default_t4": 107,
   "unmatched": 0,
   "ancient_excluded": 0,
   "operator_excluded": 0

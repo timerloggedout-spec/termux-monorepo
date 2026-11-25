@@ -80,7 +80,27 @@ policy, and retirements. Retiring flips
 
 ## Seed registry
 
-`REGISTRY.json` opens with the five channels verified live on 2026-11-25:
+`REGISTRY.json` opens with the six channels verified live on 2026-11-25:
 QUE dispatch (FLY-001), mesh REQUESTS (FLY-002), the backup-relays feed
-(FLY-003), mesh-probe state exports (FLY-004), and Cue comms (FLY-005,
-round-trip receipt the day it opened).
+(FLY-003), mesh-probe state exports (FLY-004), Cue comms (FLY-005) and
+Cue work comms (FLY-006), plus a peers section (Rule 10). Each channel
+carries the round-trip receipt from the day it opened.
+
+## Rule 10 - Peer registration (owner direction 2026-11-25)
+
+Every peer doing fleet work registers in REGISTRY.json (peers section) with its
+channels of record BEFORE or AT first use. A peer with no registered channel is
+a coverage defect: its activity is unobserved, and unobserved work does not
+count. Registration state is a first-class registry field - NOT REGISTERED is
+a valid, named state, never a silent blank.
+
+## Rule 11 - Liveness readings are required automatic updates (owner, 2026-11-25)
+
+A registered or onboarding peer's liveness and quota readings refresh
+AUTOMATICALLY on the keepalive cadence. Staleness is a failure state:
+stale = FAIL, stamped by machinery when a reading ages past its cadence.
+No reading waits on an owner word, an onboarding event, or a manual check.
+
+Scope (owner, 2026-11-25): stale = FAIL is REPO-WIDE - every census, registry,
+feed, and reading in the repo, and every seat's own memory claims. Quoting a
+dated reading as current state is the same FAIL.

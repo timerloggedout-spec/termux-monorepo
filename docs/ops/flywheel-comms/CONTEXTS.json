@@ -27,12 +27,6 @@
       "transport": "GitHub Contents API and PR/issue operations",
       "credential_ref": "host-managed connector; opaque reference only",
       "background_watcher": false,
-      "action_classes": [
-        "read",
-        "comment",
-        "content_write",
-        "create_pull_request"
-      ],
       "excluded_action_classes": [
         "merge",
         "deploy",
@@ -43,6 +37,12 @@
         "termux-monorepo#5906",
         "muse-vm-workspace-backup#4",
         "muse-vm-workspace-backup@2f289a72"
+      ],
+      "requested_action_classes": [
+        "read",
+        "comment",
+        "content_write",
+        "create_pull_request"
       ]
     },
     {
@@ -363,12 +363,6 @@
         "nse-021-sidecar-overlays"
       ],
       "status": "joining_via_registry_pr_and_first_ack",
-      "action_classes": [
-        "read",
-        "comment",
-        "content_write",
-        "create_pull_request"
-      ],
       "excluded_action_classes": [
         "merge",
         "deploy",
@@ -379,6 +373,12 @@
         "termux-monorepo#5906",
         "muse-vm-workspace-backup#4",
         "muse-vm-workspace-backup@2f289a72"
+      ],
+      "requested_action_classes": [
+        "read",
+        "comment",
+        "content_write",
+        "create_pull_request"
       ]
     },
     {

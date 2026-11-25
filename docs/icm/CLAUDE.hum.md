@@ -4,7 +4,7 @@ This is the agent-navigable system map for `termux-monorepo`. It routes an edito
 
 Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect_fork/README.md) method: hierarchy scopes context, cards record change impact, and the filesystem makes the current documentation surface inspectable. For repository-wide orientation, read [`architecture.md`](../../architecture.md) before selecting a bounded ICM route.
 
-The local Claude and AGENTS machine aliases share this byte-identical content. Their separately registered human sources are `CLAUDE.hum.md` and `AGENTS.hum.md`; each pair uses the same identity projection.
+The local Claude and AGENTS machine aliases share this byte-identical content. Their separately registered human sources are `CLAUDE.hum.md` and `AGENTS.hum.md`; both use the same Siglary operator projection.
 
 ## Siglary name mapping
 

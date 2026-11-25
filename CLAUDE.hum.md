@@ -1,9 +1,8 @@
 # CLAUDE.md — Primary collaborator route
 
-This human source pairs with the root Claude instruction surface. `scripts/linguist/agent_document_pairs.py` applies the per-lane contract; this root pair uses `identity`.
+This human source pairs with the root Claude instruction surface. `scripts/linguist/agent_document_pairs.py` applies the per-lane contract; this root pair uses the registered Siglary conjunction/disjunction operators.
 
 ## Agent-specific source routes
-
 | Role | Human source | Programmatic route |
 |---|---|---|
 | Claude | `CLAUDE.hum.md` | `CLAUDE.md` |

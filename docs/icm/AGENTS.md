@@ -1,28 +1,28 @@
 # termux-monorepo ICM System Map
 
-This is the agent-navigable system map for `termux-monorepo`. It routes an editor to the smallest authoritative source set needed to understand a component or plan a change; source code, governing documents, and generated indexes remain the sources of truth.
+This is the agent-navigable system map for `termux-monorepo`. It routes an editor to the smallest authoritative source set needed to understand a component ∨ plan a change; source code, governing documents, and generated indexes remain the sources of truth.
 
 Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect_fork/README.md) method: hierarchy scopes context, cards record change impact, and the filesystem makes the current documentation surface inspectable. For repository-wide orientation, read [`architecture.md`](../../architecture.md) before selecting a bounded ICM route.
 
-The local Claude and AGENTS machine aliases share this byte-identical content. Their separately registered human sources are `CLAUDE.hum.md` and `AGENTS.hum.md`; each pair uses the same identity projection.
+The local Claude ∧ AGENTS machine aliases share this byte-identical content. Their separately registered human sources are `CLAUDE.hum.md` ∧ `AGENTS.hum.md`; both use the same Siglary operator projection.
 
 ## Siglary name mapping
 
-The notation system's name of record is **Siglary**, per [the Notation Matrice](../../docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md) and [the Siglary Standard](../../docs/proposals/active/notation-sets/SIGLARY-STANDARD.md). Retain `CAVEMAN-MICRO-DENSE-V2.md` as the legacy Matrice path. Treat the superseded working title “Caveman Micro Dense 🧬 v2” and the other repositories’ proper names “Caveman” and “CEDRLang” as prior art.
+The notation system's name of record is **Siglary**, per [the Notation Matrice](../../docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md) ∧ [the Siglary Standard](../../docs/proposals/active/notation-sets/SIGLARY-STANDARD.md). Retain `CAVEMAN-MICRO-DENSE-V2.md` as the legacy Matrice path. Treat the superseded working title “Caveman Micro Dense 🧬 v2” ∧ the other repositories’ proper names “Caveman” ∧ “CEDRLang” as prior art.
 
 ## Where things live
 
 | Shelf | What it holds |
 |---|---|
 | [`../../architecture.md`](../../architecture.md) | Repository-wide architecture entry: taxonomy, data flow, and directory map. |
-| [`../../docs/architecture/flows/README.md`](../../docs/architecture/flows/README.md) | Linked subsystem flow maps with detailed Markdown and editable Mermaid sources. |
-| [`objects/platform/`](objects/platform/CONTEXT.md) | The Android/Termux execution plane and its device/service boundary. |
-| [`objects/operations/`](objects/operations/CONTEXT.md) | ArchWiz and the bounded operational tool surface, including file-backed visual review. |
+| [`../../docs/architecture/flows/README.md`](../../docs/architecture/flows/README.md) | Linked subsystem flow maps with detailed Markdown ∧ editable Mermaid sources. |
+| [`objects/platform/`](objects/platform/CONTEXT.md) | The Android/Termux execution plane ∧ its device/service boundary. |
+| [`objects/operations/`](objects/operations/CONTEXT.md) | ArchWiz ∧ the bounded operational tool surface, including file-backed visual review. |
 | [`objects/knowledge/`](objects/knowledge/CONTEXT.md) | Navigation, routing governance, pinned reference inputs, methodology references, indices, and generated-map boundaries. |
 | [`objects/governance/`](objects/governance/CONTEXT.md) | Branch, proposal, validation, and approval constraints. |
-| [`routing.md`](routing.md) | A separately owned nested provider-routing evidence resource with its own source and lifecycle. |
-| [`_tv/`](./_tv/README.md) | Initiated file-backed CCTV cards for human review; renderer and publication remain separate scopes. |
-| [`processes/`](processes/CONTEXT.md) | Real editor workflows with explicit inputs and outputs. |
+| [`routing.md`](routing.md) | A separately owned nested provider-routing evidence resource with its own source ∧ lifecycle. |
+| [`_tv/`](./_tv/README.md) | Initiated file-backed CCTV cards for human review; renderer ∧ publication remain separate scopes. |
+| [`processes/`](processes/CONTEXT.md) | Real editor workflows with explicit inputs ∧ outputs. |
 | [`effects/`](effects/CONTEXT.md) | A compact “if you change X, read Y” index. |
 | [`maintenance/`](maintenance/CLAUDE.md) | A human-gated, documentation-only pipeline for future map updates. |
 
@@ -31,24 +31,24 @@ The notation system's name of record is **Siglary**, per [the Notation Matrice](
 | If you need to… | Read | Then stop at |
 |---|---|---|
 | orient across the monorepo | [`../../architecture.md`](../../architecture.md) | the relevant plane, then one owning ICM card |
-| orient before a change | [`CONTEXT.md`](CONTEXT.md) | the one relevant object or process card |
+| orient before a change | [`CONTEXT.md`](CONTEXT.md) | the one relevant object ∨ process card |
 | change the Android execution plane | [`objects/platform/termux-agentic-hub.md`](objects/platform/termux-agentic-hub.md) | the cited architecture source |
-| check device or service assumptions | [`objects/platform/blu-b160v-free-services.md`](objects/platform/blu-b160v-free-services.md) | the declared envelope and the required re-verification boundary |
-| change the shared Brain kernel or its specialist extension contract | [objects/operations/brain-kernel.md](objects/operations/brain-kernel.md) | `brain.rs`, `brain/` and the typed extension contract |
-| change MOSAIC methodology intelligence or its Brain adapter | [objects/operations/mosaic-brain.md](objects/operations/mosaic-brain.md) | `archwiz/mosaic_brain/`, its pure recommendation API and the integration proposal |
-| change ArchWiz or a verification tool | [`objects/operations/archwiz.md`](objects/operations/archwiz.md) | the cited tool catalog or source path |
-| use the initiated visual-review cards or plan a human checkpoint | [`objects/operations/optional-visual-review.md`](objects/operations/optional-visual-review.md) | the canonical source artifact and human approval boundary |
-| review provider-routing state or propose polling | [`routing.md`](routing.md) | the nested source, observation, and post-ICM workflow gate |
-| register or change a flywheel comms channel | [`cards/flywheel-comms.md`](cards/flywheel-comms.md) | the registry row in `docs/ops/flywheel-comms/REGISTRY.json` and its round-trip receipt |
-| alter navigation or an index | [`objects/knowledge/navigation-and-indexes.md`](objects/knowledge/navigation-and-indexes.md) | the owning navigation/index file |
+| check device ∨ service assumptions | [`objects/platform/blu-b160v-free-services.md`](objects/platform/blu-b160v-free-services.md) | the declared envelope ∧ the required re-verification boundary |
+| change the shared Brain kernel ∨ its specialist extension contract | [objects/operations/brain-kernel.md](objects/operations/brain-kernel.md) | `brain.rs`, `brain/` ∧ the typed extension contract |
+| change MOSAIC methodology intelligence ∨ its Brain adapter | [objects/operations/mosaic-brain.md](objects/operations/mosaic-brain.md) | `archwiz/mosaic_brain/`, its pure recommendation API ∧ the integration proposal |
+| change ArchWiz ∨ a verification tool | [`objects/operations/archwiz.md`](objects/operations/archwiz.md) | the cited tool catalog ∨ source path |
+| use the initiated visual-review cards ∨ plan a human checkpoint | [`objects/operations/optional-visual-review.md`](objects/operations/optional-visual-review.md) | the canonical source artifact ∧ human approval boundary |
+| review provider-routing state ∨ propose polling | [`routing.md`](routing.md) | the nested source, observation, and post-ICM workflow gate |
+| register ∨ change a flywheel comms channel | [`cards/flywheel-comms.md`](cards/flywheel-comms.md) | the registry row in `docs/ops/flywheel-comms/REGISTRY.json` ∧ its round-trip receipt |
+| alter navigation ∨ an index | [`objects/knowledge/navigation-and-indexes.md`](objects/knowledge/navigation-and-indexes.md) | the owning navigation/index file |
 | reconstruct related source/GitHub history before a nontrivial change | [`processes/context-relationship-reconnaissance.md`](processes/context-relationship-reconnaissance.md) | the exact graph root, its evidence, and separately labeled candidates |
-| select or update an ICM reference | [`objects/knowledge/reference-inputs.md`](objects/knowledge/reference-inputs.md) | the pinned reference input and custom-submodule review |
-| design or customize a recurring ICM workspace | [`objects/knowledge/interpretable-context-methodology.md`](objects/knowledge/interpretable-context-methodology.md) | the smallest suitable form and reference workspace |
-| classify nested `workspace/` artifacts | [`processes/workspace-artifact-triage.md`](processes/workspace-artifact-triage.md) | the human decision before any cleanup or promotion |
-| modify tracked code or documentation | [`processes/change-and-validate.md`](processes/change-and-validate.md) | the required human gate |
+| select ∨ update an ICM reference | [`objects/knowledge/reference-inputs.md`](objects/knowledge/reference-inputs.md) | the pinned reference input ∧ custom-submodule review |
+| design ∨ customize a recurring ICM workspace | [`objects/knowledge/interpretable-context-methodology.md`](objects/knowledge/interpretable-context-methodology.md) | the smallest suitable form ∧ reference workspace |
+| classify nested `workspace/` artifacts | [`processes/workspace-artifact-triage.md`](processes/workspace-artifact-triage.md) | the human decision before any cleanup ∨ promotion |
+| modify tracked code ∨ documentation | [`processes/change-and-validate.md`](processes/change-and-validate.md) | the required human gate |
 | assess first-order change impact | [`effects/CONTEXT.md`](effects/CONTEXT.md) | the linked object/process card |
-| maintain or extend the ICM map | [`maintenance/CLAUDE.md`](maintenance/CLAUDE.md) | the `02_design` human gate |
+| maintain ∨ extend the ICM map | [`maintenance/CLAUDE.md`](maintenance/CLAUDE.md) | the `02_design` human gate |
 
 ## One rule
 
-Use this static catalog, one relevant card or nested resource, and its cited sources. Use visual cards, generated maps, recovery notes, provider observations, and untracked device state as navigation aids; rely on their cited source artifacts for authoritative facts.
+Use this static catalog, one relevant card ∨ nested resource, and its cited sources. Use visual cards, generated maps, recovery notes, provider observations, and untracked device state as navigation aids; rely on their cited source artifacts for authoritative facts.

@@ -1,9 +1,8 @@
 # CLAUDE.md — Primary collaborator route
 
-This human source pairs with the root Claude instruction surface. `scripts/linguist/agent_document_pairs.py` applies the per-lane contract; this root pair uses `identity`.
+This human source pairs with the root Claude instruction surface. `scripts/linguist/agent_document_pairs.py` applies the per-lane contract; this root pair uses the registered Siglary conjunction/disjunction operators.
 
 ## Agent-specific source routes
-
 | Role | Human source | Programmatic route |
 |---|---|---|
 | Claude | `CLAUDE.hum.md` | `CLAUDE.md` |
@@ -16,9 +15,9 @@ This human source pairs with the root Claude instruction surface. `scripts/lingu
 
 ## Siglary name mapping
 
-The notation system's name of record is **Siglary**, per [the Notation Matrice](docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md) and [the Siglary Standard](docs/proposals/active/notation-sets/SIGLARY-STANDARD.md). Retain `CAVEMAN-MICRO-DENSE-V2.md` as the legacy Matrice path. Treat the superseded working title “Caveman Micro Dense 🧬 v2” and the other repositories’ proper names “Caveman” and “CEDRLang” as prior art.
+The notation system's name of record is **Siglary**, per [the Notation Matrice](docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md) ∧ [the Siglary Standard](docs/proposals/active/notation-sets/SIGLARY-STANDARD.md). Retain `CAVEMAN-MICRO-DENSE-V2.md` as the legacy Matrice path. Treat the superseded working title “Caveman Micro Dense 🧬 v2” ∧ the other repositories’ proper names “Caveman” ∧ “CEDRLang” as prior art.
 
-For each nontrivial change, begin with [context-relationship reconnaissance](docs/icm/processes/context-relationship-reconnaissance.md) and the [context-relationship graph skill](.agents/skills/context-relationship-graph/SKILL.md). Build verified evidence, then label scored **candidates** separately. Route ICM work through [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md), its owning ICM card, and cited sources; each machine alias keeps its own sibling human source and byte-identical local content.
+For each nontrivial change, begin with [context-relationship reconnaissance](docs/icm/processes/context-relationship-reconnaissance.md) ∧ the [context-relationship graph skill](.agents/skills/context-relationship-graph/SKILL.md). Build verified evidence, then label scored **candidates** separately. Route ICM work through [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md), its owning ICM card, and cited sources; each machine alias keeps its own sibling human source ∧ byte-identical local content.
 
 ## Governance route
 
@@ -26,23 +25,23 @@ For each nontrivial change, begin with [context-relationship reconnaissance](doc
 2. Follow [`docs/proposals/PROCESS.md`](docs/proposals/PROCESS.md) for proposal lifecycle.
 3. Apply [`docs/proposals/AGENTIC-PERMISSIONS.md`](docs/proposals/AGENTIC-PERMISSIONS.md) at human-authority boundaries.
 4. Use [`docs/ARCHW1Z-GATE.md`](docs/ARCHW1Z-GATE.md) for promotion evidence.
-5. Read [`docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md`](docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md) and the canonical Siglary/Matrice links it names.
-6. Use [`docs/proposals/active/notation-sets/SIGLARY-STANDARD.md`](docs/proposals/active/notation-sets/SIGLARY-STANDARD.md), [`docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md`](docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md), and [`scripts/ci/validate_siglary_mandate.py`](scripts/ci/validate_siglary_mandate.py) for canonical mapping and enforcement.
+5. Read [`docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md`](docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md) ∧ the canonical Siglary/Matrice links it names.
+6. Use [`docs/proposals/active/notation-sets/SIGLARY-STANDARD.md`](docs/proposals/active/notation-sets/SIGLARY-STANDARD.md), [`docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md`](docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md), and [`scripts/ci/validate_siglary_mandate.py`](scripts/ci/validate_siglary_mandate.py) for canonical mapping ∧ enforcement.
 
 ## Execution contract
 
 - Target `master` for integration work; use `master-staging` when the active lane names it.
 - Run `python3 scripts/ci/repo_gate.py`, `python3 scripts/ci/validate_siglary_mandate.py --base origin/master`, and `python3 scripts/ci/termux_smoke.py` before promotion.
 - Register implementation scope in `docs/proposals/active/<id>/ITEMS.md` before execution.
-- Cite `Implements: <ITEM-ID>` in commits and pull requests.
-- Extract independently reviewable work from mega-PRs #2 and #6 when their status is `GO=FALSE`.
+- Cite `Implements: <ITEM-ID>` in commits ∧ pull requests.
+- Extract independently reviewable work from mega-PRs #2 ∧ #6 when their status is `GO=FALSE`.
 - Route credentials, history rewrites, and Class 3/4 material through the human-only permissions in `docs/proposals/AGENTIC-PERMISSIONS.md`.
 - Record credential names in issue #184; retain secret values in approved secret storage.
-- Record consensus through a Review log or `DEBATE.md`.
-- Apply Fully Automated Agentic Development (FA-ADE): auto-promote when the dual gates (`repo_gate.py` and `termux_smoke.py`) and the Siglary validator (`scripts/ci/validate_siglary_mandate.py`) pass on the exact candidate SHA and the task outcome is verified.
+- Record consensus through a Review log ∨ `DEBATE.md`.
+- Apply Fully Automated Agentic Development (FA-ADE): auto-promote when the dual gates (`repo_gate.py` ∧ `termux_smoke.py`) ∧ the Siglary validator (`scripts/ci/validate_siglary_mandate.py`) pass on the exact candidate SHA ∧ the task outcome is verified.
 
 ## Operating motion
 
-Use BIUDL: Broad → Integrate → Validate → Develop → Learn. Execute authorized work to a verified outcome, run non-conflicting work during WAIT, and re-fetch evidence before promotion. Keep each change reviewable and cite its source, test, or run.
+Use BIUDL: Broad then Integrate then Validate then Develop then Learn. Execute authorized work to a verified outcome, run non-conflicting work during WAIT, and re-fetch evidence before promotion. Keep each change reviewable ∧ cite its source, test, or run.
 
-The session and lane source of truth is [`docs/ops/LANE-MATRIX.md`](docs/ops/LANE-MATRIX.md). The ICM chart is [`docs/architecture/AGENT-TEAM-CONTROL-PLANE.md`](docs/architecture/AGENT-TEAM-CONTROL-PLANE.md). Reference pins live under `refTemplates/smods/` and remain read-only inputs.
+The session ∧ lane source of truth is [`docs/ops/LANE-MATRIX.md`](docs/ops/LANE-MATRIX.md). The ICM chart is [`docs/architecture/AGENT-TEAM-CONTROL-PLANE.md`](docs/architecture/AGENT-TEAM-CONTROL-PLANE.md). Reference pins live under `refTemplates/smods/` ∧ remain read-only inputs.

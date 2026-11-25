@@ -25,7 +25,17 @@ RELATIONSHIP_CLASSES = frozenset(
         "excluded with rationale",
     }
 )
-MAPPING_MODES = frozenset({"identity"})
+MAPPING_MODES = frozenset({"identity", "siglary-operators"})
+SIGLARY_OPERATOR_SUBSTITUTIONS = (("and", "∧"), ("or", "∨"))
+SIGLARY_PENDING_SEQUENCE_SEPARATOR = "→"
+_SIGLARY_CONNECTIVE_RE = re.compile(r"\band/or\b|\b(?P<word>and|or)\b", re.IGNORECASE)
+_INLINE_PROTECTED_RE = re.compile(
+    r"`+[^`\n]*`+|https?://[^\s)>\]]+|\]\((?:\\.|[^)\n])*\)|"
+    r'"(?:\\.|[^"\\\n])*"|“[^”\n]*”|‘[^’\n]*’|'
+    r"(?<![\w])'[^'\n]+'(?!\w)|<[^>\n]+>",
+    re.IGNORECASE,
+)
+_FENCE_RE = re.compile(r"^ {0,3}(`{3,}|~{3,})(.*)$")
 
 
 @dataclass(frozen=True)
@@ -50,7 +60,7 @@ PAIR_REGISTRY: tuple[Projection, ...] = (
         source=Path("CLAUDE.hum.md"),
         target=Path("CLAUDE.md"),
         relationship_class="direct projection",
-        mapping_mode="identity",
+        mapping_mode="siglary-operators",
         historical_aliases=("AGENTS.hum.md", "AGENTS.md"),
         historical_alias_relationship_class="historical rename",
         provenance_note=(
@@ -80,7 +90,7 @@ PAIR_REGISTRY: tuple[Projection, ...] = (
         source=Path("docs/icm/CLAUDE.hum.md"),
         target=Path("docs/icm/CLAUDE.md"),
         relationship_class="direct projection",
-        mapping_mode="identity",
+        mapping_mode="siglary-operators",
         alias_group="icm-machine-aliases",
     ),
     Projection(
@@ -89,7 +99,7 @@ PAIR_REGISTRY: tuple[Projection, ...] = (
         source=Path("docs/icm/AGENTS.hum.md"),
         target=Path("docs/icm/AGENTS.md"),
         relationship_class="compatibility/tooling surface",
-        mapping_mode="identity",
+        mapping_mode="siglary-operators",
         alias_group="icm-machine-aliases",
     ),
     Projection(
@@ -98,7 +108,7 @@ PAIR_REGISTRY: tuple[Projection, ...] = (
         source=Path("docs/icm/maintenance/CLAUDE.hum.md"),
         target=Path("docs/icm/maintenance/CLAUDE.md"),
         relationship_class="direct projection",
-        mapping_mode="identity",
+        mapping_mode="siglary-operators",
         alias_group="icm-maintenance-machine-aliases",
     ),
     Projection(
@@ -107,7 +117,7 @@ PAIR_REGISTRY: tuple[Projection, ...] = (
         source=Path("docs/icm/maintenance/AGENTS.hum.md"),
         target=Path("docs/icm/maintenance/AGENTS.md"),
         relationship_class="compatibility/tooling surface",
-        mapping_mode="identity",
+        mapping_mode="siglary-operators",
         alias_group="icm-maintenance-machine-aliases",
     ),
 )
@@ -245,6 +255,138 @@ def validate_registry(
     return tuple(checked)
 
 
+def _replace_siglary_connectives(segment: str) -> str:
+    """Use registered operators and expand the pending sequence marker to a plain word."""
+    substitutions = dict(SIGLARY_OPERATOR_SUBSTITUTIONS)
+
+    def replace(match: re.Match[str]) -> str:
+        token = match.group(0)
+        folded = token.casefold()
+        if folded == "and/or":
+            return token
+        prefix = segment[: match.start()]
+        if re.search(r"[,;:]\s+$", prefix):
+            return token  # preserve the conjunction in a serial list
+        if folded == "or" and re.search(r"\beither\b[^;.!?\n]*$", prefix, re.IGNORECASE):
+            return token  # preserve the exclusive either/or construction
+        return substitutions[folded]
+
+    operatorized = _SIGLARY_CONNECTIVE_RE.sub(replace, segment)
+    separator = re.escape(SIGLARY_PENDING_SEQUENCE_SEPARATOR)
+    return re.sub(rf"\s*{separator}\s*", " then ", operatorized)
+
+
+def _transform_inline_prose(segment: str, *, transform: bool) -> str:
+    if not transform:
+        return segment
+    pieces: list[str] = []
+    cursor = 0
+    for match in _INLINE_PROTECTED_RE.finditer(segment):
+        pieces.append(_replace_siglary_connectives(segment[cursor : match.start()]))
+        pieces.append(match.group(0))
+        cursor = match.end()
+    pieces.append(_replace_siglary_connectives(segment[cursor:]))
+    return "".join(pieces)
+
+
+def _transform_prose_line(
+    line: str,
+    in_html_comment: bool,
+    *,
+    transform: bool,
+) -> tuple[str, bool]:
+    """Transform prose outside comments and protected inline Markdown spans."""
+    output: list[str] = []
+    cursor = 0
+    while cursor < len(line):
+        if in_html_comment:
+            end = line.find("-->", cursor)
+            if end < 0:
+                output.append(line[cursor:])
+                return "".join(output), True
+            output.append(line[cursor : end + 3])
+            cursor = end + 3
+            in_html_comment = False
+            continue
+
+        start = line.find("<!--", cursor)
+        inline = _INLINE_PROTECTED_RE.search(line, cursor)
+        if inline and (start < 0 or inline.start() < start):
+            prose = line[cursor : inline.start()]
+            output.append(_transform_inline_prose(prose, transform=transform))
+            output.append(inline.group(0))
+            cursor = inline.end()
+            continue
+        if start < 0:
+            output.append(_transform_inline_prose(line[cursor:], transform=transform))
+            break
+        output.append(_transform_inline_prose(line[cursor:start], transform=transform))
+        end = line.find("-->", start + 4)
+        if end < 0:
+            output.append(line[start:])
+            return "".join(output), True
+        output.append(line[start : end + 3])
+        cursor = end + 3
+    return "".join(output), in_html_comment
+
+
+def _siglary_operator_projection(source_bytes: bytes, source: Path) -> bytes:
+    """Map registered prose operators; preserve literals and expand pending notation."""
+    try:
+        text = source_bytes.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise ProjectionError(f"source is not valid UTF-8: {source.as_posix()}") from exc
+
+    output: list[str] = []
+    in_front_matter = False
+    in_fence: tuple[str, int] | None = None
+    in_html_comment = False
+    lines = text.splitlines(keepends=True)
+    for number, line in enumerate(lines):
+        body = line.rstrip("\r\n")
+        if number == 0 and body == "---":
+            in_front_matter = True
+            output.append(line)
+            continue
+        if in_front_matter:
+            output.append(line)
+            if body in {"---", "..."}:
+                in_front_matter = False
+            continue
+
+        if in_fence is not None:
+            output.append(line)
+            marker, minimum_length = in_fence
+            closing = _FENCE_RE.match(body)
+            if (
+                closing
+                and closing.group(1)[0] == marker
+                and len(closing.group(1)) >= minimum_length
+                and not closing.group(2).strip()
+            ):
+                in_fence = None
+            continue
+
+        opening = _FENCE_RE.match(body) if not in_html_comment else None
+        if opening:
+            output.append(line)
+            in_fence = (opening.group(1)[0], len(opening.group(1)))
+            continue
+
+        literal_line = body.lstrip().startswith(">") or line.startswith("\t") or body.startswith("    ")
+        if literal_line and not in_html_comment:
+            output.append(line)
+            continue
+        rendered, in_html_comment = _transform_prose_line(
+            line,
+            in_html_comment,
+            transform=not literal_line,
+        )
+        output.append(rendered)
+
+    return "".join(output).encode("utf-8")
+
+
 def render(source_bytes: bytes, projection: Projection) -> bytes:
     """Apply only the mapping mode explicitly assigned to this lane."""
     if not isinstance(source_bytes, bytes):
@@ -253,6 +395,8 @@ def render(source_bytes: bytes, projection: Projection) -> bytes:
         raise ProjectionError(f"projection source must end in .hum.md: {projection.source}")
     if projection.mapping_mode == "identity":
         return source_bytes
+    if projection.mapping_mode == "siglary-operators":
+        return _siglary_operator_projection(source_bytes, projection.source)
     raise ProjectionError(
         f"{projection.pair_id}: mapping mode {projection.mapping_mode!r} has no renderer"
     )

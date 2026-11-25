@@ -39,6 +39,15 @@ EXPECTED_RELATIONSHIPS = {
     "icm-maintenance-claude": "direct projection",
     "icm-maintenance-agents": "compatibility/tooling surface",
 }
+EXPECTED_MAPPING_MODES = {
+    "root-claude": "siglary-operators",
+    "root-gemini": "identity",
+    "codex-compatibility": "identity",
+    "icm-claude": "siglary-operators",
+    "icm-agents": "siglary-operators",
+    "icm-maintenance-claude": "siglary-operators",
+    "icm-maintenance-agents": "siglary-operators",
+}
 EXPECTED_ALIAS_GROUPS = {
     "icm-machine-aliases": ("icm-claude", "icm-agents"),
     "icm-maintenance-machine-aliases": (
@@ -56,12 +65,15 @@ def registry_pairs() -> tuple[tuple[str, str], ...]:
 
 
 def seed_registry_tree(root: Path, *, target_bytes: bytes = b"old output\n") -> None:
-    for source, target in registry_pairs():
-        source_path = root / source
-        target_path = root / target
+    for projection in agent_document_pairs.PAIR_REGISTRY:
+        source_path = root / projection.source
+        target_path = root / projection.target
         source_path.parent.mkdir(parents=True, exist_ok=True)
         target_path.parent.mkdir(parents=True, exist_ok=True)
-        source_path.write_bytes(b"# safe fixture\n")
+        source_bytes = b"# safe fixture\n"
+        if projection.mapping_mode == "siglary-operators":
+            source_bytes = b"# safe A and B or C\n"
+        source_path.write_bytes(source_bytes)
         target_path.write_bytes(target_bytes)
 
 
@@ -75,7 +87,10 @@ class PairRegistryTests(unittest.TestCase):
             {projection.pair_id: projection.relationship_class for projection in agent_document_pairs.PAIR_REGISTRY},
             EXPECTED_RELATIONSHIPS,
         )
-        self.assertTrue(all(projection.mapping_mode == "identity" for projection in agent_document_pairs.PAIR_REGISTRY))
+        self.assertEqual(
+            {projection.pair_id: projection.mapping_mode for projection in agent_document_pairs.PAIR_REGISTRY},
+            EXPECTED_MAPPING_MODES,
+        )
         for source, target in pairs:
             self.assertTrue(source.endswith(".hum.md"))
             self.assertEqual(target, source.removesuffix(".hum.md") + ".md")
@@ -109,11 +124,70 @@ class PairRegistryTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "historical aliases require the historical rename class"):
                 agent_document_pairs.validate_registry(root, registry)
 
-    def test_identity_projection_preserves_bytes_without_document_wide_leet(self) -> None:
+    def test_identity_lanes_preserve_bytes_without_document_wide_leet(self) -> None:
         payload = b"# Human source\r\n1337_$934k remains a literal document token.\r\n"
+        projection = agent_document_pairs.PAIR_REGISTRY[1]
+        self.assertEqual(agent_document_pairs.render(payload, projection), payload)
+        self.assertEqual(agent_document_pairs.render(payload, projection), payload)
+
+    def test_siglary_operator_projection_is_deterministic_and_preserves_literals(self) -> None:
         projection = agent_document_pairs.PAIR_REGISTRY[0]
-        self.assertEqual(agent_document_pairs.render(payload, projection), payload)
-        self.assertEqual(agent_document_pairs.render(payload, projection), payload)
+        payload = (
+            "# A and B or C\r\n"
+            "An either A or B choice and an A and/or B idiom.\r\n"
+            "Serial lists: A, B, and C.\r\n"
+            "`inline and/or code` and [label and/or](https://example.test/and/or).\r\n"
+            "`literal <!-- marker` and after A and B.\r\n"
+            'Quote "and/or" and “and” or “or”.\r\n'
+            "BIUDL: Broad → Integrate → Validate.\r\n"
+            "> quoted and/or terms\r\n"
+            "<!-- hidden and/or --> visible and/or text\r\n"
+            "<!-- multi-line and/or\r\n"
+            "still hidden and/or\r\n"
+            "--> visible A and B.\r\n"
+            "\r\n"
+            "    <!-- literal and/or\r\n"
+            "    still literal and/or\r\n"
+            "Following code A and B.\r\n"
+            "```text\r\nand/or and or\r\n```\r\n"
+        ).encode("utf-8")
+        expected = (
+            "# A ∧ B ∨ C\r\n"
+            "An either A or B choice ∧ an A and/or B idiom.\r\n"
+            "Serial lists: A, B, and C.\r\n"
+            "`inline and/or code` ∧ [label and/or](https://example.test/and/or).\r\n"
+            "`literal <!-- marker` ∧ after A ∧ B.\r\n"
+            'Quote "and/or" ∧ “and” ∨ “or”.\r\n'
+            "BIUDL: Broad then Integrate then Validate.\r\n"
+            "> quoted and/or terms\r\n"
+            "<!-- hidden and/or --> visible and/or text\r\n"
+            "<!-- multi-line and/or\r\n"
+            "still hidden and/or\r\n"
+            "--> visible A ∧ B.\r\n"
+            "\r\n"
+            "    <!-- literal and/or\r\n"
+            "    still literal and/or\r\n"
+            "Following code A ∧ B.\r\n"
+            "```text\r\nand/or and or\r\n```\r\n"
+        )
+        expected_bytes = expected.encode("utf-8")
+        rendered = agent_document_pairs.render(payload, projection)
+        self.assertEqual(rendered, expected_bytes)
+        self.assertEqual(agent_document_pairs.render(payload, projection), rendered)
+        self.assertEqual(agent_document_pairs.render(rendered, projection), rendered)
+        operator_line = next(
+            line
+            for line in (ROOT / ".agents/skills/siglary-a2a/SKILL.md")
+            .read_text(encoding="utf-8")
+            .splitlines()
+            if line.startswith("- **OPERATORS**:")
+        )
+        for _, operator in agent_document_pairs.SIGLARY_OPERATOR_SUBSTITUTIONS:
+            self.assertIn(operator, operator_line)
+        self.assertNotIn(
+            agent_document_pairs.SIGLARY_PENDING_SEQUENCE_SEPARATOR,
+            rendered.decode("utf-8"),
+        )
 
     def test_unassigned_mapping_mode_fails_registry_preflight(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -128,12 +202,25 @@ class PairRegistryTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             seed_registry_tree(root)
+            sources_before = {
+                source: (root / source).read_bytes()
+                for source, _ in EXPECTED_PAIRS
+            }
             self.assertEqual(agent_document_pairs.write_or_check(root, check=False), 0)
             before = {target: (root / target).read_bytes() for _, target in EXPECTED_PAIRS}
             timestamps = {target: (root / target).stat().st_mtime_ns for _, target in EXPECTED_PAIRS}
             self.assertEqual(agent_document_pairs.write_or_check(root, check=True), 0)
             for source, target in EXPECTED_PAIRS:
-                self.assertEqual((root / target).read_bytes(), (root / source).read_bytes())
+                projection = next(
+                    item
+                    for item in agent_document_pairs.PAIR_REGISTRY
+                    if item.source.as_posix() == source and item.target.as_posix() == target
+                )
+                self.assertEqual(
+                    (root / target).read_bytes(),
+                    agent_document_pairs.render((root / source).read_bytes(), projection),
+                )
+                self.assertEqual((root / source).read_bytes(), sources_before[source])
                 self.assertEqual((root / target).read_bytes(), before[target])
                 self.assertEqual((root / target).stat().st_mtime_ns, timestamps[target])
 
@@ -277,10 +364,17 @@ class PairRegistryTests(unittest.TestCase):
         for projection in registry:
             source_path = ROOT / projection.source
             target_path = ROOT / projection.target
+            source_bytes = source_path.read_bytes()
             self.assertEqual(
                 target_path.read_bytes(),
-                agent_document_pairs.render(source_path.read_bytes(), projection),
+                agent_document_pairs.render(source_bytes, projection),
             )
+            if projection.mapping_mode == "siglary-operators":
+                self.assertNotEqual(target_path.read_bytes(), source_bytes)
+                self.assertNotIn(
+                    agent_document_pairs.SIGLARY_PENDING_SEQUENCE_SEPARATOR,
+                    target_path.read_text(encoding="utf-8"),
+                )
 
         for directory in (ROOT / "docs/icm", ROOT / "docs/icm/maintenance"):
             self.assertEqual((directory / "CLAUDE.md").read_bytes(), (directory / "AGENTS.md").read_bytes())

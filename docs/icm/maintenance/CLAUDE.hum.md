@@ -2,7 +2,7 @@
 
 This is the documentation-only maintenance pipeline for the `docs/icm/` System map. It turns a proposed map update into a reviewed, verified, and promotable documentation change while keeping application code and generated/device artifacts outside the pipeline output.
 
-The local Claude and AGENTS machine aliases share this byte-identical content. Their separately registered human sources are `CLAUDE.hum.md` and `AGENTS.hum.md`; each pair uses the same identity projection.
+The local Claude and AGENTS machine aliases share this byte-identical content. Their separately registered human sources are `CLAUDE.hum.md` and `AGENTS.hum.md`; both use the same Siglary operator projection.
 
 ## Siglary name mapping
 

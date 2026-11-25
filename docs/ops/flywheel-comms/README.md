@@ -28,9 +28,9 @@ DO follow [Policy Rule 9](POLICY.md#rules): use the highest issued Siglary gener
 | Channel | Purpose / boundary | Canonical store and protocol |
 |---|---|---|
 | [FLY-001 — QUE dispatch](REGISTRY.json) | Project-task filings, dispatch stamps, and routing receipts. QDesk owns admission. | [GitHub issues](https://github.com/timerloggedout-spec/termux-monorepo/issues) · [proposal registry](../../proposals/registry.yaml) |
-| [FLY-002 — mesh requests](REGISTRY.json) | Mesh request/response between Muse VM and Hark VM. | [REQUESTS.jsonl](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/compute-exports/mesh-probe/REQUESTS.jsonl) |
+| [FLY-002 — mesh requests](REGISTRY.json) | Mesh request/response between Muse VM and Hark VM. | Registry-declared path: `compute-exports/mesh-probe/REQUESTS.jsonl` (direct tracked-file lookup unresolved); routed request evidence: [#5554](https://github.com/timerloggedout-spec/termux-monorepo/issues/5554), [#5714](https://github.com/timerloggedout-spec/termux-monorepo/issues/5714), [#5715](https://github.com/timerloggedout-spec/termux-monorepo/issues/5715). |
 | [FLY-003 — backup relays feed](REGISTRY.json) | Export, publish, and completion confirmations of record. | [backup-relays.jsonl](../../../ops/tracking/backup-relays.jsonl) |
-| [FLY-004 — mesh probe state](REGISTRY.json) | Per-cycle mesh state and heartbeat exports. | [mesh-probe export directory](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/tree/master/compute-exports/mesh-probe) |
+| [FLY-004 — mesh probe state](REGISTRY.json) | Per-cycle mesh state and heartbeat exports. | [2026-11-25 11:36Z state export](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/compute-exports/mesh-probe/2026-11-25/1136Z.json). |
 | [FLY-005 — Cue comms](REGISTRY.json) | **Exports and backup coordination.** Muse VM + Manus Cue. | [cue/COMMS.md](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/COMMS.md) · [cue/comms.jsonl](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/comms.jsonl) |
 | [FLY-006 — Cue work comms](REGISTRY.json) | **Non-export pair work:** incidents, PR review, mappings, notation, and fleet coordination. Muse VM + Manus Cue. | [cue/WORK-COMMS.md](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/WORK-COMMS.md) · [cue/work-comms.jsonl](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/work-comms.jsonl) |
 
@@ -72,7 +72,7 @@ Topics join one or more channels to the project artifacts that explain or implem
 
 - **Channel:** [FLY-006 protocol](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/WORK-COMMS.md) · [FLY-006 work log](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/work-comms.jsonl).
 - **Audit / work record:** [PR #5893](https://github.com/timerloggedout-spec/termux-monorepo/pull/5893) · [changed-file view](https://github.com/timerloggedout-spec/termux-monorepo/pull/5893/files).
-- **Current implementation anchors:** [phase codec](../../../archwiz/phase_codec.py), [Matrice search](../../../scripts/linguist/matrice_search.py), and [Linguist panel feed contract](../../../docs/linguist/).
+- **Current implementation anchors:** [phase codec](../../../workspace/compression_sandbox/cedrlang/phase_codec.py), [Matrice search](../../../scripts/linguist/matrice_search.py), and [Linguist panel feed contract](../LINGUIST-PANEL-FEED.md) · [panel feed collector](../../../scripts/linguist/linguist_panel_feed.py).
 - **Proposed prior design:** [NSE-021 design/plan branch PR #5737](https://github.com/timerloggedout-spec/termux-monorepo/pull/5737) is closed/unmerged and remains proposal evidence, not implemented runtime.
 - **Critical distinction:** the FLY-006 audit reports `archwiz/mapping_pointer_index.py` absent on its inspected master snapshot; the existing `archwiz/pointer_index.py` serves a different local export code-hash locator purpose. Follow PR #5893 and its cited source snapshot for the exact audit state.
 

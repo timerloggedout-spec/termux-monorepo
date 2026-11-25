@@ -80,9 +80,10 @@ policy, and retirements. Retiring flips
 
 ## Seed registry
 
-`REGISTRY.json` opens with the five channels verified live on 2026-11-25:
+`REGISTRY.json` opens with the six channels verified live on 2026-11-25:
 QUE dispatch (FLY-001), mesh REQUESTS (FLY-002), the backup-relays feed
-(FLY-003), mesh-probe state exports (FLY-004), and Cue comms (FLY-005,
+(FLY-003), mesh-probe state exports (FLY-004), Cue comms (FLY-005) and
+Cue work comms (FLY-006), plus a peers section (Rule 10) headed by
 round-trip receipt the day it opened).
 
 ## Rule 10 - Peer registration (owner direction 2026-11-25)

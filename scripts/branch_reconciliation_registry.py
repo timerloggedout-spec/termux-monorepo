@@ -54,12 +54,135 @@ def classify(ahead: int, behind: int) -> str:
     return "diverged"
 
 
+
+SURFACE_KINDS = {
+    "commit": {"commit"},
+    "issue": {"issue"},
+    "comment": {"issue_comment", "review_comment"},
+    "review": {"review"},
+    "file": {"file"},
+    "symbol": {"symbol"},
+    "scope": {"scope"},
+    "label": {"label"},
+}
+ALL_SURFACES = {"branch", "pull-request", *SURFACE_KINDS}
+PROFILE_SURFACES = {
+    "reconciliation": {"branch", "pull-request"},
+    "delivery": {"branch", "pull-request", "commit", "issue", "comment", "review"},
+    "architecture": {"file", "symbol", "scope", "label"},
+    "full": set(ALL_SURFACES),
+}
+
+
+def selected_surfaces(profiles: list[str], explicit: list[str], include_ast: bool, include_similarity: bool) -> set[str]:
+    selected = set().union(*(PROFILE_SURFACES[name] for name in profiles)) if profiles else set()
+    selected.update(explicit)
+    if include_ast:
+        selected.update({"file", "symbol"})
+    if include_similarity:
+        selected.add("file")
+    return selected or set(PROFILE_SURFACES["reconciliation"])
+
+
+def matches_queries(record: Any, clauses: list[str], mode: str = "all") -> bool:
+    if not clauses:
+        return True
+    haystack = json.dumps(record, sort_keys=True, ensure_ascii=False).casefold()
+    hits = [clause.casefold() in haystack for clause in clauses]
+    return all(hits) if mode == "all" else any(hits)
+
+
+def load_graph_projection(index_dir: Path, surfaces: set[str], clauses: list[str], mode: str,
+                          max_results: int, include_similarity: bool) -> dict[str, Any]:
+    def read_jsonl(filename: str) -> list[dict[str, Any]]:
+        path = index_dir / filename
+        if not path.is_file():
+            raise ValueError(f"graph index artifact is missing: {path}")
+        rows = []
+        for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+            if not line.strip():
+                continue
+            try:
+                row = json.loads(line)
+            except json.JSONDecodeError as exc:
+                raise ValueError(f"{path}:{number} contains invalid JSON") from exc
+            if not isinstance(row, dict):
+                raise ValueError(f"{path}:{number} must contain JSON objects")
+            rows.append(row)
+        return rows
+
+    requested_kinds = set().union(*(SURFACE_KINDS.get(surface, set()) for surface in surfaces))
+    nodes = [
+        node for node in read_jsonl("nodes.jsonl")
+        if node.get("kind") in requested_kinds and matches_queries(node, clauses, mode)
+    ][:max_results]
+    visible_ids = {str(node.get("id") or f"{node.get('kind')}:{node.get('external_id')}") for node in nodes}
+    candidates: list[dict[str, Any]] = []
+    if include_similarity:
+        for edge in read_jsonl("edges.jsonl"):
+            if edge.get("classification") != "candidate":
+                continue
+            if edge.get("source") in visible_ids or edge.get("target") in visible_ids:
+                candidates.append(edge)
+                if len(candidates) >= max_results:
+                    break
+    counts: dict[str, int] = {}
+    for node in nodes:
+        kind = str(node.get("kind", "unknown"))
+        counts[kind] = counts.get(kind, 0) + 1
+    return {
+        "index": str(index_dir),
+        "node_count": len(nodes),
+        "node_counts_by_kind": dict(sorted(counts.items())),
+        "nodes": nodes,
+        "similarity_candidate_count": len(candidates),
+        "similarity_candidates": candidates,
+    }
+
+
+
+def project_base_surfaces(records: list[dict[str, Any]], surfaces: set[str]) -> dict[str, Any]:
+    """Expose branch and pull-request selections as independent result collections."""
+    projection: dict[str, Any] = {}
+    if "branch" in surfaces:
+        projection["branches"] = records
+    if "pull-request" in surfaces:
+        projection["pull_requests"] = [
+            {**pull, "branch": branch.get("branch"), "branch_sha": branch.get("sha")}
+            for branch in records
+            for pull in branch.get("pull_requests", [])
+        ]
+    return projection
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo", required=True, help="owner/repository")
     parser.add_argument("--default-branch", required=True)
     parser.add_argument("--output-dir", default="artifacts/branch-reconciliation")
+    parser.add_argument("--query", action="append", default=[], metavar="CLAUSE",
+                        help="Repeatable case-insensitive text clause; combine with --query-mode")
+    parser.add_argument("--query-mode", choices=("all", "any"), default="all",
+                        help="Require every query clause (all) or at least one (any)")
+    parser.add_argument("--surface", action="append", choices=sorted(ALL_SURFACES), default=[],
+                        help="Repeatable output surface selector")
+    parser.add_argument("--profile", action="append", choices=sorted(PROFILE_SURFACES), default=[],
+                        help="Repeatable composable analysis profile")
+    parser.add_argument("--graph-index", type=Path,
+                        help="Existing CRG index directory containing nodes.jsonl and edges.jsonl")
+    parser.add_argument("--ast", action="store_true",
+                        help="Include CRG file and Python AST symbol surfaces")
+    parser.add_argument("--similarity", action="store_true",
+                        help="Include existing CRG candidate similarity/co-change edges")
+    parser.add_argument("--max-results", type=int, default=1000,
+                        help="Maximum graph nodes and candidate edges in the report")
     args = parser.parse_args()
+    if args.max_results < 1:
+        parser.error("--max-results must be positive")
+    surfaces = selected_surfaces(args.profile, args.surface, args.ast, args.similarity)
+    graph_surfaces = surfaces & set(SURFACE_KINDS)
+    if (graph_surfaces or args.similarity) and args.graph_index is None:
+        parser.error("graph-backed surfaces, --ast, and --similarity require --graph-index")
 
     owner, repo = args.repo.split("/", 1)
     run(["git", "fetch", "--no-tags", "origin", "+refs/heads/*:refs/remotes/origin/*"])
@@ -120,6 +243,27 @@ def main() -> int:
             "automatic_promotion": False,
         })
 
+    if args.query:
+        records = [
+            row for row in records
+            if matches_queries({"branch": row, "pull_requests": row["pull_requests"]}, args.query, args.query_mode)
+        ]
+        for row in records:
+            row["pull_requests"] = [
+                pr for pr in row["pull_requests"]
+                if matches_queries(pr, args.query, args.query_mode)
+            ] or row["pull_requests"] if matches_queries(row, args.query, args.query_mode) else []
+
+    graph_projection = None
+    if graph_surfaces:
+        graph_projection = load_graph_projection(
+            args.graph_index, graph_surfaces, args.query, args.query_mode, args.max_results, args.similarity
+        )
+    elif args.similarity:
+        graph_projection = load_graph_projection(
+            args.graph_index, {"file"}, args.query, args.query_mode, args.max_results, True
+        )
+
     now = dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat()
     report = {
         "schema": "branch-reconciliation-registry/v1",
@@ -129,6 +273,20 @@ def main() -> int:
         "inventory_complete_for_api_pages": True,
         "branch_count": len(records),
         "pull_request_count": len(pulls),
+        "selection": {
+            "profiles": args.profile,
+            "surfaces": sorted(surfaces),
+            "queries": args.query,
+            "query_mode": args.query_mode,
+            "ast_enabled": args.ast,
+            "similarity_enabled": args.similarity,
+            "max_results": args.max_results,
+        },
+        "graph": graph_projection,
+        "surface_results": {
+            **project_base_surfaces(records, surfaces),
+            **({"graph": graph_projection} if graph_projection is not None else {}),
+        },
         "policy": {
             "read_only": True,
             "never_auto_merge": True,
@@ -149,6 +307,10 @@ def main() -> int:
         f"- Default branch: `{args.default_branch}`",
         f"- Branches inventoried: **{len(records)}**",
         f"- Pull requests inspected: **{len(pulls)}**",
+        f"- Selected surfaces: **{', '.join(sorted(surfaces))}**",
+        f"- Query clauses: **{len(args.query)}** ({args.query_mode})",
+        f"- Graph nodes: **{graph_projection['node_count'] if graph_projection else 0}**",
+        f"- Similarity candidates: **{graph_projection['similarity_candidate_count'] if graph_projection else 0}**",
         "- Mode: read-only; no merge, close, push, or delete actions", "",
         "| Branch | Ahead | Behind | Disposition | Open/closed PRs |",
         "|---|---:|---:|---|---:|",

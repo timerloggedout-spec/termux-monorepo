@@ -6,7 +6,7 @@
 **Owner:** ChatGPT — documentation implementation  
 **Operator authorization:** accepted for the bounded documentation change  
 **Canonical output:** repository root `architecture.md`  
-**Implementation branch:** `docs/repository-architecture-entry-20261121-v2`
+**Implementation branch:** `docs/flywheel-context-routing-20261125`
 
 ## Objective
 
@@ -37,6 +37,7 @@ Establish one repository-wide architecture entry that routes collaborators to ca
 - [x] Root collaborator, README, ICM, and architecture-index entry points link to the root architecture entry.
 - [ ] Proposal registry validator passes with the manifest and work items present.
 - [ ] Flywheel registry and protocol peer-registration amendment reviewed; first ACK is linked without claiming the separate Web2API session complete.
+- [ ] Cross-project quota-admission RECON delivered through FLY-006 with source SHAs and validation boundaries.
 - [ ] Navigation covers all current registry channels and supports additional channels/contexts without redesign.
 - [ ] Repository gate and Termux smoke pass on the same head.
 - [ ] Required PR checks complete and the merged master head is re-fetched.

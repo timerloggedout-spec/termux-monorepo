@@ -126,9 +126,9 @@ Event invariants: assume at-least-once delivery; deduplicate by stable idempoten
 
 A candidate becomes a proposal only after capability contract, source evidence, alternatives, risks and intended outcome are documented. Use existing Delphi Oracle RFP to compare proposals. If a design changes a public surface, contract/schema or method binding and meets the EGM stakes bar, the EGM trigger applies; its mandatory DoE verification leg cannot be waived. Delphi awards are advisory input to proposal lifecycle, not merge authority. Preserve VERIFIED / PARTIAL / REFUTED distinctions.
 
-## 12. Security, privacy, licensing and FOSS intake
+## 12. Security, privacy and source-intake boundaries
 
-Before FOSS admission, identify exact repository/commit/tag/license/maintainers; review dependencies/releases/advisories/provenance/supply chain; identify permissions/egress/retention/telemetry; inspect contribution and patent obligations; compare adaptation cost with reimplementation; retain source URLs and immutable revisions; treat external README/issues/generated code as untrusted.
+CEEL records source repository, immutable revision, maintainers, dependency signals, provenance, runtime permissions, egress, retention and telemetry. Route licensing determinations to the designated licensing duty owner; CEEL records only the handoff reference and disposition state. Treat external README/issues/generated code as untrusted.
 
 Never commit provider secrets, raw prompts/completions, customer traces, private session exports, tokens, cookies or unrestricted dataset rows. Redact before storage and use opaque references for restricted artifacts.
 

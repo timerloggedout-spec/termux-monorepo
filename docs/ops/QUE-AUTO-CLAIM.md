@@ -33,8 +33,8 @@ frame — no new governor constants). Binding on this build's landing.
    project-task receipt is only a route default: it does not emit an
    explicit claim-class or claimant assignment, and legacy generated
    defaults are ignored when resolving a named or later explicit
-   assignment. Unmarked discussion text containing JSON route data is
-   not a route stamp. No stamp naming a class = unplaceable.
+   assignment. Accept JSON route data only inside a SWARM-DISPATCH
+   marker. Classify filings without a stamped claim class as unplaceable.
    Project-task claims require the current `swarm-admitted` decision.
 3. **The claim is the claim_task.py effect** — a PRODUCER CLAIM
    comment naming the machine as claimant of record + the
@@ -55,8 +55,7 @@ frame — no new governor constants). Binding on this build's landing.
    `deferred-by-tier` label or latest DEFERRED admission receipt
    blocks auto-claim, even when intake has already added
    `dispatch-queued`; the admission drain must first clear deferral.
-   No admission/governor threshold changes beyond the countersigned
-   timing slots.
+   Preserve the countersigned admission and governor timing slots.
 6. **Lease + reclaim.** An auto-claim carries a lease (executor
    120m, seat-queue / named-executor 240m — claim-machinery windows,
    stamped in the claim comment). A claim with no execution state

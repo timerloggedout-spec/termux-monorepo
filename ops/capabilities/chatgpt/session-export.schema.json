@@ -169,7 +169,8 @@
           "surface_kind",
           "availability",
           "account_connection_state",
-          "tool_count"
+          "tool_count",
+          "repository_mapping"
         ],
         "properties": {
           "namespace": {
@@ -190,6 +191,37 @@
           "tool_count": {
             "type": "integer",
             "minimum": 1
+          },
+          "repository_mapping": {
+            "type": "object",
+            "required": [
+              "integration_registry_id",
+              "discovery_index",
+              "adapter_contract",
+              "capability_policy",
+              "mapping_status",
+              "execution_adapter_status"
+            ],
+            "properties": {
+              "integration_registry_id": {
+                "type": "string"
+              },
+              "discovery_index": {
+                "type": "string"
+              },
+              "adapter_contract": {
+                "type": "string"
+              },
+              "capability_policy": {
+                "type": "string"
+              },
+              "mapping_status": {
+                "const": "discovery_indexed"
+              },
+              "execution_adapter_status": {
+                "const": "unverified"
+              }
+            }
           }
         }
       }

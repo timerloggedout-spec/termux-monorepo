@@ -20,10 +20,6 @@ The notation system's name of record is **Siglary**, per [the Notation Matrice](
 For each nontrivial change, begin with [context-relationship reconnaissance](docs/icm/processes/context-relationship-reconnaissance.md) ∧ the [context-relationship graph skill](.agents/skills/context-relationship-graph/SKILL.md). Build verified evidence, then label scored **candidates** separately. Route ICM work through [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md), its owning ICM card, and cited sources; each machine alias keeps its own sibling human source ∧ byte-identical local content.
 
 ## Governance route
-## Flywheel collaboration route
-
-Use [`docs/ops/flywheel-comms/README.md`](docs/ops/flywheel-comms/README.md) to resolve channel, peer, project, context, topic, and artifact routes. Read [`ROUTING-MODEL.md`](docs/ops/flywheel-comms/ROUTING-MODEL.md) for scope-aware memberships and effective permission intersections. Keep execution surfaces distinct from collaborator identities.
-
 
 1. Read [`docs/proposals/registry.yaml`](docs/proposals/registry.yaml) to identify active work.
 2. Follow [`docs/proposals/PROCESS.md`](docs/proposals/PROCESS.md) for proposal lifecycle.
@@ -31,6 +27,10 @@ Use [`docs/ops/flywheel-comms/README.md`](docs/ops/flywheel-comms/README.md) to 
 4. Use [`docs/ARCHW1Z-GATE.md`](docs/ARCHW1Z-GATE.md) for promotion evidence.
 5. Read [`docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md`](docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md) ∧ the canonical Siglary/Matrice links it names.
 6. Use [`docs/proposals/active/notation-sets/SIGLARY-STANDARD.md`](docs/proposals/active/notation-sets/SIGLARY-STANDARD.md), [`docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md`](docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md), and [`scripts/ci/validate_siglary_mandate.py`](scripts/ci/validate_siglary_mandate.py) for canonical mapping ∧ enforcement.
+
+## Flywheel collaboration route
+
+Use [`docs/ops/flywheel-comms/README.md`](docs/ops/flywheel-comms/README.md) to resolve channel, peer, project, context, topic, and artifact routes. Read [`ROUTING-MODEL.md`](docs/ops/flywheel-comms/ROUTING-MODEL.md) for scope-aware memberships and effective permission intersections. Keep execution surfaces distinct from collaborator identities.
 
 ## Execution contract
 

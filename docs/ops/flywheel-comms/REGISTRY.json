@@ -22,7 +22,7 @@
    "id": "FLY-002",
    "name": "mesh-requests",
    "store_repo": "timerloggedout-spec/muse-vm-workspace-backup",
-   "path": "compute-exports/mesh-probe/REQUESTS.jsonl",
+   "path": "runtime-local queue ~/workspace/repo-exports/REQUESTS.jsonl on muse-vm; published cycle records at compute-exports/mesh-probe/<date>/ in this store",
    "format": "JSONL append-only request/response",
    "participants": [
     "muse-vm",
@@ -31,7 +31,8 @@
    "cadence": "mesh-tailnet-probe-watch 1h",
    "owner_seat": "muse-vm (mesh lane)",
    "status": "established",
-   "established_evidence": "3 routed requests on record (#5554, #5714, #5715)"
+   "established_evidence": "3 routed requests on record (#5554, #5714, #5715)",
+   "path_correction": "2026-11-25: registry previously declared compute-exports/mesh-probe/REQUESTS.jsonl in the backup store - verified 404 firsthand (surfaced by ChatGPT, PR #5897). The live queue is the runtime-local file; the store carries the published cycle records."
   },
   {
    "id": "FLY-003",

@@ -11,6 +11,7 @@ name: repo gate
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, edited, ready_for_review]
   push:
     branches: [master, master-staging]
   workflow_dispatch:
@@ -49,12 +50,12 @@ jobs:
       - name: Siglary mandate mapping
         run: |
           python3 -B -m unittest discover -s tests -p 'test_siglary_mandate.py' -v
-          python3 -B scripts/ci/validate_siglary_mandate.py --base "${{ steps.base.outputs.ref }}" --event-file "$GITHUB_EVENT_PATH"
+          python3 -B scripts/ci/validate_siglary_mandate.py --event-file "$GITHUB_EVENT_PATH" --fallback-base "${{ steps.base.outputs.ref }}"
 
       - name: Linguist Agent pair parity
         run: |
           python3 -B -m unittest discover -s tests -p 'test_contact_projections.py' -v
-          python3 -B scripts/cedrlang/render_contact_projections.py --check
+          python3 -B scripts/linguist/agent_document_pairs.py --check
 
       - name: Index-only scope regressions
         run: python3 -B -m unittest discover -s tests -p 'test_repo_gate_index_scope.py' -v

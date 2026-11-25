@@ -1,6 +1,6 @@
 # CLAUDE.md — Primary collaborator route
 
-This human source pairs with the root Claude instruction surface. `scripts/cedrlang/render_contact_projections.py` projects the source byte-for-byte until a reversible notation receives approval and round-trip evidence.
+This human source pairs with the root Claude instruction surface. `scripts/linguist/agent_document_pairs.py` applies the per-lane contract; this root pair uses `identity`.
 
 ## Agent-specific source routes
 
@@ -14,7 +14,11 @@ This human source pairs with the root Claude instruction surface. `scripts/cedrl
 | ICM maintenance Claude | `docs/icm/maintenance/CLAUDE.hum.md` | `docs/icm/maintenance/CLAUDE.md` |
 | ICM maintenance AGENTS | `docs/icm/maintenance/AGENTS.hum.md` | `docs/icm/maintenance/AGENTS.md` |
 
-Load the root collaborator route first. Then follow [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md) to one owning ICM card and its cited sources. Each ICM machine alias keeps its own sibling human source and byte-identical local content.
+## Siglary name mapping
+
+The notation system's name of record is **Siglary**, per [the Notation Matrice](docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md) and [the Siglary Standard](docs/proposals/active/notation-sets/SIGLARY-STANDARD.md). Retain `CAVEMAN-MICRO-DENSE-V2.md` as the legacy Matrice path. Treat the superseded working title “Caveman Micro Dense 🧬 v2” and the other repositories’ proper names “Caveman” and “CEDRLang” as prior art.
+
+For each nontrivial change, begin with [context-relationship reconnaissance](docs/icm/processes/context-relationship-reconnaissance.md) and the [context-relationship graph skill](.agents/skills/context-relationship-graph/SKILL.md). Build verified evidence, then label scored **candidates** separately. Route ICM work through [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md), its owning ICM card, and cited sources; each machine alias keeps its own sibling human source and byte-identical local content.
 
 ## Governance route
 
@@ -28,14 +32,14 @@ Load the root collaborator route first. Then follow [`docs/icm/CLAUDE.md`](docs/
 ## Execution contract
 
 - Target `master` for integration work; use `master-staging` when the active lane names it.
-- Run `python3 scripts/ci/repo_gate.py` and `python3 scripts/ci/termux_smoke.py` before promotion.
+- Run `python3 scripts/ci/repo_gate.py`, `python3 scripts/ci/validate_siglary_mandate.py --base origin/master`, and `python3 scripts/ci/termux_smoke.py` before promotion.
 - Register implementation scope in `docs/proposals/active/<id>/ITEMS.md` before execution.
 - Cite `Implements: <ITEM-ID>` in commits and pull requests.
 - Extract independently reviewable work from mega-PRs #2 and #6 when their status is `GO=FALSE`.
 - Route credentials, history rewrites, and Class 3/4 material through the human-only permissions in `docs/proposals/AGENTIC-PERMISSIONS.md`.
 - Record credential names in issue #184; retain secret values in approved secret storage.
 - Record consensus through a Review log or `DEBATE.md`.
-- Promote when both required gates pass on the exact candidate SHA and the task outcome is verified.
+- Apply Fully Automated Agentic Development (FA-ADE): auto-promote when the dual gates (`repo_gate.py` and `termux_smoke.py`) and the Siglary validator (`scripts/ci/validate_siglary_mandate.py`) pass on the exact candidate SHA and the task outcome is verified.
 
 ## Operating motion
 

@@ -19,6 +19,13 @@ CLAUDE_REFERENCES = (
     "docs/proposals/active/notation-sets/SIGLARY-STANDARD.md",
     str(MATRICE),
     "scripts/ci/validate_siglary_mandate.py",
+    "scripts/linguist/agent_document_pairs.py",
+)
+GENERATED_MARKDOWN_PATHS = frozenset(
+    {
+        "ops/tracking/tracking.md",
+        "docs/ops/generated/lane-matrix-status.md",
+    }
 )
 CROSSWALK_TOKENS = (
     "∧", "∨", "¬", "⇒", "⇔", "∈", "∉", "∀", "∃", "∅", "≠", "≡",
@@ -142,12 +149,16 @@ def markdown_added_prose(path: str, added_lines: set[int]) -> list[tuple[int, st
     return findings
 
 
-def changed_markdown(base: str) -> dict[str, set[int]]:
-    command = ["git", "diff", "--no-ext-diff", "--unified=0", base, "--"]
+def changed_markdown(base: str, head: str | None = None) -> dict[str, set[int]]:
+    command = ["git", "diff", "--no-ext-diff", "--unified=0", base]
+    if head is not None:
+        command.append(head)
+    command.append("--")
     result = subprocess.run(command, cwd=ROOT, text=True, capture_output=True, check=False)
     if result.returncode:
         detail = result.stderr.strip() or f"git diff exited {result.returncode}"
-        raise ValidationError(f"cannot read diff against {base}: {detail}")
+        range_label = f"{base}..{head}" if head is not None else f"{base}..worktree"
+        raise ValidationError(f"cannot read diff for {range_label}: {detail}")
     additions: dict[str, set[int]] = {}
     current_path: str | None = None
     new_line = 0
@@ -170,9 +181,128 @@ def changed_markdown(base: str) -> dict[str, set[int]]:
     return {path: numbers for path, numbers in additions.items() if numbers}
 
 
-def commit_text(base: str) -> str:
+def _valid_sha(value: object) -> bool:
+    return (
+        isinstance(value, str)
+        and re.fullmatch(r"[0-9a-fA-F]{40,64}", value) is not None
+        and re.fullmatch(r"0{40,64}", value) is None
+    )
+
+
+def _is_zero_sha(value: object) -> bool:
+    return isinstance(value, str) and re.fullmatch(r"0{40,64}", value) is not None
+
+
+def _empty_tree_oid() -> str:
     result = subprocess.run(
-        ["git", "log", f"{base}..HEAD", "--format=%B"],
+        ["git", "hash-object", "-t", "tree", "--stdin"],
+        cwd=ROOT,
+        input="",
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if result.returncode:
+        raise ValidationError("cannot resolve the empty-tree revision for a root push")
+    return result.stdout.strip()
+
+
+def _resolve_commit_ref(revision: str) -> str:
+    result = subprocess.run(
+        ["git", "rev-parse", "--verify", f"{revision}^{{commit}}"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    commit = result.stdout.strip()
+    if result.returncode or not _valid_sha(commit):
+        raise ValidationError(f"cannot resolve event revision {revision!r} to a commit")
+    return commit
+
+
+def resolve_event_range(event: dict, fallback_base: str | None = None) -> tuple[str, str]:
+    """Resolve a webhook to immutable revisions before asking Git to inspect text."""
+    pull_request = event.get("pull_request")
+    if isinstance(pull_request, dict):
+        base = pull_request.get("base", {}).get("sha")
+        head = pull_request.get("head", {}).get("sha")
+        if not _valid_sha(base) or not _valid_sha(head):
+            raise ValidationError("pull-request event lacks pinned base/head SHAs")
+        return base, head
+
+    if "before" not in event and "after" not in event:
+        if not fallback_base:
+            raise ValidationError("manual workflow event requires a fetched base ref")
+        return _resolve_commit_ref(fallback_base), _resolve_commit_ref("HEAD")
+
+    before = event.get("before")
+    after = event.get("after")
+    if not _valid_sha(before) and not _is_zero_sha(before):
+        raise ValidationError("push event lacks a valid before SHA")
+    if _is_zero_sha(after):
+        if _valid_sha(before):
+            return before, before
+        raise ValidationError("push event has no post-update revision")
+    if not _valid_sha(after):
+        raise ValidationError("push event lacks a valid after SHA")
+    if _valid_sha(before):
+        return before, after
+
+    if fallback_base:
+        merged = subprocess.run(
+            ["git", "merge-base", after, fallback_base],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        candidate = merged.stdout.strip()
+        if merged.returncode == 0 and candidate != after and _valid_sha(candidate):
+            return candidate, after
+
+    commits = event.get("commits")
+    if not isinstance(commits, list):
+        commits = []
+    size = event.get("size", len(commits))
+    if commits and isinstance(size, int) and size <= len(commits):
+        pushed_ids = {
+            item.get("id")
+            for item in commits
+            if isinstance(item, dict) and _valid_sha(item.get("id"))
+        }
+        for item in commits:
+            if not isinstance(item, dict):
+                continue
+            for parent in item.get("parents", []):
+                parent_sha = parent.get("sha") if isinstance(parent, dict) else parent
+                if _valid_sha(parent_sha) and parent_sha not in pushed_ids:
+                    return parent_sha, after
+        return _empty_tree_oid(), after
+
+    if not commits and size == 0:
+        parents = subprocess.run(
+            ["git", "show", "-s", "--format=%P", after],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        if parents.returncode == 0 and not parents.stdout.strip():
+            return _empty_tree_oid(), after
+    raise ValidationError(
+        "all-zero push before SHA requires a complete commit list or a distinct fetched base"
+    )
+
+
+def commit_text(base: str, head: str | None = None) -> str:
+    head_ref = head or "HEAD"
+    if base == _empty_tree_oid():
+        revision_range = head_ref
+    else:
+        revision_range = f"{base}..{head_ref}"
+    result = subprocess.run(
+        ["git", "log", revision_range, "--format=%B"],
         cwd=ROOT,
         text=True,
         capture_output=True,
@@ -180,7 +310,7 @@ def commit_text(base: str) -> str:
     )
     if result.returncode:
         detail = result.stderr.strip() or f"git log exited {result.returncode}"
-        raise ValidationError(f"cannot inspect commit messages against {base}: {detail}")
+        raise ValidationError(f"cannot inspect commit messages for {base}..{head_ref}: {detail}")
     return result.stdout
 
 
@@ -232,13 +362,15 @@ def validate_registry() -> list[str]:
     return errors
 
 
-def validate_new_text(base: str, event_file: str | None) -> list[str]:
+def validate_new_text(base: str, event_file: str | None, head: str | None = None) -> list[str]:
     errors: list[str] = []
-    for path, line_numbers in changed_markdown(base).items():
+    for path, line_numbers in changed_markdown(base, head).items():
+        if path in GENERATED_MARKDOWN_PATHS:
+            continue
         for number, token in markdown_added_prose(path, line_numbers):
             errors.append(f"{path}:{number}: AVOID vocabulary match: {token!r}")
 
-    for token in avoid_matches(commit_text(base)):
+    for token in avoid_matches(commit_text(base, head)):
         errors.append(f"commit message: AVOID vocabulary match: {token!r}")
     if event_file:
         for token in avoid_matches(event_text(event_file)):
@@ -249,12 +381,18 @@ def validate_new_text(base: str, event_file: str | None) -> list[str]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--base", default="origin/master", help="diff base ref")
+    parser.add_argument("--head", help="pinned diff head ref")
     parser.add_argument("--event-file", help="GitHub Actions event JSON path")
+    parser.add_argument("--fallback-base", help="fetched base ref for all-zero push events")
     args = parser.parse_args(argv)
 
     try:
+        base, head = args.base, args.head
+        if args.event_file:
+            event = json.loads(Path(args.event_file).read_text(encoding="utf-8"))
+            base, head = resolve_event_range(event, args.fallback_base or args.base)
         errors = validate_registry()
-        errors.extend(validate_new_text(args.base, args.event_file))
+        errors.extend(validate_new_text(base, args.event_file, head))
     except (OSError, ValueError, ValidationError) as exc:
         errors = [str(exc)]
 

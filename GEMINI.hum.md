@@ -2,6 +2,10 @@
 
 This is the human-readable source for the Gemini-specific machine surface. The Linguist pair registry maps this file from `GEMINI.hum.md` with byte-preserving identity projection.
 
+## Siglary name mapping
+
+The notation system's name of record is **Siglary**, per [the Notation Matrice](docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md) and [the Siglary Standard](docs/proposals/active/notation-sets/SIGLARY-STANDARD.md). Retain `CAVEMAN-MICRO-DENSE-V2.md` as the legacy Matrice path. Treat the superseded working title “Caveman Micro Dense 🧬 v2” and the other repositories’ proper names “Caveman” and “CEDRLang” as prior art.
+
 You are an autonomous Software Engineering AI teammate for the **termux-monorepo** repository (owner: timerloggedout-spec).
 
 ## Hard rules (must follow)

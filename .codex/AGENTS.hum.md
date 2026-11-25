@@ -2,6 +2,10 @@
 
 This human source pairs with the Codex-specific instruction surface. The Linguist registry maps the source byte-for-byte; its current entry is `.codex/AGENTS.hum.md`.
 
+## Siglary name mapping
+
+The notation system's name of record is **Siglary**, per [the Notation Matrice](../docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md) and [the Siglary Standard](../docs/proposals/active/notation-sets/SIGLARY-STANDARD.md). Retain `CAVEMAN-MICRO-DENSE-V2.md` as the legacy Matrice path. Treat the superseded working title “Caveman Micro Dense 🧬 v2” and the other repositories’ proper names “Caveman” and “CEDRLang” as prior art.
+
 ## Repository skill
 
 - Use `.agents/skills/termux-monorepo/SKILL.md` for repository workflows.

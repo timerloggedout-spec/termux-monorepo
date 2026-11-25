@@ -34,13 +34,11 @@ canonical decompiler
 human source
 ```
 
-### 100% lossless invariant
+### Mode-specific round-trip contract
 
-For every enabled layer `L`:
+Each enabled lane declares its output mode and equivalence rule. Identity lanes require byte/hash equality, and reversible lanes require `decode_L(encode_L(x), mapping_L) == x`. Intentionally lossy modes declare their accepted loss and evaluation target, then follow that mode-specific contract. The current 70% phase codec mutates registered canonical tokens; the Agent-document lanes declare `identity`. The `1337_$934k` README mention remains historical PR #1642 Grimoire provenance.
 
-`decode_L(encode_L(x), mapping_L) == x`
-
-The invariant is **byte/hash exact**, not merely semantic similarity. A decoder must never infer original characters from ambiguous 1337 digits without mapping evidence.
+Exact reconstruction applies when the selected mode declares reversibility or an exact source mapping. Decoder behavior follows explicit mapping evidence for ambiguous 1337 digits.
 
 ## Implemented
 
@@ -63,7 +61,7 @@ The invariant is **byte/hash exact**, not merely semantic similarity. A decoder 
 
 ## Next recovery layers
 
-1. Maintain the seven active Agent machine-to-human pairs in `scripts/cedrlang/render_contact_projections.py`; preserve each ICM Claude/AGENTS alias byte-for-byte and keep the earlier root `AGENTS.md` projection as historical lineage only.
+1. Maintain the seven active Agent machine-to-human pairs in `scripts/linguist/agent_document_pairs.py`; each lane declares its FLY-006 relationship class and mapping mode. Current Agent-document lanes use `identity`; preserve each ICM Claude/AGENTS alias byte-for-byte and keep the earlier root `AGENTS.md` projection as historical lineage.
 2. Recover the INDEX Taxonomy mapper and connect Concept / Pointer / Alias / Relationship indexes.
 3. Reconcile `archwiz/pointer_index.py` with `cli-synthegration/synthegration_index.py` pointer/hash formats; retain full hashes as the canonical identity and short hashes only as display aliases.
 4. Recover Caveman-Micro/Caveman fork behavior and benchmark against the existing Grimoire/CedrLang path.

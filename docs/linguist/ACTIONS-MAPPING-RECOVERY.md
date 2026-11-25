@@ -22,7 +22,11 @@ The historical implementation discussion also identifies `REV_SYMBOL_MAP` and `R
 - `workspace/llm_map/` and `archwiz/` — existing taxonomy, pointer, alias, concept, tool, and relationship index surfaces.
 - `phase_codec.py` — current master recovery seed for the PR #154 70% diaspora experiment.
 - `mapping_pointer_index.py` — current recovery contract for explicit mapping provenance.
-- `scripts/cedrlang/render_contact_projections.py` — active explicit registry for seven Agent machine surfaces and their unique sibling `*.hum.md` sources; byte-preserving identity remains the current projection.
+- `scripts/linguist/agent_document_pairs.py` — active seven-lane registry; each row declares a relationship class and mapping mode, with ICM machine aliases preflighted as a group.
+- Agent-document mapping mode: all seven rows declare `identity`. The 70% phase codec stays scoped to its canonical-token registry; the `1337_$934k` reference is historical README/PR #1642 provenance.
+- Agent-document name mapping is authored in each lane's human source: the system name of record is **Siglary**, and `CAVEMAN-MICRO-DENSE-V2.md` remains a legacy Matrice path. The mapper applies each lane's declared `identity` mode.
+- README LMP-01 remains separate from Agent/ICM naming. Candidate policy in [PR #5188](https://github.com/timerloggedout-spec/termux-monorepo/pull/5188), branch `docs/linguist-readme-evolution-20261111` at `5f712c974c47d7d87d97647ad0cbc845b5dfe2ab` (absent from live `master`), sets `default_rate=0.0007` (0.07% per-update review/change budget), `relative_jitter=0.1`, `seed_source=base_commit_sha`, and `exploratory_ceiling=0.07` (7%). The planner seeds `random.Random(str(seed))`, sorts eligible paths, and derives each file's rate with `factor = 1.0 + rng.uniform(-jitter, jitter)`, capped at 0.07. Its mode is `report_only`, with `automatic_rewrites=false` and `semantic_mutation=false`; the rate is a review budget, with per-commit compounding excluded. The 70% phase codec is a separate token-variant mechanism.
+- Naming migration attribution: Muse initiated this migration per owner-supplied provenance; repository verification pending.
 
 ### Proposed in PR #154 comments, not verified as historically deployed
 

@@ -24,13 +24,15 @@ Every layer must expose:
 - output hash;
 - mapping hash/pointer;
 - provenance/lifecycle metadata;
-- exact round-trip test.
+- verification required by the declared mapping mode.
 
-For source `x` and layer `L`:
+Reversible modes use exact round-trip equality. Intentionally lossy modes declare their accepted loss and evaluation target; exact reconstruction applies when the selected mode declares it.
+
+For source `x` and a reversible layer `L`:
 
 `decode_L(encode_L(x), mapping_L) == x`
 
-No decoder may guess ambiguous original characters from a compact surface.
+Decoder behavior follows explicit mapping evidence for ambiguous original characters.
 
 ## Mapping Pointer Index
 
@@ -53,4 +55,4 @@ No decoder may guess ambiguous original characters from a compact surface.
 
 ## Follow-on
 
-Preserve the root `AGENTS.md` ↔ `AGENTS.hum.md` milestone as historical lineage. The current Agent-document layer registers seven active machine surfaces with unique sibling `*.hum.md` sources in `scripts/cedrlang/render_contact_projections.py`; keep ICM aliases byte-identical and use byte-preserving projection until a reversible codec is approved. Continue INDEX Taxonomy, Concept/Pointer/Alias/Relationship indexes, Caveman-Micro, Grimoire, ICM and README recovery incrementally, with compatibility fixtures for each historical behavior before canonical promotion.
+Preserve the root `AGENTS.md` ↔ `AGENTS.hum.md` milestone as historical lineage. The current Agent-document layer registers seven active machine surfaces with unique sibling `*.hum.md` sources in `scripts/linguist/agent_document_pairs.py`; each row declares its relationship class and mapping mode. Current Agent-document lanes use `identity`, and ICM aliases stay byte-identical. Continue INDEX Taxonomy, Concept/Pointer/Alias/Relationship indexes, Caveman-Micro, Grimoire, ICM and README recovery incrementally, with compatibility fixtures for each historical behavior before canonical promotion.

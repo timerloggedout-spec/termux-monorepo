@@ -4,6 +4,10 @@ This is the documentation-only maintenance pipeline for the `docs/icm/` System m
 
 The local Claude and AGENTS machine aliases share this byte-identical content. Their separately registered human sources are `CLAUDE.hum.md` and `AGENTS.hum.md`; each pair uses the same identity projection.
 
+## Siglary name mapping
+
+The notation system's name of record is **Siglary**, per [the Notation Matrice](../../../docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md) and [the Siglary Standard](../../../docs/proposals/active/notation-sets/SIGLARY-STANDARD.md). Retain `CAVEMAN-MICRO-DENSE-V2.md` as the legacy Matrice path. Treat the superseded working title “Caveman Micro Dense 🧬 v2” and the other repositories’ proper names “Caveman” and “CEDRLang” as prior art.
+
 ## Where things live
 
 | Folder | What it holds |

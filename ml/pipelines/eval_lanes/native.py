@@ -15,5 +15,8 @@ TERMUX_SMOKE = EvidenceContract(
 )
 
 
-def native_gates() -> tuple[EvidenceContract, ...]:
-    return (REPO_GATE, TERMUX_SMOKE)
+def native_gates(*, termux_related: bool = False) -> tuple[EvidenceContract, ...]:
+    """Select repository baseline plus Termux smoke only for Termux work."""
+    if termux_related:
+        return (REPO_GATE, TERMUX_SMOKE)
+    return (REPO_GATE,)

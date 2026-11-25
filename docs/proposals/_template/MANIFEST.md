@@ -9,7 +9,7 @@ priority: P2
 reviewers: []
 related_prs: []
 related_branches: []
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate] # Add termux-smoke for Termux runtime/device work
 ---
 
 # MANIFEST — PROPOSAL-ID

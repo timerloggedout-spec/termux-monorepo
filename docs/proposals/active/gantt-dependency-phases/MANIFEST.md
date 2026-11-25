@@ -16,7 +16,7 @@ reviewers:
 related_prs: [248, 252, 253, 254, 257, 717, 774, 828]
 related_branches:
   - master
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate]
 ---
 
 # MANIFEST — gantt-dependency-phases

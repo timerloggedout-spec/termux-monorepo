@@ -16,7 +16,7 @@ reviewers:
 related_prs: [614]
 related_branches:
   - feat/approxination-integration
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate]
 ---
 
 # MANIFEST — Approxination Integration

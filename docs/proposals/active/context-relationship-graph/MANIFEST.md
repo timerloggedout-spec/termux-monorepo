@@ -15,7 +15,7 @@ reviewers:
     status: executing
 related_prs: [232, 1286]
 related_branches: [manus/context-relationship-graph, docs/historical-corpus-explorer-proposal]
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate]
 ---
 
 # MANIFEST — Context Relationship Graph

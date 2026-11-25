@@ -8,7 +8,7 @@ from unittest import TestCase, main
 from she.incident import Incident, IncidentState
 from she.sandbox import plan_repair_sandbox
 from she.verify import (
-    DUAL_GATES,
+    BASE_GATES,
     CheckSpec,
     VerificationError,
     VerificationPlan,
@@ -39,13 +39,41 @@ def _inc(**overrides) -> Incident:
 
 
 class SheVerifyTests(TestCase):
-    def test_dual_gates_always_required(self):
+    def test_repo_gate_always_required(self):
         plan = plan_verification(_inc())
-        self.assertTrue(DUAL_GATES.issubset(plan.required_gates()))
+        self.assertTrue(BASE_GATES.issubset(plan.required_gates()))
         self.assertFalse(plan.promotion_ready)
         self.assertFalse(plan.live)
-        self.assertIn("dual_gates_required", plan.constraints)
+        self.assertIn("repo_gate_required", plan.constraints)
         self.assertIn("http_200_is_not_pass", plan.constraints)
+
+    def test_termux_smoke_is_required_only_for_termux_scope(self):
+        general = plan_verification(_inc())
+        self.assertNotIn("termux-smoke", general.required_gates())
+        termux = plan_verification(_inc(
+            source="github.termux-smoke",
+            event_provenance="workflow_run:termux-smoke:failure",
+            fingerprint="termux-smoke:runtime",
+        ))
+        self.assertIn("termux-smoke", termux.required_gates())
+        self.assertTrue(termux.metadata["termux_related"])
+
+    def test_termux_scope_requires_termux_result_for_readiness(self):
+        termux = plan_verification(_inc(
+            source="github.termux-smoke",
+            event_provenance="workflow_run:termux-smoke:failure",
+            fingerprint="termux-smoke:runtime",
+        ))
+        results = {
+            "repo-gate": {"outcome": "pass"},
+            "domain-tests": {"outcome": "pass"},
+            "regression-invariants": {"outcome": "pass"},
+        }
+        pending = apply_check_results(termux, results)
+        self.assertFalse(pending.promotion_ready)
+        results["termux-smoke"] = {"outcome": "pass"}
+        ready = apply_check_results(termux, results)
+        self.assertTrue(ready.promotion_ready)
 
     def test_security_requires_security_checks(self):
         inc = _inc(
@@ -98,15 +126,15 @@ class SheVerifyTests(TestCase):
         self.assertFalse(done.promotion_ready)
         self.assertIn("blocked", summarize_results(done))
 
-    def test_round_trip_json_keeps_dual_gates(self):
+    def test_round_trip_json_keeps_repo_gate(self):
         plan = plan_verification(_inc())
         restored = VerificationPlan.from_mapping(json.loads(json.dumps(plan.to_mapping())))
-        self.assertTrue(DUAL_GATES.issubset(restored.required_gates()))
+        self.assertTrue(BASE_GATES.issubset(restored.required_gates()))
 
-    def test_from_mapping_rejects_dropped_dual_gate(self):
+    def test_from_mapping_rejects_dropped_repo_gate(self):
         data = plan_verification(_inc()).to_mapping()
         data["checks"] = [c for c in data["checks"] if c["gate"] != "repo-gate"]
-        with self.assertRaisesRegex(VerificationError, "dual gates"):
+        with self.assertRaisesRegex(VerificationError, "repo gate"):
             VerificationPlan.from_mapping(data)
 
     def test_unknown_outcome_rejected(self):

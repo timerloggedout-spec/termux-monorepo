@@ -12,7 +12,7 @@ reviewers:
     status: requested
 related_prs: []
 related_branches: []
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate]
 ---
 
 # MANIFEST — free-llm-provider-prioritization

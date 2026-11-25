@@ -8,7 +8,7 @@ from unittest import TestCase, main
 from she.attest import Attestation, AttestError, digest_mapping, plan_attestation
 from she.incident import Incident, IncidentState
 from she.ledger import plan_ledger
-from she.verify import DUAL_GATES
+from she.verify import BASE_GATES
 
 FIXED = datetime(2026, 8, 29, 3, 0, tzinfo=UTC)
 
@@ -48,7 +48,7 @@ class SheAttestTests(TestCase):
         self.assertFalse(att.signed)
         self.assertFalse(att.persisted)
         self.assertFalse(att.mutates_source)
-        self.assertTrue(DUAL_GATES.issubset(att.required_gates))
+        self.assertTrue(BASE_GATES.issubset(att.required_gates))
         self.assertEqual(len(att.digest), 64)
         self.assertEqual(att.algorithm, "sha256")
 
@@ -65,7 +65,7 @@ class SheAttestTests(TestCase):
         )
         att = plan_attestation(inc)
         self.assertEqual(att.promotion_decision, "observe-only")
-        self.assertTrue(DUAL_GATES.issubset(att.required_gates))
+        self.assertTrue(BASE_GATES.issubset(att.required_gates))
         self.assertIn("security-checks", att.required_gates)
         self.assertTrue(att.metadata["security"])
 
@@ -82,12 +82,12 @@ class SheAttestTests(TestCase):
         self.assertEqual(restored.promotion_decision, "hold")
         self.assertFalse(restored.signed)
         self.assertFalse(restored.live)
-        self.assertTrue(DUAL_GATES.issubset(restored.required_gates))
+        self.assertTrue(BASE_GATES.issubset(restored.required_gates))
 
     def test_from_mapping_rejects_dropped_dual_gate(self):
         data = plan_attestation(_inc()).to_mapping()
         data["required_gates"] = [g for g in data["required_gates"] if g != "repo-gate"]
-        with self.assertRaisesRegex(AttestError, "dual gates"):
+        with self.assertRaisesRegex(AttestError, "repo gate"):
             Attestation.from_mapping(data)
 
     def test_rejects_mismatched_ledger(self):

@@ -8,7 +8,7 @@ from unittest import TestCase, main
 from she.incident import Incident, IncidentState
 from she.repair_pr import RepairPRError, RepairPRPlan, plan_repair_pr
 from she.sandbox import plan_repair_sandbox
-from she.verify import DUAL_GATES, plan_verification
+from she.verify import BASE_GATES, plan_verification
 
 FIXED = datetime(2026, 8, 27, 15, 0, tzinfo=UTC)
 
@@ -32,15 +32,25 @@ def _inc(**overrides) -> Incident:
 
 
 class SheRepairPRTests(TestCase):
-    def test_dual_gates_required(self):
+    def test_repo_gate_required(self):
         plan = plan_repair_pr(_inc())
-        self.assertTrue(DUAL_GATES.issubset(plan.required_tests))
+        self.assertTrue(BASE_GATES.issubset(plan.required_tests))
         self.assertFalse(plan.promotion_ready)
         self.assertFalse(plan.live)
         self.assertFalse(plan.mutates_source)
         self.assertEqual(plan.rollback_sha, plan.sha)
         self.assertTrue(plan.branch.startswith("she/repair/"))
-        self.assertIn("dual_gates_required", plan.constraints)
+        self.assertIn("repo_gate_required", plan.constraints)
+
+    def test_termux_scope_is_preserved_in_repair_tests(self):
+        inc = _inc(
+            source="github.termux-smoke",
+            event_provenance="workflow_run:termux-smoke:failure",
+            fingerprint="termux-smoke:runtime",
+        )
+        plan = plan_repair_pr(inc)
+        self.assertIn("termux-smoke", plan.required_tests)
+        self.assertTrue(plan.metadata["termux_related"])
 
     def test_security_observe_only(self):
         inc = _inc(
@@ -56,17 +66,17 @@ class SheRepairPRTests(TestCase):
         with self.assertRaisesRegex(RepairPRError, "terminal"):
             plan_repair_pr(inc)
 
-    def test_round_trip_keeps_dual_gates(self):
+    def test_round_trip_keeps_repo_gate(self):
         plan = plan_repair_pr(_inc())
         restored = RepairPRPlan.from_mapping(json.loads(json.dumps(plan.to_mapping())))
-        self.assertTrue(DUAL_GATES.issubset(restored.required_tests))
+        self.assertTrue(BASE_GATES.issubset(restored.required_tests))
         self.assertFalse(restored.promotion_ready)
         self.assertFalse(restored.live)
 
-    def test_from_mapping_rejects_dropped_dual_gate(self):
+    def test_from_mapping_rejects_dropped_repo_gate(self):
         data = plan_repair_pr(_inc()).to_mapping()
         data["required_tests"] = [t for t in data["required_tests"] if t != "repo-gate"]
-        with self.assertRaisesRegex(RepairPRError, "dual gates"):
+        with self.assertRaisesRegex(RepairPRError, "repo gate"):
             RepairPRPlan.from_mapping(data)
 
     def test_from_mapping_rejects_tampered_rollback(self):

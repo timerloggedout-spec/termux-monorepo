@@ -14,7 +14,7 @@ related_issues: []
 related_prs: []
 related_branches:
   - feat/ceel-continuous-capability-evolution-20261111
-gates_required: [proposal-lifecycle, repo-gate, termux-smoke]
+gates_required: [proposal-lifecycle, repo-gate]
 ---
 
 # MANIFEST — continuous-capability-evolution-lab

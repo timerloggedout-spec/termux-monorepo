@@ -9,7 +9,7 @@ from she.incident import Incident, IncidentState
 from she.ledger import plan_ledger
 from she.publish import PublicationPlan, PublishError, plan_publication
 from she.replay import plan_replay
-from she.verify import DUAL_GATES
+from she.verify import BASE_GATES
 
 FIXED = datetime(2026, 8, 29, 22, 0, tzinfo=UTC)
 
@@ -51,7 +51,7 @@ class ShePublishTests(TestCase):
         self.assertFalse(plan.persisted)
         self.assertFalse(plan.published)
         self.assertFalse(plan.mutates_source)
-        self.assertTrue(DUAL_GATES.issubset(plan.required_gates))
+        self.assertTrue(BASE_GATES.issubset(plan.required_gates))
         self.assertEqual(plan.replay_verdict, "match")
 
     def test_publish_plan_when_required_gates_pass(self):
@@ -69,7 +69,7 @@ class ShePublishTests(TestCase):
         plan = plan_publication(inc)
         self.assertEqual(plan.action, "observe-only")
         self.assertEqual(plan.promotion_decision, "observe-only")
-        self.assertTrue(DUAL_GATES.issubset(plan.required_gates))
+        self.assertTrue(BASE_GATES.issubset(plan.required_gates))
         self.assertIn("security-checks", plan.required_gates)
         self.assertTrue(plan.metadata["security"])
 
@@ -88,12 +88,12 @@ class ShePublishTests(TestCase):
         self.assertFalse(restored.published)
         self.assertFalse(restored.signed)
         self.assertFalse(restored.live)
-        self.assertTrue(DUAL_GATES.issubset(restored.required_gates))
+        self.assertTrue(BASE_GATES.issubset(restored.required_gates))
 
     def test_from_mapping_rejects_dropped_dual_gate(self):
         data = plan_publication(_inc()).to_mapping()
         data["required_gates"] = [g for g in data["required_gates"] if g != "repo-gate"]
-        with self.assertRaisesRegex(PublishError, "dual gates"):
+        with self.assertRaisesRegex(PublishError, "repo gate"):
             PublicationPlan.from_mapping(data)
 
     def test_rejects_mismatched_ledger(self):

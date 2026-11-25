@@ -19,7 +19,7 @@ related_branches:
 related_repos:
   - https://github.com/timerloggedout-spec/bifrost_fork
   - https://github.com/timerloggedout-spec/bifrost-benchmarking_fork
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate]
 ---
 
 # MANIFEST — Bifrost Gateway Integration

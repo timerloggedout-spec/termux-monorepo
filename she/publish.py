@@ -17,7 +17,7 @@ from typing import Any
 from she.incident import Incident, IncidentState
 from she.ledger import EvidenceLedger, plan_ledger
 from she.replay import ReplayVerdict, plan_replay
-from she.verify import DUAL_GATES
+from she.verify import BASE_GATES, TERMUX_SCOPE_GATES
 
 ACTIONS = frozenset({"hold", "publish-plan", "observe-only", "quarantine-plan"})
 
@@ -67,8 +67,10 @@ class PublicationPlan:
         if not self.sha:
             raise PublishError("sha required")
         needed = set(self.required_gates)
-        if not DUAL_GATES.issubset(needed):
-            raise PublishError("dual gates repo-gate + termux-smoke must be required")
+        if not BASE_GATES.issubset(needed):
+            raise PublishError("repo-gate must be required")
+        if self.metadata.get("termux_related") and not TERMUX_SCOPE_GATES.issubset(needed):
+            raise PublishError("termux-smoke must be required for Termux scope")
         if self.action not in ACTIONS:
             raise PublishError(f"unsupported action: {self.action!r}")
         if len(self.digest) != 64:
@@ -154,12 +156,12 @@ def plan_publication(
     if replay.sha != incident.sha:
         raise PublishError("replay sha must match incident sha")
 
-    required = set(ledger.required_gates) | set(replay.required_gates) | set(DUAL_GATES)
+    required = set(ledger.required_gates) | set(replay.required_gates) | set(BASE_GATES)
     security = _is_security(incident)
     if security:
         required |= {"security-checks"}
-    if not DUAL_GATES.issubset(required):
-        raise PublishError("dual gates repo-gate + termux-smoke must be required")
+    if not BASE_GATES.issubset(required):
+        raise PublishError("repo-gate must be required")
 
     if security:
         action = "observe-only"
@@ -188,7 +190,7 @@ def plan_publication(
         published=False,
         mutates_source=False,
         constraints=(
-            "dual_gates_required",
+            "repo_gate_required",
             "canonical_sha256",
             "no_sign",
             "no_persist",
@@ -204,6 +206,7 @@ def plan_publication(
             "classification": incident.classification,
             "fingerprint": incident.fingerprint,
             "source": incident.source,
+            "termux_related": bool(ledger.metadata.get("termux_related")),
             "state": incident.state.value,
             "security": security,
             "replay_decision": replay.promotion_decision,

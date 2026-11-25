@@ -155,15 +155,15 @@ def collect(owner: str, repo: str, branch: str, token: str | None) -> dict[str, 
         if st == "completed" and conc not in NON_FAILED_CONCLUSIONS:
             failed_recent.append(item)
 
-    dual = {
+    scope_gates = {
         "repo_gate": {**repo_gate, "label": gate_label(repo_gate)},
         "termux_smoke": {**termux_smoke, "label": gate_label(termux_smoke)},
     }
-    dual["combined"] = (
-        "green"
-        if dual["repo_gate"]["label"] == "green" and dual["termux_smoke"]["label"] == "green"
-        else "not_green"
+    repo_label = scope_gates["repo_gate"]["label"]
+    scope_gates["repository_baseline"] = (
+        "green" if repo_label == "green" else "blocked" if repo_label == "red" else "pending"
     )
+    scope_gates["termux_scope"] = scope_gates["termux_smoke"]["label"]
 
     return {
         "schema": "engineering-health/v1",
@@ -171,7 +171,7 @@ def collect(owner: str, repo: str, branch: str, token: str | None) -> dict[str, 
         "repository": f"{owner}/{repo}",
         "default_branch": default_branch,
         "head_sha_hint": repo_meta.get("pushed_at"),
-        "dual_gates": dual,
+        "scope_gates": scope_gates,
         "open_prs": {
             "count": len(pr_rows),
             "items": pr_rows,
@@ -189,21 +189,21 @@ def collect(owner: str, repo: str, branch: str, token: str | None) -> dict[str, 
 
 
 def to_markdown(snap: dict[str, Any]) -> str:
-    dg = snap["dual_gates"]
+    sg = snap["scope_gates"]
     lines = [
         f"# Engineering health — `{snap['repository']}`",
         "",
         f"- **Observed (UTC):** `{snap['observed_at']}`",
         f"- **Default branch:** `{snap['default_branch']}`",
-        f"- **Dual gates combined:** **{dg['combined']}**",
+        f"- **Repository baseline:** **{sg['repository_baseline']}**",
         f"- **Credit policy:** `{snap['credit_policy']}` (no CellCog agent calls)",
         "",
-        "## Dual gates",
+        "## Scope gates",
         "",
         f"| Gate | Label | Status | Conclusion | SHA |",
         f"|---|---|---|---|---|",
-        f"| repo-gate | {dg['repo_gate']['label']} | {dg['repo_gate']['status']} | {dg['repo_gate']['conclusion']} | `{dg['repo_gate']['head_sha'] or '—'}` |",
-        f"| termux-smoke | {dg['termux_smoke']['label']} | {dg['termux_smoke']['status']} | {dg['termux_smoke']['conclusion']} | `{dg['termux_smoke']['head_sha'] or '—'}` |",
+        f"| repo-gate | {sg['repo_gate']['label']} | {dg['repo_gate']['status']} | {dg['repo_gate']['conclusion']} | `{dg['repo_gate']['head_sha'] or '—'}` |",
+        f"| termux-smoke | {sg['termux_smoke']['label']} | {dg['termux_smoke']['status']} | {dg['termux_smoke']['conclusion']} | `{dg['termux_smoke']['head_sha'] or '—'}` |",
         "",
         f"## Open PRs ({snap['open_prs']['count']})",
         "",

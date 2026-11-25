@@ -57,6 +57,10 @@ jobs:
           python3 -B -m unittest discover -s tests -p 'test_doe_settings_register.py' -v
           python3 -B -m unittest discover -s tests -p 'test_tribute_family_integrity.py' -v
 
+      - name: Scope-aware SHE and native gate contracts
+        run: |
+          python3 -m unittest tests.test_native_eval_lanes_scope tests.test_she_verify tests.test_she_ledger tests.test_she_evolve tests.test_she_promote tests.test_she_repair_pr tests.test_she_learn tests.test_she_replay tests.test_she_attest tests.test_she_publish -v
+
       - name: Run gate
         run: python3 scripts/ci/repo_gate.py --base "${{ steps.base.outputs.ref }}"
 

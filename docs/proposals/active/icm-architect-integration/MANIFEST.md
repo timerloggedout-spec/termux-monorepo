@@ -13,7 +13,7 @@ reviewers:
 related_prs: []
 related_branches:
   - feat/icm-architect-submodule
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate]
 ---
 
 # MANIFEST — ICM Architect Integration

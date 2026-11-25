@@ -101,7 +101,7 @@ def test_collect_and_to_markdown(tmp_path, monkeypatch):
     monkeypatch.setattr(eh, "gh_get", mock_gh_get)
 
     snap = eh.collect("owner", "repo", "master", None)
-    assert snap["dual_gates"]["combined"] == "green"
+    assert snap["scope_gates"]["repository_baseline"] == "green"
     assert snap["open_prs"]["count"] == 1
     assert len(snap["actions_hygiene"]["recent_runs"]) == 2
     assert len(snap["actions_hygiene"]["failed_recent"]) == 1
@@ -130,10 +130,11 @@ def test_main(tmp_path, monkeypatch):
             "repository": "owner/repo",
             "default_branch": "master",
             "head_sha_hint": "pushed",
-            "dual_gates": {
+            "scope_gates": {
                 "repo_gate": {"label": "green", "status": "completed", "conclusion": "success", "head_sha": "123"},
                 "termux_smoke": {"label": "green", "status": "completed", "conclusion": "success", "head_sha": "123"},
-                "combined": "green",
+                "repository_baseline": "green",
+                "termux_scope": "green",
             },
             "open_prs": {"count": 0, "items": []},
             "actions_hygiene": {"recent_runs": [], "failed_recent": []},

@@ -21,7 +21,6 @@ proposals:
       - docs/repository-architecture-entry-20261121-v2
     gates_required:
       - repo-gate
-      - termux-smoke
 
 
   - id: master-splinter
@@ -42,7 +41,6 @@ proposals:
     related_branches: []
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: agent-contributor-provenance
     title: Evidence-backed agent contributor attribution and source citation ledger
     author: ChatGPT
@@ -64,7 +62,6 @@ proposals:
       - feat/biudl-full-stack-provenance
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: model-selection-market
     title: Model selection market — equal-weight bootstrap, 3L0 performance, DSPy-DoE, bets/trading-cards
     author: grok
@@ -87,7 +84,6 @@ proposals:
       - rate-limit-rotation
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: ratatui-tokio-terminal-dashboard
     title: Termux-first Ratatui + Tokio responsive terminal dashboard
     author: ChatGPT
@@ -140,7 +136,6 @@ proposals:
       - feat/ml-pipelines-keepalive-20260925
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: temporal-langsmith-adapter
     title: Temporal self-host + LangSmith Trajectories adapter (P1 observational)
     author: grok
@@ -159,7 +154,6 @@ proposals:
       - feat/temporal-langsmith-adapter
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: approxination-integration
     title: Approxination skill search/create/contribute + A/B/C/D evaluation cohort
     author: grok
@@ -182,7 +176,6 @@ proposals:
       - https://github.com/timerloggedout-spec/Inverse-Arena_fork
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: bifrost-gateway-integration
     title: Bifrost AI gateway + benchmarking forks — RECON, catalog, provider path
     author: grok
@@ -205,7 +198,6 @@ proposals:
       - https://github.com/timerloggedout-spec/bifrost-benchmarking_fork
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: auditengine-adapt
     title: RinDig AuditEngine (Ethics Engine) adapt pass
     author: timerloggedout-spec
@@ -220,7 +212,6 @@ proposals:
     related_branches: []
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: cost-of-remembering-integration
     title: RinDig cost-of-remembering_fork ICM evidence lane
     author: timerloggedout-spec
@@ -236,7 +227,6 @@ proposals:
       - feat/rindig-cost-of-remembering-icm
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: mcp-hub-risk-split
     title: mcp-hub / hub_mcp risk split
     author: timerloggedout-spec
@@ -251,7 +241,6 @@ proposals:
     related_branches: []
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: context-relationship-graph
     title: GitHub-native context relationship graph and scope index
     author: Manus
@@ -273,7 +262,6 @@ proposals:
       - docs/historical-corpus-explorer-proposal
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: manus-critical-eval
     title: Manus Critical Evaluation & Novel Work
     author: Manus
@@ -290,7 +278,6 @@ proposals:
       - manus/novel-work
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: rate-limit-rotation
     title: Rate limits, model rotation, OpenRouter fallback
     author: grok
@@ -354,7 +341,6 @@ proposals:
       - 11
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: chatgpt-initial
     title: Initial repository evaluation / cockpit intelligence
     author: ChatGPT
@@ -430,7 +416,6 @@ proposals:
       - feat/icm-architect-submodule
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: actions-refinements
     title: 'Issue #192 action-integration refinements'
     author: Manus AI
@@ -456,7 +441,6 @@ proposals:
       - 232
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: linguist-machine-parity
     title: Linguist README machine-parity enhancement
     author: Manus AI
@@ -474,7 +458,6 @@ proposals:
     related_branches: []
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: gantt-dependency-phases
     title: Dependency-phase automation and GitHub Projects integration
     author: Manus AI
@@ -494,7 +477,6 @@ proposals:
       - manus/dependency-phase-automation
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: notation-sets
     title: Notation Sets, Living Lexicon, and Cross-Domain Semantic Index
     author: ChatGPT
@@ -522,7 +504,6 @@ proposals:
       - docs/notation-sets-evolution
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: archwiz-ui-protocol
     title: ArchW1z Termux UI over shared agentic protocols
     author: ChatGPT
@@ -563,7 +544,6 @@ proposals:
       - docs/proposals/vercel-lane-topology
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: demo-portal
     title: 'Demo portal: public showcase of archwiz.py / deepcli-tui via a sandboxed Termux emulator'
     author: Claude
@@ -626,7 +606,6 @@ proposals:
       - feat/rindig-eduba-consolidation
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: paper2agent-scientific-factory
     title: 'Paper2Agent scientific factory: manifest, claim graph, reproduction, certificate'
     author: ChatGPT
@@ -648,7 +627,6 @@ proposals:
       - docs/paper2agent-scientific-factory-proposal-2026-09-29
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: domain-composition-matrix
     title: 'Domain composition matrix: versioned research database for composition rules'
     author: timerloggedout-spec
@@ -705,7 +683,6 @@ proposals:
     related_branches: []
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: archwiz-markov-trellis-lab
     title: ArchWiz Markov recombining tree/trellis visualization and evaluation sandbox
     author: ChatGPT
@@ -727,7 +704,6 @@ proposals:
       - experiment/archwiz-markov-trellis-lab
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: archwiz-hyperforge-gemini-review
     title: ArchWiz Hyper-Forge — Gemini plan reconciliation and collaborative development
     author: ChatGPT
@@ -758,7 +734,6 @@ proposals:
       - docs/archwiz-hyperforge-gemini-review-package
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: agent-team-formation
     title: Role-aware agent teams, game-player fleet, scoring, and controlled research
     author: Manus AI
@@ -782,7 +757,6 @@ proposals:
       - docs/agent-team-formation-draft
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: ops-hitl-control-plane
     title: OPS-EVENT HITL Control Plane
     author: timerloggedout-spec
@@ -838,7 +812,6 @@ proposals:
       - docs/proposals/codespaces-enablement
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: aws-free-tier-strands-delphi-oracle
     title: AWS Free Tier integration and Strands Decider Delphi Oracle
     author: ChatGPT
@@ -1128,7 +1101,6 @@ proposals:
       - fix/provider-usage-unknown-token-counts
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: kiroween-delphi-concept-skeleton-crew
     title: 'Kiroween 2026 — skeleton-crew: CMDB/reconciliation viewer (spec-first minimal crew)'
     author: oracle-method
@@ -1271,7 +1243,6 @@ proposals:
     gates_required:
       - proposal-lifecycle
       - repo-gate
-      - termux-smoke
   - id: integration-intelligence-superpowers
     title: "Integration Intelligence foundation and Superpowers engineering methodology"
     author: ChatGPT
@@ -1287,7 +1258,6 @@ proposals:
       - feat/integration-intelligence-superpowers
     gates_required:
       - repo-gate
-      - termux-smoke
   - id: integration-portfolio-expansion
     title: "Integration portfolio expansion and documentation readiness"
     author: ChatGPT
@@ -1304,7 +1274,6 @@ proposals:
     gates_required:
       - proposal-lifecycle
       - repo-gate
-      - termux-smoke
 
   - id: provider-family-doe-observatory
     title: "Provider Family × Configured Instance × DoE settings observatory"
@@ -1325,7 +1294,6 @@ proposals:
     gates_required:
       - proposal-lifecycle
       - repo-gate
-      - termux-smoke
   - id: que-superagent
     title: 'QUE ⇐ dsh-superagent domain model: Mandate, Report, serial Eval, fan-out, shadow mode'
     author: Hark
@@ -1369,7 +1337,6 @@ proposals:
     gates_required:
       - repo-gate
       - proposal-lifecycle
-      - termux-smoke
 
 
   - id: repository-provisioner
@@ -1388,6 +1355,28 @@ proposals:
     related_prs: []
     related_branches:
       - feat/repository-provisioner-workflow
+    gates_required:
+      - repo-gate
+
+  - id: master-staging-reconciliation
+    title: "Master-staging reconciliation and scope-aware Termux validation"
+    author: ChatGPT
+    status: executing
+    priority: P0
+    path: active/master-staging-reconciliation/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-approver
+        status: accepted
+      - id: ChatGPT
+        role: author-executor
+        status: executing
+    related_issues: []
+    related_prs: [5844]
+    related_branches:
+      - reconcile/master-staging-scope-20261124
+      - master-staging
+      - termux-smoke
     gates_required:
       - repo-gate
       - termux-smoke

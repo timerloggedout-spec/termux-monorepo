@@ -128,7 +128,8 @@ from she.sandbox import (
 )
 from she.verify import (
     CHECK_OUTCOMES,
-    DUAL_GATES,
+    BASE_GATES,
+    TERMUX_SCOPE_GATES,
     VERIFICATION_GATES,
     CheckSpec,
     VerificationError,
@@ -185,7 +186,8 @@ __all__ = [
     "plan_repair_sandbox",
     "sandbox_branch_name",
     "CHECK_OUTCOMES",
-    "DUAL_GATES",
+    "BASE_GATES",
+    "TERMUX_SCOPE_GATES",
     "VERIFICATION_GATES",
     "CheckSpec",
     "VerificationError",

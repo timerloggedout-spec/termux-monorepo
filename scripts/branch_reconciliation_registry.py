@@ -140,6 +140,21 @@ def load_graph_projection(index_dir: Path, surfaces: set[str], clauses: list[str
     }
 
 
+
+def project_base_surfaces(records: list[dict[str, Any]], surfaces: set[str]) -> dict[str, Any]:
+    """Expose branch and pull-request selections as independent result collections."""
+    projection: dict[str, Any] = {}
+    if "branch" in surfaces:
+        projection["branches"] = records
+    if "pull-request" in surfaces:
+        projection["pull_requests"] = [
+            {**pull, "branch": branch.get("branch"), "branch_sha": branch.get("sha")}
+            for branch in records
+            for pull in branch.get("pull_requests", [])
+        ]
+    return projection
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo", required=True, help="owner/repository")
@@ -268,6 +283,10 @@ def main() -> int:
             "max_results": args.max_results,
         },
         "graph": graph_projection,
+        "surface_results": {
+            **project_base_surfaces(records, surfaces),
+            **({"graph": graph_projection} if graph_projection is not None else {}),
+        },
         "policy": {
             "read_only": True,
             "never_auto_merge": True,

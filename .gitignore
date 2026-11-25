@@ -61,6 +61,8 @@ pipeline_log.jsonl
 *.dmp
 
 # === Sensitive files (keys, tokens, cookies) ===
+.Xauthority
+.bash_history
 *.cookies
 *cookies*.json
 *_api_key

@@ -295,6 +295,38 @@ def _request(method: str, url: str, token: str, payload=None):
         ) from exc
 
 
+def _delete_label_if_present(base: str, label: str, token: str) -> bool:
+    """Delete an issue label; a 404 means it was already absent."""
+    try:
+        _request("DELETE", f"{base}/labels/{label}", token)
+    except RuntimeError as exc:
+        if "-> 404:" in str(exc):
+            return False
+        raise
+    return True
+
+
+def _record_claim_cleanup_failure(issue_number: int, base: str,
+                                  exc: Exception, token: str,
+                                  now: datetime, gap_sink: list | None):
+    """Record cleanup failure without reversing a persisted claim."""
+    stamp = now.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    if gap_sink is not None:
+        gap_sink.append({
+            "at": stamp, "kind": "cleanup_failed", "issue": issue_number,
+            "label": "dispatch-escalated", "reason": str(exc),
+        })
+    try:
+        _request("POST", f"{base}/comments", token, {
+            "body": "[MUSEai]@{role:{dispatch-watchdog}} "
+                    f"auto-claim-cleanup-warning: dispatch-escalated "
+                    f"label removal failed: {exc}. Claim remains active; "
+                    "the next watchdog pass retries cleanup."
+        })
+    except Exception:
+        pass
+
+
 def _get_all(url: str, token: str) -> list:
     out, page = [], 1
     while True:
@@ -399,6 +431,23 @@ def _run_auto_claim(repo: str, token: str, now: datetime,
     plan_result = auto_claim.plan(candidates, now)
     ctx_by_issue = {c["issue"]["number"]: c for c in contexts}
 
+    # Retry stale escalation-label cleanup for claims persisted by earlier
+    # passes. Cleanup is independent from claim validity and task execution.
+    for ctx in contexts:
+        if ctx["verdict"].get("state") != "claimed":
+            continue
+        labels = {label.get("name") for label in
+                  ctx["issue"].get("labels") or [] if isinstance(label, dict)}
+        if "dispatch-escalated" not in labels:
+            continue
+        base = f"{API}/repos/{repo}/issues/{ctx['issue']['number']}"
+        try:
+            _delete_label_if_present(base, "dispatch-escalated", token)
+        except Exception as cleanup_exc:
+            _record_claim_cleanup_failure(
+                ctx["issue"]["number"], base, cleanup_exc, token, now,
+                gap_sink)
+
     for rel in plan_result["releases"]:
         ctx = ctx_by_issue[rel["issue"]]
         base = f"{API}/repos/{repo}/issues/{rel['issue']}"
@@ -430,13 +479,13 @@ def _run_auto_claim(repo: str, token: str, now: datetime,
                          now=now, trigger=claim["trigger"])})
             _request("POST", f"{base}/labels", token,
                      {"labels": ["dispatch-claimed"]})
-            try:
-                _request("DELETE", f"{base}/labels/dispatch-escalated",
-                         token)
-            except Exception:
-                pass  # label may not be present; the claim stands
             verdict["action"] = "auto-claimed"
             verdict["state"] = "claimed"
+            try:
+                _delete_label_if_present(base, "dispatch-escalated", token)
+            except Exception as cleanup_exc:
+                _record_claim_cleanup_failure(
+                    claim["issue"], base, cleanup_exc, token, now, gap_sink)
             if claim["claim_class"] == "executor":
                 # Claim -> execution bridge: fire the build-dispatch
                 # route for the claimed issue (its gate accepts only

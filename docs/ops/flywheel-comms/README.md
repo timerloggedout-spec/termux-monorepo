@@ -32,7 +32,7 @@ Peer identity and execution surface are distinct. A collaborator may use multipl
 | manus-cue | FLY-005, FLY-006 | Registered in [REGISTRY.json](REGISTRY.json) |
 | hark-vm | FLY-002, FLY-004 | Registered in [REGISTRY.json](REGISTRY.json) |
 | chatgpt | Shared-Google Web2API session | [#5885](https://github.com/timerloggedout-spec/termux-monorepo/issues/5885) — session/listener/mapping done-evidence pending |
-| chatgpt-github | GitHub connector collaboration on FLY-006 | Registration PR + first channel ACK in progress |
+| chatgpt-github | GitHub connector collaboration on FLY-006 | first ACK recorded; registry and protocol PRs #5906 and #2 remain open |
 | mistralai | Provider/API surface | [#5905](https://github.com/timerloggedout-spec/termux-monorepo/issues/5905) — liveness, keepalive, channel, and watcher evidence pending |
 
 ## 3. Navigate by project and context

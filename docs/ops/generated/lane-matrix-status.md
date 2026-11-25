@@ -1,8 +1,8 @@
-# Lane matrix status (2026-11-25T22:07:35Z)
+# Lane matrix status (2026-11-25T23:05:23Z)
 
-- Master: `37dbe3ebe742d90ceecc3078dd6fbf7e93338fc8`
+- Master: `e3dd9ed804b26803c690bb570df178f4e4644998`
 - Open PRs: **567**
-- Oldest: #47 (112.27d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
+- Oldest: #47 (112.31d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
 | Lane | Count |
 |------|------:|
@@ -22,45 +22,45 @@
 
 | PR | Days | Lane | Reasons | Title |
 |---:|-----:|------|---------|-------|
-| #1436 | 35.65 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): salvage operational Hindsight das |
-| #2702 | 25.24 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
-| #4069 | 22.74 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
-| #4621 | 22.05 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
-| #4898 | 21.4 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
-| #5034 | 19.3 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
-| #5722 | 5.2 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted routes and bind local Do |
-| #5723 | 5.2 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted review relay and record  |
-| #5724 | 5.2 | EXTRACT | state:unknown, minesweeper-title | fix(jules): replace hosted PR handoff with receipt |
-| #47 | 112.27 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
-| #81 | 110.01 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
-| #103 | 108.88 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
-| #527 | 71.59 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
-| #605 | 68.18 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
-| #684 | 66.15 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
-| #769 | 63.6 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
-| #969 | 55.51 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
-| #990 | 54.65 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
-| #1020 | 53.38 | CANDIDATE | state:unknown | feat: close provider continuity and executable rou |
-| #1274 | 37.53 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
-| #1441 | 35.6 | CANDIDATE | state:unknown | feat(triage): reconcile official quota before disp |
-| #1469 | 35.38 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
-| #1470 | 35.37 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
-| #1495 | 34.82 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
-| #1513 | 34.58 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
-| #1515 | 34.57 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
-| #1516 | 34.57 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
-| #1531 | 34.56 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
-| #1537 | 34.55 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
-| #1557 | 33.88 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
-| #1614 | 32.8 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
-| #1616 | 32.79 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
-| #1617 | 32.78 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
-| #1626 | 32.66 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
-| #1645 | 31.9 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
-| #1650 | 31.83 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
-| #1694 | 29.86 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
-| #1734 | 29.45 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
-| #1735 | 29.45 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
-| #1966 | 28.71 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
+| #1436 | 35.69 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): salvage operational Hindsight das |
+| #2702 | 25.28 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
+| #4069 | 22.78 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
+| #4621 | 22.09 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
+| #4898 | 21.44 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
+| #5034 | 19.34 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
+| #5722 | 5.24 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted routes and bind local Do |
+| #5723 | 5.24 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted review relay and record  |
+| #5724 | 5.24 | EXTRACT | state:unknown, minesweeper-title | fix(jules): replace hosted PR handoff with receipt |
+| #47 | 112.31 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
+| #81 | 110.05 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
+| #103 | 108.92 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
+| #527 | 71.63 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
+| #605 | 68.22 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
+| #684 | 66.19 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
+| #769 | 63.65 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
+| #969 | 55.55 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
+| #990 | 54.69 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
+| #1020 | 53.42 | CANDIDATE | state:unknown | feat: close provider continuity and executable rou |
+| #1274 | 37.57 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
+| #1441 | 35.64 | CANDIDATE | state:unknown | feat(triage): reconcile official quota before disp |
+| #1469 | 35.42 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
+| #1470 | 35.41 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
+| #1495 | 34.86 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
+| #1513 | 34.62 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
+| #1515 | 34.61 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
+| #1516 | 34.61 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
+| #1531 | 34.6 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
+| #1537 | 34.59 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
+| #1557 | 33.92 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
+| #1614 | 32.84 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
+| #1616 | 32.83 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
+| #1617 | 32.82 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
+| #1626 | 32.7 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
+| #1645 | 31.94 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
+| #1650 | 31.87 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
+| #1694 | 29.9 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
+| #1734 | 29.49 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
+| #1735 | 29.49 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
+| #1966 | 28.75 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
 
 Writer only: does not merge. Dual-gate remains promote authority. HOLD/WAIT/OBSERVE are invalid parking. Age alone ≠ promote.

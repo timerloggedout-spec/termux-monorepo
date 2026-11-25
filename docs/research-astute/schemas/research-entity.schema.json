@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://researchastute.org/schemas/research-entity.schema.json",
+  "title": "Research Graph Entity",
+  "type": "object",
+  "required": [
+    "entity_id",
+    "entity_type",
+    "label",
+    "description",
+    "source_ids"
+  ],
+  "properties": {
+    "entity_id": {
+      "type": "string"
+    },
+    "entity_type": {
+      "enum": [
+        "organization",
+        "project",
+        "technology",
+        "person_public_attribution",
+        "patent",
+        "paper",
+        "dataset",
+        "repository",
+        "software",
+        "mission",
+        "vehicle",
+        "spacecraft",
+        "material",
+        "process",
+        "other"
+      ]
+    },
+    "label": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "aliases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "predicate",
+          "target_entity_id",
+          "source_ids"
+        ],
+        "properties": {
+          "predicate": {
+            "enum": [
+              "CITES",
+              "DERIVED_FROM",
+              "AUTHORED_BY",
+              "OWNED_BY",
+              "IMPLEMENTS",
+              "SUPERSEDES",
+              "REFERENCES",
+              "RELATED_TO",
+              "DEVELOPS",
+              "OPERATES",
+              "FUNDS",
+              "TESTED_BY",
+              "USES",
+              "COMPETES_WITH"
+            ]
+          },
+          "target_entity_id": {
+            "type": "string"
+          },
+          "source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence_locator": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "confidence": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

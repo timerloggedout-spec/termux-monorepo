@@ -1,0 +1,263 @@
+{
+  "schema_version": "1.0",
+  "registry_kind": "engineering-blueprint-research-requests",
+  "authority": "Research-Astute",
+  "policy": "These are research requests and scope seeds. They are not completed engineering maps, endorsements, or claims of access to proprietary designs. Populate detailed components and interfaces only with cited evidence; label analytical inferences explicitly.",
+  "blueprint_schema": "../schemas/engineering-blueprint.schema.json",
+  "requests": [
+    {
+      "request_id": "EBR-NASA-001",
+      "blueprint_id": "nasa-systems-engineering-and-mission-architecture",
+      "organization": "NASA",
+      "subject": {
+        "name": "NASA programs and mission systems",
+        "subject_type": "program"
+      },
+      "collection": "Research-Astute/research-astute-nasa-missions",
+      "priority": "P1",
+      "status": "request-seeded",
+      "scope": {
+        "included": [
+          "Agency systems-engineering lifecycle and governance",
+          "Mission architecture and system boundaries",
+          "ConOps, stakeholder expectations and requirements flowdown",
+          "Functional, logical and physical architecture views",
+          "Subsystem interfaces and interface control",
+          "Ground systems, spacecraft, launch services and mission operations",
+          "Verification, validation, integration and technical reviews",
+          "Model-based systems engineering and SysML work products",
+          "Safety, reliability, risk and configuration management"
+        ],
+        "excluded": [
+          "Non-public mission design data",
+          "Export-controlled or restricted technical data without authorization"
+        ],
+        "as_of": "2026-11-22"
+      },
+      "research_questions": [
+        "How does NASA tailor systems-engineering rigor across mission classes and lifecycle phases?",
+        "How are requirements traced from stakeholder expectations through subsystem allocation and verification evidence?",
+        "Which architecture views and model artifacts are used to describe functions, components, interfaces and operational modes?",
+        "How are ground, flight, launch, communications and mission-operations interfaces governed?",
+        "How do hazard analysis, reliability, configuration management and technical reviews connect to design baselines?"
+      ],
+      "required_views": [
+        "context",
+        "functional",
+        "logical",
+        "physical",
+        "operational",
+        "data",
+        "safety",
+        "lifecycle"
+      ],
+      "initial_evidence": [
+        {
+          "evidence_id": "NASA-SEH",
+          "evidence_state": "primary-source",
+          "source_url": "https://www.nasa.gov/reference/systems-engineering-handbook/",
+          "publisher": "NASA",
+          "claim_or_artifact": "NASA Systems Engineering Handbook covering program/project lifecycle, system design, product realization and technical management."
+        },
+        {
+          "evidence_id": "NASA-NPR-7123-1D",
+          "evidence_state": "primary-source",
+          "source_url": "https://nodis3.gsfc.nasa.gov/displayDir.cfm?Internal_ID=N_PR_7123_001D_&page_name=Chapter1",
+          "publisher": "NASA",
+          "claim_or_artifact": "NASA Procedural Requirements 7123.1D, Systems Engineering Processes and Requirements; effective 2023-07-05, expiration 2028-07-05 as listed on the directive page."
+        },
+        {
+          "evidence_id": "NASA-HDBK-1009",
+          "evidence_state": "primary-source",
+          "source_url": "https://standards.nasa.gov/standard/NASA/NASA-HDBK-1009",
+          "publisher": "NASA",
+          "claim_or_artifact": "Systems Modeling Handbook describing model planning, model organization, SysML examples and generation of systems-engineering work products."
+        }
+      ],
+      "deliverables": [
+        "NASA enterprise-to-mission architecture map",
+        "Representative mission system context and functional maps",
+        "Requirements-to-verification traceability matrix",
+        "Interface inventory and control-document map",
+        "Lifecycle/review gate map",
+        "Safety, risk and configuration evidence map"
+      ],
+      "open_questions": [
+        "Select representative mission programs for deep component-level maps.",
+        "Identify public model artifacts, interface documents and mission data products by mission."
+      ]
+    },
+    {
+      "request_id": "EBR-SPACEX-001",
+      "blueprint_id": "spacex-launch-and-space-transport-systems",
+      "organization": "SpaceX",
+      "subject": {
+        "name": "SpaceX launch and space-transport systems",
+        "subject_type": "organization"
+      },
+      "collection": "Research-Astute/research-astute-space-systems",
+      "priority": "P1",
+      "status": "request-seeded",
+      "scope": {
+        "included": [
+          "Falcon 9 launch vehicle and reusable first-stage architecture",
+          "Starship and Super Heavy integrated transportation system",
+          "Propulsion, structures, tanks, avionics, flight software and ground support",
+          "Launch site, pad, integration, countdown and range interfaces",
+          "Payload integration and mission operations",
+          "Recovery, refurbishment, reuse and lifecycle economics",
+          "Publicly documented Starlink system interfaces where evidence supports mapping"
+        ],
+        "excluded": [
+          "Proprietary detailed drawings, source code, restricted operational procedures and export-controlled technical data"
+        ],
+        "as_of": "2026-11-22"
+      },
+      "research_questions": [
+        "What public evidence establishes system boundaries and stage/subsystem decomposition for Falcon 9 and Starship?",
+        "How do propulsion, structures, avionics, flight software, ground systems and payload interfaces connect?",
+        "What are the documented launch, ascent, separation, recovery and refurbishment flows?",
+        "Which performance values are vehicle-configuration-specific and revision-dated?",
+        "How are public safety, reliability, reuse and mission assurance claims supported by evidence?"
+      ],
+      "required_views": [
+        "context",
+        "functional",
+        "logical",
+        "physical",
+        "operational",
+        "manufacturing",
+        "safety",
+        "lifecycle"
+      ],
+      "initial_evidence": [
+        {
+          "evidence_id": "SPACEX-STARSHIP",
+          "evidence_state": "primary-source",
+          "source_url": "https://new.spacex.com/vehicles/starship",
+          "publisher": "SpaceX",
+          "claim_or_artifact": "Official Starship overview describes Starship and Super Heavy as a fully reusable transportation system and provides high-level vehicle specifications."
+        },
+        {
+          "evidence_id": "SPACEX-FALCON9",
+          "evidence_state": "primary-source",
+          "source_url": "https://new.spacex.com/vehicles/falcon-9",
+          "publisher": "SpaceX",
+          "claim_or_artifact": "Official Falcon 9 overview describes a reusable two-stage launch vehicle and publishes first-stage propulsion and vehicle-level specifications."
+        },
+        {
+          "evidence_id": "SPACEX-PAYLOAD-GUIDE",
+          "evidence_state": "unverified-lead",
+          "source_url": "https://www.spacex.com/launches/",
+          "publisher": "SpaceX",
+          "claim_or_artifact": "Launch and mission pages are candidate evidence for mission profiles; resolve current payload user guides and revisions during discovery."
+        }
+      ],
+      "deliverables": [
+        "Falcon 9 system decomposition and mission sequence map",
+        "Starship/Super Heavy integrated architecture map",
+        "Propulsion and stage interface map",
+        "Launch-site and ground-support interface map",
+        "Reuse/recovery/refurbishment lifecycle map",
+        "Configuration-dated performance and evidence register"
+      ],
+      "open_questions": [
+        "Resolve current official user guides and revision identifiers for each vehicle and payload interface.",
+        "Determine which launch-site, ground-support and operational details are publicly documented at useful engineering depth."
+      ]
+    },
+    {
+      "request_id": "EBR-TESLA-001",
+      "blueprint_id": "tesla-vehicle-energy-and-manufacturing-systems",
+      "organization": "Tesla",
+      "subject": {
+        "name": "Tesla vehicle, energy, AI and manufacturing systems",
+        "subject_type": "organization"
+      },
+      "collection": "Research-Astute/research-astute-tesla-mobility-energy",
+      "priority": "P1",
+      "status": "request-seeded",
+      "scope": {
+        "included": [
+          "Vehicle platform architecture: structure, body, battery, power electronics, thermal, drive, charging and software",
+          "Battery cell, pack, battery-management and thermal-safety architecture",
+          "Energy generation/storage products and grid interconnection",
+          "Powerwall, Megapack and publicly documented control/software platforms",
+          "Autonomy/robotics compute and public software/AI infrastructure disclosures",
+          "Factory systems: materials, automation, robotics, quality, test and production flows",
+          "Supply chain, service, charging, recycling and product lifecycle"
+        ],
+        "excluded": [
+          "Private vehicle firmware/source code, proprietary CAD, factory control networks, customer personal data and restricted supplier data"
+        ],
+        "as_of": "2026-11-22"
+      },
+      "research_questions": [
+        "How do publicly disclosed vehicle subsystems integrate across structural, electrical, thermal, propulsion and software domains?",
+        "What evidence describes cell-to-pack design, battery management, thermal control, fault containment and validation?",
+        "How do energy storage hardware, power electronics, grid interfaces and dispatch software form an end-to-end system?",
+        "What public evidence maps manufacturing automation, robotics, factory simulation, quality inspection and material flows?",
+        "How are vehicle/energy field data, compute infrastructure, model training and deployed software described in public disclosures?",
+        "What lifecycle flows connect materials sourcing, manufacturing, service, reuse and recycling?"
+      ],
+      "required_views": [
+        "context",
+        "functional",
+        "logical",
+        "physical",
+        "software",
+        "data",
+        "power",
+        "thermal",
+        "manufacturing",
+        "supply-chain",
+        "safety",
+        "lifecycle"
+      ],
+      "initial_evidence": [
+        {
+          "evidence_id": "TESLA-IR",
+          "evidence_state": "primary-source",
+          "source_url": "https://ir.tesla.com/",
+          "publisher": "Tesla Investor Relations",
+          "claim_or_artifact": "Official investor-relations archive for annual and quarterly filings, shareholder updates and impact reports."
+        },
+        {
+          "evidence_id": "TESLA-MANUFACTURING",
+          "evidence_state": "primary-source",
+          "source_url": "https://www.tesla.com/manufacturing",
+          "publisher": "Tesla",
+          "claim_or_artifact": "Official manufacturing overview describes factory footprint, vehicle/battery production and factory automation."
+        },
+        {
+          "evidence_id": "TESLA-BATTERY-SAFETY",
+          "evidence_state": "primary-source",
+          "source_url": "https://www.tesla.com/learn/engineering-tesla-vehicle-batteries-safety-durability-longevity",
+          "publisher": "Tesla",
+          "claim_or_artifact": "Official battery engineering article describes cell/pack integration, thermal management, cell inspection and battery safety claims."
+        },
+        {
+          "evidence_id": "TESLA-IMPACT-2024",
+          "evidence_state": "primary-source",
+          "source_url": "https://www.tesla.com/ns_videos/2024-extended-version-tesla-impact-report.pdf",
+          "publisher": "Tesla",
+          "claim_or_artifact": "Extended Impact Report includes energy manufacturing, battery production and product/safety disclosures; use revision-specific evidence locators."
+        }
+      ],
+      "deliverables": [
+        "Vehicle system context and subsystem maps",
+        "Cell-to-pack-to-vehicle electrical/thermal/safety map",
+        "Energy storage and grid-interconnection map",
+        "Factory production and automation value-stream map",
+        "AI/compute/data lifecycle map based on public disclosures",
+        "Supply-chain, service and recycling lifecycle map"
+      ],
+      "open_questions": [
+        "Select vehicle platform generations and variants for comparison.",
+        "Identify current public technical documents for charging, energy dispatch, autonomy compute and manufacturing systems.",
+        "Separate company-reported claims from independently verified performance and safety evidence."
+      ]
+    }
+  ],
+  "request_schema": "../schemas/engineering-blueprint-request.schema.json"
+}

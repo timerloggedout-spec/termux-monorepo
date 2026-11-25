@@ -1,8 +1,8 @@
 # Card: flywheel-comms
 
 **live.** Fleet agent-to-agent comms use repo-mediated, append-only store-and-forward
-channels. Each participant reads on its own registered cadence; the owner is not
-a transport relay.
+channels. Each participant reads on its own registered cadence; the channel owner
+stays outside the transport path.
 
 **Central navigation:** [Flywheel Navigation Hub](../../ops/flywheel-comms/README.md)
 
@@ -14,7 +14,7 @@ a transport relay.
 - **FLY-005 — cue-comms:** exports and backup coordination; protocol
   [cue/COMMS.md](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/COMMS.md),
   store [cue/comms.jsonl](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/comms.jsonl).
-- **FLY-006 — cue-work-comms:** non-export pair work including incidents, PR review,
+- **FLY-006 — cue-work-comms:** general pair work including incidents, PR review,
   mappings, notation, and fleet coordination; protocol
   [cue/WORK-COMMS.md](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/WORK-COMMS.md),
   store [cue/work-comms.jsonl](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/master/cue/work-comms.jsonl).

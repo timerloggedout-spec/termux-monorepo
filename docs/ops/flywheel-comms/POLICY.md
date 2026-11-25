@@ -99,3 +99,7 @@ A registered or onboarding peer's liveness and quota readings refresh
 AUTOMATICALLY on the keepalive cadence. Staleness is a failure state:
 stale = FAIL, stamped by machinery when a reading ages past its cadence.
 No reading waits on an owner word, an onboarding event, or a manual check.
+
+Scope (owner, 2026-11-25): stale = FAIL is REPO-WIDE - every census, registry,
+feed, and reading in the repo, and every seat's own memory claims. Quoting a
+dated reading as current state is the same FAIL.

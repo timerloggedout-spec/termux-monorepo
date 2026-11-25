@@ -91,7 +91,7 @@ def score_capability_child(child: dict) -> dict:
     }
     readiness = round(sum(layers[key] * weights[key] for key in weights), 4)
     band = (
-        "source_review_ready" if readiness >= 0.80
+        "source_review_ready" if readiness >= 0.95
         else "metadata_candidate" if readiness >= 0.55
         else "metadata_gap"
     )

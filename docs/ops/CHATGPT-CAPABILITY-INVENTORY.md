@@ -48,7 +48,7 @@ Candidate treatment dimensions for future controlled experiments:
 6. Approval tier and operation scope.
 7. Wait, retry and handoff policy.
 
-Pin the snapshot date, manifest SHA-256, tool/skill IDs, adapter version, task cohort, complexity evidence, budget and execution environment for every experiment. Randomize or block comparable tasks by complexity and task class. Record execution through the canonical event and action/effect contracts; calculate ATES/WTCV/3L0 from observed outcomes. Catalog size, tool availability and model claims remain descriptive metadata, never quality scores.
+Pin the snapshot date, manifest SHA-256, tool/skill IDs, adapter version, task cohort, complexity evidence, budget and execution environment for every experiment. Randomize or block comparable tasks by complexity and task class. Record execution through the canonical event and action/effect contracts; calculate ATES/WTCV/3L0 from observed outcomes. Catalog size, tool availability and model claims remain descriptive metadata, quality scores derive from observed outcomes only.
 
 ## Lifecycle and authority
 

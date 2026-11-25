@@ -6,13 +6,17 @@
 **Owner:** ChatGPT — documentation implementation  
 **Operator authorization:** accepted for the bounded documentation change  
 **Canonical output:** repository root `architecture.md`  
-**Implementation branch:** `docs/repository-architecture-entry-20261121-v2`
+**Implementation branch:** `docs/flywheel-context-routing-20261125`
 
 ## Objective
 
 Establish one repository-wide architecture entry that routes collaborators to canonical domain sources, summarizes major system planes, maps repository data flows, and provides a navigable directory taxonomy.
 
 ## Scope
+
+- Central Flywheel nested navigation across all registered channels, collaborators, project contexts, topics, and linked artifacts.
+- Machine-readable project/context/surface/membership index and versioned JSON Schema.
+- Extensible peer/surface/context/membership routing model with least-privilege effective-token semantics.
 
 - Root architecture entry with ToC and nested taxonomy.
 - Mermaid data-flow source under `docs/ops/diagrams/`.
@@ -33,6 +37,10 @@ Establish one repository-wide architecture entry that routes collaborators to ca
 - [x] 36 internal architecture links resolve against the branch tree.
 - [x] Root collaborator, README, ICM, and architecture-index entry points link to the root architecture entry.
 - [ ] Proposal registry validator passes with the manifest and work items present.
+- [ ] Flywheel registry and protocol peer-registration amendment reviewed; first ACK is linked without claiming the separate Web2API session complete.
+- [ ] Cross-project quota-admission RECON delivered through FLY-006 with source SHAs and validation boundaries.
+- [ ] Navigation covers all current registry channels and supports additional channels/contexts without redesign.
+- [ ] `CONTEXTS.json` parses, schema-validates, and resolves project/channel/peer/surface/context/topic/artifact references.
 - [ ] Repository gate and Termux smoke pass on the same head.
 - [ ] Required PR checks complete and the merged master head is re-fetched.
 

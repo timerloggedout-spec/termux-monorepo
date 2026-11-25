@@ -28,6 +28,10 @@ For each nontrivial change, begin with [context-relationship reconnaissance](doc
 5. Read [`docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md`](docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md) ∧ the canonical Siglary/Matrice links it names.
 6. Use [`docs/proposals/active/notation-sets/SIGLARY-STANDARD.md`](docs/proposals/active/notation-sets/SIGLARY-STANDARD.md), [`docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md`](docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md), and [`scripts/ci/validate_siglary_mandate.py`](scripts/ci/validate_siglary_mandate.py) for canonical mapping ∧ enforcement.
 
+## Flywheel collaboration route
+
+Use [`docs/ops/flywheel-comms/README.md`](docs/ops/flywheel-comms/README.md) to resolve channel, peer, project, context, topic, and artifact routes. Read [`ROUTING-MODEL.md`](docs/ops/flywheel-comms/ROUTING-MODEL.md) for scope-aware memberships and effective permission intersections. Keep execution surfaces distinct from collaborator identities.
+
 ## Execution contract
 
 - Target `master` for integration work; use `master-staging` when the active lane names it.

@@ -78,8 +78,8 @@
    "owner_seat": "muse-vm + cue (joint)",
    "status": "established",
    "established_evidence": "opened 2026-11-25: muse-vm line at 50c780c2, cue ACK at 8d03661e",
-   "access": "Collaborators of record: muse-vm (operator) + manus-cue (peer). Cue holds deploy-key WRITE on the store (exports, checkpoints, cue/ tree) and read on all export prefixes + compute-exports/mesh-probe telemetry. Owner rule 2026-11-25: collaborator access to Exports + Telemetry is important \u2014 access gaps are defects, named on this row.",
-   "upgrade": "2026-11-25: multi-route upgrade proposed to Cue via the channel \u2014 FLY-005 stays primary; redundant provider routes to be added as Cue confirms which it can terminate (Manus email fallback already noted).",
+   "access": "Collaborators of record: muse-vm (operator) + manus-cue (peer). Cue holds deploy-key WRITE on the store (exports, checkpoints, cue/ tree) and read on all export prefixes + compute-exports/mesh-probe telemetry. Owner rule 2026-11-25: collaborator access to Exports + Telemetry is important — access gaps are defects, named on this row.",
+   "upgrade": "2026-11-25: multi-route upgrade proposed to Cue via the channel — FLY-005 stays primary; redundant provider routes to be added as Cue confirms which it can terminate (Manus email fallback already noted).",
    "scope": "Exports + backup coordination with Cue. Non-export pair work moved to FLY-006 (owner order 2026-11-25)."
   },
   {
@@ -90,13 +90,14 @@
    "format": "JSONL append-only {ts, from, to, body}",
    "participants": [
     "muse-vm",
-    "manus-cue"
+    "manus-cue",
+    "chatgpt-github"
    ],
-   "cadence": "cue watch 900s; muse-vm cadence checks",
+   "cadence": "cue watch 900s; muse-vm cadence checks; chatgpt-github on-demand per user-directed session",
    "owner_seat": "muse-vm + cue (joint)",
    "status": "established",
    "established_evidence": "owner order 2026-11-25: a different flywheel for work other than the exports; opened 2026-11-25 with the Siglary/Linguist item",
-   "scope": "Non-export pair work: incidents, PR review, mappings, notation, general fleet coordination. Exports stay on FLY-005; confirmations of record stay on FLY-003."
+   "scope": "Non-export collaborative work across registered peers and scoped contexts: incidents, PR review, mappings, notation, and fleet coordination. Exports stay on FLY-005; confirmations of record stay on FLY-003."
   }
  ],
  "peers": [
@@ -130,12 +131,23 @@
   {
    "name": "chatgpt",
    "channels": [],
-   "status": "NOT REGISTERED - no channel of record; app-side activity (incl. its Devpost connector) is unobserved by the fleet. Registration is a done-evidence leg of QUE #5885."
+   "status": "UNREGISTERED — channel of record pending; app-side activity, including the Devpost connector, awaits fleet observation. QUE #5885 tracks the registration evidence leg."
   },
   {
    "name": "mistralai",
    "channels": [],
-   "status": "ONBOARDING PENDING - owner word 2026-11-25. Readings state: STALE = FAIL (Rule 11): last liveness 2026-11-02 (key live, 55 models), last quota reading 2026-11-11 (quota-terminal 429) - both past cadence, auto-refresh owed by the keepalive leg of QUE #5905, no owner word required. Legs: keepalive running + ensured - channel of record (FLY-007 class) - watcher coverage."
+   "status": "ONBOARDING PENDING — owner authorization recorded 2026-11-25. Liveness 2026-11-02 (key live, 55 models) and quota reading 2026-11-11 (quota-terminal 429) exceed cadence. QUE #5905 keepalive leg owns auto-refresh. Next legs: keepalive running + ensured; FLY-007-class channel of record; watcher coverage."
+  },
+  {
+   "name": "chatgpt-github",
+   "channels": [
+    "FLY-006"
+   ],
+   "status": "JOINED VIA PR + FIRST ACK — registry/protocol merge pending",
+   "surface": "ChatGPT GitHub connector",
+   "scope": "Non-export project collaboration through GitHub repository/issue/PR content APIs. The shared-Google Web2API session, browser profile, Termux device, provider inference, and credential values retain separate owners and permission scopes.",
+   "cadence": "On-demand during explicit user-directed project sessions; background watcher disabled.",
+   "registration_evidence": "termux-monorepo PR #5906; backup protocol PR #4; first FLY-006 ACK appended 2026-11-25T21:39:30Z, commit 2f289a72cab78c2e680ebe2674aa2ecd36145857"
   }
  ]
 }

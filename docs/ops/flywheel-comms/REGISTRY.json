@@ -78,8 +78,8 @@
       "owner_seat": "muse-vm + cue (joint)",
       "status": "established",
       "established_evidence": "opened 2026-11-25: muse-vm line at 50c780c2, cue ACK at 8d03661e",
-      "access": "Collaborators of record: muse-vm (operator) + manus-cue (peer). Cue holds deploy-key WRITE on the store (exports, checkpoints, cue/ tree) and read on all export prefixes + compute-exports/mesh-probe telemetry. Owner rule 2026-11-25: collaborator access to Exports + Telemetry is important \u2014 access gaps are defects, named on this row.",
-      "upgrade": "2026-11-25: multi-route upgrade proposed to Cue via the channel \u2014 FLY-005 stays primary; redundant provider routes to be added as Cue confirms which it can terminate (Manus email fallback already noted).",
+      "access": "Collaborators of record: muse-vm (operator) + manus-cue (peer). Cue holds deploy-key WRITE on the store (exports, checkpoints, cue/ tree) and read on all export prefixes + compute-exports/mesh-probe telemetry. Owner rule 2026-11-25: collaborator access to Exports + Telemetry is important — access gaps are defects, named on this row.",
+      "upgrade": "2026-11-25: multi-route upgrade proposed to Cue via the channel — FLY-005 stays primary; redundant provider routes to be added as Cue confirms which it can terminate (Manus email fallback already noted).",
       "scope": "Exports + backup coordination with Cue. Non-export pair work moved to FLY-006 (owner order 2026-11-25)."
     },
     {
@@ -132,7 +132,7 @@
       "owner_seat": "cue (delegated owner request); Muse participation pending",
       "status": "proposed",
       "proposal_evidence": "Owner-directed registration; FLY-005 request commit 3be91c1d803c7a9a15b8d60f79ec9718645224af. FLY-007 not allocated here because #5905 names a FLY-007-class MistralAI channel; no reader/round-trip proof yet.",
-      "scope": "Evidence-only trace of Swarms/DoE and provider-catalog issue/PR components, gates, statuses, and source refs. No admission decisions, dispatch, inference, promotion, or new gate/registry."
+      "scope": "Evidence-only trace of Swarms/DoE and provider-catalog issue/PR components, gates, statuses, and source refs. No admission decisions, dispatch, inference, promotion, or new gate/registry. Mesh is the existing compute/inference execution fabric. The owner-designated 172-provider registry, DoE participants, quota, and admission remain authoritative. Vultr is only a comparative model-catalog template/reference; it is not a compute provider, endpoint, or competing execution runtime."
     }
   ],
   "peers": [

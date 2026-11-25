@@ -17,3 +17,8 @@ Each JSONL line uses `swarms-doe-issue-trace/v1` and includes `ts`, `actor`, `ev
 ## Participation and cadence
 
 Cue access is on-demand during explicit trace tasks; no background reader is claimed. Muse participation and any recurring read loop remain unverified; a request was appended to FLY-005 at commit `3be91c1d803c7a9a15b8d60f79ec9718645224af`. The active 900-second backup-state watcher is not proof that this JSONL path is read. Keep the channel `proposed` until the participant/reader cadence is evidenced and a two-party round-trip exists.
+
+
+## Execution-role boundary
+
+The existing Mesh is the compute/inference execution fabric. The owner-designated 172-provider registry, DoE participants, quota controls, admission gates, and existing routes remain authoritative. Vultr is used only as a comparative model-catalog template/reference for catalog schema and representation. It is not a compute provider, inference endpoint, or competing execution runtime. A catalog projection changes representation only; it does not add a provider, alter participant membership, grant eligibility, or select an execution route.

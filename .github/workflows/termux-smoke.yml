@@ -39,7 +39,7 @@ jobs:
       - name: Bucket headroom unit and workflow-contract tests
         run: |
           python3 -m pip install --disable-pip-version-check --quiet PyYAML pytest
-          python3 -m pytest -q tests/test_bucket_headroom.py tests/test_bucket_headroom_workflow.py
+          python3 -m pytest -q tests/test_bucket_headroom.py tests/test_bucket_headroom_workflow.py scripts/dispatch/test_rate_limit.py
 
       - name: Core smoke (required)
         run: python3 scripts/ci/termux_smoke.py

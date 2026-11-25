@@ -11,7 +11,8 @@ reviewers:
     role: operator-authorizer
     status: accepted
 related_issues: []
-related_prs: []
+related_prs:
+  - 5908
 related_branches:
   - feat/ceel-006-concept-competition-20261125
 gates_required: [proposal-lifecycle, repo-gate, termux-smoke]

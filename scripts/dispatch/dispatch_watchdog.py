@@ -35,9 +35,10 @@ tier frame + a machine-readable `stall-event:` line, on the
 issue record where receipts and claims already live.
 
 Runs in Actions (.github/workflows/dispatch-watchdog.yml, every
-15 min + on dispatch) on the Termux Fleet Swarm App token (the
-default token's rate bucket is exhausted in this repo — see
-#4164). --flag-min / --escalate-min override the BASE tier only.
+15 min + on dispatch) on the Termux Fleet Swarm App installation token.
+That installation bucket is shared across workflows using the same App;
+see #4164 and docs/ops/DISPATCH-WATCHDOG-RATE-LIMIT.md.
+--flag-min / --escalate-min override the BASE tier only.
 """
 
 from __future__ import annotations

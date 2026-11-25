@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-11-25T16:10:48Z UTC · receipts=3962 · foreign_open=7 · tributes=132_
+_Generated 2026-11-25T18:26:40Z UTC · receipts=3962 · foreign_open=7 · tributes=132_
 
 ## Tributes (contributor ledger)
 
@@ -61,11 +61,11 @@ See docs/ops/TRIBUTE-TRIBUTE.md
 
 ## Tribute outcome SLO: **FAIL** (30d window)
 
-real merges **0** · stake-only merges **0** (weight 0) · closed-unmerged **21** · real merge rate **0.0** · open now **7** · days since real merge **36.9**
+real merges **0** · stake-only merges **0** (weight 0) · closed-unmerged **21** · real merge rate **0.0** · open now **7** · days since real merge **37.0**
 
 - FAIL `zero_real_merges`: 0 real foreign merges in the last 30d
 - FAIL `real_merge_rate_below`: real merge rate 0.0% < 10% over 21 decided PRs (30d)
-- FAIL `real_merge_drought`: last real merge 36.9d ago (> 21d)
+- FAIL `real_merge_drought`: last real merge 37.0d ago (> 21d)
 - WARN `closed_unmerged`: 21 PRs closed without merge in 30d (counted as failures)
 
 System 1 threads 208: yielded 62 · retired 61 · dropped 3 · placeholder merges 0

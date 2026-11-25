@@ -8,11 +8,11 @@
       "workflow": ".github/workflows/provenance-export-ingest.yml",
       "store_path": "timerloggedout-spec/muse-vm-workspace-backup:provenance/<source_ns>/run-<run_id>/records.jsonl",
       "source_classes": ["message", "thinking"],
-      "classifiers": ["chat_intent (scripts/classifiers/chat_intent.py)", "ml.pipelines.lanes.classify (PR-bearing records)"],
+      "classifiers": ["chat_intent (scripts/classifiers/chat_intent.py)", "ml.pipelines.lanes.classify (PR-bearing records)", "muse_side_chat_seo (muse-side-chat namespaces only; versioned topic labels)"],
       "comparison": "Actions run evidence via head_sha ∨ head_branch ∨ PR number",
       "consumers": [
         {
-          "id": "provenance.export-digest/v1",
+          "id": "provenance.export-digest/v2",
           "reader": "scripts/provenance/export_digest.py",
           "read_receipts": "provenance/<source_ns>/run-<run_id>/consumer-reads.jsonl (store) ∧ workflow notice",
           "status": "registered"

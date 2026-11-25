@@ -1,10 +1,10 @@
-# AGENTS.md
+# CLAUDE.hum.md — Linguist collaborator context
 
 This file provides guidance to agents when working with code in this repository.
 
 ## Governance & Process (Read First)
 
-1. **This file** (`AGENTS.md`) - Technical guidance and codebase overview
+1. **This file** (`CLAUDE.hum.md`) - Technical guidance and codebase overview
 2. [`docs/proposals/registry.yaml`](docs/proposals/registry.yaml) — what is active
 3. [`docs/proposals/PROCESS.md`](docs/proposals/PROCESS.md) — post / debate / consensus / close
 4. [`docs/PR-SUMMARY-PROCESS.md`](docs/PR-SUMMARY-PROCESS.md) — who may rewrite PR bodies (multi-agent)

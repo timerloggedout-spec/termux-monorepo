@@ -2,7 +2,7 @@
 
 Structured lifecycle: **ingest → register → itemize → review → execute → close**.
 
-**Also read:** `AGENTIC-PERMISSIONS.md` · `registry.yaml` · root `AGENTS.md` · `docs/CONSENSUS.md`
+**Also read:** `AGENTIC-PERMISSIONS.md` · `registry.yaml` · root `CLAUDE.md` · `docs/CONSENSUS.md`
 
 ## Directory layout
 
@@ -48,7 +48,7 @@ All ITEMS terminal + Review log outcome + move active/ → closed/ + registry up
 ## Agent entrypoint
 
 ```text
-1. Read AGENTS.md then registry.yaml
+1. Read CLAUDE.md then registry.yaml
 2. Pick highest-priority accepted/executing todo item
 3. Branch off master-staging
 4. PR → master-staging with Implements: <ITEM-ID>

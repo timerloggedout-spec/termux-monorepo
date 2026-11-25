@@ -42,7 +42,7 @@ e.g. a Delphi feed-collector verification write died at 05:33 PT.
 
 ## Guardrail
 
-1. **Convention (fleet AGENTS.md, 2026-10-27):** clones, build trees and
+1. **Convention (fleet collaborator guidance, 2026-10-27):** clones, build trees and
    scratch workspaces go under `~/workspace/scratch/<task>/` (real disk);
    /tmp is for small transient files only. Scratch clones are cleaned up
    in the session that creates them. (The repo-gate lesson of 2026-10-20

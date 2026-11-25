@@ -25,7 +25,7 @@
 | Production WAIT → VALIDATE | `.github/skills/production-reconciliation/SKILL.md` |
 | Siglary A2A notation (room↔room comms) | `.agents/skills/siglary-a2a/SKILL.md` |
 
-Root `AGENTS.md` is **deprecated** (Linguist / Jules redirect only). Load `CLAUDE.md` first.
+Load `CLAUDE.md` first.
 
 ## Layout (both trees are first-class)
 

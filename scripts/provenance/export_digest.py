@@ -16,7 +16,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-CONSUMER_ID = "provenance.export-digest/v1"
+CONSUMER_ID = "provenance.export-digest/v2"
 REPRESENTATION = "provenance-export-record/v1"
 
 
@@ -26,7 +26,7 @@ def digest(records: list[dict[str, Any]]) -> dict[str, Any]:
         key = f"{r.get('source_ns')}|{r.get('export_class')}"
         g = groups.setdefault(key, {"source_ns": r.get("source_ns"), "export_class": r.get("export_class"),
                                     "records": 0, "classified": 0, "labels": {}, "actions_verdicts": {},
-                                    "credential_shapes": 0, "sessions": set()})
+                                    "credential_shapes": 0, "sessions": set(), "discovery_terms": {}})
         g["records"] += 1
         g["sessions"].add(r.get("session"))
         g["credential_shapes"] += len(r.get("credentials") or [])
@@ -35,6 +35,9 @@ def digest(records: list[dict[str, Any]]) -> dict[str, Any]:
         for c in r.get("classifications") or []:
             lab = g["labels"].setdefault(str(c.get("classifier_id")), {})
             lab[str(c.get("label"))] = lab.get(str(c.get("label")), 0) + 1
+            if c.get("classifier_id") == "muse_side_chat_seo":
+                for term in c.get("terms") or []:
+                    g["discovery_terms"][term] = g["discovery_terms"].get(term, 0) + 1
         v = (r.get("actions") or {}).get("verdict", "unjoined")
         g["actions_verdicts"][v] = g["actions_verdicts"].get(v, 0) + 1
     out = []

@@ -6,7 +6,7 @@ This is a **system map**, not a replacement architecture specification or an aut
 
 | Kind | Path | Why it is loaded |
 |---|---|---|
-| Static catalog aliases | [`CLAUDE.md`](CLAUDE.md) and [`AGENTS.md`](AGENTS.md) | Byte-identical stable entry points that route an edit request to one shelf. |
+| Repository entrypoint | [`CLAUDE.md`](../../CLAUDE.md) | Canonical repository governance and task routing. |
 | Provider-routing resource | [`routing.md`](routing.md) | Separately owned nested evidence and polling-governance route; not a static alias. |
 | Governance | [`../../CLAUDE.md`](../../CLAUDE.md) | Defines branch, proposal, and validation constraints. |
 | Navigation | [`../../README.md`](../../README.md) | Owns the root navigation ladder and subsystem inventory. |

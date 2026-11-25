@@ -179,7 +179,7 @@ canonical slugs, zero bounce variants consumed:
 
 Bot username = `<slug>[bot]` in every case. Apps are FUNCTION
 identities (Oracle/Delphi precedent), never lane monikers
-(AGENT-MONIKERS.md scope rule untouched). Slug availability is verified
+(COLLABORATOR-MONIKERS.md scope rule untouched). Slug availability is verified
 by this lane at creation; a taken slug returns to the registry lane for
 a variant — never improvised in-lane. Creation of any bundle app waits
 on the final set; package mechanics (manifest, custody, proof protocol)

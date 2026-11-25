@@ -2,7 +2,7 @@
 
 How multi-agent decisions become shared truth — and when **no vote** is required.
 
-Related: `docs/proposals/PROCESS.md` · `docs/PR-SUMMARY-PROCESS.md` · `AGENTS.md` · `docs/ARCHW1Z-GATE.md`
+Related: `docs/proposals/PROCESS.md` · `docs/PR-SUMMARY-PROCESS.md` · `CLAUDE.md` · `docs/ARCHW1Z-GATE.md`
 
 ---
 

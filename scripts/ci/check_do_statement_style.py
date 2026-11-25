@@ -27,7 +27,7 @@ IMPERATIVE = {
     "test", "update", "use", "validate", "verify", "wire", "collect", "generate", "regenerate", "rebuild",
 }
 STYLE_PATHS = [
-    "AGENTS.md", "moniker.md", "CLAUDE.md", "GEMINI.md", "SKILLS.md",
+    "CLAUDE.md", "GEMINI-MESH.md", "moniker.md", "SKILLS.md",
     ".agents/skills", ".github/skills", ".github/workflows",
     "docs/ops", "docs/proposals",
 ]

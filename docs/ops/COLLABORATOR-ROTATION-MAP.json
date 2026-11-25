@@ -1,0 +1,112 @@
+{
+  "schema_version": "collaborator-rotation-map/v1",
+  "canonical_governance": "CLAUDE.md",
+  "collaborator_registry": "docs/ops/COLLABORATOR-MONIKERS.md",
+  "entries": [
+    {
+      "source": "AGENTS.md",
+      "target": "CLAUDE.md",
+      "action": "route",
+      "kind": "repository_governance",
+      "owner": "repository"
+    },
+    {
+      "source": "GEMINI.md",
+      "target": "GEMINI-MESH.md",
+      "action": "rename",
+      "kind": "collaborator_profile",
+      "owner": "geminiMesh"
+    },
+    {
+      "source": "GEMINI-CLI.md",
+      "target": "GEMINI-MESH.md",
+      "action": "retire_transition",
+      "kind": "transitional_filename",
+      "owner": "geminiMesh"
+    },
+    {
+      "source": "docs/ops/AGENT-MONIKERS.md",
+      "target": "docs/ops/COLLABORATOR-MONIKERS.md",
+      "action": "rename",
+      "kind": "collaborator_registry",
+      "owner": "repository"
+    },
+    {
+      "source": "docs/ops/AGENT-IDENTITY.md",
+      "target": "docs/ops/COLLABORATOR-IDENTITY.md",
+      "action": "rename",
+      "kind": "collaborator_identity_contract",
+      "owner": "repository"
+    },
+    {
+      "source": ".codex/AGENTS.md",
+      "target": ".codex/CODEX-CLI.md",
+      "action": "rename",
+      "kind": "specific_cli_implementation",
+      "owner": "codex"
+    },
+    {
+      "source": ".codex/AGENTS.hum.md",
+      "target": ".codex/CODEX-CONTEXT.md",
+      "action": "rename",
+      "kind": "collaborator_context",
+      "owner": "codex"
+    },
+    {
+      "source": "docs/icm/AGENTS.md",
+      "target": null,
+      "canonical": "docs/icm/CLAUDE.md",
+      "action": "retire_duplicate_alias",
+      "kind": "duplicate_navigation_alias",
+      "owner": "icm"
+    },
+    {
+      "source": "docs/icm/maintenance/AGENTS.md",
+      "target": "docs/icm/maintenance/ICM-MAP-MAINTENANCE.md",
+      "action": "rename",
+      "kind": "icm_maintenance_pipeline",
+      "owner": "icm"
+    }
+  ],
+  "tool_vocabulary": {
+    "allowed_specific_implementations": [
+      "Gemini CLI",
+      "Codex CLI"
+    ],
+    "rule": "CLI names identify concrete implementations or implementation templates; collaborator identity uses the registered name or moniker."
+  },
+  "historical_reference_paths": [
+    "docs/icm/objects/knowledge/linguist-diaspora-recovery.md",
+    "docs/linguist/ACTIONS-MAPPING-RECOVERY.md",
+    "docs/linguist/MASTER-ALIGNMENT.md",
+    "docs/ops/PR-CONCEPT-CONSOLIDATION-LEDGER.md",
+    "docs/ops/PR42-SCOPE-RESOLUTION.md",
+    "docs/ops/REVIEWER-JIT-RECON-2026-10-23.md",
+    "docs/ops/agent-coordination/2026-10-20/JOINED-NEEDS-REVIEW.md",
+    "docs/proposals/active/notation-sets/ITEMS.md",
+    "docs/proposals/active/notation-sets/LINGUIST-LINEAGE.md",
+    "docs/proposals/active/notation-sets/NSE-020-MAPPING-POINTER-ROUNDTRIP.md",
+    "docs/proposals/active/notation-sets/RECOVERY-DC8C08D.md",
+    "docs/proposals/active/notation-sets/ROUNDTRIP-IMPLEMENTATION.md",
+    "docs/recon/team-formation/MONEYBALL_RECON.md"
+  ],
+  "collision_policy": {
+    "internal_checks": [
+      "duplicate display monikers",
+      "display moniker equal to a declared live trigger"
+    ],
+    "external_github_username_inventory": "not_established",
+    "rule": "External GitHub username collisions require an authoritative account inventory; this sweep reports that check as not_established."
+  },
+  "external_migrations": [
+    {
+      "system": "Muse VM home volume",
+      "source": "~/AGENTS.md",
+      "target": "~/MUSE-VM.md",
+      "action": "install_named_profile_and_retire_generic_guidance",
+      "status": "pending_vm_side_install",
+      "required_before_next_export": true,
+      "template": "ops/vm-backup/templates/MUSE-VM.md"
+    }
+  ]
+}

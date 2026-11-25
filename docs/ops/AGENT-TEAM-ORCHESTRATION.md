@@ -39,7 +39,7 @@ The six-hour [provider availability workflow](../../.github/workflows/provider-a
 
 Contributor provenance must retain the provider/model/adapter/role dimensions alongside workflow run/job/step, triggering event, PR/issue, SHA, and attribution confidence. A model response incorporated into a commit does not establish provider authorship. PAT owner, commit author, workflow actor, and model provider are separate fields.
 
-The display-moniker SSOT is `docs/ops/AGENT-MONIKERS.md`; capability/routing declarations are in `docs/schemas/agent-roster.yaml`. See Issue #921 for the continuing moniker/role expansion track.
+The display-moniker SSOT is `docs/ops/COLLABORATOR-MONIKERS.md`; capability/routing declarations are in `docs/schemas/agent-roster.yaml`. See Issue #921 for the continuing moniker/role expansion track.
 
 ## Team roles
 

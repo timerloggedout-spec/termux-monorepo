@@ -127,7 +127,7 @@ All requested deliverables have been **created, integrated, and documented**:
 
 ### With Existing Systems
 
-1. **AGENTS.md Workflow**
+1. **Collaborator profile workflow**
    - Agents now have clear project and milestone references
    - Connector management integrated into agent workflow
    - Proposal process aligned with milestone tracking
@@ -251,7 +251,7 @@ print('Yobit enabled:', manager.is_enabled('exchanges', 'yobit'))
 - ✅ **Centralized Connector Management** with Python API
 - ✅ **Clear Navigation SSOT** with priority ladder
 - ✅ **Easy Onboarding** with quick start guides
-- ✅ **Integration** with existing workflows (AGENTS.md, proposals, archwiz)
+- ✅ **Integration** with existing workflows (CLAUDE.md, collaborator profiles, proposals, archwiz)
 
 ---
 
@@ -264,7 +264,7 @@ print('Yobit enabled:', manager.is_enabled('exchanges', 'yobit'))
 - **Reference Materials**: refTemplates, workspace/llm_map
 
 ### Existing Workflows
-- **Agent Workflow**: AGENTS.md → registry.yaml → PROCESS.md → execution
+- **Agent Workflow**: named collaborator profile → registry.yaml → PROCESS.md → execution
 - **Proposal System**: docs/proposals/ with registry, active/closed/ directories
 - **ArchWiz System**: 28 tools across 7 categories with Sentinel gates
 - **CI/CD**: repo-gate, termux-smoke, multiple GitHub workflows

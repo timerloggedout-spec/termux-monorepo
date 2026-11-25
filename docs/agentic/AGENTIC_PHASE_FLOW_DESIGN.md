@@ -134,7 +134,7 @@ Plan hash: <sha256>
 Base branch: master
 Implements: DPH-10-01
 
-Read: AGENTS.md, docs/proposals/registry.yaml, the current phase plan,
+Read: CLAUDE.md, docs/proposals/registry.yaml, the current phase plan,
 and only the task-relevant contracts.
 
 Constraints:

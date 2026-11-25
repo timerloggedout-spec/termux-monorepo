@@ -9,7 +9,7 @@
 
 ## Peer-review outcome (2026-09-07)
 
-The on-demand agent pipeline (`@gemini-cli` / `@deepseek-ci`, `docs/ops/AGENT-MONIKERS.md`) was invoked twice on this PR asking specifically for a position on VLT-001. Neither produced one:
+The on-demand agent pipeline (`@gemini-cli` / `@deepseek-ci`, `docs/ops/COLLABORATOR-MONIKERS.md`) was invoked twice on this PR asking specifically for a position on VLT-001. Neither produced one:
 
 - **A real, repo-wide bug blocked the first attempt entirely**: `scripts/model_router.py` was being invoked as `python3 scripts/model_router.py` (puts `scripts/` itself on `sys.path[0]`, not the repo root), so `from scripts import capability_spine` raised `ModuleNotFoundError` on every dispatch. Fixed on master (`da89bab9`): `python3 -m scripts.model_router`.
 - **DeepSeek CI dispatched successfully both times** (runs `34110775453`, `34111728927`) but failed at `create_chat_session` with `code=40003 "Authorization Failed (invalid token)"`. Root cause: the `ds_session_id` behind `DEEPSEEK_TOKEN_PRIMARY` is stale/invalid — most likely because the compromised session documented in `docs/CREDENTIAL-EXPOSURE.md` was correctly rotated, which invalidates any token captured from that exposed browser profile. This is the webWrapper (reverse-engineered, WASM PoW, no official API key by design) architecture working as intended and correctly rejecting a dead session — not a code defect. Needs a freshly-captured, clean cookie jar (not re-derived from the already-exposed profile data) set as `DEEPSEEK_COOKIES` before this channel can vote on anything.

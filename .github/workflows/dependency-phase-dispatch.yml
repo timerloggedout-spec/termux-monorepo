@@ -87,7 +87,7 @@ jobs:
           starting_branch: master
           prompt: |
             Dependency phase ${{ env.PHASE_ID }} was admitted in deterministic wave ${{ steps.claim.outputs.wave }} through manager policy ${{ steps.route.outputs.manager_policy }} and routed to specialist ${{ steps.route.outputs.selected_specialist }} with idempotency key ${{ steps.claim.outputs.idempotency_key }}.
-            Follow AGENTS.md and docs/agentic/dependency-phases.json. Read only the phase-relevant contracts and current issue #${{ env.ISSUE_NUMBER }}. Make the smallest reviewable change, target master, cite Implements: ${{ env.PHASE_ID }}, and open a PR. Do not merge, close proposals, update submodules, or alter Project configuration.
+            Follow CLAUDE.md and docs/agentic/dependency-phases.json. Read only the phase-relevant contracts and current issue #${{ env.ISSUE_NUMBER }}. Make the smallest reviewable change, target master, cite Implements: ${{ env.PHASE_ID }}, and open a PR. Do not merge, close proposals, update submodules, or alter Project configuration.
 
       - name: Upload claim record
         uses: actions/upload-artifact@v4

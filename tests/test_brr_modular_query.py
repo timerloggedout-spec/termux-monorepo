@@ -53,7 +53,9 @@ class ModularSelectionTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             (root / "nodes.jsonl").write_text(
-                json.dumps({"kind": "file", "external_id": "src/a.py", "attributes": {"path": "src/a.py"}})
+                json.dumps({"kind": "file", "external_id": "src/a.py", "attributes": {"path": "src/a.py", "fingerprint": {"algorithm": "BLAKE3-256", "hash": "ab" * 32}}})
+                + "\n"
+                + json.dumps({"kind": "file", "external_id": "src/copy.py", "attributes": {"path": "src/copy.py", "fingerprint": {"algorithm": "BLAKE3-256", "hash": "ab" * 32}}})
                 + "\n"
                 + json.dumps({"kind": "symbol", "external_id": "src/a.py:run", "attributes": {"name": "run"}})
                 + "\n",
@@ -74,8 +76,10 @@ class ModularSelectionTests(unittest.TestCase):
             result = registry.load_graph_projection(
                 root, {"file", "symbol"}, [], "all", 10, True
             )
-            self.assertEqual(result["node_count"], 2)
+            self.assertEqual(result["node_count"], 3)
             self.assertEqual(result["similarity_candidate_count"], 1)
+            self.assertEqual(result["fingerprint_match_count"], 1)
+            self.assertEqual(result["fingerprint_matches"][0]["classification"], "candidate")
             self.assertEqual(
                 result["similarity_candidates"][0]["classification"], "candidate"
             )

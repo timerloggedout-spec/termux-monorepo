@@ -40,6 +40,8 @@ Operator directive received 2026-11-11: "Do everything high Detail at once. Get 
 - docs/ops/AGENT-EVALUATION-LANE-REGISTRY.md remains the evaluator lane registry; external platforms remain observational.
 - GitHub-native events are the primary awareness path. Existing bounded reconciliation jobs remain recovery paths only.
 - External provider capabilities are hypotheses until version-pinned documentation, runtime evidence, or reproducible tests verify them.
+- `docs/ops/CAPABILITY-ACTIVATION-MATRIX.md` routes repository skills, session plugin skills and exact tool actions; session catalogs are dated discovery snapshots, not authorization.
+- `experiments/doe/skill-plugin-tool-contextual-activation/DESIGN.json` is a proposal-only DoE design. It remains undispatched until the campaign automation and DoE-expert admission are complete.
 - No raw prompts, completions, credentials, private traces, or restricted customer data are committed.
 
 ## Review and promotion
@@ -52,6 +54,9 @@ The operator authorized this scoped execution. Independent review and same-SHA r
 - [x] Operator authorization recorded
 - [ ] Independent review recorded
 - [ ] Proposal lifecycle, repo-gate, and Termux smoke pass on the same immutable PR head
+- [x] Repository skill census and contextual session skill/tool catalogs linked from CLAUDE.md, Skills Inventory and Integration Intelligence
+- [x] Contextual activation DoE design registered as proposal-only with complete source scope
+- [ ] Campaign automation and DoE-expert admission recorded before dispatch
 - [ ] Evidence, limitations, and deferred runtime work reconciled
 - [ ] Merge/promotion only under repository policy
 
@@ -61,4 +66,6 @@ The operator authorized this scoped execution. Independent review and same-SHA r
 - docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md
 - docs/superpowers/plans/2026-11-11-continuous-capability-evolution-lab.md
 - docs/integrations/capability-opportunity-graph.json
+- docs/ops/CAPABILITY-ACTIVATION-MATRIX.md
+- experiments/doe/skill-plugin-tool-contextual-activation/DESIGN.json
 - docs/integrations/PLATFORM-COMPARISON.md

@@ -1,23 +1,26 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-25T20:15:00Z",
+ "generated_at": "2026-11-25T21:33:18Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 1,
-   "in_progress": 0,
-   "oldest_queued_at": "2026-11-25T20:11:51Z",
+   "queued": 3,
+   "in_progress": 2,
+   "oldest_queued_at": "2026-11-25T21:32:22Z",
    "by_workflow_queued": {
-    "PR scope guard": 1
+    "PR scope guard": 2,
+    "repo gate": 1
    }
   },
   "2": {
    "tier": 2,
-   "queued": 0,
+   "queued": 1,
    "in_progress": 1,
-   "oldest_queued_at": null,
-   "by_workflow_queued": {}
+   "oldest_queued_at": "2026-11-25T21:29:46Z",
+   "by_workflow_queued": {
+    "tribute-dashboard-deploy": 1
+   }
   },
   "3": {
    "tier": 3,
@@ -28,48 +31,53 @@
   },
   "4": {
    "tier": 4,
-   "queued": 92,
+   "queued": 84,
    "in_progress": 15,
-   "oldest_queued_at": "2026-11-25T20:11:49Z",
+   "oldest_queued_at": "2026-11-25T21:29:31Z",
    "by_workflow_queued": {
-    "Agent Throughput Evidence": 32,
-    "lane events recorder": 12,
-    "Gemini review after peers": 2,
-    "Agent review \u2192 auto Jules": 8,
-    "Peer review orchestrator": 1,
-    "Agent feedback \u2192 Linear subtasks": 2,
+    "Agent Throughput Evidence": 21,
+    "Quota Dispatch Tree": 1,
+    "PR production ledger": 5,
+    "Context Relationship + Lead/Lag Audit": 3,
+    "Agent feedback \u2192 Linear subtasks": 1,
+    "Peer review orchestrator": 2,
+    "Agent review \u2192 auto Jules": 3,
+    "PR evidence evaluation": 2,
     "n8n SHE bridge": 1,
-    "Context Relationship + Lead/Lag Audit": 12,
-    "Issue Comment Router \u2014 modular fan-out reduction": 10,
-    "delphi-ledger-feed-collect": 1,
-    "delphi-rfp-feed-collect": 1,
-    "PR production ledger": 2,
-    "DO Statement Style": 1,
-    "Agent PR Jules Handoff": 1,
-    "archwiz dangle check": 1,
+    "lane events recorder": 15,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 3,
+    "Agent PR Jules Handoff": 2,
+    "CellCog review": 2,
+    "Agent Readability Source Contract": 2,
     "termux smoke": 1,
-    "RECON INTEL discovery": 1,
-    "Sweep Accountability": 1,
-    "Action Effectiveness Ledger": 2
+    "Sweep Accountability": 3,
+    "DO Statement Style": 4,
+    "Repository development evaluation": 2,
+    "RECON INTEL discovery": 2,
+    "Action Effectiveness Ledger": 4,
+    "DeepSeek CI \u2013 Agentic Automation": 1,
+    "Lane matrix event-driven inventory": 2,
+    "PR Change Effectiveness Ledger": 1,
+    "delphi-rfp-feed-collect": 1
    }
   }
  },
  "totals": {
-  "queued": 93,
-  "in_progress": 16
+  "queued": 88,
+  "in_progress": 18
  },
  "wedged_ancient": [],
  "wedged_excluded_from_counts": true,
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 1,
-   "2": 1,
+   "1": 5,
+   "2": 2,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 2,
-  "default_t4": 107,
+  "explicit_total": 7,
+  "default_t4": 99,
   "unmatched": 0,
   "ancient_excluded": 0,
   "operator_excluded": 0

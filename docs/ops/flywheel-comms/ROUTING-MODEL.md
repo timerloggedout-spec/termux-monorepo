@@ -30,7 +30,7 @@ For an action on an artifact, calculate the effective permission as the intersec
 - An empty intersection yields `deny`.
 - Read, comment, content-write, workflow-write, and merge are separate action classes.
 - A token's presence proves authentication only; its effective scope is constrained by the repository grant and the registered membership.
-- Context membership cannot widen a token or repository permission.
+- Context membership remains bounded by token and repository grants.
 - Default access is least-privilege; write access is explicit per action and context.
 - Store credential names/roles or protected references only. Keep token values, cookies, browser profiles, and private payloads outside registry records and channel messages.
 - Expiry, revocation, and observed access gaps are explicit membership states.

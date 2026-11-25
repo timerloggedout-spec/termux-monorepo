@@ -89,6 +89,28 @@ Canonical skill: `.agents/skills/adaptive-feedback-cycle/SKILL.md`
 Companion: `.github/skills/production-reconciliation/SKILL.md` (WAIT → VALIDATE → RE-FETCH)
 Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 
+## Dispatch lease lifecycle — QUE #5286
+
+The dispatch watchdog and auto-claim machinery use an append-only GitHub comment history as the lease audit log. Derive live ownership from the newest lifecycle transition:
+
+- A correlated `<!-- auto-claim-lease-release:v1 -->` receipt closes only its matching automated claim; a legacy receipt closes the newest lease only when its embedded release time reaches that lease's expiry; malformed receipts remain audit-only.
+- A later automated `PRODUCER CLAIM` starts a fresh lease; a later manual `PRODUCER CLAIM` takes active ownership directly.
+- Resolve the newest claim/release event before consulting `dispatch-claimed`; retain label-only/manual claims when claim history is absent.
+- Re-read comment history around release effects and preserve any newer manual claim.
+- Emit at most one release receipt per lease, and serialize watchdog sweeps by repository concurrency group with `queue: max`.
+- Preserve historical stall-resolution evidence after lease release; the release event remains open until a later claim resolves it.
+- Keep the lifecycle regression tests in `scripts/dispatch/test_auto_claim.py` and `scripts/dispatch/test_dispatch_watchdog.py` inside the required smoke workflow.
+
+**Scope item:** `QSR-LEASE-001` in `docs/proposals/active/qdesk-self-repair/ITEMS.md`. **Route:** `scripts/dispatch/auto_claim.py`, `scripts/dispatch/dispatch_watchdog.py`, `docs/ops/QUE-AUTO-CLAIM.md`, and [issue #5286](https://github.com/timerloggedout-spec/termux-monorepo/issues/5286). Incident evidence: [#5239](https://github.com/timerloggedout-spec/termux-monorepo/issues/5239) and [#5264](https://github.com/timerloggedout-spec/termux-monorepo/issues/5264); remediation review: [PR #5859](https://github.com/timerloggedout-spec/termux-monorepo/pull/5859).
+
+**Promotion evidence:** focused lifecycle tests, repository gate, Termux smoke, and a live cycle proving expired lease → one release → fresh claim → zero repeated release effects across subsequent watchdog sweeps.
+
+## Shared GitHub API budget — QSR-LEASE-002
+
+The 2026-11-25 08:20 UTC `dispatch-watchdog` run (#45575427717) failed on its first issue-list request with HTTP 403, `API rate limit exceeded`. Its failure diagnostic was posted to [issue #4164](https://github.com/timerloggedout-spec/termux-monorepo/issues/4164). At inspection, 81 of that issue's 137 comments were rate-limit diagnostics. Treat the installation-level rate bucket as shared fleet capacity across workflows.
+
+**Follow-up:** QSR-LEASE-002 tracks request-volume telemetry, reset-aware bounded backoff and graceful deferral, incremental comment-history reads, and coalesced failure diagnostics. PR #5859 addresses lease lifecycle correctness; rate-limit resilience remains a separate queued item.
+
 ## Quick pointers
 
 | Need | Path |

@@ -16,3 +16,11 @@
 | QSR-BRR-003 | P1 | executing | Run BRR inside the existing scheduled QDesk cycle. | No manual dispatch or duplicate BRR schedule; census precedes intake; 90-day artifact upload is required. |
 | QSR-BRR-004 | P1 | executing | Preserve independent review and promotion authority. | No branch mutation APIs are called; claim is not promotion; CI, DoE, Desk/QDesk, branch-protection and owner gates remain intact. |
 | QSR-BRR-005 | P1 | executing | Validate exact-head behavior and runtime evidence. | Regression tests pass; QDesk scheduled cycle completes census, QUE intake and artifact upload; failures and deferred items are retained as evidence. |
+
+## QUE lease lifecycle
+
+| ID | Priority | Status | Scope | Acceptance criteria |
+|---|---:|---|---|---|
+| QSR-LEASE-001 | P0 | executing | Make QUE auto-claim lease ownership, release effects, manual pickup, and stall-resolution history deterministic and idempotent. | Release receipts correlate to their originating claim; a newer manual claim remains active through concurrent release effects; historical stall resolutions survive lease release while the new release event remains open; each lease emits at most one release; watchdog sweeps serialize; focused tests and both repository gates pass; a live post-promotion cycle confirms zero repeated release effects. |
+
+| QSR-LEASE-002 | P1 | queued | Protect dispatch watchdog operation against shared GitHub App installation rate limits and diagnostic-notification amplification. | Track request volume and rate-limit headers; use bounded reset-aware backoff and graceful deferral; reduce repeated comment-history reads; coalesce identical failure diagnostics; preserve queue and lease state through API throttling. |

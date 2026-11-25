@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-25T12:35:51Z)
+# Lane matrix status (2026-11-25T12:36:25Z)
 
-- Master: `ceaab507e054c348ac3de9853c88b61c9d3b4b82`
+- Master: `8ed168ab24bdd5b0684be090e553b8ccb054fe86`
 - Open PRs: **560**
 - Oldest: #47 (111.87d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -56,11 +56,11 @@
 | #1616 | 32.39 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 32.39 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
 | #1626 | 32.27 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
-| #1645 | 31.5 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
+| #1645 | 31.51 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
 | #1650 | 31.43 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
 | #1694 | 29.46 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
 | #1734 | 29.05 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
 | #1735 | 29.05 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
-| #1966 | 28.31 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
+| #1966 | 28.32 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
 
 Writer only: does not merge. Dual-gate remains promote authority. HOLD/WAIT/OBSERVE are invalid parking. Age alone ≠ promote.

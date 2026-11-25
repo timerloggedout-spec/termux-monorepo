@@ -65,7 +65,7 @@ Route resolution:
 5. Choose the narrowest qualifying route; preserve explicit channel boundaries (for example FLY-005 exports vs FLY-006 non-export work).
 6. Emit one append-only event with typed artifact references and an idempotent event identity.
 
-A channel is a transport. It does not become the source of truth for a project's code, issue, test result, or provider quota.
+A channel is a transport; project code, issues, test results, and provider quota remain authoritative in their source systems.
 
 ## 5. Navigation projections
 
@@ -78,7 +78,7 @@ The central hub should expose several projections over the same identities:
 - **By topic:** cross-project references with source ownership retained.
 - **By artifact:** immutable source reference → contexts, discussions, decisions, tests, and follow-up work.
 
-The hub is a navigation layer, not a second task database or a copied artifact store.
+The hub serves navigation; task state and artifact payloads remain in their source systems.
 
 ## 6. Token efficiency and shared context
 
@@ -91,13 +91,13 @@ The hub is a navigation layer, not a second task database or a copied artifact s
 
 ## 7. Registry evolution
 
-The current `REGISTRY.json` remains the channel/peer authority. The additive [`CONTEXTS.json`](CONTEXTS.json) now carries project, context, surface, membership, and topic records under `flywheel-contexts/v1`; [`CONTEXTS.schema.json`](CONTEXTS.schema.json) defines the data contract. Membership action classes describe requested/observed scope and do not grant access.
+The current `REGISTRY.json` remains the channel/peer authority. The additive [`CONTEXTS.json`](CONTEXTS.json) now carries project, context, surface, membership, and topic records under `flywheel-contexts/v1`; [`CONTEXTS.schema.json`](CONTEXTS.schema.json) defines the data contract. Membership action classes describe requested/observed scope; effective access is computed by owning permissions and action policy.
 
 Migration rules:
 1. Preserve existing FLY-NNN IDs, channel paths, messages, and peer names.
 2. Keep current channel and peer rows valid while the additive fields are introduced.
-3. Do not copy quota registries, issue bodies, source files, or telemetry payloads into the Flywheel registry.
-4. Keep unverified and pending memberships visibly pending; a connector membership does not complete a separate browser/Web2API onboarding task.
+3. Preserve quota registries, issue bodies, source files, and telemetry payloads in their canonical source systems.
+4. Keep pending memberships visibly pending; each execution surface retains its own onboarding evidence.
 5. Add schema validation and round-trip fixtures before consumers rely on the new fields.
 
 ## 8. Current collaboration registration boundary

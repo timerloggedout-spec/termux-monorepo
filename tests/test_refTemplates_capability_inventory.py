@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 from scripts.ci.refTemplates_inventory import capability_child_entry, inventory_entry, REF
-from scripts.ci.refTemplates_score import score_capability_child, score_child
+from scripts.ci.refTemplates_score import score_capability_child, score_child, validate_rows
 
 
 class RefTemplatesCapabilityInventoryTests(unittest.TestCase):
@@ -60,6 +60,20 @@ class RefTemplatesCapabilityInventoryTests(unittest.TestCase):
         self.assertIsNone(score["efficacy_score"])
         self.assertEqual("unmeasured", score["validation_state"])
         self.assertEqual("metadata_candidate", score["readiness_band"])
+
+    def test_score_contract_rejects_efficacy_claims_without_runs(self):
+        row = score_capability_child({
+            "name": "assert",
+            "category": "11_Evaluation_Quality",
+            "path": "refTemplates/11_Evaluation_Quality/assert",
+            "has_source": True,
+            "has_readme": True,
+            "metadata_files": ["SOURCE.txt"],
+            "source_preview": "https://github.com/responsibleai/ASSERT",
+            "provenance_state": "source_recorded",
+        })
+        row["efficacy_score"] = 0.99
+        self.assertTrue(any("efficacy must remain unmeasured" in error for error in validate_rows([row])))
 
     def test_research_template_profile_remains_distinct(self):
         score = score_child("jogyo-research-lab", True, True, "https://github.com/Yeachan-Heo/My-Jogyo")

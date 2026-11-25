@@ -58,3 +58,9 @@ Pins intentional; no auto-advance without dual-gate green. New live pins require
 | 12_External_Agents | agentic-factory-hack | https://github.com/microsoft/agentic-factory-hack | Multi-agent architecture reference |
 
 These entries are concept-adaptation targets. The category-aware score reports metadata readiness; task efficacy requires controlled experiments. Licensing disposition is routed to the designated licensing duty owner.
+
+## Foundry platform boundary
+
+| Reference | Preferred SOURCE | Disposition |
+|---|---|---|
+| Microsoft Foundry managed platform | https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry | Managed Azure platform/control-plane reference; separate from independently published component projects |

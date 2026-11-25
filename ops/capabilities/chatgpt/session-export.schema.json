@@ -1,0 +1,277 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/capabilities/chatgpt/session-export.schema.json",
+  "title": "ChatGPT Session Capability Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "captured_at",
+    "repository",
+    "capture_sources",
+    "scope",
+    "counts",
+    "skill_source_groups",
+    "skills_catalog",
+    "tool_catalog_chunks",
+    "namespace_catalog",
+    "plugin_status_observations",
+    "user_supplied_sources",
+    "integration_mappings",
+    "limitations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "chatgpt.session-capability-manifest.v1"
+    },
+    "captured_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "repository": {
+      "type": "object",
+      "required": [
+        "full_name",
+        "base_ref",
+        "base_sha"
+      ],
+      "properties": {
+        "full_name": {
+          "type": "string"
+        },
+        "base_ref": {
+          "type": "string"
+        },
+        "base_sha": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      }
+    },
+    "capture_sources": {
+      "type": "object"
+    },
+    "scope": {
+      "type": "object"
+    },
+    "counts": {
+      "type": "object",
+      "required": [
+        "skills",
+        "skill_source_groups",
+        "tools",
+        "tool_namespaces",
+        "mcp_provider_namespaces",
+        "native_host_namespaces",
+        "tool_catalog_chunks"
+      ],
+      "properties": {
+        "skills": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "skill_source_groups": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "tools": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "tool_namespaces": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mcp_provider_namespaces": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "native_host_namespaces": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "tool_catalog_chunks": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "skill_source_groups": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "skills_catalog": {
+      "type": "object",
+      "required": [
+        "path",
+        "sha256",
+        "bytes"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "tool_catalog_chunks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "sha256",
+          "bytes",
+          "tools",
+          "namespaces"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "tools": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "namespaces": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "namespace_catalog": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "namespace",
+          "surface_kind",
+          "availability",
+          "account_connection_state",
+          "tool_count"
+        ],
+        "properties": {
+          "namespace": {
+            "type": "string"
+          },
+          "surface_kind": {
+            "enum": [
+              "mcp_provider_namespace",
+              "native_host_namespace"
+            ]
+          },
+          "availability": {
+            "type": "string"
+          },
+          "account_connection_state": {
+            "type": "string"
+          },
+          "tool_count": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      }
+    },
+    "plugin_status_observations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "status",
+          "evidence_source",
+          "observed_at"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "evidence_source": {
+            "type": "string"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "user_supplied_sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "file",
+          "bytes",
+          "sha256",
+          "kind",
+          "status",
+          "repo_paths",
+          "notes"
+        ],
+        "properties": {
+          "file": {
+            "type": "string"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "repo_paths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "integration_mappings": {
+      "type": "object"
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

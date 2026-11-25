@@ -241,10 +241,10 @@ class QuotaAdmission:
         db = self._connect()
         try:
             db.execute("BEGIN IMMEDIATE")
-            row = db.execute("SELECT state,sent,token_budget FROM reservations WHERE id=?", (token,)).fetchone()
+            row = db.execute("SELECT state,sent FROM reservations WHERE id=?", (token,)).fetchone()
             if not row:
                 raise AdmissionDenied("reservation_unknown")
-            state, sent, budget = row
+            state, sent = row
             if state != "reserved":
                 db.execute("COMMIT")
                 return state
@@ -254,7 +254,10 @@ class QuotaAdmission:
                 raise AdmissionDenied("reservation_not_sent")
             else:
                 state = "charged"
-            db.execute("UPDATE reservations SET state=?,actual_tokens=? WHERE id=? AND state='reserved'", (state, actual_tokens if actual_tokens is not None else (None if ambiguous or actual is None else (budget if actual > 0 else 0)), token))
+            reported_tokens = actual_tokens
+            if reported_tokens is None and not ambiguous and actual == 0:
+                reported_tokens = 0
+            db.execute("UPDATE reservations SET state=?,actual_tokens=? WHERE id=? AND state='reserved'", (state, reported_tokens, token))
             db.execute("COMMIT")
             return state
         except Exception:

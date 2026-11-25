@@ -217,8 +217,8 @@ def test_end_to_end_offline_pilot_uses_real_running_hub_quota_research_and_paper
     journal_path = output / 'paper-market.jsonl'
     snapshot = mod.json.loads((output / 'paper-market.json').read_text())
     from scripts.model_selection_market.market import MarketGraph
-    from scripts.model_selection_market.paper_wallet import validate_csv
-    replay = MarketGraph(journal=str(journal_path)).snapshot()
+    from scripts.model_selection_market.paper_wallet import parse_csv, write_csv
+    replay = MarketGraph(event_path=str(journal_path)).snapshot()
     assert replay == snapshot
     with (output / 'paper-market.csv').open(newline='') as stream:
         rows = list(csv.DictReader(stream))
@@ -226,7 +226,10 @@ def test_end_to_end_offline_pilot_uses_real_running_hub_quota_research_and_paper
     assert account_rows and all(int(row['balance']) >= 0 and int(row['reserved']) >= 0 and int(row['available']) >= 0 for row in account_rows)
     assert all(int(row['balance']) == int(row['reserved']) + int(row['available']) for row in account_rows)
     with (output / 'paper-market.csv').open(newline='') as stream:
-        assert validate_csv(io.StringIO(stream.read()), replay)
+        actual_csv = stream.read()
+    expected_csv = io.StringIO(newline='')
+    write_csv(replay, expected_csv)
+    assert parse_csv(actual_csv) == parse_csv(expected_csv.getvalue())
     # The runner removes its private reservation DB after the pilot; persisted
     # returned metrics prove all dispatched reservations were charged and settled.
     assert result['request_reservation_states'] == {'charged': 6}
@@ -234,3 +237,45 @@ def test_end_to_end_offline_pilot_uses_real_running_hub_quota_research_and_paper
     telemetry_text = (output / 'events.jsonl').read_text()
     assert 'synthetic bounded fixture query' not in telemetry_text
     assert 'synthetic_fixture.py' not in telemetry_text
+
+
+def test_pilot_reservation_metrics_survive_execution_exception(tmp_path, monkeypatch):
+    """Fixture-only exception path; no provider, GitHub, or hub request is made."""
+    tasks = []
+    for index, context in enumerate(mod.CONTEXTS):
+        facts = {'url': f'https://github.com/fixture/repo/pull/{index + 1}', 'head_sha': 'a' * 40}
+        tasks.append({'context': context, 'facts': facts, 'snapshot_sha256': mod.digest(facts)})
+    monkeypatch.setattr(mod, 'collect_tasks', lambda *args: (tasks, []))
+    monkeypatch.setattr(mod, 'get_free_catalog', lambda *args: 'openrouter/fake:free')
+    monkeypatch.setattr(mod, 'fetch_counter', lambda key: ({}, {'remaining': 100}))
+    monkeypatch.setattr(mod, 'publish_counter', lambda *args: None)
+    monkeypatch.setattr(mod.subprocess, 'check_output', lambda *args, **kwargs: 'c' * 40 + '\n')
+    observed = []
+    metrics = {'states': {'charged': 2}, 'sent': 3, 'reserved_token_budget': 768,
+               'unsettled_sent_requests': 1}
+
+    def read_metrics(private, prefix=None):
+        assert private.is_dir()
+        observed.append(private)
+        return metrics
+
+    def fail_pilot(*args):
+        raise RuntimeError('fixture exception after reservation')
+
+    monkeypatch.setattr(mod, 'reservation_metrics', read_metrics)
+    monkeypatch.setattr(mod, 'execute_pilot', fail_pilot)
+    catalog = tmp_path / 'catalog.json'
+    catalog.write_text('{}')
+    output = tmp_path / 'output'
+    output.mkdir()
+    args = Namespace(output=str(output), gh_command='unused', pairs_per_context=1,
+                     exclude_pr='1541', mode='pilot', catalog=str(catalog), model=None)
+
+    assert mod.run(args) == 0
+    result = json.loads((output / 'evaluation.json').read_text())
+    assert result['status'] == 'BLOCKED'
+    assert result['reason'] == 'experiment_unavailable'
+    assert result['request_reservation_states'] == {'charged': 2}
+    assert result['inference_requests_dispatched'] == 3
+    assert result['unsettled_sent_requests'] == 1
+    assert len(observed) == 1 and not observed[0].exists()

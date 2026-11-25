@@ -52,6 +52,7 @@ def receipt(root: Path, artifacts: list[Path], evidence_kind: str = "fake-fixtur
         "task_outcome": "UNKNOWN",
         "merged_or_deployed": False,
         "dirty_tracked_files": bool(git("diff", "HEAD", "--name-only")),
+        "dirty_worktree": bool(git("status", "--porcelain", "--untracked-files=all")),
         "source_sha256": dict(sorted(sources.items())),
         "artifact_sha256": dict(sorted(evidence.items())),
     }

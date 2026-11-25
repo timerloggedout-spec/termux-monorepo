@@ -313,8 +313,11 @@ def execute_pilot(tasks, model, key, private, output, plan, run_id):
     from scripts.model_selection_market.market import MarketGraph, BetEntry
     from scripts.model_selection_market.paper_wallet import write_csv
     from scripts.telemetry.research_evidence import ingest
-    graph = MarketGraph(journal=str(output / 'paper-market.jsonl'))
-    graph.issue_paper_points('issue-pilot', 'pilot', 2 * len(tasks), 'Nonredeemable paper experiment points; real task attempt audit, not money or a quality award')
+    graph = MarketGraph(event_path=str(output / 'paper-market.jsonl'))
+    provenance = {'issuer': 'live_task_experiment', 'source': 'synthetic-or-public-task-attempts',
+                  'reference': 'nonredeemable audit points; not money or a quality award'}
+    graph.open_account('pilot', event_id='open-pilot', provenance=provenance)
+    graph.issue_points('pilot', 2 * len(tasks), event_id='issue-pilot', provenance=provenance)
     details = []
     with running_hub(private, output) as (base, hub_key):
         def infer(route, messages, max_tokens, *, correlation):
@@ -340,8 +343,9 @@ def execute_pilot(tasks, model, key, private, output, plan, run_id):
             rng.shuffle(arms)
             for arm in arms:
                 prefix = f'{run_id}-task-{index}-{arm}'
-                wager = graph.place_bet(BetEntry(actor_class='job', actor_id='pilot', subject_kind='job', subject_id=prefix, head_sha=facts['head_sha']))
-                graph.reserve_bet('reserve-' + prefix, prefix, 'pilot', 1, wager['entry_id'])
+                wager = BetEntry(actor_class='job', actor_id='pilot', subject_kind='job', subject_id=prefix,
+                                 unit_kind='paper_point', units=1, head_sha=facts['head_sha'])
+                graph.reserve_bet(wager, event_id='reserve-' + prefix, reservation_id=prefix)
                 started = time.monotonic()
                 claim, outcome, reason = None, 'ERROR', None
                 try:
@@ -372,11 +376,11 @@ def execute_pilot(tasks, model, key, private, output, plan, run_id):
                                 'latency_ms': round((time.monotonic() - started) * 1000), 'reason': reason,
                                 'record': record, 'request_metrics': reservation_metrics(private, prefix)})
                 if outcome in {'PASS', 'FAIL'}:
-                    graph.settle('settle-' + prefix, prefix, 'completed-attempts')
+                    graph.settle(prefix, event_id='settle-' + prefix, recipient='pilot')
                 else:
-                    graph.void('void-' + prefix, prefix)
+                    graph.release(prefix, event_id='release-' + prefix, reason='unresolved')
     journal = graph.snapshot()
-    if journal != MarketGraph(journal=str(output / 'paper-market.jsonl')).snapshot():
+    if journal != MarketGraph(event_path=str(output / 'paper-market.jsonl')).snapshot():
         raise LiveBlocked('paper_restart_replay_mismatch')
     csv = io.StringIO()
     write_csv(journal, csv)
@@ -385,6 +389,7 @@ def execute_pilot(tasks, model, key, private, output, plan, run_id):
     evidence = ingest(output / 'events.jsonl', output / '3l0-execution.jsonl') if (output / 'events.jsonl').exists() else []
     metrics = reservation_metrics(private)
     return {'attempts': details, 'request_reservation_states': metrics['states'], 'inference_requests_dispatched': metrics['sent'],
+            'reserved_token_budget': metrics['reserved_token_budget'],
             'outcome_counts': dict(Counter(item['outcome'] for item in details)),
             'unsettled_sent_requests': metrics['unsettled_sent_requests'],
             'execution_evidence_samples': len(evidence), 'task_correctness_is_not_execution_confidence': True,
@@ -437,8 +442,22 @@ def run(args):
             with tempfile.TemporaryDirectory(prefix='private-live-task-') as directory:
                 private = Path(directory)
                 private.chmod(0o700)
-                publish_counter(private, payload, model)
-                result.update(execute_pilot(tasks, model, key, private, output, plan, run_id))
+                try:
+                    publish_counter(private, payload, model)
+                    result.update(execute_pilot(tasks, model, key, private, output, plan, run_id))
+                finally:
+                    try:
+                        metrics = reservation_metrics(private)
+                    except Exception:
+                        result['reservation_metrics_status'] = 'UNAVAILABLE'
+                    else:
+                        result.update({
+                            'request_reservation_states': metrics['states'],
+                            'inference_requests_dispatched': metrics['sent'],
+                            'reserved_token_budget': metrics['reserved_token_budget'],
+                            'unsettled_sent_requests': metrics['unsettled_sent_requests'],
+                            'reservation_metrics_status': 'CAPTURED',
+                        })
             result['status'] = ('SCREENING_COMPLETE' if all(item['outcome'] in {'PASS', 'FAIL'} for item in result['attempts']) else 'SCREENING_INCOMPLETE')
             result['statistics'] = plan.analyze(look=args.pairs_per_context)
     except LiveBlocked as exc:

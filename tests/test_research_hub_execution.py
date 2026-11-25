@@ -129,6 +129,71 @@ def test_actual_usage_is_reconciled_and_cancel_keeps_ambiguous_charge(boundary, 
     assert "private upstream text" not in log.read_text()
 
 
+@pytest.mark.parametrize("usage", [
+    ["not-an-object"], "not-an-object", 1,
+    {"total_tokens": True}, {"total_tokens": "7"}, {"total_tokens": -1}, {"total_tokens": 2**31},
+    {"input_tokens": True, "output_tokens": 1}, {"input_tokens": -1, "output_tokens": 2},
+    {"input_tokens": 1.0, "output_tokens": 2}, {"input_tokens": 2**31, "output_tokens": 0},
+    {"input_tokens": 2**31 - 1, "output_tokens": 1},
+])
+def test_malformed_provider_usage_keeps_success_unknown_usage_and_budget_accounting(boundary, monkeypatch, usage):
+    client, original_manager, _ = boundary
+    manager = seed_quota(original_manager.records_path, ["openrouter/fixture"], remaining=20)
+    monkeypatch.setattr(hub, "admission", manager)
+    monkeypatch.setattr(hub.runtime, "complete_upstream", lambda *_: {
+        "choices": [{"index": 0, "message": {"role": "assistant", "content": "ok"}, "finish_reason": "stop"}],
+        "usage": usage,
+    })
+
+    response = client.post("/v1/chat/completions", json=body(model="openrouter/fixture"))
+
+    assert response.status_code == 200
+    assert response.json()["choices"][0]["message"]["content"] == "ok"
+    assert hub.reported_actual_tokens({"usage": usage}) is None
+    state, sent, amount, actual_tokens = states(manager)[0]
+    assert (state, sent, amount, actual_tokens) == ("charged", 1, 1, None)
+    with sqlite3.connect(manager.db_path) as db:
+        token_budget, = db.execute("SELECT token_budget FROM reservations").fetchone()
+    assert token_budget > 0
+    records = json.loads(manager.records_path.read_text())
+    records["records"][0]["remaining_tokens"] = token_budget + 1
+    manager.records_path.write_text(json.dumps(records))
+    with pytest.raises(AdmissionDenied, match="token_quota_exhausted"):
+        manager.reserve("openrouter", "openrouter/fixture", attempt_id="after-unknown-usage", token_budget=2)
+
+
+@pytest.mark.parametrize("usage, expected", [
+    ({"total_tokens": 7}, 7),
+    ({"input_tokens": 3, "output_tokens": 4}, 7),
+])
+def test_valid_provider_usage_reconciles_exact_integer_counts(boundary, monkeypatch, usage, expected):
+    client, original_manager, _ = boundary
+    manager = seed_quota(original_manager.records_path, ["openrouter/fixture"], remaining=20)
+    monkeypatch.setattr(hub, "admission", manager)
+    monkeypatch.setattr(hub.runtime, "complete_upstream", lambda *_: {
+        "choices": [{"index": 0, "message": {"role": "assistant", "content": "ok"}, "finish_reason": "stop"}],
+        "usage": usage,
+    })
+
+    response = client.post("/v1/chat/completions", json=body(model="openrouter/fixture"))
+
+    assert response.status_code == 200
+    assert states(manager) == [("charged", 1, 1, expected)]
+
+
+def test_non_object_provider_response_is_rejected_and_kept_ambiguous(boundary, monkeypatch):
+    client, original_manager, _ = boundary
+    manager = seed_quota(original_manager.records_path, ["openrouter/fixture"], remaining=20)
+    monkeypatch.setattr(hub, "admission", manager)
+    monkeypatch.setattr(hub.runtime, "complete_upstream", lambda *_: ["not-an-object"])
+
+    response = client.post("/v1/chat/completions", json=body(model="openrouter/fixture"))
+
+    assert response.status_code == 502
+    assert response.json()["error"]["code"] == "upstream_invalid_response"
+    assert states(manager) == [("charged", 1, 1, None)]
+
+
 def test_concurrent_hub_callers_do_not_overspend(boundary, monkeypatch):
     client, manager, log = boundary
     monkeypatch.setattr(hub, "admission", seed_quota(manager.records_path, ["wrapper/deepseek"], remaining=1))

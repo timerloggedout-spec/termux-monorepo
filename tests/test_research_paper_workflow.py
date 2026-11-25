@@ -31,6 +31,8 @@ def test_workflow_tests_candidate_with_read_only_fixed_inputs():
                      "test_research_telemetry.py", "test_paper_accounting.py",
                      "repo_gate.py", "termux_smoke.py", "research_paper_receipt.py"):
         assert expected in text
+    assert "scripts/telemetry/research_evidence.py" in text
+    assert text.count("git status --porcelain --untracked-files=all") == 2
     assert "secrets." not in text
     assert "pull_request_target" not in text
     assert "--execute" not in text
@@ -62,6 +64,15 @@ def test_receipt_binds_artifacts_source_and_commit(tmp_path, monkeypatch):
     assert result["task_outcome"] == "UNKNOWN"
     assert result["merged_or_deployed"] is False
     assert result["dirty_tracked_files"] is False
+    assert result["dirty_worktree"] is False
     json.dumps(result, allow_nan=False)
     source.write_text("# changed\n")
     assert module.receipt(repo, [artifact])["dirty_tracked_files"] is True
+    assert module.receipt(repo, [artifact])["dirty_worktree"] is True
+    subprocess.run(["git", "-C", str(repo), "add", "src/advanced_research_adapter.py"], check=True)
+    assert module.receipt(repo, [artifact])["dirty_worktree"] is True
+    subprocess.run(["git", "-C", str(repo), "reset", "--hard", "-q", "HEAD"], check=True)
+    (repo / "untracked.txt").write_text("fixture\n")
+    untracked = module.receipt(repo, [artifact])
+    assert untracked["dirty_tracked_files"] is False
+    assert untracked["dirty_worktree"] is True

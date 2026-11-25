@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "scenario_id": "economy-pilot-cohort-001",
+  "seed": 20261113,
+  "horizon_rounds": 30,
+  "reward_units": 100,
+  "participants": [
+    {"participant_id": "origin-alpha", "success_probability_bps": 8200, "initial_balance": 1000, "origin_id": null},
+    {"participant_id": "builder-beta", "success_probability_bps": 7100, "initial_balance": 500, "origin_id": "origin-alpha"},
+    {"participant_id": "builder-gamma", "success_probability_bps": 6500, "initial_balance": 500, "origin_id": "origin-alpha"},
+    {"participant_id": "scout-delta", "success_probability_bps": 5200, "initial_balance": 300, "origin_id": null},
+    {"participant_id": "reviewer-epsilon", "success_probability_bps": 4700, "initial_balance": 300, "origin_id": null},
+    {"participant_id": "newcomer-zeta", "success_probability_bps": 3500, "initial_balance": 100, "origin_id": null}
+  ],
+  "policy": {
+    "policy_id": "baseline-paper-v1",
+    "cull_after_misses": 4,
+    "pool_distribution_bps": 2500,
+    "royalty_rate_bps": 0
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://timerloggedout-spec.github.io/termux-monorepo/schemas/royalty-policy.schema.json",
+  "title": "Origin Royalty Policy Activation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "policy_id", "version", "rate_bps", "basis_definition", "effective_from", "effective_until", "approved_by", "approved_at", "approval_digest"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "policy_id": {"type": "string", "minLength": 1},
+    "version": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+    "rate_bps": {"type": "integer", "minimum": 0, "maximum": 10000},
+    "basis_definition": {"type": "string", "minLength": 1, "maxLength": 128},
+    "effective_from": {"type": "string", "format": "date-time"},
+    "effective_until": {"type": ["string", "null"], "format": "date-time"},
+    "approved_by": {"type": "string", "minLength": 1},
+    "approved_at": {"type": "string", "format": "date-time"},
+    "approval_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

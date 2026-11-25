@@ -68,4 +68,4 @@ The Python pin is the Kye Gomez behavioral parity origin; Rust is a separate pri
 
 ## Current wiring and paper-wallet scope
 
-See [Operating status](OPERATING-STATUS.md) for invocation, hub routing and the unconnected quota/3L0 boundaries. Research framework runtime integration remains open; the planner is not an implementation of AdvancedResearch. Wallet work means paper CSV accounting under MSM-005/MSM-012, not a chain adapter or swarm deployment.
+See [Operating status](OPERATING-STATUS.md) for invocation, the existing-registry/source map, and current boundaries. The pinned Research adapter uses shared hub admission and correlated 3L0 evidence ingestion; local checks are fixture-based, not live-provider evidence. Native Android support and a deployed service remain unverified. Wallet work means paper CSV accounting under MSM-005/MSM-012, not a chain adapter or Swarms deployment.

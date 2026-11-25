@@ -1,0 +1,47 @@
+name: Economy backtest artifacts
+
+on:
+  pull_request:
+    paths:
+      - "scripts/model_selection_market/economy_backtest.py"
+      - "tests/test_economy_backtest.py"
+      - "experiments/model-selection-market/economy-backtest/**"
+      - "schemas/economy-backtest.schema.json"
+      - ".github/workflows/economy-backtest.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  simulate:
+    name: deterministic economy policy matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          submodules: false
+      - name: Verify deterministic contracts
+        run: python3 -B -m unittest discover -s tests -p 'test_economy_backtest.py' -v
+      - name: Run baseline and policy sensitivity matrix
+        env:
+          CODE_COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          python3 -m scripts.model_selection_market.economy_backtest \
+            --manifest experiments/model-selection-market/economy-backtest/scenarios/baseline.json \
+            --code-commit "$CODE_COMMIT_SHA" \
+            --output-dir artifacts/economy-backtests
+          python3 -m scripts.model_selection_market.economy_backtest \
+            --matrix experiments/model-selection-market/economy-backtest/scenarios/policy-matrix.json \
+            --code-commit "$CODE_COMMIT_SHA" \
+            --output-dir artifacts/economy-backtests
+      - name: Preserve immutable run artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: economy-backtests-${{ github.event.pull_request.head.sha || github.sha }}
+          path: artifacts/economy-backtests/
+          if-no-files-found: error
+          retention-days: 90

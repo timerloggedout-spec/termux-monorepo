@@ -1,69 +1,98 @@
-"""Rebuildable fake paper evidence, using the same MSM-005 journal and MSM-012 CSV."""
+"""Rebuildable fake paper evidence using the canonical MSM-005 journal and CSV view."""
+import csv
 import io
 import json
 import os
 from pathlib import Path
 
-from scripts.model_selection_market.market import MarketGraph, BetEntry, TradingCard
-from scripts.model_selection_market.paper_wallet import write_csv
+from scripts.model_selection_market.market import BetEntry, MarketGraph, TradingCard
+from scripts.model_selection_market.paper_wallet import FIELDS, parse_csv, write_csv
+
+
+PROVENANCE = {
+    "issuer": "offline-fixture",
+    "source": "synthetic",
+    "reference": "nonredeemable paper evidence; no production wallet",
+}
 
 
 def test_four_scope_lifecycle_has_one_authority_and_rebuildable_csv(tmp_path):
     journal = tmp_path / "market.jsonl"
-    graph = MarketGraph(journal=str(journal))
-    graph.issue_paper_points("fixture-issue", "fixture-owner", 100, "deterministic offline fixture; nonredeemable paper points")
+    graph = MarketGraph(event_path=str(journal))
+    graph.open_account("fixture-owner", event_id="open-owner", provenance=PROVENANCE)
+    graph.open_account("fixture-peer", event_id="open-peer", provenance=PROVENANCE)
+    graph.issue_points("fixture-owner", 100, event_id="issue-owner", provenance=PROVENANCE)
+
     for actor, subject_kind, subject_id, terminal in (
         ("itself", "model", "fixture/self", "settle"),
-        ("others", "model", "fixture/peer", "release"),
-        ("job", "job", "fixture-job", "void"),
+        ("others", "model", "fixture/peer", "cancelled"),
+        ("job", "job", "fixture-job", "unresolved"),
     ):
-        bet = graph.place_bet(BetEntry(actor_class=actor, actor_id="fixture-owner", subject_kind=subject_kind, subject_id=subject_id))
-        reservation = "fixture-" + actor
-        graph.reserve_bet("reserve-" + actor, reservation, "fixture-owner", 10, bet["entry_id"])
+        reservation_id = "fixture-" + actor
+        bet = BetEntry(actor_class=actor, actor_id="fixture-owner", subject_kind=subject_kind,
+                       subject_id=subject_id, unit_kind="paper_point", units=10)
+        graph.reserve_bet(bet, event_id="reserve-" + actor, reservation_id=reservation_id)
         if terminal == "settle":
-            graph.settle("settle-self", reservation, "fixture-peer")
-        elif terminal == "release":
-            graph.release("release-peer", reservation)
+            graph.settle(reservation_id, event_id="settle-" + actor, recipient="fixture-peer")
         else:
-            graph.void("void-job", reservation)
+            graph.release(reservation_id, event_id="release-" + actor, reason=terminal)
+
     card = graph.add_card(TradingCard(role="fixture-review", owner="fixture-owner"))
-    offer = graph.offer_trade("fixture-offer", card["card_id"], "fixture-peer", at="2026-10-22T00:00:00+00:00")
-    graph.reserve_offer("reserve-offer", "fixture-offer-reservation", "fixture-owner", 10, card["card_id"], offer["at"])
-    graph.settle("settle-offer", "fixture-offer-reservation", "fixture-peer")
     snapshot = graph.snapshot()
-    rebuilt = MarketGraph(journal=str(journal)).snapshot()
+    rebuilt = MarketGraph(event_path=str(journal)).snapshot()
     assert snapshot == rebuilt
-    accounts = snapshot["accounting"]["accounts"]
-    assert sum(row["balance"] for row in accounts.values()) == 100
-    assert all(row["reserved"] == 0 for row in accounts.values())
-    csv = io.StringIO()
-    write_csv(snapshot, csv)
-    replayed = io.StringIO()
-    write_csv(rebuilt, replayed)
-    assert csv.getvalue() == replayed.getvalue()
-    assert "PAPER ONLY" in csv.getvalue()
+    assert any(row["card_id"] == card["card_id"] for row in snapshot["cards"])
+    accounts = snapshot["paper_accounting"]["accounts"]
+    assert sum(row["balance"] for row in accounts) == 100
+    assert all(row["reserved"] == 0 for row in accounts)
+    assert {row["status"] for row in snapshot["paper_accounting"]["reservations"]} == {"settled", "released"}
+
+    projection = io.StringIO(newline="")
+    write_csv(snapshot, projection)
+    replayed_projection = io.StringIO(newline="")
+    write_csv(rebuilt, replayed_projection)
+    assert projection.getvalue() == replayed_projection.getvalue()
+    parsed = parse_csv(projection.getvalue())
+    assert {row["record_type"] for row in parsed} >= {"account", "reservation", "event", "card"}
+    assert "PAPER ONLY" in projection.getvalue()
+
     destination = os.environ.get("RESEARCH_PAPER_EVIDENCE_DIR")
     if destination:
         directory = Path(destination)
         directory.mkdir(parents=True, exist_ok=True)
         (directory / "paper-market-fixture.jsonl").write_text(journal.read_text())
         (directory / "paper-market-snapshot.json").write_text(json.dumps(snapshot, indent=2, sort_keys=True) + "\n")
-        (directory / "paper-market-projection.csv").write_text(csv.getvalue())
+        (directory / "paper-market-projection.csv").write_text(projection.getvalue())
 
 
 def test_csv_view_rejects_edits_against_authoritative_journal(tmp_path, capsys):
-    from scripts.model_selection_market.paper_wallet import main, validate_csv
     import pytest
-    journal = tmp_path / 'market.jsonl'
-    graph = MarketGraph(journal=str(journal))
-    graph.issue_paper_points('issue', 'owner', 10, 'fixture issuance')
-    output = io.StringIO()
+    from scripts.model_selection_market.paper_wallet import main
+
+    journal = tmp_path / "market.jsonl"
+    graph = MarketGraph(event_path=str(journal))
+    graph.open_account("owner", event_id="open-owner", provenance=PROVENANCE)
+    graph.issue_points("owner", 10, event_id="issue-owner", provenance=PROVENANCE)
+    output = io.StringIO(newline="")
     write_csv(graph.snapshot(), output)
-    source = tmp_path / 'projection.csv'
+    source = tmp_path / "projection.csv"
     source.write_text(output.getvalue())
-    assert main(['view', str(source), '--journal', str(journal)]) == 0
+
+    assert main(["view", str(source), "--events", str(journal)]) == 0
     assert capsys.readouterr().out == output.getvalue()
-    assert validate_csv(io.StringIO(output.getvalue()), graph.snapshot())
-    source.write_text(output.getvalue().replace(',10,0,10,', ',99,0,99,'))
-    with pytest.raises(SystemExit): main(['view', str(source), '--journal', str(journal)])
-    assert graph.accounting_snapshot()['accounts']['owner']['balance'] == 10
+    assert parse_csv(output.getvalue())
+
+    rows = list(csv.DictReader(io.StringIO(output.getvalue(), newline="")))
+    account = next(row for row in rows if row["record_type"] == "account")
+    account["balance"] = "99"
+    account["available"] = "99"
+    tampered = io.StringIO(newline="")
+    writer = csv.DictWriter(tampered, fieldnames=FIELDS, lineterminator="\n")
+    writer.writeheader()
+    writer.writerows(rows)
+    source.write_text(tampered.getvalue())
+
+    with pytest.raises(SystemExit):
+        main(["view", str(source), "--events", str(journal)])
+    owner = next(row for row in graph.accounting_snapshot()["accounts"] if row["owner"] == "owner")
+    assert owner["balance"] == 10

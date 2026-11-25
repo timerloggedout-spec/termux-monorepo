@@ -13,9 +13,11 @@ reviewers:
   - id: timerloggedout-spec
     role: operator-authorizer
     status: requested
-related_prs: []
+related_prs: [1540, 5345]
 related_branches:
   - docs/model-selection-market-3l0-20261001
+  - cue/msm005-paper-accounting-20261022
+  - cue/msm005-cull-pool-lifecycle
 related_proposals:
   - approxination-integration
   - ml-keep-alive
@@ -32,6 +34,7 @@ Public leaderboards remain **features**; repository-local 3L0 / ELO++ success ma
 Add explicit **series | parallel | concurrent** selection modes, a **DSPy DoE-MVT consideration lane**
 (under Approxination affinity, not default router), and an observational **Bets|Wagers|Bids**
 market (Itself|Others|Job) with **trading-card** code/meta sharing and a total role×model×job graph.
+Extend the existing paper journal with governed participant culling, reservation disposition, consolidation-pool distribution, and a read-only wallet/testnet promotion preflight.
 
 ## Boundary
 

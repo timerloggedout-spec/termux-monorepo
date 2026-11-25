@@ -260,6 +260,29 @@ def quota_token_budget(request: ChatCompletionRequest) -> int:
     return prompt_bound + output_bound
 
 
+MAX_REPORTED_TOKEN_COUNT = 2**31 - 1
+
+
+def reported_actual_tokens(response: Any) -> Optional[int]:
+    """Return only a bounded, exact integer usage report; otherwise keep it unknown."""
+    if not isinstance(response, dict):
+        return None
+    usage = response.get("usage")
+    if not isinstance(usage, dict):
+        return None
+    total = usage.get("total_tokens")
+    if type(total) is int and 0 <= total <= MAX_REPORTED_TOKEN_COUNT:
+        return total
+    input_tokens, output_tokens = usage.get("input_tokens"), usage.get("output_tokens")
+    if (type(input_tokens) is int and type(output_tokens) is int
+            and 0 <= input_tokens <= MAX_REPORTED_TOKEN_COUNT
+            and 0 <= output_tokens <= MAX_REPORTED_TOKEN_COUNT):
+        combined = input_tokens + output_tokens
+        if combined <= MAX_REPORTED_TOKEN_COUNT:
+            return combined
+    return None
+
+
 def messages_to_prompt(messages: Iterable[ChatMessage]) -> str:
     """Render a multi-turn OpenAI conversation for legacy wrapper backends."""
     rendered: List[str] = []
@@ -494,10 +517,9 @@ def chat_completions(request: ChatCompletionRequest, raw_request: Request) -> An
         admission.mark_sent(reservation)
         sent = True
         response = dispatch()
-        usage = response.get("usage") or {}
-        actual_tokens = usage.get("total_tokens")
-        if actual_tokens is None and "input_tokens" in usage and "output_tokens" in usage:
-            actual_tokens = usage["input_tokens"] + usage["output_tokens"]
+        if not isinstance(response, dict):
+            raise HubError(502, "upstream returned a non-object response", code="upstream_invalid_response")
+        actual_tokens = reported_actual_tokens(response)
         admission.reconcile(reservation, actual=1, actual_tokens=actual_tokens)
     except BaseException as exc:
         status = getattr(exc, "status", getattr(exc, "status_code", None))

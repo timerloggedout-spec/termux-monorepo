@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://timerloggedout-spec.github.io/termux-monorepo/schemas/economy-backtest.schema.json",
+  "title": "Economy Backtest Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "scenario_id", "seed", "horizon_rounds", "reward_units", "participants", "policy"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "scenario_id": {"type": "string", "minLength": 1},
+    "seed": {"type": "integer", "minimum": 0, "maximum": 9223372036854775807},
+    "horizon_rounds": {"type": "integer", "minimum": 1, "maximum": 10000},
+    "reward_units": {"type": "integer", "minimum": 1, "maximum": 9223372036854775807},
+    "participants": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["participant_id", "success_probability_bps", "initial_balance", "origin_id"],
+        "properties": {
+          "participant_id": {"type": "string", "minLength": 1},
+          "success_probability_bps": {"type": "integer", "minimum": 0, "maximum": 10000},
+          "initial_balance": {"type": "integer", "minimum": 0, "maximum": 9223372036854775807},
+          "origin_id": {"type": ["string", "null"]}
+        }
+      }
+    },
+    "policy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["policy_id", "cull_after_misses", "pool_distribution_bps", "royalty_rate_bps"],
+      "properties": {
+        "policy_id": {"type": "string", "minLength": 1},
+        "cull_after_misses": {"type": "integer", "minimum": 1, "maximum": 10001},
+        "pool_distribution_bps": {"type": "integer", "minimum": 0, "maximum": 10000},
+        "royalty_rate_bps": {"type": "integer", "minimum": 0, "maximum": 10000}
+      }
+    }
+  }
+}

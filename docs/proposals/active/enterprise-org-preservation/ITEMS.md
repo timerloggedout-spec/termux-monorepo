@@ -20,6 +20,8 @@
 
 | ENT-PRES-010 | Publish a reusable Enterprise organization preservation skill. | Skill documents eligibility, baseline, direct removal, Free destination, dry-run/apply transfer, resource reconciliation, and WAIT/WATCH evidence. | Implemented |
 
+| ENT-PRES-011 | Remove tracked session artifacts from the source tree and register coordinated history remediation. | PR #5874 removes `.Xauthority` and `.bash_history` from the current source tree and adds ignore rules; historical blobs and fork copies remain under review. | Implemented in PR #5874 — awaiting gates |
+
 ## Execution order
 
 1. Merge the baseline and verification automation after repository gates pass.

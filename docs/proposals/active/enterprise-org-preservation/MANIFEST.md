@@ -62,3 +62,9 @@ The transfer path preserves repository contents, issues, pull requests, wikis, s
 | 2026-11-22 | ChatGPT | Confirmed deadline and affected organization | GitHub Support emails received 2026-11-03 and 2026-10-04 |
 | 2026-11-22 | ChatGPT | Live repository inventory | GitHub repository search and commit comparison |
 | 2026-11-22 | ChatGPT | Confirmed trial lifecycle and transfer semantics | GitHub Enterprise trial and repository transfer documentation |
+
+
+## Implementation PRs
+
+- PR #5873: organization-aware repository provisioning and Enterprise preservation workflows.
+- PR #5874: remove tracked source session artifacts and add ignore rules; historical remediation remains a separate controlled step.

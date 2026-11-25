@@ -8,7 +8,8 @@ status: accepted
 priority: P1
 reviewers:
   - timerloggedout-spec
-related_prs: []
+related_prs:
+  - 5873
 related_branches:
   - feat/repository-provisioner-workflow
 gates_required: [repo-gate, termux-smoke]

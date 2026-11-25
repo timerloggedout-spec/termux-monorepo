@@ -1385,7 +1385,8 @@ proposals:
       - id: ChatGPT
         role: author+executor
         status: executing
-    related_prs: []
+    related_prs:
+      - 5873
     related_branches:
       - feat/repository-provisioner-workflow
       - feat/enterprise-org-preservation-20261125b
@@ -1406,7 +1407,9 @@ proposals:
       - id: ChatGPT
         role: author+executor
         status: executing
-    related_prs: []
+    related_prs:
+      - 5873
+      - 5874
     related_branches:
       - feat/enterprise-org-preservation-20261125b
     gates_required:

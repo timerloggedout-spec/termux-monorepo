@@ -20,6 +20,10 @@ The notation system's name of record is **Siglary**, per [the Notation Matrice](
 For each nontrivial change, begin with [context-relationship reconnaissance](docs/icm/processes/context-relationship-reconnaissance.md) ∧ the [context-relationship graph skill](.agents/skills/context-relationship-graph/SKILL.md). Build verified evidence, then label scored **candidates** separately. Route ICM work through [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md), its owning ICM card, and cited sources; each machine alias keeps its own sibling human source ∧ byte-identical local content.
 
 ## Governance route
+## Flywheel collaboration route
+
+Use [`docs/ops/flywheel-comms/README.md`](docs/ops/flywheel-comms/README.md) to resolve channel, peer, project, context, topic, and artifact routes. Read [`ROUTING-MODEL.md`](docs/ops/flywheel-comms/ROUTING-MODEL.md) for scope-aware memberships and effective permission intersections. Keep execution surfaces distinct from collaborator identities.
+
 
 1. Read [`docs/proposals/registry.yaml`](docs/proposals/registry.yaml) to identify active work.
 2. Follow [`docs/proposals/PROCESS.md`](docs/proposals/PROCESS.md) for proposal lifecycle.

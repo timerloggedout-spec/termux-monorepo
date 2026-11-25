@@ -286,21 +286,26 @@ def escalation_comment(issue: dict, age_min: float,
 def _defer_until(headers) -> datetime:
     now = datetime.now(timezone.utc)
     try:
-        reset = int(headers.get("X-RateLimit-Reset") or 0)
-    except (TypeError, ValueError):
-        reset = 0
-    try:
         retry_after = int(headers.get("Retry-After") or 0)
     except (TypeError, ValueError):
         retry_after = 0
+    try:
+        remaining = str(headers.get("X-RateLimit-Remaining") or "")
+    except (TypeError, ValueError):
+        remaining = ""
+    try:
+        reset = int(headers.get("X-RateLimit-Reset") or 0)
+    except (TypeError, ValueError):
+        reset = 0
     if retry_after > 0:
         return now + timedelta(seconds=retry_after)
-    if reset > int(now.timestamp()):
+    if remaining == "0" and reset > int(now.timestamp()):
         return datetime.fromtimestamp(reset, timezone.utc)
-    return now + timedelta(minutes=15)
+    return now + timedelta(minutes=1)
 
 
-def _request(method: str, url: str, token: str, payload=None):
+def _request(method: str, url: str, token: str, payload=None,
+             return_headers: bool = False):
     data = json.dumps(payload).encode() if payload is not None \
         else None
     req = urllib.request.Request(url, data=data, method=method)
@@ -313,7 +318,10 @@ def _request(method: str, url: str, token: str, payload=None):
     req.add_header("Content-Type", "application/json")
     try:
         with urllib.request.urlopen(req, timeout=30) as resp:
-            return json.loads(resp.read().decode() or "{}")
+            result = json.loads(resp.read().decode() or "{}")
+            if return_headers:
+                return result, resp.headers
+            return result
     except urllib.error.HTTPError as exc:
         body = exc.read().decode(errors="replace")[:400]
         headers = exc.headers or {}
@@ -343,12 +351,15 @@ def _request(method: str, url: str, token: str, payload=None):
 
 def _rate_limit_preflight(token: str) -> dict:
     """Read the token's live core budget and preserve shared headroom."""
-    snapshot = _request("GET", f"{API}/rate_limit", token)
+    snapshot, headers = _request(
+        "GET", f"{API}/rate_limit", token, return_headers=True)
     core = (snapshot.get("resources") or {}).get("core") or {}
     try:
-        limit = int(core["limit"])
-        remaining = int(core["remaining"])
-        reset_epoch = int(core["reset"])
+        limit = int(headers.get("X-RateLimit-Limit") or core["limit"])
+        remaining = int(
+            headers.get("X-RateLimit-Remaining") or core["remaining"])
+        reset_epoch = int(
+            headers.get("X-RateLimit-Reset") or core["reset"])
     except (KeyError, TypeError, ValueError) as exc:
         raise RuntimeError(
             "GitHub /rate_limit response lacks a valid core budget"

@@ -33,6 +33,7 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 | change ArchWiz or a verification tool | [`objects/operations/archwiz.md`](objects/operations/archwiz.md) | the cited tool catalog or source path |
 | use the initiated visual-review cards or plan a human checkpoint | [`objects/operations/optional-visual-review.md`](objects/operations/optional-visual-review.md) | the canonical source artifact and human approval boundary |
 | review provider-routing state or propose polling | [`routing.md`](routing.md) | the nested source, observation, and post-ICM workflow gate |
+| register or change a flywheel comms channel | [`cards/flywheel-comms.md`](cards/flywheel-comms.md) | the registry row in `docs/ops/flywheel-comms/REGISTRY.json` and its round-trip receipt |
 | alter navigation or an index | [`objects/knowledge/navigation-and-indexes.md`](objects/knowledge/navigation-and-indexes.md) | the owning navigation/index file |
 | reconstruct related source/GitHub history before a nontrivial change | [`processes/context-relationship-reconnaissance.md`](processes/context-relationship-reconnaissance.md) | the exact graph root, its evidence, and separately labeled candidates |
 | select or update an ICM reference | [`objects/knowledge/reference-inputs.md`](objects/knowledge/reference-inputs.md) | the pinned reference input and custom-submodule review |

@@ -25,7 +25,7 @@ The current registry contains six established channels. New channels receive the
 
 ## 2. Navigate by collaborator
 
-Peer identity and execution surface are distinct. A collaborator may use multiple surfaces and hold different memberships; one surface's onboarding state does not establish another surface's readiness.
+Peer identity and execution surface are distinct. A collaborator may use multiple surfaces and hold different memberships; Each execution surface carries independent onboarding and readiness evidence.
 
 | Collaborator / surface | Registered channel scope | Current evidence |
 |---|---|---|
@@ -98,4 +98,4 @@ Use typed, immutable references wherever possible:
 - Channel protocols and append-only stores govern message format and history.
 - Repository source, GitHub issues/PRs, commits, tests, and workflow artifacts govern implementation state.
 - The [routing model](ROUTING-MODEL.md) proposes a normalized model for scope-aware routing and effective permission calculation.
-- This page is a navigation index; it does not grant access, establish live execution, or replace source evidence.
+- This page is a navigation index; access, execution readiness, and source evidence remain governed by their owning systems.

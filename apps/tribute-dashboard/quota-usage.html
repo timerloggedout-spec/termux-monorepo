@@ -40,6 +40,9 @@
   .anno{border-left:3px solid var(--gold);padding:.2rem .6rem;margin:.5rem 0}
   .dim{color:var(--muted)}
   .flag{color:var(--gold);font-weight:700}
+  .event-log{font-size:12px;overflow-wrap:anywhere}
+  .event-log ul{margin:.35rem 0;padding-left:1.2rem}
+  .event-log li{padding:.2rem 0;border-top:1px solid var(--line)}
 </style>
 </head>
 <body>
@@ -55,15 +58,15 @@
 <div class="hero">
 <p class="eyebrow">Quota Usage · Burn-down &amp; Replenishment</p>
 <h1>Usage, walls and replenishment — as observed</h1>
-<p class="lede">The historical burn-down of the shared GitHub API bucket, the per-service state timeline from the quota readings snapshots, the Actions corpus volume with its storm spike, and the replenishment stamp for every pool. This page consumes <code>data/quota-usage.json</code> (schema <code>quota-usage/v1</code>) and nothing else. Points are observations, not samples: gaps stay gaps, composed-but-unlanded data is flagged, and a pool with no established replenishment renders no stamp.</p>
+<p class="lede">The historical burn-down of the shared GitHub API bucket, the per-service state timeline from the quota readings snapshots, the Actions corpus volume with its storm spike, and the replenishment stamp for every pool. This page consumes <code>data/quota-usage.json</code> (schema <code>quota-usage/v1</code>) and nothing else. Quota points remain observations, not samples; rate-limit events are shown in a separate time-aligned marker lane, never as remaining-quota readings.</p>
 </div>
 </header>
 <main>
 <p class="muted" id="meta">Loading pack…</p>
 
 <section>
-<div class="head"><h2>API core burn-down — shared PAT bucket</h2></div>
-<div class="card"><div id="burndown"></div><p class="dim" id="burnnote"></p></div>
+<div class="head"><h2>API core burn-down — PAT readings + separate rate-limit events</h2></div>
+<div class="card"><div id="burndown"></div><p class="dim" id="burnnote"></p><div class="event-log" id="rateevents"></div></div>
 </section>
 
 <section>
@@ -93,12 +96,23 @@ const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 // ==== pure logic (node-sim tested) ====
 function parseT(s){return Date.parse(s);}
-function burnGeom(points,limit,w,h,pad){
-  const ts=points.map(p=>parseT(p.at));
+function burnGeom(points,limit,w,h,pad,eventTimes=[]){
+  const ts=points.map(p=>parseT(p.at)).concat(eventTimes.map(parseT).filter(Number.isFinite));
   let t0=Math.min.apply(null,ts), t1=Math.max.apply(null,ts);
   const span=Math.max(t1-t0,3600000); t0-=span*0.04; t1+=span*0.04;
   const iw=w-pad*2, ih=h-pad*2;
   return {t0,t1,pts:points.map(p=>({x:pad+iw*(parseT(p.at)-t0)/(t1-t0), y:pad+ih*(1-p.remaining/limit), p}))};
+}
+function eventGeom(events,t0,t1,w,pad,laneY=14){
+  const span=t1-t0, iw=w-pad*2, laneLast=[];
+  const sorted=events.filter(e=>Number.isFinite(parseT(e.at))).slice().sort((a,b)=>parseT(a.at)-parseT(b.at));
+  return sorted.map(e=>{
+    const x=pad+iw*(parseT(e.at)-t0)/span;
+    let lane=laneLast.findIndex(prev=>Math.abs(x-prev)>=8);
+    if(lane<0) lane=laneLast.length;
+    laneLast[lane]=x;
+    return {x:+x.toFixed(1),y:laneY+lane*7,event:e,lane};
+  });
 }
 function stepPath(pts){
   if(!pts.length) return "";
@@ -148,20 +162,26 @@ function barScale(days){
 function stampText(stamp){
   return stamp.established ? ("↻ "+String(stamp.cadence).toUpperCase()) : "NO STAMP — UNMETERED";
 }
-if(typeof module!=="undefined"){ module.exports={parseT,burnGeom,stepPath,stateClass,barGeom,stampText,idealRemaining,yTicks,labelPlace,wallLabels,barScale}; }
+if(typeof module!=="undefined"){ module.exports={parseT,burnGeom,eventGeom,stepPath,stateClass,barGeom,stampText,idealRemaining,yTicks,labelPlace,wallLabels,barScale}; }
 // ==== end pure logic ====
 let PACK=null;
 function svgEl(html){ return html; }
 function renderBurn(){
-  const s=PACK.series1_api_core, W=920, H=300, P=44;
-  const g=burnGeom(s.points, s.limit, W, H, P);
-  let out='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="API core remaining over time">';
+  const s=PACK.series1_api_core, events=(PACK.series4_rate_limit_events||{}).events||[], W=920, H=300, P=44;
+  const g=burnGeom(s.points, s.limit, W, H, P, events.map(e=>e.at));
+  const eventMarks=eventGeom(events,g.t0,g.t1,W,P,14);
+  let out='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="PAT API core remaining observations with separate time-aligned rate-limit event markers">';
   out+='<line x1="'+P+'" y1="'+(H-P)+'" x2="'+(W-P)+'" y2="'+(H-P)+'" stroke="var(--line)"/>';
   out+='<line x1="'+P+'" y1="'+P+'" x2="'+P+'" y2="'+(H-P)+'" stroke="var(--line)"/>';
   for(const tv of yTicks(s.limit)){
     const ty=P+(H-P*2)*(1-tv/s.limit);
     out+='<line x1="'+P+'" y1="'+ty+'" x2="'+(W-P)+'" y2="'+ty+'" stroke="var(--line)" opacity="0.35"/>';
     out+='<text class="ytick" x="'+(P-8)+'" y="'+(ty+4)+'" text-anchor="end" fill="var(--muted)" font-size="11">'+tv+'</text>';
+  }
+  for(const m of eventMarks){
+    const e=m.event, color=e.http===403?'var(--bad)':'var(--gold)', status=e.http==null?'HTTP status unavailable':'HTTP '+e.http;
+    const d='M'+m.x+','+(m.y-4)+' L'+(m.x+4)+','+m.y+' L'+m.x+','+(m.y+4)+' L'+(m.x-4)+','+m.y+' Z';
+    out+='<path class="rate-limit-event-marker" d="'+d+'" fill="'+color+'"><title>'+esc(e.at)+' · '+esc(status)+' · '+esc(e.class)+' · '+esc(e.bucket)+' · '+esc(e.id)+'</title></path>';
   }
   if(s.model){
     const anchor=parseT(s.model.anchor_reset), winMs=s.model.window_ms;
@@ -194,7 +214,10 @@ function renderBurn(){
   let bn=s.note+" Replenishment: "+s.replenishment+"; next reset observed "+s.next_reset_observed+".";
   if(s.model){ bn+=" Flow line (green): "+s.model.ideal+". Faults both ways — "+s.model.faults.below_line+"; "+s.model.faults.above_line+"."; }
   if(PACK.buckets){ bn+=" Buckets, kept separate — never one merged line: "+PACK.buckets.map(b=>b.name+" "+b.limit+"/"+b.unit+(b.observed?(" ("+b.observed+")"):"")).join(" · ")+"."; }
+  bn+=" Rate-limit events: red markers = HTTP 403; gold markers = other registered events. They occupy a separate time lane and are not quota readings; bucket identity is listed per event.";
   $("burnnote").textContent=bn;
+  const ordered=events.slice().sort((a,b)=>parseT(a.at)-parseT(b.at));
+  $("rateevents").innerHTML=ordered.length?'<strong>Rate-limit event log</strong><ul>'+ordered.map(e=>'<li><time>'+esc(e.at)+'</time> — '+esc(e.http==null?'HTTP status unavailable':'HTTP '+e.http)+' · '+esc(e.class)+' · <code>'+esc(e.bucket)+'</code> · <code>'+esc(e.id)+'</code></li>').join('')+'</ul>':'No rate-limit events recorded.';
 }
 function renderStates(){
   const s=PACK.series2_snapshots;

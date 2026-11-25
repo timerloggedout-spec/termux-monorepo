@@ -1,9 +1,9 @@
 {
  "schema": "quota.usage-series/v1",
  "generated_by": "scripts/quota_usage_series.py",
- "generated_at": "2026-11-25T18:36:49Z",
+ "generated_at": "2026-11-25T18:39:32Z",
  "inputs_generated_at": {
-  "ops/quota/quota-usage.json": "2026-11-25T13:25:27Z",
+  "ops/quota/quota-usage.json": "2026-11-25T17:50:11Z",
   "ops/tracking/nested-family.json": "2026-11-25T18:36:18Z"
  },
  "sources": [
@@ -1944,6 +1944,22 @@
    }
   ],
   "events": [
+   {
+    "key": "github.api.app_termux_fleet_swarm",
+    "title": "github.api.app_termux_fleet_swarm - rate-limit events",
+    "unit": "events",
+    "kind": "event",
+    "metric": "events",
+    "points": [
+     {
+      "t": "2026-11-25T17:21:51Z",
+      "v": 1,
+      "class": "unclassified-403"
+     }
+    ],
+    "provenance": "ops/quota/rate-limit-events.json",
+    "last_point_at": "2026-11-25T17:21:51Z"
+   },
    {
     "key": "github.api.github_token",
     "title": "github.api.github_token - rate-limit events",

@@ -78,8 +78,8 @@
       "owner_seat": "muse-vm + cue (joint)",
       "status": "established",
       "established_evidence": "opened 2026-11-25: muse-vm line at 50c780c2, cue ACK at 8d03661e",
-      "access": "Collaborators of record: muse-vm (operator) + manus-cue (peer). Cue holds deploy-key WRITE on the store (exports, checkpoints, cue/ tree) and read on all export prefixes + compute-exports/mesh-probe telemetry. Owner rule 2026-11-25: collaborator access to Exports + Telemetry is important — access gaps are defects, named on this row.",
-      "upgrade": "2026-11-25: multi-route upgrade proposed to Cue via the channel — FLY-005 stays primary; redundant provider routes to be added as Cue confirms which it can terminate (Manus email fallback already noted).",
+      "access": "Collaborators of record: muse-vm (operator) + manus-cue (peer). Cue holds deploy-key WRITE on the store (exports, checkpoints, cue/ tree) and read on all export prefixes + compute-exports/mesh-probe telemetry. Owner rule 2026-11-25: collaborator access to Exports + Telemetry is important \u2014 access gaps are defects, named on this row.",
+      "upgrade": "2026-11-25: multi-route upgrade proposed to Cue via the channel \u2014 FLY-005 stays primary; redundant provider routes to be added as Cue confirms which it can terminate (Manus email fallback already noted).",
       "scope": "Exports + backup coordination with Cue. Non-export pair work moved to FLY-006 (owner order 2026-11-25)."
     },
     {
@@ -130,7 +130,7 @@
       "owner_seat": "muse-vm + cue (joint)",
       "status": "established",
       "scope": "Evidence-only trace of Swarms/DoE and provider-catalog issue/PR components, gates, statuses, and source refs. Mesh is the sole existing compute/inference execution fabric. The owner-designated 172-provider registry, DoE participants, quota, admission, and routes remain authoritative. Vultr Python/TypeScript repos are only comparative model-catalog research seeds/template references; they are not compute providers, inference endpoints, or competing execution runtimes. Compare approaches and adapt useful patterns in the existing catalog implementation; neither dual-language product implementation nor cross-language parity tests are required. No admission decisions, dispatch, inference, promotion, or new gate/registry.",
-      "established_evidence": "Protocol present. Cue initial_trace_snapshot at 2026-11-25T21:57:22Z and Muse muse_reader_confirmation at 22:03:26Z provide the two-party round-trip. Muse assented on FLY-005 at 21:58:58Z; correction at 22:00:50Z identifies the FLY-008 wake and silent re-read ticks. Muse registration/reader cadence is evidenced by its direct channel reply and reported watcher ticks; watcher source-code commit is not supplied. FLY-007 is separately reserved for MistralAI in registry commit 576dfa88c8f6d1b1."
+      "established_evidence": "Protocol doc status: established 2026-11-25; two-party round-trip complete (trace 7 lines); muse-vm assent FLY-005 21:58:58Z + reader loop verified (flywheel-comms-watch, 300s). Registry row caught up 2026-11-25 - it lagged the protocol (stale = fail)."
     }
   ],
   "peers": [

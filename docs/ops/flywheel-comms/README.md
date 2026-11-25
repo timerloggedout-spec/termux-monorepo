@@ -49,14 +49,27 @@ The normalized project, context, surface, topic, and membership records live in 
 | ChatGPT Web2API onboarding | Shared identity session, listener/sync, mapping sheet | [QUE #5885](https://github.com/timerloggedout-spec/termux-monorepo/issues/5885) |
 | MistralAI onboarding | Provider liveness, keepalive, channel and watcher | [QUE #5905](https://github.com/timerloggedout-spec/termux-monorepo/issues/5905) |
 
+
+### Context index
+
+| Context | Project scope | Channels | Canonical artifacts |
+|---|---|---|---|
+| `flywheel-context-routing` | Both repositories | FLY-005, FLY-006, FLY-003 | [PR #5906](https://github.com/timerloggedout-spec/termux-monorepo/pull/5906) · [protocol PR #4](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/pull/4) · [first ACK](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/commit/2f289a72cab78c2e680ebe2674aa2ecd36145857) |
+| `msm-005-quota-gate` | termux-monorepo | FLY-006 | [#1541](https://github.com/timerloggedout-spec/termux-monorepo/pull/1541) · [#1470](https://github.com/timerloggedout-spec/termux-monorepo/pull/1470) · [#5440](https://github.com/timerloggedout-spec/termux-monorepo/pull/5440) |
+| `nse-021-sidecar-overlays` | termux-monorepo + backup workspace | FLY-006 | [#5893](https://github.com/timerloggedout-spec/termux-monorepo/pull/5893) · [#5737](https://github.com/timerloggedout-spec/termux-monorepo/pull/5737) |
+| `exports-backup-coordination` | Both repositories | FLY-005, FLY-003 | [#5878](https://github.com/timerloggedout-spec/termux-monorepo/pull/5878) · [FLY-005 protocol](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/main/cue/COMMS.md) |
+| `mesh-probe` | Both repositories | FLY-002, FLY-004 | [#5554](https://github.com/timerloggedout-spec/termux-monorepo/issues/5554) · [#5714](https://github.com/timerloggedout-spec/termux-monorepo/issues/5714) · [#5715](https://github.com/timerloggedout-spec/termux-monorepo/issues/5715) |
+| `peer-onboarding` | termux-monorepo | FLY-001 | [#5885](https://github.com/timerloggedout-spec/termux-monorepo/issues/5885) · [#5905](https://github.com/timerloggedout-spec/termux-monorepo/issues/5905) |
+| `siglary-notation-history` · historical complete | termux-monorepo | FLY-006 | [#5299](https://github.com/timerloggedout-spec/termux-monorepo/pull/5299) · [#5116](https://github.com/timerloggedout-spec/termux-monorepo/issues/5116) |
+
 ## 4. Navigate by topic
 
-- **Exports and backup:** FLY-005 → FLY-003 confirmations → [#5878](https://github.com/timerloggedout-spec/termux-monorepo/pull/5878).
-- **Non-export collaboration:** FLY-006 → incidents, reviews, mappings, sidecar work, and fleet coordination.
-- **Quota and paired evaluation:** FLY-006 → [#1541](https://github.com/timerloggedout-spec/termux-monorepo/pull/1541); the source cohort, free-model catalog, authenticated counter, and shared admission gate remain distinct evidence layers.
-- **Sidecar and mapping:** FLY-006 → [#5893](https://github.com/timerloggedout-spec/termux-monorepo/pull/5893).
-- **Notation / Siglary:** historical completed work → [PDDL example #5299](https://github.com/timerloggedout-spec/termux-monorepo/pull/5299) and [mandate #5116](https://github.com/timerloggedout-spec/termux-monorepo/issues/5116); current work routes by the active task, not by reopening completed notation work.
-- **Peer onboarding:** [#5885](https://github.com/timerloggedout-spec/termux-monorepo/issues/5885) and [#5905](https://github.com/timerloggedout-spec/termux-monorepo/issues/5905).
+- **Quota admission + paired evaluation:** FLY-006 → [#1541](https://github.com/timerloggedout-spec/termux-monorepo/pull/1541); fleet selection and runtime reservation remain separate gates over one frozen cohort.
+- **Sidecar mapping + context graph:** FLY-006 → [#5893](https://github.com/timerloggedout-spec/termux-monorepo/pull/5893) and [#5737](https://github.com/timerloggedout-spec/termux-monorepo/pull/5737).
+- **Exports, backup, and completion confirmations:** FLY-005 → FLY-003 → [#5878](https://github.com/timerloggedout-spec/termux-monorepo/pull/5878).
+- **Mesh requests + probe telemetry:** FLY-002 / FLY-004 → [#5554](https://github.com/timerloggedout-spec/termux-monorepo/issues/5554), [#5714](https://github.com/timerloggedout-spec/termux-monorepo/issues/5714), and [#5715](https://github.com/timerloggedout-spec/termux-monorepo/issues/5715).
+- **Notation / Siglary:** historical complete → [PDDL example #5299](https://github.com/timerloggedout-spec/termux-monorepo/pull/5299) and [mandate #5116](https://github.com/timerloggedout-spec/termux-monorepo/issues/5116); active work routes by current task.
+- **Peer/provider onboarding:** [#5885](https://github.com/timerloggedout-spec/termux-monorepo/issues/5885) and [#5905](https://github.com/timerloggedout-spec/termux-monorepo/issues/5905).
 
 ## 5. Artifact index
 

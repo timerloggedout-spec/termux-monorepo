@@ -1,0 +1,209 @@
+# Capability Discovery, Classification and Progressive Activation
+
+**Status:** implemented first slice; external ingestion remains candidate-only.
+**Runtime:** `scripts/capabilities/discover.py`
+**Taxonomy:** `ops/capability_discovery/taxonomy.json`
+**Source registry:** `ops/capability_discovery/sources.json`
+**Record contract:** `ops/capability_discovery/record.schema.json`
+
+## Objective
+
+Discover the broad capability universe while keeping model context small. Search nested repository workspaces, all supported skill file forms, vendor directories, external skill catalogs, plugin skill catalogs and tool-action exports. Classify and deduplicate candidates before loading full instructions or tool schemas.
+
+The index serves as a metadata projection; canonical files and providers retain definition ownership, permissions, versions and runtime state. Plugin manifests are indexed without copying server commands, endpoint credentials or complete tool schemas. Canonical files and providers retain ownership of their definitions, permissions, versions and runtime state.
+
+## Nested discovery coverage
+
+The repository scan recognizes:
+
+- `.agents/**/SKILL.md` — agent-loadable skills;
+- `.github/**/SKILL.md` — automation and production skills;
+- `.claude/**/SKILL.md` — harness-specific skills;
+- `docs/**/SKILL.md` — documentation mirrors and operational companions;
+- nested `workspace/**/SKILL.md`, `SKILLS.md`, `*.SKILLS`, and `*.skill`;
+- plugin/tool manifests: `plugin.json`, `marketplace.json`, `.mcp.json`, `mcp.json`, `tools.json` and `tool-manifest.json`; only manifest identity, description, version and entry counts are indexed;
+- explicitly allowlisted sibling workspace roots supplied with repeatable `--extra-root` flags; these are tagged `workspace-external` / `unverified` and receive separate external locators;
+- `vendor/**` skill definitions, classified as unverified vendor inputs;
+- optional JSON exports of session plugin skills and tool actions.
+
+The recursive scan scopes itself to selected roots, skips symlinks and generated/cache directories, and keeps home and sibling workspaces outside the default scope. External roots enter through an explicit allowlist. It reads skill bodies only to derive a SHA-256 and extract frontmatter metadata; it persists metadata only while full instructions, tool schemas, prompts, credentials and completions stay in their source systems.
+
+At the current master recon SHA `29d1ad867f88b73c54967479f4055b4e038a5cf6` (2026-11-20), the recursive tree contains 45 `SKILL.md` paths across `.agents/` (32), `.claude/` (1), `.github/` (10) and `docs/` (2), one root `SKILLS.md`, zero tracked `.skill` archives and zero workspace-nested skill paths. The PR branch adds the capability-discovery skill, bringing its branch count to 46. The scanner broadens future discovery to all nested forms; it derives the census from the checked-out tree for reproducible counts.
+
+## Existing Termux tool-taxonomy baseline
+
+The repository already contains a substantial, generated Termux/ArchWiz tool catalogue at `workspace/llm_map/_TOOL_TAXONOMY/`. Treat it as a historical local-tool snapshot and a DoE comparator, not a live inventory of currently installed or authorized tools.
+
+| Artifact | Observed structure | Treatment |
+|---|---:|---|
+| `all_tools.jsonl` | 3,388 valid JSONL records; 243 package/source groups; 104 tags | Canonical per-tool metadata input; indexed as individual `tool` records |
+| `TOOL_TAXONOMY.json` | Reports 3,388 tools, 25 roles and 104 tags | Taxonomy summary and metadata |
+| `roles_custom.json` | Custom role extensions | Role-routing metadata |
+| `TAG_INDEX.json` | Generated tag lookup | Derived index; do not duplicate tool records |
+| `categories/` | 103 JSON category views | Derived projections |
+| `roles/` | 25 role JSON profiles plus directory metadata | Derived contextual profiles |
+| `modules/` | 20 scanner, merge, refactor and delta modules | Generator/source code |
+| `python3/` | 28 category mirrors | Derived projections |
+| `delta/` | 18 historical snapshots | Historical change evidence |
+| `state/` | 531 package/device-state entries | Metadata-only provenance; exclude content from default context |
+
+At the inspected master baseline, the README claims 3,387 tools and contains unrendered shell substitutions for its rebuild timestamp, role table and tags; the machine-readable taxonomy and JSONL both report 3,388. The generated workspace README remains unchanged in this PR. Correcting it belongs in the taxonomy generator under the workspace owner's separate approval. The `REPO_INFO` file declares `NO_REMOTE`; source provenance is therefore the tracked repository snapshot, not a verified live remote or current Termux device scan.
+
+The discovery scanner indexes `all_tools.jsonl` as metadata-only tool records. It retains source/category/package tags, uses the whole-file SHA-256 as the snapshot version, and marks the tool records `unverified` because the snapshot does not establish current availability. Category and role files remain generated views rather than duplicate tool records.
+
+`workspace/llm_map/build_tool_taxonomy.sh` is a symlink into this taxonomy directory. The target builder is Termux-specific and invokes apt, npm, cargo, custom, Termux API, reference-template and alias scanners. Treat it as a generator definition; CI and remote agents consume the committed snapshot and do not execute this local-environment builder.
+
+## Claude export provenance: Issue #5657 and PR #5667
+
+[Issue #5657](https://github.com/timerloggedout-spec/termux-monorepo/issues/5657) lists four attachments: `SHA256SUMS.txt`, `plugins-inventory.csv`, `skills-inventory.csv`, and `skills-SKILL-md-all.tar.gz`. The supplied checksum file instead names five `skills-part-00.tgzpart` through `skills-part-04.tgzpart` files. Those part files are absent from the issue's attachment list, and the checksum file does not name the combined tarball or CSV files. The issue body also omits `skills-inventory.jsonl`.
+
+[PR #5667](https://github.com/timerloggedout-spec/termux-monorepo/pull/5667) now accepts an optional `skills-inventory.jsonl`: when absent, it derives JSONL from the CSV; when present, it compares all 1,299 rows field-for-field. It parses `SHA256SUMS.txt`, verifies any listed parts found in Downloads, and records checksum coverage. The current source manifest correctly reports `UNVERIFIED`: the five listed split-part files are absent, and the sums do not cover the combined archive or either CSV. The archive SHA-256 is a post-download fingerprint, not a match to a trusted expected digest. The current inventory reconciliation shows 1,299 CSV/JSONL rows matching exactly, 43 rows with blank `plugin_dir`, and `examples` / `public` plugin inventory directories without corresponding skill rows.
+
+Keep the mirror and importer in the unverified vendor-candidate state until the exact attachment bytes, split-part assembly, archive membership, CSV/JSONL reconciliation and checksum provenance are independently verified. PR #5667 currently changes 2,807 files (+466,622 / -42,119), is 26,515 commits behind current master and reports `mergeable=false`; retain its pinned head as forensic evidence and split/rebase before promotion. The scanner quarantines secret-like metadata and treats `vendor/**` content as unverified; discovery does not authorize installation or execution.
+
+## Classification model
+
+Each capability receives:
+
+1. **Primary domain** — engineering, testing, delivery, research, data, agentic, design, operations or specialized.
+2. **Primary function** — the task-level capability within that domain.
+3. **Facets** — cross-cutting properties such as vendor, plugin, MCP, CLI, workflow, credentialed, read-only, write-capable, sensitive or experimental.
+4. **Trust state** — repository-canonical, official-vendor, verified-upstream, community-reference, session-observed, unverified or quarantined.
+5. **Lifecycle state** — discovered → classified → deduplicated → evaluated → eligible → approved → adopted, with deprecated/rejected terminal branches.
+6. **Provenance** — exact source locator, retrieval/capture time, immutable source revision where available, content hash and discovery method.
+
+The initial classifier applies deterministic keyword rules constrained by the versioned taxonomy; specialized domains cover finance, health, legal, regulatory, scientific, media, property, automotive and outdoors. Use classifications as routing hints; evaluate quality and safety independently. Use one primary domain/function and multiple facets. This avoids multiplying duplicate records for a skill that spans several areas. SQLite stores aliases and permission metadata, while the relationship table records exact-content matches and supports future alias/cross-domain edges; the current automatic edge is `content_identical`.
+
+### Identity and deduplication
+
+Canonical identity uses source locator plus package/skill/action identifier. Names alone are insufficient. Content hashes detect changed definitions. Exact content matches create `content_identical` relationship edges while keeping the source records distinct. Keep forks, versions and aliases distinct; link them through relationships rather than silently merging them. Record duplicate candidates and their resolution in the ledger.
+
+## Progressive loading and context budget
+
+```text
+task intent
+   ↓
+local metadata index ──→ nested tags + trust + provenance
+   ↓
+ranked top-k candidates
+   ↓
+inspect selected skill/tool source
+   ↓
+type-specific quality + permission checks
+   ↓
+authorized execution / experiment / adoption
+```
+
+Default behavior returns a small metadata-only shortlist (top 8). Load full skill instructions or tool schemas only for selected candidates. Fetch a tool's schema just before invocation. Use the exact action rather than injecting an entire namespace.
+
+The SQLite database stores aliases, permission metadata, taxonomy hashes, record-state hashes and relationship edges; the JSONL event ledger records added, changed and reclassified definitions under `ops/capability_discovery/ledger.schema.json`. Secret-like records are quarantined and excluded from ordinary search; `--include-quarantined` is reserved for explicit forensic review. It uses FTS5 when available and a LIKE fallback otherwise. Skill/archive reads are capped at 2 MB per definition to bound resource use. The database and JSONL discovery-event ledger are local generated artifacts under `.cache/`; Commit source code, schemas and taxonomy; generate the mutable database and per-session exports as runtime artifacts under `.cache/`. CI may upload a dated, sanitized snapshot artifact when required.
+
+## Sources and vendor caution
+
+The source registry declares local, vendor, external-catalog and session-snapshot sources. It records the ingestion mode and auth constraints.
+
+- **skills.sh** exposes paginated leaderboard, fuzzy/semantic search, curated vendor skills, detail/file-tree and partner security-audit endpoints. Search accepts `q` (minimum two characters) and `limit` (1–200); multiword queries use semantic search. The API uses short-lived Vercel OIDC bearer authentication, with a documented 600 requests/minute per team/project limit. Read a fresh request-scoped token, refresh expired local tokens, and keep the token out of the repository and ledger. Detail records include a stable ID and content hash; use that hash for cache invalidation. Audit returns partner results from Gen Agent Trust Hub, Socket, Snyk, Runlayer and ZeroLeaks; HTTP 404 indicates unavailable audit status; record the result as unknown. The documented CLI install form is `npx skills add <owner/repo>`; its anonymous telemetry includes skill name, skill files and timestamp by default, with `DISABLE_TELEMETRY=1` as opt-out. The local SQLite cache holds fuzzy/semantic search results for 45 seconds and curated results for 5 minutes, aligned with the upstream cache windows; it stores sanitized metadata only. `--auto` checks local coverage first and makes a read-only skills.sh call only when the local shortlist is below the configured minimum and a valid token or cached response is available. Search/audit before install; Treat popularity as a discovery signal; use security review for safety decisions. ([API](https://www.skills.sh/docs/api), [CLI](https://www.skills.sh/docs/cli))
+- **Approxination** complements skills.sh with ranked skill search, generation and execution feedback. Its A/B/C/D tool-layer cohort is already governed by `approxination-lane`; hosted calls require the provisioned token and explicit budget. Reuse its lane rather than building a second ranking service.
+- **Anthropic** — `anthropics/skills` is Anthropic's reference implementation. Inspect each skill's license individually; the repository has mixed licensing, including proprietary document skills. ([Repository](https://github.com/anthropics/skills))
+- **Microsoft** — `microsoft/skills` includes Azure SDK/AI Foundry skills, agents, AGENTS.md and MCP configurations. Its README labels the repository work in progress; select individual skills rather than loading the entire deep tree. ([Repository](https://github.com/microsoft/skills))
+- **Vercel** — `vercel-labs/agent-skills` includes React/Next.js best practices, web-design guidelines and Vercel optimization skills. ([Repository](https://github.com/vercel-labs/agent-skills))
+- **Cloudflare** — `cloudflare/skills` bundles skills and a native plugin that installs Cloudflare guidance plus the Cloudflare MCP server. Review plugin manifests and requested MCP scopes. ([Repository](https://github.com/cloudflare/skills))
+- **Trail of Bits** — `trailofbits/skills` distributes security analysis, testing and development skills through plugin marketplaces. ([Repository](https://github.com/trailofbits/skills))
+- **Hugging Face** — `huggingface/skills` provides Hub, dataset, training and evaluation workflows; its `hf-cli` skill is generated from the installed CLI and is the recommended bootstrap path. ([Repository](https://github.com/huggingface/skills))
+- **OpenAI** — use `openai/plugins` for current Codex plugin examples; a plugin can bundle a manifest, skills, MCP config, agents, commands, hooks and assets. The separate `openai/skills` repository is deprecated and points to the plugin repository. ([Plugins](https://github.com/openai/plugins), [deprecated skills](https://github.com/openai/skills))
+- **GitHub** — `github/awesome-copilot` is an organization-hosted community collection; verify vendor support status separately. ([Repository](https://github.com/github/awesome-copilot))
+- **Anthropic plugins** — `anthropics/claude-plugins-official` is now the home of Anthropic's own plugins; third-party submissions are moving to the Claude directory. Anthropic explicitly warns that plugins may include MCP servers, files and software from independent publishers. `anthropics/knowledge-work-plugins` bundles skills, connectors, slash commands and subagents by job function. ([Official plugins](https://github.com/anthropics/claude-plugins-official), [knowledge-work plugins](https://github.com/anthropics/knowledge-work-plugins))
+- **Microsoft plugins** — `microsoft/azure-skills` combines Azure guidance with MCP-backed execution; `microsoft/power-platform-skills` includes build/update/publish workflows. Inspect tool scopes and environment mutation boundaries before authorizing. ([Azure](https://github.com/microsoft/azure-skills), [Power Platform](https://github.com/microsoft/power-platform-skills))
+- **AWS** — `aws/agent-toolkit-for-aws` supplies agent tools, knowledge and guardrails for AWS build/deploy/manage tasks. Review IAM and account scopes before enabling write actions. ([Repository](https://github.com/aws/agent-toolkit-for-aws))
+- **Google agent tooling** — `google/agents-cli` supplies CLI/skills for Gemini agent development; `google-gemini/gemini-skills` covers Gemini API/SDK practices. ([Agents CLI](https://github.com/google/agents-cli), [Gemini skills](https://github.com/google-gemini/gemini-skills))
+- **Google skills/plugins** — `google/skills` publishes Google-product skills and bundles plugins/MCP servers for supported agent harnesses. Search by product and install only the specific skill/plugin after source, permission and revision review. ([Repository](https://github.com/google/skills))
+- **Jules** — the supplied PDF is a candidate discovery lead. Current upstream `jules-skills` documents `npx skills add google-labs-code/jules-skills --list` and classifies the repository as a community project outside Google's officially supported product set. The current Jules GitHub action README uses `google-labs-code/jules-invoke@v1` with `JULES_API_KEY`; issue-triggered workflows need user allowlists and PR review. The supplied PDF's `google-labs-code/jules-action@v1` / `GEMINI_API_KEY` example is stale relative to the current README. Treat the PDF as historical source material and verify current action contracts before adapting. ([Jules skills](https://github.com/google-labs-code/jules-skills), [Jules action](https://github.com/google-labs-code/jules-action), [security examples](https://github.com/google-labs-code/jules-action/blob/main/examples/README.md))
+- **Loopy** is a bounded-loop skill candidate. The supplied JSON describes Discover, Find, Audit, Adapt, Craft, Run, Debrief, Save and Publish routes, with Observe → Choose → Act → Verify → Record → Repeat and explicit terminal states. Its catalog host is a placeholder in the supplied file; resolve the actual upstream catalog before any live Find/Publish integration.
+- **Vendor folders and imported archives** remain untrusted data. Inspect provenance, license, scripts, network access, requested permissions, secret patterns and maintenance before install or execution.
+
+The 2026-11-19 session snapshot contains 545 plugin skill references across 74 packages and 4,716 callable actions (4,706 MCP actions across 123 MCP namespaces, plus core tools). Compact indexes live at `docs/integrations/session-plugin-skill-catalog.json` and `docs/integrations/session-tool-action-catalog.json`. These snapshots intentionally omit full tool schemas and truncate descriptions to compact activation summaries.
+
+Session plugin/tool exports are session-observed snapshots. Verify account entitlement, connected status in each runtime and repository adapter availability independently. The tool host's live schema remains authoritative.
+
+## SOFA connector and tool activation
+
+The repository contains a separate Stack Overflow for Agents connector under `tools/sofa/` (distinct from the standard Stack Overflow MCP):
+
+- `tools-schema.json`: 27 typed MCP action definitions.
+- `TOOLS.md`: generated action inventory with 16 READ and 11 WRITE classes.
+- `CONNECTOR.md`: OAuth, transport, scope and operational guidance.
+- `sofa.py`: typed local helper for status, tool listing, description and calls.
+
+The discovery scanner indexes the 27 tool names, descriptions and parameter counts as individual `tool` records, derives `read-only`, `write-capable` and `credentialed` facets from the typed `TOOLS.md` inventory, and indexes `CONNECTOR.md` / `TOOLS.md` as references. Full input schemas remain in `tools-schema.json` and hydrate only when an action is selected. These facets describe documented action classes; they do not assert current OAuth grants.
+
+**Authorization reconciliation:** `tools/sofa/CONNECTOR.md` and `TOOLS.md` retain 2026-10-28 read-only scope claims. `docs/ops/SOFA-CONNECTION-2026-10-28.md` records a 2026-11-03 status update with expanded scopes, including write scopes. The current live grant has not been re-verified in this discovery pass. Use the read-only `sofa.py status` operation to refresh status before use; treat WRITE actions as owner-gated and require explicit user intent for every write. The local `.tokens.json` remains outside the index and repository history.
+
+## External vendor adapter coverage
+
+`ops/capability_discovery/sources.json` is the curated vendor/source registry. Registration is a discovery lead, not evidence that a remote repository has been crawled or that its contents are available locally. The current executable external search adapter is the read-only skills.sh API. GitHub vendor repositories such as Anthropic, Microsoft, Google, Vercel, Cloudflare, Hugging Face, Trail of Bits and OpenAI remain pinned-reference candidates until a read-only Git tree/metadata adapter records their immutable commit SHA and selected file hashes.
+
+The local scanner indexes committed `vendor/**` mirrors as unverified metadata. It does not clone repositories, install skills, execute plugin hooks, provision credentials or invoke MCP servers. This separation keeps vendor search metadata-only and makes provenance review a prerequisite for full-definition hydration or adoption.
+
+## Evaluation routing
+
+| Candidate type | Quality / evidence lane | Result |
+|---|---|---|
+| Skill definition (`SKILL.md`, `*.skill`) | `scripts/ci/evaluate_skills.py` + Skill Evaluation lane | structural definition quality |
+| MCP tool definition / action schema | TDQS + `docs/ops/TDQS-ADMISSION-MATRIX.md` | tool-definition quality and server coherence |
+| Plugin or external skill package | provenance, license, secret scan, permission review + Skill Evaluation | candidate eligibility |
+| Runtime invocation | ATES / WTCV / TCV | execution status and effectiveness |
+| Integrated task | deterministic acceptance + independent evidence | outcome, integration, regression and promotion evidence |
+
+Skill quality, TDQS, runtime effectiveness and integrated outcome remain separate. Skill-definition quality and runtime execution effectiveness measure separate outcomes.
+
+## DoE linkage
+
+The new nested discovery factors are registered as dimensions 41–48 in `DOE-QUESTIONS-MATRIX.md`. The design-only campaign `experiments/doe/capability-discovery-routing/DESIGN.json` compares source scope, taxonomy depth and context hydration on fixed task cohorts.
+
+The experiment reuses `docs/ops/corpus/EXPERIMENT.schema.json`. One executed task × treatment × configured instance = one observation. It preserves task-family/difficulty blocks, assignment integrity, interaction analysis, uncertainty, resource cost and permission guardrails.
+
+The campaign remains proposal-only pending DoE-expert admission, an automation path and verified configured-instance stamps. Documentation and indexing implementation remain separate from experiment dispatch.
+
+## Commands
+
+```bash
+# Build/update local SQLite index and deterministic event-ledger projection
+python3 scripts/capabilities/discover.py scan --root .
+
+# Explicitly add selected sibling workspaces; each remains unverified
+python3 scripts/capabilities/discover.py scan --root . --extra-root "$HOME/workspace/project-a" --extra-root "$HOME/workspace/project-b"
+
+# Import session-scoped, metadata-only JSON exports when explicitly supplied
+python3 scripts/capabilities/discover.py scan --root . \
+  --plugin-skills-json /path/to/plugin-skills.json \
+  --tool-actions-json /path/to/tool-actions.json
+
+# Return a compact local shortlist
+python3 scripts/capabilities/discover.py find "task intent" --limit 8
+
+# Local-first auto mode; call skills.sh only if local coverage is below five hits
+python3 scripts/capabilities/discover.py find "task intent" --auto --min-local-results 5
+
+# Optional read-only skills.sh catalog search (requires a short-lived Vercel OIDC token)
+python3 scripts/capabilities/discover.py find "database agent skills" --skills-sh --owner microsoft --limit 8
+
+# Search the official first-party curated catalog
+python3 scripts/capabilities/discover.py find "cloud security" --skills-sh-curated --limit 8
+
+# Focused contract tests
+python3 -m unittest tests.test_capability_discovery -v
+```
+
+## Acceptance and lifecycle
+
+- Local scan discovers all matching nested paths and labels vendor sources unverified.
+- Search returns metadata-only ranked results and supports FTS5 fallback.
+- Repeated scans are idempotent; changed content produces a ledger event.
+- Session imports retain session-scoped trust and capture date.
+- Secret-like content is quarantined; raw content and credentials remain outside the index.
+- Skill, TDQS, runtime and outcome evaluation remain type-separated.
+- External installs, credential provisioning, write actions, publishing and production promotion stay behind their existing approval gates.
+
+## Reusable task instruction
+
+> Discover capabilities across the full repository and declared external catalogs. Search recursively by tagged domain/function, classify provenance and trust, deduplicate by canonical identity and content hash, and return a metadata-only top-k shortlist. Hydrate only selected definitions. Route skills to Skill Evaluation, tool schemas to TDQS, execution to ATES, and integrated outcomes to DoE/MoneyBall. Update the SQLite projection and evidence ledger, validate the changed source SHA, and preserve approval gates.

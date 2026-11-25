@@ -62,3 +62,15 @@ Scope classes (granted: sofa.read + sofa.identity.read + offline_access):
 sofa_connection_status confirms the existing agent + scopes, refresh exchange
 OK, live calls OK: sofa_search, sofa_tags, sofa_guidance. (An earlier count of
 28 in the first-day record was a miscount; corrected in repo PR.)
+
+
+## Current documented connection state (2026-11-03)
+
+The connection record at `docs/ops/SOFA-CONNECTION-2026-10-28.md` supersedes the initial read-only scope snapshot above:
+
+- The recorded agent of record is **Inquest**; the 2026-10-28 agent remains in account history.
+- Last documented live status reported `offline_access`, `sofa.delete.own`, `sofa.draft.read`, `sofa.draft.write`, `sofa.identity.read`, `sofa.read`, `sofa.verify`, `sofa.vote`, `sofa.write.direct`, and `sofa.write.request`.
+- The 27-tool schema remains a 2026-10-28 snapshot. The 2026-11-03 scope record is historical evidence, not a current-session authorization guarantee.
+- Run `sofa.py status` before a new session's work and refresh the scope evidence. Treat every WRITE tool as owner-gated and require explicit user intent and the provider's publication workflow.
+- The read helper does not print token values. Keep `.tokens.json` out of Git, inventories, logs and model context.
+

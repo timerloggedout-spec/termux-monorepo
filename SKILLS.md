@@ -5,6 +5,7 @@
 | Need | Path |
 |------|------|
 | **Full inventory + role load matrix** | [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) |
+| **Nested capability discovery / MOAR** | [`.agents/skills/capability-discovery/SKILL.md`](.agents/skills/capability-discovery/SKILL.md) · [`docs/ops/CAPABILITY-DISCOVERY-AND-ACTIVATION.md`](docs/ops/CAPABILITY-DISCOVERY-AND-ACTIVATION.md) |\n| **Session plugin/tool catalogs** | [Plugin skills](docs/integrations/session-plugin-skill-catalog.json) · [Tool actions](docs/integrations/session-tool-action-catalog.json) · [Source registry](ops/capability_discovery/sources.json) |
 | **Superpowers engineering methodology** | [`.agents/skills/superpowers/SKILL.md`](.agents/skills/superpowers/SKILL.md) |
 | **Primary agent entry (BIUDL)** | [`CLAUDE.md`](CLAUDE.md) |
 | **DO phrasing / framing guide** | [`docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md`](docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md) |
@@ -27,13 +28,20 @@
 
 Root `AGENTS.md` is **deprecated** (Linguist / Jules redirect only). Load `CLAUDE.md` first.
 
-## Layout (both trees are first-class)
+## Canonical and candidate surfaces
 
 ```text
-.agents/skills/<name>/SKILL.md     # agent / collaborator loadable skills
-.github/skills/<name>/SKILL.md     # CI / production reconciliation skills
-docs/ops/SKILLS-INVENTORY.md        # SSOT navigator + role matrix
-SKILLS.md                           # this file — short collaborator entry
+.agents/skills/<name>/SKILL.md      # agent / collaborator loadable skills
+.github/skills/<name>/SKILL.md      # CI / production reconciliation skills
+.claude/skills/<name>/SKILL.md      # harness companion skills
+docs/ops/skills/<name>/SKILL.md     # documentation mirrors; canonical path linked
+vendor/**/SKILL.md, *.skill         # unverified candidate inputs; metadata-only until reviewed
+**/plugin.json, **/marketplace.json # plugin manifests; metadata-only until reviewed
+**/.mcp.json, **/tools.json          # MCP/tool manifests; schemas hydrate on selection
+ops/capability_discovery/           # taxonomy, source registry and record contract
+docs/integrations/session-*.json    # dated, session-scoped plugin/tool discovery snapshots
+docs/ops/SKILLS-INVENTORY.md         # curated SSOT navigator + role matrix
+SKILLS.md                            # this file — short collaborator entry
 ```
 
 Every skill directory must contain a `SKILL.md`. Inventory lists **all** of them so collaborators do not need private mirrors.
@@ -43,6 +51,7 @@ Every skill directory must contain a `SKILL.md`. Inventory lists **all** of them
 | Role | Load first |
 |------|------------|
 | Collaborator | `superpowers` → `adaptive-feedback-cycle` → dual-gate |
+| Capability discovery | `capability-discovery` → `context-relationship-graph` → `find-skills` / `approxination-lane` |
 | Admin / Grok | `evidence-led-monorepo-ops` + `adaptive-wait` + `ml-pipeline-ops` + `ml-command-center` |
 | Admin / Grok | `evidence-led-monorepo-ops` + `adaptive-wait` |
 | Admin / Termux | `termux-mcp-project-steward` + `adaptive-wait` |

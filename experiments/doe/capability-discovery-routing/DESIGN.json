@@ -1,0 +1,301 @@
+{
+  "campaign_id": "capability-discovery-routing",
+  "family": "doe",
+  "member_kind": "campaign",
+  "surface": "doe",
+  "suite_type": "control",
+  "status": "proposal_only_not_admitted",
+  "moniker": "doe-expert",
+  "base_sha": "57559c9100f9df2868398603410e6ba28783a942",
+  "hypothesis": {
+    "statement": "Nested tagged classification plus metadata-first progressive loading improves top-k capability retrieval quality and verified task success while reducing context ingestion and unnecessary tool/schema loads, compared with flat tags and broad definition loading.",
+    "predeclared_threshold": "Progressive treatment reduces definition bytes loaded by at least 40% while maintaining top-5 relevant-and-safe retrieval precision within 0.05 of the broad-load baseline; final success and permission guardrails remain non-inferior.",
+    "null": "The nested metadata-first approach yields zero material improvement in retrieval quality or context cost under the fixed task cohort."
+  },
+  "design": {
+    "type": "blocked full factorial (2x2x2), 8 treatment arms",
+    "unit_of_observation": "one fixed capability-search task executed under one treatment and one pinned configured instance; each completed run emits one EXPERIMENT record",
+    "factors": {
+      "source_scope": {
+        "levels": [
+          "repository_only",
+          "repository_plus_approved_catalog_snapshots"
+        ],
+        "dimension": 41
+      },
+      "taxonomy_depth": {
+        "levels": [
+          "flat_tags",
+          "nested_domain_function_facets"
+        ],
+        "dimension": 42
+      },
+      "context_hydration": {
+        "levels": [
+          "broad_role_bundle_with_namespace_tool_schemas",
+          "metadata_first_with_exact_action_schema_on_demand"
+        ],
+        "dimension": 45,
+        "definition": "Compare broad skill/namespace bundles against metadata-first retrieval that selects one skill and exact tool action before hydrating its full definition/schema."
+      }
+    },
+    "fixed_controls": {
+      "retrieval_engine": "Pin the same FTS5/BM25 or LIKE fallback engine across all arms and record the engine used.",
+      "result_budget": "top_k=8",
+      "deduplication": "canonical source locator + package/skill/action identity + content SHA-256",
+      "trust_policy": "vendor/community/session inputs remain distinct trust strata; permission gates identical across all arms",
+      "catalog_freshness": "Freeze the approved session/catalog snapshot hashes for all arms; record capture time and source revision."
+    },
+    "blocks": [
+      "task_family",
+      "difficulty_stratum"
+    ],
+    "replication": "8 fixed tasks × 8 treatment arms = 64 planned observations; task-family balance and budget confirmed at admission.",
+    "randomization": "balanced randomized assignment within task-family and difficulty blocks; preserve planned and observed allocation and report deviations.",
+    "outcomes": {
+      "primary": "top-5 relevant-and-safe capability retrieval precision, with selected-source correctness independently adjudicated",
+      "secondary": [
+        "verified task success",
+        "context bytes and actual input tokens where telemetry exists",
+        "definition bodies/schemas hydrated",
+        "tool actions invoked",
+        "elapsed time",
+        "duplicate candidates",
+        "source coverage",
+        "rework and retries",
+        "exact tool-action selection accuracy",
+        "full tool-schema hydration count",
+        "namespace-wide schema hydration count"
+      ],
+      "guardrails": [
+        "unauthorized write actions = 0",
+        "secret/private-data exposure = 0",
+        "unreviewed external skill installation = 0",
+        "all outcomes retain explicit unknown/blocked/failed states"
+      ]
+    },
+    "analysis": "Estimate main effects and interactions with uncertainty; preserve per-run observations; stratify by task family/difficulty; treat latency and token reduction as resource measures and correctness as an independent outcome. Confirm promising effects on a held-out task cohort.",
+    "configured_instance": "Pin provider and model@version; system prompt ref+sha256; tools ref+sha256; role; moniker; context; environment fingerprint; base SHA; evaluator; dataset/cohort; and instance_key.",
+    "dimension_roles": {
+      "41": "treatment factor: discovery source scope",
+      "42": "treatment factor: taxonomy depth",
+      "43": "fixed control: retrieval/ranking engine",
+      "44": "fixed control: canonical identity and content-hash relationship policy",
+      "45": "treatment factor: context hydration",
+      "46": "invariant guardrail: source trust/admission policy",
+      "47": "fixed control: pinned catalog freshness/version",
+      "48": "fixed control: top-k result budget"
+    }
+  },
+  "matrix_dimensions": [
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48
+  ],
+  "source_scope": [
+    "CLAUDE.md",
+    "SKILLS.md",
+    ".agents/skills/capability-discovery/SKILL.md",
+    ".agents/skills/find-skills/SKILL.md",
+    ".agents/skills/approxination-lane/SKILL.md",
+    ".agents/skills/skill-evaluation/SKILL.md",
+    ".agents/skills/context-relationship-graph/SKILL.md",
+    ".agents/skills/multivariate-doe/SKILL.md",
+    ".agents/skills/blind-agent-evaluation/SKILL.md",
+    ".agents/skills/design-of-experiments/SKILL.md",
+    ".agents/skills/**/SKILL.md",
+    ".github/skills/**/SKILL.md",
+    ".claude/**/SKILL.md",
+    "docs/ops/skills/**/SKILL.md",
+    "**/SKILLS.md",
+    "**/*.SKILLS",
+    "**/*.skill",
+    "vendor/**",
+    "docs/ops/SKILLS-INVENTORY.md",
+    "docs/ops/SKILL-DISCOVERY-MATRIX.md",
+    "docs/ops/CAPABILITY-DISCOVERY-AND-ACTIVATION.md",
+    "docs/ops/SKILL-EVALUATION.md",
+    "docs/ops/SKILL-EVALUATION-EVIDENCE.schema.json",
+    "docs/ops/TDQS-ADMISSION-MATRIX.md",
+    "docs/architecture/TOOL-DEFINITION-QUALITY-SCORE.md",
+    "docs/ops/DOE-FAMILY.md",
+    "docs/ops/DOE-TAXONOMY.md",
+    "docs/ops/DOE-QUESTIONS-MATRIX.md",
+    "docs/ops/corpus/EXPERIMENT.schema.json",
+    "docs/integrations/README.md",
+    "docs/integrations/INTEGRATION-REGISTRY.md",
+    "docs/integrations/registry.json",
+    "docs/integrations/ADAPTER-CONTRACT.md",
+    "docs/integrations/schemas/integration-event.schema.json",
+    "docs/integrations/session-plugin-skill-catalog.json",
+    "docs/integrations/session-tool-action-catalog.json",
+    "ops/capability_discovery/taxonomy.json",
+    "ops/capability_discovery/sources.json",
+    "ops/capability_discovery/record.schema.json",
+    "scripts/capabilities/discover.py",
+    "scripts/ci/evaluate_skills.py",
+    "tests/test_capability_discovery.py",
+    ".github/workflows/skill-quality-lane.yml",
+    "docs/proposals/active/continuous-capability-evolution-lab/MANIFEST.md",
+    "docs/proposals/active/continuous-capability-evolution-lab/ITEMS.md",
+    "experiments/doe/capability-discovery-routing/DESIGN.json",
+    "experiments/doe/capability-discovery-routing/README.md",
+    "docs/ops/AGENT-TEAM-ORCHESTRATION.md",
+    "docs/ops/RUNTIME-WATCHER-LOOP.md",
+    "docs/ops/AGENT-OBSERVABILITY-RESEARCH-MATRIX.md",
+    "docs/ops/AGENT-THROUGHPUT-METRICS.md",
+    "docs/ops/AGENT-THROUGHPUT-EVENT.schema.json",
+    "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md",
+    "docs/ops/AGENT-EVALUATION-LANE-REGISTRY.md",
+    "**/plugin.json",
+    "**/marketplace.json",
+    "**/.mcp.json",
+    "**/mcp.json",
+    "**/tools.json",
+    "**/tool-manifest.json",
+    "ops/capability_discovery/ledger.schema.json",
+    "workspace/README.md",
+    "workspace/llm_map/README.md",
+    "workspace/llm_map/TOOL_INDEX.md",
+    "workspace/llm_map/_TOOL_TAXONOMY/README.md",
+    "workspace/llm_map/_TOOL_TAXONOMY/REPO_INFO",
+    "workspace/llm_map/_TOOL_TAXONOMY/TAGS.txt",
+    "workspace/llm_map/_TOOL_TAXONOMY/TAG_INDEX.json",
+    "workspace/llm_map/_TOOL_TAXONOMY/TOOL_TAXONOMY.json",
+    "workspace/llm_map/_TOOL_TAXONOMY/all_tools.jsonl",
+    "workspace/llm_map/_TOOL_TAXONOMY/auto_tag_rules.json",
+    "workspace/llm_map/_TOOL_TAXONOMY/build_tool_taxonomy.sh",
+    "workspace/llm_map/_TOOL_TAXONOMY/modules/**",
+    "workspace/llm_map/_TOOL_TAXONOMY/categories/**",
+    "workspace/llm_map/_TOOL_TAXONOMY/roles/**",
+    "workspace/llm_map/_TOOL_TAXONOMY/python3/**",
+    "workspace/llm_map/_TOOL_TAXONOMY/delta/**",
+    "workspace/llm_map/_TOOL_TAXONOMY/state/**",
+    "docs/icm/objects/knowledge/workspace-artifact-estate.md",
+    "docs/icm/processes/workspace-artifact-triage.md",
+    "workspace/llm_map/ALIAS_INDEX.md",
+    "workspace/llm_map/CAVEMAN_INDEX.md",
+    "workspace/llm_map/CHANGELOG.md",
+    "workspace/llm_map/ECOSYSTEM_MAPPER_DOCS.md",
+    "workspace/llm_map/HANDOFF.json",
+    "workspace/llm_map/INDEX_OVERVIEW.md",
+    "workspace/llm_map/REFERENCE.md",
+    "workspace/llm_map/SYSTEM_MAP.md",
+    "workspace/llm_map/TRUTH_REPORT.md",
+    "workspace/llm_map/TUI_ARCHAEOLOGY.md",
+    "workspace/llm_map/access_policy.json",
+    "workspace/llm_map/agent_shell.py",
+    "workspace/llm_map/build_tool_taxonomy.sh",
+    "workspace/llm_map/router_agent.py",
+    "workspace/llm_map/manager_agent.py",
+    "workspace/llm_map/task_runner.py",
+    "workspace/llm_map/tool_logger.py",
+    "workspace/llm_map/promote.py",
+    "workspace/llm_map/validate_promotion.py",
+    "workspace/llm_map/build_llm_index.py",
+    "workspace/llm_map/build_all.py",
+    "workspace/llm_map/impact_oracle.py",
+    "workspace/llm_map/graph_query.py",
+    "workspace/llm_map/reliability_scan.py",
+    "workspace/llm_map/reliability_db.py",
+    "workspace/llm_map/agent_proposals/**",
+    "workspace/llm_map/context_relationships/**",
+    "workspace/llm_map/graph/**",
+    "workspace/llm_map/repositories/**",
+    "workspace/llm_map/social/**",
+    "workspace/llm_map/_TOOL_TAXONOMY/roles_custom.json",
+    "tools/sofa/**",
+    "docs/ops/SOFA-CONNECTION-2026-10-28.md",
+    "docs/ops/archive/SOFA-SEARCH-FINDINGS-2026-10-28.md"
+  ],
+  "automation": {
+    "status": "local-indexer-implemented; CI integration added; experiment-runner-pending",
+    "required": "Add reviewed workflow dispatch/admission path that pins catalogs, toolset snapshots and configured-instance identity; emits one EXPERIMENT-schema record per run; preserves failed and blocked outcomes."
+  },
+  "constraints": [
+    "Design-only until DoE-expert admission.",
+    "Use offline frozen catalog fixtures for first validation; external live catalog calls require authorized source access and budget.",
+    "External skill installation and execution stay outside the discovery indexer.",
+    "Keep credentials, private prompts, full tool schemas and completion content outside the index.",
+    "All treatment arms retain identical safety and authorization gates.",
+    "Treat workspace/llm_map/_TOOL_TAXONOMY as a historical generated Termux tool-catalog baseline: its JSONL has 3,388 valid records while README claims 3,387; never equate its catalog rows with current installed tools.",
+    "Treat taxonomy categories/roles/python3/delta as generated projections and state/ as local package-state evidence; keep state content out of default model context and do not run the Termux-specific taxonomy builder in CI.",
+    "Treat SOFA tools-schema.json as a dated 27-action snapshot: index names/descriptions/parameter counts only, hydrate the full schema on selection, and re-check live authorization before each action; connector documentation conflicts on the last recorded scope state."
+  ],
+  "external_reference_inputs": [
+    {
+      "file": "Awesome Jules Skills Actions and Workflows for GitHub Development. (supplied PDF)",
+      "role": "vendor skill/action/workflow discovery reference",
+      "trust": "unverified until current upstream source and immutable refs are checked",
+      "use": "candidate source taxonomy; issue/PR automation, TDD and subagent workflow patterns"
+    },
+    {
+      "file": "skill-loopy-api-loop-library-skill.json (supplied JSON)",
+      "role": "bounded agent-loop skill reference",
+      "trust": "community-reference; catalog host in supplied material is unresolved",
+      "use": "bounded loop lifecycle, terminal states, run receipts and discover/find/audit/adapt/craft/run/debrief/publish routes"
+    },
+    {
+      "file": "context-relationship-graph_2.skill (supplied archive)",
+      "role": "relationship and provenance skill reference",
+      "trust": "session-supplied; compare with repository canonical skill",
+      "use": "nested graph links and evidence relationships"
+    },
+    {
+      "file": "termux-mcp-project-steward.skill (supplied archive)",
+      "role": "Termux/GitHub stewardship skill reference",
+      "trust": "session-supplied; repository canonical skill takes precedence",
+      "use": "source-specific scope and operational permission context"
+    },
+    {
+      "file": "context-relationship-graph.skill (supplied ZIP)",
+      "role": "repository relationship and provenance graph skill",
+      "trust": "session-supplied; compare with repository canonical skill",
+      "use": "narrow-root discovery, verified-vs-candidate edges, evidence URLs, bounded collection and read-only graph operations"
+    },
+    {
+      "file": "Diagnose Routing Architecture.txt (supplied text)",
+      "role": "agent-team orchestration and routing methodology",
+      "trust": "user-supplied design reference; conceptual claims require repository evidence",
+      "use": "manager/player separation, integrated outcome metrics, provider attribution and context/time/retry/human-intervention cost dimensions"
+    },
+    {
+      "file": "Implement GitLab Sync Diagnosis.txt (supplied text)",
+      "role": "cross-platform integration and tool-permission diagnosis",
+      "trust": "user-supplied diagnostic reference; credential values excluded",
+      "use": "least-privilege token topology, single-writer coordination, source-pair identity and explicit authorization boundaries"
+    },
+    {
+      "file": "Notation Registry Proposal.txt (supplied text; filename/content mismatch)",
+      "role": "WAIT/WATCH/RE-FETCH runtime evidence and reconciliation methodology",
+      "trust": "user-supplied operational report; filename and contents differ; contents document WAIT/WATCH reconciliation",
+      "use": "runtime state separation, observer-only watchers, immutable SHA binding, failure preservation and evidence-led loops"
+    },
+    {
+      "file": "GitHub Issue #5657 — Claude Exports",
+      "locator": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5657",
+      "role": "source export and checksum-provenance reference for imported Claude skills/plugins",
+      "trust": "unverified: SHA256SUMS lists five split-part filenames that are absent from the issue attachment list and does not name the combined tarball or CSVs; skills-inventory.jsonl is absent from the issue body",
+      "use": "reconcile exact attachment bytes, split-part assembly, archive membership, CSV/JSONL inventories and checksum chain before promoting imported definitions"
+    },
+    {
+      "file": "PR #5667 — Claude export importer and mirror",
+      "locator": "https://github.com/timerloggedout-spec/termux-monorepo/commit/baf927ae71ad1d740dc66442ee333a6938bb5074",
+      "role": "repository import adapter and mirrored vendor-skill corpus",
+      "trust": "importer code is repository-canonical; current imported source data remains UNVERIFIED; branch is 26,515 commits behind current master and PR is non-mergeable",
+      "use": "review scripts/skills/import_claude_export.py and validate_claude_export.py, plus tests/test_import_claude_export.py, .skills/index.json, .skills/tags.json, docs/ops/skills/source/** and vendor/skills-mirror/**. The importer now derives JSONL from CSV when absent, compares downloaded JSONL field-for-field, verifies any present listed parts and records checksum coverage. Current sums still omit the combined archive and CSVs, and the five listed split parts are absent. Preserve the 1,299 skill / 1,218 plugin-row counts as inventory observations, not source authenticity claims. Include tests/test_import_claude_export.py as the importer integrity regression suite. Keep this branch as a pinned forensic reference until it is rebased/split; do not merge the 2,807-file, 466,622-addition branch as-is."
+    },
+    {
+      "file": "PR #5680 — contextual activation matrix and CMP-7 dashboard",
+      "locator": "https://github.com/timerloggedout-spec/termux-monorepo/commit/c1532c062182e8bebca07b6f1992ebd23f650b3e",
+      "role": "prior activation-matrix and DoE dashboard implementation",
+      "trust": "repository-canonical; overlapping proposal branch",
+      "use": "compare docs/ops/CAPABILITY-ACTIVATION-MATRIX.md and session catalogs against this PR's canonical discovery matrix; preserve independent CMP-7 dashboard/admission-feed work, then rebase/split it after PR #5681. Current PR is 30 commits behind master, 19 files changed (+23,430/-195), and overlaps on capability activation docs."
+    }
+  ]
+}

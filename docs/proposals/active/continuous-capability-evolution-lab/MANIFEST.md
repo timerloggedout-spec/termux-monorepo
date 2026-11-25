@@ -11,9 +11,12 @@ reviewers:
     role: operator-authorizer
     status: accepted
 related_issues: []
-related_prs: []
+related_prs: [5667, 5680, 5681]
 related_branches:
   - feat/ceel-continuous-capability-evolution-20261111
+  - docs/connector-audit-2026-11-17
+  - ops/contextual-capability-activation-doe-20261119
+  - feat/nested-capability-discovery-classifier-20261119
 gates_required: [proposal-lifecycle, repo-gate, termux-smoke]
 ---
 

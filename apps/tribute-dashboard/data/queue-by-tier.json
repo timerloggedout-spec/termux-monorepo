@@ -1,16 +1,17 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-25T11:32:15Z",
+ "generated_at": "2026-11-25T12:05:10Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 3,
-   "in_progress": 1,
+   "queued": 8,
+   "in_progress": 0,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "repo gate": 1,
-    "PR scope guard": 2
+    "Orchestration Regression Guard": 1,
+    "repo gate": 3,
+    "PR scope guard": 4
    }
   },
   "2": {
@@ -29,22 +30,39 @@
   },
   "4": {
    "tier": 4,
-   "queued": 6,
-   "in_progress": 10,
+   "queued": 27,
+   "in_progress": 19,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
+    "n8n SHE bridge": 1,
+    "Agent Throughput Evidence": 1,
+    "graph-matrix-probe": 1,
+    "quota-served-probe": 1,
+    "Foresight Evidence Spine": 1,
+    "quota-analysis": 1,
+    "que-cadence-kick": 1,
+    "hitl-control-plane-verify": 1,
+    "Agent Readability Source Contract": 1,
+    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
+    "termux smoke": 3,
+    "Action Effectiveness Ledger": 1,
+    "Lane matrix event-driven inventory": 1,
+    "Agent PR Jules Handoff": 2,
+    "RECON INTEL discovery": 1,
+    "PR Change Effectiveness Ledger": 2,
+    "PR production ledger": 1,
+    "Repository development evaluation": 1,
+    "Sweep Accountability": 1,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
     "Quota Dispatch Tree": 1,
-    "termux smoke": 1,
-    "Agent PR Jules Handoff": 1,
-    "PR Change Effectiveness Ledger": 1,
     "Advisory GitHub Actions lint": 1,
     "DO Statement Style": 1
    }
   }
  },
  "totals": {
-  "queued": 9,
-  "in_progress": 13
+  "queued": 35,
+  "in_progress": 21
  },
  "wedged_ancient": [
   {
@@ -202,13 +220,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 4,
+   "1": 8,
    "2": 2,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 6,
-  "default_t4": 16,
+  "explicit_total": 10,
+  "default_t4": 46,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

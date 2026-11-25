@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-25T22:50:45Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-25T23:07:19Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-25T22:50:44Z` (merged 150 · open 200) · lane-events(Neon) status=`error:HTTPError` count=`None` read_at=`2026-11-25T22:50:44Z`
+Sources: PR feed read_at=`2026-11-25T23:07:19Z` (merged 150 · open 200) · lane-events(Neon) status=`error:HTTPError` count=`None` read_at=`2026-11-25T23:07:19Z`
 
 Rows: 22 · by_state: active=1 · closed=1 · in-flight=10 · landed=1 · unknown=9
 
@@ -76,4 +76,4 @@ Campaigns: 19 · joined: 2 · distinct instances: 18 · providers: Muse, baseten
 ## Gaps (named, never synthesized)
 
 - lane-events source status=error:HTTPError: events contribute no evidence this run
-- merged PRs unclassified by seed match rules: 112/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 111/150 (extend ops/tracking/projects.json match rules)

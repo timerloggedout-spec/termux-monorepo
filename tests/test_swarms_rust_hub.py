@@ -18,6 +18,8 @@ import time
 
 import pytest
 import uvicorn
+from hub_quota_fixture import seed_quota
+from src import telemetry
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,10 +28,14 @@ pytestmark = pytest.mark.skipif(not BINARY, reason="set SWARMS_RS_TEST_BINARY to
 
 
 @pytest.fixture
-def live_hub(monkeypatch):
+def live_hub(monkeypatch, tmp_path):
     """Serve the actual app on loopback, with every inference route stubbed/blocked."""
     monkeypatch.syspath_prepend(str(ROOT))
     hub = importlib.import_module("llm_api_hub.server.app")
+    monkeypatch.setattr(hub, "admission", seed_quota(tmp_path / "quota.json", ["wrapper/deepseek"]))
+    destination = str(tmp_path / "telemetry.jsonl")
+    monkeypatch.setenv("TERMUX_TELEMETRY_LOG", destination)
+    monkeypatch.setitem(telemetry.TermuxTelemetryLogger.notify.__globals__, "TELEMETRY_LOG", destination)
     calls: list[dict] = []
     requests: list[str] = []
 

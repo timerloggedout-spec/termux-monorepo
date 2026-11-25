@@ -1,0 +1,82 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "advanced-research"
+version = "0.2.2"
+description = "Advanced Multi-Agent Research System - Enhanced implementation of Anthropic's orchestrator-worker pattern with 90.2% performance improvement over single-agent systems"
+license = "MIT"
+authors = ["Kye Gomez <kye@swarms.world>"]
+readme = "README.md"
+homepage = "https://github.com/The-Swarm-Corporation/AdvancedResearch"
+repository = "https://github.com/The-Swarm-Corporation/AdvancedResearch"
+documentation = "https://github.com/The-Swarm-Corporation/AdvancedResearch/blob/main/Docs.md"
+keywords = [
+    "artificial intelligence", 
+    "multi-agent systems", 
+    "research automation", 
+    "anthropic", 
+    "orchestrator-worker pattern",
+    "parallel execution",
+    "web search",
+    "citation generation",
+    "llm-as-judge"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
+    "Topic :: Text Processing :: Markup :: Markdown",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12"
+]
+
+[tool.poetry.dependencies]
+python = ">=3.10"
+swarms = "*"
+python-dotenv = "*"
+requests = "*"
+loguru = "*"
+pydantic = "*"
+httpx = "*"
+orjson = "*"
+swarms-tools = "*"
+
+[tool.poetry.group.dev.dependencies]
+black = "*"
+ruff = "*"
+mypy = "*"
+types-httpx = "*"
+
+
+
+
+[tool.ruff]
+line-length = 70
+
+[tool.black]
+target-version = ["py38"]
+line-length = 70
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | docs
+)/
+'''
+
+
+

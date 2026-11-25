@@ -25,10 +25,9 @@
 
 | MSM-012 | Paper-only CSV wallet projection from market snapshots | **in_review** | MSM-005 | Read-only projection of observational stakes, offers, and cards; no chain adapter, spendable balances, or real settlement |
 
+
 | MSM-013 | Diagnose existing Actions provider-secret mappings and execute only a verified no-cost bounded smoke | **done** | MSM-010 | #1321 merged; run 39432211461 verified existing OpenRouter free-tier and exact zero-price model, one synthetic request returned HTTP 429; inference remains unverified, no retry/paid fallback/admission change; 301 pytest + 9 unit contracts |
-
 | MSM-019 | Official-source passive quota manager contracts for 20 canonical provider families | **done** | MSM-018 (free-provider prioritization) | Implementation validated in #1448; 5 passive parsers, 12 documentation-only, 3 unsupported; current-head promotion/publication receipts in that PR. No new polling/account validation/admission change; 18 live/service-mapping gaps remain explicit. |
-
 | MSM-020 | Official Ollama balance parser and bounded injectable private account transport | **done** | MSM-019 | Official GET balance schema; modern USD pools and legacy percentages/reset timestamps remain distinct. Fixture-only validation; no account calls, inference, polling, paid fallback or runtime admission changes. |
 
 | MSM-022 | Opt-in production Ollama balance service manager with private persistence and source/freshness checks | **done** | MSM-020 | Fixed authenticated HTTPS balance source, explicit credential-selected user/Team scope, bounded no-redirect transport, private exclusive output, reset/period validity and status-only projection. No automatic collection, account identity claim, inference, admission or schedule change. Separate code/mapping readiness from live account validation. |
@@ -46,7 +45,8 @@ scripts/model_selection_market/
   selector.py       # MSM-003
   dspy_doe.py       # MSM-004
   market.py         # MSM-005
-  paper_wallet.py  # MSM-012 — CSV projection only
+  paper_wallet.py  # MSM-012 — observational snapshot CSV projection
+  accounting.py    # MSM-005 journal engine used through MarketGraph
   cli.py
   test_msm.py
 ```

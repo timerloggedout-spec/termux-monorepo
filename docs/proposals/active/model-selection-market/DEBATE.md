@@ -95,4 +95,8 @@ Verify v1 replay compatibility, v2 schema/type enforcement, cull atomicity, coun
 - Foundation PR #1470: https://github.com/timerloggedout-spec/termux-monorepo/pull/1470
 - Focused tests: tests/test_paper_accounting*.py and tests/test_wallet_promotion.py
 - Required acceptance gates: repo-gate + termux-smoke
-- Current automated signals: Devin Review ✓; ECC security evidence ✓; ECC PR taxonomy ✓. Vercel preview blocked by the provider's daily deployment quota. Repository gate and Termux smoke remain pending.
+- Automated signals recorded at the time of this debate entry: Devin Review ✓; ECC security evidence ✓; ECC PR taxonomy ✓. Vercel preview was blocked by the provider's daily deployment quota; local repo-gate and Termux-smoke results for the later THUB-017 candidate are recorded below.
+
+### Local validation follow-up (2026-11-25)
+
+Both required local gates passed on the THUB-017 candidate tree: `scripts/ci/repo_gate.py` and `scripts/ci/termux_smoke.py`. This is local synthetic/offline evidence, not a SHA-bound GitHub Actions receipt; exact-SHA remote workflow results remain pending.

@@ -35,3 +35,26 @@ class TermuxTelemetryLogger:
                 os.chmod(TELEMETRY_LOG, 0o600)
             except Exception:
                 pass
+
+# In a monorepo checkout there is one telemetry implementation for legacy agent
+# imports and root adapters. Preserve the existing standalone implementation
+# above when the optional monorepo integration is absent.
+from pathlib import Path as _Path
+import importlib.util as _import_util
+import sys as _sys
+
+_shared_path = _Path(__file__).resolve().parents[2] / "src" / "telemetry.py"
+if _shared_path.is_file() and (_shared_path.parent / "swarms_adapter.py").is_file():
+    _shared_name = "_termux_shared_telemetry"
+    _shared = _sys.modules.get(_shared_name)
+    if _shared is None:
+        _spec = _import_util.spec_from_file_location(_shared_name, _shared_path)
+        _shared = _import_util.module_from_spec(_spec)
+        _sys.modules[_shared_name] = _shared
+        try:
+            _spec.loader.exec_module(_shared)
+        except BaseException:
+            _sys.modules.pop(_shared_name, None)
+            raise
+    TermuxTelemetryLogger = _shared.TermuxTelemetryLogger
+    _sys.modules[__name__] = _shared

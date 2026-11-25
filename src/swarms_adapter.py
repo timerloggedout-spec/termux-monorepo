@@ -5,11 +5,15 @@ import os
 import sys
 import tempfile
 import threading
+import uuid
+
+from src.telemetry import TermuxTelemetryLogger
 from contextlib import redirect_stdout
 from typing import Any, Mapping
 
-_ALLOWED = {"task", "model", "max_loops", "number_agents", "execute"}
+_ALLOWED = {"task", "model", "max_loops", "number_agents", "execute", "run_id", "job_id", "request_id", "attempt_id", "parent_id", "source_revision", "provider"}
 _EXECUTION_LOCK = threading.Lock()
+SOURCE_REVISION = "8ec7948ce6e8ab28c4454d6c2c3187a735672067"
 
 
 def validate_config(config: Mapping[str, Any]) -> dict[str, Any]:
@@ -35,13 +39,23 @@ def validate_config(config: Mapping[str, Any]) -> dict[str, Any]:
     if execute and model is None:
         raise ValueError("--execute requires an explicit model; no paid default is selected")
     return {"task": task.strip(), "model": model.strip() if model else None,
-            "max_loops": loops, "number_agents": agents, "execute": execute}
+            "max_loops": loops, "number_agents": agents, "execute": execute, "run_id": config.get("run_id"), "job_id": config.get("job_id"),
+            "request_id": config.get("request_id"), "attempt_id": config.get("attempt_id"),
+            "parent_id": config.get("parent_id"), "source_revision": config.get("source_revision"),
+            "provider": config.get("provider")}
 
 
 class _HubLLM:
     """Minimal custom llm.run interface; sends requests only when Agent.run is called."""
-    def __init__(self, model: str):
+    def __init__(self, model: str, correlation=None):
         self.model = model
+        self.correlation = {key: value for key, value in (correlation or {}).items() if value is not None}
+        self.correlation.setdefault("run_id", uuid.uuid4().hex)
+        self.correlation.setdefault("job_id", self.correlation["run_id"])
+        self.correlation.setdefault("adapter", "swarms")
+        self.correlation.setdefault("source_revision", SOURCE_REVISION)
+        self.correlation.setdefault("provider", model.split("/", 1)[0])
+        self.correlation["model"] = model
 
     def run(self, task: str | None = None, **kwargs: Any) -> str:
         from llm_api_hub.clients.openai_compat import chat_completions, assistant_text
@@ -62,7 +76,16 @@ class _HubLLM:
             messages = [{"role": "user", "content": task}]
         else:
             raise ValueError("SDK supplied neither text task nor conversation messages")
-        response = chat_completions(messages, model=self.model)
+        corr = {**self.correlation, "event": "request", "outcome": "UNKNOWN",
+                "parent_id": self.correlation.get("request_id") or self.correlation.get("parent_id") or self.correlation["run_id"],
+                "request_id": uuid.uuid4().hex, "attempt_id": uuid.uuid4().hex}
+        TermuxTelemetryLogger.notify("INFO", "swarms", "Hub request started", context=corr)
+        try:
+            response = chat_completions(messages, model=self.model, correlation=corr)
+        except Exception:
+            TermuxTelemetryLogger.notify("CRITICAL", "swarms", "Hub request failed", context={**corr, "event": "error", "outcome": "failure"})
+            raise RuntimeError("Hub request failed") from None
+        TermuxTelemetryLogger.notify("SUCCESS", "swarms", "Hub response received; task outcome UNKNOWN", context={**corr, "event": "response", "outcome": "UNKNOWN"})
         text = assistant_text(response)
         if not isinstance(text, str) or not text.strip():
             raise ValueError("Hub returned no assistant text")
@@ -82,6 +105,9 @@ def run(config: Mapping[str, Any], *, swarms_module: Any = None) -> dict[str, An
     if not cfg["execute"]:
         result["note"] = "Offline dry-run; pass execute=true and an explicit model to make model calls."
         return result
+    cfg["run_id"] = cfg.get("run_id") or uuid.uuid4().hex
+    cfg["job_id"] = cfg.get("job_id") or cfg["run_id"]
+    cfg["source_revision"] = SOURCE_REVISION
     # Upstream uses process-global environment/cwd and writes MEMORY.md even
     # with autosave=False. Serialize our runs and clean state on all exits.
     # This API is for the standalone CLI, not a concurrent embedded host.
@@ -99,7 +125,7 @@ def run(config: Mapping[str, Any], *, swarms_module: Any = None) -> dict[str, An
             names = ["researcher", "reviewer"][:cfg["number_agents"]]
             agents = [Agent(agent_name=name, agent_description=f"{name} in a bounded sequential workflow",
                             system_prompt=f"You are the {name}. Complete only the provided task.",
-                            llm=_HubLLM(cfg["model"]), model_name=cfg["model"], max_loops=1,
+                            llm=_HubLLM(cfg["model"], {k: cfg[k] for k in ("run_id", "job_id", "request_id", "attempt_id", "parent_id", "source_revision", "provider")}), model_name=cfg["model"], max_loops=1,
                             retry_attempts=1, tools=[], autosave=False, saved_state_path=None,
                             print_on=False, verbose=False, dynamic_loops=False)
                       for name in names]

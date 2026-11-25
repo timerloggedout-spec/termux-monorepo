@@ -61,6 +61,21 @@ class PaperAccountingCsvTests(unittest.TestCase):
         changed["paper_accounting"]["event_count"] = 99
         with self.assertRaises(ValueError): write_csv(changed, io.StringIO())
 
+    def test_malformed_nested_event_shapes_are_rejected_before_projection(self):
+        from scripts.model_selection_market.accounting import digest
+
+        graph = MarketGraph()
+        graph.open_account("alice", event_id="open", provenance={"issuer": "fixture", "source": "synthetic", "reference": "test"})
+        graph.issue_points("alice", 5, event_id="issue", provenance={"issuer": "fixture", "source": "synthetic", "reference": "test"})
+        original = graph.snapshot()
+        for event_index, payload in ((0, []), (1, {"owner": "alice", "units": 5, "provenance": []})):
+            changed = copy.deepcopy(original)
+            events = changed["paper_accounting"]["events"]
+            events[event_index]["payload"] = payload
+            changed["paper_accounting"]["source_digest"] = digest(events)
+            with self.assertRaises(ValueError):
+                write_csv(changed, io.StringIO())
+
     def test_source_symlink_protects_resolved_lock(self):
         with tempfile.TemporaryDirectory() as d:
             real = Path(d) / "real.jsonl"

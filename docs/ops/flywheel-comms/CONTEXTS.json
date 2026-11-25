@@ -1,6 +1,6 @@
 {
   "schema": "flywheel-contexts/v1",
-  "updated_at": "2026-11-25T21:50:00Z",
+  "updated_at": "2026-11-25T21:53:00Z",
   "purpose": "Machine-readable project, context, topic, execution-surface, and scoped-membership index. This file routes to source artifacts; it grants no permissions and stores no credentials.",
   "projects": [
     {
@@ -138,7 +138,7 @@
         {
           "kind": "repository_file",
           "ref": "termux-monorepo:docs/ops/flywheel-comms/README.md",
-          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/flywheel-comms/README.md"
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/docs/flywheel-context-routing-20261125/docs/ops/flywheel-comms/README.md"
         }
       ]
     },
@@ -518,6 +518,41 @@
       "title": "Completed Siglary notation work",
       "context_ids": [
         "siglary-notation-history"
+      ]
+    },
+    {
+      "id": "provider-entitlement",
+      "title": "Provider and account entitlement evidence",
+      "context_ids": [
+        "msm-005-quota-gate"
+      ]
+    },
+    {
+      "id": "context-graph",
+      "title": "Context relationship and sidecar graph",
+      "context_ids": [
+        "nse-021-sidecar-overlays"
+      ]
+    },
+    {
+      "id": "completion-confirmations",
+      "title": "Backup and export completion confirmations",
+      "context_ids": [
+        "exports-backup-coordination"
+      ]
+    },
+    {
+      "id": "mesh-requests",
+      "title": "Mesh request queue",
+      "context_ids": [
+        "mesh-probe"
+      ]
+    },
+    {
+      "id": "probe-telemetry",
+      "title": "Mesh probe telemetry and receipts",
+      "context_ids": [
+        "mesh-probe"
       ]
     }
   ]

@@ -92,3 +92,10 @@ channels of record BEFORE or AT first use. A peer with no registered channel is
 a coverage defect: its activity is unobserved, and unobserved work does not
 count. Registration state is a first-class registry field - NOT REGISTERED is
 a valid, named state, never a silent blank.
+
+## Rule 11 - Liveness readings are required automatic updates (owner, 2026-11-25)
+
+A registered or onboarding peer's liveness and quota readings refresh
+AUTOMATICALLY on the keepalive cadence. Staleness is a failure state:
+stale = FAIL, stamped by machinery when a reading ages past its cadence.
+No reading waits on an owner word, an onboarding event, or a manual check.

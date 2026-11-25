@@ -131,12 +131,12 @@
   {
    "name": "chatgpt",
    "channels": [],
-   "status": "NOT REGISTERED - no channel of record; app-side activity (incl. its Devpost connector) is unobserved by the fleet. Registration is a done-evidence leg of QUE #5885."
+   "status": "UNREGISTERED — channel of record pending; app-side activity, including the Devpost connector, awaits fleet observation. QUE #5885 tracks the registration evidence leg."
   },
   {
    "name": "mistralai",
    "channels": [],
-   "status": "ONBOARDING PENDING - owner word 2026-11-25. Readings state: STALE = FAIL (Rule 11): last liveness 2026-11-02 (key live, 55 models), last quota reading 2026-11-11 (quota-terminal 429) - both past cadence, auto-refresh owed by the keepalive leg of QUE #5905, no owner word required. Legs: keepalive running + ensured - channel of record (FLY-007 class) - watcher coverage."
+   "status": "ONBOARDING PENDING — owner authorization recorded 2026-11-25. Liveness 2026-11-02 (key live, 55 models) and quota reading 2026-11-11 (quota-terminal 429) exceed cadence. QUE #5905 keepalive leg owns auto-refresh. Next legs: keepalive running + ensured; FLY-007-class channel of record; watcher coverage."
   },
   {
    "name": "chatgpt-github",
@@ -145,8 +145,8 @@
    ],
    "status": "JOINED VIA PR + FIRST ACK — registry/protocol merge pending",
    "surface": "ChatGPT GitHub connector",
-   "scope": "Non-export project collaboration through GitHub repository/issue/PR content APIs; excludes the separate shared-Google Web2API session, browser profile, Termux device, provider inference, and credential values",
-   "cadence": "On-demand during explicit user-directed project sessions; no background watcher",
+   "scope": "Non-export project collaboration through GitHub repository/issue/PR content APIs. The shared-Google Web2API session, browser profile, Termux device, provider inference, and credential values retain separate owners and permission scopes.",
+   "cadence": "On-demand during explicit user-directed project sessions; background watcher disabled.",
    "registration_evidence": "termux-monorepo PR #5906; backup protocol PR #4; first FLY-006 ACK appended 2026-11-25T21:39:30Z, commit 2f289a72cab78c2e680ebe2674aa2ecd36145857"
   }
  ]

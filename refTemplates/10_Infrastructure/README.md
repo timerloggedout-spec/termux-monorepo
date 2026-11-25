@@ -4,6 +4,6 @@ Metadata category (from recreate/refTemplates-skeleton).
 
 Infra, deploy, runner patterns. Expand-only; live pins under `../smods/` when required.
 
-## Metadata-only candidates
+## Runner and DoE patterns
 
-- [osx-forge](./osx-forge/README.md) — immutable-core OS builder and reproducible build-plan patterns; source inspection pending.
+- [Blacksmith DoE replication](blacksmith-doe-replication/README.md) — organization-owned DoE repositories, full-history baseline clones, opt-in submodule hydration, versioned incumbent-versus-candidate evidence, and free-tier-aware runner use.

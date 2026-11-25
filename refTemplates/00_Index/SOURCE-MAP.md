@@ -38,8 +38,6 @@ Cited inspiration sources are catalogued separately in [smods/INSPIRATION-SOURCE
 
 Pins intentional; no auto-advance without dual-gate green. New live pins require a real customized fork, immutable reviewed pin, compatibility evidence, and passing gates.
 
-## 10_Infrastructure (metadata-only candidates)
+## Infrastructure references
 
-| Slot | Preferred SOURCE | Disposition |
-|------|------------------|-------------|
-| osx-forge | https://github.com/credkellar/OSx | Pattern candidate; Docker Hub overview reviewed, upstream source inspection pending |
+- [Blacksmith DoE replication](../10_Infrastructure/blacksmith-doe-replication/README.md) — organization runner setup, complete source-history cloning, selective submodule hydration, and versioned comparison evidence.

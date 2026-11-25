@@ -58,7 +58,7 @@ portfolio:
 
 **Verification Command:**
 ```bash
-python scripts/verify-completion.py --roadmap mlops --exercise implement-ml-pipeline
+python roadmap-completions/scripts/verify-completion.py --roadmap mlops --exercise implement-ml-pipeline
 ```
 
 ### 📝 Notes
@@ -69,12 +69,15 @@ python scripts/verify-completion.py --roadmap mlops --exercise implement-ml-pipe
 
 ## 🤖 Automation
 
-This issue will be **automatically closed** when:
-1. Evidence is verified by GitHub Actions
-2. Badge is generated
-3. README.md is updated
+The `roadmap-completion.yml` workflow validates the submitted evidence and posts a result on this issue.
 
-**Trigger:** Push to `roadmap-completions/` directory
+**Triggers:**
+- Issue opened, edited, reopened, or labeled after `roadmap:{roadmap}` and `exercise:{exercise}` labels are present
+- Push of the matching `evidence.json` under `roadmap-completions/roadmaps/{roadmap}/exercises/{exercise}/`
+
+The verifier checks configured evidence paths, code size/extensions/patterns, submitted test-result metadata, documentation word counts/sections, and required local portfolio files. It records verification status in the workflow run and comments on the matching issue. The verifier validates submitted test metadata and evidence files; exercise test commands run in their owning project workflow.
+
+Badge generation, README publication, and issue closure follow as explicit publication steps after evidence verification.
 
 ---
 

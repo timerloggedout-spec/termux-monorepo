@@ -99,6 +99,7 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 | Status | `docs/ARCHW1Z-STATUS.md` |
 | Permissions / human edges | `docs/proposals/AGENTIC-PERMISSIONS.md` |
 | Repository architecture | `architecture.md` |
+| GitHub issue forms + label triggers | `docs/ops/GITHUB-ISSUE-INTAKE-MAP.md` |
 | ICM task routing | `docs/icm/CLAUDE.md` |
 | Skills + adaptive wait | `docs/ops/SKILLS-INVENTORY.md` |
 | Session / lane SSOT | `docs/ops/LANE-MATRIX.md` |

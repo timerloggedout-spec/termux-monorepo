@@ -1,5 +1,7 @@
 # Research Triggers — existing set (recon) + issue-trigger expansion
 
+Current cross-family discovery: [`GITHUB-ISSUE-INTAKE-MAP.md`](GITHUB-ISSUE-INTAKE-MAP.md).
+
 `[MUSEai]@{role:{research-triggers}}` — recon verified firsthand via the PAT
 API on master (2026-10-28); expansion landed with this doc.
 
@@ -30,14 +32,15 @@ only via Observatory signals, scheduled/PR recon, or a hand-written seed file.
 
 ## Expansion 1 — issue triggers (`research-intake.yml`)
 
-Events: `issues` [opened, labeled, reopened] and `issue_comment` [created].
+Events: `issues` [opened, reopened, edited] and `issue_comment` [created]. The executable workflow subscribes to these issue events; its trigger set intentionally omits `labeled`.
 No `pull_request_target` (Nov-2 rules; the 8 audited fleet files are untouched).
 Permissions: top-level `{}`, job `contents: read` + `issues: write` only;
 trusted default-branch checkout; body treated as data, never executed.
 
 - Label gate (fleet colon convention, cf. `delphi:rfp`): `research:provider`,
-  `research:service`, or the pre-existing umbrella label `research`
-  (opened/reopened, or a `research*` label being added).
+  `research:service`, or the pre-existing umbrella label `research` must be
+  present on an issue `opened`, `reopened`, or `edited` event. A label-added-only
+  event sits outside this workflow's subscription.
 - Comment command (delphi-intake precedent, marker-gated, bot-safe):
   a comment containing `<!-- request-research -->` plus `key: value` lines
   (`kind:, id:, name:, url:, upstream:, category:, signal:, quota:, auth:, evidence:`).
@@ -83,5 +86,6 @@ hash dedupe):
 | Reverse Engineering — APK Cross-Reference | `apk-cross-reference.yml`, `apk-cross-reference-findings.yml` | `apk-xref` | `apk-xref-intake.yml` -> `apk-xref/v1` | docs/ops/APK-XREF-TEMPLATES.md |
 | Reverse Engineering — Taxonomy / Toolkit | `reverse-engineering-taxonomy.yml`, `reverse-engineering-taxonomy-record.yml` | `re-taxonomy` | `re-taxonomy-intake.yml` -> `re-taxonomy-intake/v1` | docs/ops/RE-TAXONOMY-TEMPLATES.md |
 
-Filing either template applies the label that wakes `research-intake`, so
-filing an issue **is** the trigger — no cron, no manual dispatch.
+Filing either template creates an issue with its labels already attached;
+`issues.opened` carries those labels into `research-intake`. The workflow also
+supports edits, reopen events, and the marker comment command.

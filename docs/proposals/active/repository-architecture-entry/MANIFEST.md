@@ -51,6 +51,14 @@ Establish one repository-wide architecture entry that routes collaborators to ca
 | 2026-11-21 | ChatGPT | Initial documentation and data-flow map committed | PR #5744; registry validator exposed missing MANIFEST.md; follow-up adds this manifest. |
 
 
+## Flywheel navigation extension — REPO-ARCH-007
+
+- Central hub: `docs/ops/flywheel-comms/README.md`.
+- Nested routes cover FLY-001…FLY-006, cross-channel handoffs, and verified work topics.
+- FLY-005's 2026-11-25T19:28:30Z pointer resolves to FLY-006 protocol/store and PR #5893.
+- Root architecture and ICM entry points route to the hub; registry and append-only channel stores remain canonical.
+- Implementation branch: `docs/flywheel-central-navigation-20261125`.
+
 ## Architecture v2 — linked modules and snapshot audit
 
 - Flow index: docs/architecture/flows/README.md

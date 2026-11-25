@@ -2,7 +2,7 @@
 
 **Design:** 2026-11-11-continuous-capability-evolution-lab.md  
 **Proposal:** CCEL-001 through CCEL-006  
-**Branch:** feat/ceel-continuous-capability-evolution-20261111
+**Branch:** feat/ceel-006-concept-competition-20261125
 
 ## Delivery strategy
 

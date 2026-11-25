@@ -13,6 +13,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from claim_task import claim_comment  # noqa: E402
+import dispatch_watchdog as dw  # noqa: E402
 from dispatch_watchdog import (classify, has_claim, queued_since)  # noqa: E402
 from project_task import receipt_comment  # noqa: E402
 
@@ -377,3 +378,86 @@ def test_auto_claim_accepts_structured_task_ranking_result(monkeypatch):
     assert len(claim_posts) == 1
     assert "score 321.0" in claim_posts[0]
     assert gap_records[0]["kind"] == "auto_claimed"
+
+
+def test_delete_label_if_absent_is_idempotent(monkeypatch):
+    def missing(method, url, token, payload=None):
+        raise RuntimeError("GitHub API DELETE " + url + " -> 404: label absent")
+    monkeypatch.setattr(dw, "_request", missing)
+    assert dw._delete_label_if_present("https://api.example/issues/1",
+                                       "dispatch-claimed", "token") is False
+
+
+def test_delete_label_if_present_propagates_non_404(monkeypatch):
+    def forbidden(method, url, token, payload=None):
+        raise RuntimeError("GitHub API DELETE " + url + " -> 403: forbidden")
+    monkeypatch.setattr(dw, "_request", forbidden)
+    try:
+        dw._delete_label_if_present("https://api.example/issues/1",
+                                    "dispatch-claimed", "token")
+    except RuntimeError as exc:
+        assert "-> 403:" in str(exc)
+    else:
+        raise AssertionError("non-404 API failure must remain visible")
+
+
+def test_auto_claim_cleanup_failure_keeps_claim_and_retries(monkeypatch):
+    import dispatch_watchdog as dw
+    calls = []
+    fail_cleanup = {"remaining": 1}
+
+    def request(method, url, token, payload=None):
+        calls.append((method, url, payload))
+        if (method == "DELETE" and url.endswith("/labels/dispatch-escalated")
+                and fail_cleanup["remaining"]):
+            fail_cleanup["remaining"] -= 1
+            raise RuntimeError("GitHub API DELETE -> 503: temporary failure")
+        return {}
+
+    monkeypatch.setattr(
+        dw.task_ranking, "nearest_wall", lambda _tb, _now: (None, None))
+    monkeypatch.setattr(
+        dw.task_ranking, "score_dispatch",
+        lambda _row: {"score": 321, "components": {"wall": 400}})
+    monkeypatch.setattr(dw, "_request", request)
+
+    issue = {
+        "number": 78,
+        "body": ('<!-- SWARM-DISPATCH {"schema": "issue-dispatch/v1", '
+                 '"route": "build-dispatch", "entry": "x", "tier": 3} -->'),
+        "labels": [],
+        "user": {"login": "filer"},
+    }
+    context = {
+        "issue": issue,
+        "comments": [],
+        "verdict": {
+            "state": "escalated", "action": "escalate",
+            "age_min": 20.0, "tier": "BASE", "entry": None,
+        },
+    }
+    gap_records = []
+    dw._run_auto_claim("owner/repo", "token", NOW, [context], {}, gap_records)
+
+    assert context["verdict"]["state"] == "claimed"
+    assert context["verdict"]["action"] == "auto-claimed"
+    assert any(record["kind"] == "auto_claimed" for record in gap_records)
+    assert any(record["kind"] == "cleanup_failed" for record in gap_records)
+
+    claim_body = dw.auto_claim.auto_claim_comment(
+        claim_class="executor", claimant="dispatch-executor", rank=1,
+        score=321, now=NOW, trigger="escalation")
+    issue["labels"] = [{"name": "dispatch-claimed"},
+                       {"name": "dispatch-escalated"}]
+    context["comments"] = [{
+        "body": claim_body, "created_at": NOW.strftime("%Y-%m-%dT%H:%M:%SZ")
+    }]
+    context["verdict"] = {
+        "state": "claimed", "action": None, "age_min": 20.0,
+        "tier": "BASE", "entry": None,
+    }
+    calls.clear()
+    dw._run_auto_claim("owner/repo", "token", NOW, [context], {}, [])
+    assert any(method == "DELETE" and
+               url.endswith("/labels/dispatch-escalated")
+               for method, url, _payload in calls)

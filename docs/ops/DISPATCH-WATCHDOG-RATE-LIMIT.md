@@ -18,10 +18,10 @@ The failure is an exhausted App-installation core bucket. The minted token draws
 
 ## Runtime controls
 
-1. **Preflight:** read `GET /rate_limit` once before queue discovery. Derive the reserve as `max(100, floor(core.limit / 10))`.
+1. **Preflight:** read `GET /rate_limit` once before queue discovery and prefer its response `X-RateLimit-*` headers as the authoritative reading. Derive the reserve as `max(100, floor(core.limit / 10))`.
 2. **Admission:** after the queue page arrives, estimate the issue-list and per-issue comment-page reads. Defer before comment scanning when the projected reads would cross the reserve.
 3. **Cheap reads:** skip the comments endpoint when the issue's comment count is zero.
-4. **Rate-limit classification:** treat HTTP 429 and rate-limit-class HTTP 403 responses as deferrals. Use `X-RateLimit-Reset` or `Retry-After` to publish the defer-until time. Permission and other non-rate-limit 403 responses remain hard failures.
+4. **Rate-limit classification:** treat HTTP 429 and rate-limit-class HTTP 403 responses as deferrals. Honor `Retry-After` first; when `X-RateLimit-Remaining` is zero, defer to `X-RateLimit-Reset`; otherwise apply the documented one-minute secondary-limit cooldown. Permission and other non-rate-limit 403 responses remain hard failures.
 5. **Graceful state:** emit a workflow notice and summary, set the `deferred=true` step output, return success for the deferred cycle, and skip feed publication. The next scheduled cycle resumes the work.
 6. **Diagnostic coalescing:** record failure evidence in the Actions run summary. Keep the issue ledger for durable task state rather than posting one diagnostic comment for every failed sweep.
 7. **Partial-cycle recovery:** if a rate limit arrives after an action begins, stop the cycle and skip feed publication. The next sweep re-reads the issue state and uses the existing claim/flag/escalation markers to reconcile prior effects.

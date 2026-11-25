@@ -103,12 +103,6 @@
               "type": "string"
             }
           },
-          "excluded_action_classes": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "evidence_refs": {
             "type": "array",
             "items": {
@@ -116,6 +110,12 @@
             }
           },
           "requested_action_classes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "separate_authority_action_classes": {
             "type": "array",
             "items": {
               "type": "string"
@@ -240,12 +240,6 @@
               "type": "string"
             }
           },
-          "excluded_action_classes": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "evidence_refs": {
             "type": "array",
             "items": {
@@ -253,6 +247,12 @@
             }
           },
           "requested_action_classes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "separate_authority_action_classes": {
             "type": "array",
             "items": {
               "type": "string"

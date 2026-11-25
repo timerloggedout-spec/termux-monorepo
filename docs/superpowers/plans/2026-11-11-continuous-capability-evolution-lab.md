@@ -22,6 +22,7 @@ Land a complete, reviewable foundation: proposal registration, capability graph 
    ```bash
    python3 scripts/integrations/validate_capability_graph.py
    python3 -m unittest discover -s tests -p 'test_capability_opportunity_graph.py' -v
+   python3 -m unittest discover -s tests -p 'test_refTemplates_capability_inventory.py' -v
    python3 scripts/integrations/validate_portfolio.py
    python3 scripts/proposals/validate_registry.py
    python3 scripts/ci/repo_gate.py

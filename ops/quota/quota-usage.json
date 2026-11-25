@@ -1,6 +1,6 @@
 {
  "schema": "quota-usage/v1",
- "generated_at": "2026-11-25T13:25:27Z",
+ "generated_at": "2026-11-25T17:50:11Z",
  "ordered_by": "owner order 2026-10-29 via quota-specialist lane (b18fae96)",
  "built_by": "scripts/quota_usage_pack.py (auto-refresh; series1 carried verbatim - tap ruled OUT (owner 2026-11-03; self-counted nulls)",
  "registry_context": {
@@ -936,6 +936,17 @@
     "id": "wall-2026-11-12T10:51:00Z-github-token",
     "provenance": "main firsthand diagnosis 2026-11-12 11:04-11:12Z {PAT core healthy 289-335/5,000 \u00b7 Swarm App installation idle 1/12,500 - bucket separation proven}; annotation of record: collect-peer-responses (head d1678cb0) 11:09Z 'API rate limit exceeded for installation, request ID DC83:1898F0'; wall cluster 10:51-10:52Z across unrelated PR workflows {peer-review orchestrator \u00b7 effectiveness ledgers x3 \u00b7 repo-dev evaluation \u00b7 Jules handoff \u00b7 dangle check \u00b7 proposal-lifecycle \u00b7 scope guard}; QDesk PAT-corroborated; filed as QUE #5231 by Desk - multi-observer provenance {main \u00b7 QDesk \u00b7 Desk} per the F3 rule",
     "surface": "REST core"
+   },
+   {
+    "at": "2026-11-25T17:21:51Z",
+    "bucket": "github.api.app_termux_fleet_swarm",
+    "class": "unclassified-403",
+    "context": "Last successful QUE feed run #45660675218 generated at 2026-11-25T17:04:45Z (97 queued, 15 in progress, 153 events). Kick run #45663803272 at 17:22:33Z used the failed run age 4.7m and skipped, although the feed was 17.8m old. The 403 reason and rate-limit class remain unknown.",
+    "evidence": "api-observed",
+    "http": 403,
+    "id": "que-2026-11-25T17:21:51Z-app-403",
+    "provenance": "GitHub Actions run #45663229421 (https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/45663229421): collector first GET /repos/timerloggedout-spec/termux-monorepo/actions/runs?status=queued&page=1 returned HTTP 403 at 2026-11-25T17:21:51.992Z. Workflow minted the Termux Fleet Swarm GitHub App installation token. Logs did not capture response body, request ID, Retry-After, or X-RateLimit headers; cause/class unknown. Prior successful run #45660675218: https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/45660675218. Kick run #45663803272: https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/45663803272.",
+    "surface": "REST core - Actions runs GET"
    }
   ]
  },

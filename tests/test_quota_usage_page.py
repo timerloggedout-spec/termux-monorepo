@@ -44,8 +44,20 @@ def test_page_consumes_only_the_pack():
     html = _html()
     fetches = re.findall(r"fetch\(([^)]*)\)", html)
     assert fetches == ['"./data/quota-usage.json"'], fetches
-    for el in ["meta", "burndown", "states", "actions", "stamps", "origins"]:
+    for el in ["meta", "burndown", "states", "actions", "stamps",
+               "origins", "rateevents"]:
         assert f'id="{el}"' in html
+
+
+def test_series4_event_pack_matches_append_only_register():
+    register = json.loads((ROOT / "ops/quota/rate-limit-events.json").read_text())
+    events = _pack()["series4_rate_limit_events"]["events"]
+    assert events == register["events"]
+    incident = next(e for e in events
+                    if e["id"] == "que-2026-11-25T17:21:51Z-app-403")
+    assert incident["http"] == 403
+    assert incident["class"] == "unclassified-403"
+    assert "remaining" not in incident
 
 
 def test_no_hardcoded_observations():
@@ -309,6 +321,40 @@ console.log(JSON.stringify(res));
     assert res["place_right"] == "end" and res["place_left"] == "start"
     assert len(set(res["wall_ys"])) == 2
     assert res["scale"] == {"max": 40, "ticks": [0, 20, 40]}
+
+
+def test_rate_limit_events_extend_time_domain_not_quota_points(tmp_path):
+    html = _html()
+    logic = html.split("// ==== pure logic (node-sim tested) ====")[1].split(
+        "// ==== end pure logic ====")[0]
+    harness = tmp_path / "event-harness.cjs"
+    harness.write_text(logic)
+    out = tmp_path / "event-run.cjs"
+    out.write_text("""
+const {burnGeom,eventGeom} = require("./event-harness.cjs");
+const points = [{at:"2026-11-02T06:30:06Z",remaining:3871,kind:"observed"}];
+const events = [{at:"2026-11-25T17:21:51Z",http:403,class:"unclassified-403",
+  bucket:"github.api.app_termux_fleet_swarm",id:"que-2026-11-25T17:21:51Z-app-403"}];
+const old = burnGeom(points,5000,920,300,44);
+const extended = burnGeom(points,5000,920,300,44,events.map(e=>e.at));
+const marks = eventGeom(events,extended.t0,extended.t1,920,44,14);
+console.log(JSON.stringify({old_t1:old.t1,new_t1:extended.t1,
+  points:extended.pts.length,remaining:extended.pts[0].p.remaining,
+  marks:marks.length,marker_x:marks[0].x,point_x:extended.pts[0].x,
+  marker_y:marks[0].y}));
+""")
+    result = subprocess.run(["node", str(out)], cwd=tmp_path,
+                            capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    got = json.loads(result.stdout)
+    assert got["old_t1"] < got["new_t1"]
+    assert got["points"] == 1 and got["remaining"] == 3871
+    assert got["marks"] == 1 and got["marker_x"] > got["point_x"]
+    assert got["marker_y"] < 44
+    page = _html()
+    assert "PACK.series4_rate_limit_events" in page
+    assert "rate-limit-event-marker" in page
+    assert "separate time lane and are not quota readings" in page
 
 
 def test_quota_page_links_usage_graphs_and_sitemap():

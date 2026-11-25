@@ -21,10 +21,12 @@ Fleet Swarm App installation token; the app identity is what
 lets the feed commits trigger downstream consumers).
 """
 from __future__ import annotations
-
+import email.utils
 import json
 import os
 import sys
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta, timezone
@@ -38,6 +40,7 @@ API = "https://api.github.com"
 ROOT = Path(__file__).resolve().parents[2]
 FEEDS = ROOT / "ops" / "que" / "feeds"
 EVENTS = ROOT / "ops" / "que" / "events"
+API_BACKOFF_FILE = FEEDS / "api-backoff.json"
 WEDGED_DAYS = 7
 EXCLUSIONS = ROOT / "ops" / "queue" / "exclusions.json"
 # Declared cadences for per-source freshness (#5546 gate 1):
@@ -68,13 +71,197 @@ def parse_iso(s: str) -> datetime:
         tzinfo=timezone.utc)
 
 
+API_RETRY_MAX_ATTEMPTS = 3
+API_RETRY_MAX_WAIT_SECONDS = 300
+# 25 queued + 5 in-progress + 1 completed REST-core page; governor_feed
+# makes two Search API calls. /rate_limit is separate because it does not
+# consume primary REST core quota.
+API_MAX_PER_CYCLE = {"core": 31, "search": 2, "preflight": 1}
+API_MIN_REQUIRED_PER_CYCLE = {"core": 3, "search": 2}
+API_STATS = {
+    "core": {"attempts": 0, "successes": 0},
+    "search": {"attempts": 0, "successes": 0},
+    "preflight": {"attempts": 0, "successes": 0},
+    "retries": 0,
+}
+RATE_LIMIT_HEADERS = (
+    "X-RateLimit-Limit", "X-RateLimit-Remaining", "X-RateLimit-Reset",
+    "X-RateLimit-Resource", "Retry-After", "X-GitHub-Request-Id",
+)
+
+
+def api_request_summary() -> dict:
+    """Counts attempted/successful REST calls by primary bucket surface."""
+    core, search = API_STATS["core"], API_STATS["search"]
+    preflight = API_STATS["preflight"]
+    return {
+        "attempts": (core["attempts"] + search["attempts"]
+                     + preflight["attempts"]),
+        "core_attempts": core["attempts"],
+        "core_successes": core["successes"],
+        "search_attempts": search["attempts"],
+        "search_successes": search["successes"],
+        "rate_limit_preflight_attempts": preflight["attempts"],
+        "rate_limit_preflight_successes": preflight["successes"],
+        "max_before_retries_per_cycle": API_MAX_PER_CYCLE,
+        "retries": API_STATS["retries"],
+    }
+
+
+def api_budget_deferral(snapshot: dict) -> list[str]:
+    """Do not start a cycle if live headroom cannot cover minimum reads."""
+    reasons = []
+    for surface, minimum in API_MIN_REQUIRED_PER_CYCLE.items():
+        remaining = (snapshot.get(surface) or {}).get("remaining")
+        try:
+            remaining = int(remaining)
+        except (TypeError, ValueError):
+            continue
+        if remaining < minimum:
+            reasons.append(f"{surface} remaining={remaining} < minimum={minimum}")
+    return reasons
+
+
+def _set_step_output(name: str, value: str) -> None:
+    output = os.environ.get("GITHUB_OUTPUT")
+    if output:
+        with open(output, "a", encoding="utf-8") as fh:
+            fh.write(f"{name}={value}\n")
+
+
+def active_api_backoff(at: datetime, path: Path | None = None):
+    """Read persisted not-before state; remove it locally once expired."""
+    backoff_path = path or API_BACKOFF_FILE
+    if not backoff_path.exists():
+        return None
+    try:
+        doc = json.loads(backoff_path.read_text())
+        until = parse_iso(doc["not_before"])
+    except (OSError, ValueError, KeyError, TypeError):
+        backoff_path.unlink(missing_ok=True)
+        return None
+    if at >= until:
+        backoff_path.unlink(missing_ok=True)
+        return None
+    return doc
+
+
+def _retry_after_seconds(value, now_ts=None):
+    if not value:
+        return None
+    try:
+        return max(0.0, float(value))
+    except (TypeError, ValueError):
+        try:
+            retry_at = email.utils.parsedate_to_datetime(str(value))
+            if retry_at.tzinfo is None:
+                retry_at = retry_at.replace(tzinfo=timezone.utc)
+            now_ts = now_ts if now_ts is not None else time.time()
+            return max(0.0, retry_at.timestamp() - now_ts)
+        except (TypeError, ValueError, OverflowError):
+            return None
+
+
+def _rate_limit_retry(code, body, headers, retries_done, now_ts=None):
+    """Return (delay, reason); unknown 403s are never blindly retried."""
+    if code not in (403, 429):
+        return None, None
+    remaining = str(headers.get("X-RateLimit-Remaining") or "")
+    reset = headers.get("X-RateLimit-Reset")
+    lower = body.lower()
+    if remaining == "0":
+        try:
+            reset_at = float(reset)
+        except (TypeError, ValueError):
+            return None, "primary-limit response without reset header"
+        now_ts = now_ts if now_ts is not None else time.time()
+        return max(0.0, reset_at - now_ts), "primary-limit reset"
+    retry_after = _retry_after_seconds(
+        headers.get("Retry-After"), now_ts=now_ts)
+    secondary = (code == 429 or retry_after is not None
+                 or "secondary rate limit" in lower)
+    if secondary:
+        delay = (retry_after if retry_after is not None
+                 else 60.0 * (2 ** retries_done))
+        return delay, "secondary-limit backoff"
+    if "rate limit exceeded" in lower:
+        return None, "rate-limit response without authoritative reset"
+    return None, None
+
+
+class ApiHttpError(RuntimeError):
+    """HTTP failure with non-secret response evidence for Actions logs."""
+
+    def __init__(self, path, code, body, headers, retry_note,
+                 retry_not_before=None):
+        self.path = path
+        self.code = code
+        self.body = body[:500]
+        self.headers = {k: v for k, v in headers.items() if v is not None}
+        self.retry_note = retry_note
+        self.retry_not_before = retry_not_before
+        super().__init__(self.__str__())
+
+    def __str__(self):
+        return json.dumps({
+            "method": "GET", "path": self.path, "http": self.code,
+            "headers": self.headers, "body": self.body,
+            "retry": self.retry_note,
+            "retry_not_before": self.retry_not_before,
+        }, sort_keys=True)
+
+
 def api(path: str, token: str) -> dict:
     req = urllib.request.Request(API + path, headers={
         "Authorization": f"Bearer {token}",
         "Accept": "application/vnd.github+json",
         "X-GitHub-Api-Version": "2022-11-28"})
-    with urllib.request.urlopen(req, timeout=60) as r:
-        return json.loads(r.read())
+    surface = ("preflight" if path == "/rate_limit" else
+               "search" if path.startswith("/search/") else "core")
+    retries_done = 0
+    while True:
+        API_STATS[surface]["attempts"] += 1
+        try:
+            with urllib.request.urlopen(req, timeout=60) as r:
+                result = json.loads(r.read())
+                API_STATS[surface]["successes"] += 1
+                return result
+        except urllib.error.HTTPError as exc:
+            body = exc.read().decode(errors="replace")[:500]
+            response_headers = exc.headers or {}
+            safe_headers = {name: response_headers.get(name)
+                            for name in RATE_LIMIT_HEADERS
+                            if response_headers.get(name) is not None}
+            delay, reason = _rate_limit_retry(
+                exc.code, body, response_headers, retries_done)
+            retry_not_before = None
+            if delay is None:
+                retry_note = reason or "not retried (403 is unclassified)"
+            elif delay > API_RETRY_MAX_WAIT_SECONDS:
+                retry_not_before = iso(datetime.fromtimestamp(
+                    time.time() + delay, timezone.utc))
+                _set_step_output("rate_limit_defer_until",
+                                 retry_not_before)
+                retry_note = (f"deferred until {retry_not_before} "
+                              f"(wait {delay:.1f}s; inline cap "
+                              f"{API_RETRY_MAX_WAIT_SECONDS}s)")
+                delay = None
+            elif retries_done >= API_RETRY_MAX_ATTEMPTS - 1:
+                retry_note = "retry limit reached"
+                delay = None
+            else:
+                retry_note = f"{reason}; wait {delay:.1f}s before retry"
+            err = ApiHttpError(path, exc.code, body, safe_headers,
+                               retry_note, retry_not_before)
+            if delay is None:
+                print(f"::warning title=QUE API {surface}::{err}",
+                      file=sys.stderr)
+                raise err from exc
+            print(f"::warning title=QUE API {surface}::HTTP {exc.code}; "
+                  f"{retry_note}", file=sys.stderr)
+            API_STATS["retries"] += 1
+            retries_done += 1
+            time.sleep(delay)
 
 
 def census(token: str, status: str, pages: int) -> list[dict]:
@@ -550,10 +737,62 @@ def main() -> int:
         print("GH_TOKEN required", file=sys.stderr)
         return 2
     at = now()
+    backoff = active_api_backoff(at)
+    if backoff:
+        reason = (f"server-directed API retry window remains active until "
+                  f"{backoff['not_before']}")
+        print(f"::warning title=QUE API backoff::{reason}")
+        summary = os.environ.get("GITHUB_STEP_SUMMARY")
+        if summary:
+            with open(summary, "a", encoding="utf-8") as fh:
+                fh.write("QUE collection deferred without API requests: `"
+                         + reason + "`\n")
+        return 1
     tiers_doc = load_tiers()
-    queued = census(token, "queued", 25)
-    in_progress = census(token, "in_progress", 5)
-    completed = census(token, "completed", 1)
+    try:
+        budget = api("/rate_limit", token)
+        resources = budget.get("resources") or {}
+        bucket_snapshot = {
+            name: {key: (resources.get(name) or {}).get(key)
+                   for key in ("limit", "remaining", "reset")}
+            for name in ("core", "search")
+        }
+        print("API bucket preflight (minted App token): "
+              + json.dumps(bucket_snapshot, sort_keys=True))
+        summary = os.environ.get("GITHUB_STEP_SUMMARY")
+        if summary:
+            with open(summary, "a", encoding="utf-8") as fh:
+                fh.write("## QUE API budget preflight\n\n```json\n"
+                         + json.dumps(bucket_snapshot, indent=1,
+                                      sort_keys=True)
+                         + "\n```\n")
+        deferrals = api_budget_deferral(bucket_snapshot)
+        if deferrals:
+            reason = "; ".join(deferrals)
+            print(f"::warning title=QUE API budget::deferred before census: {reason}")
+            print("API request counts: " + json.dumps(
+                api_request_summary(), sort_keys=True))
+            if summary:
+                with open(summary, "a", encoding="utf-8") as fh:
+                    fh.write("\nQUE collection deferred before census: `"
+                             + reason + "`\n")
+            return 1
+        queued = census(token, "queued", 25)
+        in_progress = census(token, "in_progress", 5)
+        completed = census(token, "completed", 1)
+        governor = governor_feed(token, at)
+    except ApiHttpError as exc:
+        print(f"::error title=QUE API failure::{exc}", file=sys.stderr)
+        print("API request counts: " + json.dumps(
+            api_request_summary(), sort_keys=True), file=sys.stderr)
+        summary = os.environ.get("GITHUB_STEP_SUMMARY")
+        if summary:
+            with open(summary, "a", encoding="utf-8") as fh:
+                fh.write("## QUE collection API failure\n\n```json\n"
+                         + str(exc) + "\n```\n\nAPI request counts: `"
+                         + json.dumps(api_request_summary(), sort_keys=True)
+                         + "`\n")
+        return 1
     excluded = load_exclusions()
     queued, dropped_q = split_excluded(queued, excluded)
     in_progress, dropped_p = split_excluded(in_progress, excluded)
@@ -594,7 +833,7 @@ def main() -> int:
         json.dumps(freshness, indent=1) + "\n")
     publish("priority-windows.json", priority_feed(tiers_doc, at),
             alias="que-priority-windows.json")
-    publish("governor.json", governor_feed(token, at),
+    publish("governor.json", governor,
             alias="que-governor.json")
     # Excluded ghosts leave the differ state once, with an explicit
     # `excluded` event (¬ a false `vanished` gap row).
@@ -624,6 +863,14 @@ def main() -> int:
               f"{freshness['sources'][k]['health']}")
     print(f"cycle ok: queued={len(queued)} "
           f"in_progress={len(in_progress)} events={len(events)}")
+    print("API request counts: " + json.dumps(
+        api_request_summary(), sort_keys=True))
+    summary = os.environ.get("GITHUB_STEP_SUMMARY")
+    if summary:
+        with open(summary, "a", encoding="utf-8") as fh:
+            fh.write("\nAPI request counts: `"
+                     + json.dumps(api_request_summary(), sort_keys=True)
+                     + "`\n")
     return 0
 
 

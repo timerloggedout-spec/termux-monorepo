@@ -30,9 +30,55 @@ jobs:
         with:
           python-version: "3.12"
       - name: Collect one QUE cycle
+        id: collect
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
         run: python3 scripts/que/que_feed_collect.py
+      - name: Persist long API retry window
+        if: ${{ always() && steps.collect.outputs.rate_limit_defer_until != '' }}
+        env:
+          RETRY_NOT_BEFORE: ${{ steps.collect.outputs.rate_limit_defer_until }}
+        run: |
+          python3 - <<'PY'
+          import datetime as dt
+          import json
+          import os
+          from pathlib import Path
+
+          value = os.environ["RETRY_NOT_BEFORE"]
+          until = dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
+          if until.tzinfo is None:
+              raise SystemExit("retry deadline must be timezone-aware")
+          normalized = until.astimezone(dt.timezone.utc).isoformat().replace(
+              "+00:00", "Z")
+          path = Path("ops/que/feeds/api-backoff.json")
+          path.parent.mkdir(parents=True, exist_ok=True)
+          path.write_text(json.dumps({
+              "schema": "que.api-backoff/v1",
+              "not_before": normalized,
+              "source": "github-api-response"
+          }, indent=2) + "\n")
+          print(f"Persisted QUE API not-before deadline: {normalized}")
+          PY
+          git config user.name "termux-fleet-swarm[bot]"
+          git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
+          git add ops/que/feeds/api-backoff.json
+          if ! git diff --cached --quiet; then
+            git commit -m "que: persist API retry deadline"
+            pushed=0
+            for attempt in 1 2 3; do
+              if git push; then
+                pushed=1
+                break
+              fi
+              echo "push rejected (attempt $attempt) — rebasing"
+              git pull --rebase origin master
+            done
+            if [ "$pushed" -ne 1 ]; then
+              echo "failed to persist API retry deadline after 3 pushes" >&2
+              exit 1
+            fi
+          fi
       - name: Commit feeds + events (only on change)
         run: |
           git config user.name "termux-fleet-swarm[bot]"
@@ -45,11 +91,17 @@ jobs:
             # master moves under this run on a busy fleet:
             # rebase onto the new head and retry the push
             # (first live cycle lost exactly this race)
+            pushed=0
             for attempt in 1 2 3; do
               if git push; then
+                pushed=1
                 break
               fi
               echo "push rejected (attempt $attempt) — rebasing"
               git pull --rebase origin master
             done
+            if [ "$pushed" -ne 1 ]; then
+              echo "failed to publish QUE feeds after 3 pushes" >&2
+              exit 1
+            fi
           fi

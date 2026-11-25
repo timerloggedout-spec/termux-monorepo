@@ -32,7 +32,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-          sparse-checkout: scripts/que
+          sparse-checkout: |
+            scripts/que
+            ops/que/feeds/api-backoff.json
       - name: Kick stale QUE producers
         env:
           GH_TOKEN: ${{ github.token }}

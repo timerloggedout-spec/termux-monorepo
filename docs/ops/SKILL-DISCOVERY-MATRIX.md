@@ -74,3 +74,16 @@ Promotion remains downstream of current-SHA task-outcome verification and the re
 | Orchestration contract | receipt schema | `docs/ops/ORCHESTRATION-RECEIPT.schema.json` | shared execution-state/outcome/promotion projection |
 
 External loop/framework material remains candidate pattern evidence until explicit schema mapping, bounded implementation, deterministic validation, evidence capture, and promotion.
+
+
+## ChatGPT session capability export — 2026-11-25
+
+- Machine pointer: `ops/capabilities/chatgpt/current.json`.
+- Mapping contract: `docs/ops/CHATGPT-CAPABILITY-INVENTORY.md`.
+- Skill catalog: 571 descriptors across 78 source groups; exact URIs retained.
+- Tool catalog: 4,897 complete exposed definitions across 128 namespaces (125 MCP provider namespaces and 3 native host namespaces), partitioned into 16 SHA-256-pinned JSON chunks.
+- Scope: complete for the active session's skill and tool catalogs; global plugin-directory coverage and account connection states remain separately qualified.
+- Repository mapping: native skill index, integration registry, adapter contract, provider capability contract, harness admission, orchestration treatment, DoE/MVT and ATES/WTCV.
+- The three uploaded skill archives and Loopy/Jules/routing/GitLab/notation references retain their source hashes and adoption dispositions in the machine manifest.
+
+The dated snapshot is discovery evidence. Each selected capability proceeds through source/version review, permission declaration, adapter validation, execution evidence and explicit promotion.

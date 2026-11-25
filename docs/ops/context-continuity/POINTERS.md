@@ -21,6 +21,11 @@ Minimal-token index for a fresh or rotated context. Every entry is a location, n
 - **Endpoints:** endpoints-db in monorepo (9,588 rows; mapped 6,145 / unmapped 3,443)
 - **Skills:** canonical home = monorepo (PR #5721, merge pending); local cache `~/workspace/skills-library/` (`search.py`, `search-index.json`, log every use in `USAGE.jsonl`)
 
+## Continuity system (this directory)
+- `POLICY.md` — maintenance policy (also in monorepo PR #5877, `docs/ops/context-continuity/`)
+- `IMPROVEMENTS.md` — context/token economy log, maintained by the `context-economy-monitor` daily cron (~06:32 PT, goal termux-monorepo-completion)
+- Checkpoints: backup store `checkpoint/<export-id>/` (latest CONFIRM-verified: `ckpt-20261125T151731Z` @ `516d1f2e`)
+
 ## Live machinery (QUE, termux-monorepo issues)
 - #5685 context rotation (this system) · #5855 fresh-start cutover Phase 1 · #5555 Provenance · #5554 web-use registration · #5641 queue self-optimization · #5646 conversion repair + reclaim sweep · #5868 Cue compute + adaptive cadence · #5152 Cadence ledger
 - Workflows: project-task-dispatch `405322142` · dispatch-executor `416155269` · dispatch-watchdog `405572638` (intake parses `###` headings only)

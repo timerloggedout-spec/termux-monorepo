@@ -18,7 +18,8 @@
     "plugin_status_observations",
     "user_supplied_sources",
     "integration_mappings",
-    "limitations"
+    "limitations",
+    "doe_factor_candidates"
   ],
   "properties": {
     "schema_version": {
@@ -303,6 +304,43 @@
       "type": "array",
       "items": {
         "type": "string"
+      }
+    },
+    "doe_factor_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "source",
+          "version_binding",
+          "status",
+          "purpose"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "categorical",
+              "numeric"
+            ]
+          },
+          "source": {
+            "type": "string"
+          },
+          "version_binding": {
+            "type": "string"
+          },
+          "status": {
+            "const": "candidate"
+          },
+          "purpose": {
+            "type": "string"
+          }
+        }
       }
     }
   }

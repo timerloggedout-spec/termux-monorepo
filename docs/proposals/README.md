@@ -11,6 +11,7 @@
 | ID | Priority | Status | Path |
 |----|----------|--------|------|
 | chatgpt-critical-eval | P0 | executing | [active/chatgpt-critical-eval/](active/chatgpt-critical-eval/) |
+| enterprise-org-preservation | P0 | executing | [active/enterprise-org-preservation/](active/enterprise-org-preservation/) |
 | kimi-cloud-offload | P1 | posted | [active/kimi-cloud-offload/](active/kimi-cloud-offload/) |
 | chatgpt-initial | P2 | posted | [active/chatgpt-initial/](active/chatgpt-initial/) |
 | chatgpt-droidapp | P2 | posted | [active/chatgpt-droidapp/](active/chatgpt-droidapp/) |

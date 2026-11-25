@@ -1388,6 +1388,28 @@ proposals:
     related_prs: []
     related_branches:
       - feat/repository-provisioner-workflow
+      - feat/enterprise-org-preservation-20261125
     gates_required:
+      - repo-gate
+      - termux-smoke
+
+  - id: enterprise-org-preservation
+    title: "Preserve search-astute-ly outside the AdAstraNeoNexus Enterprise trial"
+    author: ChatGPT
+    status: executing
+    priority: P0
+    path: active/enterprise-org-preservation/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_prs: []
+    related_branches:
+      - feat/enterprise-org-preservation-20261125
+    gates_required:
+      - proposal-lifecycle
       - repo-gate
       - termux-smoke

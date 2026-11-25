@@ -1,0 +1,118 @@
+name: Enterprise organization preservation verification
+
+run-name: "${{ inputs.phase }} ${{ inputs.mode }} preservation"
+
+on:
+  workflow_dispatch:
+    inputs:
+      phase:
+        description: "Capture the source baseline or verify the preservation destination"
+        required: true
+        type: choice
+        options:
+          - baseline
+          - verify
+        default: baseline
+      mode:
+        description: "Direct organization detachment or repository transfer to a new Free organization"
+        required: true
+        type: choice
+        options:
+          - detached
+          - transferred
+        default: transferred
+      source_org:
+        description: "Organization named in the Enterprise deletion notice"
+        required: true
+        type: string
+        default: search-astute-ly
+      target_org:
+        description: "Free destination organization; used by transferred verification"
+        required: true
+        type: string
+        default: asastraneonexus
+      baseline_run_id:
+        description: "Baseline Actions run ID; required for verify"
+        required: false
+        type: string
+
+concurrency:
+  group: enterprise-org-preservation-${{ inputs.source_org }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
+      SOURCE_ORG: ${{ inputs.source_org }}
+      TARGET_ORG: ${{ inputs.target_org }}
+      PHASE: ${{ inputs.phase }}
+      MODE: ${{ inputs.mode }}
+      BASELINE_RUN_ID: ${{ inputs.baseline_run_id }}
+      CREDENTIAL_REF: ${{ secrets.ARCHWIZ_GITHUB_TOKEN != '' && 'ARCHWIZ_GITHUB_TOKEN' || secrets.OPERATOR_GITHUB_TOKEN != '' && 'OPERATOR_GITHUB_TOKEN' || secrets.OPERATOR_TOKEN != '' && 'OPERATOR_TOKEN' || 'UNAVAILABLE' }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate operator credential and destination
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "$GH_TOKEN" ]]; then
+            echo "::error::Configure ARCHWIZ_GITHUB_TOKEN, OPERATOR_GITHUB_TOKEN, or OPERATOR_TOKEN."
+            exit 1
+          fi
+          actor="$(gh api user --jq '.login')"
+          if [[ "$actor" != "timerloggedout-spec" ]]; then
+            echo "::error::Expected timerloggedout-spec operator identity; received $actor."
+            exit 1
+          fi
+          if [[ "$MODE" == "transferred" && "$SOURCE_ORG" == "$TARGET_ORG" ]]; then
+            echo "::error::The transfer destination must differ from the source organization."
+            exit 1
+          fi
+          echo "Credential reference: $CREDENTIAL_REF" >> "$GITHUB_STEP_SUMMARY"
+          echo "Authenticated owner: $actor" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Download baseline artifact
+        if: inputs.phase == 'verify'
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ ! "$BASELINE_RUN_ID" =~ ^[0-9]+$ ]]; then
+            echo "::error::Provide the numeric baseline Actions run ID."
+            exit 1
+          fi
+          mkdir -p baseline
+          gh run download "$BASELINE_RUN_ID" --name enterprise-org-state --dir baseline
+          test -s baseline/enterprise-org-state.json
+
+      - name: Capture and compare organization state
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          if [[ "$PHASE" == "baseline" || "$MODE" == "detached" ]]; then
+            org="$SOURCE_ORG"
+          else
+            org="$TARGET_ORG"
+          fi
+          args=(--org "$org" --phase "$PHASE" --mode "$MODE" --source-org "$SOURCE_ORG" --output artifacts/enterprise-org-state.json)
+          if [[ "$PHASE" == "verify" ]]; then
+            args+=(--baseline baseline/enterprise-org-state.json)
+          fi
+          python3 scripts/github/verify_enterprise_org_detachment.py "${args[@]}"
+
+      - name: Publish preservation receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: enterprise-org-state
+          path: artifacts/enterprise-org-state.json
+          if-no-files-found: error
+          retention-days: 30

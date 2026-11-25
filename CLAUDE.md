@@ -100,6 +100,7 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 | Permissions / human edges | `docs/proposals/AGENTIC-PERMISSIONS.md` |
 | Repository architecture | `architecture.md` |
 | ICM task routing | `docs/icm/CLAUDE.md` |
+| Flywheel channels, topics, and project artifacts | `docs/ops/flywheel-comms/README.md` |
 | Skills + adaptive wait | `docs/ops/SKILLS-INVENTORY.md` |
 | Session / lane SSOT | `docs/ops/LANE-MATRIX.md` |
 | Dependency-phase system | `docs/agentic/README.md` |

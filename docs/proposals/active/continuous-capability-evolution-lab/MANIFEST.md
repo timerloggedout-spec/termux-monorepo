@@ -11,7 +11,8 @@ reviewers:
     role: operator-authorizer
     status: accepted
 related_issues: []
-related_prs: []
+related_prs:
+  - 5191
 related_branches:
   - feat/ceel-continuous-capability-evolution-20261111
 gates_required: [proposal-lifecycle, repo-gate, termux-smoke]

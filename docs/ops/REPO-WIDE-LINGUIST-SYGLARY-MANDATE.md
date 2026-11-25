@@ -100,3 +100,40 @@ Follow the canonical [Siglary Standard](../proposals/active/notation-sets/SIGLAR
 - [ ] Signal stays high; repetition and ceremony removed
 
 **Canonical reminder:** `DO the necessary action · prove the resulting state · record ∆ · repeat when evidence changes the next action.`
+
+
+## SG rule registry and enforcement boundary (2026-11-25)
+
+`DO` = requirement · `DEFAULT` = overridable preference · unmarked statement = observation. These are local force labels; apply RFC 2119/8174 keyword discipline without equating the local labels with RFC keywords.
+
+The following IDs preserve the supplied rule meanings:
+
+| ID | Force | Registered statement |
+|---|---|---|
+| SG001 | DO | `CHAT := STATE-CHANGE ∨ OVERSIGHT` |
+| SG002 | DO | `DO-form ∀ directives · ⊘ := AVOID set {No, Not, Don't, Never}` |
+| SG003 | DO | `necessary-only · one statement per fact · Δ-only updates` |
+| SG004 | DO | `scope-key ∀ message · out-of-scope ⇒ DROP+log` |
+| SG005 | DO | `OFFLOAD MAX: execution ⤴ QUE/machinery · chat ¬executes` |
+| SG006 | DO | `catalogue ∀ routes · single-arm = stamped exception only` |
+| SG007 | DO | `claims carry evidence inline {⊩} ∨ mark ≟` |
+| SG008 | DO | `mandate lint-enforced in CI {rules + AVOID vocabulary}` |
+
+The fixed-position statement frame remains `⌖scope → ▶action → ⊗constraint → ⤵output → ~state`. The Matrice crosswalk records issued and candidate symbols separately.
+
+### Automated coverage
+
+| Rule | Current CI coverage |
+|---|---|
+| SG001 | Human oversight; live chat is outside repository CI inputs. |
+| SG002 | Hard check on newly added Markdown prose, full-line source comments, commit messages, and pull-request title/body; inline code, quoted spans, fenced code, and blockquote source text remain exempt. |
+| SG003 | Human review for necessity, one-fact structure, and delta-only updates. |
+| SG004 | Human review; message-scope schema status: UNDEFINED. |
+| SG005 | Human review of authorized execution routes and chat behavior. |
+| SG006 | Human review; the route catalogue and stamped single-arm exception schema remain open work. |
+| SG007 | Human review of claim meaning and evidence adjacency; the existing compliance scorer remains diagnostic. |
+| SG008 | Bounded source gate: rule-ID completeness, canonical links, candidate-map coverage, and SG002 lexical checks. |
+
+The repo gate uses a Python standard-library validator because Vale and markdownlint configuration and executables are absent from current master. The gate checks newly authored text; historical prose, external chats, route completeness, and semantic judgment remain outside its automated verdict.
+
+The `≤4±1` item ceiling remains an unverified hypothesis pending a better empirical test. `racc` remains an observation; source: UNKNOWN; in-repository definition: UNFOUND. Treat both as research inputs rather than hard CI limits.

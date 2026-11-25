@@ -328,3 +328,46 @@ Register the following formal operators in the OPERATORS class for repository di
 **Class boundary:** `⤴` remains the issued dispatch GLYPH. The symbols in this amendment are OPERATORS because each has a fixed formal relation or state-transition meaning. The glyph inventory remains closed to the issued set; this amendment adds no glyphs or chords. `∆` remains the canonical change operator. Use uncommon operators only where their meaning is clear from the local directive; accuracy outranks compression.
 
 **DO-first application:** `DO <VERB> <OBJECT> ∧ <SCOPE> ⇒ <EXPECTED STATE> · EVIDENCE=<RECEIPT>`. Chat remains `STATE-CHANGE ∨ OVERSIGHT`; operational controls use affirmative verbs such as REQUIRE, ENFORCE, REJECT, EXCLUDE, HOLD, and FAIL-CLOSED.
+
+
+## 2026-11-25 — Siglary mandate crosswalk (candidate mappings)
+
+This crosswalk maps the supplied writing mandate into the Linguist-owned Matrice. Existing entries retain their registered meanings; candidate rows preserve requested meanings for review. Family headings group symbols and keep the three Matrice classes—GLYPHS, CHORDS, OPERATORS—distinct.
+
+| Family | Token | Supplied meaning | Matrice disposition |
+|---|---|---|---|
+| LOGIC | `∧ ∨ ¬ ⇒ ⇔ ∈ ∉ ∀ ∃ ∅ ≠ ≡ ≤ ≥` | Existing meanings in the mandate | Registered OPERATORS; resolve by the operator tables above. |
+| LOGIC | `≈` | approximately | Candidate operator; registration pending. |
+| LOGIC | `∝` | proportional | Candidate operator; registration pending. |
+| EVIDENCE | `⊢` | proven | Current Matrice meaning is entails; the supplied label and standard use a different gloss. Owner ruling required. |
+| EVIDENCE | `⊬` | unproven | Current Matrice meaning is fails to establish; the supplied label and standard use a shorter gloss. Owner ruling required. |
+| EVIDENCE | `⊩` | assert+trace | Candidate operator; registration pending. |
+| EVIDENCE | `≟` | disputed | Candidate operator; registration pending. |
+| EVIDENCE | `∎` | closed | Candidate operator; registration pending. |
+| FLOW | `⤴` | route | Issued GLYPH meaning is dispatch; broader route use awaits a scope ruling. |
+| FLOW | `↳` | child | Registered OPERATOR meaning is child / derivation. |
+| FLOW | `⤵` | land | Candidate operator; registration pending. |
+| FLOW | `↻` | cadence-cycle | Candidate operator; registration pending. |
+| FLOW | `⊕` | combine | Registered OPERATOR. |
+| FLOW | `⊗` | constrained-combine | Registered OPERATOR; frame-slot use as a constraint label awaits a role ruling. |
+| FLOW | `⋈` | join | Candidate operator; registration pending. |
+| STATE | `⏸ ▶ ✓ ✗` | hold · execute · pass · fail | Registered OPERATORS. |
+| STATE | `⧖` | pending | Candidate operator; registration pending. |
+| STATE | `⚡` | immediate | Candidate operator; registration pending. |
+| STATE | `∆` | change | Canonical change OPERATOR. |
+| STATE | `Δ` | change | Candidate alias for `∆`; code-point distinction retained pending a ruling. |
+| STATE | `§` | rule-ref | Candidate operator; registration pending. |
+| FRAME | `⌖` | scope | Candidate frame marker; registration pending. |
+| FRAME | `▶` | action | Existing execute OPERATOR; frame-role alignment awaits review. |
+| FRAME | `⤵` | output / land | Candidate frame marker; registration pending. |
+| FRAME | `~` | state | Candidate frame marker; registration pending. |
+| DIRECTIVE | `⊘` | AVOID set | Candidate marker; registration pending. |
+| FRAME | `→` | fixed-slot sequence separator | Candidate syntax marker; grammar registration pending. |
+
+Use `symbol` as the class-neutral term in the one-meaning principle; reserve `GLYPH` for pictographs.
+
+The proposed `zero precedence` statement needs an operator grammar and parenthesization contract before parser-level enforcement.
+
+The frame reuses `⊗` and `▶` in roles that need explicit alignment with their registered meanings.
+
+SG007 invokes `⊩` and `≟` before registration, which conflicts with the mandate's registered-symbol requirement. Preserve the supplied row and defer resolution to Linguist.

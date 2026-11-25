@@ -109,6 +109,10 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 | FA-ADE / auto-promote | `docs/ops/REFTEMPLATES-CONSOLIDATION.md` |
 | Session SSOT schema | `docs/schemas/session-ssot.md` |
 | Provider caps | `docs/schemas/provider-capabilities.md` |
+| Siglary mandate + SG rule registry | `docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md` |
+| Siglary standard | `docs/proposals/active/notation-sets/SIGLARY-STANDARD.md` |
+| Linguist notation Matrice | `docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md` |
+| Deterministic rule-map check | `scripts/ci/validate_siglary_mandate.py` (repo-gate) |
 | Linguist / CedrLang / Jules stub only | `AGENTS.md` (deprecated redirect) |
 
 ## ICM + RinDig reference pins (smods)

@@ -180,6 +180,14 @@ This is the first implementation slice for restoring the Linguist/CedrLang diasp
 - The phased diaspora implementation remains reversible, isolated, and test-backed; the 70% threshold is treated as an initial rollout control, not a universal optimum.
 - Execution work remains gated by proposal acceptance and `repo-gate` + `termux-smoke`.
 
+## NSE-024 — Siglary mandate mapping and deterministic CI slice
+
+Route the repo-wide Siglary mandate through the existing Linguist Matrice and root `CLAUDE.md` pointer map. Preserve SG001–SG008 and the supplied operator meanings; record unresolved notation/class conflicts as candidate mappings. Add a stdlib validator for registry IDs, canonical pointers, and the AVOID vocabulary on newly authored source text. Keep semantic judgment, runtime routing, and chat behavior in their owning review lanes.
+
+**Status:** executing; promotion awaits required checks and review.
+
+**Acceptance:** `CLAUDE.md` remains a compact routing map; the SG registry maps once; candidate notation stays visibly candidate; focused tests and the repository gate pass; review notes retain every unresolved design choice.
+
 ## TDQS-CI-001 — Read-only TDQS quality-lane coverage
 
 **Status:** executing. Extend the existing Agent Quality Lane to cover TDQS preparation/aggregation: implementation, focused tests, evidence schema, specification, and admission-matrix path filters; compile the focused test, validate schema JSON, and run the deterministic TDQS tests alongside the existing telemetry tests. Acceptance requires the focused commands, repository gate, and Termux smoke to pass. This item does not authorize external rubric evaluation, prompt/tool execution, or acceptance of the broader notation proposal.

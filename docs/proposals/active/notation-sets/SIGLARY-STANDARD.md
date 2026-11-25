@@ -211,3 +211,12 @@ Finding: CHORDS ∧ GLYPHS cost more tokens than their plain expansions (A2A sta
 The Notation Matrice amendment dated 2026-11-18 registers ⇔ ∉ ≡ ≠ ≤ ≥ ⊕ ⊗ ↳ ∴ ∵ ⊢ ⊬ ⊥ ⏸ ▶ ✓ ✗ as OPERATORS. `⤴` remains a GLYPH; `∆` remains the canonical delta operator. The new operators retain fixed meanings and remain subject to class correctness, accuracy-first review, and token-cost measurement.
 
 The DO-first authoring profile applies to repo skill files, ICM, `*.SKILLS` / `SKILLS.md`, `CLAUDE.md`, and DoE-dispatched participants: `CHAT := STATE-CHANGE ∨ OVERSIGHT`; use CAVEMAN-6; lead with concrete DO verbs; state scope, owner, condition, expected state, and receipt. Prefer affirmative operational controls; use `¬` for essential logical negation. Preserve exact code literals and quotations. Preserve the N∅ chat-only/data-null boundary and all approval and authority boundaries.
+
+
+## 7. Repository CI wiring (2026-11-25)
+
+Root `CLAUDE.md` maps the repo-writing mandate to this standard, the Linguist Matrice, and `scripts/ci/validate_siglary_mandate.py`. The validator runs in the existing `repo-gate` workflow with Python standard-library dependencies only.
+
+The deterministic gate checks SG001–SG008 registry completeness, canonical source pointers, required candidate-map entries, and AVOID-vocabulary matches in newly added Markdown prose, full-line source comments, commit messages, and pull-request title/body. Inline code, quoted spans, fenced code, and blockquote source text remain exempt under the quotation and technical-literal boundaries above. Use `¬` or affirmative control verbs for essential negation.
+
+This gate supplies a bounded source-level enforcement slice. Chat behavior, route-catalogue completeness, execution routing, cognitive-load claims, operator precedence, and semantic claim/evidence judgment remain human-owned review surfaces. The existing notation compliance scorer remains diagnostic; its scope stays distinct from these checks.

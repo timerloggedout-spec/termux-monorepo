@@ -30,8 +30,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          # Need the base commit for the changed-file scope. Submodules stay
-          # uninitialised: the gate reads the git index, never the worktree.
+          # Need the base commit for changed-file scope. The hygiene gate reads
+          # the index; the Siglary validator scopes authored text against this base.
           fetch-depth: 0
           submodules: false
 
@@ -45,6 +45,11 @@ jobs:
           # script body, so a branch name can't inject shell.
           git fetch --no-tags origin "+refs/heads/${BASE_REF}:refs/remotes/origin/${BASE_REF}"
           echo "ref=origin/${BASE_REF}" >> "$GITHUB_OUTPUT"
+
+      - name: Siglary mandate mapping
+        run: |
+          python3 -B -m unittest discover -s tests -p 'test_siglary_mandate.py' -v
+          python3 -B scripts/ci/validate_siglary_mandate.py --base "${{ steps.base.outputs.ref }}" --event-file "$GITHUB_EVENT_PATH"
 
       - name: Index-only scope regressions
         run: python3 -B -m unittest discover -s tests -p 'test_repo_gate_index_scope.py' -v

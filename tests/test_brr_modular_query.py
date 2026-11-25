@@ -39,9 +39,9 @@ class ModularSelectionTests(unittest.TestCase):
             root = Path(tmp)
             (root / "nodes.jsonl").write_text(
                 json.dumps({"kind": "file", "external_id": "src/a.py", "attributes": {"path": "src/a.py"}})
-                + "\\n"
+                + "\n"
                 + json.dumps({"kind": "symbol", "external_id": "src/a.py:run", "attributes": {"name": "run"}})
-                + "\\n",
+                + "\n",
                 encoding="utf-8",
             )
             (root / "edges.jsonl").write_text(
@@ -53,7 +53,7 @@ class ModularSelectionTests(unittest.TestCase):
                     "classification": "candidate",
                     "score": 0.5,
                 })
-                + "\\n",
+                + "\n",
                 encoding="utf-8",
             )
             result = registry.load_graph_projection(

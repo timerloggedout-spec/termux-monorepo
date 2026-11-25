@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-25T16:10:12Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-25T16:14:19Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-25T16:10:11Z` (merged 150 · open 200) · lane-events(Neon) status=`error:HTTPError` count=`None` read_at=`2026-11-25T16:10:11Z`
+Sources: PR feed read_at=`2026-11-25T16:14:19Z` (merged 150 · open 200) · lane-events(Neon) status=`error:HTTPError` count=`None` read_at=`2026-11-25T16:14:19Z`
 
 Rows: 22 · by_state: active=2 · closed=1 · in-flight=10 · landed=1 · unknown=8
 
@@ -25,7 +25,7 @@ Rows: 22 · by_state: active=2 · closed=1 · in-flight=10 · landed=1 · unknow
 | opportunities | `challenge-entries` | Challenge OSINT + opportunity ledger | in-flight | #5558 `bca4313025b0` 2026-11-17T14:18:40Z | land/close PR #5758 — docs(ops): expand Devpost + GitLab challenge OSINT observatory |
 | providers | `providers` | Provider registry / catalog / availability | in-flight | NOT_ESTABLISHED | land/close PR #3916 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #5684 `79943221cc5f` 2026-11-20T06:23:04Z | land/close PR #5878 — docs: FLY-005 collaborator access (Exports + Telemetry) + comms upgrade notes |
+| providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #5684 `79943221cc5f` 2026-11-20T06:23:04Z | land/close PR #3890 — chore(telemetry): refresh HindSight+Provenance ingest |
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #5797 `b8f70c7e0a86` 2026-11-23T11:11:55Z | land/close PR #5860 — fix(dispatch): defer watchdog safely on GitHub API rate limits |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | active | #5359 `5e57dcd3d1e8` 2026-11-13T17:17:46Z | NOT_ESTABLISHED |

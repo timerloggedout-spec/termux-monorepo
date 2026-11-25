@@ -28,6 +28,21 @@ class ModularSelectionTests(unittest.TestCase):
             {"branch", "pull-request"},
         )
 
+
+    def test_branch_and_pull_request_surfaces_project_independently(self):
+        rows = [{
+            "branch": "feature/x",
+            "sha": "abc123",
+            "pull_requests": [{"number": 42, "state": "open"}],
+        }]
+        branches = registry.project_base_surfaces(rows, {"branch"})
+        self.assertEqual(branches, {"branches": rows})
+        pulls = registry.project_base_surfaces(rows, {"pull-request"})
+        self.assertEqual(
+            pulls["pull_requests"],
+            [{"number": 42, "state": "open", "branch": "feature/x", "branch_sha": "abc123"}],
+        )
+
     def test_query_clauses_support_all_and_any(self):
         record = {"branch": "release/alpha", "sha": "abc123"}
         self.assertTrue(registry.matches_queries(record, ["release", "abc"], "all"))

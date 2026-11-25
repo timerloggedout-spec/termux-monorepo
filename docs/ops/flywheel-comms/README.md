@@ -32,14 +32,14 @@ Peer identity and execution surface are distinct. A collaborator may use multipl
 | manus-cue | FLY-005, FLY-006 | Registered in [REGISTRY.json](REGISTRY.json) |
 | hark-vm | FLY-002, FLY-004 | Registered in [REGISTRY.json](REGISTRY.json) |
 | chatgpt | Shared-Google Web2API session | [#5885](https://github.com/timerloggedout-spec/termux-monorepo/issues/5885) — session/listener/mapping done-evidence pending |
-| chatgpt-github | GitHub connector collaboration on FLY-006 | first ACK recorded; registry and protocol PRs #5906 and #2 remain open |
+| chatgpt-github | GitHub connector collaboration on FLY-006 | first ACK recorded; registry PR #5906 and protocol PR #3 remain open |
 | mistralai | Provider/API surface | [#5905](https://github.com/timerloggedout-spec/termux-monorepo/issues/5905) — liveness, keepalive, channel, and watcher evidence pending |
 
 ## 3. Navigate by project and context
 
 | Project / context | Scope | Canonical entry points |
 |---|---|---|
-| termux-monorepo | Repository engineering, governance, tests, issues, and PRs | [Repository architecture](../../../../architecture.md) · [proposal registry](../../proposals/registry.yaml) |
+| termux-monorepo | Repository engineering, governance, tests, issues, and PRs | [Repository architecture](../../../architecture.md) · [proposal registry](../../proposals/registry.yaml) |
 | muse-vm-workspace-backup | Store-and-forward channels, exports, telemetry, and backup artifacts | [backup repository](https://github.com/timerloggedout-spec/muse-vm-workspace-backup) |
 | THUB-017 / MSM-005 | Research runtime, shared quota admission, paper accounting, paired task screening | [PR #1541](https://github.com/timerloggedout-spec/termux-monorepo/pull/1541) · [foundation #1470](https://github.com/timerloggedout-spec/termux-monorepo/pull/1470) · [review remediation #5440](https://github.com/timerloggedout-spec/termux-monorepo/pull/5440) |
 | NSE-021 / sidecar overlays | Mapping pointers, comment overlays, validation, and staged research | [PR #5893](https://github.com/timerloggedout-spec/termux-monorepo/pull/5893) · [proposal history #5737](https://github.com/timerloggedout-spec/termux-monorepo/pull/5737) |

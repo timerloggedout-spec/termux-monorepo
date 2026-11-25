@@ -14,7 +14,7 @@ GET /repos/timerloggedout-spec/termux-monorepo/issues
 
 The failed run skipped feed publication. Its diagnostic was recorded on [issue #4164](https://github.com/timerloggedout-spec/termux-monorepo/issues/4164). The issue had accumulated 137 comments, including 81 rate-limit diagnostics at the recorded inspection.
 
-The failure is an exhausted App-installation core bucket. The minted token has a dedicated installation bucket shared by workflows using that same App installation; each workflow does not receive an independent bucket. Repository metadata and authenticated connector reads remain available through a separate connection and permission context.
+The failure is an exhausted App-installation core bucket. The minted token draws from a dedicated installation bucket shared by workflows using that same App installation. Repository metadata and authenticated connector reads remain available through a separate connection and permission context.
 
 ## Runtime controls
 

@@ -90,7 +90,8 @@ def decide(runs: list[dict], max_age_min: float, now: datetime,
                              key=lambda r: parse_iso(r["created_at"]),
                              default=None)
         if latest_failure:
-            failed_at = parse_iso(latest_failure.get("completed_at")
+            failed_at = parse_iso(latest_failure.get("updated_at")
+                                  or latest_failure.get("completed_at")
                                   or latest_failure["created_at"])
             failure_age = max(0.0, (now - failed_at).total_seconds() / 60)
             cooldown = (failure_backoff_min

@@ -10,14 +10,15 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import cadence_kick as k  # noqa: E402
 import que_feed_collect as q  # noqa: E402
+import refresh_api_backoff as refresh_backoff  # noqa: E402
 
 
-def _run(created, conclusion, completed=None):
+def _run(created, conclusion, updated=None):
     return {
         "status": "completed",
         "conclusion": conclusion,
         "created_at": created,
-        "completed_at": completed or created,
+        "updated_at": updated or created,
     }
 
 
@@ -50,6 +51,23 @@ def test_failed_qf_run_does_not_refresh_stale_feed_and_is_cooled_down():
     assert result["last_failure_age_min"] < 1
     assert result["failure_backoff_min"] == 12
     assert "stale successful feed" in result["reason"]
+
+
+def test_qf_failure_cooldown_uses_terminal_updated_at_after_long_queue_time():
+    # This fixture matches the Actions workflow-runs REST shape: no
+    # completed_at field, and updated_at records the terminal change.
+    run = _run("2026-11-25T17:00:00Z", "failure",
+               "2026-11-25T17:21:52Z")
+    during_cooldown = k.decide([run], 12, INCIDENT_NOW,
+                               success_only=True, failure_backoff_min=12)
+    after_cooldown = k.decide(
+        [run], 12, datetime(2026, 11, 25, 17, 34, 0, tzinfo=timezone.utc),
+        success_only=True, failure_backoff_min=12)
+
+    assert "completed_at" not in run
+    assert during_cooldown["action"] == "skip"
+    assert during_cooldown["last_failure_age_min"] < 1
+    assert after_cooldown["action"] == "kick"
 
 
 def test_qf_kicks_after_failed_run_cooldown_expires():
@@ -174,6 +192,26 @@ def test_secondary_403_honors_retry_after_and_counts_retry(monkeypatch):
     assert stats["retries"] == 1
 
 
+@pytest.mark.parametrize(("reset", "retry_after", "expected"), [
+    ("105", "120", 120.0),
+    ("150", "20", 50.0),
+    (None, "120", 120.0),
+    ("not-a-timestamp", "120", 120.0),
+])
+def test_primary_limit_uses_later_valid_reset_or_retry_after(
+        reset, retry_after, expected):
+    headers = {"X-RateLimit-Remaining": "0",
+               "Retry-After": retry_after}
+    if reset is not None:
+        headers["X-RateLimit-Reset"] = reset
+
+    delay, _reason = q._rate_limit_retry(
+        403, '{"message":"API rate limit exceeded"}', headers, 0,
+        now_ts=100.0)
+
+    assert delay == expected
+
+
 def test_primary_limit_waits_for_reset_or_defers_without_retry(monkeypatch):
     path = "/repos/timerloggedout-spec/termux-monorepo/actions/runs?status=queued"
     headers = Message()
@@ -197,6 +235,34 @@ def test_primary_limit_waits_for_reset_or_defers_without_retry(monkeypatch):
     assert q.api_request_summary()["retries"] == 0
 
 
+def test_last_short_rate_limit_retry_persists_deadline_without_sleeping(
+        monkeypatch, tmp_path):
+    path = "/repos/timerloggedout-spec/termux-monorepo/actions/runs?status=queued"
+    headers = Message()
+    headers["Retry-After"] = "4"
+    body = b'{"message":"You have exceeded a secondary rate limit"}'
+    calls, delays = [], []
+
+    def fail(*_args, **_kwargs):
+        calls.append(1)
+        raise _http_error(path, 429, body, headers)
+
+    monkeypatch.setattr(q, "API_STATS", _fresh_api_stats())
+    monkeypatch.setattr(q.urllib.request, "urlopen", fail)
+    monkeypatch.setattr(q.time, "sleep", delays.append)
+    monkeypatch.setattr(q.time, "time", lambda: 1000.0)
+    output = tmp_path / "github-output"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(output))
+
+    with pytest.raises(q.ApiHttpError) as caught:
+        q.api(path, "token")
+
+    assert len(calls) == q.API_RETRY_MAX_ATTEMPTS
+    assert delays == [4.0, 4.0]
+    assert "deferred until 1970-01-01T00:16:44Z" in str(caught.value)
+    assert "rate_limit_defer_until=1970-01-01T00:16:44Z" in output.read_text()
+
+
 def test_active_persisted_backoff_skips_all_collector_api_requests(
         monkeypatch, tmp_path, capsys):
     now = datetime(2026, 11, 25, 17, 22, 33, tzinfo=timezone.utc)
@@ -212,6 +278,59 @@ def test_active_persisted_backoff_skips_all_collector_api_requests(
     assert q.main() == 1
     assert "server-directed API retry window" in capsys.readouterr().out
     assert marker.exists()
+
+
+def test_restart_refreshes_published_backoff_before_collector_api_calls(
+        monkeypatch, tmp_path, capsys):
+    master_marker = tmp_path / "master" / "api-backoff.json"
+    local_marker = tmp_path / "event-checkout" / "api-backoff.json"
+    master_marker.parent.mkdir(parents=True)
+    local_marker.parent.mkdir(parents=True)
+    master_marker.write_text(
+        '{"schema":"que.api-backoff/v1",'
+        '"not_before":"2026-11-25T18:00:00Z"}')
+    # Simulate a rerun pinned to an older SHA with only an expired marker.
+    local_marker.write_text(
+        '{"schema":"que.api-backoff/v1",'
+        '"not_before":"2026-11-25T17:00:00Z"}')
+
+    assert "refreshed marker" in refresh_backoff.refresh(
+        master_marker, local_marker)
+    monkeypatch.setattr(q, "API_BACKOFF_FILE", local_marker)
+    monkeypatch.setattr(q, "now", lambda: INCIDENT_NOW)
+    monkeypatch.setenv("GH_TOKEN", "token")
+    monkeypatch.setattr(q, "api", lambda *_a, **_k: pytest.fail(
+        "restart must honor the published master deadline before API calls"))
+
+    assert q.main() == 1
+    assert "server-directed API retry window" in capsys.readouterr().out
+    assert '"not_before":"2026-11-25T18:00:00Z"' in local_marker.read_text()
+
+
+def test_restart_refresh_removes_marker_absent_from_current_master(tmp_path):
+    local_marker = tmp_path / "event-checkout" / "api-backoff.json"
+    local_marker.parent.mkdir(parents=True)
+    local_marker.write_text(
+        '{"schema":"que.api-backoff/v1",'
+        '"not_before":"2026-11-25T18:00:00Z"}')
+
+    status = refresh_backoff.refresh(
+        tmp_path / "master" / "api-backoff.json", local_marker)
+
+    assert "removed stale marker" in status
+    assert not local_marker.exists()
+
+
+def test_producer_workflows_refresh_master_marker_and_keep_ten_minute_cadence():
+    collector = (q.ROOT / ".github/workflows/que-feed-collect.yml").read_text()
+    kick = (q.ROOT / ".github/workflows/que-cadence-kick.yml").read_text()
+
+    assert 'cron: "*/10 * * * *"' in collector
+    for workflow in (collector, kick):
+        assert "ref: master" in workflow
+        assert "path: .que-backoff-master" in workflow
+        assert "scripts/que/refresh_api_backoff.py" in workflow
+        assert "ops/que/feeds/api-backoff.json" in workflow
 
 
 def test_expired_persisted_backoff_is_removed(tmp_path):

@@ -23,6 +23,7 @@ lets the feed commits trigger downstream consumers).
 from __future__ import annotations
 import email.utils
 import json
+import math
 import os
 import sys
 import time
@@ -150,7 +151,8 @@ def _retry_after_seconds(value, now_ts=None):
     if not value:
         return None
     try:
-        return max(0.0, float(value))
+        seconds = float(value)
+        return max(0.0, seconds) if math.isfinite(seconds) else None
     except (TypeError, ValueError):
         try:
             retry_at = email.utils.parsedate_to_datetime(str(value))
@@ -169,21 +171,32 @@ def _rate_limit_retry(code, body, headers, retries_done, now_ts=None):
     remaining = str(headers.get("X-RateLimit-Remaining") or "")
     reset = headers.get("X-RateLimit-Reset")
     lower = body.lower()
+    now_ts = now_ts if now_ts is not None else time.time()
+    primary_delay = None
     if remaining == "0":
         try:
             reset_at = float(reset)
         except (TypeError, ValueError):
-            return None, "primary-limit response without reset header"
-        now_ts = now_ts if now_ts is not None else time.time()
-        return max(0.0, reset_at - now_ts), "primary-limit reset"
+            reset_at = None
+        if reset_at is not None and math.isfinite(reset_at):
+            primary_delay = max(0.0, reset_at - now_ts)
     retry_after = _retry_after_seconds(
         headers.get("Retry-After"), now_ts=now_ts)
-    secondary = (code == 429 or retry_after is not None
-                 or "secondary rate limit" in lower)
+    if primary_delay is not None or retry_after is not None:
+        waits = [wait for wait in (primary_delay, retry_after)
+                 if wait is not None]
+        reason = ("primary-limit reset and Retry-After"
+                  if primary_delay is not None and retry_after is not None
+                  else "primary-limit reset" if primary_delay is not None
+                  else "Retry-After")
+        return max(waits), reason
+    secondary = code == 429 or "secondary rate limit" in lower
     if secondary:
         delay = (retry_after if retry_after is not None
                  else 60.0 * (2 ** retries_done))
         return delay, "secondary-limit backoff"
+    if remaining == "0":
+        return None, "primary-limit response without valid reset header"
     if "rate limit exceeded" in lower:
         return None, "rate-limit response without authoritative reset"
     return None, None
@@ -247,7 +260,16 @@ def api(path: str, token: str) -> dict:
                               f"{API_RETRY_MAX_WAIT_SECONDS}s)")
                 delay = None
             elif retries_done >= API_RETRY_MAX_ATTEMPTS - 1:
-                retry_note = "retry limit reached"
+                if delay > 0:
+                    retry_not_before = iso(datetime.fromtimestamp(
+                        time.time() + delay, timezone.utc))
+                    _set_step_output("rate_limit_defer_until",
+                                     retry_not_before)
+                    retry_note = (f"retry limit reached; deferred until "
+                                  f"{retry_not_before} "
+                                  f"(wait {delay:.1f}s)")
+                else:
+                    retry_note = "retry limit reached"
                 delay = None
             else:
                 retry_note = f"{reason}; wait {delay:.1f}s before retry"

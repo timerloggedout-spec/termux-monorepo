@@ -62,3 +62,5 @@ The operator authorized this scoped execution. Independent review and same-SHA r
 - docs/superpowers/plans/2026-11-11-continuous-capability-evolution-lab.md
 - docs/integrations/capability-opportunity-graph.json
 - docs/integrations/PLATFORM-COMPARISON.md
+- docs/ops/CEEL-CONCEPT-ADAPTATION-AND-COMPETITION.md
+- refTemplates/00_Index/SOURCE-MAP.md

@@ -4,6 +4,7 @@
 
 - **Policy:** [POLICY.md](POLICY.md)
 - **Channel + peer registry:** [REGISTRY.json](REGISTRY.json)
+- **Project/context/surface/membership index:** [CONTEXTS.json](CONTEXTS.json) · [JSON Schema](CONTEXTS.schema.json)
 - **Extensible routing model:** [ROUTING-MODEL.md](ROUTING-MODEL.md)
 - **ICM card:** [flywheel-comms](../../icm/cards/flywheel-comms.md)
 
@@ -36,6 +37,8 @@ Peer identity and execution surface are distinct. A collaborator may use multipl
 | mistralai | Provider/API surface | [#5905](https://github.com/timerloggedout-spec/termux-monorepo/issues/5905) — liveness, keepalive, channel, and watcher evidence pending |
 
 ## 3. Navigate by project and context
+
+The normalized project, context, surface, topic, and membership records live in [CONTEXTS.json](CONTEXTS.json); [CONTEXTS.schema.json](CONTEXTS.schema.json) defines its additive data contract.
 
 | Project / context | Scope | Canonical entry points |
 |---|---|---|

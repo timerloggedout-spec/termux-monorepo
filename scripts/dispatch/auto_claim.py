@@ -41,6 +41,13 @@ _CLAIM_CLASS_RE = re.compile(r"claim-class:\s*(executor|seat-queue|named:\s*\S+)
                              re.I)
 _EXECUTOR_OF_RECORD_RE = re.compile(r"executor of record:\s*([^\n·|]+)", re.I)
 _SWARM_ROUTE_RE = re.compile(r'"route":\s*"([^"]+)"')
+_PROJECT_TASK_ROUTE_RE = re.compile(
+    r"^\s*route:\s*project-task-dispatch(?:\.yml)?\s*$", re.I | re.M)
+_SWARM_ADMISSION_ROLE = "[MUSEai]@{role:{swarm-admission}}"
+_PROJECT_TASK_ROLE = "[MUSEai]@{role:{project-task-dispatch}}"
+_ADMISSION_DECISION_RE = re.compile(
+    r"\[MUSEai\]@\{role:\{swarm-admission\}\}.*?DISPATCH\s+\*\*(ADMITTED|DEFERRED)\*\*",
+    re.I | re.S)
 _LEASE_RE = re.compile(r"^- auto-claim: class=(\S+) claimant=(\S+) "
                        r"lease_expires=(\S+)", re.M)
 
@@ -66,31 +73,88 @@ def is_gated(issue, comments) -> str | None:
     return None
 
 
-def claim_class_of(issue, comments):
-    """(claim_class, claimant) the filing's stamp names, else
-    (None, None). An explicit `claim-class:` line wins; then a named
-    executor of record; then the SWARM-DISPATCH route stamp
-    (build-dispatch -> executor, project-task-dispatch -> the QDesk
-    seat queue)."""
+def _admission_decision(issue, comments):
+    """Latest admission decision, with mutually exclusive labels as fallback."""
+    labels = {l.get("name") for l in issue.get("labels") or []
+              if isinstance(l, dict)}
+    latest = None
+    # Admission receipts are workflow comments; never trust issue-body
+    # text supplied by the filer as an admission decision.
+    for comment in comments:
+        body = comment.get("body") or ""
+        for match in _ADMISSION_DECISION_RE.finditer(body):
+            latest = match.group(1).lower()
+    if latest == "deferred" or "deferred-by-tier" in labels:
+        return "deferred"
+    if latest == "admitted" or "swarm-admitted" in labels:
+        return "admitted"
+    return "pending"
+
+
+def _is_project_task_route(issue, comments):
+    """Whether the filing carries the explicit project-task route receipt."""
     for body in _bodies(issue, comments):
-        m = _CLAIM_CLASS_RE.search(body)
-        if m:
-            raw = m.group(1).strip()
-            if raw.lower().startswith("named:"):
-                return "named-executor", raw.split(":", 1)[1].strip()
-            if raw.lower() == "executor":
-                return "executor", "dispatch-executor"
-            return "seat-queue", "qdesk-seat-queue"
+        if _PROJECT_TASK_ROLE in body:
+            return True
+        if (_SWARM_ADMISSION_ROLE in body
+                and _PROJECT_TASK_ROUTE_RE.search(body)):
+            return True
+        if "<!-- SWARM-DISPATCH" in body:
+            match = _SWARM_ROUTE_RE.search(body)
+            if match and match.group(1) == "project-task-dispatch":
+                return True
+    return False
+
+
+def claim_class_of(issue, comments):
+    """Resolve explicit assignment first, then the stamped route default.
+
+    The generated project-task receipt is a routing default, not an
+    assignment. Ignore its legacy default class/claimant lines so a
+    named executor or later explicit assignment remains authoritative.
+    """
+    explicit = None
+    for body in _bodies(issue, comments):
+        if _PROJECT_TASK_ROLE in body:
+            # Backward compatibility: old generated receipts wrote this
+            # default explicitly. It must not mask an actual assignment.
+            matches = list(_CLAIM_CLASS_RE.finditer(body))
+            matches = [m for m in matches
+                       if not (m.group(1).strip().lower() == "seat-queue"
+                               and "claimant: qdesk-seat-queue" in body)]
+        else:
+            matches = list(_CLAIM_CLASS_RE.finditer(body))
+        if matches:
+            explicit = matches[-1].group(1).strip()
+    if explicit:
+        raw = explicit
+        if raw.lower().startswith("named:"):
+            return "named-executor", raw.split(":", 1)[1].strip()
+        if raw.lower() == "executor":
+            return "executor", "dispatch-executor"
+        return "seat-queue", "qdesk-seat-queue"
+
+    named = None
     for body in _bodies(issue, comments):
         m = _EXECUTOR_OF_RECORD_RE.search(body)
         if m:
-            return "named-executor", m.group(1).strip()
-    body = issue.get("body") or ""
-    m = _SWARM_ROUTE_RE.search(body)
-    if m:
-        if m.group(1) == "build-dispatch":
-            return "executor", "dispatch-executor"
-        return "seat-queue", "qdesk-seat-queue"
+            named = m.group(1).strip()
+    if named:
+        return "named-executor", named
+
+    for body in _bodies(issue, comments):
+        if "<!-- SWARM-DISPATCH" in body:
+            m = _SWARM_ROUTE_RE.search(body)
+            if m:
+                route = m.group(1)
+                if route == "build-dispatch":
+                    return "executor", "dispatch-executor"
+                if route == "project-task-dispatch":
+                    return "seat-queue", "qdesk-seat-queue"
+        if _SWARM_ADMISSION_ROLE in body and _PROJECT_TASK_ROUTE_RE.search(body):
+            return "seat-queue", "qdesk-seat-queue"
+        if _PROJECT_TASK_ROLE in body:
+            return "seat-queue", "qdesk-seat-queue"
     return None, None
 
 
@@ -219,6 +283,16 @@ def plan(candidates, now):
         admission = (cand.get("wall_in_min") is not None
                      and cand["wall_in_min"] <= WALL_ADMISSION_MIN)
         if not (escalated or admission):
+            continue
+        admission = _admission_decision(issue, comments)
+        project_route = _is_project_task_route(issue, comments)
+        if admission == "deferred" or (project_route and admission != "admitted"):
+            reason = ("filing deferred by QUE admission"
+                      if admission == "deferred"
+                      else "project-task route awaits QUE admission")
+            exceptions.append({"issue": issue["number"], "reason": reason,
+                               "kind": "deferred" if admission == "deferred"
+                               else "admission-pending"})
             continue
         gated = is_gated(issue, comments)
         if gated:

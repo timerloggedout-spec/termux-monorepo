@@ -13,7 +13,7 @@
 ## Global Constraints
 
 - Preserve FLY-001…FLY-006 IDs, scopes, participants, cadence, and append-only stores.
-- FLY-005 remains exports/backup coordination; FLY-006 remains non-export pair work; FLY-003 remains confirmations of record.
+- FLY-005 owns exports/backup coordination; FLY-006 owns general pair work; FLY-003 owns confirmations of record.
 - Link to JSONL stores; keep message bodies in their registered stores.
 - Use exact paths, GitHub IDs, and commit SHAs.
 - Distinguish verified, candidate, and unknown relationships.
@@ -25,7 +25,7 @@
 - FLY-005 pointer resolves to the actual FLY-006 protocol/store and linked report.
 - All six registry rows appear exactly once with correct channel boundaries.
 - Topic-to-artifact links target exact existing paths and IDs.
-- The hub does not imply that PR #5893 is merged or that branch-only NSE-021 design is implemented.
+- Represent PR #5893's current lifecycle state exactly; classify branch-only NSE-021 artifacts as design evidence.
 - The stale Context Relationship Graph is described as historical/partial rather than current.
 
 ---
@@ -86,6 +86,6 @@
 - [ ] **Step 2: Run** `python3 scripts/proposals/validate_registry.py`.
 - [ ] **Step 3: Run** `python3 scripts/ci/repo_gate.py`.
 - [ ] **Step 4: Run** `python3 scripts/ci/termux_smoke.py`.
-- [ ] **Step 5: Inspect the final diff** for exact links, scope accuracy, confidence labels, and no channel payload duplication.
+- [ ] **Step 5: Inspect the final diff** for exact links, scope accuracy, confidence labels, and source-store payload preservation.
 - [ ] **Step 6: Record the tested SHA** in the PR and WAIT for required checks on that exact SHA.
 

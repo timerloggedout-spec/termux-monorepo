@@ -10,6 +10,12 @@ Extract reusable concepts from external agent systems, map each concept to one r
 
 CEEL records source provenance and capability evidence. The designated licensing duty owner handles licensing determinations; CEEL consumes the owner's disposition/reference as a separate handoff. Security, privacy, runtime qualification, and production admission retain their existing owners and gates.
 
+## Foundry platform boundary
+
+Treat Microsoft Foundry as a managed Azure platform and control plane. Evaluate separately published components as independent source projects: Microsoft Agent Framework, Foundry Local, Agent Governance Toolkit / ACS, and Microsoft Foundry Skills. Keep the managed platform reference separate from the open-source component candidates.
+
+Platform source: https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry
+
 ## Candidate disposition
 
 | Candidate | Pattern to extract | Primary refTemplates slot | First experiment | Current state |

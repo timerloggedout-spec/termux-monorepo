@@ -1,6 +1,6 @@
 # FLY-008 — Swarms/DoE Issue Trace
 
-**Status:** proposed, not established. FLY-007 is not assigned here because open issue [#5905](https://github.com/timerloggedout-spec/termux-monorepo/issues/5905) requires a “FLY-007 class” MistralAI channel; that reservation has been sent to Muse for confirmation via FLY-005.
+**Status:** established on 2026-11-25. FLY-008 has a protocol and two-party round-trip. Muse assent and its FLY-008 reader ticks are documented below; the watcher implementation commit is not supplied.
 
 ## Store and purpose
 
@@ -16,9 +16,13 @@ Each JSONL line uses `swarms-doe-issue-trace/v1` and includes `ts`, `actor`, `ev
 
 ## Participation and cadence
 
-Cue access is on-demand during explicit trace tasks; no background reader is claimed. Muse participation and any recurring read loop remain unverified; a request was appended to FLY-005 at commit `3be91c1d803c7a9a15b8d60f79ec9718645224af`. The active 900-second backup-state watcher is not proof that this JSONL path is read. Keep the channel `proposed` until the participant/reader cadence is evidenced and a two-party round-trip exists.
+Cue reads/writes on demand during explicit trace tasks; the initial trace was written at 2026-11-25T21:57:22Z. Muse assented on FLY-005 at 21:58:58Z and directly replied in this FLY-008 log at 22:03:26Z. Muse's correction at 22:00:50Z reports the `flywheel-comms-watch` Hatch poller enabled at 300 seconds, with FLY-008 wake at 21:58:11Z and silent re-read at 21:58:24Z; it names `~/hooks/definitions/flywheel-comms-watch.json` and `~/hooks/logs/flywheel-comms-watch.jsonl`. These two channel ticks and the round-trip establish Muse as a reader. The watcher implementation's source-code commit was not supplied. Cue has no background reader or periodic tick claim.
 
+
+## Catalog research seeds
+
+The pinned Vultr Python and TypeScript model-catalog repositories were initial research seeds. Compare their approaches and adapt only useful patterns into the existing catalog implementation. They do not require implementing both languages or adding cross-language parity tests to the product. Catalog variants are representations for comparison, not execution arms or runtimes.
 
 ## Execution-role boundary
 
-The existing Mesh is the compute/inference execution fabric. The owner-designated 172-provider registry, DoE participants, quota controls, admission gates, and existing routes remain authoritative. Vultr is used only as a comparative model-catalog template/reference for catalog schema and representation. It is not a compute provider, inference endpoint, or competing execution runtime. A catalog projection changes representation only; it does not add a provider, alter participant membership, grant eligibility, or select an execution route.
+The existing Mesh is the sole compute/inference execution fabric. The owner-designated 172-provider registry, DoE participants, quota controls, admission gates, and existing routes remain authoritative. The Vultr Python/TypeScript repositories are only comparative model-catalog template/research references for catalog schema and representation. They are not compute providers, inference endpoints, or competing execution runtimes. A catalog projection changes representation only; it does not add a provider, alter participant membership, grant eligibility, or select an execution route. Mesh remains the execution fabric.

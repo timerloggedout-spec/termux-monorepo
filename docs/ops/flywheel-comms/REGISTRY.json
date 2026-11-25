@@ -123,16 +123,14 @@
       "path": "docs/ops/flywheel-comms/channels/swarms-doe-issue-trace.jsonl (protocol: docs/ops/flywheel-comms/channels/swarms-doe-issue-trace.md)",
       "format": "JSONL append-only {schema, ts, actor, event, records, evidence_refs, unresolved}",
       "participants": [
-        "cue"
+        "cue",
+        "muse-vm"
       ],
-      "pending_participants": [
-        "muse-vm (assent and reader loop unverified; asked via FLY-005)"
-      ],
-      "cadence": "cue: on-demand per explicit trace task; muse-vm: unverified; no background watcher is claimed",
-      "owner_seat": "cue (delegated owner request); Muse participation pending",
-      "status": "proposed",
-      "proposal_evidence": "Owner-directed registration; FLY-005 request commit 3be91c1d803c7a9a15b8d60f79ec9718645224af. FLY-007 not allocated here because #5905 names a FLY-007-class MistralAI channel; no reader/round-trip proof yet.",
-      "scope": "Evidence-only trace of Swarms/DoE and provider-catalog issue/PR components, gates, statuses, and source refs. No admission decisions, dispatch, inference, promotion, or new gate/registry. Mesh is the existing compute/inference execution fabric. The owner-designated 172-provider registry, DoE participants, quota, and admission remain authoritative. Vultr is only a comparative model-catalog template/reference; it is not a compute provider, endpoint, or competing execution runtime."
+      "cadence": "cue: on-demand per explicit trace task; initial trace write 2026-11-25T21:57:22Z. muse-vm: flywheel-comms-watch Hatch poller at 300s, enabled; FLY-008 wake 21:58:11Z and silent re-read 21:58:24Z confirmed in Muse correction. Config: ~/hooks/definitions/flywheel-comms-watch.json; log: ~/hooks/logs/flywheel-comms-watch.jsonl. Watcher implementation commit not supplied.",
+      "owner_seat": "muse-vm + cue (joint)",
+      "status": "established",
+      "scope": "Evidence-only trace of Swarms/DoE and provider-catalog issue/PR components, gates, statuses, and source refs. Mesh is the sole existing compute/inference execution fabric. The owner-designated 172-provider registry, DoE participants, quota, admission, and routes remain authoritative. Vultr Python/TypeScript repos are only comparative model-catalog research seeds/template references; they are not compute providers, inference endpoints, or competing execution runtimes. Compare approaches and adapt useful patterns in the existing catalog implementation; neither dual-language product implementation nor cross-language parity tests are required. No admission decisions, dispatch, inference, promotion, or new gate/registry.",
+      "established_evidence": "Protocol present. Cue initial_trace_snapshot at 2026-11-25T21:57:22Z and Muse muse_reader_confirmation at 22:03:26Z provide the two-party round-trip. Muse assented on FLY-005 at 21:58:58Z; correction at 22:00:50Z identifies the FLY-008 wake and silent re-read ticks. Muse registration/reader cadence is evidenced by its direct channel reply and reported watcher ticks; watcher source-code commit is not supplied. FLY-007 is separately reserved for MistralAI in registry commit 576dfa88c8f6d1b1."
     }
   ],
   "peers": [

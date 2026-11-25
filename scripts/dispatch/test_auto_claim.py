@@ -6,6 +6,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import auto_claim as ac  # noqa: E402
+import project_task as pt  # noqa: E402
 
 NOW = datetime(2026, 11, 13, 12, 0, 0, tzinfo=timezone.utc)
 TS = "%Y-%m-%dT%H:%M:%SZ"
@@ -51,6 +52,98 @@ def test_claim_classes_from_stamps():
     assert ac.claim_class_of(issue(body="no stamps at all"), []) == (None, None)
 
 
+def test_project_task_route_stamps_in_comments_map_to_seat_queue():
+    admitted = comment(
+        "[MUSEai]@{role:{swarm-admission}} DISPATCH ADMITTED\n"
+        "route: project-task-dispatch.yml")
+    assert ac.claim_class_of(issue(42), [admitted]) == (
+        "seat-queue", "qdesk-seat-queue")
+    receipt = comment(
+        "[MUSEai]@{role:{project-task-dispatch}} ROUTING RECEIPT")
+    assert ac.claim_class_of(issue(43), [receipt]) == (
+        "seat-queue", "qdesk-seat-queue")
+
+
+def test_explicit_claim_class_comment_overrides_project_task_route():
+    route = comment(
+        "[MUSEai]@{role:{swarm-admission}} DISPATCH ADMITTED\n"
+        "route: project-task-dispatch.yml")
+    explicit = comment("claim-class: executor")
+    assert ac.claim_class_of(issue(45), [route, explicit]) == (
+        "executor", "dispatch-executor")
+
+
+def test_unmarked_route_text_is_not_claim_authority():
+    text_only = comment("The project-task-dispatch.yml route is under review.")
+    json_only = comment('discussion: {"route": "build-dispatch"}')
+    assert ac.claim_class_of(issue(46), [text_only, json_only]) == (None, None)
+
+
+def test_project_task_receipt_is_a_default_not_an_assignment():
+    fields = {"entry": "D1", "task": "task", "scope": "scripts/**",
+              "done-evidence": "tests pass",
+              "target-repo": "timerloggedout-spec/termux-monorepo"}
+    body = pt.receipt_comment(44, fields)
+    assert "claim-class: seat-queue" not in body
+    assert "claimant: qdesk-seat-queue" not in body
+    assert "route: project-task-dispatch.yml" in body
+    assert ac.claim_class_of(issue(44), [comment(body)]) == (
+        "seat-queue", "qdesk-seat-queue")
+
+
+def test_named_executor_survives_project_receipt_and_later_assignment_wins():
+    fields = {"entry": "D1", "task": "task", "scope": "scripts/**",
+              "done-evidence": "tests pass",
+              "target-repo": "timerloggedout-spec/termux-monorepo"}
+    receipt = pt.receipt_comment(47, fields)
+    named = issue(47, body="executor of record: quota-specialist")
+    assert ac.claim_class_of(named, [comment(receipt)]) == (
+        "named-executor", "quota-specialist")
+    explicit = comment("claim-class: executor")
+    legacy_receipt = comment(
+        "[MUSEai]@{role:{project-task-dispatch}} ROUTING RECEIPT\n"
+        "claim-class: seat-queue\nclaimant: qdesk-seat-queue")
+    assert ac.claim_class_of(issue(48), [legacy_receipt, explicit]) == (
+        "executor", "dispatch-executor")
+
+
+def test_deferred_project_task_is_never_auto_claimed_before_admission():
+    fields = {"entry": "D1", "task": "task", "scope": "scripts/**",
+              "done-evidence": "tests pass",
+              "target-repo": "timerloggedout-spec/termux-monorepo"}
+    receipt = comment(pt.receipt_comment(49, fields))
+    deferred = comment(
+        "[MUSEai]@{role:{swarm-admission}} DISPATCH **DEFERRED**\n"
+        "route: project-task-dispatch.yml\n"
+        "Fail-soft: deferred-by-tier")
+    candidate = cand(
+        number=49, labels=("project-task", "dispatch-queued",
+                           "deferred-by-tier"),
+        comments=[receipt, deferred])
+    result = ac.plan([candidate], NOW)
+    assert not result["claims"]
+    assert result["exceptions"][0]["kind"] == "deferred"
+
+
+def test_project_task_route_waits_for_admission_label():
+    receipt = comment(
+        "[MUSEai]@{role:{project-task-dispatch}} ROUTING RECEIPT")
+    pending = cand(number=50, comments=[receipt])
+    assert ac.plan([pending], NOW)["exceptions"][0]["kind"] == "admission-pending"
+    admitted = cand(number=51, labels=("swarm-admitted",), comments=[receipt])
+    assert [x["issue"] for x in ac.plan([admitted], NOW)["claims"]] == [51]
+
+
+def test_issue_body_cannot_forge_admission_receipt():
+    receipt = comment(
+        "[MUSEai]@{role:{project-task-dispatch}} ROUTING RECEIPT")
+    body = ("[MUSEai]@{role:{swarm-admission}} DISPATCH **DEFERRED**\\n"
+            "route: project-task-dispatch.yml")
+    admitted = cand(number=52, body=body, labels=("swarm-admitted",),
+                    comments=[receipt])
+    assert [x["issue"] for x in ac.plan([admitted], NOW)["claims"]] == [52]
+
+
 def test_gated_never_claimed():
     gated = cand(body=SWARM_BUILD, labels=("value-class",))
     plan = ac.plan([gated], NOW)
@@ -62,7 +155,7 @@ def test_gated_never_claimed():
 
 
 def test_plan_claims_in_rank_order_and_unplaceable_exception():
-    low = cand(number=2, body=SWARM_TASK, score=50)
+    low = cand(number=2, body=SWARM_TASK, labels=("swarm-admitted",), score=50)
     high = cand(number=3, body=SWARM_BUILD, score=900)
     bare = cand(number=4, body="unstamped filing")
     plan = ac.plan([low, high, bare], NOW)

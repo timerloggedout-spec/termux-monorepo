@@ -108,7 +108,7 @@ Migration rules:
 
 ## 8. Current collaboration registration boundary
 
-`chatgpt` remains the separate shared-Google Web2API session tracked by [QUE #5885](https://github.com/timerloggedout-spec/termux-monorepo/issues/5885). This design registers the GitHub connector surface as `chatgpt-github` for scoped FLY-006 project collaboration. The two surfaces retain separate readiness, permissions, and evidence.
+`chatgpt` remains the separate shared-Google Web2API session tracked by [QUE #5885](https://github.com/timerloggedout-spec/termux-monorepo/issues/5885). This PR proposes the GitHub connector surface as `chatgpt-github` for scoped FLY-006 project collaboration; its first ACK is recorded while registry and protocol review remain open. The two surfaces retain separate readiness, permissions, and evidence.
 
 ## 9. Acceptance
 

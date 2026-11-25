@@ -124,13 +124,17 @@ class DeepSeekWafSessionTests(unittest.TestCase):
         self.assertEqual(session["cookies"]["aws-waf-token"], "new-waf-value")
         self.assertEqual(persisted["cookies"]["aws-waf-token"], "new-waf-value")
 
-    def test_workflow_cache_is_repo_and_ref_scoped_without_restore_prefix(self):
+    def test_deepseek_workflow_is_disabled_and_non_invoking(self):
         workflow = (Path(__file__).parent.parent / ".github/workflows/deepseek-ci.yml").read_text(
             encoding="utf-8"
         )
-        self.assertIn("github.repository_id", workflow)
-        self.assertIn("github.ref", workflow)
-        self.assertNotIn("restore-keys:", workflow)
+        self.assertIn("workflow_dispatch:", workflow)
+        self.assertIn("if: ${{ false }}", workflow)
+        self.assertIn("permissions: {}", workflow)
+        for disabled_trigger in ("pull_request:", "issue_comment:", "pull_request_review_comment:"):
+            self.assertNotIn(disabled_trigger, workflow)
+        for invocation_marker in ("python -m deepcli.ci_mode", "DEEPSEEK_", "secrets."):
+            self.assertNotIn(invocation_marker, workflow)
 
     def test_resumed_session_keeps_cached_waf_without_refresh_flag(self):
         with tempfile.TemporaryDirectory() as temp_dir, patch.dict(

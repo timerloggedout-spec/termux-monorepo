@@ -27,9 +27,11 @@ def test_price_classification():
     assert provider_model_catalog.price_classification({"pricing": {"prompt": 0, "completion": 0}}) == "free_zero_price"
     assert provider_model_catalog.price_classification({"pricing": {"prompt": "0.0", "completion": "0.0"}}) == "free_zero_price"
 
-    # Float conversions
+    # Exact decimal parsing preserves tiny nonzero prices.
     assert provider_model_catalog.price_classification({"pricing": {"prompt": "0.000", "completion": "0.000"}}) == "free_zero_price"
     assert provider_model_catalog.price_classification({"pricing": {"prompt": "0.001", "completion": "0.002"}}) == "paid"
+    assert provider_model_catalog.price_classification({"pricing": {"prompt": "1e-10000", "completion": "0"}}) == "paid"
+    assert provider_model_catalog.price_classification({"pricing": {"prompt": "-0.001", "completion": "0"}}) == "unknown"
 
     # Invalid or non-dict pricing
     assert provider_model_catalog.price_classification({"pricing": {}}) == "unknown"

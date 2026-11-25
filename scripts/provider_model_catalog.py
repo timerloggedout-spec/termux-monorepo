@@ -13,7 +13,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
-import math
+from decimal import Decimal, InvalidOperation
 import os
 import re
 import tempfile
@@ -222,19 +222,19 @@ def price_classification(data: dict) -> str:
     pricing = data.get("pricing")
     if not isinstance(pricing, dict):
         return "unknown"
-    values = []
+    values: list[Decimal] = []
     for key in ("prompt", "completion"):
         value = pricing.get(key)
         if isinstance(value, bool) or value is None:
             return "unknown"
         try:
-            number = float(value)
-        except (TypeError, ValueError, OverflowError):
+            number = Decimal(str(value))
+        except (InvalidOperation, TypeError, ValueError):
             return "unknown"
-        if not math.isfinite(number):
+        if not number.is_finite():
             return "unknown"
         values.append(number)
-    if values == [0, 0]:
+    if values == [Decimal(0), Decimal(0)]:
         return "free_zero_price"
     return "paid" if min(values) >= 0 else "unknown"
 

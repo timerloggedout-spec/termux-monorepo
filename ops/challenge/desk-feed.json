@@ -729,7 +729,7 @@
               "omni"
             ],
             "note": "endpoints exist in scripts/provider_model_catalog.py (MSM catalog 16); no research_providers endpoint/admission => not batch-wired. Felo also Actions-egress blocked.",
-            "promotion": "add endpoint to llm_api_hub/server/research_providers.py + research-provider-admission/v1 policy entry (+ verified secret name); then batch proof run."
+            "promotion": "add endpoint to llm_api_hub/server/research_providers.py + provider-route-admission/v2 policy entry (+ verified secret name); then batch proof run."
           },
           "inference_only": {
             "count": 63,

@@ -10,7 +10,7 @@ Read these before changing the briefing/evidence system:
 
 1. `docs/briefing/DAILY-DIGEST-SPEC.md` — five-item selection and item contract.
 2. `docs/research/BRIEFING-INGEST.md` — provenance, evidence-status, version/date, confidence, and item fields.
-3. `docs/research/FOSS-PROCUREMENT-MATRIX.md` — inspectable procurement dimensions and decision states.
+3. `research/legal-licensing/FOSS-PROCUREMENT-MATRIX.md` — research-only source observations and procurement context.
 4. `docs/research/FORESIGHT-RADAR.md` — H0/H1/H2/H3 semantics.
 5. `config/foresight_digest_sources.json` — standing source families and lane registry.
 6. `docs/ops/FORESIGHT-EVIDENCE-SPINE.md` — canonical JSONL evidence boundary.
@@ -115,7 +115,7 @@ https://github.com/ggml-org/llama.cpp/releases
 
 ## FOSS procurement posture
 
-The existing procurement matrix remains the decision-support record. No aggregate vendor score is introduced by this pass.
+The procurement matrix is research-only and lives in `research/legal-licensing/`. The production procurement ledger records technical readiness and evidence; legal-source observations are stored separately. No aggregate vendor score is introduced by this pass.
 
 Recommended states arising from the evidence:
 
@@ -151,7 +151,8 @@ ATES is an observation layer; it does not replace correctness or review evidence
 - `data/briefing/briefings/2026-09-30.json`
 - `docs/briefing/CONTRIBUTOR-INTEGRATION-2026-09-30.md`
 - `data/briefing/resources.jsonl` — append today's primary-source observations
-- `data/briefing/procurement.jsonl` — append inspectable procurement records
+- `data/briefing/procurement.jsonl` — append technical procurement records
+- `research/legal-licensing/PROCUREMENT-LICENSE-OBSERVATIONS.jsonl` — preserve migrated legacy fields with original record references and unverified status
 - `data/briefing/radar.jsonl` — append/update material H1/H2 signals
 
 The dated briefing is a snapshot; the JSONL registries are append-oriented evidence stores. Corrections must append a newer observation rather than overwrite history.

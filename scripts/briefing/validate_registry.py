@@ -56,7 +56,7 @@ def validate_resources():
             raise SystemExit(f"resources.jsonl:{n}: invalid confidence")
 
 def validate_procurement():
-    required = ["resource_id","project","canonical_source","license","maintenance","portability","offline_capability","interoperability","reproducibility","provenance","dependency_risk","lock_in_risk","security_surface","resource_cost","operational_fit","horizon","confidence","decision_status","version_or_commit","observed_at"]
+    required = ["resource_id","project","canonical_source","maintenance","portability","offline_capability","interoperability","reproducibility","provenance","dependency_risk","lock_in_risk","security_surface","resource_cost","operational_fit","horizon","confidence","decision_status","version_or_commit","observed_at"]
     for n,r in load_jsonl(DATA/"procurement.jsonl"):
         require(r, required, "procurement.jsonl", n)
         if not uri(r["canonical_source"]):

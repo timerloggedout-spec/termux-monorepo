@@ -11,7 +11,7 @@ SHA = "a" * 40
 
 
 def snapshot():
-    return (json.dumps({"schema_version": "msm-provider-recon-v1", "sources": [
+    return (json.dumps({"schema_version": "msm-provider-recon-v2", "sources": [
             {"repo": repo, "commit_sha": SHA, "files": {"data": {
                 "url": f"https://raw.githubusercontent.com/{repo}/{SHA}/data", "sha256": "b" * 64}}}
             for repo in ("mnfst/awesome-free-llm-apis", "tashfeenahmed/freellmapi")],

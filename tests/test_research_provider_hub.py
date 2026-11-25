@@ -20,7 +20,7 @@ def client():
 def entry(**updates):
     value = {
         "provider": "groq", "model": "llama-3.3-70b-versatile",
-        "free_account_verified": True, "terms_accepted": True,
+        "account_type": "free", "free_account_verified": True, "operator_authorized": True,
         "data_class": "public",
         "expires_at": (datetime.now(timezone.utc) + timedelta(hours=2)).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
     }
@@ -30,7 +30,7 @@ def entry(**updates):
 
 def policy_file(tmp_path, entries):
     path = tmp_path / "admission.json"
-    path.write_text(json.dumps({"schema": "research-provider-admission/v1", "entries": entries}))
+    path.write_text(json.dumps({"schema": "provider-route-admission/v2", "entries": entries}))
     return path
 
 
@@ -60,13 +60,23 @@ def test_exact_admission_invokes_pinned_transport_and_supports_sse(client, monke
 
 @pytest.mark.parametrize("overrides", [
     {"free_account_verified": False}, {"free_account_verified": "true"},
-    {"terms_accepted": False}, {"data_class": "private"},
+    {"operator_authorized": False}, {"operator_authorized": "true"}, {"data_class": "private"},
     {"expires_at": "2000-01-01T00:00:00Z"}, {"model": "llama-*"},
-    {"account_type": "paid"}, {"account_type": "trial"},
+    {"account_type": "paid"}, {"account_type": "trial"}, {"account_type": "promotional"}, {"account_type": "evaluation"}, {"account_type": None},
 ])
 def test_invalid_or_unverified_policy_denied(client, monkeypatch, tmp_path, overrides):
     monkeypatch.setenv("GROQ_API_KEY", "secret")
     monkeypatch.setenv("LLM_API_HUB_PROVIDER_POLICY", str(policy_file(tmp_path, [entry(**overrides)])))
+    response = client.post("/v1/chat/completions", json=request_body())
+    assert response.status_code == 403
+
+
+
+def test_missing_account_type_denied(client, monkeypatch, tmp_path):
+    monkeypatch.setenv("GROQ_API_KEY", "secret")
+    policy = entry()
+    policy.pop("account_type")
+    monkeypatch.setenv("LLM_API_HUB_PROVIDER_POLICY", str(policy_file(tmp_path, [policy])))
     response = client.post("/v1/chat/completions", json=request_body())
     assert response.status_code == 403
 
@@ -79,6 +89,10 @@ def test_absent_malformed_or_trial_policy_denied_and_not_listed(client, monkeypa
     bad = tmp_path / "bad.json"
     bad.write_text("not json")
     monkeypatch.setenv("LLM_API_HUB_PROVIDER_POLICY", str(bad))
+    assert client.post("/v1/chat/completions", json=request_body()).status_code == 403
+    legacy = tmp_path / "legacy-v1.json"
+    legacy.write_text(json.dumps({"schema": "research-provider-admission/v1", "entries": [entry()]}))
+    monkeypatch.setenv("LLM_API_HUB_PROVIDER_POLICY", str(legacy))
     assert client.post("/v1/chat/completions", json=request_body()).status_code == 403
     monkeypatch.setenv("LLM_API_HUB_PROVIDER_POLICY", str(policy_file(tmp_path, [entry(free_account_verified=False)])))
     assert all(not m["id"].startswith("groq/") for m in client.get("/v1/models").json()["data"])
@@ -139,7 +153,7 @@ def test_malformed_account_status_fails_closed(client, monkeypatch, tmp_path, ba
 
 def test_conflicting_duplicate_denied(client, monkeypatch, tmp_path):
     monkeypatch.setenv("GROQ_API_KEY", "secret")
-    monkeypatch.setenv("LLM_API_HUB_PROVIDER_POLICY", str(policy_file(tmp_path, [entry(), entry(terms_accepted=False)])))
+    monkeypatch.setenv("LLM_API_HUB_PROVIDER_POLICY", str(policy_file(tmp_path, [entry(), entry(operator_authorized=False)])))
     assert client.post("/v1/chat/completions", json=request_body()).status_code == 403
 
 def test_complete_rejects_payload_model_mismatch(monkeypatch, tmp_path):

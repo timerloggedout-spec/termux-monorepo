@@ -32,6 +32,12 @@ class ResourceIndexTests(unittest.TestCase):
             self.assertEqual(candidate[key], providers["model_candidates"][0][key])
         self.assertFalse(any(x["runtime_eligible"] is not False for x in a["resources"]))
 
+    def test_legacy_provider_snapshot_schema_is_rejected(self):
+        registry, provider = self.fixtures()
+        provider["schema_version"] = "msm-provider-recon-v1"
+        with self.assertRaises(ri.IndexError):
+            ri.build_index(registry, provider)
+
     def test_registry_and_provider_fail_closed(self):
         reg, prov = self.fixtures()
         for flag in (True, None, 0, "false"):

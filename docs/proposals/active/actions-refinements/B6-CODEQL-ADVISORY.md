@@ -9,7 +9,6 @@ The public test-and-build environment’s enabled administrative control surface
 | Candidate-review criterion | Result |
 |---|---|
 | Action | GitHub’s official `github/codeql-action` v4, pinned to commit `ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd`. |
-| License and use | MIT-licensed action. The CodeQL project permits use on open-source repositories hosted on GitHub. |
 | Trigger | Pull requests changing Python, JavaScript/TypeScript, or GitHub Actions sources; a weekly Monday 03:23 UTC baseline; and controlled manual dispatch. |
 | Language/build scope | `actions`, `javascript-typescript`, and `python`, each with `build-mode: none`. The control does not claim coverage of the repository’s Rust trees or introduce an unreliable multi-project compiled-language autobuild. |
 | Permission boundary | Workflow scope is `permissions: {}`. The analysis job receives only `contents: read` and `security-events: write`. Checkout disables persisted credentials. |

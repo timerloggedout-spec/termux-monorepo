@@ -73,8 +73,8 @@ def test_sambanova_requires_separate_provider_key_even_with_admin_access(monkeyp
     model = 'Meta-Llama-3.3-70B-Instruct'
     path = tmp_path / 'synthetic-admission.json'
     path.write_text(json.dumps({'schema': runtime.SCHEMA, 'entries': [{
-        'provider': 'sambanova', 'model': model, 'free_account_verified': True,
-        'terms_accepted': True, 'data_class': 'public',
+        'provider': 'sambanova', 'model': model, 'account_type': 'free', 'free_account_verified': True,
+        'operator_authorized': True, 'data_class': 'public',
         'expires_at': (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat().replace('+00:00', 'Z'),
     }]}))
     monkeypatch.setenv('LLM_API_HUB_PROVIDER_POLICY', str(path))

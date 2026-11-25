@@ -3,6 +3,7 @@ import sys
 from datetime import datetime, timedelta, timezone
 from email.message import Message
 from pathlib import Path
+import json
 
 import pytest
 
@@ -11,6 +12,7 @@ sys.path.insert(0, str(HERE))
 import cadence_kick as k  # noqa: E402
 import que_feed_collect as q  # noqa: E402
 import refresh_api_backoff as refresh_backoff  # noqa: E402
+import persist_api_backoff as persist_backoff  # noqa: E402
 
 
 def _run(created, conclusion, updated=None):
@@ -331,6 +333,59 @@ def test_producer_workflows_refresh_master_marker_and_keep_ten_minute_cadence():
         assert "path: .que-backoff-master" in workflow
         assert "scripts/que/refresh_api_backoff.py" in workflow
         assert "ops/que/feeds/api-backoff.json" in workflow
+
+def test_rerun_without_event_marker_publishes_against_expired_master_marker(
+        tmp_path):
+    event_marker = tmp_path / "event-sha" / "ops/que/feeds/api-backoff.json"
+    master_marker = tmp_path / "master" / "ops/que/feeds/api-backoff.json"
+    master_marker.parent.mkdir(parents=True)
+    master_marker.write_text(json.dumps({
+        "schema": "que.api-backoff/v1",
+        "not_before": "2026-11-25T17:00:00Z",
+        "source": "github-api-response",
+    }))
+    assert not event_marker.exists()
+
+    status = persist_backoff.persist(master_marker, "2026-11-25T17:22:40Z")
+
+    assert status == "persisted master API retry deadline 2026-11-25T17:22:40Z"
+    assert json.loads(master_marker.read_text())["not_before"] == (
+        "2026-11-25T17:22:40Z")
+    assert not event_marker.exists()
+
+
+def test_deadline_publisher_checks_out_and_rereads_current_master_each_retry():
+    collector = (q.ROOT / ".github/workflows/que-feed-collect.yml").read_text()
+    checkout = collector.split(
+        "      - name: Checkout current master for API backoff publication", 1
+    )[1].split("      - name: Persist long API retry window", 1)[0]
+    publisher = collector.split(
+        "      - name: Persist long API retry window", 1
+    )[1].split("      - name: Commit feeds + events", 1)[0]
+
+    assert "ref: master" in checkout
+    assert "path: .que-backoff-publish" in checkout
+    fetch = publisher.index('git -C "$repo" fetch origin master')
+    reset = publisher.index('git -C "$repo" reset --hard FETCH_HEAD')
+    merge = publisher.index("scripts/que/persist_api_backoff.py")
+    push = publisher.index(
+        'git -C "$repo" push origin HEAD:refs/heads/master')
+    assert fetch < reset < merge < push
+
+
+def test_master_deadline_is_not_replaced_by_an_earlier_candidate(tmp_path):
+    marker = tmp_path / "api-backoff.json"
+    marker.write_text(json.dumps({
+        "schema": "que.api-backoff/v1",
+        "not_before": "2026-11-25T18:00:00Z",
+        "source": "github-api-response",
+    }))
+    original = marker.read_text()
+
+    status = persist_backoff.persist(marker, "2026-11-25T17:22:40Z")
+
+    assert status == "kept current master API retry deadline 2026-11-25T18:00:00Z"
+    assert marker.read_text() == original
 
 
 def test_expired_persisted_backoff_is_removed(tmp_path):

@@ -48,50 +48,48 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
         run: python3 scripts/que/que_feed_collect.py
+      - name: Checkout current master for API backoff publication
+        if: ${{ always() && steps.collect.outputs.rate_limit_defer_until != '' }}
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app.outputs.token }}
+          ref: master
+          path: .que-backoff-publish
+          persist-credentials: true
+          sparse-checkout: |
+            ops/que/feeds/api-backoff.json
+          sparse-checkout-cone-mode: false
       - name: Persist long API retry window
         if: ${{ always() && steps.collect.outputs.rate_limit_defer_until != '' }}
         env:
           RETRY_NOT_BEFORE: ${{ steps.collect.outputs.rate_limit_defer_until }}
         run: |
-          python3 - <<'PY'
-          import datetime as dt
-          import json
-          import os
-          from pathlib import Path
-
-          value = os.environ["RETRY_NOT_BEFORE"]
-          until = dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
-          if until.tzinfo is None:
-              raise SystemExit("retry deadline must be timezone-aware")
-          normalized = until.astimezone(dt.timezone.utc).isoformat().replace(
-              "+00:00", "Z")
-          path = Path("ops/que/feeds/api-backoff.json")
-          path.parent.mkdir(parents=True, exist_ok=True)
-          path.write_text(json.dumps({
-              "schema": "que.api-backoff/v1",
-              "not_before": normalized,
-              "source": "github-api-response"
-          }, indent=2) + "\n")
-          print(f"Persisted QUE API not-before deadline: {normalized}")
-          PY
-          git config user.name "termux-fleet-swarm[bot]"
-          git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
-          git add ops/que/feeds/api-backoff.json
-          if ! git diff --cached --quiet; then
-            git commit -m "que: persist API retry deadline"
-            pushed=0
-            for attempt in 1 2 3; do
-              if git push; then
-                pushed=1
-                break
-              fi
-              echo "push rejected (attempt $attempt) — rebasing"
-              git pull --rebase origin master
-            done
-            if [ "$pushed" -ne 1 ]; then
-              echo "failed to persist API retry deadline after 3 pushes" >&2
-              exit 1
+          set -eu
+          repo=.que-backoff-publish
+          git -C "$repo" config user.name "termux-fleet-swarm[bot]"
+          git -C "$repo" config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
+          pushed=0
+          for attempt in 1 2 3; do
+            git -C "$repo" fetch origin master
+            git -C "$repo" reset --hard FETCH_HEAD
+            python3 scripts/que/persist_api_backoff.py \
+              "$repo/ops/que/feeds/api-backoff.json" "$RETRY_NOT_BEFORE"
+            git -C "$repo" add -- ops/que/feeds/api-backoff.json
+            if git -C "$repo" diff --cached --quiet; then
+              echo "master already has an equal or later API retry deadline"
+              pushed=1
+              break
             fi
+            git -C "$repo" commit -m "que: persist API retry deadline"
+            if git -C "$repo" push origin HEAD:refs/heads/master; then
+              pushed=1
+              break
+            fi
+            echo "push rejected (attempt $attempt) — rereading current master marker"
+          done
+          if [ "$pushed" -ne 1 ]; then
+            echo "failed to persist API retry deadline after 3 pushes" >&2
+            exit 1
           fi
       - name: Commit feeds + events (only on change)
         run: |

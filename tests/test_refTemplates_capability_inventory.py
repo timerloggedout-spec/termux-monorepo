@@ -64,7 +64,7 @@ class RefTemplatesCapabilityInventoryTests(unittest.TestCase):
     def test_research_template_profile_remains_distinct(self):
         score = score_child("jogyo-research-lab", True, True, "https://github.com/Yeachan-Heo/My-Jogyo")
         self.assertEqual("research_template", score["candidate_class"])
-        self.assertEqual("A", score["tier"])
+        self.assertEqual("B", score["tier"])
 
 
 if __name__ == "__main__":

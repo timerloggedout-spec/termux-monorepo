@@ -27,14 +27,23 @@ def _core_snapshot(remaining, limit=5000):
     }
 
 
-def test_preflight_uses_a_live_derived_reserve(monkeypatch):
+def test_preflight_uses_authoritative_headers_and_derived_reserve(monkeypatch):
+    def snapshot(remaining):
+        headers = Message()
+        headers["X-RateLimit-Limit"] = "5000"
+        headers["X-RateLimit-Remaining"] = str(remaining)
+        headers["X-RateLimit-Reset"] = str(
+            int((datetime.now(timezone.utc) + timedelta(minutes=20)).timestamp())
+        )
+        return _core_snapshot(remaining), headers
+
     monkeypatch.setattr(dw, "_request",
-                        lambda *_args, **_kwargs: _core_snapshot(499))
+                        lambda *_args, **_kwargs: snapshot(499))
     with pytest.raises(dw.RateLimitDeferred, match="499/5000"):
         dw._rate_limit_preflight("installation-token")
 
     monkeypatch.setattr(dw, "_request",
-                        lambda *_args, **_kwargs: _core_snapshot(500))
+                        lambda *_args, **_kwargs: snapshot(500))
     budget = dw._rate_limit_preflight("installation-token")
     assert budget["reserve"] == 500
     assert budget["remaining"] == 500
@@ -88,6 +97,30 @@ def test_secondary_limit_honors_retry_after_before_hourly_reset(monkeypatch):
                     "installation-token")
     assert timedelta(seconds=74) <= caught.value.defer_until - before \
         <= timedelta(seconds=76)
+
+
+def test_secondary_limit_without_retry_after_uses_minute_cooldown(monkeypatch):
+    reset = int((datetime.now(timezone.utc)
+                 + timedelta(hours=1)).timestamp())
+    headers = Message()
+    headers["X-RateLimit-Remaining"] = "2500"
+    headers["X-RateLimit-Reset"] = str(reset)
+    error = urllib.error.HTTPError(
+        "https://api.github.com/repos/example/repo/issues",
+        403, "Forbidden", headers,
+        io.BytesIO(b'{"message":"You have exceeded a secondary rate limit"}'),
+    )
+
+    def fail_request(*_args, **_kwargs):
+        raise error
+
+    monkeypatch.setattr(dw.urllib.request, "urlopen", fail_request)
+    before = datetime.now(timezone.utc)
+    with pytest.raises(dw.RateLimitDeferred) as caught:
+        dw._request("GET", "https://api.github.com/repos/example/repo/issues",
+                    "installation-token")
+    delta = caught.value.defer_until - before
+    assert timedelta(seconds=59) <= delta <= timedelta(seconds=61)
 
 
 def test_permission_403_remains_a_hard_error(monkeypatch):

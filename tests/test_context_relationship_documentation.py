@@ -1,10 +1,35 @@
+import re
 from pathlib import Path
+
+import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def read(relative_path):
     return (ROOT / relative_path).read_text()
+
+
+@pytest.mark.parametrize(
+    ("page", "target"),
+    [
+        ("docs/icm/routing.md", "CLAUDE.md"),
+        ("docs/icm/objects/governance/CONTEXT.hum.md", "CLAUDE.md"),
+        ("docs/icm/objects/governance/CONTEXT.md", "CLAUDE.md"),
+        ("docs/icm/maintenance/04_promote/CONTEXT.hum.md", "CLAUDE.md"),
+        ("docs/icm/maintenance/04_promote/CONTEXT.md", "CLAUDE.md"),
+        ("docs/icm/processes/change-and-validate.md", "CLAUDE.md"),
+        ("docs/icm/_meta/method-coverage.md", "docs/icm/CLAUDE.md"),
+    ],
+)
+def test_icm_guidance_links_resolve_to_the_intended_entrypoint(page, target):
+    content = read(page)
+    links = re.findall(r"\]\(([^\s)]+)\)", content)
+    paths = {(ROOT / page).parent / link.split("#", 1)[0] for link in links}
+    expected = ROOT / target
+    assert expected.is_file()
+    assert expected in {path.resolve() for path in paths}
+    assert not any(path.name == "AGENTS.md" for path in paths)
 
 
 def test_claude_icm_catalog_routes_context_reconnaissance():

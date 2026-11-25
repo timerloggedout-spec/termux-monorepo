@@ -4,7 +4,7 @@ universe: live
 status: verified
 consumes:
   - ../objects/governance/change-control.md
-  - ../../../AGENTS.md
+  - ../../../CLAUDE.md
   - ../../../docs/proposals/registry.yaml
 produces:
   - scoped feature branch
@@ -27,10 +27,12 @@ Skipping registration, using raw `master`, or treating unrelated gate failures a
 
 ## Steps
 
+The [repository execution defaults](../../../CLAUDE.hum.md#execution-defaults) define the integration base, evidence requirements, and required gates used in steps 2–4.
+
 1. Read the active proposal registry and select or register the item. Cite `docs/proposals/registry.yaml` and `docs/proposals/PROCESS.md:31-36`.
-2. Create a feature branch from `master-staging`, not raw `master`. Cite `AGENTS.md:18-29`.
-3. Implement only the item scope and record the `Implements: <ITEM-ID>` reference in the commit or pull request. Cite `AGENTS.md:20-29`.
-4. Run `python3 scripts/ci/repo_gate.py` and `python3 scripts/ci/termux_smoke.py`; separate pre-existing failures from branch changes. Cite `AGENTS.md:20-24`.
+2. Create a feature branch from `master-staging`, not raw `master`.
+3. Implement only the item scope and record the `Implements: <ITEM-ID>` reference in the commit or pull request.
+4. Run `python3 scripts/ci/repo_gate.py` and `python3 scripts/ci/termux_smoke.py`; separate pre-existing failures from branch changes.
 5. Present the branch and evidence for review; do not merge, force-push, rotate credentials, or change protected settings without explicit operator authority. Cite `docs/proposals/AGENTIC-PERMISSIONS.md:9-27`.
 
 ## If you change this
@@ -50,5 +52,5 @@ Skipping registration, using raw `master`, or treating unrelated gate failures a
 ## See
 
 - Objects: [`../objects/governance/change-control.md`](../objects/governance/change-control.md)
-- Source: [`AGENTS.md`](../../../AGENTS.md)
+- Source: [`CLAUDE.md`](../../../CLAUDE.md)
 - Source: [`docs/proposals/PROCESS.md`](../../proposals/PROCESS.md)

@@ -8,7 +8,7 @@ One job: turn a verified ICM map change into a focused, reviewable repository up
 |---|---|---|
 | Working | `../03_verify/output/verification-record.md` | Provides map-specific validation evidence and blockers; created by the prior run stage. |
 | Reference | [`../../objects/governance/change-control.md`](../../objects/governance/change-control.md) | Defines branch, work-item, gate, and human-only boundaries. |
-| Reference | [`../../../../AGENTS.md`](../../../../AGENTS.md) | Defines the repository’s governance sequence and `master-staging` validation rule. |
+| Reference | [`../../../../CLAUDE.md`](../../../../CLAUDE.md) | Defines the repository’s `master-staging` integration default and required gates. |
 | Reference | [`../../_shared/maintenance-rules.md`](../../_shared/maintenance-rules.md) | Preserves the documentation-only scope. |
 
 ## Process

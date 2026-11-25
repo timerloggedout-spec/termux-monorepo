@@ -11,11 +11,10 @@ The Linguist contact surface uses one canonical human source for each agent-faci
 | Surface | Canonical human source | Generated projection | Mode |
 |---|---|---|---|
 | Root README | `README.hum.md` | `README.md` | Human-readable L33t/Grimoire display |
-| Root agent guidance | `AGENTS.hum.md` | `AGENTS.md` | Machine L33t/Grimoire projection |
 | Root Claude guidance | `CLAUDE.hum.md` | `CLAUDE.md` | Machine L33t/Grimoire projection |
 | ICM contact tree | Every `*.hum.md` contact source under `docs/icm/` | Matching `.md` path | Machine L33t/Grimoire projection |
 
-The ICM contact tree includes `AGENTS`, `CLAUDE`, `CONTEXT`, and `README` documents. The projection generator recognizes a human source named `NAME.hum.md` and writes its machine projection to `NAME.md`.
+The ICM contact tree includes `CLAUDE`, `CONTEXT`, and `README` documents. The projection generator recognizes a human source named `NAME.hum.md` and writes its machine projection to `NAME.md`.
 
 ## Obfuscation Boundary
 

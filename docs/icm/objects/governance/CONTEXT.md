@@ -7,7 +7,7 @@ One job: route a planned tracked change to the controls that determine whether i
 ## Inputs
 
 - Object index: [`../_index.md`](../_index.md)
-- §19§ guidance: [`../../../../§02§.md`](../../../../AGENTS.md)
+- §19§ guidance: [`../../../../§05§.md`](../../../../CLAUDE.md)
 - Proposal §17§: [`../../../../docs/proposals/§17§.md`](../../../../docs/proposals/PROCESS.md)
 - Active work registry: [`../../../../docs/proposals/registry.yaml`](../../../../docs/proposals/registry.yaml)
 

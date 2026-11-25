@@ -36,3 +36,18 @@ See root `.gitmodules`:
 AuditEngine_fork, batteries_fork, content-agent-routing-promptbase_fork, cost-of-remembering_fork, icm-architect_fork, icm-cctv_fork, interpretable-context-methodology_fork, mcp-android-ssh_fork, term_mcp_deepseek_fork, termux-mcp-server_fork, lego_fork
 
 Pins intentional; no auto-advance without dual-gate green. Flywheel components remain metadata-only until a real customized fork and compatibility evidence exist.
+
+## Capability pattern candidates (metadata-first)
+
+| Category | Slot | Preferred SOURCE | Disposition |
+|---|---|---|---|
+| 01_Agent_Runtime | microsoft-agent-framework | https://github.com/microsoft/agent-framework | Concept adaptation; runtime tournament |
+| 01_Agent_Runtime | foundry-local | https://github.com/microsoft/Foundry-Local | Local inference compatibility experiment |
+| 05_Safety_Observability | agent-governance-toolkit | https://github.com/microsoft/agent-governance-toolkit | ACS policy-contract adaptation |
+| 05_Safety_Observability | foundry-e2e-agent-observability-workshop | https://github.com/Azure-Samples/microsoft-foundry-e2e-agent-observability-workshop | Observability/evaluation pipeline pattern |
+| 07_Prompt_Context | microsoft-foundry-skills | https://github.com/microsoft/skills/tree/main/.github/plugins/azure-skills/skills/microsoft-foundry | Selective instruction-pattern harvest |
+| 11_Evaluation_Quality | assert | https://github.com/responsibleai/ASSERT | First evaluation-pattern experiment |
+| 12_External_Agents | frontier-week-hack | https://github.com/microsoft/FrontierWeekHack | Agent lifecycle reference patterns |
+| 12_External_Agents | agentic-factory-hack | https://github.com/microsoft/agentic-factory-hack | Multi-agent architecture reference |
+
+These entries are concept-adaptation targets. The category-aware score reports metadata readiness; task efficacy requires controlled experiments. Licensing disposition is routed to the designated licensing duty owner.

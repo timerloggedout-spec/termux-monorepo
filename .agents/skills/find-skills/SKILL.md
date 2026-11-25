@@ -148,3 +148,15 @@ I can still help you with this task directly! Would you like me to proceed?
 If this is something you do often, you could create your own skill:
 npx @agentic/skills@latest init my-xyz-skill
 ```
+
+
+## Repository ChatGPT Session Catalog
+
+Use the repository's pinned session catalog as a local discovery surface before starting an external skill search:
+
+- Current snapshot pointer: `ops/capabilities/chatgpt/current.json`
+- Versioned manifest: `ops/capabilities/chatgpt/manifest.json`
+- Skill descriptors: the manifest's `skills_catalog.path`; each entry retains its exact source URI.
+- Connector/tool contracts: the manifest's `tool_catalog_chunks`; each record preserves the exposed tool name, namespace and complete host description.
+
+Resolve full skill content through its exact URI. Treat `availability=exposed_in_session` as discoverability evidence and `account_connection_state=unknown` as an unresolved authorization state. Use the integration registry and adapter contract to map selected providers. Record source revision, permissions, overlap, validation and adoption disposition before a skill or connector enters a repository-native workflow.

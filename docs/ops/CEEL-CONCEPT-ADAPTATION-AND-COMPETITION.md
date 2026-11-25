@@ -23,7 +23,7 @@ CEEL records source provenance and capability evidence. The designated licensing
 | Frontier Week Hack | Build → monitor → evaluate → deploy lifecycle and reusable lab structure | `12_External_Agents/frontier-week-hack` | Harvest individual workflow patterns; compare cycle time and evidence quality | REFERENCE PATTERN |
 | Agentic Factory Hack | Multi-agent orchestration and specialist-agent handoffs | `12_External_Agents/agentic-factory-hack` | Compare single-agent, current multi-agent and adapted orchestration on identical tasks | REFERENCE PATTERN |
 
-Source URLs and observation dates live in `docs/integrations/capability-opportunity-graph.json` and each slot's `SOURCE.txt`. Pin the exact source commit/tag before a reproducible experiment. A mutable branch URL establishes discovery provenance, not a reproducible revision.
+Source URLs and observation dates live in `docs/integrations/capability-opportunity-graph.json` and each slot's `SOURCE.txt`. Pin the exact source commit/tag before a reproducible experiment. A mutable A reproducible revision requires an immutable commit or tag; a branch URL establishes discovery provenance.
 
 ## RefTemplates pipeline
 

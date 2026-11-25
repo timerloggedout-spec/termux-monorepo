@@ -67,4 +67,4 @@ Establish one repository-wide architecture entry that routes collaborators to ca
 - Existing root diagram document ID updated in place: 080c5454-1215-40a8-afb5-7ef30e42dfcb
 - Focused Mermaid.ai saves reached the account diagram limit; all six editable sources are committed in the repository.
 - archwiz/DATA_FLOW_MANIFEST.md is a zero-byte tracked blob at observed master SHA 5135731c389c6b1b8ed8332b3415a60f8163c2a1. Generator writes to $HOME/archwiz/DATA_FLOW_MANIFEST.md and omits source SHA / tree SHA / input digest.
-- Actual local generated_at: unknown; it is not inferred from audit date.
+- Actual local generated_at: unknown; audit date 2026-11-21 remains a separate timestamp.

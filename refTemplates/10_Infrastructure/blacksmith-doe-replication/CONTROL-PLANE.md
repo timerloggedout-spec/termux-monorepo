@@ -4,7 +4,7 @@
 
 `timerloggedout-spec/termux-monorepo` is the authoritative DoE control plane for the related organization repositories. The source repository owns the canonical tournament definitions, factor and treatment specifications, test-suite revisions, acceptance criteria, adjudication rules, and version history.
 
-The repositories owned by `Research-Astute` and `search-astute-ly` are execution replicas. They provide organization-local workflow adapters and runner capacity. They consume version-pinned instructions from the source control plane and return attributable evidence.
+The repositories owned by `Research-Astute` and `search-astute-ly` are execution replicas. They are intended to provide organization-local workflow adapters and runner capacity. They consume version-pinned instructions from the source control plane and return attributable evidence.
 
 The authority chain is:
 
@@ -77,11 +77,12 @@ A source adjudication requires a complete receipt, matching immutable pins, and 
 2. Compare all candidate replicas by complete Git tree and commit ancestry.
 3. Complete the security preflight and record remediation evidence.
 4. Validate the source-owned tournament and run-contract schemas.
-5. Install the thin receiver workflow in each selected organization repository.
-6. Dispatch one controlled smoke tournament per organization on Blacksmith.
-7. Run the same smoke cohort on the incumbent self-hosted lane.
-8. Return receipts to source DoE Tournaments and verify source-side adjudication.
-9. Expand to the approved benchmark matrix after the first matched comparison passes.
+5. Extend the Receiver Mesh through a separately scoped, owner-approved dispatch installation for the selected organization repositories.
+6. Install the thin receiver workflow in each selected organization repository.
+7. Dispatch one controlled smoke tournament per organization on Blacksmith.
+8. Run the same smoke cohort on the incumbent self-hosted lane.
+9. Return receipts to source DoE Tournaments and verify source-side adjudication.
+10. Expand to the approved benchmark matrix after the first matched comparison passes.
 
 ## Operational status
 
@@ -101,8 +102,9 @@ The control plane is grounded in the existing DoE records and implementation in 
 - [Receiver Mesh](../../../docs/ops/RECEIVER-MESH.md) defines the current prototype's HMAC, dedupe, allowlist, dead-letter, and repository-dispatch envelope.
 - [GitHub App Process](../../../docs/ops/GITHUB-APP-PROCESS.md) and [GitHub App Credential Readiness](../../../docs/ops/GITHUB-APP-CREDENTIAL-READINESS.md) define installation scope, permission approval, and credential custody.
 
-The manager-tournament contract applies to manager-policy cohorts. Other DoE family campaigns retain their own registered experiment contracts, schemas, and acceptance criteria.
 - `deepcli/deepcli/observatory/doe.py` provides the implemented factorial, Taguchi L9, and randomized assignment helpers; `deepcli/deepcli/observatory/tournament.py` provides campaign ranking helpers.
+
+The manager-tournament contract applies to manager-policy cohorts. Other DoE family campaigns retain their own registered experiment contracts, schemas, and acceptance criteria.
 
 These records remain the source authority. The organization dispatch/receipt adapter described in this document is a rollout design; its deployment and first end-to-end adjudication require separate evidence.
 

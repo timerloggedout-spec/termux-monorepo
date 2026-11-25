@@ -9,7 +9,7 @@
 
 Give every collaborator one central, nested navigation entry for the repository's Flywheel system. A reader starts from the hub, selects a channel or work topic, and follows direct links to the authoritative artifacts behind it: protocol, append-only store, concept, source document, issue, pull request, commit, test, and validation evidence.
 
-The hub serves human and agent navigation. It makes the existing work graph discoverable without copying message payloads or replacing source systems.
+The hub serves human and agent navigation. It makes the existing work graph discoverable while message payloads and source-system authority stay in their canonical stores.
 
 ## Goals
 
@@ -17,27 +17,27 @@ The hub serves human and agent navigation. It makes the existing work graph disc
 - Enumerate the registered channels FLY-001 through FLY-006 from the canonical registry.
 - Preserve channel scopes and boundaries:
   - FLY-005: exports and backup coordination.
-  - FLY-006: non-export pair work, including incidents, PR review, mappings, notation, and fleet coordination.
+  - FLY-006: general work pair channel, including incidents, PR review, mappings, notation, and fleet coordination.
   - FLY-003: confirmations of record.
 - Make the FLY-005 pointer at 2026-11-25T19:28:30Z resolve directly to FLY-006's work-comms protocol and append-only store.
 - Organize cross-channel work by topic, then link its source concept, channel, canonical documents, GitHub work records, commits, tests, and evidence where those records are verified.
 - Route root architecture and ICM navigation through the hub.
 - State source authority, confidence, and freshness so readers can tell canonical records from derived indexes and candidate relationships.
 
-## Non-goals
+## Scope boundaries
 
-- Create, rename, retire, or modify any Flywheel channel or participant membership.
-- Append to FLY-005 or FLY-006, send messages, or operate participant cadence loops.
-- Copy JSONL message bodies into the monorepo hub.
-- Build a new scheduler, message transport, relationship database, or generated graph.
+- Keep channel identity, membership, and lifecycle under their registered owner seats.
+- Keep FLY-005/FLY-006 appends, message delivery, and participant cadence under their existing channel owners.
+- Link JSONL stores while message bodies remain in their registered repositories.
+- Reuse the existing channel transport, relationship graph, and cadence machinery.
 - Treat GitHub PR status, a dashboard projection, or the Context Relationship Graph as the source of truth for a channel.
-- Implement the separate THUB-011 Siglary checker.
+- Keep THUB-011 checker implementation as a separately authorized work item.
 
 ## Verified starting state
 
 - `docs/ops/flywheel-comms/REGISTRY.json` contains established FLY-001…FLY-006.
 - FLY-005 is `cue-comms`, backed by `timerloggedout-spec/muse-vm-workspace-backup/cue/comms.jsonl` and `cue/COMMS.md`; its scope is exports and backup coordination.
-- FLY-006 is `cue-work-comms`, backed by `cue/work-comms.jsonl` and `cue/WORK-COMMS.md`; its scope is non-export pair work.
+- FLY-006 is `cue-work-comms`, backed by `cue/work-comms.jsonl` and `cue/WORK-COMMS.md`; its scope is general pair work beyond export operations.
 - The FLY-005 line at 2026-11-25T19:28:30Z points to the full research, test record, and adaptation map on FLY-006.
 - FLY-006 carries the sidecar/overlay adaptation record and links to monorepo PR #5893 and `docs/linguist/FLY-006-SIDECAR-OVERLAY-ADAPTATION.md`.
 - FLY-006 also carries the Siglary/Linguist work record referencing PR #5299, the PDDL example, Matrice tooling, and its tests.
@@ -46,8 +46,8 @@ The hub serves human and agent navigation. It makes the existing work graph disc
 
 ## Approaches
 
-1. **Extend only the ICM card.** Lowest change cost, but the card remains a shallow route and cannot serve as the nested artifact directory requested.
-2. **Dedicated Flywheel hub with ICM and architecture entry links — selected.** The hub owns curated channel/topic navigation; existing registry, channel stores, docs, GitHub, commits, and tests remain canonical. This provides a central entry without duplicating source data.
+1. **Extend only the ICM card.** Lowest change cost; the card remains a shallow route and the nested artifact directory stays unserved.
+2. **Dedicated Flywheel hub with ICM and architecture entry links — selected.** The hub owns curated channel/topic navigation; existing registry, channel stores, docs, GitHub, commits, and tests remain canonical while the hub supplies the central entry.
 3. **Generated graph/UI as the primary navigation.** Deferred. The existing graph is metadata-only, stale, and historically incomplete; using it as the primary directory would misstate freshness and conflate navigation with evidence collection.
 
 ## Navigation model
@@ -59,7 +59,7 @@ The hub has two top-level branches:
 
   `concept → channel(s) → canonical source docs → issue/PR → commit(s) → tests/checks → downstream consumer`
 
-Each link is labeled by artifact type. A missing or unverified relationship is labeled `unknown` or `candidate`; it is not silently filled from naming similarity.
+Each link is labeled by artifact type. Classify missing or unverified relationships as `unknown`; classify bounded heuristics as `candidate`.
 
 ## Source authority
 
@@ -89,5 +89,5 @@ Each link is labeled by artifact type. A missing or unverified relationship is l
 - Topic routes connect at least the verified export/telemetry, Siglary/notation, and sidecar/overlay work to their documents, PRs, commits, and tests.
 - Root `architecture.md`, `docs/icm/CLAUDE.md`, and the ICM Flywheel card route to the hub.
 - All local links resolve; external links use exact known repository paths and GitHub IDs.
-- The hub does not duplicate JSONL payloads or create a competing graph.
+- DO keep JSONL payloads in their registered stores and relationship evidence in the existing graph.
 - Documentation checks, proposal validation, repo gate, Termux smoke, and required PR checks are recorded against the same candidate SHA.

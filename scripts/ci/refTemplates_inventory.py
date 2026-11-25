@@ -31,7 +31,8 @@ def slots() -> list[Path]:
 def _first_line(path: Path) -> str | None:
     if not path.is_file() or path.stat().st_size == 0:
         return None
-    return path.read_text(encoding="utf-8").strip().splitlines()[0]
+    content = path.read_text(encoding="utf-8").strip()
+    return content.splitlines()[0] if content else None
 
 
 def capability_child_entry(slot: Path, child: Path) -> dict:

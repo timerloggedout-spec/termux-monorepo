@@ -92,7 +92,12 @@
           "credential_ref": {
             "type": "string"
           },
-          "background_watcher": {},
+          "background_watcher": {
+            "type": [
+              "boolean",
+              "string"
+            ]
+          },
           "action_classes": {
             "type": "array",
             "items": {
@@ -106,6 +111,12 @@
             }
           },
           "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requested_action_classes": {
             "type": "array",
             "items": {
               "type": "string"
@@ -237,6 +248,12 @@
             }
           },
           "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requested_action_classes": {
             "type": "array",
             "items": {
               "type": "string"

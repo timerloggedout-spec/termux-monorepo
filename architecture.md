@@ -56,6 +56,12 @@ The monorepo is an Android/Termux-first execution environment, agent-development
 - Contracts: [Termux Agentic Hub](docs/architecture/termux-agentic-hub.md), [transport and identity decision](docs/architecture/transport-and-identity-decision.md), [session SSOT](docs/schemas/session-ssot.md).
 
 ### 2.2 Agent control and orchestration plane
+### 2.2.1 Multi-collaborator communication fabric
+
+- Flywheel channels, peer memberships, project contexts, topics, and artifact navigation: [central hub](docs/ops/flywheel-comms/README.md).
+- Extensible scope-aware routing and effective token permissions: [routing model](docs/ops/flywheel-comms/ROUTING-MODEL.md).
+- Channel protocols and stores remain canonical; the hub is a navigation projection.
+
 
 - Lifecycle: scout → candidate → experiment → telemetry → review → admission / synthesis.
 - Dispatch: GitHub Actions, provider command dispatch, ArchWiz dispatch, and bounded DAG planning.

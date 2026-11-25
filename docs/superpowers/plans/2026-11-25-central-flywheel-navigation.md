@@ -39,10 +39,10 @@
 - Consumes: `POLICY.md`, `REGISTRY.json`, FLY-005/006 protocol and store paths, exact GitHub artifact links.
 - Produces: the canonical navigation entry for channels, topics, and evidence links.
 
-- [ ] **Step 1: Write the hub** with sections for operating model, channel map, FLY-005 → FLY-006 handoff, topic index, artifact relationship pattern, source authority, and freshness.
-- [ ] **Step 2: Verify every cited channel and topic record** against its canonical registry row, protocol, store, document, issue/PR, commit, or test.
-- [ ] **Step 3: Review scope labels** for FLY-003, FLY-005, and FLY-006.
-- [ ] **Step 4: Commit** the hub with `Implements: REPO-ARCH-007`.
+- [x] **Step 1: Write the hub** with sections for operating model, channel map, FLY-005 → FLY-006 handoff, topic index, artifact relationship pattern, source authority, and freshness.
+- [x] **Step 2: Verify every cited channel and topic record** against its canonical registry row, protocol, store, document, issue/PR, commit, or test.
+- [x] **Step 3: Review scope labels** for FLY-003, FLY-005, and FLY-006.
+- [x] **Step 4: Commit** the hub with `Implements: REPO-ARCH-007`.
 
 ### Task 2: Route repository navigation to the hub
 
@@ -55,11 +55,11 @@
 - Consumes: the hub from Task 1.
 - Produces: discoverable root architecture and ICM routes.
 
-- [ ] **Step 1: Update the ICM card** to list FLY-001…FLY-006 via the canonical registry and make the hub its primary route.
-- [ ] **Step 2: Add an ICM route** for navigating Flywheel channels and cross-channel work artifacts.
-- [ ] **Step 3: Add the hub** to the architecture canonical source index and documentation taxonomy.
-- [ ] **Step 4: Verify** every new internal route resolves.
-- [ ] **Step 5: Commit** with `Implements: REPO-ARCH-007`.
+- [x] **Step 1: Update the ICM card** to list FLY-001…FLY-006 via the canonical registry and make the hub its primary route.
+- [x] **Step 2: Add an ICM route** for navigating Flywheel channels and cross-channel work artifacts.
+- [x] **Step 3: Add the hub** to the architecture canonical source index and documentation taxonomy.
+- [x] **Step 4: Verify** every new internal route resolves.
+- [x] **Step 5: Commit** with `Implements: REPO-ARCH-007`.
 
 ### Task 3: Record design, plan, and proposal linkage
 
@@ -72,10 +72,10 @@
 - Consumes: accepted proposal `repository-architecture-entry`.
 - Produces: durable design, implementation sequence, and REPO-ARCH-007 lifecycle record.
 
-- [ ] **Step 1: Register REPO-ARCH-007** as executing under the accepted proposal.
-- [ ] **Step 2: Save this design and plan** with exact source paths and acceptance criteria.
+- [x] **Step 1: Register REPO-ARCH-007** as executing under the accepted proposal.
+- [x] **Step 2: Save this design and plan** with exact source paths and acceptance criteria.
 - [ ] **Step 3: Validate proposal registry** with `python3 scripts/proposals/validate_registry.py`.
-- [ ] **Step 4: Commit** with `Implements: REPO-ARCH-007`.
+- [x] **Step 4: Commit** with `Implements: REPO-ARCH-007`.
 
 ### Task 4: Verify the complete navigation graph
 
@@ -89,3 +89,13 @@
 - [ ] **Step 5: Inspect the final diff** for exact links, scope accuracy, confidence labels, and source-store payload preservation.
 - [ ] **Step 6: Record the tested SHA** in the PR and WAIT for required checks on that exact SHA.
 
+
+
+## Execution ledger — remote GitHub lane
+
+- **Ruling:** the available execution surface is the GitHub repository API; use an isolated feature branch and SHA-bound GitHub Actions evidence. Local worktree shell commands remain pending until an authorized local runner is available.
+- **Ruling:** FLY-002's registry path remains the canonical declaration; direct tracked-file lookup is unresolved. Preserve the discrepancy and link runtime-local queue evidence plus routed issues.
+- **Ruling:** the policy seed-registry paragraph lists five channels while REGISTRY.json contains established FLY-006. Preserve registry authority and route the prose amendment to its owner seat.
+- **Ruling:** PR #5737 is proposal/design evidence; classify its NSE-021 artifacts as design state.
+- **Verified:** 30 internal hub-link occurrences resolve to 15 unique repository paths. FLY-005/006 protocol and store files, FLY-004 sample export, Matrice source/tests/workflow, PDDL example, mandate, and CRG manifest paths were fetched.
+- **Review:** PR #5897 opened; exact-head required checks remain the promotion gate.

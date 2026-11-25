@@ -1,0 +1,1457 @@
+{
+  "schema_version": "chatgpt.session-capability-manifest.v1",
+  "captured_at": "2026-11-25T19:02:00Z",
+  "repository": {
+    "full_name": "timerloggedout-spec/termux-monorepo",
+    "base_ref": "master",
+    "base_sha": "9d91eba4564ffd7ee1813195a5fae0f945c23c08"
+  },
+  "capture_sources": {
+    "skills_catalog": "skills__list",
+    "tool_catalog": "ALL_TOOLS",
+    "tool_description_semantics": "Complete exposed tool descriptions, including declared argument/output contracts where supplied by the host."
+  },
+  "scope": {
+    "kind": "session_snapshot",
+    "skills_catalog_complete_for_session": true,
+    "tool_catalog_complete_for_session": true,
+    "global_plugin_directory_complete": false,
+    "account_connection_states_complete": false
+  },
+  "counts": {
+    "skills": 571,
+    "skill_source_groups": 78,
+    "tools": 4897,
+    "tool_namespaces": 128,
+    "mcp_provider_namespaces": 125,
+    "native_host_namespaces": 3,
+    "tool_catalog_chunks": 16
+  },
+  "skill_source_groups": {
+    "app-69f0dc45f6048191876c14c1016fe778": 5,
+    "investment-banking": 23,
+    "public-equity-investing": 23,
+    "boltz-api-cli": 8,
+    "tailscale": 1,
+    "codex-smart-router": 1,
+    "cache-stats": 1,
+    "chronos": 2,
+    "app-6a624c56bfe081918f7544f7d58f6faf": 22,
+    "airtable": 3,
+    "app-69b31dc2110c8191b8b47dc98fe5a052": 7,
+    "app-69c597eebdd4819194fd9c4d03acedb6": 8,
+    "app-694421e60cc88191a1e5bb4aa79950e4": 4,
+    "app-69e6af3297d88191b4925772c50df286": 4,
+    "app-69fdb9081018819193707354f21b366e": 4,
+    "base44": 5,
+    "app-69fb9378663481919a68e8a2109644e5": 4,
+    "app-6a3c407853888191beddc2151c2b6f8b": 4,
+    "supabase": 2,
+    "app-6a314a73f8ac819195b0d55e36b9c609": 19,
+    "app-69ea4ed2cf7c8191b742ef3622479ddd": 1,
+    "app-69f271663a288191ac98f46bed7cb032": 6,
+    "app-6a4d5a687f0881918be3cb8b4b93773d": 1,
+    "app-6a57330f603c8191928119af462402b2": 4,
+    "app-6a06f62b2f50819181136d58192063d1": 1,
+    "app-6a438975e2488191923ab04c4fea893d": 3,
+    "app-6a70eca71e948191aea49dbb9b674477": 2,
+    "app-6a8485b5beac8191954e37241acffe6d": 1,
+    "app-6a585f804ad08191931907c9dc46a985": 6,
+    "amd-skills": 5,
+    "fastapicloud": 6,
+    "nvidia": 1,
+    "app-6a5f875215108191ae5d449352363219": 3,
+    "app-6a58e3cdf86881919e813606edacec3c": 1,
+    "canva": 1,
+    "temporal": 5,
+    "chatgpt-osint": 9,
+    "auth0": 1,
+    "insforge": 4,
+    "simulator-login": 1,
+    "music-as-code": 3,
+    "dominodatalab": 30,
+    "intuitive-software-design": 9,
+    "pts-pivotal-token-search": 1,
+    "app-6aa7ad131c4c81918373561ab7de3699": 1,
+    "product-design": 10,
+    "app-6aa80fbfddb0819188f1304e303c856d": 13,
+    "app-6a330a7730c081919892632d5baaec58": 13,
+    "runcomfy-image-to-video": 2,
+    "netlify": 16,
+    "app-6956e6ff740481919946ceae8e5d6304": 4,
+    "notion": 12,
+    "neon-postgres": 7,
+    "convex": 8,
+    "app-6a3293e129088191abf0875820e839da": 2,
+    "app-6a3c278c93ac8191b29768648d63a754": 1,
+    "app-6a514c90130c8191bb9a04df335d5ac6": 1,
+    "app-6a576f075ec4819196c203b7049542be": 6,
+    "app-6a5a7c2760248191a8c61bb2b6c26ac9": 3,
+    "app-6a5d5d38c5648191a54b117a8263505b": 2,
+    "app-6a5fc156fad88191a3977b60131d7391": 16,
+    "app-6a764790fbc48191a2b4ba1af90404b4": 18,
+    "app-6a883213fb288191aa91f89a5db31f60": 1,
+    "app-6a88631af75081918917d89fb00269ad": 1,
+    "app-6a8d784b60cc81919aeafbfaeda5fbcf": 42,
+    "app-6aabc4b3a1488191905b08ff242a88d9": 7,
+    "app-6ab242dbeb5c8191ba5277534ef0c570": 1,
+    "app-6a99ceead2c481919fb44845267235c4": 13,
+    "empiriolabs": 15,
+    "agent-swarm": 2,
+    "plugin-management": 1,
+    "figma": 18,
+    "vercel": 33,
+    "monday-com": 5,
+    "jam": 5,
+    "build-web-data-visualization": 18,
+    "superpowers": 15,
+    "adaptyv-bio": 4
+  },
+  "skills_catalog": {
+    "path": "ops/capabilities/chatgpt/snapshots/2026-11-25/skills.json",
+    "sha256": "55e8ffaeb08e4b6ad325a64a08161fafed4b0ad88cfc504a778378bdf8995b1e",
+    "bytes": 264761
+  },
+  "tool_catalog_chunks": [
+    {
+      "path": "ops/capabilities/chatgpt/snapshots/2026-11-25/tools-01.json",
+      "sha256": "6229fbd6c2ecb294807310889a68dc737e6bcf200fd38575f3526670768cfb91",
+      "bytes": 611039,
+      "tools": 362,
+      "namespaces": [
+        "Agent_Ready",
+        "Agent_Swarm",
+        "Agentic_Search_by_Liner",
+        "Ahrefs",
+        "AI_Task_Brief_Builder",
+        "Airtable",
+        "All_Tide_Times",
+        "Alloy",
+        "AllTrails",
+        "AnyBarcodeScanner",
+        "API_Impact_Mapper",
+        "AppDeploy",
+        "Automations",
+        "AutoMotion",
+        "Base44"
+      ]
+    },
+    {
+      "path": "ops/capabilities/chatgpt/snapshots/2026-11-25/tools-02.json",
+      "sha256": "bb198d60ee72b104cc816672c2ea6d127b8f190dfc5c34c3ee6d1fc9b483ca13",
+      "bytes": 605716,
+      "tools": 312,
+      "namespaces": [
+        "Base44",
+        "Canva",
+        "ClickHouse",
+        "Cloudflare",
+        "Cloudinary",
+        "Consensus",
+        "Context_dev",
+        "Context7",
+        "Convex",
+        "Courtroom5",
+        "Descript",
+        "Devpost_Hackathons",
+        "DigitalOcean",
+        "Dovetail_Regulatory",
+        "Dropbox"
+      ]
+    },
+    {
+      "path": "ops/capabilities/chatgpt/snapshots/2026-11-25/tools-03.json",
+      "sha256": "f9c949375720dc2b35c396f17bdf1c970884b6e3ee075e585994d490072ef0a5",
+      "bytes": 604502,
+      "tools": 186,
+      "namespaces": [
+        "Dropbox",
+        "ElevenLabs"
+      ]
+    },
+    {
+      "path": "ops/capabilities/chatgpt/snapshots/2026-11-25/tools-04.json",
+      "sha256": "9edd1cc854342b8021e1d2488d7d5d583e3dd647b4c7e333ab0b0d3590a3b7b8",
+      "bytes": 598724,
+      "tools": 206,
+      "namespaces": [
+        "ElevenLabs",
+        "EmpirioLabs_AI",
+        "Endurance_Planner",
+        "Engram",
+        "Equation_io",
+        "Exa",
+        "Figma",
+        "files",
+        "Finances",
+        "Firecrawl",
+        "flow"
+      ]
+    },
+    {
+      "path": "ops/capabilities/chatgpt/snapshots/2026-11-25/tools-05.json",
+      "sha256": "acd965665776b22011a7aa10022176c10ca070034abc3dc6ede6fcb83da2ce54",
+      "bytes": 590634,
+      "tools": 348,
+      "namespaces": [
+        "flow",
+        "Genomic_Intelligence",
+        "GitBook",
+        "GitHub",
+        "Gmail",
+        "Google_Calendar",
+        "Grafana_Cloud",
+        "Graffiticode",
+        "Grow_My_Website",
+        "HAPI_MCP_Registry",
+        "Hatchable",
+        "Hercules",
+        "Hex"
+      ]
+    },
+    {
+      "path": "ops/capabilities/chatgpt/snapshots/2026-11-25/tools-06.json",
+      "sha256": "c1e7a2d7333388aa31ecddf0d2bdafcd28df4877c6320be85e180bd2a0fdfe6a",
+      "bytes": 606503,
+      "tools": 199,
+      "namespaces": [
+        "Hex",
+        "Higgsfield"
+      ]
+    },
+    {
+      "path": "ops/capabilities/chatgpt/snapshots/2026-11-25/tools-07.json",
+      "sha256": "8d6594ef739bf9442093fbdd20491c5be30ae0b877173e8605ec846a7a105276",
+      "bytes": 604509,
+      "tools": 299,
+      "namespaces": [
+        "Higgsfield",
+        "Hot100_ai",
+        "Hugging_Face",
+        "idealista",
+        "Image_to_Video_by_RunComfy",
+        "Inductive",
+        "Jam",
+        "Klaviyo"
+      ]
+    },
+    {
+      "path": "ops/capabilities/chatgpt/snapshots/2026-11-25/tools-08.json",
+      "sha256": "1414d6b87c4dcc891645cd58e58603b37cb69f7d97197402d46263f623c6e4ab",
+      "bytes": 606106,
+      "tools": 286,
+      "namespaces": [
+        "Klaviyo",
+        "Linear"
+      ]
+    },
+    {
+      "path": "ops/capabilities/chatgpt/snapshots/2026-11-25/tools-09.json",
+      "sha256": "f4a3590e251966cd04676763e0db4bbde5772b53e3036e99872dc6fa0fc19d37",
+      "bytes": 609416,
+      "tools": 331,
+      "namespaces": [
+        "Linear",
+        "LinkedIn",
+        "Lovable",
+        "Lucid",
+        "Magic_Patterns",
+        "MagicPath",
+        "Manus",
+        "Master_Metrics",
+        "Mermaid_Chart",
+        "Midpage_Legal_Research",
+        "Mintlify_MCP",
+        "Miro"
+      ]
+    },
+    {
+      "path": "ops/capabilities/chatgpt/snapshots/2026-11-25/tools-10.json",
+      "sha256": "eabcb6233e969964f1aa73335f08ecf7e6467e155e24dc96871dc16c8904e635",
+      "bytes": 608927,
+      "tools": 349,
+      "namespaces": [
+        "Miro",
+        "Mobbin",
+        "monday_com",
+        "Neon",
+        "Netlify",
+        "Newegg",
+        "Notion"
+      ]
+    },
+    {
+      "path": "ops/capabilities/chatgpt/snapshots/2026-11-25/tools-11.json",
+      "sha256": "ad73b1c774fcb0b043db3f4d08284a986867dc8307155e342716224a26b0dab4",
+      "bytes": 609612,
+      "tools": 296,
+      "namespaces": [
+        "Notion",
+        "onX_Offroad",
+        "OpenAI_Platform",
+        "Opscotch",
+        "Parallel",
+        "PartnerProf",
+        "Peptide_Critic",
+        "PeptidePrices_COA_Verifier",
+        "Plugin_Management",
+        "Precise_Special_Functions",
+        "Promocodes_com",
+        "Property_Hazard_MCP",
+        "QuanterLab",
+        "Quo",
+        "Real_Random",
+        "Render"
+      ]
+    },
+    {
+      "path": "ops/capabilities/chatgpt/snapshots/2026-11-25/tools-12.json",
+      "sha256": "2851f0df8ff9ad321eb66a435e5979fc616cd10dda4bbd5b784011e09459f100",
+      "bytes": 609151,
+      "tools": 310,
+      "namespaces": [
+        "Render",
+        "Replit",
+        "Resend",
+        "Rowan",
+        "SciSpace",
+        "Scite",
+        "Sent",
+        "ShipStatic",
+        "Similarweb"
+      ]
+    },
+    {
+      "path": "ops/capabilities/chatgpt/snapshots/2026-11-25/tools-13.json",
+      "sha256": "053417350b0b748bbac946c1edb983863b08112da320c45d1cb9d64edb95efc4",
+      "bytes": 615823,
+      "tools": 484,
+      "namespaces": [
+        "Similarweb",
+        "SiteTriage",
+        "Sixtyfour_Intelligence",
+        "skills",
+        "Softonic",
+        "Soracom_Knowledge",
+        "Spacefast"
+      ]
+    },
+    {
+      "path": "ops/capabilities/chatgpt/snapshots/2026-11-25/tools-14.json",
+      "sha256": "99c435ce475c848ce518df4e699c4662bbb042aded285714d7667ec96b572a8a",
+      "bytes": 611530,
+      "tools": 419,
+      "namespaces": [
+        "Spacefast",
+        "Sprites",
+        "Stocktwits",
+        "Supabase",
+        "SVG_Diagram",
+        "Tally",
+        "Tamarind_Bio",
+        "Tavily",
+        "Tessie",
+        "TinyFish",
+        "tldraw",
+        "Todoist"
+      ]
+    },
+    {
+      "path": "ops/capabilities/chatgpt/snapshots/2026-11-25/tools-15.json",
+      "sha256": "2400ef76e26cbc9876897a34b23604d8fd13645014c2d8aaddc43ae3ac38d0dd",
+      "bytes": 604433,
+      "tools": 242,
+      "namespaces": [
+        "Todoist",
+        "Trace",
+        "Trocafone",
+        "TubeAlfred",
+        "Typeform",
+        "user_settings",
+        "Vectorize",
+        "Vercel"
+      ]
+    },
+    {
+      "path": "ops/capabilities/chatgpt/snapshots/2026-11-25/tools-16.json",
+      "sha256": "05a72d9b4f5d301089dc0a63dc4d8b5be2d7956b34f6bf9d62977f87db027587",
+      "bytes": 363066,
+      "tools": 268,
+      "namespaces": [
+        "Vercel",
+        "Wispr_Flow",
+        "Wolfram",
+        "WorkOS"
+      ]
+    }
+  ],
+  "namespace_catalog": [
+    {
+      "namespace": "AI_Task_Brief_Builder",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 3
+    },
+    {
+      "namespace": "API_Impact_Mapper",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 3
+    },
+    {
+      "namespace": "Agent_Ready",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 3
+    },
+    {
+      "namespace": "Agent_Swarm",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 10
+    },
+    {
+      "namespace": "Agentic_Search_by_Liner",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 9
+    },
+    {
+      "namespace": "Ahrefs",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 158
+    },
+    {
+      "namespace": "Airtable",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 47
+    },
+    {
+      "namespace": "AllTrails",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 6
+    },
+    {
+      "namespace": "All_Tide_Times",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 1
+    },
+    {
+      "namespace": "Alloy",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 48
+    },
+    {
+      "namespace": "AnyBarcodeScanner",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 1
+    },
+    {
+      "namespace": "AppDeploy",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 29
+    },
+    {
+      "namespace": "AutoMotion",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 8
+    },
+    {
+      "namespace": "Automations",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 7
+    },
+    {
+      "namespace": "Base44",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 32
+    },
+    {
+      "namespace": "Canva",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 37
+    },
+    {
+      "namespace": "ClickHouse",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 19
+    },
+    {
+      "namespace": "Cloudflare",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 5
+    },
+    {
+      "namespace": "Cloudinary",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 23
+    },
+    {
+      "namespace": "Consensus",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 7
+    },
+    {
+      "namespace": "Context7",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 2
+    },
+    {
+      "namespace": "Context_dev",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 50
+    },
+    {
+      "namespace": "Convex",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 4
+    },
+    {
+      "namespace": "Courtroom5",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 3
+    },
+    {
+      "namespace": "Descript",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 19
+    },
+    {
+      "namespace": "Devpost_Hackathons",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 24
+    },
+    {
+      "namespace": "DigitalOcean",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 54
+    },
+    {
+      "namespace": "Dovetail_Regulatory",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 56
+    },
+    {
+      "namespace": "Dropbox",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 39
+    },
+    {
+      "namespace": "ElevenLabs",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 156
+    },
+    {
+      "namespace": "EmpirioLabs_AI",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 38
+    },
+    {
+      "namespace": "Endurance_Planner",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 15
+    },
+    {
+      "namespace": "Engram",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 8
+    },
+    {
+      "namespace": "Equation_io",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 3
+    },
+    {
+      "namespace": "Exa",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 2
+    },
+    {
+      "namespace": "Figma",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 52
+    },
+    {
+      "namespace": "Finances",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 10
+    },
+    {
+      "namespace": "Firecrawl",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 34
+    },
+    {
+      "namespace": "Genomic_Intelligence",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 15
+    },
+    {
+      "namespace": "GitBook",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 12
+    },
+    {
+      "namespace": "GitHub",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 89
+    },
+    {
+      "namespace": "Gmail",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 21
+    },
+    {
+      "namespace": "Google_Calendar",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 10
+    },
+    {
+      "namespace": "Grafana_Cloud",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 130
+    },
+    {
+      "namespace": "Graffiticode",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 7
+    },
+    {
+      "namespace": "Grow_My_Website",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 3
+    },
+    {
+      "namespace": "HAPI_MCP_Registry",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 3
+    },
+    {
+      "namespace": "Hatchable",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 34
+    },
+    {
+      "namespace": "Hercules",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 10
+    },
+    {
+      "namespace": "Hex",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 55
+    },
+    {
+      "namespace": "Higgsfield",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 196
+    },
+    {
+      "namespace": "Hot100_ai",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 6
+    },
+    {
+      "namespace": "Hugging_Face",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 9
+    },
+    {
+      "namespace": "Image_to_Video_by_RunComfy",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 78
+    },
+    {
+      "namespace": "Inductive",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 2
+    },
+    {
+      "namespace": "Jam",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 40
+    },
+    {
+      "namespace": "Klaviyo",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 326
+    },
+    {
+      "namespace": "Linear",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 93
+    },
+    {
+      "namespace": "LinkedIn",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 1
+    },
+    {
+      "namespace": "Lovable",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 52
+    },
+    {
+      "namespace": "Lucid",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 43
+    },
+    {
+      "namespace": "MagicPath",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 43
+    },
+    {
+      "namespace": "Magic_Patterns",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 50
+    },
+    {
+      "namespace": "Manus",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 5
+    },
+    {
+      "namespace": "Master_Metrics",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 11
+    },
+    {
+      "namespace": "Mermaid_Chart",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 7
+    },
+    {
+      "namespace": "Midpage_Legal_Research",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 14
+    },
+    {
+      "namespace": "Mintlify_MCP",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 57
+    },
+    {
+      "namespace": "Miro",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 47
+    },
+    {
+      "namespace": "Mobbin",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 8
+    },
+    {
+      "namespace": "Neon",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 141
+    },
+    {
+      "namespace": "Netlify",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 27
+    },
+    {
+      "namespace": "Newegg",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 6
+    },
+    {
+      "namespace": "Notion",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 79
+    },
+    {
+      "namespace": "OpenAI_Platform",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 2
+    },
+    {
+      "namespace": "Opscotch",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 46
+    },
+    {
+      "namespace": "Parallel",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 14
+    },
+    {
+      "namespace": "PartnerProf",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 21
+    },
+    {
+      "namespace": "PeptidePrices_COA_Verifier",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 7
+    },
+    {
+      "namespace": "Peptide_Critic",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 3
+    },
+    {
+      "namespace": "Plugin_Management",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 6
+    },
+    {
+      "namespace": "Precise_Special_Functions",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 8
+    },
+    {
+      "namespace": "Promocodes_com",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 2
+    },
+    {
+      "namespace": "Property_Hazard_MCP",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 1
+    },
+    {
+      "namespace": "QuanterLab",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 44
+    },
+    {
+      "namespace": "Quo",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 38
+    },
+    {
+      "namespace": "Real_Random",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 2
+    },
+    {
+      "namespace": "Render",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 48
+    },
+    {
+      "namespace": "Replit",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 8
+    },
+    {
+      "namespace": "Resend",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 141
+    },
+    {
+      "namespace": "Rowan",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 21
+    },
+    {
+      "namespace": "SVG_Diagram",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 5
+    },
+    {
+      "namespace": "SciSpace",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 6
+    },
+    {
+      "namespace": "Scite",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 44
+    },
+    {
+      "namespace": "Sent",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 31
+    },
+    {
+      "namespace": "ShipStatic",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 15
+    },
+    {
+      "namespace": "Similarweb",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 137
+    },
+    {
+      "namespace": "SiteTriage",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 7
+    },
+    {
+      "namespace": "Sixtyfour_Intelligence",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 36
+    },
+    {
+      "namespace": "Softonic",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 5
+    },
+    {
+      "namespace": "Soracom_Knowledge",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 3
+    },
+    {
+      "namespace": "Spacefast",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 501
+    },
+    {
+      "namespace": "Sprites",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 26
+    },
+    {
+      "namespace": "Stocktwits",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 13
+    },
+    {
+      "namespace": "Supabase",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 36
+    },
+    {
+      "namespace": "Tally",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 32
+    },
+    {
+      "namespace": "Tamarind_Bio",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 66
+    },
+    {
+      "namespace": "Tavily",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 5
+    },
+    {
+      "namespace": "Tessie",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 13
+    },
+    {
+      "namespace": "TinyFish",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 34
+    },
+    {
+      "namespace": "Todoist",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 52
+    },
+    {
+      "namespace": "Trace",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 15
+    },
+    {
+      "namespace": "Trocafone",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 2
+    },
+    {
+      "namespace": "TubeAlfred",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 34
+    },
+    {
+      "namespace": "Typeform",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 99
+    },
+    {
+      "namespace": "Vectorize",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 7
+    },
+    {
+      "namespace": "Vercel",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 281
+    },
+    {
+      "namespace": "Wispr_Flow",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 17
+    },
+    {
+      "namespace": "Wolfram",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 3
+    },
+    {
+      "namespace": "WorkOS",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 5
+    },
+    {
+      "namespace": "files",
+      "surface_kind": "native_host_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 6
+    },
+    {
+      "namespace": "flow",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 43
+    },
+    {
+      "namespace": "idealista",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 4
+    },
+    {
+      "namespace": "monday_com",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 131
+    },
+    {
+      "namespace": "onX_Offroad",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 2
+    },
+    {
+      "namespace": "skills",
+      "surface_kind": "native_host_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 2
+    },
+    {
+      "namespace": "tldraw",
+      "surface_kind": "mcp_provider_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 10
+    },
+    {
+      "namespace": "user_settings",
+      "surface_kind": "native_host_namespace",
+      "availability": "exposed_in_session",
+      "account_connection_state": "unknown",
+      "tool_count": 2
+    }
+  ],
+  "plugin_status_observations": [
+    {
+      "name": "Gmail",
+      "status": "installed",
+      "evidence_source": "recommended_plugins_context",
+      "observed_at": "2026-11-25T19:02:00Z"
+    },
+    {
+      "name": "Google Calendar",
+      "status": "installed",
+      "evidence_source": "recommended_plugins_context",
+      "observed_at": "2026-11-25T19:02:00Z"
+    },
+    {
+      "name": "Finances",
+      "status": "installed",
+      "evidence_source": "recommended_plugins_context",
+      "observed_at": "2026-11-25T19:02:00Z"
+    },
+    {
+      "name": "Health",
+      "status": "not_installed",
+      "evidence_source": "recommended_plugins_context",
+      "observed_at": "2026-11-25T19:02:00Z"
+    }
+  ],
+  "user_supplied_sources": [
+    {
+      "file": "termux-mcp-project-steward.skill",
+      "bytes": 4194,
+      "sha256": "f17a523e0769582c8a142cb94491b978483a399a38873ad745a63aa29ebe7cf2",
+      "kind": "agent-skill-archive",
+      "status": "mapped_to_existing_repo_skill",
+      "repo_paths": [
+        ".agents/skills/termux-mcp-project-steward/SKILL.md"
+      ],
+      "notes": "Repository copy is the current authority; uploaded archive remains provenance evidence."
+    },
+    {
+      "file": "context-relationship-graph.skill",
+      "bytes": 1915,
+      "sha256": "93ce1437c0c0eaa7684ae354f10c3713e68337c500f75b583a50b8d0b65f1c27",
+      "kind": "agent-skill-archive",
+      "status": "reference_only",
+      "repo_paths": [
+        ".agents/skills/context-relationship-graph/SKILL.md"
+      ],
+      "notes": "Older duplicate; current repository contract is authoritative."
+    },
+    {
+      "file": "context-relationship-graph_2.skill",
+      "bytes": 2512,
+      "sha256": "6a22393e62d46febc87767a99caf537e93fc0c585420256988dd92aeae7340f0",
+      "kind": "agent-skill-archive",
+      "status": "mapped_to_current_repo_skill",
+      "repo_paths": [
+        ".agents/skills/context-relationship-graph/SKILL.md"
+      ],
+      "notes": "Current relationship-graph contract lineage; preserve archive provenance."
+    },
+    {
+      "file": "skill-loopy-api-loop-library-skill.json",
+      "bytes": 14849,
+      "sha256": "72347107e69427a55f0ec21e2dffcad02bc67e09ea931331d3025128e8ca75b6",
+      "kind": "external-skill-export",
+      "status": "pattern_adapted_reference_only",
+      "repo_paths": [
+        ".agents/skills/adaptive-wait/SKILL.md",
+        ".agents/skills/adaptive-feedback-cycle/SKILL.md",
+        ".agents/skills/orchestration-treatment-registry/SKILL.md"
+      ],
+      "notes": "Bounded Observe/Choose/Act/Verify/Record/Repeat semantics are represented natively; no direct external skill import."
+    },
+    {
+      "file": "Awesome Jules Skills Actions and Workflows for GitHub Development.",
+      "bytes": 126119,
+      "sha256": "52635bbcdf130f66ba0a63108817920cdad4e380b92f2927036147bc2d185049",
+      "kind": "research-reference-pdf",
+      "status": "candidate_reference_only",
+      "repo_paths": [
+        "docs/ops/AGENT-TEAM-ORCHESTRATION.md"
+      ],
+      "notes": "Three-page user-supplied research note; external claims and referenced links require independent verification before adoption."
+    },
+    {
+      "file": "Diagnose Routing Architecture.txt",
+      "bytes": 8558,
+      "sha256": "6505bcef7d0c40525a763e66c3874e7f6d05ffd1a6ad203064f207405e87188a",
+      "kind": "architecture-diagnostic",
+      "status": "reference_input",
+      "repo_paths": [
+        "docs/ops/ROUTING-ORCHESTRATION-MAP.md"
+      ],
+      "notes": "User-supplied diagnostic input; reconcile against current repository sources before implementation."
+    },
+    {
+      "file": "Implement GitLab Sync Diagnosis.txt",
+      "bytes": 5086,
+      "sha256": "bece5c5075b9c08f8e066ba818141a2715a9e6cd5e023a9d2fd3a0a84c9e1e2d",
+      "kind": "integration-diagnostic",
+      "status": "reference_input",
+      "repo_paths": [
+        "docs/integrations/registry.json"
+      ],
+      "notes": "User-supplied diagnostic input; credential names only and explicit secret boundaries."
+    },
+    {
+      "file": "Notation Registry Proposal.txt",
+      "bytes": 8498,
+      "sha256": "577fc56b5d7702b24579c8586dc9726687822976c8c2eaa057522335e7d08f8e",
+      "kind": "notation-proposal",
+      "status": "reference_input",
+      "repo_paths": [
+        "docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md"
+      ],
+      "notes": "User-supplied proposal input; current repository notation contract remains authoritative."
+    }
+  ],
+  "integration_mappings": {
+    "skills": {
+      "authority": [
+        "SKILLS.md",
+        "docs/ops/SKILLS-INVENTORY.md",
+        "docs/ops/SKILL-DISCOVERY-MATRIX.md",
+        ".agents/skills/",
+        " .github/skills/"
+      ],
+      "rule": "Session skill descriptors are discovery metadata; repository-local skill files remain policy authority."
+    },
+    "connectors": [
+      "docs/integrations/registry.json",
+      "docs/integrations/INTEGRATION-REGISTRY.md",
+      "docs/integrations/ADAPTER-CONTRACT.md",
+      "docs/integrations/schemas/integration-event.schema.json"
+    ],
+    "provider_capabilities": [
+      "docs/schemas/provider-capabilities.md",
+      "hub_mcp/policy.py"
+    ],
+    "admission": [
+      "docs/security/AGENT-HARNESS-ADMISSION.md"
+    ],
+    "orchestration": [
+      "docs/ops/ORCHESTRATION-CONTRACTS.md",
+      "docs/ops/ORCHESTRATION-TREATMENT.schema.json",
+      "docs/ops/ORCHESTRATION-RECEIPT.schema.json",
+      ".agents/skills/orchestration-treatment-registry/SKILL.md"
+    ],
+    "doe": [
+      "docs/ops/DOE-FAMILY.md",
+      "docs/ops/DOE-COMPONENT-REGISTRY.md",
+      "ops/doe/component-registry.json",
+      "docs/ops/AGENT-THROUGHPUT-METRICS.md",
+      "she/metrics/agent_throughput.py"
+    ],
+    "evidence": [
+      "docs/integrations/schemas/integration-event.schema.json",
+      "docs/ops/EVIDENCE-ENVELOPE.schema.json",
+      "docs/ops/ACTION-EFFECT-EVENT.schema.json",
+      "workspace/llm_map/context_relationships/"
+    ],
+    "measurement": "Use provider namespace, skill, tool choice, manager policy, context strategy and approval tier as candidate treatment factors. Measure actual task outcomes through existing DoE/MVT, action-effect, ATES/WTCV and 3L0 evidence; inventory counts are not quality scores."
+  },
+  "limitations": [
+    "The skill catalog exports URI and description metadata; full skill bodies remain available through each exact URI and are not duplicated in this snapshot.",
+    "A tool namespace being exposed in this session does not prove account authentication, entitlement, provider health, CI availability, Termux availability, or production readiness.",
+    "Plugin-directory search is relevance-based and non-exhaustive; this snapshot covers all tool definitions exposed to this session, not every plugin globally available to every user.",
+    "Plugin installation/connection states are included only where explicitly supplied by the session context; other account states remain unknown.",
+    "No credentials, tokens, secrets, prompts, completions, private conversation content, or account records are exported.",
+    "The inventory grants no new authority and activates no external tool inside hub_mcp."
+  ]
+}

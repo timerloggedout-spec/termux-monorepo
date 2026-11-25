@@ -15,7 +15,7 @@ The NSE-021 design and plan exist on the unmerged branch `docs/nse-021-sidecar-c
 
 | Surface | Exact path | Current contract / evidence | Classification |
 |---|---|---|---|
-| Phase codec | `workspace/compression_sandbox/cedrlang/phase_codec.py` | `to_1337speak` / `from_1337speak`; initial probability 0.70; seeded RNG; canonical token variant index; exact phase-token restoration | Implemented |
+| Phase codec | `workspace/compression_sandbox/cedrlang/phase_codec.py` | `to_1337speak` / `from_1337speak`; initial probability 0.70; seeded RNG; canonical token variant index; normalized token restoration (case-preserving byte-exact recovery is not guaranteed) | Implemented |
 | Phase codec tests | `tests/test_cedrlang_phase_codec.py` | Six tests: 70% constant, p=0 identity, p=1 reversible, seeded repeatability, protected prose/numbers/path, probability validation | Present; not executed in this audit |
 | Nomenclature tool | `scripts/linguist/matrice_search.py` | stdlib `search`, `screen`, `add`, `validate`; additions forced to candidate | Implemented |
 | Matrice tests | `scripts/linguist/tests/test_matrice_search.py` | Three tests for search, collision screening, add+validate | Present; PR #5299 reports 3/3 local |
@@ -130,7 +130,7 @@ python3 scripts/linguist/matrice_search.py validate
 python3 scripts/linguist/index_alignment.py
 ```
 
-The first two are existing fixture suites. PR #5299 records 3/3 local Matrice tests and a clean seed validation (116 concepts, 170 labels, 0 problems at that revision). The phase codec test file contains six assertions/scenarios. This audit did not execute repository tests; results must be attached from a current checkout and exact commit.
+The first two are existing fixture suites. The current master Matrice validation reports 122 concepts, 170 labels, 14 mappings, and zero problems; counts are live data and should be regenerated at the exact tested commit. The phase codec test file contains six assertions/scenarios. This audit did not execute repository tests; results must be attached from a current checkout and exact commit.
 
 New overlay acceptance fixtures:
 - Markdown headings, tables, lists, nested formatting, code fences, inline code, URLs, paths, citations and quotations;
@@ -152,8 +152,9 @@ New overlay acceptance fixtures:
 5. **Land renderer/materializer:** disposable tree only; preserve source and executable tokens.
 6. **Wire Matrice:** concept IDs and typed operator/glyph/chord references; use Matrice validation before overlay issuance.
 7. **Wire panel feed:** expose overlay counts, stale/fail-closed counts and actual round-trip outcomes from runtime evidence; keep count-only/private data excluded.
-8. **Pre-register DoE/MVT:** run four representation arms × three context placements × three surfaces using the existing experiment contract; quality floors and held-out replication precede promotion.
-9. **Promotion:** comment/documentation-only patch, exact-head repo-gate and termux-smoke, dual review.
+8. **Operator acceptance gate:** add NSE-021 to the active items ledger and obtain explicit Operator acceptance before implementation. The recovered NSE-021 item currently gates execution on acceptance.
+9. **Screen treatments:** representation screening first; compare context placement and surface only for treatments that pass; reserve factorial interaction testing for finalists under the recovered design. Apply quality floors and held-out replication before promotion.
+10. **Promotion:** comment/documentation-only patch, exact-head repo-gate and termux-smoke, dual review.
 
 ## FLY-006 handoff status
 

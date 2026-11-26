@@ -1,12 +1,12 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-26T05:32:30Z",
+ "generated_at": "2026-11-26T06:07:43Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
    "queued": 3,
-   "in_progress": 1,
+   "in_progress": 3,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
     "repo gate": 1,
@@ -23,27 +23,33 @@
   "3": {
    "tier": 3,
    "queued": 0,
-   "in_progress": 0,
+   "in_progress": 1,
    "oldest_queued_at": null,
    "by_workflow_queued": {}
   },
   "4": {
    "tier": 4,
-   "queued": 5,
-   "in_progress": 14,
+   "queued": 21,
+   "in_progress": 32,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
+    "Issue Comment Router \u2014 modular fan-out reduction": 5,
+    "Context Relationship + Lead/Lag Audit": 6,
+    "delphi-ledger-feed-collect": 1,
+    "delphi-rfp-feed-collect": 1,
+    "quota-analysis": 1,
+    "telemetry-ingest": 1,
+    "DO Statement Style": 2,
     "termux smoke": 1,
     "Agent PR Jules Handoff": 1,
     "PR Change Effectiveness Ledger": 1,
-    "Advisory GitHub Actions lint": 1,
-    "DO Statement Style": 1
+    "Advisory GitHub Actions lint": 1
    }
   }
  },
  "totals": {
-  "queued": 8,
-  "in_progress": 17
+  "queued": 24,
+  "in_progress": 38
  },
  "wedged_ancient": [
   {
@@ -201,13 +207,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 4,
+   "1": 6,
    "2": 2,
-   "3": 0,
+   "3": 1,
    "4": 0
   },
-  "explicit_total": 6,
-  "default_t4": 19,
+  "explicit_total": 9,
+  "default_t4": 53,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

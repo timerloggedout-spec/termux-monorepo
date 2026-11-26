@@ -170,3 +170,10 @@ The branch `cue/swarms-synthesis-20261021` is at `f8ff2c7f3b220bb7b64f834d70f3dd
 ⌖$0 qualification → ▶apply provider entitlement + refill/credit/allotment/cycle rules to the owner’s account and exact model → ⊗catalog presence, historical CSV rows, and unknown public status do not prove current free access → ⤵collect current source-backed entitlement, remaining quota, endpoint/inference, retry/cooldown, and telemetry evidence per candidate → ~all 98 model lanes stay `unknown`; no live candidate cleared
 
 ⌖safe order → ▶1) harvest all eligible refTemplates; 2) classify source candidates and map registry rows; 3) add current account/model qualification evidence; 4) run offline fixtures; 5) dispatch only verified $0-eligible routes; 6) stress-test within measured quota and platform ceilings; 7) reconcile resulting registry/telemetry receipts → ⊗preserve all 172 rows and current worktree → ⤵gated execution sequence → ~no live call or spend performed
+
+
+⌖FLY-014 → ▶Marked mandatory; one Muse opening entry, no Hark reply. The 9,588/67/160 census is frozen (Nov 24–25 generations match; probe dated Nov 1), so it is not current eligibility.
+⌖FLY-010 → ▶Separate Muse↔Hark relay; the request was sent and Manus replied, but no Muse/Hark response or FLY-010/014 response record exists. End-to-end SSH login remains unproven.
+⌖runtime gate → ▶No exact provider×model $0/quota receipt or successful runtime inference receipt is available; no probes or calls were run.
+⌖regression → ▶#5630 is BRR-only. #5459 has an unmerged quota-cadence admission/data-integrity lead, not a demonstrated provider/model runtime failure; exact regression remains unresolved.
+⊗This omits raw DMs, device addresses, and SSH mechanics.

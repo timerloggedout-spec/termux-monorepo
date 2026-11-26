@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-26T01:23:55Z)
+# Lane matrix status (2026-11-26T01:24:40Z)
 
-- Master: `f388c27ec5cdc8439fac46c82f84f0abc536ef38`
+- Master: `467ac6c7ed86154f2f532c066ab17a78695a841c`
 - Open PRs: **569**
 - Oldest: #47 (112.4d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -27,7 +27,7 @@
 | #4069 | 22.88 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
 | #4621 | 22.19 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
 | #4898 | 21.53 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
-| #5034 | 19.43 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
+| #5034 | 19.44 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
 | #5722 | 5.34 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted routes and bind local Do |
 | #5723 | 5.34 | EXTRACT | state:unknown, minesweeper-title | fix(jules): remove hosted review relay and record  |
 | #5724 | 5.34 | EXTRACT | state:unknown, minesweeper-title | fix(jules): replace hosted PR handoff with receipt |
@@ -60,7 +60,7 @@
 | #1650 | 31.97 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
 | #1694 | 30.0 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
 | #1734 | 29.59 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
-| #1735 | 29.58 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
+| #1735 | 29.59 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
 | #1966 | 28.85 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
 
 Writer only: does not merge. Dual-gate remains promote authority. HOLD/WAIT/OBSERVE are invalid parking. Age alone ≠ promote.

@@ -10,6 +10,7 @@
 | **DO phrasing / framing guide** | [`docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md`](docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md) |
 | Superpowers engineering workflow | `.agents/skills/superpowers/SKILL.md` |
 | Adaptive wait / feedback | `.agents/skills/adaptive-feedback-cycle/SKILL.md` |
+| **Adaptive capability evolution / agent self-improvement** | [`.agents/skills/adaptive-capability-evolution/SKILL.md`](.agents/skills/adaptive-capability-evolution/SKILL.md) · `.agents/skills/adaptive-capability-evolution.skill` |
 | Admin ops | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` |
 | ML keep-alive | `.agents/skills/ml-pipeline-ops/SKILL.md` |
 | ML command-center / repo SSOT | `.agents/skills/ml-command-center/SKILL.md` |
@@ -31,6 +32,7 @@ Root `AGENTS.md` is **deprecated** (Linguist / Jules redirect only). Load `CLAUD
 
 ```text
 .agents/skills/<name>/SKILL.md     # agent / collaborator loadable skills
+.agents/skills/<name>.skill         # portable ZIP package; exact SKILL.md parity
 .github/skills/<name>/SKILL.md     # CI / production reconciliation skills
 docs/ops/SKILLS-INVENTORY.md        # SSOT navigator + role matrix
 SKILLS.md                           # this file — short collaborator entry
@@ -42,7 +44,7 @@ Every skill directory must contain a `SKILL.md`. Inventory lists **all** of them
 
 | Role | Load first |
 |------|------------|
-| Collaborator | `superpowers` → `adaptive-feedback-cycle` → dual-gate |
+| Collaborator | `superpowers` → `adaptive-capability-evolution` → `adaptive-feedback-cycle` → dual-gate |
 | Admin / Grok | `evidence-led-monorepo-ops` + `adaptive-wait` + `ml-pipeline-ops` + `ml-command-center` |
 | Admin / Grok | `evidence-led-monorepo-ops` + `adaptive-wait` |
 | Admin / Termux | `termux-mcp-project-steward` + `adaptive-wait` |

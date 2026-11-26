@@ -22,7 +22,7 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | **Admin / Grok Administrator** | `superpowers` · `evidence-led-monorepo-ops` + `adaptive-wait` + **`stepie-stepwise-ops`** + `ml-pipeline-ops` | `review-loop` · `tribute-lane` · `github-pages-operator` · `icm-cctv-ops` |
 | **Admin / Termux stewardship** | `termux-mcp-project-steward` + `adaptive-wait` | `context-relationship-graph` · `wingman-project-integration` |
 | **Wingman adaptation** | `wingman-project-integration` | `adaptive-wait` · `context-relationship-graph` | `review-loop` · `tribute-lane` · `github-pages-operator` · `approxination-lane` |
-| **Collaborator** | `superpowers` · `adaptive-feedback-cycle` | dual-gate · `find-skills` |
+| **Collaborator** | `superpowers` · `adaptive-capability-evolution` · `adaptive-feedback-cycle` | dual-gate · `find-skills` |
 | **Oversight / external contrib** | `tribute-lane` | evidence-led + adaptive-wait · living status board |
 | **Dashboard / Pages** | `github-pages-operator` | tribute-lane · deploy workflow |
 | **Evaluation / DOE** | `multivariate-doe` + `blind-agent-evaluation` | `approxination-lane` · `mvt-experiment` |
@@ -33,6 +33,7 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | Skill | Path |
 |-------|------|
 | adaptive-feedback-cycle | `.agents/skills/adaptive-feedback-cycle/SKILL.md` |
+| adaptive-capability-evolution | `.agents/skills/adaptive-capability-evolution/SKILL.md` |
 | adaptive-wait | `.agents/skills/adaptive-wait/SKILL.md` |
 | approxination-lane | `.agents/skills/approxination-lane/SKILL.md` |
 | blind-agent-evaluation | `.agents/skills/blind-agent-evaluation/SKILL.md` |
@@ -53,6 +54,8 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | termux-monorepo-agentic-governance | `.agents/skills/termux-monorepo-agentic-governance/SKILL.md` |
 | termux-mcp-project-steward | `.agents/skills/termux-mcp-project-steward/SKILL.md` |
 | wingman-project-integration | `.agents/skills/wingman-project-integration/SKILL.md` |
+
+Portable package parity: `.agents/skills/adaptive-capability-evolution.skill` contains exactly one UTF-8 `SKILL.md`, byte-identical to the agent-loadable source.
 
 ## `.github/skills/` (CI / production)
 

@@ -7,6 +7,7 @@
 | Cluster | Skill | Path | Role |
 |---|---|---|---|
 | Wait/control | adaptive-wait | `.agents/skills/adaptive-wait/SKILL.md` | asynchronous cadence, stall detection, disjoint work, promotion boundary |
+| Self-improvement | adaptive-capability-evolution | `.agents/skills/adaptive-capability-evolution/SKILL.md` | agent methods, skills, context, tools, communication, and orchestration improved through bounded evidence-led experiments |
 | Feedback | adaptive-feedback-cycle | `.agents/skills/adaptive-feedback-cycle/SKILL.md` | continuous observation, historical evaluation, feed-forward learning |
 | Evidence/admin | evidence-led-monorepo-ops | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` | current-state reconstruction, provenance, admin closeout |
 | Review | review-loop | `.agents/skills/review-loop/SKILL.md` | review ingestion, repeated validation, attribution |
@@ -24,7 +25,7 @@
 
 ## Other repository-native skill files
 
-The recursive tree contains 27 paths matching `**/SKILL.md` or `*.skill`: 25 `SKILL.md` files and 2 documentation mirrors. The repository tree currently contains **no tracked `.skill` archive**.
+The discovery snapshot counted 27 paths matching `**/SKILL.md` or `*.skill`: 25 `SKILL.md` files and 2 documentation mirrors. This branch adds the first tracked portable package: `.agents/skills/adaptive-capability-evolution.skill`.
 
 Agent-loadable paths also include: approxination-lane, blind-agent-evaluation, gemini-performance-psychology, github-pages-operator, tribute-lane, multivariate-doe, termux-monorepo, termux-monorepo-agentic-governance, and the Claude companion skill.
 
@@ -59,7 +60,7 @@ Use the smallest repository-native skill that fills the evidence gap. If an exte
 
 ## Current operating chain
 
-adaptive-wait -> adaptive-feedback-cycle -> evidence-led-monorepo-ops -> review-loop -> context-relationship-graph -> production-reconciliation -> evidence envelope/provenance -> workflow/effectiveness measurement
+adaptive-capability-evolution -> adaptive-feedback-cycle -> adaptive-wait -> evidence-led-monorepo-ops -> review-loop -> context-relationship-graph -> production-reconciliation -> evidence envelope/provenance -> workflow/effectiveness measurement
 
 Promotion remains downstream of current-SHA task-outcome verification and the repository's dual gates.
 

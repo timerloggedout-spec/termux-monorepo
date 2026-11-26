@@ -1,7 +1,7 @@
 {
  "schema": "dashboard-surface-feed/v1",
  "surface": "doe",
- "generated_at": "2026-11-02T14:23:13Z",
+ "generated_at": "2026-11-26T17:43:05Z",
  "sources": [
   "deepcli/deepcli/observatory/doe.py",
   ".agents/skills/multivariate-doe/SKILL.md",
@@ -181,7 +181,7 @@
      "factors": null,
      "design_type": null,
      "primary_outcome": null,
-     "runs": 3,
+     "runs": 6,
      "state": "executed",
      "results": null
     },
@@ -205,6 +205,18 @@
      "factors": null,
      "design_type": null,
      "primary_outcome": null,
+     "runs": 0,
+     "state": "admitted_design_only",
+     "results": null
+    },
+    {
+     "campaign_id": "game-development-specialist-evolution",
+     "issue": null,
+     "kind": "campaign",
+     "design_record": "experiments/doe/game-development-specialist-evolution/DESIGN.json",
+     "factors": null,
+     "design_type": "Taguchi L9 screening design (DoE-supported generator; proposed)",
+     "primary_outcome": "Verified requirement satisfaction rate: accepted requirement IDs / applicable requirement IDs, with all critical requirements passing.",
      "runs": 0,
      "state": "admitted_design_only",
      "results": null
@@ -242,7 +254,7 @@
      "factors": null,
      "design_type": "2x2 factorial: framing (manipulated, assigned) x entry-class (intrinsic classification factor, NOT assignable \u2014 recorded before assignment, never relabelled after outcomes)",
      "primary_outcome": null,
-     "runs": 7,
+     "runs": 9,
      "state": "executed",
      "results": null
     },
@@ -291,6 +303,18 @@
      "design_type": null,
      "primary_outcome": null,
      "runs": 6,
+     "state": "executed",
+     "results": null
+    },
+    {
+     "campaign_id": "phone-1-mcp-background-control",
+     "issue": null,
+     "kind": "campaign",
+     "design_record": "experiments/doe/phone-1-mcp-background-control/DESIGN.json",
+     "factors": null,
+     "design_type": null,
+     "primary_outcome": null,
+     "runs": 1,
      "state": "executed",
      "results": null
     },
@@ -364,8 +388,20 @@
      "factors": null,
      "design_type": null,
      "primary_outcome": null,
-     "runs": 27,
+     "runs": 42,
      "state": "executed",
+     "results": null
+    },
+    {
+     "campaign_id": "rust-zero-drift-evolution",
+     "issue": null,
+     "kind": "campaign",
+     "design_record": "experiments/doe/rust-zero-drift-evolution/DESIGN.json",
+     "factors": null,
+     "design_type": "2^4 full-factorial candidate (16 treatment combinations; design proposal only)",
+     "primary_outcome": "Verified invariant and requirement satisfaction: independently accepted critical invariants / applicable critical invariants, with all critical requirements passing.",
+     "runs": 0,
+     "state": "admitted_design_only",
      "results": null
     },
     {
@@ -452,7 +488,7 @@
     "factors": null,
     "design_type": null,
     "primary_outcome": null,
-    "runs": 3,
+    "runs": 6,
     "state": "executed",
     "results": null
    },
@@ -476,6 +512,18 @@
     "factors": null,
     "design_type": null,
     "primary_outcome": null,
+    "runs": 0,
+    "state": "admitted_design_only",
+    "results": null
+   },
+   {
+    "campaign_id": "game-development-specialist-evolution",
+    "issue": null,
+    "kind": "campaign",
+    "design_record": "experiments/doe/game-development-specialist-evolution/DESIGN.json",
+    "factors": null,
+    "design_type": "Taguchi L9 screening design (DoE-supported generator; proposed)",
+    "primary_outcome": "Verified requirement satisfaction rate: accepted requirement IDs / applicable requirement IDs, with all critical requirements passing.",
     "runs": 0,
     "state": "admitted_design_only",
     "results": null
@@ -513,7 +561,7 @@
     "factors": null,
     "design_type": "2x2 factorial: framing (manipulated, assigned) x entry-class (intrinsic classification factor, NOT assignable \u2014 recorded before assignment, never relabelled after outcomes)",
     "primary_outcome": null,
-    "runs": 7,
+    "runs": 9,
     "state": "executed",
     "results": null
    },
@@ -562,6 +610,18 @@
     "design_type": null,
     "primary_outcome": null,
     "runs": 6,
+    "state": "executed",
+    "results": null
+   },
+   {
+    "campaign_id": "phone-1-mcp-background-control",
+    "issue": null,
+    "kind": "campaign",
+    "design_record": "experiments/doe/phone-1-mcp-background-control/DESIGN.json",
+    "factors": null,
+    "design_type": null,
+    "primary_outcome": null,
+    "runs": 1,
     "state": "executed",
     "results": null
    },
@@ -635,8 +695,20 @@
     "factors": null,
     "design_type": null,
     "primary_outcome": null,
-    "runs": 27,
+    "runs": 42,
     "state": "executed",
+    "results": null
+   },
+   {
+    "campaign_id": "rust-zero-drift-evolution",
+    "issue": null,
+    "kind": "campaign",
+    "design_record": "experiments/doe/rust-zero-drift-evolution/DESIGN.json",
+    "factors": null,
+    "design_type": "2^4 full-factorial candidate (16 treatment combinations; design proposal only)",
+    "primary_outcome": "Verified invariant and requirement satisfaction: independently accepted critical invariants / applicable critical invariants, with all critical requirements passing.",
+    "runs": 0,
+    "state": "admitted_design_only",
     "results": null
    },
    {
@@ -692,8 +764,10 @@
  "gaps": [
   "Campaign cb-1-chronomancer-emission is admitted (design record committed) but has no run records yet \u2014 defined, not run.",
   "Campaign cmp-register is admitted (design record committed) but has no run records yet \u2014 defined, not run.",
+  "Campaign game-development-specialist-evolution is admitted (design record committed) but has no run records yet \u2014 defined, not run.",
   "Campaign lab-1-prompt-x-model-x-role is admitted (design record committed) but has no run records yet \u2014 defined, not run.",
   "Campaign live-4-dispatch-framing is admitted (design record committed) but has no run records yet \u2014 defined, not run.",
+  "Campaign rust-zero-drift-evolution is admitted (design record committed) but has no run records yet \u2014 defined, not run.",
   "Campaign ww-1-duckduckgo is admitted (design record committed) but has no run records yet \u2014 defined, not run.",
   "Campaign ww-2-brave is admitted (design record committed) but has no run records yet \u2014 defined, not run.",
   "Campaign ww-3-you-com is admitted (design record committed) but has no run records yet \u2014 defined, not run.",

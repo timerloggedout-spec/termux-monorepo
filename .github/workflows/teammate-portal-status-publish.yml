@@ -64,7 +64,15 @@ jobs:
         run: |
           set -euo pipefail
           pip install --quiet markdown==3.7
-          python3 scripts/ops/render_teammate_portal_status.py \
+          # The renderer lives on master; a source ref (the PR branch) may predate it.
+          renderer=scripts/ops/render_teammate_portal_status.py
+          if [ ! -f "$renderer" ]; then
+            gh api -H "Accept: application/vnd.github.raw" \
+              "repos/${{ github.repository }}/contents/scripts/ops/render_teammate_portal_status.py?ref=master" \
+              > "$RUNNER_TEMP/render_teammate_portal_status.py"
+            renderer="$RUNNER_TEMP/render_teammate_portal_status.py"
+          fi
+          python3 "$renderer" \
             --out _site/previews/pr-5840/hackathon-desk \
             --source-ref "$SRC_REF" --source-sha "$(git rev-parse HEAD)" \
             --repo "${{ github.repository }}" --pr 5840

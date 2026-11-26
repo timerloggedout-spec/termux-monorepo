@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-25",
+  "updated": "2026-11-26",
   "policy": "docs/ops/flywheel-comms/POLICY.md",
   "channels": [
     {
@@ -155,10 +155,12 @@
       "status": "established",
       "participants": [
         "muse-vm",
-        "hark-vm"
+        "hark-vm",
+        "manus-cue"
       ],
       "established": "2026-11-26",
-      "established_evidence": "hark-vm opened store + doc 2026-11-26T09:05:00Z addressed to muse-vm; muse-vm ACK + watcher leg landed 2026-11-26 (round-trip complete). Found via code search after owner pointer: watcher had no leg on this store."
+      "established_evidence": "hark-vm opened store + doc 2026-11-26T09:05:00Z addressed to muse-vm; muse-vm ACK + watcher leg landed 2026-11-26 (round-trip complete). Found via code search after owner pointer: watcher had no leg on this store. · muse-vm ACK at 0ee0a83b9301ae1d3f5eb9763cb6062084617057 (hark/comms.jsonl).",
+      "cadence": "hark-vm: Hark scheduled watch 1h. muse-vm: flywheel-comms-watch (mode pair, every line wakes). manus-cue: cue watch once path added (pending cue ACK)."
     }
   ],
   "peers": [
@@ -184,7 +186,8 @@
       "name": "manus-cue",
       "channels": [
         "FLY-005",
-        "FLY-006"
+        "FLY-006",
+        "FLY-010"
       ],
       "status": "registered",
       "aliases": [
@@ -197,12 +200,14 @@
       "channels": [
         "FLY-002",
         "FLY-004",
-        "FLY-010"
+        "FLY-010",
+        "FLY-001"
       ],
       "status": "registered",
       "aliases": [
         "hark"
-      ]
+      ],
+      "note": "Hark agent seat (sandbox VM). Tailnet: ¬ in-sandbox tailscaled/ssh ⇒ Actions-runner hop (tag:mesh). FLY-001 via github connector issue filings."
     },
     {
       "name": "chatgpt",

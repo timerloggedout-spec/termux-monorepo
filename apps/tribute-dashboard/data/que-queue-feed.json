@@ -1,6 +1,6 @@
 {
  "schema": "que-queue-feed/v1",
- "generated_at": "2026-11-26T02:41:55Z",
+ "generated_at": "2026-11-26T03:06:43Z",
  "provenance": {
   "producer": "optimizations-assurance (QUE lead) via que-feed-collect",
   "design_input": "Stagefoil \u2014 the desk-flow template brand (Registry issuance PR #4817) \u2014 agent-browser-clerk pattern (D2 candidate B learnings); the Desk as interactive-flow + routing template, agent-operated",
@@ -10,21 +10,20 @@
   "tiers": {
    "1": {
     "tier": 1,
-    "queued": 5,
+    "queued": 3,
     "in_progress": 2,
     "oldest_queued_at": "2026-11-20T07:43:25Z",
     "by_workflow_queued": {
-     "PR scope guard": 3,
-     "repo gate": 2
+     "repo gate": 1,
+     "PR scope guard": 2
     }
    },
    "2": {
     "tier": 2,
-    "queued": 2,
+    "queued": 1,
     "in_progress": 1,
-    "oldest_queued_at": "2026-11-26T02:38:05Z",
+    "oldest_queued_at": "2026-11-26T03:06:36Z",
     "by_workflow_queued": {
-     "pages build and deployment": 1,
      "tribute-dashboard-deploy": 1
     }
    },
@@ -37,61 +36,195 @@
    },
    "4": {
     "tier": 4,
-    "queued": 91,
-    "in_progress": 14,
+    "queued": 6,
+    "in_progress": 19,
     "oldest_queued_at": "2026-11-20T07:43:25Z",
     "by_workflow_queued": {
-     "lane events recorder": 12,
-     "repo-tracking-collect": 1,
-     "Agent Throughput Evidence": 23,
-     "Agent review \u2192 auto Jules": 6,
-     "Gemini review after peers": 1,
-     "Sweep Accountability": 3,
-     "Agent Readability Source Contract": 2,
-     "Agent PR Jules Handoff": 2,
-     "CellCog review": 1,
-     "PR evidence evaluation": 2,
-     "termux smoke": 3,
      "DO Statement Style": 2,
-     "Repository development evaluation": 1,
-     "Audit Cycle \u2014 Single PR Feed-Forward": 1,
-     "RECON INTEL discovery": 2,
-     "PR production ledger": 3,
-     "Peer review orchestrator": 2,
-     "Action Effectiveness Ledger": 1,
-     "que-cadence-kick": 1,
-     "Foresight Evidence Spine": 1,
-     "graph-matrix-probe": 1,
-     "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
-     "quota-allocation-planner": 1,
-     "Context Relationship + Lead/Lag Audit": 11,
-     "Agent feedback \u2192 Linear subtasks": 1,
-     "Issue Comment Router \u2014 modular fan-out reduction": 4,
+     "termux smoke": 1,
+     "Agent PR Jules Handoff": 1,
      "PR Change Effectiveness Ledger": 1,
      "Advisory GitHub Actions lint": 1
     }
    }
   },
   "totals": {
-   "queued": 98,
-   "in_progress": 17
+   "queued": 10,
+   "in_progress": 22
   },
-  "wedged_ancient": [],
+  "wedged_ancient": [
+   {
+    "id": 43098247266,
+    "workflow": "repo gate",
+    "created_at": "2026-11-11T20:48:59Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247266"
+   },
+   {
+    "id": 43098247342,
+    "workflow": "Orchestration Regression Guard",
+    "created_at": "2026-11-11T20:48:59Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247342"
+   },
+   {
+    "id": 43098247319,
+    "workflow": "repo-tracking-collect",
+    "created_at": "2026-11-11T20:48:59Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247319"
+   },
+   {
+    "id": 43098247247,
+    "workflow": "Foresight Evidence Spine",
+    "created_at": "2026-11-11T20:48:59Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247247"
+   },
+   {
+    "id": 43098247311,
+    "workflow": "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher",
+    "created_at": "2026-11-11T20:48:59Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247311"
+   },
+   {
+    "id": 43098247260,
+    "workflow": "graph-matrix-probe",
+    "created_at": "2026-11-11T20:48:59Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247260"
+   },
+   {
+    "id": 43098247290,
+    "workflow": "termux smoke",
+    "created_at": "2026-11-11T20:48:59Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247290"
+   },
+   {
+    "id": 43098247303,
+    "workflow": "Quota Dispatch Tree",
+    "created_at": "2026-11-11T20:48:59Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247303"
+   },
+   {
+    "id": 43098247273,
+    "workflow": "hitl-control-plane-verify",
+    "created_at": "2026-11-11T20:48:59Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247273"
+   },
+   {
+    "id": 43098247239,
+    "workflow": "Context Relationship + Lead/Lag Audit",
+    "created_at": "2026-11-11T20:48:59Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247239"
+   },
+   {
+    "id": 43098247233,
+    "workflow": "Sweep Accountability",
+    "created_at": "2026-11-11T20:48:59Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43098247233"
+   },
+   {
+    "id": 43097183084,
+    "workflow": "doe-nc1-continuous-log",
+    "created_at": "2026-11-11T20:37:41Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43097183084"
+   },
+   {
+    "id": 43096831186,
+    "workflow": "Quota Dispatch Tree",
+    "created_at": "2026-11-11T20:34:15Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831186"
+   },
+   {
+    "id": 43096831303,
+    "workflow": "termux smoke",
+    "created_at": "2026-11-11T20:34:15Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831303"
+   },
+   {
+    "id": 43096831325,
+    "workflow": "Foresight Evidence Spine",
+    "created_at": "2026-11-11T20:34:15Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831325"
+   },
+   {
+    "id": 43096831370,
+    "workflow": "hitl-control-plane-verify",
+    "created_at": "2026-11-11T20:34:15Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831370"
+   },
+   {
+    "id": 43096831128,
+    "workflow": "Sweep Accountability",
+    "created_at": "2026-11-11T20:34:15Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831128"
+   },
+   {
+    "id": 43096831290,
+    "workflow": "repo gate",
+    "created_at": "2026-11-11T20:34:15Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831290"
+   },
+   {
+    "id": 43096831100,
+    "workflow": "Context Relationship + Lead/Lag Audit",
+    "created_at": "2026-11-11T20:34:15Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831100"
+   },
+   {
+    "id": 43096831285,
+    "workflow": "graph-matrix-probe",
+    "created_at": "2026-11-11T20:34:15Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831285"
+   },
+   {
+    "id": 43096831306,
+    "workflow": "repo-tracking-collect",
+    "created_at": "2026-11-11T20:34:15Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831306"
+   },
+   {
+    "id": 43096831086,
+    "workflow": "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher",
+    "created_at": "2026-11-11T20:34:15Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831086"
+   },
+   {
+    "id": 43096831107,
+    "workflow": "Orchestration Regression Guard",
+    "created_at": "2026-11-11T20:34:15Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831107"
+   },
+   {
+    "id": 36803855107,
+    "workflow": "PR production ledger",
+    "created_at": "2026-10-01T02:01:22Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36803855107"
+   },
+   {
+    "id": 36803852632,
+    "workflow": "Peer review orchestrator",
+    "created_at": "2026-10-01T02:01:19Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36803852632"
+   }
+  ],
   "tier_basis": {
    "population": "actions-runs (queued \u2227 in_progress)",
    "explicit": {
-    "1": 7,
-    "2": 3,
+    "1": 5,
+    "2": 2,
     "3": 0,
     "4": 0
    },
-   "explicit_total": 10,
-   "default_t4": 105,
+   "explicit_total": 7,
+   "default_t4": 25,
    "unmatched": 0,
-   "ancient_excluded": 0,
-   "operator_excluded": 0
+   "ancient_excluded": 25,
+   "operator_excluded": 1
   },
-  "operator_excluded": []
+  "operator_excluded": [
+   {
+    "id": 37655538554,
+    "workflow": "Merge Promotion Queue",
+    "class": "ghost-never-queued"
+   }
+  ]
  },
  "dispatch_claims": {
   "source": "ops/challenge/dispatch-state-feed.json",
@@ -2441,67 +2574,67 @@
  },
  "source_freshness": {
   "schema": "que.source-freshness/v1",
-  "generated_at": "2026-11-26T02:41:55Z",
+  "generated_at": "2026-11-26T03:06:43Z",
   "rule": "FRESH iff age \u2264 cadence + tolerance; freshness(x) \u00acinferred from freshness(y)",
   "counts": {
-   "STALE": 1,
-   "FRESH": 3,
+   "STALE": 3,
+   "FRESH": 1,
    "UNVERIFIABLE": 1
   },
   "sources": {
    "que-feed-collect": {
     "source_ref": "ops/que/feeds/que-queue-feed.json",
-    "generated_at": "2026-11-26T02:41:55Z",
-    "observed_at": "2026-11-26T02:41:55Z",
+    "generated_at": "2026-11-26T03:06:43Z",
+    "observed_at": "2026-11-26T03:06:43Z",
     "expected_cadence_min": 10,
     "tolerance_min": 5,
-    "previous_cycle_at": "2026-11-26T02:06:29Z",
-    "cycle_gap_min": 35.4,
+    "previous_cycle_at": "2026-11-26T02:41:55Z",
+    "cycle_gap_min": 24.8,
     "health": "STALE",
     "health_basis": "gap since previous cycle watermark",
-    "sha": "ce39c21150012926fb6f8561dc11673760dbbee1",
-    "run_id": "45743780300"
+    "sha": "edade29614fffed9bf97978eb4dac57c5492f05a",
+    "run_id": "45746752580"
    },
    "dispatch-state-feed": {
     "source_ref": "ops/challenge/dispatch-state-feed.json",
-    "observed_at": "2026-11-26T02:41:55Z",
+    "observed_at": "2026-11-26T03:06:43Z",
     "expected_cadence_min": 15,
     "tolerance_min": 15,
-    "sha": "ce39c21150012926fb6f8561dc11673760dbbee1",
+    "sha": "edade29614fffed9bf97978eb4dac57c5492f05a",
     "generated_at": "2026-11-26T02:35:21Z",
-    "age_min": 6.6,
-    "health": "FRESH"
+    "age_min": 31.4,
+    "health": "STALE"
    },
    "stall-gap-feed": {
     "source_ref": "ops/que/feeds/stall-gap-feed.json",
-    "observed_at": "2026-11-26T02:41:55Z",
+    "observed_at": "2026-11-26T03:06:43Z",
     "expected_cadence_min": 15,
     "tolerance_min": 15,
-    "sha": "ce39c21150012926fb6f8561dc11673760dbbee1",
+    "sha": "edade29614fffed9bf97978eb4dac57c5492f05a",
     "generated_at": "2026-11-26T02:35:21Z",
-    "age_min": 6.6,
-    "health": "FRESH"
+    "age_min": 31.4,
+    "health": "STALE"
    },
    "opportunity-priority": {
     "source_ref": "ops/que/feeds/opportunity-priority.json",
-    "observed_at": "2026-11-26T02:41:55Z",
+    "observed_at": "2026-11-26T03:06:43Z",
     "expected_cadence_min": 720,
     "tolerance_min": 0,
-    "sha": "ce39c21150012926fb6f8561dc11673760dbbee1",
+    "sha": "edade29614fffed9bf97978eb4dac57c5492f05a",
     "generated_at": "2026-11-25T22:35:18Z",
-    "age_min": 246.6,
+    "age_min": 271.4,
     "health": "FRESH"
    },
    "governor-events": {
     "source_ref": "ops/que/events/governor-events-*.jsonl",
-    "observed_at": "2026-11-26T02:41:55Z",
+    "observed_at": "2026-11-26T03:06:43Z",
     "generated_at": "2026-11-25T22:50:45Z",
-    "age_min": 231.2,
+    "age_min": 256.0,
     "expected_cadence_min": null,
     "tolerance_min": null,
     "health": "UNVERIFIABLE",
     "health_basis": "emitter cadence \u00acdeclared (source-specific)",
-    "sha": "ce39c21150012926fb6f8561dc11673760dbbee1"
+    "sha": "edade29614fffed9bf97978eb4dac57c5492f05a"
    }
   }
  }

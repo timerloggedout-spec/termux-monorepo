@@ -187,8 +187,9 @@
       ],
       "cadence": "muse-vm watcher 60s + hourly discovery; grok on its app cadence",
       "owner_seat": "muse-vm (mesh lane)",
-      "status": "proposed",
+      "status": "established",
       "established": "2026-11-26",
+      "established_evidence": "muse-vm open 2026-11-26T11:41:15Z; grok ACK 2026-11-26T11:50:00Z (commit 1ee5ac8e). Cross-linked to termux-monorepo master production coordination.",
       "scope": "Grok pair comms: recon + Approxination oversight + fleet work with grok. Established on first round-trip ACK (Policy: proposed until receipt). Landed by direct commit under owner order 2026-11-26 after the PR gate left the channel unregistered."
     }
   ],
@@ -359,8 +360,8 @@
       "aliases": [
         "grok"
       ],
-      "status": "ONBOARDING PENDING",
-      "note": "AI collaborator via the Grok app (no Muse connector); runs recon, holds Approxination oversight. First ACK on FLY-011 flips to registered."
+      "status": "registered",
+      "note": "AI collaborator via the Grok app (no Muse connector); runs recon, holds Approxination oversight. First ACK on FLY-011 flipped to registered 2026-11-26T11:50:00Z. Cross-linked production coordination on termux-monorepo."
     }
   ]
 }

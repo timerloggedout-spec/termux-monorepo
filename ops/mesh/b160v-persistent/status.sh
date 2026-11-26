@@ -3,10 +3,20 @@
 DIR="$HOME/b160v-persistent"
 echo "== b160v-persistent status =="
 pgrep sshd >/dev/null 2>&1 && echo "sshd: RUNNING (port 8022)" || echo "sshd: NOT RUNNING"
+command -v cloudflared >/dev/null 2>&1 && echo "cloudflared: INSTALLED ($(cloudflared --version 2>/dev/null | head -1))" || echo "cloudflared: MISSING (pkg install cloudflared)"
+pgrep -f "bin/supervisor.sh" >/dev/null 2>&1 && echo "supervisor: RUNNING" || echo "supervisor: NOT RUNNING"
+grep -q "b160v-tunnel.sh" ~/bin/supervisor.sh 2>/dev/null && echo "supervisor stanza: PRESENT" || echo "supervisor stanza: MISSING"
 if [ -f "$DIR/loop.pid" ] && kill -0 "$(cat "$DIR/loop.pid")" 2>/dev/null; then
   echo "tunnel loop: RUNNING (pid $(cat "$DIR/loop.pid"))"
 else
   echo "tunnel loop: NOT RUNNING"
+fi
+CF_MODE="named"; CF_HOSTNAME=""
+[ -f "$DIR/cf.env" ] && . "$DIR/cf.env"
+echo "tunnel mode: $CF_MODE"
+if [ "$CF_MODE" = "named" ]; then
+  [ -f "$DIR/cf-token" ] && echo "tunnel token: PRESENT" || echo "tunnel token: MISSING (~/b160v-persistent/cf-token)"
+  [ -n "$CF_HOSTNAME" ] && echo "tunnel hostname: $CF_HOSTNAME" || echo "tunnel hostname: UNSET (CF_HOSTNAME in cf.env)"
 fi
 echo "endpoint (local): $(cat "$DIR/last-endpoint" 2>/dev/null || echo none)"
 python3 - <<'PY'

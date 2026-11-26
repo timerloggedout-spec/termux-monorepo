@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "28a27a85ea757055bb6e1de1d73c64336db661aa1941102d9dd6c8c2762f9387",
-  "workflow_count": 329,
+  "source_fingerprint": "3dd5dc695410df0263311c0d0cd8a60b6fbedba5b6d052d78090e6becfc9377d",
+  "workflow_count": 330,
   "workflows": [
     {
       "action_pins": [],
@@ -670,6 +670,21 @@
       ],
       "name": "BIFROST-006 benchmark smoke",
       "path": ".github/workflows/bifrost-006-smoke.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "standup"
+      ],
+      "name": "bonsai-endpoint",
+      "path": ".github/workflows/bonsai-endpoint.yml",
       "schedules": [],
       "triggers": [
         "workflow_dispatch"

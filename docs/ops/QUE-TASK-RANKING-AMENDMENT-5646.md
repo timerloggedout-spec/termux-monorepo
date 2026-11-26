@@ -115,11 +115,14 @@ amendment makes the bound explicit and small:
 - The watchdog carries a **per-issue consecutive-release counter**:
   lease releases with no execution state change since the claim,
   counted consecutively (any execution state change resets it).
-- **At 3 consecutive releases, the machinery escalates once** — a
-  stamped escalation on the item naming the cycle count, plus a
-  defect datum on #5646. Three is the bound because 3 is where a
-  seat caught #5614 by hand (instance #4); the machinery must catch
-  it there first, without a seat.
+- **Every** zero-execution release is a dispatch defect event,
+  stamped on #5646 in the pass it occurs (§5) — never a silent
+  re-queue.
+- **At 3 consecutive releases, the machinery escalates once on the
+  item** — a stamped escalation naming the cycle count. Three is
+  the bound because 3 is where a seat caught #5614 by hand
+  (instance #4); the machinery must catch it there first, without
+  a seat.
 - After that escalation the item is **claim-ineligible for silent
   auto re-claim** until a named claimant claims it or a stamped
   HOLD-cause (arm + pre-flight state, per #5646's conversion
@@ -127,6 +130,42 @@ amendment makes the bound explicit and small:
 - Deferred-by-tier items are claim-ineligible outright (the #5220
   datum, instance #3): a tier-deferred item is never auto-claimed,
   so it can never enter the release cycle.
+
+## 5. Dispatch-level fix — claim ⇒ execution (owner addendum, 2026-11-26)
+
+The owner names the root requirement: *"Execution from claim
+requires FIX in QUE QDesk queue dispatches."* Scoring decides what
+claims first; this section binds what a claim *is*. The census in
+Appendix A is the defect evidence: 147 times, a dispatch claimed an
+item, no execution ever started, and the lease machinery treated
+that as a normal cycle.
+
+1. **A claim takes only if execution starts inside the lease
+   window.** Execution start = a build dispatch receipt on the item
+   (run id + arm named at claim time, per #5646's claim-time input
+   bound) or a stamped HOLD-cause (arm + pre-flight state). A claim
+   whose window closes with neither **does not take**: it is voided
+   as a conversion failure, not released as a routine expiry.
+2. **An execution heartbeat holds the lease.** Once execution has
+   started, a heartbeat stamp from the executing run (progress,
+   artifact, or verdict precursor) inside the window is the
+   execution state change that holds the lease; the watchdog ages
+   the claim against the heartbeat deadline, as build-dispatch
+   receipts already stamp. Silence past the heartbeat deadline —
+   not the lease clock alone — is what releases a started claim.
+3. **A lease release with zero execution state change is a
+   dispatch defect event.** It is stamped on #5646 as a defect
+   datum in the same pass (item · claimant · window · cycle count),
+   and it escalates immediately — the item does not silently
+   re-enter the pool. §4's counter and 3-cycle bound govern what
+   happens next: after the third consecutive defect event the item
+   leaves auto-claim entirely until a named claim or HOLD-cause
+   lands.
+
+Done-evidence for this section: the first watchdog pass in which a
+zero-execution release appears as a #5646 defect stamp authored by
+the machinery — and, behind it, a full pass with no zero-execution
+release at all.
 
 ## Appendix A — churn census (evidence, live API, 2026-11-26)
 

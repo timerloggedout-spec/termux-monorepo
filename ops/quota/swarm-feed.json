@@ -1,6 +1,6 @@
 {
  "schema": "quota.swarm-feed/v1",
- "generated_at": "2026-11-26T16:33:30Z",
+ "generated_at": "2026-11-26T17:34:23Z",
  "generated_by": "scripts/quota_swarm_feed.py",
  "spec": {
   "doc": "docs/ops/PROVIDER-DISPATCH-CAPABILITY.md",
@@ -27,7 +27,7 @@
   {
    "id": "usage-series",
    "path": "ops/quota/usage-series.json",
-   "generated_at": "2026-11-26T16:33:30Z"
+   "generated_at": "2026-11-26T17:34:23Z"
   },
   {
    "id": "rate-limit-events",
@@ -36,24 +36,24 @@
   }
  ],
  "summary": {
-  "registry_model_records": 98,
-  "distinct_providers": 96,
-  "families": 36,
-  "families_direct": 35,
+  "registry_model_records": 99,
+  "distinct_providers": 97,
+  "families": 37,
+  "families_direct": 36,
   "g4f_children": 61,
   "live_verified_families": 12,
   "rate_limit_events": 10,
   "families_populated": 29,
-  "families_gap": 7,
+  "families_gap": 8,
   "records_populated": 2,
-  "records_total": 98,
+  "records_total": 99,
   "population": {
-   "providers_total": 96,
+   "providers_total": 97,
    "providers_populated": 2,
-   "providers_gap": 94,
-   "families_total": 36,
+   "providers_gap": 95,
+   "families_total": 37,
    "families_populated": 29,
-   "families_gap": 7
+   "families_gap": 8
   }
  },
  "providers": [
@@ -2165,6 +2165,32 @@
      },
      "usage_series": null,
      "populated": null
+    }
+   ]
+  },
+  {
+   "provider": "local",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "population": {
+    "state": "gap",
+    "bases": []
+   },
+   "census": null,
+   "records": [
+    {
+     "id": "local.bonsai_llama_server",
+     "provider": "LocalLlamaServer",
+     "metric": "Local llama-server inference dispatches (Ternary-Bonsai-2.5-27B Q2_0 GGUF on stock llama.cpp >= b11556; OpenAI-compatible /v1 surface)",
+     "limit": null,
+     "unit": "requests (self-hosted, unmetered)",
+     "window": "n/a (self-hosted)",
+     "reset": "n/a",
+     "live": "Per-stand-up receipts: each bonsai-endpoint.yml run uploads health/models/chat/tool-call JSON artifacts; no standing listener - the arm is stood up on demand on a >=10 GB host surface (census QUE #5591, 2026-11-26).",
+     "readings": null,
+     "usage_series": null,
+     "populated": false
     }
    ]
   },

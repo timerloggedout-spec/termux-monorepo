@@ -1,9 +1,9 @@
 {
  "schema": "quota.usage-series/v1",
  "generated_by": "scripts/quota_usage_series.py",
- "generated_at": "2026-11-26T16:33:30Z",
+ "generated_at": "2026-11-26T17:34:23Z",
  "inputs_generated_at": {
-  "ops/quota/quota-usage.json": "2026-11-25T17:50:11Z",
+  "ops/quota/quota-usage.json": "2026-11-26T17:34:23Z",
   "ops/tracking/nested-family.json": "2026-11-26T16:32:55Z"
  },
  "sources": [
@@ -905,6 +905,16 @@
    {
     "key": "llm7",
     "title": "llm7 - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "localllamaserver",
+    "title": "LocalLlamaServer - no stamped usage yet (gap)",
     "unit": null,
     "kind": "gap",
     "metric": null,
@@ -2030,9 +2040,9 @@
   ]
  },
  "coverage": {
-  "providers_total": 96,
+  "providers_total": 97,
   "providers_populated": 6,
-  "providers_gap": 92,
+  "providers_gap": 93,
   "model_series": 21,
   "model_populated": 21
  },

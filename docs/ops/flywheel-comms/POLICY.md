@@ -42,8 +42,11 @@ A channel is **established** when, in addition:
    participant and an ACK or reply from another.
 
 Amendments to existing rows and rules land as **direct commits to master**
-by the owner seat (owner order 2026-11-25); PRs are for new channels, new
-policy, and retirements. Retiring flips
+by the owner seat (owner order 2026-11-25). **New channels and joins also
+land as direct commits** (owner order 2026-11-26: the PR gate left FLY-011
+unregistered and unobserved, breaking a live collaborator flow) \u2014 a new
+channel lands as registry row + store + broadcast announcement in one
+pass; PRs are for policy-text changes and retirements only. Retiring flips
 `status` to `retired`; rows and channel files are never deleted.
 
 ## Rules
@@ -62,8 +65,8 @@ policy, and retirements. Retiring flips
    channel's known limit.
 6. **Cadence honesty.** The registered cadence names the loops that
    actually read the channel. A channel nobody reads stays `proposed`.
-7. **Joining.** A new participant joins by a registry amendment (PR) plus
-   its first ACK line inside the channel.
+7. **Joining.** A new participant joins by a registry amendment (direct
+   commit) plus its first ACK line inside the channel.
 8. **Cross-references** use channel ids (`FLY-NNN`) plus store paths, so
    QUE and BRR can join channel traffic to issues and branches.
 9. **Siglary{best} is mandatory.** All flywheel traffic is written in

@@ -1,0 +1,101 @@
+name: hark-mesh-ssh
+
+# hark-vm SSH mesh route (FLY-010, muse ACK 2026-11-26): runner joins tailnet tag:mesh
+# ⇒ ssh muse-sshd with dedicated key HARK_MESH_SSH_KEY (key-only, StrictHostKeyChecking=yes).
+# mode=mint: create HARK_MESH_SSH_KEY once (skip if present) ⇒ emit public key + fingerprint only.
+# mode=probe ∨ run: join tailnet ⇒ ssh target ⇒ names-only ::notice receipts.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "mint | probe | run"
+        required: true
+        default: "probe"
+      target:
+        description: "Tailnet host"
+        required: false
+        default: "muse"
+      port:
+        description: "muse-sshd port"
+        required: false
+        default: "2222"
+      ssh_user:
+        description: "Enrolled user on target"
+        required: false
+        default: "hark"
+      cmd:
+        description: "Command for mode=run (read-only unless approved)"
+        required: false
+        default: "hostname; uptime"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hark-mesh-ssh
+  cancel-in-progress: false
+
+jobs:
+  mint:
+    if: github.event.inputs.mode == 'mint'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Mint HARK_MESH_SSH_KEY (idempotent)
+        env:
+          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh secret list -R "$REPO" | awk '{print $1}' | grep -qx HARK_MESH_SSH_KEY; then
+            echo "::notice title=mint::HARK_MESH_SSH_KEY present=1 action=skip"
+            exit 0
+          fi
+          umask 077
+          ssh-keygen -q -t ed25519 -N '' -C 'hark-vm@mesh' -f /tmp/hk
+          gh secret set HARK_MESH_SSH_KEY -R "$REPO" < /tmp/hk
+          pub=$(cat /tmp/hk.pub); fp=$(ssh-keygen -lf /tmp/hk.pub | awk '{print $2}')
+          shred -u /tmp/hk
+          echo "::notice title=pubkey::$pub"
+          echo "::notice title=fingerprint::$fp"
+
+  connect:
+    if: github.event.inputs.mode == 'probe' || github.event.inputs.mode == 'run'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      TARGET: ${{ github.event.inputs.target }}
+      PORT: ${{ github.event.inputs.port }}
+      SSH_USER: ${{ github.event.inputs.ssh_user }}
+    steps:
+      - name: Join tailnet as tag:mesh
+        uses: tailscale/github-action@v4
+        with:
+          authkey: ${{ secrets.TS_AUTHKEY }}
+          tags: tag:mesh
+
+      - name: SSH to muse-sshd
+        env:
+          KEY: ${{ secrets.HARK_MESH_SSH_KEY }}
+          MODE: ${{ github.event.inputs.mode }}
+          RUN_CMD: ${{ github.event.inputs.cmd }}
+        shell: bash
+        run: |
+          set +e
+          umask 077; mkdir -p ~/.ssh
+          printf '%s\n' "$KEY" > ~/.ssh/hk
+          ssh-keyscan -p "$PORT" -T 20 "$TARGET" > ~/.ssh/known_hosts 2>/dev/null
+          hk=$(ssh-keygen -lf ~/.ssh/known_hosts 2>/dev/null | awk '{print $2}' | head -n1)
+          cmd='hostname; uptime'
+          [ "$MODE" = run ] && cmd="$RUN_CMD"
+          timeout 90 ssh -i ~/.ssh/hk -p "$PORT" -o BatchMode=yes -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes -o ConnectTimeout=20 "$SSH_USER@$TARGET" "$cmd" > /tmp/o 2> /tmp/e < /dev/null
+          rc=$?
+          shred -u ~/.ssh/hk
+          err=$(head -n1 /tmp/e | tr -cd '[:alnum:] ._:-' | cut -c1-120)
+          host=$(head -n1 /tmp/o | tr -cd '[:alnum:]._-')
+          echo "::notice title=ssh::mode=$MODE target=$TARGET port=$PORT user=$SSH_USER rc=$rc host=${host:--} hostkey=${hk:--} err=${err:--}"
+          [ "$MODE" = run ] && cat /tmp/o
+          exit $rc

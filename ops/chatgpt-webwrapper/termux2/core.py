@@ -30,6 +30,11 @@ Deviations from the DeepSeek pattern, surface-forced:
   - Send: message sending on this surface requires its sentinel/PoW
     flow, so v2's participant primitives are the read set (session
     state, enumerate, fetch, export). No send primitive ships.
+  - Import: --import-session reads the established session from the
+    phone's own signed-in Chrome over ADB + its DevTools socket
+    (patterns adopted from google/artemis; see the ADB section below),
+    with the original manual paste kept as the fallback. The value
+    moves only from the browser surface into the 0600 config.
 """
 import base64
 import hashlib
@@ -515,6 +520,628 @@ def export_markdown(messages):
     return md
 
 
+# ---------- ADB import leg (primary session-import path) ---------------
+# Patterns adopted from google/artemis (via timerloggedout-spec/
+# artemis_fork), fitted to this single-device bundle:
+#   (1) atomic trace writes — temp file + fsync + os.replace; a reader
+#       never sees a torn file; corrupt state is quarantined aside,
+#       never silently trusted (runtime/trace_store.py).
+#   (2) a session owns ordered step records; terminal statuses are
+#       canonicalised ("completed" / "failed" / "stopped"); worker
+#       liveness that cannot be determined counts as ALIVE, so a live
+#       import is never reaped by mistake (admin_console repositories).
+#   (3) the ADB target is an immutable per-run snapshot: endpoint +
+#       serial are frozen at start and every adb call in the run uses
+#       exactly that target (runtime/adb_endpoint.py).
+#   (4) a blocker-class preflight probe walks its rungs in order —
+#       adb binary -> transport -> devtools socket — and classes each
+#       failure BEFORE any session read is attempted; probe enrichment
+#       is cached briefly (core/diagnostics/probes/adb_probe.py).
+#   (5) the import is replayable: every step lands in the step-trace
+#       (0600, under the config dir) and in the telemetry stream.
+#       Steps are always recorded; credential VALUES never are.
+# The session value moves only from the phone's own signed-in Chrome
+# (read over its DevTools socket) into the 0600 config — never printed,
+# never logged, never echoed.
+
+import shutil
+import socket
+import struct
+import subprocess
+import urllib.request
+import uuid
+
+IMPORT_TRACES_DIR = CONFIG_DIR / "import-traces"
+IMPORT_LOCK = CONFIG_DIR / "import.lock"
+_TERMINAL_STATUSES = ("completed", "failed", "stopped")
+
+
+def _utcnow():
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+
+
+def _atomic_write_json(path: Path, data) -> Path:
+    """Pattern (1): write tmp in the same dir, fsync, os.replace."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if path.is_symlink():
+        raise ValueError("Atomic write target is a symlink")
+    tmp = path.with_name(f".{path.name}.tmp-{os.getpid()}")
+    fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+        f.flush()
+        os.fsync(f.fileno())
+    os.replace(tmp, path)
+    try:
+        path.chmod(0o600)
+    except Exception:
+        pass
+    return path
+
+
+def _read_json_three_state(path: Path):
+    """Pattern (1) read side: missing -> (None, 'missing') silently;
+    corrupt -> quarantined aside + warning, (None, 'corrupt');
+    IO error -> warning, (None, 'io_error'); else (data, 'ok')."""
+    if not path.exists():
+        return None, "missing"
+    try:
+        return json.loads(path.read_text(encoding="utf-8")), "ok"
+    except json.JSONDecodeError:
+        aside = path.with_name(f"{path.name}.corrupt-{int(time.time())}")
+        try:
+            os.replace(path, aside)
+        except Exception:
+            pass
+        print(f"warning: corrupt state quarantined: {path.name}", file=sys.stderr)
+        return None, "corrupt"
+    except OSError as e:
+        print(f"warning: state unreadable ({e}); treating as absent", file=sys.stderr)
+        return None, "io_error"
+
+
+class _ImportLock:
+    """PID-aware single-flight guard for the import (patterns 1+2).
+    The owner record carries pid + created + a random token; a lock
+    whose owner cannot be proven dead is treated as HELD (indeterminate
+    counts as alive), so a live import is never displaced."""
+
+    def __init__(self):
+        self.token = uuid.uuid4().hex
+        self.acquired = False
+
+    def _owner(self):
+        data, state = _read_json_three_state(IMPORT_LOCK)
+        return data if state == "ok" else None
+
+    @staticmethod
+    def _pid_alive(pid) -> Optional[bool]:
+        """True = alive, False = proven dead, None = indeterminate."""
+        try:
+            pid = int(pid)
+        except Exception:
+            return None
+        if pid <= 0:
+            return None
+        try:
+            os.kill(pid, 0)
+            return True
+        except ProcessLookupError:
+            return False
+        except PermissionError:
+            return True  # exists, owned by someone else -> alive
+        except OSError:
+            return None  # indeterminate -> counts as alive
+
+    def acquire(self) -> Optional[str]:
+        """Returns None on success, else the failure class."""
+        owner = self._owner()
+        if owner is not None:
+            alive = self._pid_alive(owner.get("pid"))
+            if alive is not False:
+                return "import_in_progress"
+            # owner proven dead -> stale lock, steal it
+        try:
+            _atomic_write_json(IMPORT_LOCK, {
+                "pid": os.getpid(), "created": _utcnow(), "token": self.token,
+            })
+        except Exception as e:  # noqa: BLE001
+            return f"lock_unavailable:{type(e).__name__}"
+        self.acquired = True
+        return None
+
+    def release(self):
+        if not self.acquired:
+            return
+        owner = self._owner()
+        if owner is not None and owner.get("token") == self.token:
+            try:
+                IMPORT_LOCK.unlink()
+            except Exception:
+                pass
+        self.acquired = False
+
+
+class ImportTrace:
+    """Patterns (2)+(5): one import session owning ordered step
+    records, persisted atomically after every step, mirrored into the
+    telemetry stream. Credential values are never recorded — only
+    names, counts, classes, booleans."""
+
+    def __init__(self):
+        self.session_id = uuid.uuid4().hex[:16]
+        self.started = _utcnow()
+        self.steps: List[Dict[str, Any]] = []
+        self.status = "running"
+        self.path = IMPORT_TRACES_DIR / f"{self.session_id}.json"
+        self._persist()
+
+    def _record(self):
+        return {
+            "session_id": self.session_id,
+            "kind": "import_session",
+            "started": self.started,
+            "status": self.status,
+            "steps": self.steps,
+        }
+
+    def _persist(self):
+        try:
+            _atomic_write_json(self.path, self._record())
+        except Exception:
+            pass
+
+    def step(self, name: str, status: str, **fields):
+        rec = {"n": len(self.steps) + 1, "step": name, "status": status, "at": _utcnow()}
+        rec.update(fields)
+        self.steps.append(rec)
+        self._persist()
+        try:
+            import telemetry
+
+            telemetry.emit("import_step", import_session=self.session_id,
+                           step=name, step_status=status, **{
+                               k: v for k, v in fields.items()
+                               if k in ("class", "method", "rung", "count")})
+        except Exception:
+            pass
+        return rec
+
+    def finish(self, status: str, **fields):
+        if status not in _TERMINAL_STATUSES:
+            status = "failed"
+        self.status = status
+        self._persist()
+        data, state = _read_json_three_state(self.path)
+        verified = bool(state == "ok" and data and data.get("status") == status)
+        try:
+            import telemetry
+
+            telemetry.emit("session_event", state=f"import_{status}",
+                           import_session=self.session_id,
+                           trace_verified=verified, **fields)
+        except Exception:
+            pass
+        return verified
+
+
+class AdbTarget:
+    """Pattern (3): the immutable per-run ADB snapshot. `endpoint` is
+    the normalised socket-string identity of the target; every adb
+    invocation in the run goes through .run() with the frozen serial."""
+
+    def __init__(self, adb_path: str, serial: str):
+        if not adb_path or not os.path.isabs(adb_path):
+            raise ValueError(f"malformed adb path: {adb_path!r}")
+        if not serial or any(c.isspace() for c in serial):
+            raise ValueError(f"malformed adb serial: {serial!r}")
+        self.adb_path = adb_path
+        self.serial = serial
+        self.endpoint = f"adb://{serial}"
+        self._frozen = True
+
+    def __setattr__(self, name, value):
+        if getattr(self, "_frozen", False):
+            raise AttributeError("AdbTarget is immutable")
+        object.__setattr__(self, name, value)
+
+    def run(self, args, timeout=20):
+        cmd = [self.adb_path, "-s", self.serial] + list(args)
+        return subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+
+
+def _adb_base():
+    return os.environ.get("ADB") or shutil.which("adb")
+
+
+def _adb_devices(adb_path):
+    """Parse `adb devices` into [(serial, state)]."""
+    out = subprocess.run([adb_path, "devices"], capture_output=True,
+                         text=True, timeout=15)
+    devices = []
+    for line in (out.stdout or "").splitlines():
+        line = line.strip()
+        if not line or line.startswith("List of devices"):
+            continue
+        parts = line.split()
+        if len(parts) >= 2:
+            devices.append((parts[0], parts[1]))
+    return devices
+
+
+_PREFLIGHT_CACHE: Dict[str, Any] = {"at": 0.0, "result": None}
+_PREFLIGHT_TTL = 5.0
+
+
+def adb_preflight(use_cache=True):
+    """Pattern (4): blocker-class probe, rungs in order. Returns
+    {"state": "ok"|"fail", "class": <class>, "target": AdbTarget|None,
+     "rungs": [{rung, state, class}]}. Enrichment cached briefly."""
+    now = time.time()
+    if use_cache and _PREFLIGHT_CACHE["result"] is not None \
+            and now - _PREFLIGHT_CACHE["at"] < _PREFLIGHT_TTL:
+        return _PREFLIGHT_CACHE["result"]
+    rungs = []
+
+    def done(result):
+        _PREFLIGHT_CACHE.update(at=time.time(), result=result)
+        return result
+
+    adb_path = _adb_base()
+    if not adb_path:
+        rungs.append({"rung": "adb_binary", "state": "fail", "class": "adb_absent"})
+        return done({"state": "fail", "class": "adb_absent",
+                     "target": None, "rungs": rungs})
+    rungs.append({"rung": "adb_binary", "state": "ok", "class": "present"})
+
+    try:
+        devices = _adb_devices(adb_path)
+    except Exception as e:  # noqa: BLE001
+        cls = f"adb_devices_error:{type(e).__name__}"
+        rungs.append({"rung": "adb_transport", "state": "fail", "class": cls})
+        return done({"state": "fail", "class": cls, "target": None, "rungs": rungs})
+    live = [s for s, st in devices if st == "device"]
+    if not live:
+        if any(st == "unauthorized" for _, st in devices):
+            cls = "adb_transport_unauthorized"
+        elif any(st == "offline" for _, st in devices):
+            cls = "adb_transport_offline"
+        else:
+            cls = "adb_no_transport"
+        rungs.append({"rung": "adb_transport", "state": "fail", "class": cls})
+        return done({"state": "fail", "class": cls, "target": None, "rungs": rungs})
+    try:
+        target = AdbTarget(adb_path, live[0])
+    except ValueError as e:
+        cls = f"adb_target_malformed:{e}"
+        rungs.append({"rung": "adb_transport", "state": "fail", "class": cls})
+        return done({"state": "fail", "class": cls, "target": None, "rungs": rungs})
+    rungs.append({"rung": "adb_transport", "state": "ok", "class": "device",
+                  "serial": target.serial})
+
+    try:
+        out = target.run(["shell", "cat", "/proc/net/unix"], timeout=15)
+        has_socket = "chrome_devtools_remote" in (out.stdout or "")
+    except Exception:  # noqa: BLE001
+        has_socket = False
+    if not has_socket:
+        rungs.append({"rung": "devtools_socket", "state": "fail",
+                      "class": "devtools_socket_absent"})
+        return done({"state": "fail", "class": "devtools_socket_absent",
+                     "target": target, "rungs": rungs})
+    rungs.append({"rung": "devtools_socket", "state": "ok", "class": "present"})
+    return done({"state": "ok", "class": "ready", "target": target, "rungs": rungs})
+
+
+# ----- minimal CDP client (stdlib only: socket + base64 + hashlib) -----
+
+def _http_get_json(url, timeout=10):
+    req = urllib.request.Request(url, headers={"Accept": "application/json"})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return json.loads(r.read().decode("utf-8", errors="replace"))
+
+
+class _Ws:
+    """Minimal RFC6455 client: masked text frames, fragmentation and
+    ping/pong handled; just enough for CDP request/response."""
+
+    def __init__(self, url, timeout=15):
+        m = re.match(r"ws://([^/:]+):(\d+)(/.*)?$", url)
+        if not m:
+            raise ValueError(f"unsupported websocket url: {url}")
+        host, port = m.group(1), int(m.group(2))
+        path = m.group(3) or "/"
+        self.sock = socket.create_connection((host, port), timeout=timeout)
+        self.sock.settimeout(timeout)
+        key = base64.b64encode(os.urandom(16)).decode()
+        handshake = (
+            f"GET {path} HTTP/1.1\r\nHost: {host}:{port}\r\n"
+            "Upgrade: websocket\r\nConnection: Upgrade\r\n"
+            f"Sec-WebSocket-Key: {key}\r\nSec-WebSocket-Version: 13\r\n\r\n"
+        )
+        self.sock.sendall(handshake.encode())
+        buf = b""
+        while b"\r\n\r\n" not in buf:
+            chunk = self.sock.recv(4096)
+            if not chunk:
+                raise ConnectionError("websocket handshake closed")
+            buf += chunk
+        head, _, self._rest = buf.partition(b"\r\n\r\n")
+        if b" 101 " not in head.split(b"\r\n")[0]:
+            raise ConnectionError(f"websocket handshake failed: "
+                                  f"{head.split(chr(13).encode())[0]!r}")
+        self._buf = self._rest or b""
+        self._next_id = 0
+
+    def _read_exact(self, n):
+        while len(self._buf) < n:
+            chunk = self.sock.recv(65536)
+            if not chunk:
+                raise ConnectionError("websocket closed")
+            self._buf += chunk
+        out, self._buf = self._buf[:n], self._buf[n:]
+        return out
+
+    def _send_frame(self, payload: bytes, opcode=1):
+        mask = os.urandom(4)
+        n = len(payload)
+        if n < 126:
+            hdr = struct.pack("!BB", 0x80 | opcode, 0x80 | n)
+        elif n < 65536:
+            hdr = struct.pack("!BBH", 0x80 | opcode, 0x80 | 126, n)
+        else:
+            hdr = struct.pack("!BBQ", 0x80 | opcode, 0x80 | 127, n)
+        masked = bytes(b ^ mask[i % 4] for i, b in enumerate(payload))
+        self.sock.sendall(hdr + mask + masked)
+
+    def _recv_message(self):
+        payload = b""
+        while True:
+            b0, b1 = self._read_exact(2)
+            fin, opcode = b0 & 0x80, b0 & 0x0F
+            ln = b1 & 0x7F
+            if ln == 126:
+                ln = struct.unpack("!H", self._read_exact(2))[0]
+            elif ln == 127:
+                ln = struct.unpack("!Q", self._read_exact(8))[0]
+            if b1 & 0x80:
+                self._read_exact(4)  # server frames are unmasked; skip if set
+            data = self._read_exact(ln) if ln else b""
+            if opcode == 9:  # ping -> pong
+                self._send_frame(data, opcode=10)
+                continue
+            if opcode == 8:
+                raise ConnectionError("websocket close frame")
+            payload += data
+            if fin:
+                return payload.decode("utf-8", errors="replace")
+
+    def call(self, method, params=None):
+        self._next_id += 1
+        mid = self._next_id
+        self._send_frame(json.dumps(
+            {"id": mid, "method": method, "params": params or {}}).encode())
+        while True:
+            msg = json.loads(self._recv_message())
+            if msg.get("id") == mid:
+                if "error" in msg:
+                    raise RuntimeError(f"CDP {method}: {msg['error']}")
+                return msg.get("result") or {}
+
+    def close(self):
+        try:
+            self._send_frame(b"", opcode=8)
+        except Exception:
+            pass
+        try:
+            self.sock.close()
+        except Exception:
+            pass
+
+
+def _cdp_read_cookies(port):
+    """Read the chatgpt.com cookies from the forwarded DevTools port.
+    Browser-level Storage.getCookies first; page-level
+    Network.getCookies as the fallback rung. Returns the cookie list."""
+    version = _http_get_json(f"http://127.0.0.1:{port}/json/version")
+    browser_ws = version.get("webSocketDebuggerUrl")
+    if browser_ws:
+        ws = _Ws(browser_ws)
+        try:
+            result = ws.call("Storage.getCookies")
+            cookies = result.get("cookies") or []
+            if cookies:
+                return cookies
+        finally:
+            ws.close()
+    targets = _http_get_json(f"http://127.0.0.1:{port}/json/list")
+    pages = [t for t in targets if t.get("type") == "page"
+             and t.get("webSocketDebuggerUrl")]
+    pages.sort(key=lambda t: 0 if "chatgpt.com" in (t.get("url") or "") else 1)
+    if not pages:
+        raise RuntimeError("cdp_no_page_target")
+    ws = _Ws(pages[0]["webSocketDebuggerUrl"])
+    try:
+        ws.call("Network.enable")
+        result = ws.call("Network.getCookies", {"urls": [BASE_URL + "/"]})
+        return result.get("cookies") or []
+    finally:
+        ws.close()
+
+
+_SESSION_COOKIE = "__Secure-next-auth.session-token"
+_CHUNK_RE = re.compile(r"^" + re.escape(_SESSION_COOKIE) + r"\.(\d+)$")
+
+
+def _extract_session(cookies):
+    """Split the surface's cookies into (session_token, cookie_header).
+    NextAuth chunks an oversized session token across
+    `<name>.0`, `<name>.1`, ... — reassembled here in numeric order.
+    Values are returned to the caller only; never logged or traced."""
+    mine = [c for c in cookies
+            if str(c.get("domain") or "").endswith("chatgpt.com")]
+    token = None
+    chunks = {}
+    for c in mine:
+        name = c.get("name") or ""
+        if name == _SESSION_COOKIE:
+            token = c.get("value")
+        else:
+            m = _CHUNK_RE.match(name)
+            if m:
+                chunks[int(m.group(1))] = c.get("value") or ""
+    if token is None and chunks:
+        token = "".join(chunks[k] for k in sorted(chunks))
+    header = "; ".join(f"{c.get('name')}={c.get('value')}" for c in mine
+                       if c.get("name"))
+    return token, (header or None), len(chunks)
+
+
+def _adb_open_surface(target: AdbTarget):
+    """The honest next rung when the browser side is not ready: open
+    the surface in the phone's Chrome via adb so the owner signs in
+    there himself; credentials are never touched by this code."""
+    try:
+        target.run(["shell", "am", "start", "-a", "android.intent.action.VIEW",
+                    "-d", HOME_URL], timeout=15)
+        return True
+    except Exception:
+        return False
+
+
+def import_session_adb(trace: ImportTrace) -> int:
+    """ADB-primary import. Returns a process exit code; every outcome
+    is a named class, recorded in the step-trace."""
+    pre = adb_preflight(use_cache=False)
+    for rung in pre["rungs"]:
+        trace.step(f"preflight:{rung['rung']}", rung["state"], **{
+            "class": rung["class"], "rung": rung["rung"]})
+    if pre["state"] != "ok":
+        cls = pre["class"]
+        if cls == "adb_absent":
+            print("adb not found on PATH (class adb_absent).")
+            print("Install android-tools in Termux, or use the manual path:")
+            print("  python3 core.py --import-session --manual")
+            trace.step("fallback", "completed", method="manual", **{"class": cls})
+            return import_session_manual(trace)
+        if cls in ("adb_no_transport", "adb_transport_unauthorized",
+                   "adb_transport_offline") or cls.startswith("adb_"):
+            print(f"no usable adb transport (class {cls}).")
+            print("Enable wireless debugging on the phone and confirm the")
+            print("Termux adb transport shows state 'device', then re-run.")
+            print("Falling back to the manual path.")
+            trace.step("fallback", "completed", method="manual", **{"class": cls})
+            return import_session_manual(trace)
+        if cls == "devtools_socket_absent":
+            target = pre["target"]
+            opened = _adb_open_surface(target) if target else False
+            trace.step("open_surface", "completed" if opened else "failed",
+                       **{"class": cls})
+            print("Chrome's DevTools socket is not exposed (class "
+                  "devtools_socket_absent).")
+            print("ChatGPT has been opened in the phone's Chrome — sign in "
+                  "there, keep Chrome in the foreground, then re-run:")
+            print("  python3 core.py --import-session")
+            trace.finish("stopped", **{"class": cls})
+            return 4
+        trace.finish("failed", **{"class": cls})
+        print(f"import failed (class {cls}).")
+        return 5
+
+    target: AdbTarget = pre["target"]
+    trace.step("snapshot_target", "completed", endpoint=target.endpoint)
+
+    port = None
+    for cand in range(9222, 9232):
+        try:
+            out = target.run(["forward", f"tcp:{cand}",
+                              "localabstract:chrome_devtools_remote"], timeout=15)
+            if out.returncode == 0:
+                port = cand
+                break
+        except Exception:
+            continue
+    if port is None:
+        trace.step("forward", "failed", **{"class": "adb_forward_failed"})
+        trace.finish("failed", **{"class": "adb_forward_failed"})
+        print("adb forward to the DevTools socket failed "
+              "(class adb_forward_failed).")
+        return 5
+    trace.step("forward", "completed", count=port)
+
+    try:
+        try:
+            cookies = _cdp_read_cookies(port)
+        except Exception as e:  # noqa: BLE001
+            cls = str(e) if str(e).startswith("cdp_") else \
+                f"cdp_error:{type(e).__name__}"
+            trace.step("cdp_read", "failed", **{"class": cls})
+            if cls == "cdp_no_page_target":
+                _adb_open_surface(target)
+                print("Chrome has no page target yet (class cdp_no_page_target).")
+                print("ChatGPT has been opened in Chrome — sign in, keep "
+                      "Chrome foregrounded, then re-run import.")
+                trace.finish("stopped", **{"class": cls})
+                return 4
+            trace.finish("failed", **{"class": cls})
+            print(f"DevTools read failed (class {cls}).")
+            return 5
+        trace.step("cdp_read", "completed", count=len(cookies))
+
+        token, cookie_header, n_chunks = _extract_session(cookies)
+        if not token:
+            trace.step("extract_session", "failed",
+                       **{"class": "session_cookie_absent"})
+            _adb_open_surface(target)
+            print("No ChatGPT session cookie in the phone's Chrome "
+                  "(class session_cookie_absent) — the browser is not "
+                  "signed in.")
+            print("ChatGPT has been opened in Chrome — sign in there, "
+                  "then re-run import.")
+            trace.finish("stopped", **{"class": "session_cookie_absent"})
+            return 4
+        trace.step("extract_session", "completed", count=n_chunks)
+
+        cfg = load_config()
+        cfg["session_token"] = token
+        if cookie_header:
+            cfg["cookie_header"] = cookie_header
+        save_config(cfg)
+        trace.step("store", "completed", method="adb")
+        print("session stored (0600 config) from the phone's Chrome.")
+
+        try:
+            state = session_state()
+            signed = bool(state.get("has_token"))
+        except FrictionError as e:
+            trace.step("verify", "failed", **{"class": e.cls})
+            trace.finish("stopped", **{"class": e.cls})
+            print(f"stored, but the surface answered with friction "
+                  f"(class {e.cls}) — run stopped, never evaded.")
+            return 3
+        except Exception as e:  # noqa: BLE001 - verify transport failure
+            cls = f"verify_error:{type(e).__name__}"
+            trace.step("verify", "failed", **{"class": cls})
+            trace.finish("failed", **{"class": cls})
+            print(f"session stored, but verification could not complete "
+                  f"(class {cls}) — the stored credential stands; "
+                  f"check with: python3 core.py --probe")
+            return 5
+        trace.step("verify", "completed" if signed else "failed",
+                   **{"class": "signed_in" if signed else "profile_logged_out"})
+        trace.finish("completed", method="adb",
+                     **{"class": "signed_in" if signed else "profile_logged_out"})
+        print("verified: signed in." if signed else
+              "stored, but the surface reports logged out — sign in in "
+              "Chrome and re-run import.")
+        return 0 if signed else 2
+    finally:
+        try:
+            target.run(["forward", "--remove", f"tcp:{port}"], timeout=10)
+        except Exception:
+            pass
+
+
 # ---------- probe / doctor / session import ----------------------------
 
 def probe():
@@ -556,14 +1183,21 @@ def doctor():
     if acct_dir.exists():
         n_cached = len(list(acct_dir.glob("*.json")))
     checks["session_store_sessions"] = n_cached
+    pre = adb_preflight()
+    checks["adb"] = {
+        "state": pre["state"],
+        "class": pre["class"],
+        "rungs": {r["rung"]: r["class"] for r in pre["rungs"]},
+        "endpoint": pre["target"].endpoint if pre.get("target") else None,
+    }
     state = "ok" if checks["config_dir_writable"] is True and checks["credential_present"] else "degraded"
     return {"state": state, "class": "doctor", "checks": checks}
 
 
-def import_session():
-    """One-time participant handoff, on the device terminal only: the
-    owner pastes the session cookie value from his own signed-in
-    browser/app session. Stored in the 0600 config; never echoed."""
+def import_session_manual(trace: ImportTrace = None) -> int:
+    """Manual fallback handoff, on the device terminal only: the owner
+    pastes the session cookie value from his own signed-in browser/app
+    session. Stored in the 0600 config; never echoed."""
     import getpass
 
     print("Paste the __Secure-next-auth.session-token cookie value from")
@@ -575,9 +1209,41 @@ def import_session():
         cfg["session_token"] = value
         save_config(cfg)
         print("stored (0600 config).")
+        if trace is not None:
+            trace.step("store", "completed", method="manual")
+            trace.finish("completed", method="manual")
     else:
         print("unchanged.")
+        if trace is not None:
+            trace.step("store", "completed", method="manual",
+                       **{"class": "unchanged"})
+            trace.finish("completed", method="manual",
+                         **{"class": "unchanged"})
     return 0
+
+
+def import_session(manual: bool = False) -> int:
+    """Session import entrypoint. Primary path: ADB (read the session
+    from the phone's own signed-in Chrome over its DevTools socket).
+    Fallback: the manual paste. The whole run is single-flighted and
+    step-traced; exit codes: 0 stored+verified / unchanged-manual,
+    2 stored but surface reports logged out, 3 friction (stop),
+    4 browser side not ready (sign in in Chrome, re-run),
+    5 import failure / already in progress."""
+    lock = _ImportLock()
+    blocked = lock.acquire()
+    if blocked:
+        print(f"another import holds the lock (class {blocked}).")
+        return 5
+    trace = ImportTrace()
+    try:
+        if manual:
+            trace.step("dispatch", "completed", method="manual")
+            return import_session_manual(trace)
+        trace.step("dispatch", "completed", method="adb")
+        return import_session_adb(trace)
+    finally:
+        lock.release()
 
 
 if __name__ == "__main__":
@@ -586,6 +1252,7 @@ if __name__ == "__main__":
     elif len(sys.argv) > 1 and sys.argv[1] == "--probe":
         print(json.dumps(probe()))
     elif len(sys.argv) > 1 and sys.argv[1] == "--import-session":
-        sys.exit(import_session())
+        sys.exit(import_session(manual="--manual" in sys.argv[2:]))
     else:
-        print("usage: core.py --doctor | --probe | --import-session")
+        print("usage: core.py --doctor | --probe | "
+              "--import-session [--manual]")

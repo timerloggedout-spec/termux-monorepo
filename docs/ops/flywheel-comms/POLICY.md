@@ -32,7 +32,12 @@ carrying:
 | `participants` | the actors who write and read |
 | `cadence` | the actual loops that read it, per participant |
 | `owner_seat` | the seat answerable for the channel |
-| `status` | `proposed` · `established` · `retired` |
+| `status` | `proposed` · `mandatory` · `established` · `reserved` · `retired` |
+
+`mandatory` records an owner-directed obligation; it is not an establishment
+claim and waives neither criterion below. `proposed` and `mandatory` channels
+become `established` only after both existing criteria are met. `reserved`
+marks an assigned channel that carries no traffic until activation.
 
 A channel is **established** when, in addition:
 

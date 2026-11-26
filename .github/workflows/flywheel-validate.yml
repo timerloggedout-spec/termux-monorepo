@@ -1,6 +1,12 @@
 name: Flywheel adapter validation
 
 on:
+  push:
+    branches: [master]
+    paths:
+      - 'docs/ops/flywheel-comms/**'
+      - 'scripts/ops/validate_flywheel_comms_registry.py'
+      - 'tests/test_flywheel_comms_registry.py'
   pull_request:
     branches: [master]
     paths:
@@ -8,10 +14,13 @@ on:
       - 'scripts/ci/repo_gate.py'
       - 'scripts/ci/termux_smoke.py'
       - 'tests/test_flywheel.py'
+      - 'tests/test_flywheel_comms_registry.py'
       - 'tests/test_dependency_phase*.py'
       - 'tests/fixtures/dependency_phases/**'
       - 'docs/agentic/dependency-phases.json'
       - 'docs/ops/FLYWHEEL-RUNTIME.md'
+      - 'docs/ops/flywheel-comms/**'
+      - 'scripts/ops/validate_flywheel_comms_registry.py'
       - '.github/workflows/flywheel-validate.yml'
   workflow_dispatch:
 
@@ -38,6 +47,8 @@ jobs:
         run: |
           python3 -m unittest discover -s tests -p 'test_dependency_phase*.py' -v
           python3 -m unittest discover -s tests -p 'test_flywheel.py' -v
+          python3 -m unittest discover -s tests -p 'test_flywheel_comms_registry.py' -v
+          python3 scripts/ops/validate_flywheel_comms_registry.py
       - name: Run local validation loop with explicitly synthetic coordination evidence
         run: |
           mkdir -p /tmp/flywheel-evidence

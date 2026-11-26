@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "3dd5dc695410df0263311c0d0cd8a60b6fbedba5b6d052d78090e6becfc9377d",
-  "workflow_count": 330,
+  "source_fingerprint": "ec1b129677ac51509e4c45708d5fde90ad974a4177abea8d405315b64fb0075d",
+  "workflow_count": 331,
   "workflows": [
     {
       "action_pins": [],
@@ -5260,6 +5260,27 @@
       "triggers": [
         "issues",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: teammate-portal-status-publish cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "publish"
+      ],
+      "name": "teammate-portal-status-publish",
+      "path": ".github/workflows/teammate-portal-status-publish.yml",
+      "schedules": [
+        "17,47 * * * *"
+      ],
+      "triggers": [
+        "push",
+        "schedule",
         "workflow_dispatch"
       ]
     },

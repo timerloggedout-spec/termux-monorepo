@@ -24,12 +24,12 @@
 
 ## Fleet mapping (candidate fits — unscored, intake only)
 
-- **Endpoints-db route:** Q2_0 on stock llama.cpp's llama-server, registered as a local endpoint — on a ≥10 GB host. This VM (~6 GB) cannot host it; the phone class is NOT_ESTABLISHED (Q2_0 + OS + KV exceeds 8 GB devices). A Hark/Cue-class host census is owed before any route is claimed.
+- **Endpoints-db route — LANDED 2026-11-26 (QUE #5591 placement):** the fleet census (27+ surfaces) scored the GitHub-hosted Actions runner (4 vCPU / 16 GB RAM) as the proven host. HF Spaces is gated (compute-Space creation requires a paid plan per HF docs; the fleet HF token is read-only), Hark VM (8.3 GB RAM, owner-stated) sits under the serving footprint, Cue VM was unreachable at census time (mesh tunnel down), this VM cannot host. Stand-up route: `.github/workflows/bonsai-endpoint.yml` (commit `fe4d5c13`); run 45866204134 (2026-11-26) served Q2_0 on stock llama.cpp **b12779** (build verified in-log, ≥ the b11556 floor) with receipts: /health ok · /v1/models (n_params 26,895,998,464 · ftype Q2_0) · coherent chat completion · tool-call completion (finish_reason=tool_calls). Measured on that surface: decode ≈1.0 tok/s · prompt ≈1.1–1.2 tok/s — receipt-grade speed on the generic prebuilt binary; the native-build speed leg is open. Registered as local arm `LocalLlamaServer` with quota record `local.bonsai_llama_server` (registry.json commit `9cc9c758`; endpoints-db.csv row commit `73a6ab2e`; source-join rebuild-verified, 9,589 rows, mapped). The arm stands up on demand on any ≥10 GB surface; no standing listener exists yet.
 - **Contender field:** this entry is the model/runtime-class contender in today's set (beside the agent-surface contenders pydantic-pax · vercel-board · google-stitch-skills · t3-code) — a candidate local-inference arm for long agentic jobs, scored by the DoE leg against the pool's existing arms, not by this entry.
 - **Build-check discipline ↔ pre-flight doctrine:** the silent-garbage trap is the same defect class as the fleet's stale-reading failures — a surface that loads is not a surface that works; the ≥ b11556 check is this model's pre-flight headroom read.
 
 ## Bounds
 
-- Pattern + inspection only: no dependency, no vendoring, no weights pulled; any adoption goes through DoE scoring as its own leg.
+- Pattern + inspection only: no dependency, no vendoring, no weights in the repo (stand-up runs fetch the GGUF from the vendor's HF repo at run time); any adoption goes through DoE scoring as its own leg.
 - Vendor benchmark figures (SWE-bench Verified 75.6; base 80.6; Bonsai 2's 60.8) are the vendor's own claims, recorded as claims.
 - Runtime verdicts are as of the 2026-11-26 survey (QUE #5591 comment 7198491060); engine support moves fast in this class — re-verify before any scored run.

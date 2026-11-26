@@ -1,28 +1,24 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-26T14:24:00Z",
+ "generated_at": "2026-11-26T14:37:09Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 4,
+   "queued": 6,
    "in_progress": 1,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "Orchestration Regression Guard": 1,
-    "repo gate": 1,
-    "PR scope guard": 2
+    "PR scope guard": 4,
+    "repo gate": 2
    }
   },
   "2": {
    "tier": 2,
-   "queued": 2,
+   "queued": 0,
    "in_progress": 1,
-   "oldest_queued_at": "2026-11-26T14:23:26Z",
-   "by_workflow_queued": {
-    "pages build and deployment": 1,
-    "tribute-dashboard-deploy": 1
-   }
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "3": {
    "tier": 3,
@@ -33,29 +29,40 @@
   },
   "4": {
    "tier": 4,
-   "queued": 18,
+   "queued": 81,
    "in_progress": 17,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "Agent Throughput Evidence": 3,
-    "quota-served-probe": 1,
-    "termux smoke": 2,
-    "graph-matrix-probe": 1,
-    "quota-allocation-planner": 1,
-    "quota-analysis": 1,
-    "Agent Readability Source Contract": 1,
+    "Gemini review after peers": 2,
+    "Quota Dispatch Tree": 1,
+    "lane events recorder": 25,
+    "n8n SHE bridge": 2,
+    "PR Change Effectiveness Ledger": 3,
+    "Context Relationship + Lead/Lag Audit": 3,
+    "PR production ledger": 4,
+    "Agent PR Jules Handoff": 2,
+    "Action Effectiveness Ledger": 1,
+    "Sweep Accountability": 3,
+    "Workflow Surface Policy": 1,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
+    "DeepSeek CI \u2013 Agentic Automation": 1,
+    "Lane matrix event-driven inventory": 2,
+    "CellCog review": 1,
+    "RECON INTEL discovery": 3,
+    "PR evidence evaluation": 1,
+    "Peer review orchestrator": 1,
+    "Agent Throughput Evidence": 15,
+    "DO Statement Style": 2,
     "Agent review \u2192 auto Jules": 2,
     "Agent feedback \u2192 Linear subtasks": 1,
-    "Quota Dispatch Tree": 1,
-    "Agent PR Jules Handoff": 1,
-    "PR Change Effectiveness Ledger": 1,
-    "Advisory GitHub Actions lint": 1,
-    "DO Statement Style": 1
+    "termux smoke": 2,
+    "archwiz dangle check": 1,
+    "Advisory GitHub Actions lint": 1
    }
   }
  },
  "totals": {
-  "queued": 24,
+  "queued": 87,
   "in_progress": 19
  },
  "wedged_ancient": [
@@ -124,46 +131,22 @@
    "workflow": "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher",
    "created_at": "2026-11-11T20:34:15Z",
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831086"
-  },
-  {
-   "id": 43096831107,
-   "workflow": "Orchestration Regression Guard",
-   "created_at": "2026-11-11T20:34:15Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43096831107"
-  },
-  {
-   "id": 36803855107,
-   "workflow": "PR production ledger",
-   "created_at": "2026-10-01T02:01:22Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36803855107"
-  },
-  {
-   "id": 36803852632,
-   "workflow": "Peer review orchestrator",
-   "created_at": "2026-10-01T02:01:19Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36803852632"
   }
  ],
  "wedged_excluded_from_counts": true,
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 5,
-   "2": 3,
+   "1": 7,
+   "2": 1,
    "3": 0,
    "4": 0
   },
   "explicit_total": 8,
-  "default_t4": 35,
+  "default_t4": 98,
   "unmatched": 0,
-  "ancient_excluded": 14,
-  "operator_excluded": 1
+  "ancient_excluded": 11,
+  "operator_excluded": 0
  },
- "operator_excluded": [
-  {
-   "id": 37655538554,
-   "workflow": "Merge Promotion Queue",
-   "class": "ghost-never-queued"
-  }
- ]
+ "operator_excluded": []
 }

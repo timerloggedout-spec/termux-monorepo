@@ -180,8 +180,13 @@
    "model": "gemini-3.5-flash-lite",
    "model_version": "gemini-3.5-flash-lite",
    "notes": "One registry row among peers (#5151): its 20 requests/day is a metered per-arm budget, not a global ceiling. Escalation-class draws stamp quota_class=escalation against the reserved slice only under the DoE escalation ruling's conditions (#5151 c.6799106430 term 2); primary routing never spends the reserve.",
-   "selectable": true,
-   "status": "eligible"
+   "selectable": false,
+   "status": "eligible",
+   "live_state": {
+    "as_of": "2026-11-26",
+    "routing": "deselected",
+    "evidence": "Owner ruling 2026-11-26 10:16 PT: gemini-cli is a regression. Auto selection skips this arm; its 429 quota-terminal on #5922 build run 45868893954 confirmed the cost. Re-admission requires a new Owner ruling. Explicit arm requests stay honored."
+   }
   },
   {
    "arm_id": "jules",
@@ -255,7 +260,7 @@
  "excluded_by_kind": "Providers in the PERMANENT funded-out set {huggingface, deepinfra, novita, friendli, zai, llm7, routeway, siliconflow} and card-gated providers are never build arms: their catalogs count toward the endpoint census, their completions never clear, and no registry row may be added for them without a new owner ruling.",
  "generated_by": "seat-authoring bypass build for #5151; arms join by registry row + census pass, not workflow edits",
  "schema": "build-arms/v1",
- "selection_rule": "Runtime selection only (no provider is named in the method contract): eligible arms (census-passed) in registry order, free-tier before credit-funded; quota-terminal arms skipped for the arm-day; no arm is a fallback of record (#5160 clause 5) -- Gemini competes on the same gate as every other arm and is selected only as the first eligible free-tier arm in registry order. An explicit arm request is honored and stamped with selection_reason=explicit-request.",
+ "selection_rule": "Runtime selection only (no provider is named in the method contract): eligible arms (census-passed) in registry order, free-tier before credit-funded; quota-terminal arms skipped for the arm-day; no arm is a fallback of record (#5160 clause 5) -- Gemini competes on the same gate as every other arm and is selected only as the first eligible free-tier arm in registry order. An explicit arm request is honored and stamped with selection_reason=explicit-request. Arms with selectable=false sit outside auto selection (gemini-cli deselected by Owner ruling 2026-11-26).",
  "sources": [
   "ops/quota/registry.json (catalog of record)",
   "ops/quota/swarm-feed.json (catalog of record)",

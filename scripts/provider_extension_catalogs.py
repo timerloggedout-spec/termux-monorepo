@@ -58,8 +58,8 @@ def _pricing(item, provider):
     """Normalize provider-specific price shapes without guessing free access."""
     pricing = item.get("pricing")
     if provider == "requesty":
-        # The official wire schema is an ARRAY, not {tiers:[...]}. Thresholds
-        # can make a later tier paid; use every tier, never only the first.
+        # The official wire schema places pricing tiers in a top-level ARRAY.
+        # Evaluate every tier because later thresholds can identify paid access.
         if not isinstance(pricing, list) or not pricing:
             return {}, "unknown"
         parsed, all_rates = [], []

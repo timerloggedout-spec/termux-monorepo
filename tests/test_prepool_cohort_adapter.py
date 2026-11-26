@@ -31,7 +31,7 @@ def test_canonical_172_record_registry_round_trips_with_explicit_test_fixture():
     assert len(services) == 172
     assert len({row["id"] for row in services}) == 172
 
-    # This is interface-test input only, not output from the authoritative gate.
+    # The fixture supplies test input for the adapter interface; production gate output remains a separate required input.
     gate_output = {"decisions": [fixture_decision(row["id"]) for row in services]}
     result = build_prepool_cohort(registry, gate_output)
 

@@ -256,6 +256,21 @@
    "owner_seat": "muse-vm + cue (joint)",
    "status": "proposed",
    "scope": "Dedicated evidence-only comparison of THUB-017 research and MSM-005 paper accounting across PR #1541, its open #1470 base, and merged PR #1540; work requests and replies stay in FLY-015."
+  },
+  {
+    "id": "FLY-016",
+    "name": "backup-export-recovery",
+    "store_repo": "timerloggedout-spec/termux-monorepo",
+    "path": "docs/ops/flywheel-comms/channels/backup-export-recovery.jsonl (protocol: docs/ops/flywheel-comms/channels/backup-export-recovery.md)",
+    "format": "JSONL append-only {ts, actor, to, event, body}; one recipient per event; Siglary CAVEMAN-6",
+    "participants": [
+      "muse-vm",
+      "manus-cue"
+    ],
+    "cadence": "muse-vm registry-driven flywheel-comms-watch (300s reported; FLY-016 path-read proof pending); manus-cue on-demand via GitHub connector",
+    "owner_seat": "muse-vm + cue (joint)",
+    "status": "proposed",
+    "scope": "Evidence-led recovery coordination for three failed VM backup staging exports; preserve all local payloads, append-only history, and the existing pressure guard; retention remains owner-reviewed."
   }
  ],
  "peers": [

@@ -4,7 +4,7 @@ name: teammate-portal-status-publish
 # Renders the proposal docs and the ITEMS.md done-board, then publishes to the
 # user site at previews/pr-5840/hackathon-desk/ via peaceiris keep_files.
 # Contract: docs/ops/REVIEW-PUBLISHING.md. Hand commits to gh-pages are wiped
-# by tribute-dashboard-deploy (force-orphan); Vercel is not a review route.
+# by tribute-dashboard-deploy (force-orphan); review routes run on GitHub Pages only.
 
 on:
   workflow_dispatch:

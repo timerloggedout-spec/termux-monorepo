@@ -1,6 +1,6 @@
 {
  "schema": "quota.swarm-feed/v1",
- "generated_at": "2026-11-26T17:34:23Z",
+ "generated_at": "2026-11-26T17:36:50Z",
  "generated_by": "scripts/quota_swarm_feed.py",
  "spec": {
   "doc": "docs/ops/PROVIDER-DISPATCH-CAPABILITY.md",
@@ -22,12 +22,12 @@
   {
    "id": "readings",
    "path": "docs/ops/generated/quota-status.json",
-   "generated_at": "2026-11-18T17:06:56.121328+00:00"
+   "generated_at": "2026-11-26T17:34:31.868216+00:00"
   },
   {
    "id": "usage-series",
    "path": "ops/quota/usage-series.json",
-   "generated_at": "2026-11-26T17:34:23Z"
+   "generated_at": "2026-11-26T17:36:50Z"
   },
   {
    "id": "rate-limit-events",
@@ -2188,9 +2188,16 @@
      "window": "n/a (self-hosted)",
      "reset": "n/a",
      "live": "Per-stand-up receipts: each bonsai-endpoint.yml run uploads health/models/chat/tool-call JSON artifacts; no standing listener - the arm is stood up on demand on a >=10 GB host surface (census QUE #5591, 2026-11-26).",
-     "readings": null,
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "early_signal",
+      "horizon": "H1",
+      "observed_at": null
+     },
      "usage_series": null,
-     "populated": false
+     "populated": null
     }
    ]
   },
@@ -2588,10 +2595,10 @@
       "remaining": null,
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-11-18T17:06:56.121328+00:00"
+      "observed_at": "2026-11-26T17:34:31.868216+00:00"
      },
      "usage_series": null,
-     "populated": "2026-11-18T17:06:56.121328+00:00"
+     "populated": "2026-11-26T17:34:31.868216+00:00"
     }
    ]
   },

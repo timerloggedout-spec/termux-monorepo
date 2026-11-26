@@ -1,0 +1,34 @@
+# PrismML Ternary Bonsai 2.5 27B — refTemplates entry (pattern from PrismML)
+
+- **What:** Ternary Bonsai 2.5 27B — PrismML's ternarized 27B-class coding model: Qwen3.8-27B requantized to ternary weights ({−1, 0, +1}, FP16 scale per group of 128, in a Hadamard-rotated basis), 27.36B parameters in a 5.9 GB-class footprint, aimed at long multi-step agentic coding jobs on ordinary hardware.
+- **Source:** PrismML launch article, 2026-11-24 — https://prismml.com/news/bonsai-2-5-27b · Integration survey of record: QUE #5591 comment 7198491060 (runtimes, harnesses, hardware verified firsthand by the fleet, 2026-11-26).
+- **Status (QUE #5591 standing mandate):** INTAKE ONLY — inspiration + inspection, never a dependency, no vendoring. Adoption, if any, is a separate DoE-scored leg (#5590-class), not this entry.
+
+## The pattern (what we copy)
+
+- **Ternarization as the compression move.** The base model (Qwen3.8-27B, FP16) is post-training-quantized to one ternary digit per weight — values {−1, 0, +1} with a shared FP16 scale per group of 128 weights — in a Hadamard-rotated basis, which spreads outlier energy before quantization so the ternary grid keeps more of the signal. Context: 262,144 tokens. License: Apache 2.0. Vendor claim: SWE-bench Verified 75.6 (base FP16: 80.6) — a vendor figure, recorded as a claim, not a fleet number.
+- **GGUF-only official release — the deciding fact.** No safetensors artifact exists. Every runtime route below is downstream of that single fact: the model enters a stack only where a GGUF engine runs, and the PyTorch/transformers ecosystem has no direct load path.
+- **Two packings, two runtime worlds.** `PTQ1_0` (5,993,834,848 B — the 5.9 GB headline figure) loads only in PrismML's own llama.cpp fork. `Q2_0` (7,673,194,848 B) loads in stock llama.cpp ≥ b11556. The `-mtp` variants carry a built-in MTP draft head (multi-token prediction for speculative decoding). An MLX 2-bit pack exists for Apple Silicon via the fork + a bundled loader; stock mlx-lm cannot load the `prism_hadamard_qwen35` type.
+- **The silent-garbage trap.** Older stock llama.cpp builds load the Q2_0 artifact without error and emit garbage — no failure signal at load time. Any deployment route carries a mandatory engine build check (≥ b11556) before first inference; a load that "works" is not evidence the route works.
+- **Serving shape: llama-server as an OpenAI-compatible endpoint.** The PrismML llama.cpp fork gives FULL support (llama-server exposes the model as an OpenAI-compatible endpoint). Stock llama.cpp ≥ b11556 serves Q2_0 ONLY. Ollama / LM Studio are not listed by the vendor — Q2_0 is conditional on the engine build they bundle. vLLM has no route (GGUF-only release). SGLang / transformers / BitNet routes: NOT_ESTABLISHED.
+- **Harness integration is one mechanism wide.** Every harness integration reduces to pointing the harness at an OpenAI-compatible base URL. Documented end-to-end: Hermes agent → llama-server (vendor agent profile scripts, 131K context configured). Per-harness status beyond that one documented path: NOT_ESTABLISHED — the mechanism is uniform, the verification is not.
+- **The footprint is weights-only.** 5.9 GB is the smallest packing's weight bytes. Realistic serving at 32K context runs ≈8–10 GB (weights + KV cache + runtime). Sizing a host off the headline number under-provisions by roughly half.
+
+## Maturity signals (at intake, 2026-11-26)
+
+- Released 2026-11-24; Apache 2.0. Successor to Bonsai 2 (vendor-claimed SWE-bench Verified 60.8 → 75.6 across the generation).
+- Artifact discipline: GGUF packings (PTQ1_0 fork-only, Q2_0 stock-compatible, -mtp variants with built-in draft head) + an MLX 2-bit pack; no safetensors.
+- Runtime support is fork-led: the vendor's own llama.cpp fork is the only FULL route; stock-engine support is one packing deep (Q2_0) and build-gated (≥ b11556, silent-garbage failure mode below it).
+- Exactly one harness path is documented end-to-end (Hermes agent → llama-server); the rest of the harness field is mechanism-plausible, verification-pending.
+
+## Fleet mapping (candidate fits — unscored, intake only)
+
+- **Endpoints-db route:** Q2_0 on stock llama.cpp's llama-server, registered as a local endpoint — on a ≥10 GB host. This VM (~6 GB) cannot host it; the phone class is NOT_ESTABLISHED (Q2_0 + OS + KV exceeds 8 GB devices). A Hark/Cue-class host census is owed before any route is claimed.
+- **Contender field:** this entry is the model/runtime-class contender in today's set (beside the agent-surface contenders pydantic-pax · vercel-board · google-stitch-skills · t3-code) — a candidate local-inference arm for long agentic jobs, scored by the DoE leg against the pool's existing arms, not by this entry.
+- **Build-check discipline ↔ pre-flight doctrine:** the silent-garbage trap is the same defect class as the fleet's stale-reading failures — a surface that loads is not a surface that works; the ≥ b11556 check is this model's pre-flight headroom read.
+
+## Bounds
+
+- Pattern + inspection only: no dependency, no vendoring, no weights pulled; any adoption goes through DoE scoring as its own leg.
+- Vendor benchmark figures (SWE-bench Verified 75.6; base 80.6; Bonsai 2's 60.8) are the vendor's own claims, recorded as claims.
+- Runtime verdicts are as of the 2026-11-26 survey (QUE #5591 comment 7198491060); engine support moves fast in this class — re-verify before any scored run.

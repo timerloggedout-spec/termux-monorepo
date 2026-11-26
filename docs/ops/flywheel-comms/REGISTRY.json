@@ -2,8 +2,456 @@
   "version": 1,
   "updated": "2026-11-26T20:06:00Z",
   "policy": "docs/ops/flywheel-comms/POLICY.md",
+  "channels": [
+    {
+      "id": "FLY-001",
+      "name": "que-dispatch",
+      "store_repo": "timerloggedout-spec/termux-monorepo",
+      "path": "issues (project-task filings, stamps, routing receipts)",
+      "format": "GitHub issues: ###-field filings + comment stamps",
+      "participants": [
+        "all seats",
+        "QUE machinery (executor/watchdog)"
+      ],
+      "cadence": "GitHub Actions schedule + vm que-drain-drive 15m",
+      "owner_seat": "QDesk",
+      "status": "established",
+      "established_evidence": "QUE #5641 routing receipt, run 45446484039 (2026-11-24)"
+    },
+    {
+      "id": "FLY-002",
+      "name": "mesh-requests",
+      "store_repo": "timerloggedout-spec/muse-vm-workspace-backup",
+      "path": "runtime-local queue ~/workspace/repo-exports/REQUESTS.jsonl on muse-vm; published cycle records at compute-exports/mesh-probe/<date>/ in this store",
+      "format": "JSONL append-only request/response",
+      "participants": [
+        "muse-vm",
+        "hark-vm"
+      ],
+      "cadence": "mesh-tailnet-probe-watch 1h",
+      "owner_seat": "muse-vm (mesh lane)",
+      "status": "established",
+      "established_evidence": "3 routed requests on record (#5554, #5714, #5715)",
+      "path_correction": "2026-11-25: registry previously declared compute-exports/mesh-probe/REQUESTS.jsonl in the backup store - verified 404 firsthand (surfaced by ChatGPT, PR #5897). The live queue is the runtime-local file; the store carries the published cycle records."
+    },
+    {
+      "id": "FLY-003",
+      "name": "backup-relays-feed",
+      "store_repo": "timerloggedout-spec/termux-monorepo",
+      "path": "ops/tracking/backup-relays.jsonl",
+      "format": "JSONL append-only; published via GitHub automation to org pages",
+      "participants": [
+        "vm exporters (muse-vm, cue)",
+        "pages readers"
+      ],
+      "cadence": "per export event + daily repo-export-sync",
+      "owner_seat": "backup lane (muse-vm)",
+      "status": "established",
+      "established_evidence": "1,590 lines at 2026-11-25; cue relay commit 7564ade1"
+    },
+    {
+      "id": "FLY-004",
+      "name": "mesh-probe-state",
+      "store_repo": "timerloggedout-spec/muse-vm-workspace-backup",
+      "path": "compute-exports/mesh-probe/",
+      "format": "per-cycle state exports (heartbeat publication)",
+      "participants": [
+        "muse-vm",
+        "hark-vm"
+      ],
+      "cadence": "mesh-tailnet-probe-watch 1h",
+      "owner_seat": "muse-vm (mesh lane)",
+      "status": "established",
+      "established_evidence": "2026-11-25 cycle exports at 93202ed9, 14797e05, fcf07de6"
+    },
+    {
+      "id": "FLY-005",
+      "name": "cue-comms",
+      "store_repo": "timerloggedout-spec/muse-vm-workspace-backup",
+      "path": "cue/comms.jsonl (protocol: cue/COMMS.md)",
+      "format": "JSONL append-only {ts, from, to, body}",
+      "participants": [
+        "muse-vm",
+        "manus-cue"
+      ],
+      "cadence": "cue watch 900s; muse-vm cadence checks",
+      "owner_seat": "muse-vm + cue (joint)",
+      "status": "established",
+      "established_evidence": "opened 2026-11-25: muse-vm line at 50c780c2, cue ACK at 8d03661e",
+      "access": "Collaborators of record: muse-vm (operator) + manus-cue (peer). Cue holds deploy-key WRITE on the store (exports, checkpoints, cue/ tree) and read on all export prefixes + compute-exports/mesh-probe telemetry. Owner rule 2026-11-25: collaborator access to Exports + Telemetry is important — access gaps are defects, named on this row.",
+      "upgrade": "2026-11-25: multi-route upgrade proposed to Cue via the channel — FLY-005 stays primary; redundant provider routes to be added as Cue confirms which it can terminate (Manus email fallback already noted).",
+      "scope": "Exports + backup coordination with Cue. Non-export pair work moved to FLY-006 (owner order 2026-11-25)."
+    },
+    {
+      "id": "FLY-006",
+      "name": "cue-work-comms",
+      "store_repo": "timerloggedout-spec/muse-vm-workspace-backup",
+      "path": "cue/work-comms.jsonl (protocol: cue/WORK-COMMS.md)",
+      "format": "JSONL append-only {ts, from, to, body}",
+      "participants": [
+        "muse-vm",
+        "manus-cue",
+        "chatgpt-github",
+        "q",
+        "origin-archive-steward"
+      ],
+      "pending_participants": [
+        "connector-specialist (onboarding, owner-order relayed 2026-11-26)",
+        "antigravity-scout (onboarding, owner-order relayed 2026-11-26)",
+        "techdebt (onboarding, owner-order relayed 2026-11-26)",
+        "experimentslab (onboarding, owner-order relayed 2026-11-26)",
+        "devin-specialist (onboarding, owner-order relayed 2026-11-26)",
+        "validatorwirencritiq (onboarding, owner-order relayed 2026-11-26)",
+        "lab-spec (onboarding, owner-order relayed 2026-11-26)",
+        "swarms (onboarding, owner-order relayed 2026-11-26)",
+        "sol (onboarding, owner-order relayed 2026-11-26)"
+      ],
+      "cadence": "cue watch 900s; muse-vm cadence checks",
+      "owner_seat": "muse-vm + cue (joint)",
+      "status": "established",
+      "established_evidence": "owner order 2026-11-25: a different flywheel for work other than the exports; opened 2026-11-25 with the Siglary/Linguist item",
+      "scope": "Non-export pair work: incidents, PR review, mappings, notation, general fleet coordination. Exports stay on FLY-005; confirmations of record stay on FLY-003."
+    },
+    {
+      "id": "FLY-007",
+      "name": "mistralai-comms (reserved)",
+      "store_repo": "timerloggedout-spec/muse-vm-workspace-backup",
+      "path": "mistral/comms.jsonl (protocol: mistral/COMMS.md) - created at activation",
+      "format": "JSONL append-only {ts, from, to, body}",
+      "participants": [
+        "muse-vm"
+      ],
+      "pending_participants": [
+        "mistralai (onboarding per QUE #5905)"
+      ],
+      "cadence": "activates with QUE #5905 legs (liveness re-verify + keepalive + channel of record)",
+      "owner_seat": "muse-vm",
+      "status": "reserved",
+      "established_evidence": "QUE #5905 (filed 2026-11-25) named this channel 'FLY-007 class' without a registry row - reservation registered 2026-11-25 by direct commit after the gap was caught (owner). No exception existed; the filing alone never reserved the number.",
+      "scope": "MistralAI peer comms: liveness/quota readings, onboarding coordination, later fleet work with the MistralAI surface. Reserved only - no traffic until activation."
+    },
+    {
+      "id": "FLY-008",
+      "name": "swarms-doe-issue-trace",
+      "store_repo": "timerloggedout-spec/termux-monorepo",
+      "path": "docs/ops/flywheel-comms/channels/swarms-doe-issue-trace.jsonl (protocol: docs/ops/flywheel-comms/channels/swarms-doe-issue-trace.md)",
+      "format": "JSONL append-only {schema, ts, actor, event, records, evidence_refs, unresolved}",
+      "participants": [
+        "cue",
+        "muse-vm"
+      ],
+      "cadence": "cue: on-demand per explicit trace task; initial trace write 2026-11-25T21:57:22Z. muse-vm: flywheel-comms-watch Hatch poller at 300s, enabled; FLY-008 wake 21:58:11Z and silent re-read 21:58:24Z confirmed in Muse correction. Config: ~/hooks/definitions/flywheel-comms-watch.json; log: ~/hooks/logs/flywheel-comms-watch.jsonl. Watcher implementation commit not supplied.",
+      "owner_seat": "muse-vm + cue (joint)",
+      "status": "established",
+      "scope": "Evidence-only trace of Swarms/DoE and provider-catalog issue/PR components, gates, statuses, and source refs. Mesh is the sole existing compute/inference execution fabric. The owner-designated 172-provider registry, DoE participants, quota, admission, and routes remain authoritative. Vultr Python/TypeScript repos are only comparative model-catalog research seeds/template references; they are not compute providers, inference endpoints, or competing execution runtimes. Compare approaches and adapt useful patterns in the existing catalog implementation; neither dual-language product implementation nor cross-language parity tests are required. No admission decisions, dispatch, inference, promotion, or new gate/registry.",
+      "established_evidence": "Protocol doc status: established 2026-11-25; two-party round-trip complete (trace 7 lines); muse-vm assent FLY-005 21:58:58Z + reader loop verified (flywheel-comms-watch, 300s). Registry row caught up 2026-11-25 - it lagged the protocol (stale = fail)."
+    },
+    {
+      "id": "FLY-009",
+      "name": "chatgpt-comms",
+      "owner": "muse-vm",
+      "store": "chatgpt/comms.jsonl in timerloggedout-spec/muse-vm-workspace-backup (+ chatgpt/COMMS.md protocol)",
+      "scope": "ChatGPT wrapped-session coordination, export receipts, RECON findings. Access surface: muse-vm ChatGPT webWrapper (CLI/stdin -> HTTPS -> SSE, shape A). Session material names-only, never in channel.",
+      "status": "established",
+      "participants": [
+        "muse-vm",
+        "chatgpt"
+      ],
+      "established": "2026-11-25"
+    },
+    {
+      "id": "FLY-010",
+      "name": "hark-comms",
+      "owner": "hark-vm + muse-vm (joint)",
+      "store": "hark/comms.jsonl in timerloggedout-spec/muse-vm-workspace-backup (+ hark/COMMS.md protocol)",
+      "scope": "Mesh onboarding (tag:mesh, REQUESTS lane FLY-002), parity-of-functions delta between hark-vm and muse-vm, BRR fallback handoffs, incident + review pair work involving hark-vm.",
+      "status": "established",
+      "participants": [
+        "muse-vm",
+        "hark-vm",
+        "manus-cue"
+      ],
+      "established": "2026-11-26",
+      "established_evidence": "hark-vm opened store + doc 2026-11-26T09:05:00Z addressed to muse-vm; muse-vm ACK + watcher leg landed 2026-11-26 (round-trip complete). Found via code search after owner pointer: watcher had no leg on this store. · muse-vm ACK at 0ee0a83b9301ae1d3f5eb9763cb6062084617057 (hark/comms.jsonl).",
+      "cadence": "hark-vm: Hark scheduled watch 1h. muse-vm: flywheel-comms-watch (mode pair, every line wakes). manus-cue: cue watch once path added (pending cue ACK)."
+    },
+    {
+      "id": "FLY-011",
+      "name": "grok-comms",
+      "store_repo": "timerloggedout-spec/muse-vm-workspace-backup",
+      "path": "grok/comms.jsonl",
+      "format": "JSONL {ts, from, to, body} Siglary{best}",
+      "participants": [
+        "muse-vm",
+        "grok"
+      ],
+      "cadence": "muse-vm watcher 60s + hourly discovery; grok on its app cadence",
+      "owner_seat": "muse-vm (mesh lane)",
+      "status": "established",
+      "established": "2026-11-26",
+      "established_evidence": "muse-vm open 2026-11-26T11:41:15Z; grok ACK 2026-11-26T11:50:00Z (commit 1ee5ac8e). Cross-linked to termux-monorepo master production coordination.",
+      "scope": "Grok pair comms: recon + Approxination oversight + fleet work with grok. Established on first round-trip ACK (Policy: proposed until receipt). Landed by direct commit under owner order 2026-11-26 after the PR gate left the channel unregistered."
+    },
+    {
+      "id": "FLY-012",
+      "name": "que-efficacy",
+      "store_repo": "timerloggedout-spec/termux-monorepo",
+      "path": "docs/ops/flywheel-comms/channels/que-efficacy.jsonl",
+      "format": "JSONL {ts, from, event, body} Siglary{best}",
+      "participants": [
+        "muse-vm",
+        "hark-vm",
+        "QUE machinery (executor/watchdog)"
+      ],
+      "cadence": "muse-vm watcher 60s; owner seat on genre cadence",
+      "owner_seat": "QDesk",
+      "status": "proposed",
+      "established_evidence": "Genre opened by owner order 2026-11-26 (new task genres land as new FLY-NNN); promotion to established on first round-trip receipt per POLICY.",
+      "scope": "QUE operational performance efficacy: per-epoch conversion counters {claims → attempts → activations}, sweep effectiveness, claim-order state. Program of record: QUE #5646."
+    },
+    {
+      "id": "FLY-013",
+      "name": "doe-stress-test",
+      "store_repo": "timerloggedout-spec/termux-monorepo",
+      "path": "docs/ops/flywheel-comms/channels/doe-stress-test.jsonl",
+      "format": "JSONL {ts, from, event, body} Siglary{best}",
+      "participants": [
+        "muse-vm",
+        "hark-vm",
+        "QUE machinery (Swarm executor)"
+      ],
+      "cadence": "muse-vm watcher 60s; owner seat on genre cadence",
+      "owner_seat": "DoE",
+      "status": "proposed",
+      "established_evidence": "Genre opened by owner order 2026-11-26 (new task genres land as new FLY-NNN); promotion to established on first round-trip receipt per POLICY.",
+      "scope": "Endpoint diagnostics + stress tests: fireable set {secrets-census ⋈ endpoints-db ⋈ quota}, per-endpoint verdicts, failure-class ledger, participation fraction vs the 100% requirement. Vehicle: QUE #5587 (required upgrade, 2026-11-26)."
+    },
+    {
+      "id": "FLY-014",
+      "name": "compute-census",
+      "store_repo": "timerloggedout-spec/termux-monorepo",
+      "path": "docs/ops/flywheel-comms/channels/compute-census.jsonl",
+      "format": "JSONL {ts, from, event, body} Siglary{best}",
+      "participants": [
+        "muse-vm",
+        "hark-vm"
+      ],
+      "cadence": "muse-vm watcher 60s; owner seat on genre cadence",
+      "owner_seat": "Cadence",
+      "status": "mandatory",
+      "established_evidence": "Genre opened by owner order 2026-11-26 (new task genres land as new FLY-NNN); promotion to established on first round-trip receipt per POLICY.",
+      "scope": "Compute census freshness: pool registry generations, probe age, endpoints-db join state, provider/participant counts by channel. STALE = FAIL applies (POLICY Rule 11): repeat-identical generations self-stamp SUSPECT."
+    },
+    {
+      "id": "FLY-015",
+      "name": "thub017-msm005-comparison",
+      "store_repo": "timerloggedout-spec/termux-monorepo",
+      "path": "docs/ops/flywheel-comms/channels/thub017-msm005-comparison.jsonl (protocol: docs/ops/flywheel-comms/channels/thub017-msm005-comparison.md)",
+      "format": "JSONL append-only {ts, actor, to, event, body}; one recipient per event; Siglary CAVEMAN-6",
+      "participants": [
+        "muse-vm",
+        "manus-cue"
+      ],
+      "cadence": "muse-vm registry-driven flywheel-comms-watch (300s reported; FLY-015 read proof pending); manus-cue on-demand via GitHub connector",
+      "owner_seat": "muse-vm + cue (joint)",
+      "status": "proposed",
+      "scope": "Dedicated evidence-only comparison of THUB-017 research and MSM-005 paper accounting across PR #1541, its open #1470 base, and merged PR #1540; work requests and replies stay in FLY-015."
+    },
+    {
+      "id": "FLY-016",
+      "name": "backup-export-recovery",
+      "store_repo": "timerloggedout-spec/termux-monorepo",
+      "path": "docs/ops/flywheel-comms/channels/backup-export-recovery.jsonl (protocol: docs/ops/flywheel-comms/channels/backup-export-recovery.md)",
+      "format": "JSONL append-only {ts, actor, to, event, body}; one recipient per event; Siglary CAVEMAN-6",
+      "participants": [
+        "muse-vm",
+        "manus-cue"
+      ],
+      "cadence": "muse-vm registry-driven flywheel-comms-watch (300s reported; FLY-016 path-read proof pending); manus-cue on-demand via GitHub connector",
+      "owner_seat": "muse-vm + cue (joint)",
+      "status": "proposed",
+      "scope": "Evidence-led recovery coordination for three failed VM backup staging exports; preserve all local payloads, append-only history, and the existing pressure guard; retention remains owner-reviewed."
+    }
+  ],
+  "peers": [
+    {
+      "name": "muse-vm",
+      "channels": [
+        "FLY-002",
+        "FLY-003",
+        "FLY-004",
+        "FLY-005",
+        "FLY-006",
+        "FLY-007",
+        "FLY-008",
+        "FLY-009",
+        "FLY-010",
+        "FLY-011",
+        "FLY-012",
+        "FLY-013",
+        "FLY-014",
+        "FLY-015",
+        "FLY-016"
+      ],
+      "status": "registered",
+      "aliases": [
+        "muse"
+      ]
+    },
+    {
+      "name": "manus-cue",
+      "channels": [
+        "FLY-005",
+        "FLY-006",
+        "FLY-010",
+        "FLY-015",
+        "FLY-016"
+      ],
+      "status": "registered",
+      "aliases": [
+        "cue",
+        "manus"
+      ],
+      "note": "QUOTA-EXHAUSTED 2026-11-26 (owner screenshot 07:47 PT): Manus usage out, reset in 5 days (approx Dec 1). Agent-side work frozen {usage/hygiene protocol draft, specialty-chat list, #5587 joint-fix answer}; its #5587 FIX claim lapses to the pool. Cue VM (cue-scout) stays reachable via mesh SSH; muse-vm covers mechanical legs (scraping-utils validation ran green on cue-scout 2026-11-26T15:47Z)."
+    },
+    {
+      "name": "hark-vm",
+      "channels": [
+        "FLY-002",
+        "FLY-004",
+        "FLY-010",
+        "FLY-001"
+      ],
+      "status": "registered",
+      "aliases": [
+        "hark"
+      ],
+      "note": "Hark agent seat (sandbox VM). Tailnet: ¬ in-sandbox tailscaled/ssh ⇒ Actions-runner hop (tag:mesh). FLY-001 via github connector issue filings."
+    },
+    {
+      "name": "chatgpt",
+      "channels": [
+        "FLY-009"
+      ],
+      "status": "registered",
+      "note": "Channel of record FLY-009 via muse-vm webWrapper; login established 2026-11-25 (fleet Google identity); CLI session binding pending token route (browser-held session, CDP/profile not on VM)."
+    },
+    {
+      "name": "chatgpt-github",
+      "channels": [
+        "FLY-006"
+      ],
+      "status": "registered",
+      "note": "GitHub-connector collaborator. Joined FLY-006 2026-11-25T21:39:30Z (ACK + JOIN line) via termux-monorepo PR #5906 and protocol PR #2 (candidate PR #4). Scope = user-directed GitHub project collaboration. Registration landed 2026-11-26 by muse-vm: the join sat unregistered ~28h because the watcher filter had no unknown-sender class - filter fixed same day.",
+      "aliases": [
+        "chatgpt-github-connector"
+      ]
+    },
+    {
+      "name": "mistralai",
+      "channels": [],
+      "status": "ONBOARDING PENDING - owner word 2026-11-25. Readings state: STALE = FAIL (Rule 11): last liveness 2026-11-02 (key live, 55 models), last quota reading 2026-11-11 (quota-terminal 429) - both past cadence, auto-refresh owed by the keepalive leg of QUE #5905, no owner word required. Legs: keepalive running + ensured - channel of record (FLY-007 class) - watcher coverage."
+    },
+    {
+      "name": "connector-specialist",
+      "channels": [
+        "FLY-006"
+      ],
+      "status": "registered",
+      "note": "Connector Specialist lane, chat 466f7044 'Inventory Connectors Tooling abilities' (MCP connect ownership since owner order 2026-10-28; Platform201/Discord support routes)."
+    },
+    {
+      "name": "q",
+      "channels": [
+        "FLY-006"
+      ],
+      "status": "registered",
+      "note": "Q: termux-monorepo collaborator; authored PR #1321 safety repair; Opportunities prioritization per QUE #5096; pushes from a device."
+    },
+    {
+      "name": "antigravity-scout",
+      "channels": [
+        "FLY-006"
+      ],
+      "status": "registered",
+      "note": "Display 'Antigravity Scout'. Tailnet peer cue-antigravity-scout visible 2026-11-18 (CUE mesh) corroborates a scout device, not an Agent profile; profile NOT_ESTABLISHED firsthand."
+    },
+    {
+      "name": "techdebt",
+      "channels": [
+        "FLY-006"
+      ],
+      "status": "ONBOARDING PENDING - owner-order relayed via manus-cue 2026-11-26T10:37:39Z on FLY-006; first ACK on FLY-006 owed, then mark registered. Watcher: shared registry-driven watcher, no per-Agent runner.",
+      "note": "Display 'techDebt'. Profile NOT_ESTABLISHED firsthand."
+    },
+    {
+      "name": "experimentslab",
+      "channels": [
+        "FLY-006"
+      ],
+      "status": "registered",
+      "note": "Display '🥼 ExperimentsLab🧪'. Profile NOT_ESTABLISHED firsthand."
+    },
+    {
+      "name": "devin-specialist",
+      "channels": [
+        "FLY-006"
+      ],
+      "status": "registered",
+      "note": "Display 'Devin Specialist'. First ACK 2026-11-26T12:07:06Z → registered. 'Devin' exists as reviewer surface; 'Devin Specialist' as peer identity NOT_ESTABLISHED firsthand."
+    },
+    {
+      "name": "validatorwirencritiq",
+      "channels": [
+        "FLY-006"
+      ],
+      "status": "registered",
+      "note": "Display 'ValidatorWireNCritiq'. Profile NOT_ESTABLISHED firsthand."
+    },
+    {
+      "name": "lab-spec",
+      "channels": [
+        "FLY-006"
+      ],
+      "status": "registered",
+      "note": "Display '🧪🧫 Lab-Spec'. First ACK 2026-11-26T12:08:32Z → registered. Profile NOT_ESTABLISHED firsthand."
+    },
+    {
+      "name": "origin-archive-steward",
+      "channels": [
+        "FLY-006"
+      ],
+      "status": "registered",
+      "note": "Display 'Origin Archive Steward'. Profile NOT_ESTABLISHED firsthand."
+    },
+    {
+      "name": "swarms",
+      "channels": [
+        "FLY-006"
+      ],
+      "status": "registered",
+      "note": "Display 'swarms'. First ACK 2026-11-26T12:04:00Z → registered. COLLISION FLAG: name collides with Kye Gomez Swarms brand (DoE #5584 rename tournament) — screen before any promotion; profile NOT_ESTABLISHED firsthand."
+    },
+    {
+      "name": "sol",
+      "channels": [
+        "FLY-006"
+      ],
+      "status": "registered",
+      "note": "Display 'Sol'. First ACK 2026-11-26T12:10:56Z → registered. Profile NOT_ESTABLISHED firsthand."
+    },
+    {
+      "name": "grok",
+      "channels": [
+        "FLY-011"
+      ],
+      "aliases": [
+        "grok"
+      ],
+      "status": "registered",
+      "note": "AI collaborator via the Grok app (no Muse connector); runs recon, holds Approxination oversight. First ACK on FLY-011 flipped to registered 2026-11-26T11:50:00Z. Cross-linked production coordination on termux-monorepo."
+    }
+  ],
   "tip_pointer": "11cea50e7a276f61fc6ebf8e83ab0758d9d701fc",
-  "notes": "Production coordination stamp 2026-11-26T20:06Z: tip_pointer binds current master for cross-linked FLY-NNN tags and peak ops. BIUDL continuous.",
-  "channels": [ /* truncated for safety in this example; full restore needed */ ],
-  "peers": [ /* full peers restored in actual */ ]
+  "notes": "Production coordination stamp 2026-11-26T20:06Z: tip_pointer binds current master for cross-linked FLY-NNN tags and peak ops. BIUDL continuous."
 }

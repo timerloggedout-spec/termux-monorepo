@@ -1,0 +1,15 @@
+{
+  "name": "coden",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "postCreateCommand": "curl -fsSL https://coden-app.com/codespace.sh | bash -s install",
+  "postStartCommand": "curl -fsSL https://coden-app.com/codespace.sh | bash -s start",
+  "forwardPorts": [
+    7799
+  ],
+  "portsAttributes": {
+    "7799": {
+      "label": "coden",
+      "onAutoForward": "silent"
+    }
+  }
+}

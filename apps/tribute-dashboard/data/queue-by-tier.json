@@ -1,24 +1,28 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-26T14:08:17Z",
+ "generated_at": "2026-11-26T14:24:00Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 3,
+   "queued": 4,
    "in_progress": 1,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
+    "Orchestration Regression Guard": 1,
     "repo gate": 1,
     "PR scope guard": 2
    }
   },
   "2": {
    "tier": 2,
-   "queued": 0,
-   "in_progress": 2,
-   "oldest_queued_at": null,
-   "by_workflow_queued": {}
+   "queued": 2,
+   "in_progress": 1,
+   "oldest_queued_at": "2026-11-26T14:23:26Z",
+   "by_workflow_queued": {
+    "pages build and deployment": 1,
+    "tribute-dashboard-deploy": 1
+   }
   },
   "3": {
    "tier": 3,
@@ -29,11 +33,20 @@
   },
   "4": {
    "tier": 4,
-   "queued": 5,
-   "in_progress": 15,
+   "queued": 18,
+   "in_progress": 17,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "termux smoke": 1,
+    "Agent Throughput Evidence": 3,
+    "quota-served-probe": 1,
+    "termux smoke": 2,
+    "graph-matrix-probe": 1,
+    "quota-allocation-planner": 1,
+    "quota-analysis": 1,
+    "Agent Readability Source Contract": 1,
+    "Agent review \u2192 auto Jules": 2,
+    "Agent feedback \u2192 Linear subtasks": 1,
+    "Quota Dispatch Tree": 1,
     "Agent PR Jules Handoff": 1,
     "PR Change Effectiveness Ledger": 1,
     "Advisory GitHub Actions lint": 1,
@@ -42,8 +55,8 @@
   }
  },
  "totals": {
-  "queued": 8,
-  "in_progress": 18
+  "queued": 24,
+  "in_progress": 19
  },
  "wedged_ancient": [
   {
@@ -135,13 +148,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 4,
-   "2": 2,
+   "1": 5,
+   "2": 3,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 6,
-  "default_t4": 20,
+  "explicit_total": 8,
+  "default_t4": 35,
   "unmatched": 0,
   "ancient_excluded": 14,
   "operator_excluded": 1

@@ -5,7 +5,7 @@ channels ("flywheel"): appends are commits in a GitHub store, reads ride
 each participant's own cadence loop. The owner is never a relay.
 
 Policy + registry: `docs/ops/flywheel-comms/POLICY.md` ·
-`docs/ops/flywheel-comms/REGISTRY.json` (FLY-001…FLY-014 + peers section).
+`docs/ops/flywheel-comms/REGISTRY.json` (FLY-001…FLY-016 + peers section).
 
 A channel counts as established only with a registry row, a protocol doc
 at its path, and one round-trip receipt in the store.
@@ -33,5 +33,10 @@ clear division.
 | FLY-009 | chatgpt-comms | established | chatgpt/comms.jsonl |
 | FLY-010 | hark-comms | established | hark/comms.jsonl |
 | FLY-011 | grok-comms | established | grok/comms.jsonl (ACK 1ee5ac8e) |
+| FLY-012 | que-efficacy | proposed | docs/ops/flywheel-comms/channels/que-efficacy.jsonl |
+| FLY-013 | doe-stress-test | proposed | docs/ops/flywheel-comms/channels/doe-stress-test.jsonl |
+| FLY-014 | compute-census | mandatory | docs/ops/flywheel-comms/channels/compute-census.jsonl |
+| FLY-015 | thub017-msm005-comparison | proposed | docs/ops/flywheel-comms/channels/thub017-msm005-comparison.jsonl |
+| FLY-016 | backup-export-recovery | proposed | docs/ops/flywheel-comms/channels/backup-export-recovery.jsonl |
 
-Production coordination: dual-gate on master tip remains promote authority. Peak performance via evidence-led RECON → dual-gate green extracts. BIUDL continuous.
+Production coordination: dual-gate on master tip remains promote authority. Peak performance via evidence-led RECON → dual-gate green extracts. BIUDL continuous. Everything open for revision.

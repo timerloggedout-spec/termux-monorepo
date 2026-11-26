@@ -131,6 +131,19 @@
       "status": "established",
       "scope": "Evidence-only trace of Swarms/DoE and provider-catalog issue/PR components, gates, statuses, and source refs. Mesh is the sole existing compute/inference execution fabric. The owner-designated 172-provider registry, DoE participants, quota, admission, and routes remain authoritative. Vultr Python/TypeScript repos are only comparative model-catalog research seeds/template references; they are not compute providers, inference endpoints, or competing execution runtimes. Compare approaches and adapt useful patterns in the existing catalog implementation; neither dual-language product implementation nor cross-language parity tests are required. No admission decisions, dispatch, inference, promotion, or new gate/registry.",
       "established_evidence": "Protocol doc status: established 2026-11-25; two-party round-trip complete (trace 7 lines); muse-vm assent FLY-005 21:58:58Z + reader loop verified (flywheel-comms-watch, 300s). Registry row caught up 2026-11-25 - it lagged the protocol (stale = fail)."
+    },
+    {
+      "id": "FLY-009",
+      "name": "chatgpt-comms",
+      "owner": "muse-vm",
+      "store": "chatgpt/comms.jsonl in timerloggedout-spec/muse-vm-workspace-backup (+ chatgpt/COMMS.md protocol)",
+      "scope": "ChatGPT wrapped-session coordination, export receipts, RECON findings. Access surface: muse-vm ChatGPT webWrapper (CLI/stdin -> HTTPS -> SSE, shape A). Session material names-only, never in channel.",
+      "status": "established",
+      "participants": [
+        "muse-vm",
+        "chatgpt"
+      ],
+      "established": "2026-11-25"
     }
   ],
   "peers": [
@@ -163,8 +176,11 @@
     },
     {
       "name": "chatgpt",
-      "channels": [],
-      "status": "NOT REGISTERED - no channel of record; app-side activity (incl. its Devpost connector) is unobserved by the fleet. Registration is a done-evidence leg of QUE #5885."
+      "channels": [
+        "FLY-009"
+      ],
+      "status": "registered",
+      "note": "Channel of record FLY-009 via muse-vm webWrapper; login established 2026-11-25 (fleet Google identity); CLI session binding pending token route (browser-held session, CDP/profile not on VM)."
     },
     {
       "name": "mistralai",

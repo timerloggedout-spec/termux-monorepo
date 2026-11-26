@@ -1,0 +1,89 @@
+name: bonsai-endpoint
+# Stand-up receipt run for the PrismML Ternary Bonsai 2.5 27B local arm.
+# Census of record: QUE #5591 (2026-11-26) — winner surface = GitHub-hosted
+# Actions runner (4 vCPU / 16 GB RAM); HF Spaces gated (compute-Space creation
+# requires a paid plan + fleet HF token is read-only); Hark VM 8.3 GB RAM is
+# under the serving footprint; Cue VM unreachable at census time.
+on:
+  workflow_dispatch:
+    inputs:
+      ctx:
+        description: 'context size for llama-server'
+        required: false
+        default: '8192'
+permissions:
+  contents: read
+jobs:
+  standup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Surface card + disk guard
+        run: |
+          {
+            echo '## Bonsai endpoint stand-up — GitHub-hosted runner'
+            echo '```'
+            free -h
+            echo "vCPU: $(nproc)"
+            grep -m1 'model name' /proc/cpuinfo || true
+            df -h . | tail -1
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          avail=$(df --output=avail -B1 . | tail -1)
+          if [ "$avail" -lt 13000000000 ]; then
+            sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /opt/hostedtoolcache || true
+            df -h . | tail -1
+          fi
+      - name: Fetch llama.cpp b12779 (pinned; floor = b11556 per QUE #5591 survey)
+        run: |
+          curl -fsSL -o llama.tar.gz https://github.com/ggml-org/llama.cpp/releases/download/b12779/llama-b12779-bin-ubuntu-x64.tar.gz
+          mkdir llama && tar -xzf llama.tar.gz -C llama
+          BIN=$(dirname "$(find llama -name llama-server -type f | head -1)")
+          echo "LLAMA_BIN=$BIN" >> "$GITHUB_ENV"
+          "$BIN/llama-server" --version 2>&1 | head -3 | tee version.txt
+      - name: Fetch Q2_0 GGUF (public, Apache-2.0)
+        run: |
+          curl -fsSL -o bonsai-q2_0.gguf https://huggingface.co/prism-ml/Ternary-Bonsai-2.5-27B-GGUF/resolve/main/Ternary-Bonsai-2.5-27B-Q2_0.gguf
+          ls -l bonsai-q2_0.gguf
+          sz=$(stat -c%s bonsai-q2_0.gguf)
+          if [ "$sz" = "7673194848" ]; then echo "size OK: $sz"; else echo "SIZE MISMATCH: $sz (expected 7673194848)"; exit 1; fi
+      - name: Serve + receipts
+        run: |
+          set +e
+          "$LLAMA_BIN/llama-server" -m bonsai-q2_0.gguf --host 127.0.0.1 --port 8080 -c "${{ inputs.ctx }}" -t 4 --jinja > server.log 2>&1 &
+          echo $! > server.pid
+          ok=""
+          for i in $(seq 1 150); do
+            if curl -sf http://127.0.0.1:8080/health >/dev/null 2>&1; then ok=1; break; fi
+            sleep 2
+          done
+          if [ -z "$ok" ]; then echo "SERVER NEVER HEALTHY"; tail -50 server.log; exit 1; fi
+          mkdir -p receipts
+          curl -s http://127.0.0.1:8080/health | tee receipts/health.json; echo
+          curl -s http://127.0.0.1:8080/v1/models | tee receipts/models.json; echo
+          MID=$(jq -r '.data[0].id' receipts/models.json)
+          echo "model id: $MID"
+          jq -n --arg m "$MID" '{model:$m, messages:[{role:"user", content:"Write a one-line Python function that reverses a string, then stop."}], max_tokens:96, temperature:0.2}' > chat_req.json
+          curl -s http://127.0.0.1:8080/v1/chat/completions -H 'Content-Type: application/json' -d @chat_req.json | tee receipts/chat.json; echo
+          jq -n --arg m "$MID" '{model:$m, messages:[{role:"user", content:"What is the weather in San Francisco right now? Use the tool."}], tools:[{type:"function", function:{name:"get_weather", description:"Get current weather for a city", parameters:{type:"object", properties:{city:{type:"string"}}, required:["city"]}}}], tool_choice:"auto", max_tokens:128, temperature:0.2}' > tool_req.json
+          curl -s http://127.0.0.1:8080/v1/chat/completions -H 'Content-Type: application/json' -d @tool_req.json | tee receipts/tool_call.json; echo
+          kill "$(cat server.pid)" || true
+          {
+            echo '## Build + load evidence (server log)'
+            echo '```'
+            grep -E 'build:|version:|llama_model_loader|server listening|main: model loaded' server.log | head -12
+            echo '```'
+            echo '## Receipts'
+            echo '### /v1/models'; echo '```json'; cat receipts/models.json; echo '```'
+            echo '### chat completion (timings.predicted_per_second = measured decode tok/s)'; echo '```json'; cat receipts/chat.json; echo '```'
+            echo '### tool-call completion'; echo '```json'; cat receipts/tool_call.json; echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bonsai-endpoint-receipts
+          path: |
+            receipts/
+            server.log
+            version.txt

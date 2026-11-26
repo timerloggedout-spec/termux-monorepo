@@ -1,0 +1,83 @@
+name: teammate-portal-status-publish
+
+# Teammate Portal (proposal hackathon-desk, PR #5840) reference + status page.
+# Renders the proposal docs and the ITEMS.md done-board, then publishes to the
+# user site at previews/pr-5840/hackathon-desk/ via peaceiris keep_files.
+# Contract: docs/ops/REVIEW-PUBLISHING.md. Hand commits to gh-pages are wiped
+# by tribute-dashboard-deploy (force-orphan); review routes run on GitHub Pages only.
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_ref:
+        description: "Ref holding docs/proposals/active/hackathon-desk (PR branch until merged)"
+        required: false
+        default: "feat/hackathon-desk-full-20261124"
+        type: string
+  push:
+    branches: [master]
+    paths:
+      - "docs/proposals/active/hackathon-desk/**"
+      - "docs/superpowers/specs/2026-11-24-hackathon-desk-design.md"
+      - "docs/superpowers/plans/2026-11-24-hackathon-desk.md"
+  schedule:
+    - cron: "17,47 * * * *"
+
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+
+concurrency:
+  group: teammate-portal-status-publish
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Resolve source ref
+        id: ref
+        env:
+          IN_REF: ${{ inputs.source_ref }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          ref="${IN_REF:-}"
+          if [ -z "$ref" ]; then
+            if gh api "repos/${{ github.repository }}/contents/docs/proposals/active/hackathon-desk/ITEMS.md?ref=master" >/dev/null 2>&1; then
+              ref=master
+            else
+              ref=feat/hackathon-desk-full-20261124
+            fi
+          fi
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.ref.outputs.ref }}
+          persist-credentials: false
+      - name: Render reference + status
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SRC_REF: ${{ steps.ref.outputs.ref }}
+        run: |
+          set -euo pipefail
+          pip install --quiet markdown==3.7
+          python3 scripts/ops/render_teammate_portal_status.py \
+            --out _site/previews/pr-5840/hackathon-desk \
+            --source-ref "$SRC_REF" --source-sha "$(git rev-parse HEAD)" \
+            --repo "${{ github.repository }}" --pr 5840
+          touch _site/.nojekyll
+          echo "Status page: https://timerloggedout-spec.github.io/previews/pr-5840/hackathon-desk/ (ref $SRC_REF @ $(git rev-parse --short HEAD))" >> "$GITHUB_STEP_SUMMARY"
+      - name: Publish (keep_files)
+        uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453
+        with:
+          personal_token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN }}
+          external_repository: timerloggedout-spec/timerloggedout-spec.github.io
+          publish_dir: _site
+          publish_branch: main
+          keep_files: true
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
+          commit_message: "deploy(teammate-portal-status): pr-5840 from ${{ steps.ref.outputs.ref }}"

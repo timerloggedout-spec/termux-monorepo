@@ -1,6 +1,6 @@
 ================================================================================
- QUOTA  termux-monorepo  (172 registry records)
- Snapshot generated (not observation time): 2026-11-18T17:06:56.121328+00:00
+ QUOTA  termux-monorepo  (173 registry records)
+ Snapshot generated (not observation time): 2026-11-26T17:34:31.868216+00:00
  Source: apps/tribute-dashboard/data/quota.json + ops/quota/registry.json
  Limits are documented entitlements, not balances.
  Private balances are hidden; unknown is not healthy or admitted.
@@ -10,6 +10,9 @@
 --------------------------------------------------------------------------------
  [!  WATCH] github.api.github_token
    limit (documented): 1000 requests/hour/repo
+   used: No live reading
+ [!  WATCH] vercel.deployments
+   limit (documented): 100 deployments/day
    used: No live reading
 
  ALL SERVICES
@@ -38,6 +41,15 @@
     metric: Inference via the direct DeepSeek API route (distinct from the g4f
     route g4f.deepseek and the CI build arm deepseek.build_dispatch) | window:
     provider-side (not established) | reset: not established
+    Public evidence state only; no account balance or runtime admission implied.
+--------------------------------------------------------------------------------
+ LocalLlamaServer (1)
+  local.bonsai_llama_server
+    status: PRIVATE_PREFLIGHT
+    limit (documented): n/a requests (self-hosted, unmetered)
+    metric: Local llama-server inference dispatches (Ternary-Bonsai-2.5-27B Q2_0
+    GGUF on stock llama.cpp >= b11556; OpenAI-compatible /v1 surface) | window:
+    n/a (self-hosted) | reset: n/a
     Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  agentrouter (1)
@@ -1231,7 +1243,7 @@
     metric: build step duration per deployment | window: per-build | reset: n/a
     Public evidence state only; no account balance or runtime admission implied.
   vercel.deployments
-    status: OK
+    status: !  WATCH
     limit (documented): 100 deployments/day
     metric: deployments created | window: rolling 24h (observed: error says try
     again in 24 hours) | reset: rolling
@@ -1337,6 +1349,6 @@
   zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
   registry: zai.free_models
  Coverage and quota checks do not grant runtime admission.
- 172 registry records | 1 alert(s) | 172 with a reported reading | 0 with No
+ 173 registry records | 2 alert(s) | 173 with a reported reading | 0 with No
  live reading
 ================================================================================

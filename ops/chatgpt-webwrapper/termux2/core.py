@@ -973,28 +973,116 @@ _SESSION_COOKIE = "__Secure-next-auth.session-token"
 _CHUNK_RE = re.compile(r"^" + re.escape(_SESSION_COOKIE) + r"\.(\d+)$")
 
 
-def _extract_session(cookies):
-    """Split the surface's cookies into (session_token, cookie_header).
-    NextAuth chunks an oversized session token across
-    `<name>.0`, `<name>.1`, ... — reassembled here in numeric order.
-    Values are returned to the caller only; never logged or traced."""
+def _session_candidates(cookies):
+    """Enumerate every distinct session-token candidate in the jar.
+
+    v2 took the last plain token in list order and spliced chunks by
+    numeric suffix alone, so a stale duplicate — or chunks from two
+    different scopes — silently won over the live token. Here plain
+    tokens are kept per scope, chunked tokens are grouped BY SCOPE
+    (domain, path) and reassembled in numeric order within the group,
+    and candidates are ordered freshest-expiry first (expired last),
+    deduped by value. The caller verifies each candidate against the
+    surface and keeps the first that signs in. Values stay in memory
+    only; never logged or traced."""
+    now = time.time()
     mine = [c for c in cookies
             if str(c.get("domain") or "").endswith("chatgpt.com")]
-    token = None
-    chunks = {}
+    plains = {}   # scope -> (value, expires)
+    groups = {}   # scope -> {index: (value, expires)}
     for c in mine:
         name = c.get("name") or ""
+        scope = (str(c.get("domain") or ""), str(c.get("path") or "/"))
+        try:
+            exp = float(c.get("expires") or 0)
+        except Exception:  # noqa: BLE001
+            exp = 0.0
         if name == _SESSION_COOKIE:
-            token = c.get("value")
+            cur = plains.get(scope)
+            if cur is None or exp >= cur[1]:
+                plains[scope] = (c.get("value") or "", exp)
         else:
             m = _CHUNK_RE.match(name)
             if m:
-                chunks[int(m.group(1))] = c.get("value") or ""
-    if token is None and chunks:
-        token = "".join(chunks[k] for k in sorted(chunks))
-    header = "; ".join(f"{c.get('name')}={c.get('value')}" for c in mine
-                       if c.get("name"))
-    return token, (header or None), len(chunks)
+                g = groups.setdefault(scope, {})
+                idx = int(m.group(1))
+                cur = g.get(idx)
+                if cur is None or exp >= cur[1]:
+                    g[idx] = (c.get("value") or "", exp)
+    out = []
+    for scope, (value, exp) in plains.items():
+        if value:
+            out.append({"token": value, "kind": "plain", "n_chunks": 0,
+                        "expires": exp, "scope": scope})
+    for scope, g in groups.items():
+        idxs = sorted(g)
+        if idxs and idxs == list(range(len(idxs))):
+            value = "".join(g[i][0] for i in idxs)
+            if value:
+                out.append({"token": value, "kind": "chunks",
+                            "n_chunks": len(idxs),
+                            "expires": min(g[i][1] for i in idxs),
+                            "scope": scope})
+
+    def rank(cand):
+        exp = cand["expires"]
+        live = exp <= 0 or exp > now
+        return (0 if live else 1, -(exp if exp > 0 else 0.0))
+
+    out.sort(key=rank)
+    seen = set()
+    ded = []
+    for cand in out:
+        if cand["token"] not in seen:
+            seen.add(cand["token"])
+            ded.append(cand)
+    return ded
+
+
+def _base_cookie_header(cookies):
+    """Cookie header from the jar EXCLUDING every session-token cookie
+    (plain and chunks): the chosen token is stored separately and the
+    request layer appends its pair exactly once — the v2 header carried
+    every duplicate and chunk alongside it."""
+    mine = [c for c in cookies
+            if str(c.get("domain") or "").endswith("chatgpt.com")]
+    parts = []
+    seen = set()
+    for c in mine:
+        name = c.get("name") or ""
+        if not name or name == _SESSION_COOKIE or _CHUNK_RE.match(name):
+            continue
+        if name in seen:
+            continue
+        seen.add(name)
+        parts.append(f"{name}={c.get('value')}")
+    return "; ".join(parts) or None
+
+
+def _extract_session(cookies):
+    """Back-compat shim: (best candidate token, base header, n_chunks).
+    The import path uses _session_candidates directly."""
+    cands = _session_candidates(cookies)
+    if not cands:
+        return None, _base_cookie_header(cookies), 0
+    best = cands[0]
+    return best["token"], _base_cookie_header(cookies), best["n_chunks"]
+
+
+# Cookie sources are pluggable rungs: today the CDP read over the
+# forwarded DevTools socket. The next rung — a Firefox RDP storage-
+# actor read — lands when a device's Chrome jar holds no viable token.
+COOKIE_SOURCES = [("cdp", _cdp_read_cookies)]
+
+
+def _read_cookies(port):
+    last = None
+    for _name, fn in COOKIE_SOURCES:
+        try:
+            return fn(port)
+        except Exception as e:  # noqa: BLE001
+            last = e
+    raise last if last is not None else RuntimeError("cdp_no_source")
 
 
 def _adb_open_surface(target: AdbTarget):
@@ -1071,7 +1159,7 @@ def import_session_adb(trace: ImportTrace) -> int:
 
     try:
         try:
-            cookies = _cdp_read_cookies(port)
+            cookies = _read_cookies(port)
         except Exception as e:  # noqa: BLE001
             cls = str(e) if str(e).startswith("cdp_") else \
                 f"cdp_error:{type(e).__name__}"
@@ -1088,8 +1176,8 @@ def import_session_adb(trace: ImportTrace) -> int:
             return 5
         trace.step("cdp_read", "completed", count=len(cookies))
 
-        token, cookie_header, n_chunks = _extract_session(cookies)
-        if not token:
+        candidates = _session_candidates(cookies)
+        if not candidates:
             trace.step("extract_session", "failed",
                        **{"class": "session_cookie_absent"})
             _adb_open_surface(target)
@@ -1100,41 +1188,65 @@ def import_session_adb(trace: ImportTrace) -> int:
                   "then re-run import.")
             trace.finish("stopped", **{"class": "session_cookie_absent"})
             return 4
-        trace.step("extract_session", "completed", count=n_chunks)
+        trace.step("extract_session", "completed", count=len(candidates))
 
+        # v2.1: verify EVERY candidate; the first that signs in is the
+        # stored credential. The base header excludes all session-token
+        # cookies, so the chosen pair is appended exactly once.
         cfg = load_config()
-        cfg["session_token"] = token
-        if cookie_header:
-            cfg["cookie_header"] = cookie_header
+        base_header = _base_cookie_header(cookies)
+        if base_header:
+            cfg["cookie_header"] = base_header
+        evaluated = 0
+        last_error = None
+        for i, cand in enumerate(candidates):
+            cfg["session_token"] = cand["token"]
+            save_config(cfg)
+            trace.step("store", "completed", method="adb", candidate=i,
+                       kind=cand["kind"], n_chunks=cand["n_chunks"])
+            try:
+                state = session_state()
+                signed = bool(state.get("has_token"))
+            except FrictionError as e:
+                trace.step("verify", "failed", candidate=i,
+                           **{"class": e.cls})
+                trace.finish("stopped", **{"class": e.cls})
+                print(f"stored, but the surface answered with friction "
+                      f"(class {e.cls}) — run stopped, never evaded.")
+                return 3
+            except Exception as e:  # noqa: BLE001 - verify transport failure
+                cls = f"verify_error:{type(e).__name__}"
+                trace.step("verify", "failed", candidate=i,
+                           **{"class": cls})
+                last_error = cls
+                continue
+            evaluated += 1
+            trace.step("verify", "completed" if signed else "failed",
+                       candidate=i,
+                       **{"class": "signed_in" if signed
+                          else "profile_logged_out"})
+            if signed:
+                print("session stored (0600 config) from the phone's "
+                      "Chrome.")
+                print("verified: signed in.")
+                trace.finish("completed", method="adb",
+                             **{"class": "signed_in"})
+                return 0
+        # No candidate signed in: keep the best-ranked one stored.
+        cfg["session_token"] = candidates[0]["token"]
         save_config(cfg)
-        trace.step("store", "completed", method="adb")
         print("session stored (0600 config) from the phone's Chrome.")
-
-        try:
-            state = session_state()
-            signed = bool(state.get("has_token"))
-        except FrictionError as e:
-            trace.step("verify", "failed", **{"class": e.cls})
-            trace.finish("stopped", **{"class": e.cls})
-            print(f"stored, but the surface answered with friction "
-                  f"(class {e.cls}) — run stopped, never evaded.")
-            return 3
-        except Exception as e:  # noqa: BLE001 - verify transport failure
-            cls = f"verify_error:{type(e).__name__}"
-            trace.step("verify", "failed", **{"class": cls})
-            trace.finish("failed", **{"class": cls})
-            print(f"session stored, but verification could not complete "
-                  f"(class {cls}) — the stored credential stands; "
+        if evaluated == 0 and last_error:
+            trace.finish("failed", **{"class": last_error})
+            print(f"stored, but verification could not complete "
+                  f"(class {last_error}) — the stored credential stands; "
                   f"check with: python3 core.py --probe")
             return 5
-        trace.step("verify", "completed" if signed else "failed",
-                   **{"class": "signed_in" if signed else "profile_logged_out"})
         trace.finish("completed", method="adb",
-                     **{"class": "signed_in" if signed else "profile_logged_out"})
-        print("verified: signed in." if signed else
-              "stored, but the surface reports logged out — sign in in "
+                     **{"class": "profile_logged_out"})
+        print("stored, but the surface reports logged out — sign in in "
               "Chrome and re-run import.")
-        return 0 if signed else 2
+        return 2
     finally:
         try:
             target.run(["forward", "--remove", f"tcp:{port}"], timeout=10)
@@ -1143,6 +1255,56 @@ def import_session_adb(trace: ImportTrace) -> int:
 
 
 # ---------- probe / doctor / session import ----------------------------
+
+def cookies_report() -> int:
+    """Names-only diagnostic (--cookies): every chatgpt.com cookie in
+    the phone's Chrome — name, domain, path, expires, value LENGTH,
+    never a value — so a bad import can be told apart from an empty
+    jar, and duplicate/chunked session tokens are visible at a glance."""
+    pre = adb_preflight(use_cache=False)
+    if pre["state"] != "ok":
+        print(json.dumps({"state": "fail", "class": pre["class"]}))
+        return 5
+    target = pre["target"]
+    port = None
+    for cand in range(9222, 9232):
+        try:
+            out = target.run(["forward", f"tcp:{cand}",
+                              "localabstract:chrome_devtools_remote"],
+                             timeout=15)
+            if out.returncode == 0:
+                port = cand
+                break
+        except Exception:  # noqa: BLE001
+            continue
+    if port is None:
+        print(json.dumps({"state": "fail", "class": "adb_forward_failed"}))
+        return 5
+    try:
+        cookies = _read_cookies(port)
+    except Exception as e:  # noqa: BLE001
+        cls = str(e) if str(e).startswith("cdp_") else \
+            f"cdp_error:{type(e).__name__}"
+        print(json.dumps({"state": "fail", "class": cls}))
+        return 5
+    finally:
+        try:
+            target.run(["forward", "--remove", f"tcp:{port}"], timeout=10)
+        except Exception:  # noqa: BLE001
+            pass
+    rows = []
+    for c in cookies:
+        if str(c.get("domain") or "").endswith("chatgpt.com"):
+            rows.append({"name": c.get("name"),
+                         "domain": c.get("domain"),
+                         "path": c.get("path"),
+                         "expires": c.get("expires"),
+                         "value_len": len(str(c.get("value") or ""))})
+    rows.sort(key=lambda r: str(r["name"]))
+    print(json.dumps({"state": "ok", "class": "cookies_report",
+                      "count": len(rows), "cookies": rows}, indent=1))
+    return 0
+
 
 def probe():
     """Session probe (the VM core's probe shape, at the session layer)."""
@@ -1253,6 +1415,8 @@ if __name__ == "__main__":
         print(json.dumps(probe()))
     elif len(sys.argv) > 1 and sys.argv[1] == "--import-session":
         sys.exit(import_session(manual="--manual" in sys.argv[2:]))
+    elif len(sys.argv) > 1 and sys.argv[1] == "--cookies":
+        sys.exit(cookies_report())
     else:
-        print("usage: core.py --doctor | --probe | "
+        print("usage: core.py --doctor | --probe | --cookies | "
               "--import-session [--manual]")

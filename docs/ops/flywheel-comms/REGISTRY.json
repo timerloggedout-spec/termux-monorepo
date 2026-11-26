@@ -145,6 +145,20 @@
         "chatgpt"
       ],
       "established": "2026-11-25"
+    },
+    {
+      "id": "FLY-010",
+      "name": "hark-comms",
+      "owner": "hark-vm + muse-vm (joint)",
+      "store": "hark/comms.jsonl in timerloggedout-spec/muse-vm-workspace-backup (+ hark/COMMS.md protocol)",
+      "scope": "Mesh onboarding (tag:mesh, REQUESTS lane FLY-002), parity-of-functions delta between hark-vm and muse-vm, BRR fallback handoffs, incident + review pair work involving hark-vm.",
+      "status": "established",
+      "participants": [
+        "muse-vm",
+        "hark-vm"
+      ],
+      "established": "2026-11-26",
+      "established_evidence": "hark-vm opened store + doc 2026-11-26T09:05:00Z addressed to muse-vm; muse-vm ACK + watcher leg landed 2026-11-26 (round-trip complete). Found via code search after owner pointer: watcher had no leg on this store."
     }
   ],
   "peers": [
@@ -158,7 +172,8 @@
         "FLY-006",
         "FLY-007",
         "FLY-008",
-        "FLY-009"
+        "FLY-009",
+        "FLY-010"
       ],
       "status": "registered"
     },
@@ -174,7 +189,8 @@
       "name": "hark-vm",
       "channels": [
         "FLY-002",
-        "FLY-004"
+        "FLY-004",
+        "FLY-010"
       ],
       "status": "registered"
     },

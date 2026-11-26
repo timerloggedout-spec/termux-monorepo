@@ -78,8 +78,8 @@
       "owner_seat": "muse-vm + cue (joint)",
       "status": "established",
       "established_evidence": "opened 2026-11-25: muse-vm line at 50c780c2, cue ACK at 8d03661e",
-      "access": "Collaborators of record: muse-vm (operator) + manus-cue (peer). Cue holds deploy-key WRITE on the store (exports, checkpoints, cue/ tree) and read on all export prefixes + compute-exports/mesh-probe telemetry. Owner rule 2026-11-25: collaborator access to Exports + Telemetry is important — access gaps are defects, named on this row.",
-      "upgrade": "2026-11-25: multi-route upgrade proposed to Cue via the channel — FLY-005 stays primary; redundant provider routes to be added as Cue confirms which it can terminate (Manus email fallback already noted).",
+      "access": "Collaborators of record: muse-vm (operator) + manus-cue (peer). Cue holds deploy-key WRITE on the store (exports, checkpoints, cue/ tree) and read on all export prefixes + compute-exports/mesh-probe telemetry. Owner rule 2026-11-25: collaborator access to Exports + Telemetry is important \u2014 access gaps are defects, named on this row.",
+      "upgrade": "2026-11-25: multi-route upgrade proposed to Cue via the channel \u2014 FLY-005 stays primary; redundant provider routes to be added as Cue confirms which it can terminate (Manus email fallback already noted).",
       "scope": "Exports + backup coordination with Cue. Non-export pair work moved to FLY-006 (owner order 2026-11-25)."
     },
     {
@@ -172,7 +172,7 @@
         "manus-cue"
       ],
       "established": "2026-11-26",
-      "established_evidence": "hark-vm opened store + doc 2026-11-26T09:05:00Z addressed to muse-vm; muse-vm ACK + watcher leg landed 2026-11-26 (round-trip complete). Found via code search after owner pointer: watcher had no leg on this store. · muse-vm ACK at 0ee0a83b9301ae1d3f5eb9763cb6062084617057 (hark/comms.jsonl).",
+      "established_evidence": "hark-vm opened store + doc 2026-11-26T09:05:00Z addressed to muse-vm; muse-vm ACK + watcher leg landed 2026-11-26 (round-trip complete). Found via code search after owner pointer: watcher had no leg on this store. \u00b7 muse-vm ACK at 0ee0a83b9301ae1d3f5eb9763cb6062084617057 (hark/comms.jsonl).",
       "cadence": "hark-vm: Hark scheduled watch 1h. muse-vm: flywheel-comms-watch (mode pair, every line wakes). manus-cue: cue watch once path added (pending cue ACK)."
     },
     {
@@ -191,6 +191,56 @@
       "established": "2026-11-26",
       "established_evidence": "muse-vm open 2026-11-26T11:41:15Z; grok ACK 2026-11-26T11:50:00Z (commit 1ee5ac8e). Cross-linked to termux-monorepo master production coordination.",
       "scope": "Grok pair comms: recon + Approxination oversight + fleet work with grok. Established on first round-trip ACK (Policy: proposed until receipt). Landed by direct commit under owner order 2026-11-26 after the PR gate left the channel unregistered."
+    },
+    {
+      "id": "FLY-012",
+      "name": "que-efficacy",
+      "store_repo": "timerloggedout-spec/termux-monorepo",
+      "path": "docs/ops/flywheel-comms/channels/que-efficacy.jsonl",
+      "format": "JSONL {ts, from, event, body} Siglary{best}",
+      "participants": [
+        "muse-vm",
+        "hark-vm",
+        "QUE machinery (executor/watchdog)"
+      ],
+      "cadence": "muse-vm watcher 60s; owner seat on genre cadence",
+      "owner_seat": "QDesk",
+      "status": "proposed",
+      "established_evidence": "Genre opened by owner order 2026-11-26 (new task genres land as new FLY-NNN); promotion to established on first round-trip receipt per POLICY.",
+      "scope": "QUE operational performance efficacy: per-epoch conversion counters {claims \u2192 attempts \u2192 activations}, sweep effectiveness, claim-order state. Program of record: QUE #5646."
+    },
+    {
+      "id": "FLY-013",
+      "name": "doe-stress-test",
+      "store_repo": "timerloggedout-spec/termux-monorepo",
+      "path": "docs/ops/flywheel-comms/channels/doe-stress-test.jsonl",
+      "format": "JSONL {ts, from, event, body} Siglary{best}",
+      "participants": [
+        "muse-vm",
+        "hark-vm",
+        "QUE machinery (Swarm executor)"
+      ],
+      "cadence": "muse-vm watcher 60s; owner seat on genre cadence",
+      "owner_seat": "DoE",
+      "status": "proposed",
+      "established_evidence": "Genre opened by owner order 2026-11-26 (new task genres land as new FLY-NNN); promotion to established on first round-trip receipt per POLICY.",
+      "scope": "Endpoint diagnostics + stress tests: fireable set {secrets-census \u22c8 endpoints-db \u22c8 quota}, per-endpoint verdicts, failure-class ledger, participation fraction vs the 100% requirement. Vehicle: QUE #5587 (required upgrade, 2026-11-26)."
+    },
+    {
+      "id": "FLY-014",
+      "name": "compute-census",
+      "store_repo": "timerloggedout-spec/termux-monorepo",
+      "path": "docs/ops/flywheel-comms/channels/compute-census.jsonl",
+      "format": "JSONL {ts, from, event, body} Siglary{best}",
+      "participants": [
+        "muse-vm",
+        "hark-vm"
+      ],
+      "cadence": "muse-vm watcher 60s; owner seat on genre cadence",
+      "owner_seat": "Cadence",
+      "status": "proposed",
+      "established_evidence": "Genre opened by owner order 2026-11-26 (new task genres land as new FLY-NNN); promotion to established on first round-trip receipt per POLICY.",
+      "scope": "Compute census freshness: pool registry generations, probe age, endpoints-db join state, provider/participant counts by channel. STALE = FAIL applies (POLICY Rule 11): repeat-identical generations self-stamp SUSPECT."
     }
   ],
   "peers": [
@@ -238,7 +288,7 @@
       "aliases": [
         "hark"
       ],
-      "note": "Hark agent seat (sandbox VM). Tailnet: ¬ in-sandbox tailscaled/ssh ⇒ Actions-runner hop (tag:mesh). FLY-001 via github connector issue filings."
+      "note": "Hark agent seat (sandbox VM). Tailnet: \u00ac in-sandbox tailscaled/ssh \u21d2 Actions-runner hop (tag:mesh). FLY-001 via github connector issue filings."
     },
     {
       "name": "chatgpt",
@@ -302,7 +352,7 @@
         "FLY-006"
       ],
       "status": "registered",
-      "note": "Display '🥼 ExperimentsLab🧪'. Profile NOT_ESTABLISHED firsthand."
+      "note": "Display '\ud83e\udd7c ExperimentsLab\ud83e\uddea'. Profile NOT_ESTABLISHED firsthand."
     },
     {
       "name": "devin-specialist",
@@ -310,7 +360,7 @@
         "FLY-006"
       ],
       "status": "registered",
-      "note": "Display 'Devin Specialist'. First ACK 2026-11-26T12:07:06Z → registered. 'Devin' exists as reviewer surface; 'Devin Specialist' as peer identity NOT_ESTABLISHED firsthand."
+      "note": "Display 'Devin Specialist'. First ACK 2026-11-26T12:07:06Z \u2192 registered. 'Devin' exists as reviewer surface; 'Devin Specialist' as peer identity NOT_ESTABLISHED firsthand."
     },
     {
       "name": "validatorwirencritiq",
@@ -326,7 +376,7 @@
         "FLY-006"
       ],
       "status": "registered",
-      "note": "Display '🧪🧫 Lab-Spec'. First ACK 2026-11-26T12:08:32Z → registered. Profile NOT_ESTABLISHED firsthand."
+      "note": "Display '\ud83e\uddea\ud83e\uddeb Lab-Spec'. First ACK 2026-11-26T12:08:32Z \u2192 registered. Profile NOT_ESTABLISHED firsthand."
     },
     {
       "name": "origin-archive-steward",
@@ -342,7 +392,7 @@
         "FLY-006"
       ],
       "status": "registered",
-      "note": "Display 'swarms'. First ACK 2026-11-26T12:04:00Z → registered. COLLISION FLAG: name collides with Kye Gomez Swarms brand (DoE #5584 rename tournament) — screen before any promotion; profile NOT_ESTABLISHED firsthand."
+      "note": "Display 'swarms'. First ACK 2026-11-26T12:04:00Z \u2192 registered. COLLISION FLAG: name collides with Kye Gomez Swarms brand (DoE #5584 rename tournament) \u2014 screen before any promotion; profile NOT_ESTABLISHED firsthand."
     },
     {
       "name": "sol",
@@ -350,7 +400,7 @@
         "FLY-006"
       ],
       "status": "registered",
-      "note": "Display 'Sol'. First ACK 2026-11-26T12:10:56Z → registered. Profile NOT_ESTABLISHED firsthand."
+      "note": "Display 'Sol'. First ACK 2026-11-26T12:10:56Z \u2192 registered. Profile NOT_ESTABLISHED firsthand."
     },
     {
       "name": "grok",

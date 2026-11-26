@@ -465,6 +465,7 @@ parallel quota threads, each reconciling its own cap before its own dispatch.
 | C4 | Put environment secrets behind the 14 existing environments **only when** a deploy actually needs env-scoped credentials | Environments are currently pure structure; don't pre-fill |
 | C5 | Evaluate Composio as the standard bridge before adding any new one-off OAuth grants | 31 OAuth grants is the sprawl metric; new capability should arrive through one router where possible |
 | C6 | Assign-or-park the dormant set in one owner pass: AskSolo, cto.new, Factory Droid, Happy Coder, Koyeb, Miro, Zed, SonarQube ×2, HackerOne, BLACKBOX, Dify, Entelligence, GitCode, Jam, Kernel, Mino, Nous, Komi, Spck, ChatGPT Verification, Linear Code, Copilot Chat | "Park" = recorded dormant in this matrix with a named job-if-woken. **Not** revocation — rule (2) governs any later removal |
+| C7 | Activate the GitLab validation compute lane after scope verification | Existing `.gitlab-ci.yml` is opt-in and advisory; Free entitlement is 400 compute minutes/month with a 320-minute planning ceiling, while namespace tier, Owner-visible usage and runner cost factor remain unknown. Keep `TERMUX_GITLAB_CI_ENABLED` unset until a live quota read and owner-approved allocation are recorded. |
 
 ## 10. Active polling
 

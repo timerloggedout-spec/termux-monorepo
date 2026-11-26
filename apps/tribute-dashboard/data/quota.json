@@ -2066,6 +2066,30 @@
       "evidence_status": "attributed_claim",
       "horizon": "H1",
       "observed_at": null
+    },
+    {
+      "resource_id": "gitlab.ci.compute_minutes",
+      "status": "unknown",
+      "used": null,
+      "limit": 400,
+      "unit": "compute minutes",
+      "reset": null,
+      "note": "Public plan entitlement only; namespace compute usage remains unobserved.",
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+    },
+    {
+      "resource_id": "gitlab.project.repository_lfs_storage",
+      "status": "unknown",
+      "used": null,
+      "limit": 10,
+      "unit": "GiB/project",
+      "reset": null,
+      "note": "Public plan entitlement only; project repository/LFS usage remains unobserved.",
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
     }
   ]
 }

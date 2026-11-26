@@ -308,3 +308,38 @@ def test_pool_state_shape_validated():
     retired["pools"][0]["state"] = {"value": "retired", "at": "2026-11-04T00:00:00Z",
                                     "method": {"route": "lifecycle", "receipt_id": "r-1"}}
     assert any("state.value" in e for e in qa.validate(retired, REG))
+
+def test_gitlab_compute_and_storage_entitlements_are_registered_but_held():
+    compute = REGMAP["gitlab.ci.compute_minutes"]
+    storage = REGMAP["gitlab.project.repository_lfs_storage"]
+    assert compute["provider"] == "gitlab"
+    assert compute["lane"] == "ci"
+    assert compute["limit"] == 400
+    assert compute["unit"] == "compute minutes"
+    assert compute["window"] == "monthly"
+    assert compute["planned_use"]["safety"] == 0.8
+    assert "runtime reservation remains unimplemented" in compute["planned_use"]["note"]
+    assert "ci_minutes_usage" in compute["live"]
+
+    assert storage["provider"] == "gitlab"
+    assert storage["limit"] == 10
+    assert storage["unit"] == "GiB/project"
+    assert "Git LFS" in storage["metric"]
+    assert storage["planned_use"]["safety"] == 0.8
+
+    held = {row["id"] for row in CFG["excluded_services"]}
+    pooled = {service for pool in CFG["pools"] for service in pool["services"]}
+    assert {"gitlab.ci.compute_minutes", "gitlab.project.repository_lfs_storage"} <= held
+    assert {"gitlab.ci.compute_minutes", "gitlab.project.repository_lfs_storage"}.isdisjoint(pooled)
+
+def test_gitlab_storage_entitlement_matches_free_storage_ledger():
+    storage_ledger = json.loads(
+        (ROOT / "ops/free-storage/free-storage-registry.json").read_text()
+    )
+    gitlab = next(row for row in storage_ledger["rows"] if row["id"] == "gitlab")
+    assert gitlab["free_allowance"].startswith("10 GiB per project")
+    assert any(
+        "docs.gitlab.com/user/storage_usage_quotas/" in source
+        for source in gitlab["sources"]
+    )
+

@@ -247,12 +247,12 @@
         "session_exports": "ok (private project mirrors)"
       },
       "fleet_state": "IN USE as repo validator/mirror (gitlab.com/a-group2180532/termux-monorepo — Repo Replay V2 copy)",
-      "free_allowance": "10 GB storage per project (repo + LFS combined) on free tier (third-party comparison figure; not re-read on gitlab.com this pass)",
+      "free_allowance": "10 GiB per project for repository + LFS combined on GitLab.com Free tier (official documentation; project tier and current usage remain unverified)",
       "id": "gitlab",
-      "limits": "per-project cap shapes it as a mirror plane, not bulk storage",
+      "limits": "per-project cap positions it as a mirror plane; bulk storage remains a separate use case",
       "name": "GitLab.com (free tier)",
       "sources": [
-        "GitHub-vs-GitLab LFS limits comparison (GitLab free 10 GB per project)",
+        "https://docs.gitlab.com/user/storage_usage_quotas/ (official: 10 GiB per project for repository + LFS on Free tier)",
         "fleet record: Repo Replay validators (2026-10-29)"
       ]
     },

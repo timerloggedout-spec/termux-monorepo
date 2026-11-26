@@ -1,5 +1,5 @@
 ================================================================================
- QUOTA  termux-monorepo  (172 registry records)
+ QUOTA  termux-monorepo  (174 registry records)
  Snapshot generated (not observation time): 2026-11-18T17:06:56.121328+00:00
  Source: apps/tribute-dashboard/data/quota.json + ops/quota/registry.json
  Limits are documented entitlements, not balances.
@@ -799,6 +799,23 @@
     metric: Copilot Free allowance | window: monthly | reset: unverified
     Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
+ gitlab (2)
+  gitlab.ci.compute_minutes
+    status: UNKNOWN
+    limit (documented): 400 compute minutes
+    metric: GitLab.com instance-runner compute minutes aggregated to the
+    top-level namespace | window: monthly | reset: first day of each calendar
+    month
+    Public evidence state only; no account balance or runtime admission implied.
+  gitlab.project.repository_lfs_storage
+    status: UNKNOWN
+    limit (documented): 10 GiB/project
+    metric: GitLab.com project repository plus Git LFS storage
+    (container/package registries and job artifacts excluded) | window:
+    per-project fixed cap | reset: continuous accumulation; usage changes when
+    repository/LFS data is reduced or storage is purchased
+    Public evidence state only; no account balance or runtime admission implied.
+--------------------------------------------------------------------------------
  google (3)
   gemini.api_free
     status: PRIVATE_PREFLIGHT
@@ -1337,6 +1354,6 @@
   zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
   registry: zai.free_models
  Coverage and quota checks do not grant runtime admission.
- 172 registry records | 1 alert(s) | 172 with a reported reading | 0 with No
+ 174 registry records | 1 alert(s) | 174 with a reported reading | 0 with No
  live reading
 ================================================================================

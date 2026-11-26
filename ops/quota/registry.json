@@ -3280,6 +3280,52 @@
     "basis": "limit read at use: GET https://co.agentrouter.org/v1/models (authenticated model catalogue only; no documented remaining-credit/r",
     "as_of": "2026-11-18"
    }
+  },
+  {
+   "id": "gitlab.ci.compute_minutes",
+   "provider": "gitlab",
+   "lane": "ci",
+   "metric": "GitLab.com instance-runner compute minutes aggregated to the top-level namespace",
+   "limit": 400,
+   "unit": "compute minutes",
+   "window": "monthly",
+   "reset": "first day of each calendar month",
+   "zone": "unknown",
+   "source": "https://docs.gitlab.com/ci/pipelines/compute_minutes/",
+   "doc_quote": "Free tier namespaces receive 400 compute minutes per month.",
+   "live": "GET /api/v4/namespaces/:id exposes ci_minutes_usage for an eligible top-level group Owner; live account read and quota reader are unconfigured; usage remains unknown",
+   "planned_use": {
+    "safety": 0.8,
+    "note": "Advisory planning ceiling <=320 compute minutes/month (80% of the documented Free allowance); runtime reservation remains unimplemented. GitLab namespace tier, Owner access, runner cost factor and current usage remain unverified. Validation stays opt-in."
+   },
+   "limit_diagnostic": {
+    "class": "upstream-enforced",
+    "basis": "Public GitLab.com Free namespace entitlement from official compute-minutes documentation; the connected project's tier and remaining balance remain unverified.",
+    "as_of": "2026-11-22"
+   }
+  },
+  {
+   "id": "gitlab.project.repository_lfs_storage",
+   "provider": "gitlab",
+   "lane": "storage",
+   "metric": "GitLab.com project repository plus Git LFS storage (container/package registries and job artifacts excluded)",
+   "limit": 10,
+   "unit": "GiB/project",
+   "window": "per-project fixed cap",
+   "reset": "continuous accumulation; usage changes when repository/LFS data is reduced or storage is purchased",
+   "zone": "n/a",
+   "source": "https://docs.gitlab.com/user/storage_usage_quotas/",
+   "doc_quote": "Each project in a Free tier namespace on GitLab.com has 10 GiB of free storage.",
+   "live": "GitLab project Usage quotas > Storage; live project read and storage reader are unconfigured; current usage remains unknown",
+   "planned_use": {
+    "safety": 0.8,
+    "note": "Advisory target <=8 GiB/project (80% of the documented Free allowance); storage reservation remains unimplemented. Project tier and current repository/LFS usage remain unverified."
+   },
+   "limit_diagnostic": {
+    "class": "upstream-enforced",
+    "basis": "Public GitLab.com Free per-project repository plus LFS storage entitlement from official storage documentation; current project usage remains unobserved.",
+    "as_of": "2026-11-22"
+   }
   }
  ]
 }

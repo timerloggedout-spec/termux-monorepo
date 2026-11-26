@@ -344,3 +344,35 @@ Invert the default:
 
 *End of proposal. Next action belongs to main chat / the owner:
 route P1–P6, or send this chat a scoped build order. Nothing above executes itself.*
+
+## Addendum 2026-11-22 — GitLab secondary compute lane
+
+The existing root `.gitlab-ci.yml` is now treated as a distinct, opt-in
+validation compute surface. It runs the repository gate, Termux smoke check,
+and GitLab reconciliation regression tests; it records the GitLab candidate
+SHA and canonical GitHub `master` SHA. Authority remains advisory: validation only; deployment, LLM invocation,
+GitLab writes, and promotion remain outside scope.
+
+The quota ledger now carries:
+
+- `gitlab.ci.compute_minutes`: GitLab.com Free entitlement of 400 instance-runner
+  compute minutes per top-level namespace per month.
+- `gitlab.project.repository_lfs_storage`: 10 GiB per Free project for
+  repository plus LFS storage.
+
+Both records are in `ops/quota/registry.json`. They are explicitly held
+outside allocation pools pending verification of the existing namespace
+plan, Owner-visible usage, runner cost factor, project storage usage, and an
+owner-approved allocation. The 80% planning factor yields a 320-minute
+advisory ceiling; runtime enforcement remains unimplemented. Live GitLab usage remains unobserved; project settings, secrets, runners,
+and pipeline activation retain their existing states.
+
+The validation lane remains gated by
+`TERMUX_GITLAB_CI_ENABLED=true`. Its single compute job now uses a shared
+`resource_group` to serialize overlapping runs. The ten-minute job timeout
+remains a per-job bound; monthly reservation requires a separate account guard.
+
+The mirror/webhook redundancy lane remains separate. The integration mesh
+matrix's last recorded webhook response is 429 (2026-11-02), and mirror
+health remains unverified. Treat a successful GitLab CI pipeline as validation evidence only; mirror
+synchronization and webhook delivery remain separate, unverified states.

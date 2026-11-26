@@ -2769,6 +2769,20 @@
       "provider": "agentrouter",
       "quota_manager_owner": "Manager",
       "service_id": "agentrouter.models"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "gitlab",
+      "quota_manager_owner": "Manager",
+      "service_id": "gitlab.ci.compute_minutes"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "gitlab",
+      "quota_manager_owner": "Manager",
+      "service_id": "gitlab.project.repository_lfs_storage"
     }
   ]
 }

@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "caa2cf2f3c0f0cfbbb015d2d453162bc1c228bd6ac55788a38190e8e782e9849",
-  "workflow_count": 326,
+  "source_fingerprint": "cbeb2d6ec21f3bb140d7f86091cb7f5de88e7138c25683431f8efd089c445786",
+  "workflow_count": 328,
   "workflows": [
     {
       "action_pins": [],
@@ -2346,6 +2346,24 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
+      "concurrency": "group: fly-hark-runner cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "watch"
+      ],
+      "name": "fly-hark-runner",
+      "path": ".github/workflows/fly-hark-runner.yml",
+      "schedules": [
+        "*/30 * * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
       "concurrency": "",
       "domain": "agentic-development",
       "jobs": [
@@ -2859,6 +2877,22 @@
       "schedules": [],
       "triggers": [
         "workflow_call",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: hark-mesh-ssh cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "connect",
+        "mint"
+      ],
+      "name": "hark-mesh-ssh",
+      "path": ".github/workflows/hark-mesh-ssh.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

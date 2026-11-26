@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-26T16:32:55Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-26T19:27:24Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-26T16:32:55Z` (merged 0 · open 0) · lane-events(Neon) status=`error:HTTPError` count=`None` read_at=`2026-11-26T16:32:55Z`
+Sources: PR feed read_at=`2026-11-26T19:27:23Z` (merged 0 · open 0) · lane-events(Neon) status=`error:HTTPError` count=`None` read_at=`2026-11-26T19:27:23Z`
 
 Rows: 22 · by_state: closed=1 · landed=1 · unknown=20
 
@@ -58,10 +58,10 @@ Campaigns: 19 · joined: 2 · distinct instances: 18 · providers: Muse, baseten
 | phone-1-mcp-background-control | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | pilot-1-context-routing-x-compression | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | routed-dispatch | Muse | Muse Spark 1.3 | builder | docs/ops/SWARM-OPTIMIZATION-ASSURANCE.md#7d7481cc3c52 | optimizations-assurance | fan-out wiring completion set (build-class) | `1a60e8329fb6…` | 0 | 3 | 0 |
-| routed-dispatch | baseten | openai/gpt-oss-120b | builder | scripts/ops/build_arm_harness.py#system-prompt#04de4332afa3 | providers-dispatch-fix | build-dispatch multi-arm (#5151) | `4c9b24b77fe3…` | 0 | 1 | 0 |
+| routed-dispatch | baseten | openai/gpt-oss-120b | builder | scripts/ops/build_arm_harness.py#system-prompt#04de4332afa3 | providers-dispatch-fix | build-dispatch multi-arm (#5151) | `4c9b24b77fe3…` | 0 | 2 | 0 |
 | routed-dispatch | cohere | c4ai-aya-expanse-32b | builder | scripts/certifications/run_unit.py#c34eb7290dfe | optimizations-assurance | certifications-unit l1-relational-databases-v9/061 | `7434577f5900…` | 0 | 1 | 0 |
 | routed-dispatch | cohere | command-a-03-2025 | builder | scripts/ops/build_arm_harness.py#system-prompt#04de4332afa3 | providers-dispatch-fix | build-dispatch multi-arm (#5151) | `598950850240…` | 0 | 1 | 0 |
-| routed-dispatch | google | gemini-3.5-flash-lite | builder | scripts/ops/build_arm_harness.py#system-prompt#NOT_ESTABLIS | providers-dispatch-fix | build-dispatch multi-arm (#5151) | `ed64aec90f3b…` | 0 | 4 | 0 |
+| routed-dispatch | google | gemini-3.5-flash-lite | builder | scripts/ops/build_arm_harness.py#system-prompt#NOT_ESTABLIS | providers-dispatch-fix | build-dispatch multi-arm (#5151) | `ed64aec90f3b…` | 0 | 5 | 0 |
 | routed-dispatch | mistral | codestral-2508 | builder | scripts/ops/build_arm_harness.py#system-prompt#04de4332afa3 | providers-dispatch-fix | build-dispatch multi-arm (#5151) | `b39313a3a380…` | 0 | 1 | 0 |
 | routed-dispatch | sealion | aisingapore/Llama-SEA-LION-v3-70B-IT | builder | scripts/certifications/run_unit.py#c34eb7290dfe | optimizations-assurance | FCC L1 M5 theory batch (cert-unit workflow dispatch) | `7e20822af41d…` | 0 | 3 | 0 |
 | routed-dispatch | sealion | aisingapore/Llama-SEA-LION-v3-70B-IT | builder | scripts/ops/build_arm_harness.py#system-prompt#04de4332afa3 | providers-dispatch-fix | build-dispatch multi-arm (#5151) | `a1d2b5ece4e2…` | 0 | 2 | 0 |

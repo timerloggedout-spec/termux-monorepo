@@ -1,8 +1,21 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-26T19:49:36Z",
+ "read_at": "2026-11-26T19:51:58Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 5924,
+   "title": "ops(dispatch): remove gemini-cli from auto build-arm selection [skip render]",
+   "merged_at": "2026-11-26T19:51:22Z",
+   "updated_at": "2026-11-26T19:51:56Z",
+   "created_at": "2026-11-26T18:17:00Z",
+   "merge_commit_sha": "7434f74e22197ac05455da2842fd252eb82c2e48",
+   "head_ref": "ops/deselect-gemini-arm-20261126",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5924",
+   "merged": true
+  },
   {
    "number": 5923,
    "title": "ops(publish): teammate-portal status \u2014 fetch renderer from master when source ref predates it",
@@ -1939,22 +1952,22 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5178",
    "merged": true
-  },
-  {
-   "number": 5209,
-   "title": "fix(gates): SIE target 1 \u2014 branch gates degrade platform walls instead of failing [skip render]",
-   "merged_at": "2026-11-12T13:16:53Z",
-   "updated_at": "2026-11-12T14:03:01Z",
-   "created_at": "2026-11-12T09:58:20Z",
-   "merge_commit_sha": "f009c9976241bd52a882a5af966e265b81746ef6",
-   "head_ref": "hark/sie-branch-gate-platform-walls",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5209",
-   "merged": true
   }
  ],
  "open": [
+  {
+   "number": 3890,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "merged_at": null,
+   "updated_at": "2026-11-26T19:51:31Z",
+   "created_at": "2026-11-02T13:39:06Z",
+   "merge_commit_sha": "9e5cf1a01ea6ff5d917bdfd2a1398f149178e503",
+   "head_ref": "telemetry-ingest/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
+   "merged": false
+  },
   {
    "number": 3916,
    "title": "chore(reviewer-metrics): regenerate provider x context map",
@@ -1969,19 +1982,6 @@
    "merged": false
   },
   {
-   "number": 5924,
-   "title": "ops(dispatch): remove gemini-cli from auto build-arm selection [skip render]",
-   "merged_at": null,
-   "updated_at": "2026-11-26T19:48:57Z",
-   "created_at": "2026-11-26T18:17:00Z",
-   "merge_commit_sha": "e981eda7379ba3da432aa514fb5357fe4a5860b0",
-   "head_ref": "ops/deselect-gemini-arm-20261126",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5924",
-   "merged": false
-  },
-  {
    "number": 2310,
    "title": "chore(delphi): refresh delphi-rfp-feed.json",
    "merged_at": null,
@@ -1992,19 +1992,6 @@
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2310",
-   "merged": false
-  },
-  {
-   "number": 3890,
-   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-   "merged_at": null,
-   "updated_at": "2026-11-26T19:48:04Z",
-   "created_at": "2026-11-02T13:39:06Z",
-   "merge_commit_sha": "c444355ccf4a822a1768fd97c9f904a98c8f9bfe",
-   "head_ref": "telemetry-ingest/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
    "merged": false
   },
   {
@@ -4557,6 +4544,19 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5431",
+   "merged": false
+  },
+  {
+   "number": 5417,
+   "title": "feat(tribute): nested versioned graph and algorithm suite",
+   "merged_at": null,
+   "updated_at": "2026-11-14T17:20:02Z",
+   "created_at": "2026-11-14T15:29:34Z",
+   "merge_commit_sha": null,
+   "head_ref": "feat/delphic-versioned-graph-suite-final-20261114",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5417",
    "merged": false
   }
  ],

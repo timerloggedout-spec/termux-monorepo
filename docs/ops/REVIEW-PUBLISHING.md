@@ -5,8 +5,8 @@ Owner directives (2026-11-26 PT): "FAIL if not gh pages published!", "WorkFlows 
 ## Rule
 
 - Review surfaces publish to GitHub Pages **through repo workflows only**.
-- Vercel is **not** a review route. Its previews are rate-limited, and an upgrade is money (Owner-only).
-- **Never hand-commit to `gh-pages`.** `tribute-dashboard-deploy.yml` (`publish-gh-pages`, peaceiris) rewrites the branch, and hand-added paths 404 after the next deploy (observed 2026-11-26 08:34 PT on `hackathon-desk/`).
+- Route review previews through GitHub Pages only. Vercel previews are rate-limited, and an upgrade is money (Owner-only).
+- **Publish to `gh-pages` through workflows only; skip hand commits.** `tribute-dashboard-deploy.yml` (`publish-gh-pages`, peaceiris) rewrites the branch, and hand-added paths 404 after the next deploy (observed 2026-11-26 08:34 PT on `hackathon-desk/`).
 - Previews land on the **user site** `timerloggedout-spec/timerloggedout-spec.github.io` (branch `main`) under `previews/<key>/…` with `keep_files: true`, so they persist across deploys.
 
 ## Route: filing ⇒ build ⇒ publish
@@ -30,4 +30,4 @@ Owner directives (2026-11-26 PT): "FAIL if not gh pages published!", "WorkFlows 
 
 ## Monitoring
 
-Check routing on the filing: the admission stamp, then the intake receipt, then the build receipt and PR, then the publish run. A `deferred-by-tier` filing waits for the QUE drain; it is not lost.
+Check routing on the filing: the admission stamp, then the intake receipt, then the build receipt and PR, then the publish run. A `deferred-by-tier` filing waits for the QUE drain; it stays queued as an issue.

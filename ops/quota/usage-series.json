@@ -1,7 +1,7 @@
 {
  "schema": "quota.usage-series/v1",
  "generated_by": "scripts/quota_usage_series.py",
- "generated_at": "2026-11-26T17:47:20Z",
+ "generated_at": "2026-11-26T19:20:12Z",
  "inputs_generated_at": {
   "ops/quota/quota-usage.json": "2026-11-26T17:36:50Z",
   "ops/tracking/nested-family.json": "2026-11-26T16:32:55Z"
@@ -123,10 +123,14 @@
      {
       "t": "2026-11-20T03:09:30Z",
       "v": 2773
+     },
+     {
+      "t": "2026-11-26T19:18:48Z",
+      "v": 7396
      }
     ],
     "provenance": "per-call usage records: ops/3l0/intake.jsonl usage{} + routed-dispatch record usage{} (method: fleet-self-count/response-usage; see docs/ops/QUOTA-USAGE-RECORDS.md)",
-    "last_point_at": "2026-11-20T03:09:30Z"
+    "last_point_at": "2026-11-26T19:18:48Z"
    },
    {
     "key": "cohere::consumption",
@@ -1582,10 +1586,14 @@
      {
       "t": "2026-11-20T03:09:30Z",
       "v": 1
+     },
+     {
+      "t": "2026-11-26T19:18:48Z",
+      "v": 2
      }
     ],
     "provenance": "stamped dispatch records: experiments/doe/routed-dispatch/{records,stamps} + ops/tracking/nested-family.json tasks (activity-proxy class)",
-    "last_point_at": "2026-11-20T03:09:30Z"
+    "last_point_at": "2026-11-26T19:18:48Z"
    },
    {
     "key": "NOT_ESTABLISHED",
@@ -1951,10 +1959,14 @@
      {
       "t": "2026-11-20T03:09:30Z",
       "v": 2773
+     },
+     {
+      "t": "2026-11-26T19:18:48Z",
+      "v": 7396
      }
     ],
     "provenance": "per-call usage records: ops/3l0/intake.jsonl usage{} + routed-dispatch record usage{} (method: fleet-self-count/response-usage; see docs/ops/QUOTA-USAGE-RECORDS.md)",
-    "last_point_at": "2026-11-20T03:09:30Z"
+    "last_point_at": "2026-11-26T19:18:48Z"
    }
   ],
   "events": [
@@ -2052,10 +2064,10 @@
  },
  "consumption_gap": {
   "method": "fleet-self-count: routed calls of record (3L0 intake + routed-dispatch records/stamps + nested-family carriers, dispatch_id-deduped, github-actions excluded) vs calls carrying a numeric usage value (provider-response tokens or a measured provider-native usage{} value)",
-  "routed_calls": 38,
-  "usage_stamped": 4,
+  "routed_calls": 39,
+  "usage_stamped": 5,
   "unstamped": 34,
-  "unstamped_share": 0.8947,
+  "unstamped_share": 0.8718,
   "causes": {
    "no-usage-record": 34,
    "no-usage-surface": 0
@@ -2087,8 +2099,8 @@
    },
    "baseten": {
     "provider": "baseten",
-    "calls": 2,
-    "stamped": 1,
+    "calls": 3,
+    "stamped": 2,
     "unstamped": 1
    },
    "gemini-cli": {

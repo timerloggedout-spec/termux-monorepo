@@ -32,6 +32,17 @@ def test_icm_guidance_links_resolve_to_the_intended_entrypoint(page, target):
     assert not any(path.name == "AGENTS.md" for path in paths)
 
 
+def test_change_and_validate_links_to_the_execution_defaults_heading():
+    page = Path("docs/icm/processes/change-and-validate.md")
+    links = re.findall(r"\[repository execution defaults\]\(([^\s)]+)\)", read(page))
+    assert len(links) == 1
+    path, _, fragment = links[0].partition("#")
+    target = ROOT / "CLAUDE.hum.md"
+    assert (ROOT / page.parent / path).resolve() == target
+    assert fragment == "execution-defaults"
+    assert "## Execution defaults" in target.read_text().splitlines()
+
+
 def test_claude_icm_catalog_routes_context_reconnaissance():
     catalog = read("docs/icm/CLAUDE.md")
     process = read("docs/icm/processes/context-relationship-reconnaissance.md")

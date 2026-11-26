@@ -153,9 +153,10 @@
       "format": "JSONL append-only {ts, from, to, body}",
       "participants": [
         "hark-vm",
-        "muse-vm"
+        "muse-vm",
+        "manus-cue"
       ],
-      "cadence": "hark-vm: Hark scheduled watch 1h. muse-vm: flywheel-comms-watch once this path is added (pending muse ACK).",
+      "cadence": "hark-vm: Hark scheduled watch 1h. muse-vm: flywheel-comms-watch once this path is added (pending muse ACK). manus-cue: cue watch 900s once path added (pending cue ACK).",
       "owner_seat": "hark-vm + muse-vm (joint)",
       "status": "proposed",
       "established_evidence": "opened 2026-11-26: hark-vm intro line at 3b485c52, protocol doc at 983a2e59; muse-vm ACK pending ⇒ status flips established on ACK.",
@@ -181,7 +182,8 @@
       "name": "manus-cue",
       "channels": [
         "FLY-005",
-        "FLY-006"
+        "FLY-006",
+        "FLY-010"
       ],
       "status": "registered"
     },

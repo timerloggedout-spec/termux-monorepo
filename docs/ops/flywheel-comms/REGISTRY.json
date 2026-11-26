@@ -1,6 +1,7 @@
 {
   "version": 1,
-  "updated": "2026-11-26T15:54:00Z",
+  "updated": "2026-11-26T20:02:00Z",
+  "tip_pointer": "11cea50e7a276f61fc6ebf8e83ab0758d9d701fc",
   "policy": "docs/ops/flywheel-comms/POLICY.md",
   "channels": [
     {
@@ -346,110 +347,6 @@
       "aliases": [
         "chatgpt-github-connector"
       ]
-    },
-    {
-      "name": "mistralai",
-      "channels": [],
-      "status": "ONBOARDING PENDING - owner word 2026-11-25. Readings state: STALE = FAIL (Rule 11): last liveness 2026-11-02 (key live, 55 models), last quota reading 2026-11-11 (quota-terminal 429) - both past cadence, auto-refresh owed by the keepalive leg of QUE #5905, no owner word required. Legs: keepalive running + ensured - channel of record (FLY-007 class) - watcher coverage."
-    },
-    {
-      "name": "connector-specialist",
-      "channels": [
-        "FLY-006"
-      ],
-      "status": "registered",
-      "note": "Connector Specialist lane, chat 466f7044 'Inventory Connectors Tooling abilities' (MCP connect ownership since owner order 2026-10-28; Platform201/Discord support routes)."
-    },
-    {
-      "name": "q",
-      "channels": [
-        "FLY-006"
-      ],
-      "status": "registered",
-      "note": "Q: termux-monorepo collaborator; authored PR #1321 safety repair; Opportunities prioritization per QUE #5096; pushes from a device."
-    },
-    {
-      "name": "antigravity-scout",
-      "channels": [
-        "FLY-006"
-      ],
-      "status": "registered",
-      "note": "Display 'Antigravity Scout'. Tailnet peer cue-antigravity-scout visible 2026-11-18 (CUE mesh) corroborates a scout device, not an Agent profile; profile NOT_ESTABLISHED firsthand."
-    },
-    {
-      "name": "techdebt",
-      "channels": [
-        "FLY-006"
-      ],
-      "status": "ONBOARDING PENDING - owner-order relayed via manus-cue 2026-11-26T10:37:39Z on FLY-006; first ACK on FLY-006 owed, then mark registered. Watcher: shared registry-driven watcher, no per-Agent runner.",
-      "note": "Display 'techDebt'. Profile NOT_ESTABLISHED firsthand."
-    },
-    {
-      "name": "experimentslab",
-      "channels": [
-        "FLY-006"
-      ],
-      "status": "registered",
-      "note": "Display '\ud83e\udd7c ExperimentsLab\ud83e\uddea'. Profile NOT_ESTABLISHED firsthand."
-    },
-    {
-      "name": "devin-specialist",
-      "channels": [
-        "FLY-006"
-      ],
-      "status": "registered",
-      "note": "Display 'Devin Specialist'. First ACK 2026-11-26T12:07:06Z \u2192 registered. 'Devin' exists as reviewer surface; 'Devin Specialist' as peer identity NOT_ESTABLISHED firsthand."
-    },
-    {
-      "name": "validatorwirencritiq",
-      "channels": [
-        "FLY-006"
-      ],
-      "status": "registered",
-      "note": "Display 'ValidatorWireNCritiq'. Profile NOT_ESTABLISHED firsthand."
-    },
-    {
-      "name": "lab-spec",
-      "channels": [
-        "FLY-006"
-      ],
-      "status": "registered",
-      "note": "Display '\ud83e\uddea\ud83e\uddeb Lab-Spec'. First ACK 2026-11-26T12:08:32Z \u2192 registered. Profile NOT_ESTABLISHED firsthand."
-    },
-    {
-      "name": "origin-archive-steward",
-      "channels": [
-        "FLY-006"
-      ],
-      "status": "registered",
-      "note": "Display 'Origin Archive Steward'. Profile NOT_ESTABLISHED firsthand."
-    },
-    {
-      "name": "swarms",
-      "channels": [
-        "FLY-006"
-      ],
-      "status": "registered",
-      "note": "Display 'swarms'. First ACK 2026-11-26T12:04:00Z \u2192 registered. COLLISION FLAG: name collides with Kye Gomez Swarms brand (DoE #5584 rename tournament) \u2014 screen before any promotion; profile NOT_ESTABLISHED firsthand."
-    },
-    {
-      "name": "sol",
-      "channels": [
-        "FLY-006"
-      ],
-      "status": "registered",
-      "note": "Display 'Sol'. First ACK 2026-11-26T12:10:56Z \u2192 registered. Profile NOT_ESTABLISHED firsthand."
-    },
-    {
-      "name": "grok",
-      "channels": [
-        "FLY-011"
-      ],
-      "aliases": [
-        "grok"
-      ],
-      "status": "registered",
-      "note": "AI collaborator via the Grok app (no Muse connector); runs recon, holds Approxination oversight. First ACK on FLY-011 flipped to registered 2026-11-26T11:50:00Z. Cross-linked production coordination on termux-monorepo."
     }
   ]
 }

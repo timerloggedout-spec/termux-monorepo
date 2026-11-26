@@ -1,22 +1,23 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-26T19:36:46Z",
+ "generated_at": "2026-11-26T20:08:33Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 3,
+   "queued": 5,
    "in_progress": 3,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "repo gate": 1,
-    "PR scope guard": 2
+    "PR scope guard": 3,
+    "delphi-gate": 1,
+    "repo gate": 1
    }
   },
   "2": {
    "tier": 2,
    "queued": 0,
-   "in_progress": 3,
+   "in_progress": 1,
    "oldest_queued_at": null,
    "by_workflow_queued": {}
   },
@@ -29,23 +30,41 @@
   },
   "4": {
    "tier": 4,
-   "queued": 7,
-   "in_progress": 10,
+   "queued": 170,
+   "in_progress": 40,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "lane events recorder": 1,
+    "PR production ledger": 2,
+    "PR evidence evaluation": 1,
+    "Model live canary": 1,
+    "PR Change Effectiveness Ledger": 2,
+    "Action Effectiveness Ledger": 1,
+    "CellCog review": 1,
+    "Agent review \u2192 auto Jules": 5,
+    "Delphi conversational intake": 1,
+    "Phantom secrets audit": 1,
+    "Peer review orchestrator": 2,
     "Quota Dispatch Tree": 1,
+    "Jules on Issues (label / @jules)": 1,
+    "Context Relationship + Lead/Lag Audit": 4,
+    "RECON INTEL discovery": 1,
+    "Agent Throughput Evidence": 57,
+    "Issue Comment Router \u2014 modular fan-out reduction": 1,
+    "DO Statement Style": 2,
+    "Sweep Accountability": 1,
+    "lane events recorder": 79,
+    "n8n SHE bridge": 1,
+    "Agent feedback \u2192 Linear subtasks": 1,
+    "delphi-ledger-feed-collect": 1,
     "termux smoke": 1,
     "Agent PR Jules Handoff": 1,
-    "PR Change Effectiveness Ledger": 1,
-    "Advisory GitHub Actions lint": 1,
-    "DO Statement Style": 1
+    "Advisory GitHub Actions lint": 1
    }
   }
  },
  "totals": {
-  "queued": 10,
-  "in_progress": 16
+  "queued": 175,
+  "in_progress": 44
  },
  "wedged_ancient": [
   {
@@ -137,13 +156,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 6,
-   "2": 3,
+   "1": 8,
+   "2": 1,
    "3": 0,
    "4": 0
   },
   "explicit_total": 9,
-  "default_t4": 17,
+  "default_t4": 210,
   "unmatched": 0,
   "ancient_excluded": 14,
   "operator_excluded": 1

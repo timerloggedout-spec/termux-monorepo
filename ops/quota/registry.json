@@ -149,6 +149,27 @@
    }
   },
   {
+   "id": "local.bonsai_llama_server",
+   "provider": "LocalLlamaServer",
+   "lane": "model",
+   "metric": "Local llama-server inference dispatches (Ternary-Bonsai-2.5-27B Q2_0 GGUF on stock llama.cpp >= b11556; OpenAI-compatible /v1 surface)",
+   "limit": null,
+   "unit": "requests (self-hosted, unmetered)",
+   "window": "n/a (self-hosted)",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "Fleet stand-up receipts 2026-11-26: workflow bonsai-endpoint.yml (termux-monorepo commit fe4d5c139c6e) executed on muse-vm-workspace-backup run 45866204134 - /health ok, /v1/models lists bonsai-q2_0.gguf (n_params 26895998464, ftype Q2_0, n_ctx_train 262144), chat completion coherent, tool-call completion finish_reason=tool_calls; engine build verified 12779 (>= b11556 floor, QUE #5591 survey stamp 7198491060). Measured on GitHub-hosted runner (4 vCPU): decode ~1.0 tok/s, prompt ~1.1-1.2 tok/s (generic prebuilt binary; native-build follow-up unrun).",
+   "live": "Per-stand-up receipts: each bonsai-endpoint.yml run uploads health/models/chat/tool-call JSON artifacts; no standing listener - the arm is stood up on demand on a >=10 GB host surface (census QUE #5591, 2026-11-26).",
+   "planned_use": {
+    "note": "Own-hardware arm: zero marginal cost, 262K context, tool-calling verified. Placement = any fleet surface with >=10 GB free RAM (GitHub-hosted Actions runner proven; Hark VM 8.3 GB under footprint; Cue VM unreachable at census). Speed on the proven surface is receipt-grade, not production-grade."
+   },
+   "limit_diagnostic": {
+    "class": "not-a-quota",
+    "basis": "self-hosted fleet arm: no provider quota, entitlement or reset exists; capacity is the host surface's RAM/CPU only",
+    "as_of": "2026-11-26"
+   }
+  },
+  {
    "id": "vercel.deployments",
    "provider": "vercel",
    "lane": "deploy",

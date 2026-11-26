@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "mint | probe | run"
+        description: "mint | probe | run | share"
         required: true
         default: "probe"
       target:
@@ -60,6 +60,22 @@ jobs:
           shred -u /tmp/hk
           echo "::notice title=pubkey::$pub"
           echo "::notice title=fingerprint::$fp"
+
+  share:
+    # P1 login leg: copy HARK_MESH_SSH_KEY secret-to-secret into the store repo (value never printed)
+    if: github.event.inputs.mode == 'share'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Share key to store repo
+        env:
+          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          KEY: ${{ secrets.HARK_MESH_SSH_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf '%s\n' "$KEY" | gh secret set HARK_MESH_SSH_KEY -R timerloggedout-spec/muse-vm-workspace-backup
+          echo "::notice title=share::HARK_MESH_SSH_KEY ⇒ muse-vm-workspace-backup present=1"
 
   connect:
     if: github.event.inputs.mode == 'probe' || github.event.inputs.mode == 'run'

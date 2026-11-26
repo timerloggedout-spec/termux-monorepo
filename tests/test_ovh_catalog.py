@@ -48,12 +48,18 @@ def test_ovh_poll_uses_single_fixed_public_call_with_no_auth_or_pagination():
 
 
 @pytest.mark.parametrize("body", [
-    [], {}, {"data": {}}, {"data": ["not an object"]},
-    {"data": [dict(model(), available="true")]},
+    [], {}, {"data": {}}, {"data": None},
 ])
-def test_ovh_invalid_shapes_fail_closed(body):
+def test_ovh_invalid_response_shapes_fail_closed(body):
     with pytest.raises(ValueError):
         catalog.normalize_models("ovhcloud", body)
+
+
+@pytest.mark.parametrize("items", [["not an object"], [dict(model(), available="true")]])
+def test_ovh_invalid_rows_are_reported_without_discarding_the_catalog(items):
+    rows = catalog.normalize_models("ovhcloud", {"data": items})
+    assert rows == []
+    assert rows.diagnostics == [{"row_index": 0, "error": "invalid_model"}]
 
 
 def test_ovh_request_errors_propagate_without_retry_or_inference():

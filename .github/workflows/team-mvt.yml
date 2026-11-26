@@ -96,9 +96,10 @@ jobs:
           set -euo pipefail
           python3 - <<'PY'
           import json, os
+          from scripts.mvt_admission import is_mvt_model_admitted
           d=json.load(open('/tmp/catalog.json',encoding='utf-8'))
           lane=os.environ['LANE']; trial=int(os.environ['TRIAL']); cohort=os.environ['COHORT']; manager=os.environ['MANAGER']; requested=os.environ.get('OX_MODEL','').strip()
-          def free(r): return r['pricing_classification']=='free_zero_price' or r['free_suffix'] or r.get('access_classification')=='free_trial'
+          def free(r): return is_mvt_model_admitted(r, expected_provider=r.get('provider'), expected_model=r.get('id'))
           def missing_secret(provider): return any(e.get('provider') == provider and e.get('error') == 'missing_secret' for e in d.get('errors', []))
           lane_index={'a-ox-felo':0,'b-other-openrouter':1,'c-felo-prompt-variant':2,'d-omni-peer':3,'e-huggingface':4}[lane]
           sequence_slot=(trial-1+lane_index) % 5
@@ -122,10 +123,7 @@ jobs:
               if missing_secret('huggingface'): rows=[]; eligible='false'; skip_reason='no configured Hugging Face credential name is available to this run; do not emit a fake Hugging Face lane'
           if not rows:
               eligible='false'
-              if lane=='a-ox-felo': skip_reason=skip_reason or 'no dynamically observed Felo OX Alpha free-trial candidate; do not substitute a different model'
-              elif lane=='b-other-openrouter': skip_reason=skip_reason or 'no dynamically observed free/zero-price OpenRouter peer; do not spend paid quota'
-              elif lane=='c-felo-prompt-variant': skip_reason=skip_reason or 'no dynamically observed Felo OX Alpha trial candidate for the adversarial prompt variant'
-              elif lane=='e-huggingface': skip_reason=skip_reason or 'no dynamically observed free Hugging Face route; do not spend paid quota'
+              if not skip_reason: skip_reason='no current exact-model $0 entitlement with positive non-cash allowance and active quota window; no paid fallback'
           else:
               reported_max=rows[0].get('max_output_tokens')
               if isinstance(reported_max,(int,float)) and reported_max>0: max_tokens=str(int(reported_max))

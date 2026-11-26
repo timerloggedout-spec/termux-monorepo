@@ -11,8 +11,10 @@ from collections import defaultdict
 
 VALID_STATUS = {"attempted", "failed", "succeeded", "skipped"}
 VALID_EVALUATED_STATUSES = {"attempted", "failed", "succeeded"}
-PROVIDER_ERROR_CLASSES = {"auth", "rate_limit", "provider", "transport"}
+PROVIDER_ERROR_CLASSES = {"auth", "quota", "rate_limit", "provider", "transport"}
 VALID_OUTCOME = {"PASS", "FAIL", "UNKNOWN", None}
+MINIMUM_ATTEMPTS = 5
+MINIMUM_RANKABLE_OUTCOMES = 5
 
 
 def percentile_fast(values, p):
@@ -165,6 +167,7 @@ def main():
             "task_success_rate": outcome,
             "task_pass": task_pass,
             "task_fail": task_fail,
+            "rankable_outcomes": len(outcome_vals),
             "reviewer_acceptance_rate": acceptance,
             "warning_rate": warnings / attempted_count if attempted_count else None,
             "error_rate": errors / attempted_count if attempted_count else None,
@@ -172,7 +175,7 @@ def main():
             "p95_latency_ms": p95_lat,
             "median_requests_used": statistics.median(req) if req else None,
             "execution_score_v2": score,
-            "sample_status": "provisional" if attempted_count < 5 else "rankable",
+            "sample_status": "rankable" if attempted_count >= MINIMUM_ATTEMPTS and len(outcome_vals) >= MINIMUM_RANKABLE_OUTCOMES else "provisional",
             "scoring_policy": "50_correctness_25_integration_15_acceptance_5_outcome_5_latency"
         })
 

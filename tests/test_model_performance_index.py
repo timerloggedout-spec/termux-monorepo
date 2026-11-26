@@ -87,6 +87,8 @@ def test_main_execution(monkeypatch, capsys):
     assert model_stat["success_rate"] == 0.5
     assert model_stat["task_pass"] == 1
     assert model_stat["task_fail"] == 0
+    assert model_stat["rankable_outcomes"] == 1
+    assert model_stat["sample_status"] == "provisional"
     assert model_stat["execution_score_v2"] is not None
 
 def test_invalid_status(monkeypatch):
@@ -102,3 +104,104 @@ def test_invalid_outcome(monkeypatch):
     with pytest.raises(SystemExit) as exc:
         model_performance_index.main()
     assert "invalid task_outcome" in str(exc.value)
+
+
+def _score_observations(monkeypatch, capsys, observations):
+    source = "\n".join(json.dumps(row) for row in observations)
+    monkeypatch.setattr("sys.stdin", io.StringIO(source))
+    model_performance_index.main()
+    return json.loads(capsys.readouterr().out)["models"][0]
+
+
+def test_five_quota_failures_are_provider_failures_not_rankable_quality(monkeypatch, capsys):
+    observations = [
+        {
+            "experiment_id": f"quota-{index}",
+            "route_status": "failed",
+            "task_outcome": "UNKNOWN",
+            "provider": "openrouter",
+            "requested_model": "peer/model-free",
+            "role": "review",
+            "error_class": "quota",
+        }
+        for index in range(5)
+    ]
+    stat = _score_observations(monkeypatch, capsys, observations)
+    assert stat["attempts"] == 5
+    assert stat["succeeded"] == 0
+    assert stat["provider_failures"] == 5
+    assert stat["rankable_outcomes"] == 0
+    assert stat["task_pass"] == stat["task_fail"] == 0
+    assert stat["task_success_rate"] is None
+    assert stat["execution_score_v2"] is None
+    assert stat["sample_status"] == "provisional"
+
+
+def test_five_successes_with_unknown_outcomes_remain_provisional(monkeypatch, capsys):
+    observations = [
+        {
+            "experiment_id": f"unknown-{index}",
+            "route_status": "succeeded",
+            "task_outcome": "UNKNOWN",
+            "provider": "openrouter",
+            "requested_model": "peer/model-free",
+            "role": "review",
+            "correctness": 0.9,
+            "integration_success": 0.9,
+            "reviewer_acceptance": 0.9,
+        }
+        for index in range(5)
+    ]
+    stat = _score_observations(monkeypatch, capsys, observations)
+    assert stat["attempts"] == 5
+    assert stat["rankable_outcomes"] == 0
+    assert stat["task_success_rate"] is None
+    assert stat["execution_score_v2"] is not None
+    assert stat["sample_status"] == "provisional"
+
+
+def test_rankability_requires_five_evaluated_outcomes_not_five_total_attempts(monkeypatch, capsys):
+    observations = [
+        {
+            "experiment_id": f"partial-{index}",
+            "route_status": "succeeded",
+            "task_outcome": "PASS",
+            "provider": "openrouter",
+            "requested_model": "peer/model-free",
+            "role": "review",
+        }
+        for index in range(4)
+    ]
+    observations.append({
+        "experiment_id": "partial-quota",
+        "route_status": "failed",
+        "task_outcome": "UNKNOWN",
+        "provider": "openrouter",
+        "requested_model": "peer/model-free",
+        "role": "review",
+        "error_class": "quota",
+    })
+    stat = _score_observations(monkeypatch, capsys, observations)
+    assert stat["attempts"] == 5
+    assert stat["provider_failures"] == 1
+    assert stat["rankable_outcomes"] == 4
+    assert stat["sample_status"] == "provisional"
+
+
+def test_five_successful_pass_fail_outcomes_are_rankable(monkeypatch, capsys):
+    observations = [
+        {
+            "experiment_id": f"evaluated-{index}",
+            "route_status": "succeeded",
+            "task_outcome": "PASS" if index < 4 else "FAIL",
+            "provider": "openrouter",
+            "requested_model": "peer/model-free",
+            "role": "review",
+        }
+        for index in range(5)
+    ]
+    stat = _score_observations(monkeypatch, capsys, observations)
+    assert stat["rankable_outcomes"] == 5
+    assert stat["task_pass"] == 4
+    assert stat["task_fail"] == 1
+    assert stat["sample_status"] == "rankable"

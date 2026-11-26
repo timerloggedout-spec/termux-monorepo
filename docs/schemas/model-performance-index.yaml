@@ -57,11 +57,11 @@ rules:
   - id: latency-is-diagnostic
     description: "Latency is primarily a diagnostic signal for loops, stalls, retries, provider degradation, and operational efficiency; it is a low-weight tiebreaker."
   - id: pass-fail-required-for-rank
-    description: "A rankable task needs an evidence-backed PASS/FAIL outcome; UNKNOWN remains provisional."
+    description: "Rankability requires at least five successful invocations with evidence-backed PASS/FAIL outcomes; UNKNOWN remains provisional and failed/ skipped invocations do not count as quality outcomes."
   - id: skipped-is-not-model-failure
     description: "Capacity, policy, duplicate, credential, and admission skips are dispatch/capacity observations, not model-quality failures."
   - id: provider-failure-distinct
-    description: "Transport, auth, rate-limit, and provider errors are distinct from correctness or task-quality failures."
+    description: "Quota, transport, auth, rate-limit, and provider errors are distinct from correctness or task-quality failures."
   - id: manager-failure-distinct
     description: "Bad decomposition, duplicate work, stale context, conflicting writes, or bad prompt design are orchestration findings and must not be charged blindly to the model."
   - id: complexity-is-task-dependent
@@ -83,7 +83,8 @@ score:
     latency: 0.05
   latency_role: "low-weight tiebreaker/diagnostic; never allowed to compensate for correctness failure"
   minimum_attempts: 5
-  note: "Scores below minimum sample size are provisional. Missing quality evidence is UNKNOWN, not zero."
+  minimum_rankable_outcomes: 5
+  note: "Scores below minimum sample size are provisional. Rankability requires five successful evidence-backed PASS/FAIL outcomes. Provider/quota failures are reported separately and do not count as model-quality outcomes; missing quality evidence is UNKNOWN, not zero."
 
 experiment_design:
   lanes:

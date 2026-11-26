@@ -1,3 +1,5 @@
+> **SUPERSEDED (2026-11-26) — v2 is the shape of record:** this Selenium bundle was the wrong shape (owner ruling: `deepcli/deepcli/core.py` is the shape — a session-layer driver, no browser binary). Use **termux2**: `ops/chatgpt-webwrapper/termux2/`. This v1 bundle is kept for the record only.
+
 # ChatGPT webWrapper — Termux device instance
 
 The fleet webWrapper stack (DeepAgent.py -> core.py model) running **on the

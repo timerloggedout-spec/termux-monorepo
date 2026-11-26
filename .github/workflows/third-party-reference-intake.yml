@@ -1,0 +1,35 @@
+name: third-party reference intake
+
+on:
+  push:
+    paths:
+      - "refTemplates/13_Third_Party_Refs/**"
+      - "refTemplates/smods/INTEGRATIONS.json"
+      - "scripts/ci/verify_third_party_reference_intake.py"
+      - "tests/test_third_party_reference_intake.py"
+      - ".github/workflows/third-party-reference-intake.yml"
+  pull_request:
+    paths:
+      - "refTemplates/13_Third_Party_Refs/**"
+      - "refTemplates/smods/INTEGRATIONS.json"
+      - "scripts/ci/verify_third_party_reference_intake.py"
+      - "tests/test_third_party_reference_intake.py"
+      - ".github/workflows/third-party-reference-intake.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-reference-intake:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: validate source and sMods disposition
+        run: python3 scripts/ci/verify_third_party_reference_intake.py
+      - name: focused lifecycle tests
+        run: python3 -m unittest discover -s tests -p 'test_third_party_reference_intake.py' -v

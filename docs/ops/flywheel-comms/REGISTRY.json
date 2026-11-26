@@ -72,7 +72,8 @@
       "format": "JSONL append-only {ts, from, to, body}",
       "participants": [
         "muse-vm",
-        "manus-cue"
+        "manus-cue",
+        "chatgpt-github"
       ],
       "cadence": "cue watch 900s; muse-vm cadence checks",
       "owner_seat": "muse-vm + cue (joint)",
@@ -184,6 +185,14 @@
       ],
       "status": "registered",
       "note": "Channel of record FLY-009 via muse-vm webWrapper; login established 2026-11-25 (fleet Google identity); CLI session binding pending token route (browser-held session, CDP/profile not on VM)."
+    },
+    {
+      "name": "chatgpt-github",
+      "channels": [
+        "FLY-006"
+      ],
+      "status": "registered",
+      "note": "GitHub-connector collaborator. Joined FLY-006 2026-11-25T21:39:30Z (ACK + JOIN line) via termux-monorepo PR #5906 and protocol PR #2 (candidate PR #4). Scope = user-directed GitHub project collaboration. Registration landed 2026-11-26 by muse-vm: the join sat unregistered ~28h because the watcher filter had no unknown-sender class - filter fixed same day."
     },
     {
       "name": "mistralai",

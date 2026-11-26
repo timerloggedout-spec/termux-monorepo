@@ -1,4 +1,4 @@
-# ChatGPT webWrapper — Termux device instance (v2)
+# ChatGPT webWrapper — Termux device instance (v2.1)
 
 The fleet webWrapper stack running **on the phone**, in the shape of
 record: `deepcli/deepcli/core.py` — a wrapped-session driver (persistent
@@ -62,6 +62,20 @@ timerloggedout-spec/muse-vm-workspace-backup.)
    side not ready (the import opens ChatGPT in Chrome via adb — sign
    in there, keep Chrome foregrounded, re-run) · 5 import failure /
    another import in progress.
+
+   **v2.1 — candidate-verified import.** A Chrome jar can hold several
+   session tokens at once (different scopes, a stale duplicate, chunks
+   split across scopes). v2 stored one unchecked candidate and failed
+   terminally when it was the stale one. v2.1 enumerates *every*
+   candidate — plain tokens per scope, chunk groups reassembled per
+   scope, freshest-expiry first — and verifies each against
+   `/api/auth/session`, keeping the first that signs in; the stored
+   cookie header excludes all session-token cookies so the chosen pair
+   is sent exactly once. Diagnose a jar with
+   `python3 core.py --cookies` (names, domains, expiries, value
+   lengths — never values). Cookie sources are pluggable rungs (CDP
+   today); the next rung, a Firefox RDP storage-actor read, lands when
+   a device's Chrome jar holds no viable token.
 
    **Manual fallback** — `./run.sh import-session` falls back to it
    automatically when adb or its transport is absent, or force it

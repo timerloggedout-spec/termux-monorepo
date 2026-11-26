@@ -72,8 +72,7 @@
       "format": "JSONL append-only {ts, from, to, body}",
       "participants": [
         "muse-vm",
-        "manus-cue",
-        "chatgpt-github"
+        "manus-cue"
       ],
       "cadence": "cue watch 900s; muse-vm cadence checks",
       "owner_seat": "muse-vm + cue (joint)",
@@ -91,7 +90,8 @@
       "format": "JSONL append-only {ts, from, to, body}",
       "participants": [
         "muse-vm",
-        "manus-cue"
+        "manus-cue",
+        "chatgpt-github"
       ],
       "cadence": "cue watch 900s; muse-vm cadence checks",
       "owner_seat": "muse-vm + cue (joint)",

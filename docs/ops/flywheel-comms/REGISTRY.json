@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-25",
+  "updated": "2026-11-26",
   "policy": "docs/ops/flywheel-comms/POLICY.md",
   "channels": [
     {
@@ -78,8 +78,8 @@
       "owner_seat": "muse-vm + cue (joint)",
       "status": "established",
       "established_evidence": "opened 2026-11-25: muse-vm line at 50c780c2, cue ACK at 8d03661e",
-      "access": "Collaborators of record: muse-vm (operator) + manus-cue (peer). Cue holds deploy-key WRITE on the store (exports, checkpoints, cue/ tree) and read on all export prefixes + compute-exports/mesh-probe telemetry. Owner rule 2026-11-25: collaborator access to Exports + Telemetry is important \u2014 access gaps are defects, named on this row.",
-      "upgrade": "2026-11-25: multi-route upgrade proposed to Cue via the channel \u2014 FLY-005 stays primary; redundant provider routes to be added as Cue confirms which it can terminate (Manus email fallback already noted).",
+      "access": "Collaborators of record: muse-vm (operator) + manus-cue (peer). Cue holds deploy-key WRITE on the store (exports, checkpoints, cue/ tree) and read on all export prefixes + compute-exports/mesh-probe telemetry. Owner rule 2026-11-25: collaborator access to Exports + Telemetry is important — access gaps are defects, named on this row.",
+      "upgrade": "2026-11-25: multi-route upgrade proposed to Cue via the channel — FLY-005 stays primary; redundant provider routes to be added as Cue confirms which it can terminate (Manus email fallback already noted).",
       "scope": "Exports + backup coordination with Cue. Non-export pair work moved to FLY-006 (owner order 2026-11-25)."
     },
     {
@@ -144,6 +144,22 @@
         "chatgpt"
       ],
       "established": "2026-11-25"
+    },
+    {
+      "id": "FLY-010",
+      "name": "hark-comms",
+      "store_repo": "timerloggedout-spec/muse-vm-workspace-backup",
+      "path": "hark/comms.jsonl (protocol: hark/COMMS.md)",
+      "format": "JSONL append-only {ts, from, to, body}",
+      "participants": [
+        "hark-vm",
+        "muse-vm"
+      ],
+      "cadence": "hark-vm: Hark scheduled watch 1h. muse-vm: flywheel-comms-watch once this path is added (pending muse ACK).",
+      "owner_seat": "hark-vm + muse-vm (joint)",
+      "status": "proposed",
+      "established_evidence": "opened 2026-11-26: hark-vm intro line at 3b485c52, protocol doc at 983a2e59; muse-vm ACK pending ⇒ status flips established on ACK.",
+      "scope": "Mesh onboarding of hark-vm, parity-of-functions Δ hark-vm ⇄ muse-vm, BRR fallback handoffs, hark-vm pair work. Confirmations of record stay on FLY-003."
     }
   ],
   "peers": [
@@ -172,10 +188,13 @@
     {
       "name": "hark-vm",
       "channels": [
+        "FLY-001",
         "FLY-002",
-        "FLY-004"
+        "FLY-004",
+        "FLY-010"
       ],
-      "status": "registered"
+      "status": "registered",
+      "note": "Hark agent seat (sandbox VM). Tailnet: ¬ in-sandbox tailscaled/ssh ⇒ Actions-runner hop (tag:mesh). FLY-001 via github connector issue filings."
     },
     {
       "name": "chatgpt",

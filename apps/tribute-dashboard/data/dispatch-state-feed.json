@@ -6,10 +6,10 @@
  },
  "dispatches": [
   {
-   "age_min": 33690.7,
+   "age_min": 33705.1,
    "claim": null,
    "components": {
-    "age": 38.994,
+    "age": 39.011,
     "state": 40.0,
     "tier": 0.0,
     "wall": 0.0
@@ -18,7 +18,7 @@
    "issue": 4077,
    "nearest_wall": null,
    "rank": 9,
-   "score": 78.994,
+   "score": 79.011,
    "stall_events": [],
    "state": "escalated",
    "thresholds_min": {
@@ -33,23 +33,23 @@
    "wall_in_min": null
   },
   {
-   "age_min": 33248.3,
+   "age_min": 33262.7,
    "claim": {
     "at": "2026-11-03T12:41:03Z",
     "by": "optimizations-assurance",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4277#issuecomment-6604037278"
    },
    "components": {
-    "age": 38.482,
+    "age": 38.498,
     "state": 0.0,
     "tier": 80.0,
-    "wall": 1559.38
+    "wall": 1559.622
    },
    "entry": "D1",
    "issue": 4277,
    "nearest_wall": "2026-11-05T07:29:00Z",
    "rank": 1,
-   "score": 1677.862,
+   "score": 1678.12,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -61,26 +61,26 @@
     "name": "FINAL"
    },
    "title": "[task] RFP-D1-7 award batch \u2014 13 verified findings, one build item",
-   "wall_in_min": -30682.8
+   "wall_in_min": -30697.3
   },
   {
-   "age_min": 33183.6,
+   "age_min": 33198.0,
    "claim": {
     "at": "2026-11-03T13:47:14Z",
     "by": "optimizations-assurance",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4330#issuecomment-6605494475"
    },
    "components": {
-    "age": 38.407,
+    "age": 38.424,
     "state": 0.0,
     "tier": 80.0,
-    "wall": 1559.38
+    "wall": 1559.622
    },
    "entry": "D1",
    "issue": 4330,
    "nearest_wall": "2026-11-05T07:29:00Z",
    "rank": 2,
-   "score": 1677.787,
+   "score": 1678.046,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -92,17 +92,17 @@
     "name": "FINAL"
    },
    "title": "[task] RFP-D1-8 set 2 \u2014 scheduler integrity + web contract fixes (6 findings)",
-   "wall_in_min": -30682.8
+   "wall_in_min": -30697.3
   },
   {
-   "age_min": 32648.6,
+   "age_min": 32663.0,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4655#issuecomment-7169862203"
    },
    "components": {
-    "age": 37.788,
+    "age": 37.804,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -111,7 +111,7 @@
    "issue": 4655,
    "nearest_wall": null,
    "rank": 17,
-   "score": 37.788,
+   "score": 37.804,
    "stall_events": [
     {
      "at": "2026-11-03T23:17:11Z",
@@ -442,6 +442,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/4655#issuecomment-7169862203)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:30Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/4655#issuecomment-7169862203)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -457,23 +463,23 @@
    "wall_in_min": null
   },
   {
-   "age_min": 30905.1,
+   "age_min": 30919.5,
    "claim": {
     "at": "2026-11-05T03:52:49Z",
     "by": "speculators-build",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4965#issuecomment-6649208382"
    },
    "components": {
-    "age": 35.77,
+    "age": 35.786,
     "state": 0.0,
     "tier": 80.0,
-    "wall": 1559.38
+    "wall": 1559.622
    },
    "entry": "D1",
    "issue": 4965,
    "nearest_wall": "2026-11-05T07:29:00Z",
    "rank": 3,
-   "score": 1675.15,
+   "score": 1675.408,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -485,26 +491,26 @@
     "name": "FINAL"
    },
    "title": "[task] D1 host-B endpoint contract alignment \u2014 /model retired \u2192 /health + /plan + always-receipt",
-   "wall_in_min": -30682.8
+   "wall_in_min": -30697.3
   },
   {
-   "age_min": 30905.0,
+   "age_min": 30919.5,
    "claim": {
     "at": "2026-11-05T03:52:10Z",
     "by": "speculators-build",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4966#issuecomment-6649199894"
    },
    "components": {
-    "age": 35.77,
+    "age": 35.786,
     "state": 0.0,
     "tier": 80.0,
-    "wall": 1559.38
+    "wall": 1559.622
    },
    "entry": "D1",
    "issue": 4966,
    "nearest_wall": "2026-11-05T07:29:00Z",
    "rank": 4,
-   "score": 1675.15,
+   "score": 1675.408,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -516,17 +522,17 @@
     "name": "FINAL"
    },
    "title": "[task] D1 FIT SLICE (FIRED) \u2014 next_order / typed check-in in core / phase-by-session-count / A2 constants as DATA",
-   "wall_in_min": -30682.8
+   "wall_in_min": -30697.3
   },
   {
-   "age_min": 30903.0,
+   "age_min": 30917.5,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4975#issuecomment-7169863213"
    },
    "components": {
-    "age": 35.767,
+    "age": 35.784,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -535,7 +541,7 @@
    "issue": 4975,
    "nearest_wall": null,
    "rank": 18,
-   "score": 35.767,
+   "score": 35.784,
    "stall_events": [
     {
      "at": "2026-11-05T12:15:04Z",
@@ -860,6 +866,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/4975#issuecomment-7169863213)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:29Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/4975#issuecomment-7169863213)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -875,23 +887,23 @@
    "wall_in_min": null
   },
   {
-   "age_min": 30813.3,
+   "age_min": 30827.8,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5001#issuecomment-7169861179"
    },
    "components": {
-    "age": 35.664,
+    "age": 35.68,
     "state": 0.0,
     "tier": 80.0,
-    "wall": 1559.38
+    "wall": 1559.622
    },
    "entry": "D1 StudySprint \u2014 0.5.2 cuts train (freeze tonight 2026-11-04 23:59 PT). Filed by the Contribution Desk under the D1 seat's decision (2026-11-04 21:17 PT): swap hand = QUE, in parallel with the endpoint deploy.",
    "issue": 5001,
    "nearest_wall": "2026-11-05T07:29:00Z",
    "rank": 5,
-   "score": 1675.044,
+   "score": 1675.302,
    "stall_events": [
     {
      "at": "2026-11-05T12:15:02Z",
@@ -1216,6 +1228,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5001#issuecomment-7169861179)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:28Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5001#issuecomment-7169861179)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -1228,17 +1246,17 @@
     "name": "FINAL"
    },
    "title": "[task] D1 0.5.2 - endpoint default-host swap to hostb-live-5b9d7 (live.py + web/live.js)",
-   "wall_in_min": -30682.8
+   "wall_in_min": -30697.3
   },
   {
-   "age_min": 23180.6,
+   "age_min": 23195.0,
    "claim": {
     "at": "2026-11-10T12:18:43Z",
     "by": "optimizations-assurance",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5096#issuecomment-6767108653"
    },
    "components": {
-    "age": 26.829,
+    "age": 26.846,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -1247,7 +1265,7 @@
    "issue": 5096,
    "nearest_wall": null,
    "rank": 19,
-   "score": 26.829,
+   "score": 26.846,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -1262,14 +1280,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 23179.2,
+   "age_min": 23193.6,
    "claim": {
     "at": "2026-11-10T12:32:23Z",
     "by": "optimizations-assurance",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5103#issuecomment-6767407398"
    },
    "components": {
-    "age": 26.828,
+    "age": 26.844,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -1278,7 +1296,7 @@
    "issue": 5103,
    "nearest_wall": null,
    "rank": 20,
-   "score": 26.828,
+   "score": 26.844,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -1293,14 +1311,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 23172.6,
+   "age_min": 23187.1,
    "claim": {
     "at": "2026-11-10T12:34:53Z",
     "by": "optimizations-assurance",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5108#issuecomment-6767459046"
    },
    "components": {
-    "age": 26.82,
+    "age": 26.837,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -1309,7 +1327,7 @@
    "issue": 5108,
    "nearest_wall": null,
    "rank": 21,
-   "score": 26.82,
+   "score": 26.837,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -1324,14 +1342,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 23160.8,
+   "age_min": 23175.3,
    "claim": {
     "at": "2026-11-10T12:48:43Z",
     "by": "optimizations-assurance",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5113#issuecomment-6767743178"
    },
    "components": {
-    "age": 26.806,
+    "age": 26.823,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -1340,7 +1358,7 @@
    "issue": 5113,
    "nearest_wall": null,
    "rank": 22,
-   "score": 26.806,
+   "score": 26.823,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -1355,14 +1373,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 23149.3,
+   "age_min": 23163.8,
    "claim": {
     "at": "2026-11-10T12:56:49Z",
     "by": "optimizations-assurance",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5116#issuecomment-6767911015"
    },
    "components": {
-    "age": 26.793,
+    "age": 26.81,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -1371,7 +1389,7 @@
    "issue": 5116,
    "nearest_wall": null,
    "rank": 23,
-   "score": 26.793,
+   "score": 26.81,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -1386,23 +1404,23 @@
    "wall_in_min": null
   },
   {
-   "age_min": 23140.5,
+   "age_min": 23155.0,
    "claim": {
     "at": "2026-11-10T14:36:13Z",
     "by": "optimizations-assurance",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5124#issuecomment-6770139424"
    },
    "components": {
-    "age": 26.783,
+    "age": 26.8,
     "state": 0.0,
     "tier": 80.0,
-    "wall": 1439.38
+    "wall": 1439.622
    },
    "entry": "D3 ListingLens \u2014 L3 demo render (Clips upload leg; gate D3-CLIPS-STORAGE satisfied 2026-11-10)",
    "issue": 5124,
    "nearest_wall": "2026-11-10T07:29:00Z",
    "rank": 6,
-   "score": 1546.163,
+   "score": 1546.422,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -1414,17 +1432,17 @@
     "name": "FINAL"
    },
    "title": "[task] QUE: D3 L3 \u2014 ListingLens demo render (video-render machinery)",
-   "wall_in_min": -23482.8
+   "wall_in_min": -23497.3
   },
   {
-   "age_min": 23062.2,
+   "age_min": 23076.6,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5129#issuecomment-7169864196"
    },
    "components": {
-    "age": 26.692,
+    "age": 26.709,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -1433,7 +1451,7 @@
    "issue": 5129,
    "nearest_wall": null,
    "rank": 24,
-   "score": 26.692,
+   "score": 26.709,
    "stall_events": [
     {
      "at": "2026-11-10T18:10:55Z",
@@ -1758,6 +1776,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5129#issuecomment-7169864196)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:27Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5129#issuecomment-7169864196)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -1773,14 +1797,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 23046.9,
+   "age_min": 23061.3,
    "claim": {
     "at": "2026-11-10T14:26:38Z",
     "by": "optimizations-assurance",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5131#issuecomment-6769896280"
    },
    "components": {
-    "age": 26.675,
+    "age": 26.691,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -1789,7 +1813,7 @@
    "issue": 5131,
    "nearest_wall": null,
    "rank": 25,
-   "score": 26.675,
+   "score": 26.691,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -1804,14 +1828,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 23042.4,
+   "age_min": 23056.9,
    "claim": {
     "at": "2026-11-10T14:29:54Z",
     "by": "optimizations-assurance",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5132#issuecomment-6769978295"
    },
    "components": {
-    "age": 26.669,
+    "age": 26.686,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -1820,7 +1844,7 @@
    "issue": 5132,
    "nearest_wall": null,
    "rank": 26,
-   "score": 26.669,
+   "score": 26.686,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -1835,14 +1859,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 23007.8,
+   "age_min": 23022.2,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5135#issuecomment-7169865304"
    },
    "components": {
-    "age": 26.629,
+    "age": 26.646,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -1851,7 +1875,7 @@
    "issue": 5135,
    "nearest_wall": null,
    "rank": 27,
-   "score": 26.629,
+   "score": 26.646,
    "stall_events": [
     {
      "at": "2026-11-10T18:10:50Z",
@@ -2182,6 +2206,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5135#issuecomment-7169865304)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:26Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5135#issuecomment-7169865304)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -2197,10 +2227,10 @@
    "wall_in_min": null
   },
   {
-   "age_min": 22965.7,
+   "age_min": 22980.1,
    "claim": null,
    "components": {
-    "age": 26.581,
+    "age": 26.597,
     "state": 40.0,
     "tier": 0.0,
     "wall": 0.0
@@ -2209,7 +2239,7 @@
    "issue": 5136,
    "nearest_wall": null,
    "rank": 10,
-   "score": 66.581,
+   "score": 66.597,
    "stall_events": [
     {
      "at": "2026-11-10T18:10:48Z",
@@ -2229,23 +2259,23 @@
    "wall_in_min": null
   },
   {
-   "age_min": 22932.9,
+   "age_min": 22947.3,
    "claim": {
     "at": "2026-11-10T16:15:44Z",
     "by": "optimizations-assurance",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5137#issuecomment-6772616322"
    },
    "components": {
-    "age": 26.543,
+    "age": 26.559,
     "state": 0.0,
     "tier": 80.0,
-    "wall": 1439.38
+    "wall": 1439.622
    },
    "entry": "D3 ListingLens \u2014 L3 demo render machinery build (for QUE entry #5124)",
    "issue": 5137,
    "nearest_wall": "2026-11-10T07:29:00Z",
    "rank": 7,
-   "score": 1545.923,
+   "score": 1546.181,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -2257,17 +2287,17 @@
     "name": "FINAL"
    },
    "title": "[task] D3 video-render machinery \u2014 ListingLens demo MP4 from real run (#5124)",
-   "wall_in_min": -23482.8
+   "wall_in_min": -23497.3
   },
   {
-   "age_min": 22856.6,
+   "age_min": 22871.0,
    "claim": {
     "at": "2026-11-10T17:28:16Z",
     "by": "optimizations-assurance",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5140#issuecomment-6774349341"
    },
    "components": {
-    "age": 26.454,
+    "age": 26.471,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -2276,7 +2306,7 @@
    "issue": 5140,
    "nearest_wall": null,
    "rank": 28,
-   "score": 26.454,
+   "score": 26.471,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -2291,14 +2321,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 22855.9,
+   "age_min": 22870.3,
    "claim": {
     "at": "2026-11-10T17:29:06Z",
     "by": "optimizations-assurance",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5141#issuecomment-6774369506"
    },
    "components": {
-    "age": 26.454,
+    "age": 26.47,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -2307,7 +2337,7 @@
    "issue": 5141,
    "nearest_wall": null,
    "rank": 29,
-   "score": 26.454,
+   "score": 26.47,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -2322,14 +2352,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 22845.8,
+   "age_min": 22860.2,
    "claim": {
     "at": "2026-11-10T17:38:53Z",
     "by": "optimizations-assurance",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5142#issuecomment-6774593561"
    },
    "components": {
-    "age": 26.442,
+    "age": 26.459,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -2338,7 +2368,7 @@
    "issue": 5142,
    "nearest_wall": null,
    "rank": 30,
-   "score": 26.442,
+   "score": 26.459,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -2353,10 +2383,10 @@
    "wall_in_min": null
   },
   {
-   "age_min": 21599.1,
+   "age_min": 21613.5,
    "claim": null,
    "components": {
-    "age": 24.999,
+    "age": 25.016,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -2365,7 +2395,7 @@
    "issue": 5151,
    "nearest_wall": null,
    "rank": 32,
-   "score": 24.999,
+   "score": 25.016,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -2380,10 +2410,10 @@
    "wall_in_min": null
   },
   {
-   "age_min": 22012.6,
+   "age_min": 22027.0,
    "claim": null,
    "components": {
-    "age": 25.478,
+    "age": 25.494,
     "state": 40.0,
     "tier": 0.0,
     "wall": 0.0
@@ -2392,7 +2422,7 @@
    "issue": 5162,
    "nearest_wall": null,
    "rank": 11,
-   "score": 65.478,
+   "score": 65.494,
    "stall_events": [
     {
      "at": "2026-11-11T09:37:24Z",
@@ -2412,14 +2442,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 21605.0,
+   "age_min": 21619.4,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5172#issuecomment-7169866484"
    },
    "components": {
-    "age": 25.006,
+    "age": 25.022,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -2428,7 +2458,7 @@
    "issue": 5172,
    "nearest_wall": null,
    "rank": 31,
-   "score": 25.006,
+   "score": 25.022,
    "stall_events": [
     {
      "at": "2026-11-11T17:37:05Z",
@@ -2759,6 +2789,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5172#issuecomment-7169866484)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:25Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5172#issuecomment-7169866484)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -2774,14 +2810,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 21582.1,
+   "age_min": 21596.5,
    "claim": {
     "at": "2026-11-13T03:49:19Z",
     "by": "build-seat",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5176#issuecomment-6843243575"
    },
    "components": {
-    "age": 24.979,
+    "age": 24.996,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -2790,7 +2826,7 @@
    "issue": 5176,
    "nearest_wall": null,
    "rank": 33,
-   "score": 24.979,
+   "score": 24.996,
    "stall_events": [
     {
      "at": "2026-11-11T17:37:03Z",
@@ -2812,14 +2848,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 21577.2,
+   "age_min": 21591.7,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5177#issuecomment-6974550110"
    },
    "components": {
-    "age": 24.974,
+    "age": 24.99,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -2828,7 +2864,7 @@
    "issue": 5177,
    "nearest_wall": null,
    "rank": 34,
-   "score": 24.974,
+   "score": 24.99,
    "stall_events": [
     {
      "at": "2026-11-11T17:37:01Z",
@@ -7035,6 +7071,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5177#issuecomment-6974550110)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:25Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5177#issuecomment-6974550110)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -7050,10 +7092,10 @@
    "wall_in_min": null
   },
   {
-   "age_min": 21487.8,
+   "age_min": 21502.3,
    "claim": null,
    "components": {
-    "age": 24.87,
+    "age": 24.887,
     "state": 40.0,
     "tier": 0.0,
     "wall": 0.0
@@ -7062,7 +7104,7 @@
    "issue": 5183,
    "nearest_wall": null,
    "rank": 12,
-   "score": 64.87,
+   "score": 64.887,
    "stall_events": [
     {
      "at": "2026-11-11T17:36:59Z",
@@ -7086,14 +7128,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 20825.0,
+   "age_min": 20839.4,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5195#issuecomment-7169867449"
    },
    "components": {
-    "age": 24.103,
+    "age": 24.12,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -7102,7 +7144,7 @@
    "issue": 5195,
    "nearest_wall": null,
    "rank": 35,
-   "score": 24.103,
+   "score": 24.12,
    "stall_events": [
     {
      "at": "2026-11-12T04:17:54Z",
@@ -7439,6 +7481,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5195#issuecomment-7169867449)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:24Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5195#issuecomment-7169867449)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -7454,10 +7502,10 @@
    "wall_in_min": null
   },
   {
-   "age_min": 20359.8,
+   "age_min": 20374.3,
    "claim": null,
    "components": {
-    "age": 23.565,
+    "age": 23.581,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -7466,7 +7514,7 @@
    "issue": 5219,
    "nearest_wall": null,
    "rank": 36,
-   "score": 23.565,
+   "score": 23.581,
    "stall_events": [
     {
      "at": "2026-11-12T13:09:41Z",
@@ -7486,14 +7534,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 20353.3,
+   "age_min": 20367.8,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5220#issuecomment-6974550939"
    },
    "components": {
-    "age": 23.557,
+    "age": 23.574,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -7502,7 +7550,7 @@
    "issue": 5220,
    "nearest_wall": null,
    "rank": 37,
-   "score": 23.557,
+   "score": 23.574,
    "stall_events": [
     {
      "at": "2026-11-12T13:09:38Z",
@@ -10914,14 +10962,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 20265.5,
+   "age_min": 20280.0,
    "claim": {
     "at": "2026-11-13T03:23:06Z",
     "by": "build-seat",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5230#issuecomment-6842837616"
    },
    "components": {
-    "age": 23.455,
+    "age": 23.472,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -10930,7 +10978,7 @@
    "issue": 5230,
    "nearest_wall": null,
    "rank": 38,
-   "score": 23.455,
+   "score": 23.472,
    "stall_events": [
     {
      "at": "2026-11-12T20:27:56Z",
@@ -10952,14 +11000,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 20182.1,
+   "age_min": 20196.5,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5239#issuecomment-6974551821"
    },
    "components": {
-    "age": 23.359,
+    "age": 23.376,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -10968,7 +11016,7 @@
    "issue": 5239,
    "nearest_wall": null,
    "rank": 39,
-   "score": 23.359,
+   "score": 23.376,
    "stall_events": [
     {
      "at": "2026-11-12T20:27:52Z",
@@ -15199,6 +15247,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5239#issuecomment-6974551821)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:23Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5239#issuecomment-6974551821)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -15214,14 +15268,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 20104.5,
+   "age_min": 20119.0,
    "claim": {
     "at": "2026-11-13T04:05:33Z",
     "by": "build-seat",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5254#issuecomment-6843535264"
    },
    "components": {
-    "age": 23.269,
+    "age": 23.286,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -15230,7 +15284,7 @@
    "issue": 5254,
    "nearest_wall": null,
    "rank": 40,
-   "score": 23.269,
+   "score": 23.286,
    "stall_events": [
     {
      "at": "2026-11-12T20:27:50Z",
@@ -15252,14 +15306,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 20083.9,
+   "age_min": 20098.3,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5256#issuecomment-6974552769"
    },
    "components": {
-    "age": 23.245,
+    "age": 23.262,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -15268,7 +15322,7 @@
    "issue": 5256,
    "nearest_wall": null,
    "rank": 41,
-   "score": 23.245,
+   "score": 23.262,
    "stall_events": [
     {
      "at": "2026-11-12T20:27:47Z",
@@ -19481,6 +19535,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5256#issuecomment-6974552769)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:22Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5256#issuecomment-6974552769)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -19496,10 +19556,10 @@
    "wall_in_min": null
   },
   {
-   "age_min": 20082.3,
+   "age_min": 20096.8,
    "claim": null,
    "components": {
-    "age": 23.243,
+    "age": 23.26,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -19508,7 +19568,7 @@
    "issue": 5257,
    "nearest_wall": null,
    "rank": 42,
-   "score": 23.243,
+   "score": 23.26,
    "stall_events": [
     {
      "at": "2026-11-12T20:27:46Z",
@@ -19528,14 +19588,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 20075.6,
+   "age_min": 20090.1,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5259#issuecomment-6974553668"
    },
    "components": {
-    "age": 23.236,
+    "age": 23.252,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -19544,7 +19604,7 @@
    "issue": 5259,
    "nearest_wall": null,
    "rank": 43,
-   "score": 23.236,
+   "score": 23.252,
    "stall_events": [
     {
      "at": "2026-11-12T20:27:43Z",
@@ -23757,6 +23817,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5259#issuecomment-6974553668)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:21Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5259#issuecomment-6974553668)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -23772,14 +23838,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 20071.2,
+   "age_min": 20085.6,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5260#issuecomment-6974554570"
    },
    "components": {
-    "age": 23.231,
+    "age": 23.247,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -23788,7 +23854,7 @@
    "issue": 5260,
    "nearest_wall": null,
    "rank": 44,
-   "score": 23.231,
+   "score": 23.247,
    "stall_events": [
     {
      "at": "2026-11-12T20:27:41Z",
@@ -28001,6 +28067,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5260#issuecomment-6974554570)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:20Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5260#issuecomment-6974554570)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -28016,14 +28088,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 20065.2,
+   "age_min": 20079.7,
    "claim": {
     "at": "2026-11-13T03:55:21Z",
     "by": "build-seat",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5261#issuecomment-6843350647"
    },
    "components": {
-    "age": 23.224,
+    "age": 23.24,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -28032,7 +28104,7 @@
    "issue": 5261,
    "nearest_wall": null,
    "rank": 45,
-   "score": 23.224,
+   "score": 23.24,
    "stall_events": [
     {
      "at": "2026-11-12T20:27:39Z",
@@ -28054,14 +28126,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 20059.0,
+   "age_min": 20073.4,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5262#issuecomment-6974555392"
    },
    "components": {
-    "age": 23.216,
+    "age": 23.233,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -28070,7 +28142,7 @@
    "issue": 5262,
    "nearest_wall": null,
    "rank": 46,
-   "score": 23.216,
+   "score": 23.233,
    "stall_events": [
     {
      "at": "2026-11-12T20:27:37Z",
@@ -32277,6 +32349,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5262#issuecomment-6974555392)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:20Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5262#issuecomment-6974555392)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -32292,14 +32370,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 20059.0,
+   "age_min": 20073.4,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5263#issuecomment-6974556238"
    },
    "components": {
-    "age": 23.216,
+    "age": 23.233,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -32308,7 +32386,7 @@
    "issue": 5263,
    "nearest_wall": null,
    "rank": 47,
-   "score": 23.216,
+   "score": 23.233,
    "stall_events": [
     {
      "at": "2026-11-12T20:27:35Z",
@@ -36521,6 +36599,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5263#issuecomment-6974556238)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:19Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5263#issuecomment-6974556238)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -36536,14 +36620,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 20059.0,
+   "age_min": 20073.4,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5264#issuecomment-6974557095"
    },
    "components": {
-    "age": 23.216,
+    "age": 23.233,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -36552,7 +36636,7 @@
    "issue": 5264,
    "nearest_wall": null,
    "rank": 48,
-   "score": 23.216,
+   "score": 23.233,
    "stall_events": [
     {
      "at": "2026-11-12T20:27:33Z",
@@ -40765,6 +40849,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5264#issuecomment-6974557095)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:18Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5264#issuecomment-6974557095)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -40780,14 +40870,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 20058.6,
+   "age_min": 20073.0,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5265#issuecomment-6974558011"
    },
    "components": {
-    "age": 23.216,
+    "age": 23.233,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -40796,7 +40886,7 @@
    "issue": 5265,
    "nearest_wall": null,
    "rank": 49,
-   "score": 23.216,
+   "score": 23.233,
    "stall_events": [
     {
      "at": "2026-11-12T20:27:31Z",
@@ -45015,6 +45105,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5265#issuecomment-6974558011)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:17Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5265#issuecomment-6974558011)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -45030,14 +45126,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 20032.8,
+   "age_min": 20047.2,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5271#issuecomment-6974558917"
    },
    "components": {
-    "age": 23.186,
+    "age": 23.203,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -45046,7 +45142,7 @@
    "issue": 5271,
    "nearest_wall": null,
    "rank": 50,
-   "score": 23.186,
+   "score": 23.203,
    "stall_events": [
     {
      "at": "2026-11-12T20:27:28Z",
@@ -49265,6 +49361,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5271#issuecomment-6974558917)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:16Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5271#issuecomment-6974558917)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -49280,10 +49382,10 @@
    "wall_in_min": null
   },
   {
-   "age_min": 19905.6,
+   "age_min": 19920.0,
    "claim": null,
    "components": {
-    "age": 23.039,
+    "age": 23.056,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -49292,7 +49394,7 @@
    "issue": 5276,
    "nearest_wall": null,
    "rank": 51,
-   "score": 23.039,
+   "score": 23.056,
    "stall_events": [
     {
      "at": "2026-11-12T20:27:26Z",
@@ -49312,14 +49414,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 19470.4,
+   "age_min": 19484.9,
    "claim": {
     "at": "2026-11-13T03:30:05Z",
     "by": "build-seat",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5283#issuecomment-6842940508"
    },
    "components": {
-    "age": 22.535,
+    "age": 22.552,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -49328,7 +49430,7 @@
    "issue": 5283,
    "nearest_wall": null,
    "rank": 52,
-   "score": 22.535,
+   "score": 22.552,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -49343,14 +49445,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 19403.2,
+   "age_min": 19417.7,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5285#issuecomment-6974560191"
    },
    "components": {
-    "age": 22.457,
+    "age": 22.474,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -49359,7 +49461,7 @@
    "issue": 5285,
    "nearest_wall": null,
    "rank": 53,
-   "score": 22.457,
+   "score": 22.474,
    "stall_events": [
     {
      "at": "2026-11-18T14:02:46Z",
@@ -53566,6 +53668,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5285#issuecomment-6974560191)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:15Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5285#issuecomment-6974560191)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -53581,14 +53689,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 19397.3,
+   "age_min": 19411.8,
    "claim": {
     "at": "2026-11-13T03:39:59Z",
     "by": "build-seat",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5286#issuecomment-6843087979"
    },
    "components": {
-    "age": 22.451,
+    "age": 22.467,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -53597,7 +53705,7 @@
    "issue": 5286,
    "nearest_wall": null,
    "rank": 54,
-   "score": 22.451,
+   "score": 22.467,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -53612,14 +53720,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 19315.1,
+   "age_min": 19329.5,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5298#issuecomment-6974560815"
    },
    "components": {
-    "age": 22.355,
+    "age": 22.372,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -53628,7 +53736,7 @@
    "issue": 5298,
    "nearest_wall": null,
    "rank": 55,
-   "score": 22.355,
+   "score": 22.372,
    "stall_events": [
     {
      "at": "2026-11-18T14:02:45Z",
@@ -53650,14 +53758,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 19297.2,
+   "age_min": 19311.6,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5302#issuecomment-6974561485"
    },
    "components": {
-    "age": 22.335,
+    "age": 22.351,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -53666,7 +53774,7 @@
    "issue": 5302,
    "nearest_wall": null,
    "rank": 56,
-   "score": 22.335,
+   "score": 22.351,
    "stall_events": [
     {
      "at": "2026-11-18T14:02:44Z",
@@ -57873,6 +57981,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5302#issuecomment-6974561485)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:14Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5302#issuecomment-6974561485)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -57888,14 +58002,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 19271.5,
+   "age_min": 19286.0,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5304#issuecomment-6974562153"
    },
    "components": {
-    "age": 22.305,
+    "age": 22.322,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -57904,7 +58018,7 @@
    "issue": 5304,
    "nearest_wall": null,
    "rank": 57,
-   "score": 22.305,
+   "score": 22.322,
    "stall_events": [
     {
      "at": "2026-11-18T14:02:42Z",
@@ -62117,6 +62231,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5304#issuecomment-6974562153)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:14Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5304#issuecomment-6974562153)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -62132,14 +62252,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 19267.1,
+   "age_min": 19281.6,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5305#issuecomment-6974562830"
    },
    "components": {
-    "age": 22.3,
+    "age": 22.317,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -62148,7 +62268,7 @@
    "issue": 5305,
    "nearest_wall": null,
    "rank": 58,
-   "score": 22.3,
+   "score": 22.317,
    "stall_events": [
     {
      "at": "2026-11-18T14:02:41Z",
@@ -66355,6 +66475,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5305#issuecomment-6974562830)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:13Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5305#issuecomment-6974562830)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -66370,14 +66496,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 19266.0,
+   "age_min": 19280.4,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5306#issuecomment-6974563451"
    },
    "components": {
-    "age": 22.299,
+    "age": 22.315,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -66386,7 +66512,7 @@
    "issue": 5306,
    "nearest_wall": null,
    "rank": 59,
-   "score": 22.299,
+   "score": 22.315,
    "stall_events": [
     {
      "at": "2026-11-18T14:02:40Z",
@@ -66426,14 +66552,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 19256.9,
+   "age_min": 19271.4,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5308#issuecomment-6974564042"
    },
    "components": {
-    "age": 22.288,
+    "age": 22.305,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -66442,7 +66568,7 @@
    "issue": 5308,
    "nearest_wall": null,
    "rank": 60,
-   "score": 22.288,
+   "score": 22.305,
    "stall_events": [
     {
      "at": "2026-11-18T14:02:38Z",
@@ -70649,6 +70775,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5308#issuecomment-6974564042)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:12Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5308#issuecomment-6974564042)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -70664,14 +70796,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 12849.7,
+   "age_min": 12864.1,
    "claim": {
     "at": "2026-11-18T15:18:16Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5309#issuecomment-6982837744"
    },
    "components": {
-    "age": 14.872,
+    "age": 14.889,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -70680,7 +70812,7 @@
    "issue": 5309,
    "nearest_wall": null,
    "rank": 68,
-   "score": 14.872,
+   "score": 14.889,
    "stall_events": [
     {
      "at": "2026-11-18T09:33:11Z",
@@ -70708,14 +70840,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 19251.3,
+   "age_min": 19265.7,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5310#issuecomment-6974564637"
    },
    "components": {
-    "age": 22.282,
+    "age": 22.298,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -70724,7 +70856,7 @@
    "issue": 5310,
    "nearest_wall": null,
    "rank": 61,
-   "score": 22.282,
+   "score": 22.298,
    "stall_events": [
     {
      "at": "2026-11-18T14:02:37Z",
@@ -74931,6 +75063,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5310#issuecomment-6974564637)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:11Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5310#issuecomment-6974564637)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -74946,14 +75084,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 19054.4,
+   "age_min": 19068.8,
    "claim": {
     "at": "2026-11-13T09:56:44Z",
     "by": "main",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5318#issuecomment-6849705238"
    },
    "components": {
-    "age": 22.054,
+    "age": 22.07,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -74962,7 +75100,7 @@
    "issue": 5318,
    "nearest_wall": null,
    "rank": 62,
-   "score": 22.054,
+   "score": 22.07,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -74977,14 +75115,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 18553.3,
+   "age_min": 18567.7,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5333#issuecomment-7169868530"
    },
    "components": {
-    "age": 21.474,
+    "age": 21.49,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -74993,7 +75131,7 @@
    "issue": 5333,
    "nearest_wall": null,
    "rank": 63,
-   "score": 21.474,
+   "score": 21.49,
    "stall_events": [
     {
      "at": "2026-11-18T09:33:10Z",
@@ -75330,6 +75468,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5333#issuecomment-7169868530)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:10Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5333#issuecomment-7169868530)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -75345,14 +75489,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 17423.5,
+   "age_min": 17437.9,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5334#issuecomment-6974565281"
    },
    "components": {
-    "age": 20.166,
+    "age": 20.183,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -75361,7 +75505,7 @@
    "issue": 5334,
    "nearest_wall": null,
    "rank": 65,
-   "score": 20.166,
+   "score": 20.183,
    "stall_events": [
     {
      "at": "2026-11-18T11:36:18Z",
@@ -79586,6 +79730,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5334#issuecomment-6974565281)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:09Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5334#issuecomment-6974565281)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -79601,14 +79751,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 18553.0,
+   "age_min": 18567.4,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5366#issuecomment-7169869700"
    },
    "components": {
-    "age": 21.473,
+    "age": 21.49,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -79617,7 +79767,7 @@
    "issue": 5366,
    "nearest_wall": null,
    "rank": 64,
-   "score": 21.473,
+   "score": 21.49,
    "stall_events": [
     {
      "at": "2026-11-18T09:33:08Z",
@@ -79954,6 +80104,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5366#issuecomment-7169869700)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:09Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5366#issuecomment-7169869700)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -79969,14 +80125,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 8875.7,
+   "age_min": 8890.1,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5454#issuecomment-7169890995"
    },
    "components": {
-    "age": 10.273,
+    "age": 10.289,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -79985,7 +80141,7 @@
    "issue": 5454,
    "nearest_wall": null,
    "rank": 92,
-   "score": 10.273,
+   "score": 10.289,
    "stall_events": [
     {
      "at": "2026-11-20T11:22:27Z",
@@ -80316,6 +80472,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5454#issuecomment-7169890995)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:08Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5454#issuecomment-7169890995)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -80331,14 +80493,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 13100.7,
+   "age_min": 13115.2,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5548#issuecomment-7169870764"
    },
    "components": {
-    "age": 15.163,
+    "age": 15.18,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -80347,7 +80509,7 @@
    "issue": 5548,
    "nearest_wall": null,
    "rank": 66,
-   "score": 15.163,
+   "score": 15.18,
    "stall_events": [
     {
      "at": "2026-11-18T09:33:07Z",
@@ -80684,6 +80846,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5548#issuecomment-7169870764)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:07Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5548#issuecomment-7169870764)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -80699,14 +80867,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 13096.1,
+   "age_min": 13110.5,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5549#issuecomment-7169871693"
    },
    "components": {
-    "age": 15.158,
+    "age": 15.174,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -80715,7 +80883,7 @@
    "issue": 5549,
    "nearest_wall": null,
    "rank": 67,
-   "score": 15.158,
+   "score": 15.174,
    "stall_events": [
     {
      "at": "2026-11-18T09:33:05Z",
@@ -81052,6 +81220,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5549#issuecomment-7169871693)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:06Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5549#issuecomment-7169871693)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -81067,14 +81241,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 12848.8,
+   "age_min": 12863.3,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5552#issuecomment-7169872627"
    },
    "components": {
-    "age": 14.871,
+    "age": 14.888,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -81083,7 +81257,7 @@
    "issue": 5552,
    "nearest_wall": null,
    "rank": 69,
-   "score": 14.871,
+   "score": 14.888,
    "stall_events": [
     {
      "at": "2026-11-18T09:33:04Z",
@@ -81426,6 +81600,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5552#issuecomment-7169872627)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:05Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5552#issuecomment-7169872627)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -81441,14 +81621,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 12848.8,
+   "age_min": 12863.2,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5554#issuecomment-7169873724"
    },
    "components": {
-    "age": 14.871,
+    "age": 14.888,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -81457,7 +81637,7 @@
    "issue": 5554,
    "nearest_wall": null,
    "rank": 70,
-   "score": 14.871,
+   "score": 14.888,
    "stall_events": [
     {
      "at": "2026-11-18T09:33:02Z",
@@ -81800,6 +81980,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5554#issuecomment-7169873724)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:04Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5554#issuecomment-7169873724)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -81815,14 +82001,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 12846.5,
+   "age_min": 12861.0,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5556#issuecomment-7169874914"
    },
    "components": {
-    "age": 14.869,
+    "age": 14.885,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -81831,7 +82017,7 @@
    "issue": 5556,
    "nearest_wall": null,
    "rank": 71,
-   "score": 14.869,
+   "score": 14.885,
    "stall_events": [
     {
      "at": "2026-11-18T09:32:59Z",
@@ -82174,6 +82360,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5556#issuecomment-7169874914)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:03Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5556#issuecomment-7169874914)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -82189,14 +82381,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 12846.2,
+   "age_min": 12860.7,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5557#issuecomment-7169875894"
    },
    "components": {
-    "age": 14.868,
+    "age": 14.885,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -82205,7 +82397,7 @@
    "issue": 5557,
    "nearest_wall": null,
    "rank": 72,
-   "score": 14.868,
+   "score": 14.885,
    "stall_events": [
     {
      "at": "2026-11-18T09:32:57Z",
@@ -82548,6 +82740,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5557#issuecomment-7169875894)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:02Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5557#issuecomment-7169875894)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -82563,23 +82761,23 @@
    "wall_in_min": null
   },
   {
-   "age_min": 12858.8,
+   "age_min": 12873.2,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5580#issuecomment-6974549453"
    },
    "components": {
-    "age": 14.883,
+    "age": 14.9,
     "state": 0.0,
     "tier": 60.0,
-    "wall": 1211.363
+    "wall": 1211.605
    },
    "entry": "D5 \u2014 AI Builder Day Hackathon - November 2026 \u00b7 host Aha! (aha.io) \u00b7 platform aha-io \u00b7 official https://www.aha.io/academy/events/ai-builder-day-hackathon-november-2026",
    "issue": 5580,
    "nearest_wall": "2026-11-19T19:30:00Z",
    "rank": 8,
-   "score": 1286.246,
+   "score": 1286.505,
    "stall_events": [
     {
      "at": "2026-11-18T14:02:35Z",
@@ -86780,6 +86978,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5580#issuecomment-6974549453)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:02Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-18T09:31:11Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5580#issuecomment-6974549453)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -86792,17 +86996,17 @@
     "name": "FINAL"
    },
    "title": "[task] D5 build dispatch \u2014 IdeaInbox (Understudy \u00b7 Aha! AI Builder Day)",
-   "wall_in_min": -9801.8
+   "wall_in_min": -9816.3
   },
   {
-   "age_min": 12828.0,
+   "age_min": 12842.4,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5584#issuecomment-7169877060"
    },
    "components": {
-    "age": 14.847,
+    "age": 14.864,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -86811,7 +87015,7 @@
    "issue": 5584,
    "nearest_wall": null,
    "rank": 73,
-   "score": 14.847,
+   "score": 14.864,
    "stall_events": [
     {
      "at": "2026-11-18T09:32:56Z",
@@ -87154,6 +87358,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5584#issuecomment-7169877060)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:01Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5584#issuecomment-7169877060)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -87169,14 +87379,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 12823.6,
+   "age_min": 12838.0,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5585#issuecomment-7169877984"
    },
    "components": {
-    "age": 14.842,
+    "age": 14.859,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -87185,7 +87395,7 @@
    "issue": 5585,
    "nearest_wall": null,
    "rank": 74,
-   "score": 14.842,
+   "score": 14.859,
    "stall_events": [
     {
      "at": "2026-11-18T09:32:54Z",
@@ -87528,6 +87738,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5585#issuecomment-7169877984)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:00Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5585#issuecomment-7169877984)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -87543,14 +87759,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 12819.4,
+   "age_min": 12833.8,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5586#issuecomment-7169879001"
    },
    "components": {
-    "age": 14.837,
+    "age": 14.854,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -87559,7 +87775,7 @@
    "issue": 5586,
    "nearest_wall": null,
    "rank": 75,
-   "score": 14.837,
+   "score": 14.854,
    "stall_events": [
     {
      "at": "2026-11-18T09:32:53Z",
@@ -87902,6 +88118,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5586#issuecomment-7169879001)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:54:00Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5586#issuecomment-7169879001)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -87917,14 +88139,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 12797.2,
+   "age_min": 12811.6,
    "claim": {
     "at": "2026-11-18T23:21:59Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5587#issuecomment-6994596643"
    },
    "components": {
-    "age": 14.812,
+    "age": 14.828,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -87933,7 +88155,7 @@
    "issue": 5587,
    "nearest_wall": null,
    "rank": 76,
-   "score": 14.812,
+   "score": 14.828,
    "stall_events": [
     {
      "at": "2026-11-18T09:32:51Z",
@@ -87961,14 +88183,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 12789.7,
+   "age_min": 12804.1,
    "claim": {
     "at": "2026-11-18T16:17:46Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5588#issuecomment-6984428960"
    },
    "components": {
-    "age": 14.803,
+    "age": 14.82,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -87977,7 +88199,7 @@
    "issue": 5588,
    "nearest_wall": null,
    "rank": 77,
-   "score": 14.803,
+   "score": 14.82,
    "stall_events": [
     {
      "at": "2026-11-18T09:32:50Z",
@@ -88005,14 +88227,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 12780.6,
+   "age_min": 12795.0,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5589#issuecomment-7169879926"
    },
    "components": {
-    "age": 14.792,
+    "age": 14.809,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -88021,7 +88243,7 @@
    "issue": 5589,
    "nearest_wall": null,
    "rank": 78,
-   "score": 14.792,
+   "score": 14.809,
    "stall_events": [
     {
      "at": "2026-11-18T09:32:48Z",
@@ -88364,6 +88586,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5589#issuecomment-7169879926)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:53:59Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5589#issuecomment-7169879926)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -88379,14 +88607,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 12775.4,
+   "age_min": 12789.8,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5590#issuecomment-7169880776"
    },
    "components": {
-    "age": 14.786,
+    "age": 14.803,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -88395,7 +88623,7 @@
    "issue": 5590,
    "nearest_wall": null,
    "rank": 79,
-   "score": 14.786,
+   "score": 14.803,
    "stall_events": [
     {
      "at": "2026-11-18T09:32:47Z",
@@ -88738,6 +88966,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5590#issuecomment-7169880776)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:53:58Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5590#issuecomment-7169880776)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -88753,14 +88987,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 12761.5,
+   "age_min": 12775.9,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5591#issuecomment-7169881755"
    },
    "components": {
-    "age": 14.77,
+    "age": 14.787,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -88769,7 +89003,7 @@
    "issue": 5591,
    "nearest_wall": null,
    "rank": 80,
-   "score": 14.77,
+   "score": 14.787,
    "stall_events": [
     {
      "at": "2026-11-18T09:32:45Z",
@@ -89112,6 +89346,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5591#issuecomment-7169881755)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:53:57Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5591#issuecomment-7169881755)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -89127,14 +89367,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 11786.1,
+   "age_min": 11800.5,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5612#issuecomment-7169882658"
    },
    "components": {
-    "age": 13.641,
+    "age": 13.658,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -89143,7 +89383,7 @@
    "issue": 5612,
    "nearest_wall": null,
    "rank": 81,
-   "score": 13.641,
+   "score": 13.658,
    "stall_events": [
     {
      "at": "2026-11-18T11:06:01Z",
@@ -89486,6 +89726,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5612#issuecomment-7169882658)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:53:56Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5612#issuecomment-7169882658)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -89501,14 +89747,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 11786.2,
+   "age_min": 11800.6,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5613#issuecomment-7169883749"
    },
    "components": {
-    "age": 13.641,
+    "age": 13.658,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -89517,7 +89763,7 @@
    "issue": 5613,
    "nearest_wall": null,
    "rank": 82,
-   "score": 13.641,
+   "score": 13.658,
    "stall_events": [
     {
      "at": "2026-11-18T11:06:00Z",
@@ -89860,6 +90106,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5613#issuecomment-7169883749)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:53:55Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5613#issuecomment-7169883749)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -89875,14 +90127,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 11779.3,
+   "age_min": 11793.8,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5614#issuecomment-7169884784"
    },
    "components": {
-    "age": 13.633,
+    "age": 13.65,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -89891,7 +90143,7 @@
    "issue": 5614,
    "nearest_wall": null,
    "rank": 83,
-   "score": 13.633,
+   "score": 13.65,
    "stall_events": [
     {
      "at": "2026-11-18T11:05:58Z",
@@ -90234,6 +90486,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5614#issuecomment-7169884784)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:53:54Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5614#issuecomment-7169884784)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -90249,14 +90507,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 11644.3,
+   "age_min": 11658.7,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5615#issuecomment-7169886822"
    },
    "components": {
-    "age": 13.477,
+    "age": 13.494,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -90265,7 +90523,7 @@
    "issue": 5615,
    "nearest_wall": null,
    "rank": 85,
-   "score": 13.477,
+   "score": 13.494,
    "stall_events": [
     {
      "at": "2026-11-18T13:18:22Z",
@@ -90602,6 +90860,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5615#issuecomment-7169886822)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:53:54Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5615#issuecomment-7169886822)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -90617,14 +90881,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 11657.4,
+   "age_min": 11671.8,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5628#issuecomment-7169885657"
    },
    "components": {
-    "age": 13.492,
+    "age": 13.509,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -90633,7 +90897,7 @@
    "issue": 5628,
    "nearest_wall": null,
    "rank": 84,
-   "score": 13.492,
+   "score": 13.509,
    "stall_events": [
     {
      "at": "2026-11-18T12:55:54Z",
@@ -90970,6 +91234,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5628#issuecomment-7169885657)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:53:53Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5628#issuecomment-7169885657)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -90985,14 +91255,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 11591.1,
+   "age_min": 11605.5,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5631#issuecomment-7169887854"
    },
    "components": {
-    "age": 13.416,
+    "age": 13.432,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -91001,7 +91271,7 @@
    "issue": 5631,
    "nearest_wall": null,
    "rank": 86,
-   "score": 13.416,
+   "score": 13.432,
    "stall_events": [
     {
      "at": "2026-11-18T14:03:06Z",
@@ -91338,6 +91608,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5631#issuecomment-7169887854)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:53:52Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5631#issuecomment-7169887854)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -91353,14 +91629,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 11587.9,
+   "age_min": 11602.3,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5632#issuecomment-7169889098"
    },
    "components": {
-    "age": 13.412,
+    "age": 13.429,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -91369,7 +91645,7 @@
    "issue": 5632,
    "nearest_wall": null,
    "rank": 87,
-   "score": 13.412,
+   "score": 13.429,
    "stall_events": [
     {
      "at": "2026-11-18T14:03:04Z",
@@ -91706,6 +91982,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5632#issuecomment-7169889098)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:53:51Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5632#issuecomment-7169889098)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -91721,10 +92003,10 @@
    "wall_in_min": null
   },
   {
-   "age_min": 11585.8,
+   "age_min": 11600.2,
    "claim": null,
    "components": {
-    "age": 13.409,
+    "age": 13.426,
     "state": 40.0,
     "tier": 0.0,
     "wall": 0.0
@@ -91733,7 +92015,7 @@
    "issue": 5633,
    "nearest_wall": null,
    "rank": 13,
-   "score": 53.409,
+   "score": 53.426,
    "stall_events": [
     {
      "at": "2026-11-18T14:03:03Z",
@@ -91753,14 +92035,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 11573.8,
+   "age_min": 11588.2,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5634#issuecomment-7169890072"
    },
    "components": {
-    "age": 13.396,
+    "age": 13.412,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -91769,7 +92051,7 @@
    "issue": 5634,
    "nearest_wall": null,
    "rank": 88,
-   "score": 13.396,
+   "score": 13.412,
    "stall_events": [
     {
      "at": "2026-11-18T14:29:21Z",
@@ -92106,6 +92388,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5634#issuecomment-7169890072)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:53:50Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5634#issuecomment-7169890072)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -92121,14 +92409,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 11403.2,
+   "age_min": 11417.6,
    "claim": {
     "at": "2026-11-18T17:06:26Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5639#issuecomment-6985745718"
    },
    "components": {
-    "age": 13.198,
+    "age": 13.215,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -92137,7 +92425,7 @@
    "issue": 5639,
    "nearest_wall": null,
    "rank": 89,
-   "score": 13.198,
+   "score": 13.215,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -92152,14 +92440,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 11400.4,
+   "age_min": 11414.9,
    "claim": {
     "at": "2026-11-18T17:06:26Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5640#issuecomment-6985747096"
    },
    "components": {
-    "age": 13.195,
+    "age": 13.212,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -92168,7 +92456,7 @@
    "issue": 5640,
    "nearest_wall": null,
    "rank": 90,
-   "score": 13.195,
+   "score": 13.212,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -92183,14 +92471,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 2734.5,
+   "age_min": 2748.9,
    "claim": {
     "at": "2026-11-24T17:37:06Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5641#issuecomment-7139529229"
    },
    "components": {
-    "age": 3.165,
+    "age": 3.182,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -92199,7 +92487,7 @@
    "issue": 5641,
    "nearest_wall": null,
    "rank": 93,
-   "score": 3.165,
+   "score": 3.182,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -92214,14 +92502,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 11016.5,
+   "age_min": 11031.0,
    "claim": {
     "at": "2026-11-24T17:37:06Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5646#issuecomment-7139527497"
    },
    "components": {
-    "age": 12.751,
+    "age": 12.767,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -92230,7 +92518,7 @@
    "issue": 5646,
    "nearest_wall": null,
    "rank": 91,
-   "score": 12.751,
+   "score": 12.767,
    "stall_events": [
     {
      "at": "2026-11-18T23:37:41Z",
@@ -92252,10 +92540,10 @@
    "wall_in_min": null
   },
   {
-   "age_min": 4471.5,
+   "age_min": 4485.9,
    "claim": null,
    "components": {
-    "age": 5.175,
+    "age": 5.192,
     "state": 40.0,
     "tier": 0.0,
     "wall": 0.0
@@ -92264,7 +92552,7 @@
    "issue": 5812,
    "nearest_wall": null,
    "rank": 14,
-   "score": 45.175,
+   "score": 45.192,
    "stall_events": [
     {
      "at": "2026-11-23T12:39:26Z",
@@ -92284,14 +92572,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 2733.0,
+   "age_min": 2747.4,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5852#issuecomment-7169891920"
    },
    "components": {
-    "age": 3.163,
+    "age": 3.18,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -92300,7 +92588,7 @@
    "issue": 5852,
    "nearest_wall": null,
    "rank": 94,
-   "score": 3.163,
+   "score": 3.18,
    "stall_events": [
     {
      "at": "2026-11-24T17:40:08Z",
@@ -92637,6 +92925,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5852#issuecomment-7169891920)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:53:49Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5852#issuecomment-7169891920)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -92652,14 +92946,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 2732.9,
+   "age_min": 2747.3,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5853#issuecomment-7169892753"
    },
    "components": {
-    "age": 3.163,
+    "age": 3.18,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -92668,7 +92962,7 @@
    "issue": 5853,
    "nearest_wall": null,
    "rank": 95,
-   "score": 3.163,
+   "score": 3.18,
    "stall_events": [
     {
      "at": "2026-11-24T17:40:06Z",
@@ -93005,6 +93299,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5853#issuecomment-7169892753)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:53:49Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5853#issuecomment-7169892753)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -93020,14 +93320,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 2660.0,
+   "age_min": 2674.4,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5856#issuecomment-7169893905"
    },
    "components": {
-    "age": 3.079,
+    "age": 3.095,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -93036,7 +93336,7 @@
    "issue": 5856,
    "nearest_wall": null,
    "rank": 96,
-   "score": 3.079,
+   "score": 3.095,
    "stall_events": [
     {
      "at": "2026-11-24T18:53:38Z",
@@ -93373,6 +93673,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5856#issuecomment-7169893905)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:53:48Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5856#issuecomment-7169893905)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -93388,14 +93694,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 1467.6,
+   "age_min": 1482.0,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5868#issuecomment-7169894991"
    },
    "components": {
-    "age": 1.699,
+    "age": 1.715,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -93404,7 +93710,7 @@
    "issue": 5868,
    "nearest_wall": null,
    "rank": 97,
-   "score": 1.699,
+   "score": 1.715,
    "stall_events": [
     {
      "at": "2026-11-25T14:57:56Z",
@@ -93747,6 +94053,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5868#issuecomment-7169894991)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:53:47Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5868#issuecomment-7169894991)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -93762,10 +94074,10 @@
    "wall_in_min": null
   },
   {
-   "age_min": 1346.6,
+   "age_min": 1361.1,
    "claim": null,
    "components": {
-    "age": 1.559,
+    "age": 1.575,
     "state": 40.0,
     "tier": 0.0,
     "wall": 0.0
@@ -93774,7 +94086,7 @@
    "issue": 5881,
    "nearest_wall": null,
    "rank": 15,
-   "score": 41.559,
+   "score": 41.575,
    "stall_events": [
     {
      "at": "2026-11-25T16:54:05Z",
@@ -93794,14 +94106,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 1344.6,
+   "age_min": 1359.0,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5882#issuecomment-7169896085"
    },
    "components": {
-    "age": 1.556,
+    "age": 1.573,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -93810,7 +94122,7 @@
    "issue": 5882,
    "nearest_wall": null,
    "rank": 98,
-   "score": 1.556,
+   "score": 1.573,
    "stall_events": [
     {
      "at": "2026-11-25T16:54:03Z",
@@ -93832,14 +94144,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 1324.7,
+   "age_min": 1339.1,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5883#issuecomment-7169897102"
    },
    "components": {
-    "age": 1.533,
+    "age": 1.55,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -93848,7 +94160,7 @@
    "issue": 5883,
    "nearest_wall": null,
    "rank": 99,
-   "score": 1.533,
+   "score": 1.55,
    "stall_events": [
     {
      "at": "2026-11-25T17:09:56Z",
@@ -94185,6 +94497,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5883#issuecomment-7169897102)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:53:46Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T17:38:54Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5883#issuecomment-7169897102)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -94200,14 +94518,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 1299.0,
+   "age_min": 1313.4,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5885#issuecomment-7169897991"
    },
    "components": {
-    "age": 1.503,
+    "age": 1.52,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -94216,7 +94534,7 @@
    "issue": 5885,
    "nearest_wall": null,
    "rank": 100,
-   "score": 1.503,
+   "score": 1.52,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -94231,14 +94549,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 1297.5,
+   "age_min": 1311.9,
    "claim": {
     "at": "2026-11-25T17:38:54Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5886#issuecomment-7169898716"
    },
    "components": {
-    "age": 1.502,
+    "age": 1.518,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -94247,7 +94565,7 @@
    "issue": 5886,
    "nearest_wall": null,
    "rank": 101,
-   "score": 1.502,
+   "score": 1.518,
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
@@ -94262,10 +94580,10 @@
    "wall_in_min": null
   },
   {
-   "age_min": 1227.8,
+   "age_min": 1242.2,
    "claim": null,
    "components": {
-    "age": 1.421,
+    "age": 1.438,
     "state": 40.0,
     "tier": 0.0,
     "wall": 0.0
@@ -94274,7 +94592,7 @@
    "issue": 5888,
    "nearest_wall": null,
    "rank": 16,
-   "score": 41.421,
+   "score": 41.438,
    "stall_events": [
     {
      "at": "2026-11-25T18:56:54Z",
@@ -94298,14 +94616,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 1129.5,
+   "age_min": 1143.9,
    "claim": {
     "at": "2026-11-25T20:37:13Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5902#issuecomment-7174005308"
    },
    "components": {
-    "age": 1.307,
+    "age": 1.324,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -94313,8 +94631,8 @@
    "entry": "NSE-020 Mapping Pointer Index; coordinated through FLY-006 and PR #5893.",
    "issue": 5902,
    "nearest_wall": null,
-   "rank": 103,
-   "score": 1.307,
+   "rank": 102,
+   "score": 1.324,
    "stall_events": [
     {
      "at": "2026-11-26T00:53:06Z",
@@ -94591,6 +94909,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T20:37:13Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5902#issuecomment-7174005308)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:53:45Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T20:37:13Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5902#issuecomment-7174005308)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -94606,14 +94930,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 1129.7,
+   "age_min": 1144.1,
    "claim": {
     "at": "2026-11-25T20:37:13Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5903#issuecomment-7174004533"
    },
    "components": {
-    "age": 1.308,
+    "age": 1.324,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -94621,8 +94945,8 @@
    "entry": "NSE-021 sidecar/comment overlays; design branch docs/nse-021-sidecar-comment-overlays-r2; adaptation audit PR #5893.",
    "issue": 5903,
    "nearest_wall": null,
-   "rank": 102,
-   "score": 1.308,
+   "rank": 103,
+   "score": 1.324,
    "stall_events": [
     {
      "at": "2026-11-26T00:53:05Z",
@@ -94899,6 +95223,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T20:37:13Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5903#issuecomment-7174004533)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:53:44Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T20:37:13Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5903#issuecomment-7174004533)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -94914,14 +95244,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 1129.4,
+   "age_min": 1143.9,
    "claim": {
     "at": "2026-11-25T20:37:13Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5904#issuecomment-7174006035"
    },
    "components": {
-    "age": 1.307,
+    "age": 1.324,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -94930,7 +95260,7 @@
    "issue": 5904,
    "nearest_wall": null,
    "rank": 104,
-   "score": 1.307,
+   "score": 1.324,
    "stall_events": [
     {
      "at": "2026-11-26T00:53:04Z",
@@ -95207,6 +95537,12 @@
      "kind": "lease-release",
      "resolution": "claim by dispatch-watchdog at 2026-11-25T20:37:13Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5904#issuecomment-7174006035)",
      "resolved": true
+    },
+    {
+     "at": "2026-11-26T14:53:43Z",
+     "kind": "lease-release",
+     "resolution": "claim by dispatch-watchdog at 2026-11-25T20:37:13Z (https://github.com/timerloggedout-spec/termux-monorepo/issues/5904#issuecomment-7174006035)",
+     "resolved": true
     }
    ],
    "state": "claimed",
@@ -95222,7 +95558,7 @@
    "wall_in_min": null
   }
  ],
- "generated_at": "2026-11-26T14:51:50Z",
+ "generated_at": "2026-11-26T15:06:16Z",
  "ranking": {
   "advisory": true,
   "age_order": [

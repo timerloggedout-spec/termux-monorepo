@@ -5,7 +5,7 @@ One job: route a planned tracked change to the controls that determine whether i
 ## Inputs
 
 - Object index: [`../_index.md`](../_index.md)
-- Repository guidance: [`../../../../AGENTS.md`](../../../../AGENTS.md)
+- Repository guidance: [`../../../../CLAUDE.md`](../../../../CLAUDE.md)
 - Proposal process: [`../../../../docs/proposals/PROCESS.md`](../../../../docs/proposals/PROCESS.md)
 - Active work registry: [`../../../../docs/proposals/registry.yaml`](../../../../docs/proposals/registry.yaml)
 

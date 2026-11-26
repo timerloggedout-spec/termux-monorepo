@@ -196,7 +196,7 @@ jobs:
                 '@coderabbitai autofix',
                 '',
                 note,
-                'Apply unresolved CodeRabbit findings to this branch. Minimal diffs; respect AGENTS.md.',
+                'Apply unresolved CodeRabbit findings to this branch. Minimal diffs; respect CLAUDE.md.',
               ].join('\n'),
             });
             core.setOutput('posted', 'true');

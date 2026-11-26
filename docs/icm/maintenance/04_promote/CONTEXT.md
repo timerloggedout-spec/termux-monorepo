@@ -10,7 +10,7 @@ One job: turn a verified ICM map change into a focused, reviewable §19§ update
 |---|---|---|
 | Working | `../03_verify/output/verification-record.md` | Provides map-specific §1d§ evidence and blockers; created by the prior run stage. |
 | Reference | [`../../objects/governance/change-control.md`](../../objects/governance/change-control.md) | Defines §04§, work-item, gate, and human-only boundaries. |
-| Reference | [`../../../../§02§.md`](../../../../AGENTS.md) | Defines the §19§’s governance sequence and `master-staging` §1d§ rule. |
+| Reference | [`../../../../§05§.md`](../../../../CLAUDE.md) | Defines the §19§’s `master-staging` §0f§ default and required gates. |
 | Reference | [`../../_shared/maintenance-rules.md`](../../_shared/maintenance-rules.md) | Preserves the documentation-only scope. |
 
 ## §17§

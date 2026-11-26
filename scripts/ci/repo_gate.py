@@ -439,6 +439,22 @@ def write_baseline(counters: dict[str, int]) -> None:
     )
 
 
+
+def check_retired_agent_paths(report: Report, index: list[IndexEntry]) -> None:
+    """Enforce the CLAUDE-only repository entrypoint contract."""
+    paths = sorted(
+        entry.path
+        for entry in index
+        if Path(entry.path).name in {"AGENTS.md", "AGENTS.hum.md"}
+    )
+    if paths:
+        report.fail(
+            "agent-entrypoint",
+            "retired AGENTS files are tracked: " + ", ".join(paths),
+        )
+
+
+
 # --------------------------------------------------------------------------- #
 
 
@@ -453,6 +469,9 @@ def main() -> int:
     index = read_index()
     by_path = {e.path: e for e in index}
     report = Report()
+
+    if not args.ratchet_only:
+        check_retired_agent_paths(report, index)
 
     if args.write_baseline:
         write_baseline(measure(index))

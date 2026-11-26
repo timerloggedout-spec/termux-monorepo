@@ -17,7 +17,7 @@ SPEC.loader.exec_module(contact_projections)
 
 
 def test_display_projection_transforms_prose_but_preserves_markdown_destinations_and_fences() -> None:
-    source = """# Agent workflow\n\nRead [agent path](docs/icm/AGENTS.md).\n\n```bash\nagent path\n```\n"""
+    source = """# Agent workflow\n\nRead [agent path](docs/icm/CLAUDE.md).\n\n```bash\nagent path\n```\n"""
 
     rendered = contact_projections.render(
         source,
@@ -26,7 +26,7 @@ def test_display_projection_transforms_prose_but_preserves_markdown_destinations
     )
 
     assert "# 4g3n7 w0rkfl0w" in rendered
-    assert "[4g3n7 p47h](docs/icm/AGENTS.md)" in rendered
+    assert "[4g3n7 p47h](docs/icm/CLAUDE.md)" in rendered
     assert "```bash\nagent path\n```" in rendered
     assert "source=README.hum.md" in rendered
 
@@ -36,23 +36,23 @@ def test_machine_projection_obfuscates_prose_path_name_and_value_terms() -> None
 
     rendered = contact_projections.render(
         source,
-        Path("AGENTS.hum.md"),
+        Path("CLAUDE.hum.md"),
         "machine-grimoire-seed-v1",
     )
 
     assert "§01§ §14§ §12§ §1e§ §20§." in rendered
     assert "§a1§ §a3§ §a2§ §a4§ §a7§." in contact_projections.render(
         "Files paths names values workflows.\n",
-        Path("AGENTS.hum.md"),
+        Path("CLAUDE.hum.md"),
         "machine-grimoire-seed-v1",
     )
-    assert "source=AGENTS.hum.md" in rendered
+    assert "source=CLAUDE.hum.md" in rendered
 
 
 def test_repository_contact_tree_has_complete_current_projections() -> None:
     projections = contact_projections.discover(ROOT)
 
-    assert len(projections) == 24
+    assert len(projections) == 21
     for projection in projections:
         expected = contact_projections.render(
             (ROOT / projection.source).read_text(encoding="utf-8"),
@@ -64,10 +64,27 @@ def test_repository_contact_tree_has_complete_current_projections() -> None:
 
 def test_write_then_check_detects_stale_projection(tmp_path: Path) -> None:
     (tmp_path / "README.hum.md").write_text("Agent workflow.\n", encoding="utf-8")
-    (tmp_path / "AGENTS.hum.md").write_text("Agent path.\n", encoding="utf-8")
+    (tmp_path / "CLAUDE.hum.md").write_text("Agent path.\n", encoding="utf-8")
 
     assert contact_projections.write_or_check(tmp_path, check=False) == 0
     assert contact_projections.write_or_check(tmp_path, check=True) == 0
 
-    (tmp_path / "AGENTS.md").write_text("stale\n", encoding="utf-8")
+    (tmp_path / "CLAUDE.md").write_text("stale\n", encoding="utf-8")
     assert contact_projections.write_or_check(tmp_path, check=True) == 1
+
+
+def test_repository_has_no_agents_named_entrypoint_or_projection() -> None:
+    retired_paths = (
+        "AGENTS.md",
+        "AGENTS.hum.md",
+        "docs/icm/AGENTS.md",
+        "docs/icm/AGENTS.hum.md",
+        "docs/icm/maintenance/AGENTS.md",
+        "docs/icm/maintenance/AGENTS.hum.md",
+    )
+    for relative in retired_paths:
+        assert not (ROOT / relative).exists(), relative
+
+    projections = contact_projections.discover(ROOT)
+    assert all(projection.source.name != "AGENTS.hum.md" for projection in projections)
+    assert all(projection.target.name != "AGENTS.md" for projection in projections)

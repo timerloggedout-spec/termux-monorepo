@@ -8,9 +8,9 @@ This is a **§1c§ map**, not a replacement architecture specification or an aut
 
 | Kind | §14§ | Why it is loaded |
 |---|---|---|
-| Static catalog aliases | [`§05§.md`](CLAUDE.md) and [`§02§.md`](AGENTS.md) | Byte-identical stable entry points that route an edit request to one shelf. |
+| ICM catalog | [`§05§.md`](CLAUDE.md) | Canonical map entry point for ICM navigation and route selection. |
 | Provider-routing resource | [`routing.md`](routing.md) | Separately owned nested evidence and polling-governance route; not a static alias. |
-| Governance | [`../../§02§.md`](../../AGENTS.md) | Defines §04§, proposal, and §1d§ constraints. |
+| Governance | [`../../§05§.md`](../../CLAUDE.md) | Defines §04§, proposal, and §1d§ constraints. |
 | Navigation | [`../../README.md`](../../README.md) | Owns the root navigation ladder and subsystem inventory. |
 | Operations | [`../../archwiz/TOOL_INDEX.md`](../../archwiz/TOOL_INDEX.md) | Owns concise ArchWiz tool roles. |
 | Stale platform §08§ | [`objects/platform/termux-agentic-hub.md`](objects/platform/termux-agentic-hub.md) | Preserves archived Android execution-plane §08§; requires re-verification before any device work. |

@@ -1,0 +1,49 @@
+name: Linguist projection contract
+
+on:
+  pull_request:
+    paths:
+      - "README.hum.md"
+      - "CLAUDE.hum.md"
+      - "docs/icm/**/*.hum.md"
+      - "scripts/cedrlang/render_contact_projections.py"
+      - "tests/test_contact_projections.py"
+      - "tests/test_context_relationship_documentation.py"
+      - ".github/workflows/linguist-projections.yml"
+      - "**/AGENTS.md"
+      - "**/AGENTS.hum.md"
+  push:
+    branches:
+      - master-staging
+    paths:
+      - "README.hum.md"
+      - "CLAUDE.hum.md"
+      - "docs/icm/**/*.hum.md"
+      - "scripts/cedrlang/render_contact_projections.py"
+      - "tests/test_contact_projections.py"
+      - "tests/test_context_relationship_documentation.py"
+      - ".github/workflows/linguist-projections.yml"
+      - "**/AGENTS.md"
+      - "**/AGENTS.hum.md"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: linguist-projections-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  projection-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test runner
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Verify generated projections
+        run: python scripts/cedrlang/render_contact_projections.py --check
+      - name: Run projection and ICM regressions
+        run: python -m pytest tests/test_contact_projections.py tests/test_context_relationship_documentation.py -q

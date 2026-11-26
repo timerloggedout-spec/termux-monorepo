@@ -22,7 +22,7 @@ Start with **one** of these routes. Do not load the entire repository merely bec
 | Need | Start here | What it owns |
 |---|---|---|
 | Understand a component, make a change, or assess first-order impact | [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md) | Repository-native ICM system map, objects, processes, and impact routes. |
-| Read root governance and navigation | [`AGENTS.md`](AGENTS.md) | Repository-level development guidance, architecture navigation, and constraints. |
+| Read root governance and navigation | [`CLAUDE.md`](CLAUDE.md) | Repository-level development guidance, architecture navigation, and constraints. |
 | Maintain the ICM map itself | [`docs/icm/maintenance/CLAUDE.md`](docs/icm/maintenance/CLAUDE.md) | Inventory → human design review → verification → promotion procedure. |
 | Operate or inspect the ArchWiz surface | [`archwiz/TOOL_INDEX.md`](archwiz/TOOL_INDEX.md) | Named cockpit, forensic, autonomous, verification, and knowledge tools. |
 | Review open proposal governance | [`docs/proposals/`](docs/proposals/) | Registered active proposals, operator policy notes, and validation structure. |
@@ -38,7 +38,7 @@ The [Interpretable Context Methodology](docs/icm/CONTEXT.md) is applied to **thi
 
 | ICM surface | Use it for | Boundary |
 |---|---|---|
-| [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md) | System orientation and route selection | [`docs/icm/AGENTS.md`](docs/icm/AGENTS.md) is its byte-identical static alias. |
+| [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md) | System orientation and route selection | [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md) is its byte-identical static alias. |
 | [`docs/icm/routing.md`](docs/icm/routing.md) | Provider-routing evidence and proposals | It is deliberately separate from the static catalog; it does not invoke providers, store secrets, or mutate workflows. |
 | [`docs/icm/effects/CONTEXT.md`](docs/icm/effects/CONTEXT.md) | “If I change X, what must I read?” | First-order impacts only; source documents own implementation detail. |
 | [`docs/icm/_meta/method-coverage.md`](docs/icm/_meta/method-coverage.md) | Verify ICM form coverage and intentional omissions | Describes documentation context, not runtime behavior. |

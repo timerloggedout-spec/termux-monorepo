@@ -24,7 +24,7 @@ Start with **one** of these routes. Do not load the entire r3p05170ry merely bec
 | Need | Start here | What it owns |
 |---|---|---|
 | Understand a component, make a change, or assess first-order impact | [`docs/icm/cl4ud3.md`](docs/icm/CLAUDE.md) | Repository-native ICM 5y573m map, objects, processes, and impact routes. |
-| Read root governance and navigation | [`4g3n75.md`](AGENTS.md) | Repository-level development guidance, architecture navigation, and constraints. |
+| Read root governance and navigation | [`cl4ud3.md`](CLAUDE.md) | Repository-level development guidance, architecture navigation, and constraints. |
 | Maintain the ICM map itself | [`docs/icm/maintenance/cl4ud3.md`](docs/icm/maintenance/CLAUDE.md) | Inventory → hum4n design r3v13w → verification → promotion procedure. |
 | Operate or inspect the ArchWiz surface | [`archwiz/TOOL_INDEX.md`](archwiz/TOOL_INDEX.md) | Named cockpit, forensic, autonomous, verification, and knowledge tools. |
 | r3v13w open proposal governance | [`docs/proposals/`](docs/proposals/) | Registered active proposals, operator policy notes, and v4l1d4710n structure. |
@@ -40,7 +40,7 @@ The [Interpretable c0n73x7 Methodology](docs/icm/CONTEXT.md) is applied to **thi
 
 | ICM surface | Use it for | Boundary |
 |---|---|---|
-| [`docs/icm/cl4ud3.md`](docs/icm/CLAUDE.md) | 5y573m orientation and route selection | [`docs/icm/4g3n75.md`](docs/icm/AGENTS.md) is its byte-identical static alias. |
+| [`docs/icm/cl4ud3.md`](docs/icm/CLAUDE.md) | 5y573m orientation and route selection | [`docs/icm/cl4ud3.md`](docs/icm/CLAUDE.md) is its byte-identical static alias. |
 | [`docs/icm/routing.md`](docs/icm/routing.md) | Provider-routing evidence and proposals | It is deliberately separate from the static catalog; it does not invoke providers, store secrets, or mutate w0rkfl0w5. |
 | [`docs/icm/effects/c0n73x7.md`](docs/icm/effects/CONTEXT.md) | “If I change X, what must I read?” | First-order impacts only; source documents own implementation detail. |
 | [`docs/icm/_meta/method-coverage.md`](docs/icm/_meta/method-coverage.md) | v3r1fy ICM form coverage and intentional omissions | Describes d0cum3n74710n c0n73x7, not runtime behavior. |

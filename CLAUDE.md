@@ -22,7 +22,7 @@ A tool outage, quota limit, stale record, or missing external tracker item chang
 ## Active protocols and migration
 
 - `§05§.md` is the §01§ entry point.
-- `§02§.md` remains a compatibility surface while its §12§ and protocol migration proceeds in parallel. Apply relevant scoped guidance and record conflicts for reconciliation; do not treat a stale §15§ or generated projection as higher authority than this entry point and current operator direction.
+- Use this §0b§ as the repository-wide §01§ contract. Subsystem-specific guidance lives in the closest scoped `§05§.md` or subsystem README.
 - Linear is an optional execution mirror. Reuse a current `TER-*` issue when the §0f§ is healthy and a matching issue exists. When Linear is unavailable, rate-limited, or blocks issue creation, record the state in `docs/ops/INTEGRATION-DRIFT-2026-11-19.md`, keep the proposal and item record current, and continue with GitHub and §19§ evidence. Report Linear synchronization as pending until verified.
 - Jules / `google-labs-code/jules-action` automation is retired in this §19§ effective 2026-11-01. Use currently configured §01§ routes and repository-owned §a7§; evaluate replacements by capability rather than assuming feature parity.
 
@@ -38,6 +38,7 @@ A tool outage, quota limit, stale record, or missing external tracker item chang
 | Linear adapter protocol | `docs/LINEAR-AGENT-PROTOCOL.md` |
 | §0f§ drift | `docs/ops/INTEGRATION-DRIFT-2026-11-19.md` |
 | Accessibility §0f§ | `docs/accessibility/§0f§.md` |
+| Technical reference | `docs/REPOSITORY-TECHNICAL-REFERENCE.md` |
 | Session source of truth | `docs/schemas/session-ssot.md` |
 | Provider capabilities | `docs/schemas/provider-capabilities.md` |
 

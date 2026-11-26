@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "cbeb2d6ec21f3bb140d7f86091cb7f5de88e7138c25683431f8efd089c445786",
-  "workflow_count": 328,
+  "source_fingerprint": "1f426a8c48ab6af1d55fd95ee1f65440e668a0fe3630fc53ee1828efc15acce1",
+  "workflow_count": 329,
   "workflows": [
     {
       "action_pins": [],
@@ -2388,6 +2388,24 @@
       "path": ".github/workflows/fly-ssh-diag.yml",
       "schedules": [],
       "triggers": []
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: flywheel-first-ack-promoter cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "promote"
+      ],
+      "name": "Flywheel first-ACK shared promoter",
+      "path": ".github/workflows/flywheel-first-ack-promoter.yml",
+      "schedules": [
+        "*/15 * * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
     },
     {
       "action_pins": [],

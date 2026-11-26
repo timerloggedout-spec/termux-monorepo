@@ -1,6 +1,6 @@
 {
  "schema": "tribute-outcomes/v1",
- "generated_at": "2026-11-26T13:06:55Z",
+ "generated_at": "2026-11-26T14:05:50Z",
  "source": "live:search-api",
  "author": "timerloggedout-spec",
  "query": "is:pr author:timerloggedout-spec -user:timerloggedout-spec (merged | closed-unmerged | open)",
@@ -14,16 +14,16 @@
    },
    {
     "code": "real_merge_drought",
-    "detail": "last real merge 37.8d ago (> 21d)"
+    "detail": "last real merge 37.9d ago (> 21d)"
    }
   ],
   "warnings": [
    {
     "code": "closed_unmerged",
-    "detail": "2 PRs closed without merge in 30d (counted as failures)"
+    "detail": "1 PRs closed without merge in 30d (counted as failures)"
    }
   ],
-  "outcome_failures": 4,
+  "outcome_failures": 3,
   "thresholds": {
    "min_real_merge_rate": 0.1,
    "min_decided": 10,
@@ -62,11 +62,11 @@
    "real_merges": 0,
    "stake_only_merges": 0,
    "self_merges_excluded": 0,
-   "closed_unmerged": 2,
+   "closed_unmerged": 1,
    "opened_still_open": 0,
-   "decided": 2,
+   "decided": 1,
    "real_merge_rate": 0.0,
-   "weighted_score": -2.0
+   "weighted_score": -1.0
   },
   "90d": {
    "real_merges": 2,
@@ -80,7 +80,7 @@
   }
  },
  "last_real_merge_at": "2026-10-19T17:28:41Z",
- "days_since_real_merge": 37.8,
+ "days_since_real_merge": 37.9,
  "system1": {
   "threads": 208,
   "yielded": 62,

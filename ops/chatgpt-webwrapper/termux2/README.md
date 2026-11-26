@@ -34,18 +34,43 @@ timerloggedout-spec/muse-vm-workspace-backup.)
 
 ## One-time setup on the device (two credentials, both owner-held)
 
-1. **ChatGPT session** — sign in to ChatGPT on this device yourself
-   (app or browser), then hand the wrapper the session cookie once:
+1. **ChatGPT session (ADB import, primary)** — sign in to ChatGPT in
+   the phone's **Chrome** yourself, then import the established
+   session over ADB:
 
    ```sh
    cd ~/chatgpt-webwrapper2 && ./run.sh import-session
    ```
 
-   It prompts (hidden input) for the `__Secure-next-auth.session-token`
-   cookie value and stores it in `~/.chatgpt-webwrapper/config.json`
-   (dir 0700, file 0600). The env var `CHATGPT_SESSION_TOKEN` overrides
-   it. When the session expires, the driver reports `no_session` —
-   sign in again and re-import.
+   Prerequisites (already true on this device): wireless debugging
+   enabled, and the Termux `adb` transport showing the phone itself in
+   state `device` (ShizukuPlus keeps this up). The import walks a
+   preflight ladder — adb binary → transport → Chrome DevTools socket —
+   classes each failure before reading anything, freezes the adb
+   target for the run, forwards `localabstract:chrome_devtools_remote`,
+   reads the chatgpt.com cookies over CDP (stdlib websocket client,
+   zero installs), reassembles the NextAuth session token (it is
+   chunked across `__Secure-next-auth.session-token.0/.1/...` when
+   oversized), and stores token + cookie header in
+   `~/.chatgpt-webwrapper/config.json` (dir 0700, file 0600). The
+   value moves only from the browser surface into that config — never
+   printed, logged, or traced. Every step is recorded in a step-trace
+   (`~/.chatgpt-webwrapper/import-traces/<id>.json`, 0600) and in the
+   telemetry stream; the import is single-flighted by a PID-aware
+   lock. Exit codes: 0 stored + verified · 2 stored, surface reports
+   logged out · 3 friction at verify (stop, never evaded) · 4 browser
+   side not ready (the import opens ChatGPT in Chrome via adb — sign
+   in there, keep Chrome foregrounded, re-run) · 5 import failure /
+   another import in progress.
+
+   **Manual fallback** — `./run.sh import-session` falls back to it
+   automatically when adb or its transport is absent, or force it
+   with `python3 core.py --import-session --manual`: it prompts
+   (hidden input) for the `__Secure-next-auth.session-token` cookie
+   value and stores it in the same 0600 config. The env var
+   `CHATGPT_SESSION_TOKEN` overrides the config either way. When the
+   session expires, the driver reports `no_session` — sign in again
+   and re-import.
 
 2. **GitHub streaming token** — captures stream straight to GitHub, so
    the sink needs a credential **the owner provisions once on the
@@ -90,7 +115,7 @@ the surface reports it).
 
 | Piece | Role |
 |---|---|
-| `core.py` | Session core in the deepcli shape: HTTP ladder, cookie/token session, session cache + dispatch hook, friction taxonomy, participant read primitives, export shapes, `--doctor` / `--probe` / `--import-session` |
+| `core.py` | Session core in the deepcli shape: HTTP ladder, cookie/token session, session cache + dispatch hook, friction taxonomy, participant read primitives, export shapes, `--doctor` / `--probe` / `--import-session` (ADB-primary, manual fallback) |
 | `driver.py` | Harvest driver: census-order capture, per-conversation checkpoint, stop-on-friction |
 | `sink.py` | Streaming GitHub sink (Contents API) + outbox dry mode |
 | `session_store.py` | Per-task session ids + run-state checkpoints (stack shape, verbatim) |
@@ -109,6 +134,38 @@ closes with `run_finished`, all in the stack's `telemetry.py` shapes
 (`{ts, stream, actor, event, ...}`), actor `termux-device`. When the
 sink credential exists, the telemetry artifacts stream to
 `chatgpt-harvest/<project_id>/telemetry/` at run end.
+
+## Patterns adopted from google/artemis
+
+The import leg's reliability discipline comes from Google's ARTEMIS
+(`timerloggedout-spec/artemis_fork` ← `google/artemis`), mined
+2026-11-26 and fitted to a single-device bundle:
+
+- **Atomic trace writes** (`runtime/trace_store.py`): temp file +
+  fsync + `os.replace`; corrupt state is quarantined aside, never
+  silently trusted. Used for the import step-trace and the import
+  lock — load-bearing on a 95%-full disk.
+- **Sessions as ordered step records** (admin-console session/step
+  repositories): one import session owns its steps; terminal statuses
+  are canonical (`completed` / `failed` / `stopped`); liveness that
+  cannot be determined counts as alive, so a live import is never
+  displaced by the lock.
+- **ADB target as an immutable snapshot** (`runtime/adb_endpoint.py`):
+  endpoint + serial are frozen at import start; every adb call in the
+  run uses exactly that target; malformed values fail precisely.
+- **Blocker-class preflight probe** (`core/diagnostics/probes/adb_probe.py`):
+  rungs in order — adb binary → transport → devtools socket — each
+  failure classed before any session read; enrichment cached briefly.
+- **Replayable trace** (`telemetry/replay.py`): the import's steps are
+  recorded end-to-end (trace file + telemetry stream) so the one
+  credential-adjacent operation stays auditable — steps always,
+  values never.
+
+Left behind, deliberately: artemis's cross-process device-lock FIFO
+queue, MCP server, admin console, device pool, and UI/coordinate
+targeting — server and UI-automation machinery with no surface on a
+single-phone CLI bundle that reads the session over CDP and never
+drives UI.
 
 ## Shape deviations (surface-forced, named)
 

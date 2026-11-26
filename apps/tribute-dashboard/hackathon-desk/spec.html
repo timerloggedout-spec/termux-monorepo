@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Hackathon Desk · spec</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../dashboard.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Hackathon Desk · spec</h1>
+</header>
+<h1 id="hackathon-desk-design">Hackathon Desk — Design</h1>
+<p><strong>Date:</strong> 2026-11-24<br />
+<strong>Proposal:</strong> hackathon-desk<br />
+<strong>Status:</strong> Operator-authorized scope; implementation plan
+pending review.</p>
+<h2 id="intent">Intent</h2>
+<p>Build one accessible teammate-facing page inside the existing Tribute
+dashboard so a hackathon teammate can discover current opportunities,
+understand challenge and event state, onboard, submit proposals,
+contribute through GitHub, and inspect evidence-backed pipeline
+progress. The page consolidates navigation and context while existing
+repository systems retain authority.</p>
+<h2 id="goals">Goals</h2>
+<ul>
+<li>Present ranked opportunities from the QUE priority feed with
+provenance and freshness.</li>
+<li>Present challenge events, deadlines, gates, and submission state
+from canonical challenge records and countdown projection.</li>
+<li>Provide hackathon discovery and status without inventing
+availability or deadlines.</li>
+<li>Guide teammates through GitHub identity, permissions, branches,
+commits, pull requests, and review.</li>
+<li>Link proposal creation and review to the existing proposal
+lifecycle.</li>
+<li>Project existing queue, desk traversal, and dispatch evidence.</li>
+<li>Provide a complete User Guide and Accessibility Guide.</li>
+<li>Target WCAG 2.2 AA and verify keyboard, focus, semantics, contrast,
+reflow, reduced motion, and status updates.</li>
+</ul>
+<h2 id="non-goals">Non-goals</h2>
+<ul>
+<li>Custom identity provider, OAuth backend, token store, or
+browser-side write API.</li>
+<li>New challenge, opportunity, proposal, pipeline, or scheduler
+database.</li>
+<li>Automated teammate permission grants.</li>
+<li>Public rendering of admin metrics or internal challenge
+estimates.</li>
+<li>Publishing Discord contact information without teammate
+consent.</li>
+<li>Replacing the existing Admin Desk, Contribution Desk, Challenge
+Coordinator, QUE, or proposal systems.</li>
+</ul>
+<h2 id="architecture">Architecture</h2>
+<p>The Hackathon Desk is a static page under apps/tribute-dashboard/,
+using the shared dashboard.css design system. A small browser module
+validates and normalizes existing public feeds, renders modules, and
+exposes source/freshness states. The page consumes the QUE priority feed
+and challenge coordinator from the public repository raw-content
+endpoint, plus existing dashboard mirror feeds for countdown, desk,
+queue, and dispatch projections.</p>
+<p>All browser actions remain navigational. Sign-in, proposal
+submission, issue creation, branch/PR contribution, and review actions
+open GitHub pages; GitHub authenticates the teammate and enforces
+repository permissions. The portal does not create a separate login
+session or retain credentials.</p>
+<h2 id="approaches">Approaches</h2>
+<ol type="1">
+<li><strong>Static Tribute projection with GitHub-owned contribution
+actions — selected.</strong> Reuses the current static dashboard, feeds,
+navigation, and GitHub Issues/PRs. It has the smallest trust boundary
+and no new secrets or service. Authentication occurs on GitHub when a
+teammate acts.</li>
+<li><strong>Custom OAuth-backed portal.</strong> Could provide an
+in-page signed-in profile and API actions, but requires a backend, OAuth
+application, secret custody, session security, and a new permission
+surface. Those resources and approval paths are outside the current
+brief.</li>
+<li><strong>Standalone public information page with manual
+links.</strong> Lowest effort, but omits live feed integration and
+pipeline evidence and duplicates existing navigation without delivering
+the requested Desk.</li>
+</ol>
+<h2 id="user-experience">User experience</h2>
+<p>Primary navigation: Overview, Opportunities, Challenges, Hackathons,
+Teammates, Proposals, Pipelines, Guide, Accessibility.</p>
+<ul>
+<li>Overview: current summary, feed freshness, next actions, and clear
+source links.</li>
+<li>Opportunities: ranked QUE records, state, priority, public gate
+status, source, and freshness.</li>
+<li>Challenges: coordinator event records, verified gates, status,
+submission evidence, and deadline references.</li>
+<li>Hackathons: event timeline and countdowns derived from recorded
+instants; expired/closed items remain visible with truthful state.</li>
+<li>Teammates: onboarding checklist, role expectations, verified GitHub
+identity link, contribution-history links, and optional contact
+guidance.</li>
+<li>Proposals: proposal process, active registry link, proposal issue
+form, and review expectations.</li>
+<li>Pipelines: read-only stage view from existing queue, desk, and
+dispatch feeds; each state links to evidence.</li>
+<li>Guide and Accessibility: standalone documentation pages.</li>
+</ul>
+<h2 id="data-and-trust-rules">Data and trust rules</h2>
+<ul>
+<li>QUE priority feed is the ranked opportunity source; render
+generated_at, freshness horizon, and stale status.</li>
+<li>Challenge coordinator JSON is the challenge event/participant/gate
+source of truth.</li>
+<li>Countdown feed carries instants; derive time remaining in the
+browser and label absent instants as “not recorded.”</li>
+<li>Desk feed supplies traversal evidence only; deprecated
+priority-timebox data is excluded from opportunity ranking.</li>
+<li>Treat missing, malformed, or stale sources as visible evidence
+states.</li>
+<li>Exclude metrics_internal, win_probability, and the Admin-only
+metrics feed from public code, feeds, and rendered content.</li>
+<li>Preserve source URLs and last-updated timestamps beside data-driven
+claims.</li>
+<li>Escape untrusted strings before HTML insertion; validate outbound
+links and use safe target attributes.</li>
+</ul>
+<h2 id="teammate-identity-and-permissions">Teammate identity and
+permissions</h2>
+<p>The supplied Discord username is a contact reference only. The
+teammate links their GitHub account by choosing their GitHub profile and
+uses GitHub sign-in for repository actions. Repository membership and
+write permissions remain under GitHub administration. The portal
+explains read, triage, and write boundaries and routes access requests
+to the repository owner; it never grants access itself.</p>
+<h2 id="accessibility-and-responsive-behavior">Accessibility and
+responsive behavior</h2>
+<p>Target WCAG 2.2 AA. Use semantic landmarks, a skip link, heading
+hierarchy, accessible names, keyboard-operable controls, visible focus,
+sufficient contrast, text alternatives for visual status, responsive
+reflow at 320 CSS pixels, zoom support, reduced-motion behavior, and
+polite live announcements for feed status. Tables and cards remain
+usable without color or pointer interaction. Document automated and
+manual checks.</p>
+<h2 id="deployment-and-verification">Deployment and verification</h2>
+<p>Integrate with the existing Tribute dashboard deployment and sitemap.
+Run focused feed/renderer tests, HTML/link checks, privacy scan,
+accessibility checks, python3 scripts/ci/repo_gate.py, and python3
+scripts/ci/termux_smoke.py. Re-fetch the same PR head SHA and named CI
+jobs before promotion. Verify the live page and feed freshness after
+deployment.</p>
+<h2 id="open-implementation-choices">Open implementation choices</h2>
+<ul>
+<li>Keep feed normalization in a focused hackathon.js module for
+testability.</li>
+<li>Use public raw GitHub content URLs pinned to master for canonical
+opportunity/challenge sources, plus existing dashboard data mirrors for
+dashboard-specific feeds.</li>
+<li>Keep teammate identity ephemeral in the UI until the teammate
+explicitly chooses a GitHub profile link; do not create a public roster
+database in this phase.</li>
+</ul>
+<h2 id="approval">Approval</h2>
+<p>Operator selected access=github and scope=full and explicitly
+authorized proposal registration, ICM routing, and implementation on
+2026-11-24. The exact implementation plan is presented separately for
+review before product-code execution.</p>
+</body>
+</html>

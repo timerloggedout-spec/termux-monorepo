@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Hackathon Desk · plan</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../dashboard.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Hackathon Desk · plan</h1>
+</header>
+<h1 id="hackathon-desk-implementation-plan">Hackathon Desk
+Implementation Plan</h1>
+<blockquote>
+<p><strong>For agentic workers:</strong> REQUIRED SUB-SKILL: Use
+superpowers:executing-plans to implement this plan task-by-task. Steps
+use checkbox syntax for tracking.</p>
+</blockquote>
+<p><strong>Goal:</strong> Build a full teammate-facing Hackathon Desk
+with GitHub-owned contribution authentication, source-backed
+opportunities/challenges/pipelines, guides, and accessible responsive
+UI.</p>
+<p><strong>Architecture:</strong> Static Tribute page with a focused
+feed/render module. Public repository feeds remain canonical; browser
+actions navigate to GitHub for authentication and writes. Existing
+proposal, challenge, QUE, and dispatch systems remain authoritative.</p>
+<p><strong>Tech Stack:</strong> HTML, CSS, browser JavaScript,
+Python/pytest tests, existing GitHub Pages deployment.</p>
+<p><strong>Spec:</strong>
+docs/superpowers/specs/2026-11-24-hackathon-desk-design.md</p>
+<h2 id="global-constraints">Global Constraints</h2>
+<ul>
+<li>Keep the portal read-only; GitHub owns authentication and repository
+write permissions.</li>
+<li>Use ops/que/feeds/opportunity-priority.json for ranked
+opportunities.</li>
+<li>Use ops/challenge/coordinator.json for challenge event, participant,
+and gate state.</li>
+<li>Use apps/tribute-dashboard/data/challenge-countdowns-feed.json for
+published countdown instants and prize projection.</li>
+<li>Use desk traversal, QUE queue, and dispatch feeds as read-only
+evidence.</li>
+<li>Exclude metrics_internal, win_probability, admin-only metrics,
+credentials, and unconsented contact details.</li>
+<li>Preserve visible provenance and explicit missing/stale states.</li>
+<li>Reuse apps/tribute-dashboard/dashboard.css and current Tribute
+deployment.</li>
+<li>Target WCAG 2.2 AA; preserve keyboard and reduced-motion
+behavior.</li>
+<li>Cite Implements: HD-<ITEM-ID> in commit/PR context.</li>
+</ul>
+<h2 id="review-focus">Review Focus</h2>
+<ol type="1">
+<li>Missing or malformed feeds — show a clear unavailable state and
+preserve the rest of the page.</li>
+<li>Stale opportunity feed — show its timestamp and stale status while
+retaining the source data.</li>
+<li>Expired or unrecorded event deadlines — derive countdown from
+recorded instants and label absent dates truthfully.</li>
+<li>Malicious feed text or external URLs — escape text and allow only
+approved HTTPS destinations.</li>
+<li>Small screens, keyboard-only use, zoom, and reduced-motion
+preferences — preserve all content and interaction paths.</li>
+</ol>
+<hr />
+<h3 id="task-1-feed-normalization-and-source-freshness">Task 1: Feed
+normalization and source freshness</h3>
+<p><strong>Files:</strong> - Create: apps/tribute-dashboard/hackathon.js
+- Create: tests/hackathon-desk.test.cjs - Create:
+tests/test_hackathon_desk.py</p>
+<p><strong>Interfaces:</strong> - Produces:
+HackathonDesk.normalizeOpportunityFeed(payload, now),
+normalizeChallengeFeed(payload), normalizeCountdownFeed(payload),
+normalizePipelineFeed(payload), safeExternalUrl(value). - Returns
+normalized records with source, generated_at, freshness, and explicit
+status values.</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Write Node tests for
+fresh/stale/missing/malformed opportunity feeds, closed events, null
+deadlines, and safe URL validation.</label></li>
+<li><label><input type="checkbox" />Run node –test
+tests/hackathon-desk.test.cjs and verify each new behavior fails for the
+expected reason.</label></li>
+<li><label><input type="checkbox" />Implement pure normalizers and
+escaping/link validation in hackathon.js.</label></li>
+<li><label><input type="checkbox" />Run focused Node tests and pytest -q
+tests/test_hackathon_desk.py.</label></li>
+<li><label><input type="checkbox" />Commit with Implements:
+HD-002.</label></li>
+</ul>
+<h3 id="task-2-hackathon-desk-shell-and-navigation">Task 2: Hackathon
+Desk shell and navigation</h3>
+<p><strong>Files:</strong> - Create:
+apps/tribute-dashboard/hackathon.html - Create:
+apps/tribute-dashboard/hackathon.css - Modify:
+apps/tribute-dashboard/index.html - Modify:
+apps/tribute-dashboard/desk.html - Modify:
+apps/tribute-dashboard/countdowns.html - Modify:
+apps/tribute-dashboard/sitemap.xml - Test:
+tests/test_hackathon_desk.py</p>
+<p><strong>Interfaces:</strong> - Consumes: normalized feeds from Task
+1. - Produces: stable module IDs for overview, opportunities,
+challenges, hackathons, teammates, proposals, pipelines, guide, and
+accessibility.</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Write failing page-contract tests
+for landmarks, skip link, nav, module headings, sitemap entry, and
+shared CSS.</label></li>
+<li><label><input type="checkbox" />Run pytest -q
+tests/test_hackathon_desk.py and verify expected failures.</label></li>
+<li><label><input type="checkbox" />Implement responsive shell, semantic
+sections, and navigation links.</label></li>
+<li><label><input type="checkbox" />Run focused tests and HTML/link
+checks.</label></li>
+<li><label><input type="checkbox" />Commit with Implements:
+HD-003.</label></li>
+</ul>
+<h3 id="task-3-data-backed-opportunities-challenges-and-hackathons">Task
+3: Data-backed opportunities, challenges, and hackathons</h3>
+<p><strong>Files:</strong> - Modify:
+apps/tribute-dashboard/hackathon.html - Modify:
+apps/tribute-dashboard/hackathon.js - Modify:
+apps/tribute-dashboard/hackathon.css - Test:
+tests/hackathon-desk.test.cjs, tests/test_hackathon_desk.py</p>
+<p><strong>Interfaces:</strong> - Consumes: normalized opportunity,
+coordinator, and countdown records. - Produces: rendered public
+opportunity, challenge, and hackathon modules with source stamps and
+truthful empty/stale states.</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Write tests for ranked opportunity
+ordering, public gate state, expired/closed events, and null
+dates.</label></li>
+<li><label><input type="checkbox" />Verify RED with focused Node/Python
+test commands.</label></li>
+<li><label><input type="checkbox" />Implement renderers with escaped
+text and validated source links.</label></li>
+<li><label><input type="checkbox" />Run focused tests and privacy
+scan.</label></li>
+<li><label><input type="checkbox" />Commit with Implements: HD-002,
+HD-003.</label></li>
+</ul>
+<h3 id="task-4-teammate-onboarding-and-github-contribution-flow">Task 4:
+Teammate onboarding and GitHub contribution flow</h3>
+<p><strong>Files:</strong> - Modify:
+apps/tribute-dashboard/hackathon.html - Modify:
+apps/tribute-dashboard/hackathon.css - Test:
+tests/test_hackathon_desk.py</p>
+<p><strong>Interfaces:</strong> - Produces: onboarding checklist and
+GitHub navigation for profile, repository, issue, branch/PR, and review
+actions.</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Write failing tests for GitHub
+destination links, consent-based Discord guidance, and absence of
+embedded credentials or browser write methods.</label></li>
+<li><label><input type="checkbox" />Verify RED.</label></li>
+<li><label><input type="checkbox" />Implement onboarding and permission
+explanations; keep the supplied Discord identity out of public markup
+until teammate consent.</label></li>
+<li><label><input type="checkbox" />Run focused tests and
+credential/privacy scans.</label></li>
+<li><label><input type="checkbox" />Commit with Implements:
+HD-004.</label></li>
+</ul>
+<h3 id="task-5-proposal-and-pipeline-views">Task 5: Proposal and
+pipeline views</h3>
+<p><strong>Files:</strong> - Modify:
+apps/tribute-dashboard/hackathon.html - Modify:
+apps/tribute-dashboard/hackathon.js - Modify:
+apps/tribute-dashboard/hackathon.css - Test:
+tests/hackathon-desk.test.cjs, tests/test_hackathon_desk.py</p>
+<p><strong>Interfaces:</strong> - Consumes: proposal process links and
+desk/queue/dispatch feed normalizers. - Produces: read-only proposal
+workflow entry points and evidence-backed pipeline states.</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Write tests for issue form
+navigation, stale pipeline feeds, and source evidence
+links.</label></li>
+<li><label><input type="checkbox" />Verify RED.</label></li>
+<li><label><input type="checkbox" />Implement proposal and pipeline
+sections; link every stage to its source or GitHub
+workflow.</label></li>
+<li><label><input type="checkbox" />Run focused tests and feed-privacy
+checks.</label></li>
+<li><label><input type="checkbox" />Commit with Implements: HD-005,
+HD-006.</label></li>
+</ul>
+<h3 id="task-6-user-guide-and-accessibility-guide">Task 6: User Guide
+and Accessibility Guide</h3>
+<p><strong>Files:</strong> - Create:
+docs/teammates/HACKATHON-DESK-GUIDE.md - Create:
+docs/teammates/ACCESSIBILITY.md - Modify:
+apps/tribute-dashboard/hackathon.html - Test:
+tests/test_hackathon_desk.py</p>
+<p><strong>Interfaces:</strong> - Produces: onboarding, navigation,
+proposal, contribution, pipeline, permissions, accessibility, and
+troubleshooting documentation.</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Write failing tests for guide links
+and required sections.</label></li>
+<li><label><input type="checkbox" />Verify RED.</label></li>
+<li><label><input type="checkbox" />Write both guides and connect them
+from the page.</label></li>
+<li><label><input type="checkbox" />Run documentation link and heading
+checks.</label></li>
+<li><label><input type="checkbox" />Commit with Implements: HD-007,
+HD-008.</label></li>
+</ul>
+<h3 id="task-7-accessibility-and-responsive-verification">Task 7:
+Accessibility and responsive verification</h3>
+<p><strong>Files:</strong> - Modify:
+apps/tribute-dashboard/hackathon.html - Modify:
+apps/tribute-dashboard/hackathon.css - Modify:
+apps/tribute-dashboard/hackathon.js - Test:
+tests/test_hackathon_desk.py</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Add tests for skip link, semantic
+landmarks, labels, focus styles, reduced motion, live status
+announcements, and responsive breakpoints.</label></li>
+<li><label><input type="checkbox" />Verify RED for each new
+assertion.</label></li>
+<li><label><input type="checkbox" />Implement the minimum changes to
+pass.</label></li>
+<li><label><input type="checkbox" />Run automated accessibility checks
+and manual keyboard/zoom/screen-reader review; record unverified manual
+checks.</label></li>
+<li><label><input type="checkbox" />Commit with Implements:
+HD-008.</label></li>
+</ul>
+<h3 id="task-8-icm-route-review-and-map-update">Task 8: ICM route review
+and map update</h3>
+<p><strong>Files:</strong> - Modify after approval: docs/icm/CLAUDE.md -
+Modify after approval: docs/icm/processes/CONTEXT.md - Modify after
+approval: docs/icm/effects/CONTEXT.md - Modify after approval:
+docs/icm/objects/operations/challenge-program.md - Create after
+approval: docs/icm/processes/hackathon-desk.md</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Obtain human approval of
+docs/proposals/active/hackathon-desk/ICM-ROUTE.md.</label></li>
+<li><label><input type="checkbox" />Write failing route/link
+checks.</label></li>
+<li><label><input type="checkbox" />Apply the approved
+documentation-only map change.</label></li>
+<li><label><input type="checkbox" />Run ICM cold-walk and link
+verification.</label></li>
+<li><label><input type="checkbox" />Commit with Implements:
+HD-010.</label></li>
+</ul>
+<h3 id="task-9-full-verification-and-delivery">Task 9: Full verification
+and delivery</h3>
+<p><strong>Files:</strong> - All Hackathon Desk files and tests.</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Run node –test
+tests/hackathon-desk.test.cjs.</label></li>
+<li><label><input type="checkbox" />Run pytest -q
+tests/test_hackathon_desk.py and the repository test suite.</label></li>
+<li><label><input type="checkbox" />Run python3
+scripts/ci/repo_gate.py.</label></li>
+<li><label><input type="checkbox" />Run python3
+scripts/ci/termux_smoke.py.</label></li>
+<li><label><input type="checkbox" />Verify required GitHub jobs on the
+same immutable head SHA.</label></li>
+<li><label><input type="checkbox" />Verify deployed page, feed
+freshness, GitHub navigation, and guide routes.</label></li>
+<li><label><input type="checkbox" />Update ITEMS.md with evidence and
+final state.</label></li>
+</ul>
+</body>
+</html>

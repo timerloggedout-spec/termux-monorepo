@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Hackathon Desk · icm-route</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../dashboard.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Hackathon Desk · icm-route</h1>
+</header>
+<h1 id="hackathon-desk-proposed-icm-route">Hackathon Desk — proposed ICM
+route</h1>
+<p><strong>State:</strong> PROPOSED · HUMAN MAP REVIEW REQUIRED<br />
+<strong>Domain object:</strong>
+docs/icm/objects/operations/challenge-program.md<br />
+<strong>Change process:</strong>
+docs/icm/processes/change-and-validate.md</p>
+<h2 id="proposed-process-card">Proposed process card</h2>
+<p>Create docs/icm/processes/hackathon-desk.md as a process card for the
+teammate-facing collaboration surface.</p>
+<p>The card routes: - UI and feed changes to
+apps/tribute-dashboard/hackathon.html, hackathon.js, and canonical feed
+contracts. - Opportunity state to QUE and
+ops/que/feeds/opportunity-priority.json. - Challenge events and gates to
+the challenge coordinator and schema. - Contribution identity and writes
+to GitHub Issues and Pull Requests. - Proposal lifecycle to
+docs/proposals/PROCESS.md. - Accessibility verification to the Hackathon
+Desk guides and test suite.</p>
+<h2 id="proposed-map-edits">Proposed map edits</h2>
+<ol type="1">
+<li>Add a “build or operate the Hackathon Desk” route in
+docs/icm/CLAUDE.md.</li>
+<li>Add the new process card to docs/icm/processes/CONTEXT.md.</li>
+<li>Add a change-impact row to docs/icm/effects/CONTEXT.md.</li>
+<li>Add the process card under “See” in
+docs/icm/objects/operations/challenge-program.md.</li>
+</ol>
+<h2 id="explicit-exclusions">Explicit exclusions</h2>
+<ul>
+<li>Keep ICM maintenance documentation-only.</li>
+<li>Keep source ownership with existing challenge, QUE, proposal, and
+dashboard contracts.</li>
+<li>Preserve the static page and GitHub permission boundary.</li>
+<li>Keep metrics_internal and win_probability out of every public
+surface.</li>
+<li>Preserve the ICM 02_design human approval checkpoint before editing
+the map.</li>
+</ul>
+<h2 id="human-decision">Human decision</h2>
+<p>Operator review: PENDING<br />
+Decision: APPROVE / REVISE / REJECT<br />
+Reviewer notes: PENDING</p>
+</body>
+</html>

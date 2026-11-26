@@ -10,7 +10,8 @@ Standing rules:
 | Wrapper | Lane | Version | Artifact | sha256 | Status | Date |
 |---|---|---|---|---|---|---|
 | ChatGPT webWrapper | `ops/chatgpt-webwrapper/termux/` | v1 (Selenium shape) | `termux-bundle.tar.gz` | NOT_ESTABLISHED in this registry | SUPERSEDED — doctor-failed on device (no chromedriver in Termux repos; Selenium port rejected) | 2026-11-26 |
-| ChatGPT webWrapper | `ops/chatgpt-webwrapper/termux2/` | v2 (deepcli `core.py` shape + ADB import leg) | `termux2-bundle.tar.gz` (28,561 B) | `bf84f10cb1b9f0a37ad63e397f57a06d65583be252e48dc8d6fc6d2e7341be7d` | CURRENT | 2026-11-26 |
+| ChatGPT webWrapper | `ops/chatgpt-webwrapper/termux2/` | v2 (deepcli `core.py` shape + ADB import leg) | `termux2-bundle.tar.gz` (28,561 B) | `bf84f10cb1b9f0a37ad63e397f57a06d65583be252e48dc8d6fc6d2e7341be7d` | PRIOR — superseded by v2.1 (import stored an unchecked token candidate; on-device verify failed while the owner was signed in) | 2026-11-26 |
+| ChatGPT webWrapper | `ops/chatgpt-webwrapper/termux2/` | v2.1 (candidate-verified ADB import) | `termux2-bundle.tar.gz` (30,554 B) | `bef69479bc74df11be0eee3ea4fa928226b74e0c187eaebe398c626c3009cdf9` | CURRENT | 2026-11-26 |
 | DeepCLI | upstream reference (`deepcli/deepcli`) | NOT_ESTABLISHED from here | `core.py` (session-layer driver pattern) | — | REFERENCE — the shape v2 is built on; not a fleet release lane | 2026-11-26 |
 
 Mandate stamps: QUE #5885 c.7200917411 · QUE #5920 c.7200918534.

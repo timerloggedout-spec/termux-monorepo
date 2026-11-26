@@ -1,6 +1,6 @@
 {
  "schema": "nested-family/v1",
- "generated_at": "2026-11-26T19:51:59Z",
+ "generated_at": "2026-11-26T20:26:31Z",
  "generated_by": "scripts/tracking/nested_family.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/NESTED-FAMILY.md",
@@ -11,8 +11,8 @@
   {
    "id": "records",
    "path": "experiments/doe/routed-dispatch/records/*.json",
-   "records_read": 44,
-   "records_used": 44
+   "records_read": 45,
+   "records_used": 45
   },
   {
    "id": "campaign-records",
@@ -23,19 +23,19 @@
   {
    "id": "stamps",
    "path": "experiments/doe/routed-dispatch/stamps/*.json",
-   "records_read": 43,
+   "records_read": 44,
    "records_used": 0
   },
   {
    "id": "intake",
    "path": "ops/3l0/intake.jsonl",
-   "records_read": 44,
+   "records_read": 45,
    "records_used": 0
   },
   {
    "id": "desk-usage",
    "path": "ops/challenge/desk-feed.json#traversals[].provider_usage",
-   "records_read": 69,
+   "records_read": 70,
    "records_used": 17
   }
  ],
@@ -150,19 +150,19 @@
   "providers": 19,
   "models": 27,
   "roles": 6,
-  "tasks": 65,
-  "dispatches": 48,
+  "tasks": 66,
+  "dispatches": 49,
   "registry_providers": 97,
   "zero_dispatch_providers": 88,
   "by_outcome": {
    "(prose state \u2014 verbatim in tasks)": 4,
    "passed": 26,
    "failed": 13,
-   "observed": 5
+   "observed": 6
   },
   "by_source": {
    "desk-usage": 17,
-   "records": 44,
+   "records": 45,
    "campaign-records": 4
   }
  },
@@ -484,7 +484,7 @@
      "contexts": [
       "build-dispatch multi-arm (#5151)"
      ],
-     "task_count": 2,
+     "task_count": 3,
      "tasks": [
       {
        "task_class": "entry-build",
@@ -537,12 +537,38 @@
        },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/build-dispatch-45882578776-baseten-gpt-oss.json"
+      },
+      {
+       "task_class": "entry-build",
+       "role": "builder",
+       "moniker": "providers-dispatch-fix",
+       "context": "build-dispatch multi-arm (#5151)",
+       "dispatch_id": "build-dispatch-45890221890-baseten-gpt-oss",
+       "run_id": "45890221890",
+       "workflow": "build-dispatch.yml",
+       "session_id": null,
+       "ts": "2026-11-26T20:21:12Z",
+       "outcome": {
+        "status": "observed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": "4c9b24b77fe3a22224d4d58f52c75133041b1c0b936fc08d7e6ed171d5690db1",
+       "first_pass": null,
+       "origin": "live",
+       "pr": null,
+       "field_sources": {
+        "run_id": "stamps",
+        "workflow": "stamps"
+       },
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/build-dispatch-45890221890-baseten-gpt-oss.json"
       }
      ]
     }
    ],
    "model_count": 2,
-   "task_count": 3,
+   "task_count": 4,
    "zero_dispatch": false
   },
   {

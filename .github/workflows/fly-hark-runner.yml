@@ -1,0 +1,89 @@
+name: fly-hark-runner
+
+# hark-vm continuous leg on FLY-010 (owner 2026-11-26: continuous runner, auto-improve).
+# Poll muse-vm-workspace-backup hark/comms.jsonl every 60s for ~5h45m, then self-redispatch.
+# Directive grammar in a peer line addressed to hark-vm:  ▶RUN hark-mesh-ssh mode=<probe|mint> [user=..] [port=..] [target=..]
+# Allowlist: hark-mesh-ssh.yml mode probe|mint ⇒ dispatch same tick ∧ append one receipt line.
+# Everything else ⇒ hark-vm agent reader (10m tick) handles reasoning work.
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "*/30 * * * *"
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: fly-hark-runner
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    env:
+      GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+      DISPATCH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+      STORE: timerloggedout-spec/muse-vm-workspace-backup
+      FILE: hark/comms.jsonl
+    steps:
+      - name: Poll ∧ dispatch
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, base64, os, re, subprocess, time, datetime
+          STORE, FILE, REPO = os.environ["STORE"], os.environ["FILE"], os.environ["REPO"]
+          ALLOW = {"hark-mesh-ssh": {"mode": {"probe", "mint"}}}
+          KEYS = {"mode", "user", "port", "target"}
+          def gh(args, tok=None):
+              env = dict(os.environ)
+              if tok: env["GH_TOKEN"] = tok
+              return subprocess.run(["gh"] + args, capture_output=True, text=True, env=env)
+          def read():
+              r = gh(["api", f"repos/{STORE}/contents/{FILE}"])
+              d = json.loads(r.stdout)
+              return d["sha"], base64.b64decode(d["content"]).decode().splitlines()
+          def append(body, to="muse-vm"):
+              for _ in range(3):
+                  sha, lines = read()
+                  line = json.dumps({"ts": datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"), "from": "hark-vm", "to": to, "body": body}, ensure_ascii=False)
+                  txt = "\n".join(lines + [line]) + "\n"
+                  r = gh(["api", "-X", "PUT", f"repos/{STORE}/contents/{FILE}", "-f", "message=feat(fly): append hark-vm runner receipt [skip render]", "-f", f"sha={sha}", "-f", "content=" + base64.b64encode(txt.encode()).decode()])
+                  if r.returncode == 0: return True
+                  time.sleep(5)
+              return False
+          _, lines = read(); seen = len(lines)
+          print(f"::notice title=runner::start seen={seen}")
+          end = time.time() + 345 * 60
+          while time.time() < end:
+              time.sleep(60)
+              try: _, lines = read()
+              except Exception as e: print("read err", e); continue
+              for i in range(seen, len(lines)):
+                  try: o = json.loads(lines[i])
+                  except Exception: continue
+                  if o.get("from") == "hark-vm" or o.get("to") not in ("hark-vm", "all"): continue
+                  for m in re.finditer(r"▶RUN\s+([\w-]+)((?:\s+\w+=[\w.:@-]+)*)", o.get("body", "")):
+                      wf, kv = m.group(1), dict(p.split("=", 1) for p in m.group(2).split())
+                      kv = {k: v for k, v in kv.items() if k in KEYS}
+                      ok = wf in ALLOW and kv.get("mode") in ALLOW[wf]["mode"]
+                      if not ok:
+                          print(f"::notice title=skip::line={i+1} wf={wf} mode={kv.get('mode')}"); continue
+                      args = ["workflow", "run", f"{wf}.yml", "-R", REPO, "--ref", "master"]
+                      for k, v in kv.items(): args += ["-f", f"{'ssh_user' if k=='user' else k}={v}"]
+                      r = gh(args, os.environ["DISPATCH_TOKEN"])
+                      st = "✓" if r.returncode == 0 else "✗"
+                      print(f"::notice title=dispatch::line={i+1} wf={wf} rc={r.returncode}")
+                      append(f"RECEIPT ⊢ FLY-010#{i+1} ▶RUN {wf} {' '.join(f'{k}={v}' for k,v in kv.items())} ⇒ dispatched {st} · result ⇒ hark-vm reader ≤10m")
+              seen = len(lines)
+          PY
+
+      - name: Self-redispatch
+        if: always()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run fly-hark-runner.yml -R "$REPO" --ref master || true

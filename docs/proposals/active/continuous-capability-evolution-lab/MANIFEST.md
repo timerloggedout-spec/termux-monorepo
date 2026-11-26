@@ -14,6 +14,7 @@ related_issues: []
 related_prs: []
 related_branches:
   - feat/ceel-continuous-capability-evolution-20261111
+  - feat/doe-controlled-evolutionary-planes-20261121
 gates_required: [proposal-lifecycle, repo-gate, termux-smoke]
 ---
 

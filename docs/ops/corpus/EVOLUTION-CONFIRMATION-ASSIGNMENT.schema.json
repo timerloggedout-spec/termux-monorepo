@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/corpus/EVOLUTION-CONFIRMATION-ASSIGNMENT.schema.json",
+  "title": "Evolutionary Policy Online Confirmation Assignment",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "campaign_id",
+    "design_id",
+    "control_arm_id",
+    "selected_arm_id",
+    "seed",
+    "task_blocks",
+    "replicates",
+    "assignment_method",
+    "assignments",
+    "execution_authority",
+    "confirmation_id"
+  ],
+  "properties": {
+    "schema": {
+      "const": "agent.evolution-confirmation-assignment.v1"
+    },
+    "campaign_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "design_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "control_arm_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{16}$"
+    },
+    "selected_arm_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{16}$"
+    },
+    "seed": {
+      "type": "integer"
+    },
+    "task_blocks": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "replicates": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "assignment_method": {
+      "const": "deterministic_randomized_complete_block"
+    },
+    "assignments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "assignment_id",
+          "unit_id",
+          "block_id",
+          "replicate",
+          "sequence",
+          "arm_id"
+        ],
+        "properties": {
+          "assignment_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{16}$"
+          },
+          "unit_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "block_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "replicate": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "arm_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{16}$"
+          }
+        }
+      }
+    },
+    "execution_authority": {
+      "const": "ATES_and_canonical_EXPERIMENT"
+    },
+    "confirmation_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    }
+  }
+}

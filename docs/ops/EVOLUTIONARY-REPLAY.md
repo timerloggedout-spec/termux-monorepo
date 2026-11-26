@@ -137,3 +137,88 @@ Once a sufficient history pool exists, manager candidates can be screened offlin
 history revision → incumbent + candidates → replay → raw evidence → existing reducers → fresh online cohort
 
 Do not rank managers on replay score alone. The online comparison must include integrated correctness/outcome, resource use, feedback cycles, conflicts, retries, and human intervention. A candidate that wins replay but loses the real task remains a failed candidate; a candidate that changes cost without changing outcome remains measurable rather than being collapsed into a single opaque agent score.
+
+
+## DoE-controlled evolutionary planes
+
+The evolutionary replay primitive now participates in the existing DoE family through
+`scripts/agent_evolution/doe_control.py`. DoE is the design/control plane; AlphaEvolve
+and Dream-RSI mechanisms are bounded candidate-generation and replay components.
+
+### Plane ownership
+
+| Plane | Owner | Contract |
+|---|---|---|
+| Design/control | DoE family | Freeze hypothesis, factors, levels, incumbent, seed, task blocks, assignment, replication and thresholds before evaluation |
+| Candidate generation | EvolutionEngine | Produce bounded data-only policy mutations and preserve the incumbent |
+| Replay/evaluation | ReplaySimulator | Evaluate every arm against the same immutable realized history; no provider or task execution |
+| Online execution | ATES + existing runner | Execute a selected candidate only in a fresh cohort; emit canonical EXPERIMENT records |
+| Analysis/challenge | DoE reducers + Delphi | Report main effects, interactions, uncertainty, missingness, cost and counter-evidence |
+| Promotion | Proposal lifecycle + dual gates | Require held-out confirmation, verified task outcome, correctness, integration and same-SHA gates |
+
+These responsibility planes compose existing owners and reuse their orchestrator,
+run ledger, scheduler, registry and merge authority.
+
+### Design artifact and confirmation assignment
+
+`docs/ops/corpus/EVOLUTION-DESIGN.schema.json` defines the frozen
+`agent.evolution-doe-design.v1` offline design artifact. It records campaign ID,
+factor levels, policy arms, incumbent control arm, deterministic seed, design ID and
+downstream authorities.
+
+After offline replay selects at most one candidate,
+`docs/ops/corpus/EVOLUTION-CONFIRMATION-ASSIGNMENT.schema.json` defines a separate
+randomized complete-block assignment containing only the incumbent and that selected
+candidate. This separation keeps offline screening distinct from online confirmation.
+
+The per-run observation remains the existing
+`docs/ops/corpus/EXPERIMENT.schema.json` record. A design artifact describes what
+was planned; an EXPERIMENT record describes one observed execution. Neither artifact
+replaces the canonical run ledger.
+
+### Executable adapter
+
+`scripts/agent_evolution/doe_control.py` provides:
+
+- full-factorial policy factor expansion for `max_active`, `min_score` and
+  `stop_after_terminal`;
+- deterministic arm IDs and exactly one incumbent control;
+- design integrity validation and replay of every arm against one shared
+  ReplaySimulator/history;
+- machine-readable replay rows carrying design, campaign, arm, policy and history
+  lineage;
+- a separate confirmation assignment that randomizes only the incumbent and one
+  selected candidate across task blocks and replicates; and
+- fail-closed promotion-readiness receipts that never execute promotion.
+
+Factorial levels are declared before replay. The incumbent is retained even when its
+settings are absent from the candidate grid. Duplicate policy configurations collapse
+to one arm. Online confirmation assigns both the incumbent and selected candidate
+exactly once per task unit × replicate.
+
+### Operating sequence
+
+1. Pre-register the hypothesis, primary outcome, factor levels, practical threshold,
+   history revision, evaluator revision, seed, blocks and replication.
+2. Replay the incumbent as control and every factorial policy arm against the same
+   completed discovery history.
+3. Preserve every arm result, including negative, tied and dominated candidates.
+4. Select at most one candidate for a fresh online confirmation cohort.
+5. Create a separate confirmation-assignment artifact that randomizes only the
+   incumbent and one selected candidate within declared task blocks.
+6. Emit one canonical EXPERIMENT record per dispatched run and preserve configured
+   instance identity, workflow/run SHA and evidence references.
+7. Analyze primary and secondary outcomes separately; report main effects,
+   interactions, uncertainty, missingness, assignment integrity and total cost.
+8. Route conclusions through existing review and proposal lifecycle. Promote only
+   after held-out confirmation, verified outcome, correctness/integration evidence
+   and both repository gates pass on the same immutable head SHA.
+
+### Interpretation
+
+Replay score estimates performance only over the realized history and evaluator.
+It does not estimate unseen branches, task correctness, model intelligence or online
+production effect. The online confirmation cohort supplies the external validity
+check. A replay winner that fails the real task remains a failed candidate. Unknown
+measurements remain unknown; the design and all negative observations remain
+append-only evidence.

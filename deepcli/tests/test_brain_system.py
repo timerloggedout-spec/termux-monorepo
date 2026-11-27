@@ -112,6 +112,8 @@ class BrainSystemTests(unittest.TestCase):
         )
         self.assertEqual(score["action_shortlist"], ["build", "tests"])
         self.assertEqual(score["timing_feedback"][0]["drift_ms"], 30)
+        self.assertEqual(score["timing_feedback"][0]["run_id"], "run-123")
+        self.assertEqual(score["timing_feedback"][0]["evidence_ref"], "ates://receipt/123")
         self.assertEqual(score["wake_recommendation"]["wake_at_ms"], 150)
 
     def test_conductor_preserves_required_cue_metadata(self):

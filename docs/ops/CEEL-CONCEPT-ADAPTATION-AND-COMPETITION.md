@@ -47,7 +47,7 @@ GitHub source / release / documentation event
   → promote / hold / reject / supersede
 ```
 
-Research-template layout scoring remains a separate profile. Capability candidates receive category-aware metadata-readiness scoring. Controlled experiments supply the separate task-efficacy evidence.
+Research-template layout scoring remains a separate profile. Capability candidates receive category-aware metadata-readiness scoring. Controlled experiments supply the separate task-efficacy evidence. Category inventory includes both directory-backed candidates and standalone Markdown references; content-backed source attribution and complete immutable revision forms determine source-readiness credit.
 
 ## Competition design
 

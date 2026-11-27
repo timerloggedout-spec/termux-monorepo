@@ -7,6 +7,7 @@
 | RS-003 | Ballet Coordinator and Orchestra Conductor cue-sheet placements | implementing | dependency-wave tests; all three placement tests; phase/open-length/barrier/evidence cue-sheet contract; cohort-isolated DoE tests |
 | RS-004 | Music as Code independent and mixed-mode stimulus paths | implementing | Strudel source syntax validation; independent/mixed-mode documentation; runtime rendering qualification |
 | RS-005 | Temporal DoE factor registration and shared notation cross-domain mappings | implementing | DoE matrix v2 registration in DOE-FAMILY and settings register; NSE-025 crosswalk; proposal-lifecycle validation |
+| BCC-001 | Brain/CNS-inspired Composer: typed intent, deterministic score compilation, module atlas, schema, and Conductor metadata integrity | implementing | deterministic composer tests; intent dependency preservation; cue metadata regression; JSON Schema contract; architecture diagram; repository gates |
 
 ## Acceptance contract
 
@@ -14,4 +15,6 @@
 - Keep architecture seed, Conductor placement, wave strategy, and temporal treatment as independent experimental axes.
 - Require canonical ATES receipt resolution, full-factor arm identity, cohort-local rankings, and disjoint winner/loser sets.
 - Preserve failed, censored, skipped, and inconclusive experimental arms.
+- Composer owns intent composition and score trace only; Manager, Ballet, QUE, adapters, Temporal Intelligence, Conductor, and ATES retain their named authority.
+- Preserve task dependencies from the canonical intent graph in every emitted cue.
 - Promote implementations only after the exact candidate SHA passes the repository gates.

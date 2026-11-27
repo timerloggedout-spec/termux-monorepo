@@ -24,12 +24,13 @@ CSS = ("body{font-family:system-ui,sans-serif;max-width:860px;margin:2rem auto;p
 
 def page(title, body, locale="en"):
     direction = "rtl" if locale == "ur" else "ltr"
-    base = "../" if locale == "ur" else "./"
+    english_href = "../index.html" if locale == "ur" else "./index.html"
+    urdu_href = "./index.html" if locale == "ur" else "./ur/index.html"
     nav = (
         '<nav aria-label="Language">'
         f'<span>{html.escape("زبان" if locale == "ur" else "Language")}</span> '
-        f'<a href="{base}index.html" lang="en" hreflang="en">English</a> · '
-        f'<a href="{base}ur/index.html" lang="ur" hreflang="ur" aria-current="{"page" if locale == "ur" else "false"}">اردو</a>'
+        f'<a href="{english_href}" lang="en" hreflang="en">English</a> · '
+        f'<a href="{urdu_href}" lang="ur" hreflang="ur" aria-current="{"page" if locale == "ur" else "false"}">اردو</a>'
         '</nav>'
     )
     rtl_css = "body{direction:rtl;text-align:right} main{unicode-bidi:plaintext} code,pre,a[dir=ltr]{direction:ltr;unicode-bidi:isolate}"

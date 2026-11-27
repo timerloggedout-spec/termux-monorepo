@@ -10,7 +10,7 @@ Use blinded native or professionally fluent Urdu reviewers. Calibrate reviewers 
 | 2 | Major repair | Meaning is partly recoverable; substantial rewriting is required. |
 | 3 | Adequate with edits | Core meaning is preserved; visible grammar, tone, or terminology edits remain. |
 | 4 | Strong | Natural and accurate Urdu; only minor stylistic edits remain. |
-| 5 | Publication-ready | Natural, context-appropriate, consistent Urdu with no material correction required. |
+| 5 | Publication-ready | Natural, context-appropriate, consistent Urdu with zero material corrections required. |
 
 ## Secondary dimensions
 - Adequacy: semantic fidelity to the source.
@@ -29,4 +29,4 @@ Use blinded native or professionally fluent Urdu reviewers. Calibrate reviewers 
 6. Report reviewer count, agreement statistic, score distribution, and uncertainty with every summary.
 
 ## Decision boundary
-A provider ranking informs workflow selection. A designated Urdu reviewer approves each published translation revision. The DOE result itself never approves catalog content.
+A provider ranking informs workflow selection. A designated Urdu reviewer approves each published translation revision. A designated Urdu reviewer approves every catalog publication.

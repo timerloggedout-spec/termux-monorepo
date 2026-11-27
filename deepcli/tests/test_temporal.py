@@ -2,6 +2,7 @@
 import sys
 import unittest
 from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from deepcli.observatory.temporal import AssignmentWindow, CollectorCycle, Phase, QueObservation, TemporalError, classify_assignment, classify_que_event, next_collector_ticks, plan_wait
@@ -46,6 +47,33 @@ class TemporalTests(unittest.TestCase):
         result = classify_assignment(self.window, self.window.closes_at)
         self.assertEqual(result.phase, Phase.LATE)
         self.assertFalse(result.window_expired)
+
+    def test_dst_fold_uses_elapsed_utc_time(self):
+        zone = ZoneInfo("America/New_York")
+        first_0130 = datetime(2026, 11, 1, 1, 30, tzinfo=zone, fold=0)
+        second_0130 = datetime(2026, 11, 1, 1, 30, tzinfo=zone, fold=1)
+        cycle = CollectorCycle(first_0130, timedelta(minutes=15))
+        next_tick = cycle.next_tick_after(second_0130)
+        self.assertEqual(next_tick.astimezone(UTC) - second_0130.astimezone(UTC), timedelta(minutes=15))
+
+    def test_dst_window_order_and_length_use_elapsed_time(self):
+        zone = ZoneInfo("America/New_York")
+        opens = datetime(2026, 11, 1, 1, 15, tzinfo=zone, fold=0)
+        nominal = datetime(2026, 11, 1, 1, 30, tzinfo=zone, fold=1)
+        closes = datetime(2026, 11, 1, 1, 45, tzinfo=zone, fold=1)
+        window = AssignmentWindow(nominal, opens, closes, timedelta(minutes=2))
+        self.assertEqual(window.open_length, timedelta(minutes=90))
+        first_0145 = datetime(2026, 11, 1, 1, 45, tzinfo=zone, fold=0)
+        self.assertEqual(classify_assignment(window, first_0145).phase, Phase.EARLY)
+
+    def test_dst_wait_ignores_past_wall_clock_deadline(self):
+        zone = ZoneInfo("America/New_York")
+        now = datetime(2026, 11, 1, 1, 30, tzinfo=zone, fold=1)
+        past = datetime(2026, 11, 1, 1, 45, tzinfo=zone, fold=0)
+        future = datetime(2026, 11, 1, 1, 45, tzinfo=zone, fold=1)
+        plan = plan_wait(now, expected_completion=future, window_close=past)
+        self.assertEqual(plan.reason, "window_close")
+        self.assertEqual(plan.wake_at, now.astimezone(UTC))
 
     def test_naive_timestamp_rejected(self):
         with self.assertRaises(TemporalError):

@@ -14,7 +14,7 @@
 - A deterministic native scorer for the same inference traces.
 - A bridge that normalizes native and ASSERT score files into repository EXPERIMENT.schema.json records and calculates descriptive 2×2 effects.
 
-The email tool is a mock side effect. The pilot makes zero mail/network calls. The native arm deliberately exposes the three policy outcomes as the control; the ACS arm tests allow, transform and deny at the tool boundary.
+The email tool is a mock side effect. All tool effects remain in-process. The native arm exposes the three policy outcomes as the control; the ACS arm tests allow, transform and deny at the tool boundary.
 
 ## Frozen cohort
 

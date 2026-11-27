@@ -4,11 +4,11 @@
 - **Companion:** https://lucasxinyu.github.io/sim/
 - **Linked paper record:** ../17_Papers/citations/sim-crsi-2026.json
 - **Local adaptation:** docs/ops/SELF-IMPROVEMENT-MEMORY.md
-- **Disposition (2026-11-27):** ADAPTED contract; runtime emission/consumption remains experimental. No live gitlink or external runtime dependency.
+- **Disposition (2026-11-27):** ADAPTED contract; runtime emission/consumption remains experimental. Live gitlink: absent; external runtime dependency: absent.
 
 ## Transferable pattern
 
-SIM is persistent memory for the **harness optimizer**, not the task-solving policy. It groups harness edits by recurring problem and preserves the rationale, predicted effect, observed result and evaluation context. Both proposer and selector consult the history. New selected attempts extend it, including regressions and unresolved failures.
+SIM is persistent memory for the **harness optimizer**; task-solving policy remains separate. It groups harness edits by recurring problem and preserves the rationale, predicted effect, observed result and evaluation context. Both proposer and selector consult the history. New selected attempts extend it, including regressions and unresolved failures.
 
 The paper's CRSI setting continues harness optimization after a compatible benchmark or policy-model change. It compares harness-only transfer, root-cause-only memory and the complete SIM record. The evaluation keeps held-out feedback outside the optimization loop.
 
@@ -17,10 +17,10 @@ The paper's CRSI setting continues harness optimization after a compatible bench
 - Four domains are studied.
 - Full SIM finishes above harness-only and root-cause-only continuation in six cross-dataset settings and four Opus-to-Gemini settings.
 - In ten independent paired coding continuations, SIM wins nine pairs and reports a mean +2.36 score-point difference (95% CI 1.05–3.68; paired p=0.003).
-- The study retains counterexamples: one coding pair favors no-SIM by 0.61 points; the Gemini 4 Argon generation comparison finishes 0.8 points below fresh RSI.
+- The study retains counterexamples: one coding pair favors SIM-free continuation by 0.61 points; the Gemini 4 Argon generation comparison finishes 0.8 points below fresh RSI.
 - The authors identify compatible executable interfaces as a transfer condition and limited independent repetitions outside the coding study as a limitation.
 
-These are preprint-reported results. This repository has not independently reproduced them. The companion page does not link a public implementation.
+These are preprint-reported results. Repository replication status: pending. The companion page lists the public implementation link as unavailable.
 
 ## Stored record details
 
@@ -47,5 +47,5 @@ Compare seed/cold-start, harness-only transfer, root-cause-only memory and full 
 - Read-only stream validator: scripts/ci/validate_sim_memory.py
 - Contract tests: tests/test_sim_memory.py
 - Bounded retrieval adapter: scripts/agent_evolution/sim_memory.py
-- Proposer/selector runtime wiring: NOT YET IMPLEMENTED
-- Independent paper replication: NOT YET PERFORMED
+- Proposer/selector runtime wiring: PENDING
+- Independent paper replication: PENDING

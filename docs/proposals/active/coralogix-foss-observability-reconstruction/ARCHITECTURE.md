@@ -77,3 +77,17 @@ A persistent service requires a separate decision covering storage, retention, b
 ## 6. Failure semantics
 
 Producer failure is distinct from collector failure and provider outage. Missing telemetry remains missing evidence. Partial exports preserve observed state and artifact digests. Provider dashboards do not override GitHub run conclusions or canonical receipts. Retries preserve original request/trace identity and add attempt metadata.
+
+
+## 7. Existing repository substrate
+
+Build on the existing implementation surfaces:
+
+- config/agent_stack_integrations.json: otel-core is already ADOPT as the canonical-neutral-telemetry-boundary.
+- docs/research/AGENT-EVIDENCE.schema.json: canonical agent execution event envelope.
+- docs/integrations/schemas/integration-event.schema.json: normalized provider integration event.
+- docs/ops/EVIDENCE-ENVELOPE.schema.json: SHA-bound reconciliation evidence.
+- scripts/telemetry_ingest/ingest.py and scripts/telemetry_ingest/sources.json: manifest-driven Provenance and HindSight sinks with a receipt.
+- data/briefing/procurement.jsonl and ops/telemetry/integration-observability-index.json: existing procurement and integration-observability records.
+
+The adapter layer maps between these contracts and provider-specific APIs. Any missing trace/experiment dimensions require a versioned extension to the owning schema, with compatibility fixtures. This proposal introduces no competing canonical event format or ledger.

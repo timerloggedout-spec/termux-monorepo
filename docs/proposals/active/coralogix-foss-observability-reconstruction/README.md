@@ -92,3 +92,10 @@ Later evidence-backed waves: persistent services; full upstream clones/dependenc
 ## 9. Immediate implementation
 
 This change adds metadata references, strengthens the reference inventory contract, reconciles the research-template listing, and files the high-detail implementation plan. Runtime adapters form the next wave because each requires pinned upstream revisions, environment/resource checks, and reproducible integration tests.
+
+
+## 10. Existing repository integration points
+
+The repository already adopts OpenTelemetry as the neutral boundary through config/agent_stack_integrations.json (otel-core, ADOPT). The current entry defines agent invocation and MCP admission inputs, OTLP-compatible export, canonical JSONL receipts, and version pinning. This adoption records the boundary decision; the Collector reference evaluates a concrete receive/process/export component.
+
+Existing contracts and pipelines are mapped in EXISTING-SYSTEM-MAP.md. Provider adapters extend these contracts through the existing integration-event and agent-evidence schemas. The existing telemetry-ingest pipeline remains the owner of its separate Provenance and HindSight outputs. ForeSight remains the procurement/research evidence spine.

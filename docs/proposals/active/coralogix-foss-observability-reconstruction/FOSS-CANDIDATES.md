@@ -4,7 +4,7 @@
 
 | Candidate | Primary capability | Reported license posture | Proposed role |
 |---|---|---|---|
-| OpenTelemetry Collector | Receivers/processors/exporters for logs, metrics, traces | Apache-2.0 | P0 interoperability and ingestion |
+| OpenTelemetry Collector | Receivers/processors/exporters for logs, metrics, traces | Apache-2.0 | P0 Collector component reference; the repository already adopts otel-core as the neutral boundary |
 | SigNoz | OTel-native logs, metrics, traces, APM | MIT core; enterprise directories carry separate terms | P1 operational UI |
 | HyperDX / ClickStack | Logs, traces, metrics, errors, session replay | MIT reported for HyperDX; verify component boundaries | P1 operational UI |
 | OpenObserve | Logs, metrics, traces, dashboards, alerts | AGPL-3.0 core; enterprise features separately licensed | P1 operational UI; legal review |

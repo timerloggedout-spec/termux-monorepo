@@ -81,7 +81,7 @@ External references:
 The paper [Self-Improvement Memory Enables Continual Recursive Self-Improvement](https://arxiv.org/abs/2611.18856) adds a distinct optimizer-side memory layer. SIM stores the rationale, predicted outcome, observed outcome and evaluation context for selected harness edits, grouped by recurring problem. The proposer and selector both consult it; later attempts append to the history.
 
 Repository adaptation:
-- Hindsight remains task/session memory; SIM is meta-memory for harness optimization.
+- Hindsight remains the general-purpose memory backend and separate telemetry-retain sink; SIM is optimizer-side meta-memory for harness evolution. Deepagent lifecycle hooks remain tracked in `docs/ops/sessions/HINDSIGHT.md`.
 - Canonical JSONL/receipts, ATES, Action→Effect, manager tournaments and evolutionary replay remain the evidence and execution owners.
 - The append-only contract is [SELF-IMPROVEMENT-MEMORY.md](SELF-IMPROVEMENT-MEMORY.md), with [schema](SELF-IMPROVEMENT-MEMORY.schema.json), read-only validator and focused tests.
 - Predictions are recorded before evaluation; selected attempts retain negative and unresolved outcomes.

@@ -12,7 +12,8 @@
 | Siglary validator | Promotion-required | Every promotion candidate | Exact-head mandate validation | Promotion remains pending |
 | `termux-smoke` | Surface-conditional | Changed paths match the canonical Termux surface registry, or manual dispatch | Smoke regression tests, core smoke, optional agent-surface probes | `SKIPPED` with reason; diff uncertainty runs smoke |
 | Dangle census | Reference-conditional | A supported reference source or target root changes | Existing baseline ratchet and JSON report | Outside supported roots: defer to scheduled/manual census |
-| Bucket-headroom contracts | Quota-code-conditional | Bucket logic, watcher workflow, process contract, or its tests change | PyYAML/pytest contract suite | Path-scoped workflow stays idle |
+| Bucket-headroom contracts | Quota-code-conditional | Bucket logic, watcher workflow, process contract, or its unit tests change | Pytest bucket logic suite | Path-scoped workflow stays idle |
+| Workflow gate contracts | Workflow-conditional | `.github/workflows/**` or workflow-contract test files change | PyYAML parsing of triggers, job conditions, and path scopes | Workflow contract suite stays idle |
 | Vercel deploy | Project-conditional | Project-scoped source changes and quota/cooldown admission succeeds | `vercel_ignore_build.sh`, project config, batch-dispatch receipt | Skip unchanged projects; defer on quota/cooldown |
 | Devin worker | Optional capacity lane | Task fit plus fresh free-tier API entitlement and quota evidence | Provider/account receipt, task output, tests, integration review | `BLOCKED` pending entitlement evidence or `SKIPPED_CAPACITY` |
 

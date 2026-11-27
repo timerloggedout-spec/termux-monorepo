@@ -29,7 +29,7 @@ class WorkflowGateContractTests(unittest.TestCase):
         self.assertIn("pull_request", event_map)
         self.assertIn("push", event_map)
         self.assertIn("workflow_dispatch", event_map)
-        self.assertFalse("paths" in event_map["pull_request"])
+        self.assertFalse("paths" in (event_map["pull_request"] or {}))
 
         steps = workflow["jobs"]["smoke"]["steps"]
         admission = next(step for step in steps if step.get("name") == "Determine Termux surface")

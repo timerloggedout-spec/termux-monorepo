@@ -79,7 +79,7 @@ Full guide: [TERMUX-SMOKE.md](TERMUX-SMOKE.md)
 - A complete path list with no Termux surface match records `SKIPPED` with reason `Termux surface unchanged`.
 - The PR lane classifier consumes the same path predicate and records `termux_smoke_required` independently from check-run status.
 
-The bucket-headroom PyYAML/pytest suite runs through its own path-scoped workflow: `.github/workflows/bucket-headroom-contract.yml`.
+The bucket-headroom PyYAML/pytest suite runs through its own path-scoped workflow: `.github/workflows/bucket-headroom-contract.yml`. Workflow YAML contracts use `.github/workflows/workflow-gate-contracts.yml`; the repo gate retains its stdlib-only runtime.
 
 ### Runtime contract
 

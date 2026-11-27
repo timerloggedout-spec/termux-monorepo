@@ -22,11 +22,22 @@ CSS = ("body{font-family:system-ui,sans-serif;max-width:860px;margin:2rem auto;p
        "a:focus,button:focus{outline:3px solid #1a73e8}")
 
 
-def page(title, body):
-    return (f'<!doctype html><html lang="en"><head><meta charset="utf-8">'
+def page(title, body, locale="en"):
+    direction = "rtl" if locale == "ur" else "ltr"
+    base = "../" if locale == "ur" else "./"
+    nav = (
+        '<nav aria-label="Language">'
+        f'<span>{html.escape("زبان" if locale == "ur" else "Language")}</span> '
+        f'<a href="{base}index.html" lang="en" hreflang="en">English</a> · '
+        f'<a href="{base}ur/index.html" lang="ur" hreflang="ur" aria-current="{"page" if locale == "ur" else "false"}">اردو</a>'
+        '</nav>'
+    )
+    rtl_css = "body{direction:rtl;text-align:right} main{unicode-bidi:plaintext} code,pre,a[dir=ltr]{direction:ltr;unicode-bidi:isolate}"
+    style = CSS + (rtl_css if locale == "ur" else "")
+    return (f'<!doctype html><html lang="{locale}" dir="{direction}"><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width,initial-scale=1">'
-            f"<title>{html.escape(title)}</title><style>{CSS}</style></head>"
-            f'<body><main>{body}</main></body></html>')
+            f'<title>{html.escape(title)}</title><style>{style}</style></head>'
+            f'<body><main>{nav}{body}</main></body></html>')
 
 
 def gh(path):
@@ -97,7 +108,35 @@ def main():
         "this page via <code>teammate-portal-status-publish.yml</code>. Contract: "
         f'<a href="https://github.com/{a.repo}/blob/master/docs/ops/REVIEW-PUBLISHING.md">REVIEW-PUBLISHING</a>.</p>'
     )
-    (out / "index.html").write_text(page("Teammate Portal · reference & status", body))
+    (out / "index.html").write_text(page("Teammate Portal · reference & status", body, "en"))
+
+    # Publish a parallel Urdu shell; source documents remain explicitly English fallbacks.
+    urdu_dir = out / "ur"
+    urdu_dir.mkdir(parents=True, exist_ok=True)
+    urdu_body = body
+    replacements = [
+        ("Teammate Portal — reference &amp; status", "ٹیم میٹ پورٹل — حوالہ اور صورتحال"),
+        ("Opportunities ∧ challenges ∧ hackathons.", "مواقع، چیلنجز اور ہیکاتھون۔"),
+        ("Standalone surface, separate from Tribute.", "یہ ایک الگ پورٹل ہے اور Tribute سے علیحدہ ہے۔"),
+        ("Done <strong>", "مکمل <strong>"),
+        ("source <code>", "ماخذ <code>"),
+        ("<h2>Done-board</h2>", "<h2>مکمل کام</h2>"),
+        ("<h2>Dispatch (label", "<h2>کام کی ترسیل (لیبل"),
+        ("<h2>Reference</h2>", "<h2>حوالہ</h2>"),
+        ("<h2>Route</h2>", "<h2>طریقۂ کار</h2>"),
+        ("<p>None filed yet.</p>", "<p>ابھی کوئی درخواست درج نہیں ہوئی۔</p>")
+    ]
+    for source, translated in replacements:
+        urdu_body = urdu_body.replace(source, translated)
+    urdu_body = (
+        '<p lang="ur" dir="rtl">یہ صفحہ اردو میں دستیاب ہے۔ حوالہ جاتی دستاویزات فی الحال انگریزی میں ہیں۔ '
+        '<a href="../plan.html" lang="en" dir="ltr">English reference documents</a></p>' + urdu_body
+    )
+    for key, (_, _) in DOCS.items():
+        urdu_body = urdu_body.replace(f'href="{key}.html"', f'href="../{key}.html"')
+    (urdu_dir / "index.html").write_text(
+        page("ٹیم میٹ پورٹل — حوالہ اور صورتحال", urdu_body, "ur")
+    )
 
 
 if __name__ == "__main__":

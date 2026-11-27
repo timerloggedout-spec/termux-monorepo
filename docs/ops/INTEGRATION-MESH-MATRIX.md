@@ -530,3 +530,22 @@ persists in cache).
 
 *End of matrix. Update rule: refresh from a poll diff or a fresh #184-style
 owner paste; never edit a row from memory alone.*
+
+
+## Lifecycle correction — 2026-11-24
+
+This dated correction supersedes the historical deployment shortlist entries
+below for execution admission while preserving the original census as history.
+
+| Provider | Historical census label | Current lifecycle | Execution rule |
+|---|---|---|---|
+| Fly.io | Token-only deploy surface | **RETIRED** | Historical Hindsight configuration and quota records remain provenance; deployment admission is disabled. |
+| Koyeb | Dormant deploy vendor | **RETIRED** | Historical Hindsight workflow and quota records remain provenance; deployment admission is disabled. |
+| Cloudflare Workers | Provider family/quota surface | **ACTIVE, PARTIAL** | PR #5807 records 2 deployed Workers; distinguish this from D1, Queues, R2, and Pages. |
+| Vercel | Active primary deploy | **ACTIVE, CAPACITY CONSTRAINED** | Application hosting remains active; serverless capability does not prove a separate deployed-function inventory. |
+| Neon | Database service | **ACTIVE** | PostgreSQL/state service; not a compute worker. |
+| Supabase | Database + Edge Functions capability | **INTEGRATED, PARTIAL** | Management/API integration evidence exists; deployed Edge Function inventory remains unverified. |
+
+The integration inventory is not a compute-node count. Keep connector/session
+availability, repository adapters, account eligibility, quota evidence, deployed
+resources, and successful workload executions as distinct dimensions.

@@ -378,3 +378,19 @@ J: agent-continuous-ops · actions-queue-reaper
 K: ml-pr-lane-classify · registration-monikers
 L: doe-cb1-acceptance · doe-live1-audit · doe-live3-autodispatch · doe-nc1-eval · doe-phrase-dispatch · continuous-evaluation · historical-evaluation-correlation · team-mvt · refTemplates-eval
 M: tribute-execute · tribute-scout · tribute-status-refresh · tribute-system1 · tribute-participation · tribute-llm-assist · tribute-diff-gate · tribute-audit-staleness
+
+
+## §4A Superseding provider lifecycle disposition — 2026-11-24
+
+This section supersedes the historical §4 deployment-board rows for execution
+admission. Earlier observations remain immutable historical evidence.
+
+| Provider | Lifecycle | Current workflow posture | Evidence |
+|---|---|---|---|
+| Fly.io | **RETIRED** | `deploy-hindsight.yml` and `fly-hindsight-config.yml` publish retirement receipts through manual dispatch only; provider deploy, secret, machine, and volume operations are removed. | Config-apply run 41410355692 failed 2026-11-02 with trial-ended/card-required; historical deploy and quota evidence retained. Account-wide provider status is not inferred. |
+| Koyeb | **RETIRED** | `koyeb-hindsight-deploy.yml` publishes a retirement receipt through manual dispatch only; push deployment and provider API operations are removed. | `KOYEB_API_TOKEN` was absent from the recorded secret-name inventory; last recorded workflow attempts were 2026-09-30. Account-wide provider status is not inferred. |
+
+Lifecycle authority: this section and `docs/DEPLOYMENT-LANES.md`. Retirement
+means excluded from this repository's deployment admission and workload
+placement. It does not delete provider resources, revoke credentials, change
+billing, or erase historical quota/commit records.

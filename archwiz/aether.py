@@ -5,7 +5,7 @@ import sys, os, subprocess, json, shlex
 
 HOME = os.path.expanduser("~")
 LLM_MAP = os.path.join(HOME, "workspace/llm_map")
-ARCHWIZ = os.path.join(HOME, "archwiz")
+ARCHWIZ = os.path.dirname(os.path.abspath(__file__))
 
 def run(cmd, cwd=None):
     p = subprocess.run(cmd, shell=True, cwd=cwd, capture_output=True, text=True)
@@ -76,7 +76,11 @@ def cmd_route(args):
     sys.argv = ["router_agent.py"] + args; rm()
 
 def cmd_manifest(args):
-    run(f"python3 {ARCHWIZ}/build_data_flow_manifest.py")
+    command = [sys.executable, os.path.join(ARCHWIZ, "build_data_flow_manifest.py"), *args]
+    out, err, rc = run(shlex.join(command), cwd=ARCHWIZ)
+    if out: print(out)
+    if err: print(err, file=sys.stderr)
+    return rc
 
 def cmd_rw(args):
     if not args: print("Usage: aether rw <data_file>"); return
@@ -134,7 +138,7 @@ def cmd_reindex(args):
         elif s == "func":
             _, err, rc = run("python3 func_indexer.py", cwd=LLM_MAP)
         elif s == "manifest":
-            _, err, rc = run(shlex.join(["python3", os.path.join(ARCHWIZ, "build_data_flow_manifest.py")]))
+            _, err, rc = run(shlex.join([sys.executable, os.path.join(ARCHWIZ, "build_data_flow_manifest.py")]))
         elif s == "tools":
             _, err, rc = run(shlex.join(["python3", os.path.join(ARCHWIZ, "build_tool_index.py")]))
         elif s == "fts":

@@ -1,8 +1,8 @@
 """Reindex pipeline: bloat → map → func → manifest → tools → fts"""
 
-import subprocess, sys, os
+import subprocess, sys, os, shlex
 HOME = os.path.expanduser("~")
-ARCHWIZ = os.path.join(HOME, "archwiz")
+ARCHWIZ = os.path.dirname(os.path.abspath(__file__))
 LLM_MAP = os.path.join(HOME, "workspace/llm_map")
 
 def run(cmd, cwd=None):
@@ -30,7 +30,8 @@ def step_func():
     return run("python3 func_indexer.py", cwd=LLM_MAP)
 
 def step_manifest():
-    return run(f"python3 {ARCHWIZ}/build_data_flow_manifest.py", cwd=ARCHWIZ)
+    command = shlex.join([sys.executable, os.path.join(ARCHWIZ, "build_data_flow_manifest.py")])
+    return run(command, cwd=ARCHWIZ)
 
 def step_tools():
     return run(f"python3 {ARCHWIZ}/build_tool_index.py", cwd=ARCHWIZ)

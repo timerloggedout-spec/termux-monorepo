@@ -121,7 +121,7 @@ python scripts/doe/assert_acs_bridge.py record \
   --batch-id pilot-001
 ~~~
 
-The output contains one canonical experiment record per planned observation and a SUMMARY.json with cell rates, evaluator/governance main effects, and the evaluator × governance interaction.
+The output contains one canonical experiment record per planned observation and a SUMMARY.json with cell rates, evaluator/governance main effects, and the evaluator × governance interaction. The pre-registered gold reference oracle supplies the same expected task-success, policy-violation and overrefusal labels to both evaluators. Summary fields separate governance task-success effects from evaluator agreement/accuracy against that common reference.
 
 ## Evidence and interpretation
 
@@ -131,7 +131,7 @@ The output contains one canonical experiment record per planned observation and 
 - ACS receipts use test_case_id, decision, reason, policy_id and intervention_point.
 - Raw message bodies and recipient addresses are excluded from ACS decision receipts.
 - Unknown and failed evaluator rows remain explicit; missing values stay null.
-- The summary is descriptive for this three-task conformance pilot. Statistical promotion requires repeated runs, confidence intervals, blind review and a wider frozen task cohort.
+- The summary is descriptive for this three-task conformance pilot. The common reference oracle is fixed in DESIGN.json before scoring; evaluator accuracy is measured against those shared labels. Statistical promotion requires repeated runs, confidence intervals, blind review and a wider frozen task cohort.
 
 ## Boundary
 

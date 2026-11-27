@@ -10,3 +10,5 @@ The scope combines:
 - DoE matrix v2 registration and typed cross-domain notation mappings.
 
 Existing dependency-phase, QUE, specialist-adapter, and ATES contracts remain authoritative. The proposal adds policy and evidence interpretation over those owners.
+
+- Brain/CNS-inspired Composer: typed Afferent Signal intake, bounded Context Assembly, Executive Intent normalization, deterministic Action Selection, Prediction Error, Homeostasis wake recommendations, and a content-addressed Composer score compiled through the existing Conductor contract. This layer remains declarative and preserves dependency-phase, Ballet, Manager, QUE, adapter, and ATES ownership. Detailed design: `docs/superpowers/specs/2026-11-27-brain-cns-composer-design.md`.

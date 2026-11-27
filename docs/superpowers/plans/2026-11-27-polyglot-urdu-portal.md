@@ -2,7 +2,7 @@
 
 Design: docs/superpowers/specs/2026-11-27-polyglot-urdu-portal-design.md
 Work item: POLY-001
-Branch: feat/polyglot-urdu-portal-20261127
+Branch: feat/polyglot-urdu-portal-20261127-v2
 
 ## Tasks
 1. Register proposal polyglot-localization and itemize implementation.

@@ -6,7 +6,7 @@ execution. This module adds temporal evidence without creating a scheduler.
 """
 from __future__ import annotations
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Iterable
 
@@ -36,14 +36,14 @@ class AssignmentWindow:
     def __post_init__(self):
         for name, value in (("nominal_at", self.nominal_at), ("opens_at", self.opens_at), ("closes_at", self.closes_at)):
             _aware(value, name)
-        if not (self.opens_at <= self.nominal_at <= self.closes_at):
+        if not (_utc(self.opens_at) <= _utc(self.nominal_at) <= _utc(self.closes_at)):
             raise TemporalError("nominal_at must fall inside the assignment window")
         if self.expected_duration <= timedelta(0):
             raise TemporalError("expected_duration must be positive")
 
     @property
     def open_length(self):
-        return self.closes_at - self.opens_at
+        return _utc(self.closes_at) - _utc(self.opens_at)
 
 @dataclass(frozen=True)
 class TimingObservation:
@@ -72,9 +72,12 @@ class CollectorCycle:
 
     def next_tick_after(self, instant):
         _aware(instant, "instant")
-        elapsed = instant - self.epoch - self.phase
+        epoch_utc = _utc(self.epoch)
+        instant_utc = _utc(instant)
+        elapsed = instant_utc - epoch_utc - self.phase
         ticks = elapsed // self.period + 1
-        return self.epoch + self.phase + ticks * self.period
+        tick_utc = epoch_utc + self.phase + ticks * self.period
+        return tick_utc.astimezone(self.epoch.tzinfo)
 
 def _aware(value, name):
     if value.tzinfo is None or value.utcoffset() is None:
@@ -96,12 +99,13 @@ def classify_assignment(window, observed_start, observed_finish=None):
         phase = Phase.LATE
     else:
         phase = Phase.ON_BEAT
-    overrun = observed_finish is not None and observed_finish - observed_start > window.expected_duration
+    overrun = finish_utc is not None and finish_utc - start_utc > window.expected_duration
     return TimingObservation(phase, offset, bool(overrun), phase is Phase.WINDOW_EXPIRED)
 
 def plan_wait(now, *, expected_completion=None, window_close=None, max_wait_until=None, event_ready=False):
     """Choose the earliest deterministic wake boundary for a WAIT to WATCH loop."""
     _aware(now, "now")
+    now_utc = _utc(now)
     candidates = []
     for value, reason, name in (
         (expected_completion, "expected_completion", "expected_completion"),
@@ -110,9 +114,9 @@ def plan_wait(now, *, expected_completion=None, window_close=None, max_wait_unti
     ):
         if value is not None:
             _aware(value, name)
-            candidates.append((max(value, now), reason))
+            candidates.append((max(_utc(value), now_utc), reason))
     if event_ready:
-        candidates.append((now, "event"))
+        candidates.append((now_utc, "event"))
     if not candidates:
         raise TemporalError("WAIT requires an event or at least one time boundary")
     wake_at, reason = min(candidates, key=lambda item: (item[0], item[1]))
@@ -136,4 +140,4 @@ def classify_que_event(state):
 def next_collector_ticks(cycles: Iterable[CollectorCycle], after: datetime):
     """Return independent collector wake times in stable chronological order."""
     _aware(after, "after")
-    return tuple(sorted(cycle.next_tick_after(after) for cycle in cycles))
+    return tuple(sorted((cycle.next_tick_after(after) for cycle in cycles), key=_utc))

@@ -47,7 +47,7 @@ GitHub source / release / documentation event
   → promote / hold / reject / supersede
 ```
 
-Research-template layout scoring remains a separate profile. Capability candidates receive category-aware metadata-readiness scoring. Neither score estimates task efficacy.
+Research-template layout scoring remains a separate profile. Capability candidates receive category-aware metadata-readiness scoring. Controlled experiments supply the separate task-efficacy evidence.
 
 ## Competition design
 

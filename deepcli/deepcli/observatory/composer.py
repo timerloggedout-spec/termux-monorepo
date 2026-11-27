@@ -131,6 +131,12 @@ def compose_score(
     plan = plan_choreography(
         tasks, strategy=policy.strategy, max_parallel=policy.max_parallel,
     )
+    # The intent task graph is canonical for dependencies. Assignment metadata
+    # supplies timing and evidence; stale caller dependency copies are replaced.
+    for task in tasks:
+        normalized_assignments[task["id"]]["depends_on"] = list(
+            task.get("depends_on", [])
+        )
     cue_sheet = build_cue_sheet(
         plan, normalized_assignments, placement=placement,
     )

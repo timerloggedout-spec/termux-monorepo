@@ -1,0 +1,35 @@
+flowchart TD
+    WORLD["World · tools · agents"] --> SENSORY["CNS-01 · Sensory Gateway"]
+    SENSORY --> RELAY["CNS-02 · Thalamic Relay"]
+    RELAY --> CONTEXT["CNS-03 · Context Memory"]
+    CONTEXT --> EXEC["CNS-04 · Executive Planner"]
+    EXEC --> SALIENCE["CNS-05 · Salience Filter"]
+    SALIENCE --> TEMPORAL["CNS-06 · Temporal Predictor"]
+    TEMPORAL --> BALLET["CNS-07 · Ballet Coordinator"]
+    BALLET --> SCORE["Composer Score v1"]
+    SCORE --> MANAGER["Manager review / approval"]
+    MANAGER --> QUE["QUE admission and claims"]
+    QUE --> CONDUCTOR["Orchestra Conductor"]
+    CONDUCTOR --> MOTOR["CNS-08 · Motor Interface"]
+    MOTOR --> ADAPTERS["Specialist adapters"]
+    ADAPTERS --> RUNTIME["Runtime events"]
+    RUNTIME --> HOMEOSTASIS["CNS-09 · Homeostasis Monitor"]
+    RUNTIME --> ATES["ATES canonical evidence"]
+    HOMEOSTASIS --> ERRORLOOP["CNS-10 · Error-Correction Loop"]
+    ATES --> ERRORLOOP
+    ERRORLOOP --> DOE["DoE / policy evaluation"]
+    DOE --> PROMOTION["Explicit policy promotion"]
+    PROMOTION --> EXEC
+
+    subgraph OWNERSHIP["Canonical authority boundaries"]
+        READY["Dependency-phase engine · readiness"]
+        QUE_OWNER["QUE · admission / claims"]
+        EXEC_OWNER["Specialist adapters · execution"]
+        EVIDENCE["ATES · evidence validation"]
+        TIME["Temporal Intelligence · timing semantics"]
+    end
+    READY -.-> BALLET
+    QUE_OWNER -.-> QUE
+    EXEC_OWNER -.-> ADAPTERS
+    EVIDENCE -.-> ATES
+    TIME -.-> TEMPORAL

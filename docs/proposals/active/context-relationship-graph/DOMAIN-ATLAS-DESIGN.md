@@ -34,7 +34,7 @@ The initial curated graph includes four verified mappings and one candidate mapp
 
 ## Interaction
 
-The Explorer presents domain cards and a relationship table. All, Semantic, Operational, and Evidence controls filter or expose the same curated graph. Controls use keyboard-accessible buttons with aria-pressed. Repository text is inserted as text nodes; links require HTTPS and open with noopener/noreferrer.
+The Explorer presents domain cards and a relationship table. All, Semantic, Operational, and Evidence controls filter or expose the same curated graph. Each domain card can be selected to inspect its incoming and outgoing relationships; All domains resets the filter. Controls use keyboard-accessible buttons with aria-pressed. Repository text is inserted as text nodes; links require HTTPS and open with noopener/noreferrer.
 
 ## Provenance and validation
 

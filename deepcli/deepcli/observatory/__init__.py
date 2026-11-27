@@ -11,11 +11,15 @@ from .ballet import plan_choreography, score_observation, run_doe_tournament, co
 from .temporal import AssignmentWindow, CollectorCycle, classify_assignment, plan_wait
 from .rhythm import RhythmicLayer, common_subdivision, exact_ratio, overlay_layers, rational_lcm
 from .conductor import ConductorPlacement, build_cue_sheet
+from .composer import ComposerIntent, ComposerPolicy, compose_score, serialize_score
+
 __all__ = [
-    "produce","critique","verify","synthesize",
-    "Leaderboard","full_factorial","taguchi_l9","mvt_shuffle","campaign", "run_trial", "plan_choreography", "score_observation",
-    "run_doe_tournament", "cohort_fingerprint", "cohort_fingerprint", "AssignmentWindow", "CollectorCycle",
+    "produce", "critique", "verify", "synthesize",
+    "Leaderboard", "full_factorial", "taguchi_l9", "mvt_shuffle", "campaign",
+    "run_trial", "plan_choreography", "score_observation", "run_doe_tournament",
+    "cohort_fingerprint", "cohort_fingerprint", "AssignmentWindow", "CollectorCycle",
     "classify_assignment", "plan_wait", "RhythmicLayer", "common_subdivision",
     "exact_ratio", "overlay_layers", "rational_lcm", "ConductorPlacement",
-    "build_cue_sheet",
+    "build_cue_sheet", "ComposerIntent", "ComposerPolicy", "compose_score",
+    "serialize_score",
 ]

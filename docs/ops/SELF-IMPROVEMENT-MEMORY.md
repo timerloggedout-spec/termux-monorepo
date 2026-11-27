@@ -32,18 +32,18 @@ These are **author-reported preprint results**; repository replication status: p
 
 ## 2. Repository boundary
 
-SIM is **optimizer memory**, a distinct layer from general-purpose agent memory services.
+SIM is **optimizer memory**, a distinct layer alongside general-purpose agent memory services.
 
 | Concern | Existing owner | SIM relationship |
 |---|---|---|
 | General-purpose memory and telemetry retention | Hindsight (`docs/ops/sessions/HINDSIGHT.md`; `docs/ops/TELEMETRY-INGEST.md`) | Separate; SIM records optimizer decisions and harness-edit outcomes rather than general memory facts or provider telemetry |
-| Canonical execution events and provenance | Agent Evidence Substrate / ATES / Action→Effect | Evidence references only; canonical records retain raw telemetry |
+| Canonical execution events and provenance | Agent Evidence Substrate / ATES / Action→Effect | Evidence references only; canonical records own raw telemetry |
 | Manager policy and orchestration | Agent Team Orchestration / MVT / DoE | Proposer and selector are manager-side consumers |
 | Deterministic offline policy replay | Evolutionary Replay / Paper2Agent | Replay can compare policy candidates; SIM supplies attributable change history |
-| Relationship evidence | Context Relationship Graph | CRG links source files, issues, PRs and evidence; SIM stores references while CRG owns graph structure |
+| Relationship evidence | Context Relationship Graph | CRG links source files, issues, PRs and evidence; SIM stores references; CRG owns graph structure |
 | External pattern intake | refTemplates / CCEL | This paper is a research reference and adapted pattern; runtime dependency status: absent |
 
-Canonical evidence remains repository-owned JSONL/receipts, immutable SHA/run linkage, task cohort, validation results, attribution confidence and Action→Effect records. ATES/WTCV remains observational; it does not become an acceptance score or merge gate.
+Canonical evidence remains repository-owned JSONL/receipts, immutable SHA/run linkage, task cohort, validation results, attribution confidence and Action→Effect records. ATES/WTCV remains observational; acceptance scores and merge gates retain separate ownership.
 
 ## 3. Event contract
 
@@ -76,7 +76,7 @@ The repository adaptation intentionally differs from the paper in four ways:
 
 1. **Append-only evidence stream.** Store problem and attempt events as JSONL records so history is reviewable and can be linked to GitHub commits and Actions artifacts. Preserve the canonical evidence corpus as the execution source of truth.
 2. **Bounded retrieval.** The paper gives the proposer and selector the complete SIM. This repository keeps the full ledger durable and uses `scripts/agent_evolution/sim_memory.py` to retrieve a bounded, deterministically ranked subset by domain, component, task overlap, source/target policy, benchmark and environment compatibility. Each result retains the complete validated event and explicit compatibility labels; improved, regressed, neutral and unresolved outcomes remain eligible. The limit is capped at 32. Ranking is a transparent ordering heuristic: exact domain is required; exact/unscoped component adds 6/1; exact target/source policy adds 5/2; exact target/source benchmark adds 5/2; exact target/source environment adds 3/1; task overlap adds 2; improved adds 1; regressed or unresolved subtracts 1; known cross-model, cross-benchmark or environment mismatch subtracts 1. Ties sort by newest record, problem ID and attempt ordinal. This score represents retrieval order; quality, correctness and confidence remain separate measures. This controls context cost; it is an explicit adaptation with semantics distinct from the paper implementation.
-3. **Evidence-linked measurements.** Observations point to existing test, workflow, artifact and Action→Effect evidence. SIM does not copy prompts, completions, raw tool arguments, session transcripts or arbitrary provider payloads.
+3. **Evidence-linked measurements.** Observations point to existing test, workflow, artifact and Action→Effect evidence. SIM stores metadata references; prompts, completions, raw tool arguments, session transcripts and arbitrary provider payloads remain in their existing governed stores.
 4. **Protected control plane.** Harness candidates execute in isolated, reviewable environments. Human objectives, permissions, credential handling, branch protections, evaluation boundaries, merge rules and repository policy remain governed by existing authorization and promotion contracts outside SIM proposals.
 
 Source/target policy fields record evidence-backed attribution independently. Unknown provider/model identity remains absent and attribution is marked `unknown`; GitHub actor identity alone is insufficient.

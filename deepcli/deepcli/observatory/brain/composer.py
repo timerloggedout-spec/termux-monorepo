@@ -57,6 +57,10 @@ def compose_score(
         "plan": {"waves": [list(wave) for wave in plan["waves"]],
                  "task_count": sum(len(wave) for wave in plan["waves"])},
         "action_shortlist": action_shortlist,
+        "action_selection_policy": {
+            "policy_version": "brain.action-selection.write-disjoint.v1",
+            "max_parallel": max_parallel,
+        },
         "timing_feedback": timing_feedback,
         "wake_recommendation": wake_recommendation,
         "cue_sheet": cue_sheet,

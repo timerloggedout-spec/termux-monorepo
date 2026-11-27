@@ -51,7 +51,7 @@ The names are typed software concepts. The mapping remains explicitly analogical
 - **Wake recommendation:** `plan_wake(now_ms, event_deadline_ms=None, window_close_ms=None, max_wait_ms=60000)` returns the earliest future boundary for collector-owned timer scheduling.
 - **Composer:** `compose_score(...)` joins normalized intent/context, ordered signal IDs, supplied Ballet plan, Conductor cue sheet, deterministic action shortlist, receipt-bound timing-error observations (run ID and evidence reference), optional homeostasis wake recommendation, authority map, candidate-only adaptation marker, and SHA-256 `score_id` over canonical JSON of preceding score fields.
 
-Identical normalized inputs and policy version produce an identical score ID.
+Identical normalized inputs and policy version produce an identical score ID. Changes to action-selection policy inputs, including max_parallel, produce distinct score IDs even when the selected task IDs remain equal.
 
 ## Authority and data flow
 
@@ -108,7 +108,7 @@ candidate -> explicit review + existing promotion gates
 
 ## Acceptance
 
-Unit tests cover normalization, duplicate conflicts, bounded context, intent validation, deterministic shortlist, write conflicts, timing classifications, earliest wake selection, integrated module wiring, receipt-bound timing feedback, deterministic score IDs, authority metadata, and cue metadata preservation. Existing focused Observatory tests and repository gates run on the exact pushed SHA. PR #5939 remains open until required checks and review disposition satisfy repository policy.
+Unit tests cover normalization, duplicate conflicts, bounded context, intent validation, deterministic shortlist, write conflicts, timing classifications, earliest wake selection, integrated module wiring, receipt-bound timing feedback, repeated-score stability, policy-sensitive score IDs, authority metadata, and cue metadata preservation. Existing focused Observatory tests and repository gates run on the exact pushed SHA. PR #5939 remains open until required checks and review disposition satisfy repository policy.
 
 ## Extension points
 

@@ -28,6 +28,7 @@
 - Past event/window boundaries yield a future wake recommendation.
 - Cue-sheet compilation preserves dependency IDs and temporal/evidence metadata.
 - Timing feedback carries both a source run ID and canonical evidence reference.
+- Composer score identity captures action-selection policy version and max_parallel, including cases where the resulting shortlist remains equal.
 
 ---
 

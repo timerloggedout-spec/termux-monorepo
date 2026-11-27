@@ -97,24 +97,33 @@ class BrainSystemTests(unittest.TestCase):
         plan = {"waves": [["build"], ["tests"]]}
         assignments = {
             "build": {"nominal_at": "n", "opens_at": "o", "closes_at": "c", "expected_duration_ms": 100, "phase": "on_beat", "open_length_ms": 10, "dependency_barriers": [], "evidence_refs": ["ates://build"]},
-            "tests": {"nominal_at": "n", "opens_at": "o", "closes_at": "c", "expected_duration_ms": 100, "phase": "on_beat", "open_length_ms": 10, "dependency_barriers": ["build-ready"], "evidence_refs": ["ates://tests"], "depends_on": ["spec"]},
+            "tests": {"nominal_at": "n", "opens_at": "o", "closes_at": "c", "expected_duration_ms": 100, "phase": "on_beat", "open_length_ms": 10, "dependency_barriers": ["build-ready"], "evidence_refs": ["ates://tests"], "depends_on": ["build"]},
         }
-        score = compose_score(
-            intent, signals, plan, assignments,
-            action_candidates=[
-                {"id": "build", "priority": 5, "writes": ["src/app.py"]},
-                {"id": "tests", "priority": 4, "writes": ["tests/test_app.py"]},
-                {"id": "docs", "priority": 2, "writes": ["src/app.py"]},
-            ],
-            max_parallel=2,
-            timing_observations=[{"task_id": "build", "run_id": "run-123", "evidence_ref": "ates://receipt/123", "expected_duration_ms": 100, "actual_duration_ms": 130}],
-            wake_context={"now_ms": 100, "window_close_ms": 150, "max_wait_ms": 100},
-        )
+        candidates = [
+            {"id": "build", "priority": 5, "writes": ["src/app.py"]},
+            {"id": "tests", "priority": 4, "writes": ["tests/test_app.py"]},
+            {"id": "docs", "priority": 2, "writes": ["src/app.py"]},
+        ]
+        timing = [{"task_id": "build", "run_id": "run-123", "evidence_ref": "ates://receipt/123", "expected_duration_ms": 100, "actual_duration_ms": 130}]
+        wake = {"now_ms": 100, "window_close_ms": 150, "max_wait_ms": 100}
+        score = compose_score(intent, signals, plan, assignments, action_candidates=candidates,
+                              max_parallel=2, timing_observations=timing, wake_context=wake)
+        repeated = compose_score(intent, signals, plan, assignments, action_candidates=candidates,
+                                  max_parallel=2, timing_observations=timing, wake_context=wake)
+        policy_variant = compose_score(intent, signals, plan, assignments, action_candidates=candidates,
+                                        max_parallel=3, timing_observations=timing, wake_context=wake)
         self.assertEqual(score["action_shortlist"], ["build", "tests"])
         self.assertEqual(score["timing_feedback"][0]["drift_ms"], 30)
         self.assertEqual(score["timing_feedback"][0]["run_id"], "run-123")
         self.assertEqual(score["timing_feedback"][0]["evidence_ref"], "ates://receipt/123")
         self.assertEqual(score["wake_recommendation"]["wake_at_ms"], 150)
+        self.assertEqual(score["schema_version"], "brain.composer.score.v1")
+        self.assertEqual(score["authority"]["admission_and_claims"], "QUE")
+        self.assertEqual(score["cue_sheet"]["authority"], "dispatch_intent_only")
+        self.assertEqual(score["cue_sheet"]["waves"][1]["tasks"][0]["depends_on"], ["build"])
+        self.assertEqual(score["score_id"], repeated["score_id"])
+        self.assertEqual(score["action_shortlist"], policy_variant["action_shortlist"])
+        self.assertNotEqual(score["score_id"], policy_variant["score_id"])
 
     def test_conductor_preserves_required_cue_metadata(self):
         assignments = {"a": {"nominal_at": "n", "opens_at": "o", "closes_at": "c", "expected_duration_ms": 10, "phase": "on_beat", "open_length_ms": 10, "dependency_barriers": ["a-ready"], "evidence_refs": ["ates://a"], "depends_on": ["root"]}}

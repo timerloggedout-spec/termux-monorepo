@@ -36,7 +36,7 @@ SIM is **optimizer memory**, not another general-purpose agent memory service.
 
 | Concern | Existing owner | SIM relationship |
 |---|---|---|
-| Task/session facts and experience | Hindsight integration | Separate; SIM records why harness changes were made and how they evaluated |
+| General-purpose memory and telemetry retention | Hindsight (`docs/ops/sessions/HINDSIGHT.md`; `docs/ops/TELEMETRY-INGEST.md`) | Separate; SIM records optimizer decisions and harness-edit outcomes rather than general memory facts or provider telemetry |
 | Canonical execution events and provenance | Agent Evidence Substrate / ATES / Action→Effect | Evidence references only; SIM does not duplicate raw telemetry |
 | Manager policy and orchestration | Agent Team Orchestration / MVT / DoE | Proposer and selector are manager-side consumers |
 | Deterministic offline policy replay | Evolutionary Replay / Paper2Agent | Replay can compare policy candidates; SIM supplies attributable change history |

@@ -10,7 +10,7 @@
 
 ## What this is
 
-The monorepo is the ICM workspace. Its own `docs/icm/` catalog, contracts, cards, process definitions, and maintenance Pipeline are the **operative** method. The shallow submodules under `refTemplates/smods/` are read-only **reference inputs**: they supply a form-selection skill, full conventions/examples, layered-routing precedent, filesystem-memory evidence, and an optional visual-review pattern. They do not run automatically, replace governance, or authorize code changes.
+The monorepo is the ICM workspace. Its own `docs/icm/` catalog, contracts, cards, process definitions, and maintenance Pipeline are the **operative** method. The shallow submodules under `refTemplates/smods/` are read-only **reference inputs**: they supply a form-selection skill, full conventions/examples, layered-routing precedent, filesystem-memory evidence, and an optional visual-review pattern. Metadata-only entries under `refTemplates/13_Third_Party_Refs/` supply cited design patterns while their source code and media remain upstream.
 
 | Reference input | Use in this repository | Do not treat as |
 |---|---|---|
@@ -20,6 +20,7 @@ The monorepo is the ICM workspace. Its own `docs/icm/` catalog, contracts, cards
 | `cost-of-remembering_fork` | Filesystem-memory vs long-context evidence (LongMemEval: ~parity accuracy, 97% fewer tokens, 95% lower cost) | Automatic harness execution, CI control plane, or committed API keys |
 | `icm-cctv_fork` | Optional visual review, stage-card mirroring, and human checkpoint patterns | A mandatory renderer, a deployment target, or the primary stage-output store |
 | `AuditEngine_fork` (staged adapt) | Psychometric / ethics-engine assessment patterns for LLMs | Live deploy or provider-key custody without Tier-4 authorization |
+| `spaceship-ide` (Tier-C metadata reference) | Human/LLM attention visualization, phrase locks, semantic steering, and realtime regeneration patterns | Executable dependency, agent runtime, or an imported credential flow |
 
 ## Read when
 
@@ -27,7 +28,7 @@ Open this card when selecting a reference, updating a pinned fork, deciding whet
 
 ## First-order impact
 
-**Hits:** the custom-reference Gitlinks, the ICM map, method coverage, and the human review boundary.
+**Hits:** custom-reference Gitlinks, Tier-C design references, the ICM map, method coverage, and the human review boundary.
 **Does not hit:** application runtime, Termux MCP/device access, external service accounts, or a new deployment automatically.
 
 ## Evidence
@@ -38,3 +39,5 @@ Open this card when selecting a reference, updating a pinned fork, deciding whet
 [4] [`refTemplates/smods/cost-of-remembering_fork/README.md`](../../../../refTemplates/smods/cost-of-remembering_fork/README.md) (after submodule init) — LongMemEval harness and paper.
 [5] [`refTemplates/smods/icm-cctv_fork/README.md`](../../../../refTemplates/smods/icm-cctv_fork/README.md) defines the optional visual layer and file-based checkpoint loop.
 [6] Native card: [`cost-of-remembering.md`](cost-of-remembering.md).
+
+[7] [`refTemplates/13_Third_Party_Refs/spaceship-ide/README.md`](../../../../refTemplates/13_Third_Party_Refs/spaceship-ide/README.md) records the MIT-licensed interaction-pattern source at an immutable revision.

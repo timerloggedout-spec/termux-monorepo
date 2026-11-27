@@ -58,6 +58,8 @@ While useful work is running, continue only with work that cannot mutate or inva
 
 Do not create competing writes, duplicate workflow dispatches, or overlapping branches merely to stay busy.
 
+**Review-finding isolation:** When actionable review feedback arrives during an active validation cohort, classify and record each finding while preserving the watched SHA. Let the current cohort reach terminal before applying a successor commit; then re-run the affected gates and bind all new conclusions to the successor SHA. Preserve the earlier run evidence as historical.
+
 ## Retry / steering rule
 
 Retry only when the new attempt has an evidence-backed reason to differ: changed input or SHA; transient infrastructure/provider failure; recovered capacity/quota; corrected workflow/reference; or a new review finding or authoritative instruction.
@@ -690,3 +692,20 @@ Session 2026-10-19 14:15 PDT / 2026-10-19 21:15 UTC:
 - Recent gates success/skipped. help-wanted execute in_progress on tip. No tip failures. Decision: QUIET / KEEP. No promote.
 - #1286 dual-gate PASS but not on tip base. Master functional. Disjoint: skills updated with recon.
 - Agent-Identity: Grok (Administrator)
+
+
+Session 2026-11-23 14:18 UTC:
+- Watched PR #5822 head `3dbfe3fc7f71ce6d4ebf32f2d6214b65f50dd623`, base `64a7b5251692434b91d526849b4389bb96639c57`.
+- Initial Actions queue depth was 273 and later 238. Required gates reached terminal success: repo gate 45191122771, termux smoke 45191122793, refTemplates evaluation 45191122880, proposal lifecycle 45191122706, DO Statement Style 45191122728; CodeQL 45191122720 also succeeded.
+- PR production ledger 45191122590 and Sweep Accountability 45191122944 succeeded.
+- Action Effectiveness Ledger 45191122773 failed at GitHub API HTTP 403 rate limit during event measurement. Classified as API-capacity infrastructure evidence; the longitudinal ledger publish step was skipped.
+- Devin Review identified four actionable findings: whitespace-only SOURCE preview safety, base-to-head whitespace-check semantics, directory-only metadata validation wording, and Tier-C scoring scope in the index.
+- Decision: preserve the watched SHA through terminal required gates, then apply a successor revision with focused regression coverage. Earlier run evidence remains historical.
+
+
+Session 2026-11-23T14:28:56.007Z:
+- Successor validation head `ce1cd893efec702074512315152b7d67ab949b00` passed refTemplates inventory contract tests, strict inventory, score, repo gate, Termux smoke, proposal lifecycle, adaptive-wait contract, Skill Quality Lane, Workflow Surface Evidence, CodeQL, PR production ledger, Sweep Accountability, and Action Effectiveness Ledger.
+- The DO Statement Style check identified generated lane-matrix commit subjects beginning `materialize`. The verb is action-first and positive; the allowlist now includes `materialize` in commit `500c59fe71d0f1a3cad1071be3e1dd099c3c3d1a`.
+- ArchWiz dangle census reported baseline drift in unrelated application/documentation paths; the new Spaceship reference links were absent from its findings and passed the independent relative-link audit.
+- Current synchronized branch head: `41b8f9c7d46d8adc11ba666876758438879b1fa4`; PR base refreshed to current `master`.
+- Decision: initiate a fresh validation cohort after the action-verb correction; keep earlier run evidence as historical and classify the final result only against the new head.

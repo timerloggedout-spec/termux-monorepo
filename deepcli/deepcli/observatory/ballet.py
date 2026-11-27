@@ -4,6 +4,7 @@ Planning primitive only: manager and dependency-phase control planes retain
 readiness, dispatch, routing, execution, evidence, and promotion authority.
 """
 from __future__ import annotations
+import math
 from typing import Any, Iterable, Mapping
 from .doe import full_factorial
 from .tournament import campaign
@@ -85,7 +86,7 @@ def plan_choreography(tasks: Iterable[Mapping[str, Any]], strategy: str = "adapt
 
 def score_observation(observation: Mapping[str, Any],
                       weights: Mapping[str, float] | None = None) -> dict[str, Any]:
-    """Score an online receipt; missing evidence is rejected, never zero-filled."""
+    """Validate a complete online receipt and return a versioned score."""
     required = {"accepted", "integrated_correctness", "time_to_integration_ms",
                 "cost_usd", "retries", "conflicts", "duplicate_actions", "human_interventions"}
     missing = required - observation.keys()
@@ -94,17 +95,17 @@ def score_observation(observation: Mapping[str, Any],
     if not isinstance(observation["accepted"], bool) or not isinstance(observation["integrated_correctness"], bool):
         raise ValueError("accepted and integrated_correctness must be booleans")
     for key in required - {"accepted", "integrated_correctness"}:
-        if float(observation[key]) < 0:
-            raise ValueError(f"{key} cannot be negative")
+        if not math.isfinite(float(observation[key])) or float(observation[key]) < 0:
+            raise ValueError(f"{key} must be finite and non-negative")
     chosen = dict(weights or DEFAULT_WEIGHTS)
-    if set(chosen) != set(DEFAULT_WEIGHTS) or any(float(v) < 0 for v in chosen.values()) or sum(chosen.values()) <= 0:
+    if set(chosen) != set(DEFAULT_WEIGHTS) or any(not math.isfinite(float(v)) or float(v) < 0 for v in chosen.values()) or sum(chosen.values()) <= 0:
         raise ValueError("weights must contain the five documented non-negative keys and sum > 0")
     total = sum(chosen.values())
     chosen = {k: float(v) / total for k, v in chosen.items()}
     baselines = observation.get("baselines", {})
     time_budget = float(baselines.get("time_to_integration_ms", 3600000))
     cost_budget = float(baselines.get("cost_usd", 1.0))
-    if time_budget <= 0 or cost_budget <= 0:
+    if not math.isfinite(time_budget) or not math.isfinite(cost_budget) or time_budget <= 0 or cost_budget <= 0:
         raise ValueError("time and cost baselines must be positive")
     time_score = max(0.0, 1.0 - float(observation["time_to_integration_ms"]) / time_budget)
     cost_score = max(0.0, 1.0 - float(observation["cost_usd"]) / cost_budget)
@@ -126,7 +127,7 @@ def run_doe_tournament(tasks: Iterable[Mapping[str, Any]],
     """Compare fixed-cohort policy arms through existing DoE and tournament APIs.
 
     observations is keyed by arm id, e.g. adaptive-cap4. Receipts must come from
-    online runs; a planned route alone earns no performance credit.
+    online runs; performance credit requires an evidence-bearing receipt.
     """
     cohort = list(tasks)
     if not cohort:

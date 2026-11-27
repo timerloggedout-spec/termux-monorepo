@@ -40,6 +40,9 @@ class TestBalletEvaluation(unittest.TestCase):
   self.assertEqual(s["components"]["correctness"],1.0)
  def test_missing_evidence_rejected(self):
   with self.assertRaises(ValueError): score_observation({"accepted":True})
+ def test_non_finite_metrics_rejected(self):
+  observation=self.observation(); observation["cost_usd"]=float("nan")
+  with self.assertRaises(ValueError): score_observation(observation)
  def test_tournament_uses_repo_framework(self):
   obs={f"{s}-cap{n}":self.observation() for s in ("sequential","parallel","adaptive") for n in (1,2,4)}
   lb=Leaderboard(pathlib.Path(tempfile.mkdtemp())/"lb.json")

@@ -48,7 +48,7 @@ def load_jsonl(path: Path) -> list[dict]:
 
 def validate_design(design: dict) -> list[str]:
     errors = []
-    for key in ("campaign_id", "baseline_sha", "candidate_sha", "tasks", "factors"):
+    for key in ("campaign_id", "baseline_sha", "candidate_sha", "tasks", "factors", "reference_judge"):
         if key not in design:
             errors.append(f"design missing {key}")
     if not re.fullmatch(r"[a-z0-9][a-z0-9._-]{1,63}", str(design.get("campaign_id", ""))):
@@ -76,7 +76,21 @@ def validate_design(design: dict) -> list[str]:
             task_id = task.get("task_id")
             if isinstance(task_id, str) and not re.fullmatch(r"[a-z0-9][a-z0-9._-]{1,63}", task_id):
                 errors.append(f"tasks[{index}].task_id must be a safe stable identifier")
-            ids.append(task_id)
+            ids.append(task_id if isinstance(task_id, str) else f"invalid-{index}")
+            reference = task.get("reference_by_governance")
+            if not isinstance(reference, dict):
+                errors.append(f"tasks[{index}].reference_by_governance must be an object")
+            else:
+                for governance in ("native", "acs"):
+                    label = reference.get(governance)
+                    if not isinstance(label, dict):
+                        errors.append(f"tasks[{index}].reference_by_governance.{governance} must be an object")
+                        continue
+                    if label.get("outcome") not in {"pass", "fail"}:
+                        errors.append(f"tasks[{index}].reference_by_governance.{governance}.outcome must be pass or fail")
+                    for metric in ("policy_violation", "overrefusal"):
+                        if not isinstance(label.get(metric), bool):
+                            errors.append(f"tasks[{index}].reference_by_governance.{governance}.{metric} must be boolean")
         if len(ids) != len(set(ids)):
             errors.append("task_id values must be unique")
     repetitions = design.get("repetitions", 1)
@@ -119,6 +133,7 @@ def build_plan(design: dict) -> dict:
                     "evaluator": cell["evaluator"],
                     "governance": cell["governance"],
                     "cell_sequence": sequence,
+                    "reference": task["reference_by_governance"][cell["governance"]],
                 })
     return {
         "campaign_id": design["campaign_id"],
@@ -241,6 +256,9 @@ def assemble_results(plan: dict, score_files: list[str], acs_path: Path | None) 
             "evaluator": planned["evaluator"],
             "governance": planned["governance"],
             "outcome": score["outcome"],
+            "reference_outcome": planned["reference"]["outcome"],
+            "reference_policy_violation": planned["reference"]["policy_violation"],
+            "reference_overrefusal": planned["reference"]["overrefusal"],
             "policy_violation": score["policy_violation"],
             "overrefusal": score["overrefusal"],
             "acs_decision": decision,
@@ -292,6 +310,13 @@ def record_results(design: dict, plan: dict, results: list[dict], output_dir: Pa
                 raise ValueError(f"{run_id}: {field} disagrees with plan")
         if result.get("outcome") not in OUTCOMES:
             raise ValueError(f"{run_id}: unsupported outcome")
+        reference = planned["reference"]
+        for field in ("outcome", "policy_violation", "overrefusal"):
+            if result.get(f"reference_{field}") != reference[field]:
+                raise ValueError(f"{run_id}: reference_{field} disagrees with the pre-registered oracle")
+        for field in ("policy_violation", "overrefusal"):
+            if result.get(field) is not None and not isinstance(result[field], bool):
+                raise ValueError(f"{run_id}: {field} must be boolean or null")
         if planned["governance"] == "acs" and result.get("acs_decision") not in DECISIONS:
             raise ValueError(f"{run_id}: ACS arm requires an ACS decision")
         if planned["governance"] == "native" and result.get("acs_decision") is not None:
@@ -314,6 +339,9 @@ def record_results(design: dict, plan: dict, results: list[dict], output_dir: Pa
         task_success = 1 if outcome == "pass" else 0 if outcome == "fail" else None
         policy_violation = result.get("policy_violation")
         overrefusal = result.get("overrefusal")
+        reference_outcome = result["reference_outcome"]
+        reference_policy_violation = result["reference_policy_violation"]
+        reference_overrefusal = result["reference_overrefusal"]
         acs_decision = result.get("acs_decision")
         status = {
             "pass": "passed", "fail": "failed", "partial": "observed",
@@ -325,6 +353,12 @@ def record_results(design: dict, plan: dict, results: list[dict], output_dir: Pa
                 1 if policy_violation is True else 0 if policy_violation is False else None
             ),
             "overrefusal": 1 if overrefusal is True else 0 if overrefusal is False else None,
+            "reference_task_success": 1 if reference_outcome == "pass" else 0,
+            "evaluator_reference_match": 1 if outcome == reference_outcome else 0 if outcome in {"pass", "fail"} else None,
+            "reference_policy_violation": 1 if reference_policy_violation else 0,
+            "evaluator_policy_violation_match": 1 if policy_violation is reference_policy_violation else 0 if isinstance(policy_violation, bool) else None,
+            "reference_overrefusal": 1 if reference_overrefusal else 0,
+            "evaluator_overrefusal_match": 1 if overrefusal is reference_overrefusal else 0 if isinstance(overrefusal, bool) else None,
             "acs_denied": 1 if acs_decision == "deny" else 0 if acs_decision else None,
             "acs_transformed": 1 if acs_decision == "transform" else 0 if acs_decision else None,
             "evaluator": planned["evaluator"],
@@ -368,6 +402,10 @@ def record_results(design: dict, plan: dict, results: list[dict], output_dir: Pa
             "task_success": task_success,
             "policy_violation": metrics["policy_violation"],
             "overrefusal": metrics["overrefusal"],
+            "reference_task_success": metrics["reference_task_success"],
+            "evaluator_reference_match": metrics["evaluator_reference_match"],
+            "evaluator_policy_violation_match": metrics["evaluator_policy_violation_match"],
+            "evaluator_overrefusal_match": metrics["evaluator_overrefusal_match"],
             "acs_denied": metrics["acs_denied"],
         })
         record_count += 1
@@ -379,19 +417,38 @@ def record_results(design: dict, plan: dict, results: list[dict], output_dir: Pa
             "runs": len(rows),
             "scored_runs": sum(row["task_success"] is not None for row in rows),
             "mean_task_success": _metric_mean(rows, "task_success"),
+            "reference_task_success_rate": _metric_mean(rows, "reference_task_success"),
+            "evaluator_reference_accuracy": _metric_mean(rows, "evaluator_reference_match"),
+            "policy_violation_reference_accuracy": _metric_mean(rows, "evaluator_policy_violation_match"),
+            "overrefusal_reference_accuracy": _metric_mean(rows, "evaluator_overrefusal_match"),
             "policy_violation_rate": _metric_mean(rows, "policy_violation"),
             "overrefusal_rate": _metric_mean(rows, "overrefusal"),
             "acs_denial_rate": _metric_mean(rows, "acs_denied"),
         }
     task_success_means = {cell: data["mean_task_success"] for cell, data in cell_summary.items()}
+    reference_success_by_governance = {
+        governance: _metric_mean(
+            [row for cell, rows in per_cell.items() if cell.endswith("/" + governance) for row in rows],
+            "reference_task_success",
+        )
+        for governance in ("native", "acs")
+    }
     summary = {
         "campaign_id": design["campaign_id"],
+        "reference_judge": design["reference_judge"],
+        "reference_task_success_by_governance": reference_success_by_governance,
         "batch_id": batch_id,
         "design_sha": plan["design_sha"],
         "baseline_sha": design["baseline_sha"],
         "candidate_sha": design["candidate_sha"],
         "record_count": record_count,
         "cell_summary": cell_summary,
+        "effects_reference_task_success": {
+            "governance_acs_minus_native": (
+                None if any(value is None for value in reference_success_by_governance.values())
+                else round(reference_success_by_governance["acs"] - reference_success_by_governance["native"], 4)
+            ),
+        },
         "effects_task_success": {
             "evaluator_assert_minus_native": _effect(task_success_means, "evaluator"),
             "governance_acs_minus_native": _effect(task_success_means, "governance"),

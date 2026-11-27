@@ -4,7 +4,7 @@
 The adapter plans a blocked 2x2 evaluator x governance comparison, normalizes
 ASSERT/native score artifacts plus ACS decision receipts, and emits the
 canonical EXPERIMENT.schema.json records and a descriptive factorial summary.
-It performs no network calls and never executes a target.
+The adapter operates offline; target execution remains a separate stage.
 """
 from __future__ import annotations
 

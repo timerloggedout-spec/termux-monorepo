@@ -32,7 +32,7 @@ SEED_ELO = {
     "jdingel-projecttemplate": 1050,
     "3rdCore-Research_Project_Template": 1080,
 }
-PIN_RE = re.compile(r"(?:/commit/|@)([0-9a-f]{7,40})|/releases/tag/|/tree/v?\d")
+PIN_RE = re.compile(r"(?:/(?:commit|tree)/|@)[0-9a-f]{40}(?=$|[\s/?#),.;])|/releases/tag/v?\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?(?=$|[\s/?#),.;])", re.IGNORECASE)
 
 
 def score_child(name: str, has_source: bool, has_readme: bool, source_preview: str | None) -> dict:

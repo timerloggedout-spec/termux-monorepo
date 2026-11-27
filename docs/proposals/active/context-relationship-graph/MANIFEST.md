@@ -68,3 +68,9 @@ The work extends the existing local context graph rather than treating it as aut
 - Historical Corpus Explorer plan: [./HISTORICAL-CORPUS-EXPLORER-INTEGRATION-PLAN.md](./HISTORICAL-CORPUS-EXPLORER-INTEGRATION-PLAN.md)
 - Source: [./source.md](./source.md)
 - ICM navigation surface: [../../icm/objects/knowledge/navigation-and-indexes.md](../../icm/objects/knowledge/navigation-and-indexes.md)
+
+
+## Review Log — 2026-11-27
+
+- Operator instruction: continue the existing Context Relationship Graph / Historical Corpus Explorer work by adding a Domain Atlas as an optional interaction layer.
+- Scope registered as CRG-16. The implementation reuses the existing Explorer, canonical evidence corpus, and proposal lifecycle. The Atlas is a curated read-only projection; verified relationships carry source-document evidence.

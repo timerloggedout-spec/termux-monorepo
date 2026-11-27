@@ -10,12 +10,12 @@
 
 - Observe: collect current-SHA evidence and relevant historical/template evidence.
 - Contextualize: use the context-relationship graph and exact roots; separate verified relationships from candidates.
-- Adapt: extract the smallest transferable contract; do not copy assumptions, permissions, metrics, or infrastructure blindly.
+- Adapt: extract the smallest transferable contract; preserve local assumptions, permissions, metrics, and infrastructure ownership.
 - Implement: make one bounded change.
 - Verify: run deterministic tests and relevant GitHub workflow gates.
 - Record: preserve source/version, adaptation, evidence, outcome, and remaining uncertainty.
 - Recompare: compare the new version with its predecessor and applicable upstream/template contract.
-- Repeat: continue only while evidence shows a useful delta.
+- Repeat: continue while evidence shows a useful delta.
 
 ## 2. Template/resource adoption
 
@@ -82,7 +82,7 @@ Promotion requires current immutable SHA, current base/merge relationship, relev
 
 Terminal states: success | clean-no-op | blocked | approval-required | exhausted | stagnated.
 
-Never convert provider failure, skipped review, rate limit, stale SHA, or infrastructure/browser failure into correctness success.
+Classify provider failure, skipped review, rate limit, stale SHA, and infrastructure/browser failure as their observed operational outcomes. Preserve correctness success as a separate evidence-backed conclusion.
 
 ## 7. Reusable adaptation template
 
@@ -107,6 +107,6 @@ Never convert provider failure, skipped review, rate limit, stale SHA, or infras
 
 ## 8. Anti-patterns
 
-Do not dismiss useful lessons solely because they are external; copy external policy without local validation; conflate activity with outcome; overwrite historical evidence; merge on stale-SHA evidence; let throughput optimize correctness; let tool-definition quality masquerade as task success; or let a relationship candidate become an asserted fact.
+Preserve useful external lessons and apply local validation before adoption. Separate activity from outcome, append historical evidence, bind reviews to current SHA, protect correctness from throughput proxies, keep TDQS scoped to tool-definition quality, and retain relationship candidates as candidates until verified.
 
 **Owner boundaries:** CRG owns relationship evidence; adaptive-wait owns asynchronous control; evidence-led-monorepo-ops owns repository evidence discipline; ATES owns execution telemetry; TDQS owns tool-definition quality; SIM records optimizer-side improvement history without becoming a second evidence or execution plane.

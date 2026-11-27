@@ -8,6 +8,7 @@
 | CCEL-004 | P1 | executing | Define event-driven awareness and GitHub-native trigger mapping. | PR/push/release/issues/workflow events map to existing paths; events are primary; bounded cursor reconciliation is fallback; no weekly discovery scheduler. |
 | CCEL-005 | P1 | queued | Define DoE campaign admission, execution, analysis and promotion evidence. | Shared cohort/configuration identity, immutable run evidence, randomization/blocking, interaction analysis, uncertainty, costs and fail-closed promotion specified. |
 | CCEL-006 | P1 | queued | Document FOSS template inspiration, benefit compounding and evolutionary reuse. | Candidates have disposition and source provenance; reuse/combination measured; Pareto trade-offs and maintenance/security costs visible. |
+| CCEL-007 | P1 | executing | Adapt Self-Improvement Memory (SIM) for optimizer-side harness evolution using the existing evidence and orchestration planes. | Paper and refTemplates source records are linked; closed JSON Schema captures problem, selected edit, rationale, prediction, observation and model/benchmark/run context; read-only JSONL validator checks schema, unique IDs, problem-open ordering and attempt ordinals; tests retain negative outcomes and enforce the held-out feedback boundary; no parallel memory database, telemetry store, or autonomous promotion; runtime proposer/selector integration remains explicitly experimental. |
 
 | MOS-007 | P0 | executing | Implement the root Brain's domain-neutral, versioned specialist extension contract; implement the pure MOSAIC crate and adapter under `archwiz/mosaic_brain/`; register root Brain/MOSAIC scopes and ICM navigation; compose it from the existing host only after host ownership is verified. | `termux-brain` exports a validated typed extension contract; MOSAIC implements it through a one-way path dependency; run/cycle/attempt identity is preserved; contract/domain mismatches fail closed; evidence and recommendation rules are deterministic and tested; CRG scopes and ICM cards are present; generated graph publication remains with the publisher; no root-to-MOSAIC dependency or duplicate registry; host runtime routing remains a separately verified follow-on. |
 
@@ -17,6 +18,8 @@
 - python3 -m unittest discover -s tests -p 'test_capability_opportunity_graph.py' -v
 - python3 scripts/integrations/validate_portfolio.py
 - python3 scripts/proposals/validate_registry.py
+- python3 -m pytest tests/test_sim_memory.py -q
+- python3 scripts/ci/validate_sim_memory.py --path /path/to/sim-memory.jsonl
 - python3 scripts/ci/repo_gate.py
 - python3 scripts/ci/termux_smoke.py
 

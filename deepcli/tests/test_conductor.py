@@ -5,6 +5,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from deepcli.observatory.conductor import ConductorPlacement, build_cue_sheet
 
+
 class ConductorTests(unittest.TestCase):
     def setUp(self):
         self.plan = {"waves": [["spec"], ["tests", "docs"]]}
@@ -23,6 +24,7 @@ class ConductorTests(unittest.TestCase):
             }
             for task in ("spec", "tests", "docs")
         }
+
     def test_all_three_placements_emit_same_work_coverage(self):
         sheets = [build_cue_sheet(self.plan, self.assignments, placement) for placement in ConductorPlacement]
         self.assertEqual({sheet["task_count"] for sheet in sheets}, {3})
@@ -34,6 +36,7 @@ class ConductorTests(unittest.TestCase):
         self.assertEqual(cue["open_length_ms"], 330000)
         self.assertEqual(cue["dependency_barriers"], ["phase-dag:spec-ready"])
         self.assertEqual(cue["evidence_refs"], ["ates://receipt/source-spec"])
+
     def test_missing_temporal_metadata_rejected(self):
         incomplete = dict(self.assignments)
         incomplete["spec"] = {"nominal_at": "2026-11-27T12:00:00Z"}
@@ -43,9 +46,32 @@ class ConductorTests(unittest.TestCase):
     def test_missing_assignment_rejected(self):
         with self.assertRaises(ValueError):
             build_cue_sheet(self.plan, {"spec": {}}, "manager_policy")
+
     def test_duplicate_task_identity_rejected(self):
         with self.assertRaises(ValueError):
             build_cue_sheet({"waves": [["spec"], ["spec"]]}, self.assignments, "manager_policy")
+
+    def test_rejects_scalar_cue_list_fields(self):
+        for field in ("dependency_barriers", "evidence_refs", "depends_on", "wake_conditions"):
+            assignments = {key: dict(value) for key, value in self.assignments.items()}
+            assignments["spec"][field] = "scalar-value"
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, field):
+                build_cue_sheet({"waves": [["spec"]]}, assignments, "manager_policy")
+
+    def test_rejects_invalid_durations(self):
+        for field, value in (("expected_duration_ms", 0), ("expected_duration_ms", True), ("open_length_ms", 0), ("open_length_ms", True)):
+            assignments = {key: dict(item) for key, item in self.assignments.items()}
+            assignments["spec"][field] = value
+            with self.subTest(field=field, value=value), self.assertRaisesRegex(ValueError, field):
+                build_cue_sheet({"waves": [["spec"]]}, assignments, "manager_policy")
+
+    def test_rejects_blank_timestamp_fields(self):
+        for field in ("nominal_at", "opens_at", "closes_at"):
+            assignments = {key: dict(item) for key, item in self.assignments.items()}
+            assignments["spec"][field] = " "
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, field):
+                build_cue_sheet({"waves": [["spec"]]}, assignments, "manager_policy")
+
 
 if __name__ == "__main__":
     unittest.main()

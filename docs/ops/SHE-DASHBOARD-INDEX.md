@@ -13,6 +13,8 @@ This is the navigation entry point for the SHE dashboard contract and its surrou
 
 - TRIGGER-WORKFLOW-REGISTRY.md — human-readable entry-method, trigger, selector, QUE admission, workflow, and feed map.
 - TRIGGER-WORKFLOW-REGISTRY.json — machine-readable registry (`trigger-workflow-registry/v1`).
+- ISSUE-TEMPLATE-CENSUS.md — source-derived census of all 14 YAML issue forms.
+- `generated/issue-template-census.json` — machine-readable template census with source blob SHAs.
 - The registry indexes (and does not duplicate) the generated 331-workflow catalog at `docs/ops/generated/automation-workflow-catalog.json`.
 
 ## Visual pipeline

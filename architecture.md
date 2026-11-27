@@ -166,6 +166,7 @@ This is a navigation taxonomy of major ownership zones, not a recursive inventor
 | `docs/architecture/` | Architecture specs, decisions, and architecture index |
 | `docs/icm/` | ICM system map: objects, processes, effects, maintenance |
 | `docs/ops/` | Operational contracts, telemetry, dashboards, runbooks, diagrams, evidence |
+| [`docs/design/`](docs/design/README.md) | User-facing design surface map, per-system design records, and shared design guidance |
 | `docs/proposals/` | Proposal registry, active work packages, review lifecycle |
 | `docs/schemas/` | Shared schemas and capability contracts |
 | `docs/integrations/` | Integration catalog, adapter contracts, event schemas |

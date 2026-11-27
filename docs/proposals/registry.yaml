@@ -1394,3 +1394,22 @@ proposals:
     gates_required:
       - repo-gate
       - termux-smoke
+
+  - id: rhythmic-systems-temporal-intelligence
+    title: "Rhythmic Systems: Temporal Intelligence, Ballet coordination, Jazz taxonomy, and Music as Code"
+    author: ChatGPT
+    status: accepted
+    priority: P1
+    path: active/rhythmic-systems-temporal-intelligence/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs:
+      - 5939
+    related_branches:
+      - feat/rhythmic-temporal-intelligence
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke

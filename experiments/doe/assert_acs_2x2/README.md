@@ -31,10 +31,10 @@ The task-set order fixes the canonical ASSERT IDs. The plan uses one observation
 Python 3.11+:
 
 ~~~bash
-python -m pip install "assert-ai[acs,phoenix]"
+python -m pip install "assert-ai[acs]"
 ~~~
 
-The acs extra supplies the ACS host SDK used by the governed target. Phoenix/OpenTelemetry dependencies support trace capture. Configure the model credentials required by the ASSERT tester and judge through the provider's environment variables. The pilot never reads or prints credential values.
+The acs extra supplies the ACS host SDK used by the governed target. The deterministic fixture uses no external tracing service. Configure the model credentials required by the ASSERT tester and judge through the provider's environment variables. The pilot never reads or prints credential values.
 
 ## Execute
 

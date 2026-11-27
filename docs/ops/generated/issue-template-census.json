@@ -1,0 +1,216 @@
+{
+  "schema_version": "issue-template-census/v1",
+  "repository": "timerloggedout-spec/termux-monorepo",
+  "ref": "feat/trigger-workflow-registry",
+  "source_directory": ".github/ISSUE_TEMPLATE/",
+  "observed_at": "2026-11-27",
+  "method": "GitHub contents directory enumeration followed by per-file source reads; title, labels, and SWARM-DISPATCH block extracted from YAML text. Classification reflects declared block presence, not runtime success.",
+  "summary": {
+    "template_files": 14,
+    "dispatch_declared": 2,
+    "intake_only": 12,
+    "contract_conversion_checklist_remaining": 12
+  },
+  "records": [
+    {
+      "id": "apk-cross-reference-findings",
+      "path": ".github/ISSUE_TEMPLATE/apk-cross-reference-findings.yml",
+      "blob_sha": "d01f9ef8179468347ff0a3bb8633f1ea8026c38c",
+      "title": "\"[apk-xref:findings] <target-id>: cross-reference findings\"",
+      "labels": [
+        "apk-xref"
+      ],
+      "dispatch_block": false,
+      "dispatch": null,
+      "classification": "INTAKE_ONLY",
+      "evidence": "template-source"
+    },
+    {
+      "id": "apk-cross-reference",
+      "path": ".github/ISSUE_TEMPLATE/apk-cross-reference.yml",
+      "blob_sha": "bc261c0269a710af01cfff0dc5c2f7e4e054aa5f",
+      "title": "\"[apk-xref] <target-id>: APK cross-validation\"",
+      "labels": [
+        "apk-xref"
+      ],
+      "dispatch_block": false,
+      "dispatch": null,
+      "classification": "INTAKE_ONLY",
+      "evidence": "template-source"
+    },
+    {
+      "id": "bug",
+      "path": ".github/ISSUE_TEMPLATE/bug.yml",
+      "blob_sha": "8d1a9d25f66bcacda3c08da39c22bc6d54d2a334",
+      "title": "\"bug: \"",
+      "labels": [
+        "bug"
+      ],
+      "dispatch_block": false,
+      "dispatch": null,
+      "classification": "INTAKE_ONLY",
+      "evidence": "template-source"
+    },
+    {
+      "id": "data-ingestion",
+      "path": ".github/ISSUE_TEMPLATE/data-ingestion.yml",
+      "blob_sha": "eaa9c1c12a34fd24229801a7eabaa7f879a9922f",
+      "title": "\"[ingest] <source-id>: <purpose>\"",
+      "labels": [
+        "data-ingestion"
+      ],
+      "dispatch_block": false,
+      "dispatch": null,
+      "classification": "INTAKE_ONLY",
+      "evidence": "template-source"
+    },
+    {
+      "id": "delphi-rfp",
+      "path": ".github/ISSUE_TEMPLATE/delphi-rfp.yml",
+      "blob_sha": "7d0993afb56573a5a5f5b82a7a5e3c42db4ceb7c",
+      "title": "\"[delphi:rfp] <surface-id>\"",
+      "labels": [
+        "delphi:rfp"
+      ],
+      "dispatch_block": false,
+      "dispatch": null,
+      "classification": "INTAKE_ONLY",
+      "evidence": "template-source"
+    },
+    {
+      "id": "egm-review",
+      "path": ".github/ISSUE_TEMPLATE/egm-review.yml",
+      "blob_sha": "b814dceaaae929a92d7938fb9acc8e72b9c826a4",
+      "title": "\"[egm] \"",
+      "labels": [
+        "egm-review"
+      ],
+      "dispatch_block": false,
+      "dispatch": null,
+      "classification": "INTAKE_ONLY",
+      "evidence": "template-source"
+    },
+    {
+      "id": "game-development-task",
+      "path": ".github/ISSUE_TEMPLATE/game-development-task.yml",
+      "blob_sha": "2825846fbfc64f9cd14db63d8df6937c911f7046",
+      "title": "\"[game-dev] \"",
+      "labels": [
+        "game-development"
+      ],
+      "dispatch_block": true,
+      "dispatch": {
+        "schema": "issue-dispatch/v1",
+        "lane": "game-development",
+        "que_tier": "3",
+        "payload_class": "game-development-task",
+        "route": "game-development-dispatch.yml",
+        "after": "",
+        "chain": ""
+      },
+      "classification": "DISPATCH_DECLARED",
+      "evidence": "template-source"
+    },
+    {
+      "id": "project-task",
+      "path": ".github/ISSUE_TEMPLATE/project-task.yml",
+      "blob_sha": "bb13a8dcd5153368338cdce737feefd18be0e934",
+      "title": "\"[task] \"",
+      "labels": [
+        "project-task"
+      ],
+      "dispatch_block": true,
+      "dispatch": {
+        "schema": "issue-dispatch/v1",
+        "lane": "swarm-dispatch",
+        "que_tier": "3",
+        "payload_class": "project-task",
+        "route": "project-task-dispatch.yml",
+        "after": "",
+        "chain": ""
+      },
+      "classification": "DISPATCH_DECLARED",
+      "evidence": "template-source"
+    },
+    {
+      "id": "proposal",
+      "path": ".github/ISSUE_TEMPLATE/proposal.yml",
+      "blob_sha": "f96a75a3dcd671d89d41aad989f6e58bd8db89f1",
+      "title": "\"Proposal: \"",
+      "labels": [
+        "proposal"
+      ],
+      "dispatch_block": false,
+      "dispatch": null,
+      "classification": "INTAKE_ONLY",
+      "evidence": "template-source"
+    },
+    {
+      "id": "research-provider",
+      "path": ".github/ISSUE_TEMPLATE/research-provider.yml",
+      "blob_sha": "6af2e8603f77fd126bf74cb2cd2f089d247a0371",
+      "title": "\"[research:provider] <provider-id>\"",
+      "labels": [
+        "research",
+        "research:provider"
+      ],
+      "dispatch_block": false,
+      "dispatch": null,
+      "classification": "INTAKE_ONLY",
+      "evidence": "template-source"
+    },
+    {
+      "id": "research-service",
+      "path": ".github/ISSUE_TEMPLATE/research-service.yml",
+      "blob_sha": "4240e270e1270e526750d1f66cc214b1cb113fe6",
+      "title": "\"[research:service] <service-id>\"",
+      "labels": [
+        "research",
+        "research:service"
+      ],
+      "dispatch_block": false,
+      "dispatch": null,
+      "classification": "INTAKE_ONLY",
+      "evidence": "template-source"
+    },
+    {
+      "id": "reverse-engineering-taxonomy-record",
+      "path": ".github/ISSUE_TEMPLATE/reverse-engineering-taxonomy-record.yml",
+      "blob_sha": "96454e320ac8fcfd95ec75336c64285d53479035",
+      "title": "\"[re-taxonomy-record] \"",
+      "labels": [
+        "re-taxonomy"
+      ],
+      "dispatch_block": false,
+      "dispatch": null,
+      "classification": "INTAKE_ONLY",
+      "evidence": "template-source"
+    },
+    {
+      "id": "reverse-engineering-taxonomy",
+      "path": ".github/ISSUE_TEMPLATE/reverse-engineering-taxonomy.yml",
+      "blob_sha": "8efbb7cdc8a3b8f1adca9c60efe3b1e8f8c3aeb5",
+      "title": "\"[re-taxonomy] \"",
+      "labels": [
+        "re-taxonomy"
+      ],
+      "dispatch_block": false,
+      "dispatch": null,
+      "classification": "INTAKE_ONLY",
+      "evidence": "template-source"
+    },
+    {
+      "id": "target-brief",
+      "path": ".github/ISSUE_TEMPLATE/target-brief.yml",
+      "blob_sha": "cc86e71cb7a47ef9227776648c117a7e7bd7d677",
+      "title": "\"[target] <target-id>: <purpose>\"",
+      "labels": [
+        "target-brief"
+      ],
+      "dispatch_block": false,
+      "dispatch": null,
+      "classification": "INTAKE_ONLY",
+      "evidence": "template-source"
+    }
+  ]
+}

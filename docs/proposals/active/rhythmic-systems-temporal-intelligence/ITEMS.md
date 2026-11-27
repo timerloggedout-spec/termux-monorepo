@@ -3,7 +3,7 @@
 | ID | Item | State | Evidence / exit condition |
 |---|---|---|---|
 | RS-001 | Temporal assignment windows, phase classification, collector cadence, and WAIT wake policy | implementing | timezone-aware unit tests; DST-fold elapsed-time regressions; QUE lifecycle fixtures; repo gate |
-| RS-002 | Exact-ratio rhythmic overlay, rational supercycles, Jazz division taxonomy, and polyphonic roles | implementing | Fraction-based overlay tests; Jazz taxonomy JSON validation; 3:2 off-beat fixture |
+| RS-002 | Exact-ratio rhythmic overlay, rational supercycles, Jazz division taxonomy, and polyphonic roles | implementing | `deepcli/deepcli/observatory/rhythm.py`; `deepcli/tests/test_rhythm.py`; Jazz taxonomy JSON validation; `music/jazz-3-2-offbeat.strudel.js` |
 | RS-003 | Ballet Coordinator and Orchestra Conductor cue-sheet placements | implementing | dependency-wave tests; all three placement tests; phase/open-length/barrier/evidence cue-sheet contract; cohort-isolated DoE tests |
 | RS-004 | Music as Code independent and mixed-mode stimulus paths | implementing | Strudel source syntax validation; independent/mixed-mode documentation; runtime rendering qualification |
 | RS-005 | Temporal DoE factor registration and shared notation cross-domain mappings | implementing | DoE matrix v2 registration in DOE-FAMILY and settings register; NSE-025 crosswalk; proposal-lifecycle validation |

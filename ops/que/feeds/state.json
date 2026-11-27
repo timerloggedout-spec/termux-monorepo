@@ -1,117 +1,537 @@
 {
- "watermark": "2026-11-27T09:48:04Z",
+ "watermark": "2026-11-27T10:17:09Z",
  "active": {
-  "45976706590": {
+  "45980777204": {
    "status": "queued",
-   "workflow": "Agent Readability Source Contract",
+   "workflow": "lane events recorder",
    "tier": 4,
-   "created_at": "2026-11-27T09:47:58Z",
-   "run_started_at": "2026-11-27T09:47:58Z"
+   "created_at": "2026-11-27T10:17:03Z",
+   "run_started_at": "2026-11-27T10:17:03Z"
   },
-  "45976706618": {
+  "45980768965": {
    "status": "queued",
-   "workflow": "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher",
+   "workflow": "lane events recorder",
    "tier": 4,
-   "created_at": "2026-11-27T09:47:58Z",
-   "run_started_at": "2026-11-27T09:47:58Z"
+   "created_at": "2026-11-27T10:16:59Z",
+   "run_started_at": "2026-11-27T10:16:59Z"
   },
-  "45976706609": {
+  "45980756208": {
    "status": "queued",
-   "workflow": "DO Statement Style",
+   "workflow": "lane events recorder",
    "tier": 4,
-   "created_at": "2026-11-27T09:47:58Z",
-   "run_started_at": "2026-11-27T09:47:58Z"
+   "created_at": "2026-11-27T10:16:54Z",
+   "run_started_at": "2026-11-27T10:16:54Z"
   },
-  "45976706663": {
+  "45980754872": {
    "status": "queued",
-   "workflow": "termux smoke",
+   "workflow": "lane events recorder",
    "tier": 4,
-   "created_at": "2026-11-27T09:47:58Z",
-   "run_started_at": "2026-11-27T09:47:58Z"
+   "created_at": "2026-11-27T10:16:53Z",
+   "run_started_at": "2026-11-27T10:16:53Z"
   },
-  "45976706559": {
-   "status": "queued",
-   "workflow": "Foresight Evidence Spine",
-   "tier": 4,
-   "created_at": "2026-11-27T09:47:57Z",
-   "run_started_at": "2026-11-27T09:47:57Z"
-  },
-  "45976706583": {
-   "status": "queued",
-   "workflow": "quota-usage-series-refresh",
-   "tier": 4,
-   "created_at": "2026-11-27T09:47:57Z",
-   "run_started_at": "2026-11-27T09:47:57Z"
-  },
-  "45976706538": {
-   "status": "queued",
-   "workflow": "Orchestration Regression Guard",
-   "tier": 1,
-   "created_at": "2026-11-27T09:47:57Z",
-   "run_started_at": "2026-11-27T09:47:57Z"
-  },
-  "45976706579": {
-   "status": "queued",
-   "workflow": "hitl-control-plane-verify",
-   "tier": 4,
-   "created_at": "2026-11-27T09:47:57Z",
-   "run_started_at": "2026-11-27T09:47:57Z"
-  },
-  "45976706439": {
-   "status": "queued",
-   "workflow": "quota-served-probe",
-   "tier": 4,
-   "created_at": "2026-11-27T09:47:57Z",
-   "run_started_at": "2026-11-27T09:47:57Z"
-  },
-  "45976706464": {
-   "status": "queued",
-   "workflow": "graph-matrix-probe",
-   "tier": 4,
-   "created_at": "2026-11-27T09:47:57Z",
-   "run_started_at": "2026-11-27T09:47:57Z"
-  },
-  "45976706577": {
+  "45980748264": {
    "status": "queued",
    "workflow": "repo gate",
    "tier": 1,
-   "created_at": "2026-11-27T09:47:57Z",
-   "run_started_at": "2026-11-27T09:47:57Z"
+   "created_at": "2026-11-27T10:16:50Z",
+   "run_started_at": "2026-11-27T10:16:50Z"
   },
-  "45976700062": {
+  "45980748016": {
+   "status": "queued",
+   "workflow": "que-cadence-kick",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:50Z",
+   "run_started_at": "2026-11-27T10:16:50Z"
+  },
+  "45980748085": {
+   "status": "queued",
+   "workflow": "quota-served-probe",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:50Z",
+   "run_started_at": "2026-11-27T10:16:50Z"
+  },
+  "45980748113": {
+   "status": "queued",
+   "workflow": "Foresight Evidence Spine",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:50Z",
+   "run_started_at": "2026-11-27T10:16:50Z"
+  },
+  "45980748136": {
+   "status": "queued",
+   "workflow": "quota-allocation-planner",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:50Z",
+   "run_started_at": "2026-11-27T10:16:50Z"
+  },
+  "45980748177": {
    "status": "queued",
    "workflow": "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher",
    "tier": 4,
-   "created_at": "2026-11-27T09:47:55Z",
-   "run_started_at": "2026-11-27T09:47:55Z"
+   "created_at": "2026-11-27T10:16:50Z",
+   "run_started_at": "2026-11-27T10:16:50Z"
   },
-  "45976700283": {
-   "status": "queued",
-   "workflow": "Agent Readability Source Contract",
-   "tier": 4,
-   "created_at": "2026-11-27T09:47:55Z",
-   "run_started_at": "2026-11-27T09:47:55Z"
-  },
-  "45976700130": {
+  "45980748087": {
    "status": "queued",
    "workflow": "hitl-control-plane-verify",
    "tier": 4,
-   "created_at": "2026-11-27T09:47:55Z",
-   "run_started_at": "2026-11-27T09:47:55Z"
+   "created_at": "2026-11-27T10:16:50Z",
+   "run_started_at": "2026-11-27T10:16:50Z"
   },
-  "45976699941": {
+  "45980748181": {
+   "status": "queued",
+   "workflow": "Agent Readability Source Contract",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:50Z",
+   "run_started_at": "2026-11-27T10:16:50Z"
+  },
+  "45980748306": {
+   "status": "queued",
+   "workflow": "Orchestration Regression Guard",
+   "tier": 1,
+   "created_at": "2026-11-27T10:16:50Z",
+   "run_started_at": "2026-11-27T10:16:50Z"
+  },
+  "45980748192": {
    "status": "queued",
    "workflow": "quota-analysis",
    "tier": 4,
-   "created_at": "2026-11-27T09:47:54Z",
-   "run_started_at": "2026-11-27T09:47:54Z"
+   "created_at": "2026-11-27T10:16:50Z",
+   "run_started_at": "2026-11-27T10:16:50Z"
   },
-  "45976650029": {
+  "45980748070": {
    "status": "queued",
-   "workflow": "Quota Dispatch Tree",
+   "workflow": "termux smoke",
    "tier": 4,
-   "created_at": "2026-11-27T09:47:32Z",
-   "run_started_at": "2026-11-27T09:47:32Z"
+   "created_at": "2026-11-27T10:16:50Z",
+   "run_started_at": "2026-11-27T10:16:50Z"
+  },
+  "45980748036": {
+   "status": "queued",
+   "workflow": "Sweep Accountability",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:50Z",
+   "run_started_at": "2026-11-27T10:16:50Z"
+  },
+  "45980742278": {
+   "status": "queued",
+   "workflow": "lane events recorder",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:48Z",
+   "run_started_at": "2026-11-27T10:16:48Z"
+  },
+  "45980743519": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:48Z",
+   "run_started_at": "2026-11-27T10:16:48Z"
+  },
+  "45980729805": {
+   "status": "queued",
+   "workflow": "lane events recorder",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:42Z",
+   "run_started_at": "2026-11-27T10:16:42Z"
+  },
+  "45980729261": {
+   "status": "queued",
+   "workflow": "lane events recorder",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:42Z",
+   "run_started_at": "2026-11-27T10:16:42Z"
+  },
+  "45980725493": {
+   "status": "queued",
+   "workflow": "Workflow Surface Policy",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:40Z",
+   "run_started_at": "2026-11-27T10:16:40Z"
+  },
+  "45980725622": {
+   "status": "queued",
+   "workflow": "Action Effectiveness Ledger",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:40Z",
+   "run_started_at": "2026-11-27T10:16:40Z"
+  },
+  "45980725701": {
+   "status": "queued",
+   "workflow": "Agent PR Jules Handoff",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:40Z",
+   "run_started_at": "2026-11-27T10:16:40Z"
+  },
+  "45980725675": {
+   "status": "queued",
+   "workflow": "repo gate",
+   "tier": 1,
+   "created_at": "2026-11-27T10:16:40Z",
+   "run_started_at": "2026-11-27T10:16:40Z"
+  },
+  "45980725473": {
+   "status": "queued",
+   "workflow": "DO Statement Style",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:40Z",
+   "run_started_at": "2026-11-27T10:16:40Z"
+  },
+  "45980725717": {
+   "status": "queued",
+   "workflow": "PR scope guard",
+   "tier": 1,
+   "created_at": "2026-11-27T10:16:40Z",
+   "run_started_at": "2026-11-27T10:16:40Z"
+  },
+  "45980725634": {
+   "status": "queued",
+   "workflow": "Context Relationship + Lead/Lag Audit",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:40Z",
+   "run_started_at": "2026-11-27T10:16:40Z"
+  },
+  "45980725746": {
+   "status": "queued",
+   "workflow": "RECON INTEL discovery",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:40Z",
+   "run_started_at": "2026-11-27T10:16:40Z"
+  },
+  "45980719569": {
+   "status": "queued",
+   "workflow": "lane events recorder",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:38Z",
+   "run_started_at": "2026-11-27T10:16:38Z"
+  },
+  "45980718213": {
+   "status": "queued",
+   "workflow": "Action Effectiveness Ledger",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:37Z",
+   "run_started_at": "2026-11-27T10:16:37Z"
+  },
+  "45980702454": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:30Z",
+   "run_started_at": "2026-11-27T10:16:30Z"
+  },
+  "45980697895": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:28Z",
+   "run_started_at": "2026-11-27T10:16:28Z"
+  },
+  "45980687537": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:24Z",
+   "run_started_at": "2026-11-27T10:16:24Z"
+  },
+  "45980683165": {
+   "status": "queued",
+   "workflow": "Foresight Evidence Spine",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:22Z",
+   "run_started_at": "2026-11-27T10:16:22Z"
+  },
+  "45980684527": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:22Z",
+   "run_started_at": "2026-11-27T10:16:22Z"
+  },
+  "45980683218": {
+   "status": "queued",
+   "workflow": "tribute-dashboard-deploy",
+   "tier": 2,
+   "created_at": "2026-11-27T10:16:22Z",
+   "run_started_at": "2026-11-27T10:16:22Z"
+  },
+  "45980683323": {
+   "status": "queued",
+   "workflow": "Context Relationship + Lead/Lag Audit",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:22Z",
+   "run_started_at": "2026-11-27T10:16:22Z"
+  },
+  "45980653160": {
+   "status": "queued",
+   "workflow": "lane events recorder",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:09Z",
+   "run_started_at": "2026-11-27T10:16:09Z"
+  },
+  "45980650980": {
+   "status": "queued",
+   "workflow": "lane events recorder",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:08Z",
+   "run_started_at": "2026-11-27T10:16:08Z"
+  },
+  "45980636904": {
+   "status": "queued",
+   "workflow": "lane events recorder",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:02Z",
+   "run_started_at": "2026-11-27T10:16:02Z"
+  },
+  "45980633818": {
+   "status": "queued",
+   "workflow": "lane events recorder",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:01Z",
+   "run_started_at": "2026-11-27T10:16:01Z"
+  },
+  "45980629778": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:15:59Z",
+   "run_started_at": "2026-11-27T10:15:59Z"
+  },
+  "45980614371": {
+   "status": "queued",
+   "workflow": "lane events recorder",
+   "tier": 4,
+   "created_at": "2026-11-27T10:15:53Z",
+   "run_started_at": "2026-11-27T10:15:53Z"
+  },
+  "45980601594": {
+   "status": "queued",
+   "workflow": "lane events recorder",
+   "tier": 4,
+   "created_at": "2026-11-27T10:15:47Z",
+   "run_started_at": "2026-11-27T10:15:47Z"
+  },
+  "45980579212": {
+   "status": "queued",
+   "workflow": "lane events recorder",
+   "tier": 4,
+   "created_at": "2026-11-27T10:15:38Z",
+   "run_started_at": "2026-11-27T10:15:38Z"
+  },
+  "45980574537": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:15:36Z",
+   "run_started_at": "2026-11-27T10:15:36Z"
+  },
+  "45980574588": {
+   "status": "queued",
+   "workflow": "Reviewer metrics collect",
+   "tier": 4,
+   "created_at": "2026-11-27T10:15:36Z",
+   "run_started_at": "2026-11-27T10:15:36Z"
+  },
+  "45980566039": {
+   "status": "queued",
+   "workflow": "lane events recorder",
+   "tier": 4,
+   "created_at": "2026-11-27T10:15:33Z",
+   "run_started_at": "2026-11-27T10:15:33Z"
+  },
+  "45980554001": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:15:28Z",
+   "run_started_at": "2026-11-27T10:15:28Z"
+  },
+  "45980510810": {
+   "status": "queued",
+   "workflow": "lane events recorder",
+   "tier": 4,
+   "created_at": "2026-11-27T10:15:11Z",
+   "run_started_at": "2026-11-27T10:15:11Z"
+  },
+  "45980465896": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:14:53Z",
+   "run_started_at": "2026-11-27T10:14:53Z"
+  },
+  "45980456896": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:14:49Z",
+   "run_started_at": "2026-11-27T10:14:49Z"
+  },
+  "45980442945": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:14:43Z",
+   "run_started_at": "2026-11-27T10:14:43Z"
+  },
+  "45980426595": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:14:35Z",
+   "run_started_at": "2026-11-27T10:14:35Z"
+  },
+  "45980409140": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:14:27Z",
+   "run_started_at": "2026-11-27T10:14:27Z"
+  },
+  "45980396680": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:14:22Z",
+   "run_started_at": "2026-11-27T10:14:22Z"
+  },
+  "45980393443": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:14:20Z",
+   "run_started_at": "2026-11-27T10:14:20Z"
+  },
+  "45980386484": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:14:17Z",
+   "run_started_at": "2026-11-27T10:14:17Z"
+  },
+  "45980368489": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:14:10Z",
+   "run_started_at": "2026-11-27T10:14:10Z"
+  },
+  "45980319983": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:13:49Z",
+   "run_started_at": "2026-11-27T10:13:49Z"
+  },
+  "45980293531": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:13:38Z",
+   "run_started_at": "2026-11-27T10:13:38Z"
+  },
+  "45980285127": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:13:35Z",
+   "run_started_at": "2026-11-27T10:13:35Z"
+  },
+  "45980207662": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:13:03Z",
+   "run_started_at": "2026-11-27T10:13:03Z"
+  },
+  "45980199836": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:13:00Z",
+   "run_started_at": "2026-11-27T10:13:00Z"
+  },
+  "45980133163": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:12:30Z",
+   "run_started_at": "2026-11-27T10:12:30Z"
+  },
+  "45980123133": {
+   "status": "queued",
+   "workflow": "Agent review \u2192 auto Jules",
+   "tier": 4,
+   "created_at": "2026-11-27T10:12:26Z",
+   "run_started_at": "2026-11-27T10:12:26Z"
+  },
+  "45980073815": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:12:05Z",
+   "run_started_at": "2026-11-27T10:12:05Z"
+  },
+  "45980064741": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:12:02Z",
+   "run_started_at": "2026-11-27T10:12:02Z"
+  },
+  "45979932863": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:11:06Z",
+   "run_started_at": "2026-11-27T10:11:06Z"
+  },
+  "45979923581": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:11:02Z",
+   "run_started_at": "2026-11-27T10:11:02Z"
+  },
+  "45979907042": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:10:55Z",
+   "run_started_at": "2026-11-27T10:10:55Z"
+  },
+  "45979812668": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:10:15Z",
+   "run_started_at": "2026-11-27T10:10:15Z"
+  },
+  "45979680900": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:09:18Z",
+   "run_started_at": "2026-11-27T10:09:18Z"
+  },
+  "45979674400": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:09:15Z",
+   "run_started_at": "2026-11-27T10:09:15Z"
+  },
+  "45979674043": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:09:15Z",
+   "run_started_at": "2026-11-27T10:09:15Z"
+  },
+  "45979669474": {
+   "status": "queued",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:09:13Z",
+   "run_started_at": "2026-11-27T10:09:13Z"
   },
   "45574652539": {
    "status": "queued",
@@ -183,166 +603,131 @@
    "created_at": "2026-11-11T20:34:15Z",
    "run_started_at": "2026-11-11T20:34:15Z"
   },
-  "43096831325": {
-   "status": "queued",
-   "workflow": "Foresight Evidence Spine",
-   "tier": 4,
-   "created_at": "2026-11-11T20:34:15Z",
-   "run_started_at": "2026-11-11T20:34:15Z"
-  },
-  "43096831370": {
-   "status": "queued",
-   "workflow": "hitl-control-plane-verify",
-   "tier": 4,
-   "created_at": "2026-11-11T20:34:15Z",
-   "run_started_at": "2026-11-11T20:34:15Z"
-  },
-  "43096831128": {
-   "status": "queued",
-   "workflow": "Sweep Accountability",
-   "tier": 4,
-   "created_at": "2026-11-11T20:34:15Z",
-   "run_started_at": "2026-11-11T20:34:15Z"
-  },
-  "43096831290": {
-   "status": "queued",
-   "workflow": "repo gate",
-   "tier": 1,
-   "created_at": "2026-11-11T20:34:15Z",
-   "run_started_at": "2026-11-11T20:34:15Z"
-  },
-  "43096831100": {
-   "status": "queued",
-   "workflow": "Context Relationship + Lead/Lag Audit",
-   "tier": 4,
-   "created_at": "2026-11-11T20:34:15Z",
-   "run_started_at": "2026-11-11T20:34:15Z"
-  },
-  "43096831285": {
-   "status": "queued",
-   "workflow": "graph-matrix-probe",
-   "tier": 4,
-   "created_at": "2026-11-11T20:34:15Z",
-   "run_started_at": "2026-11-11T20:34:15Z"
-  },
-  "43096831306": {
-   "status": "queued",
-   "workflow": "repo-tracking-collect",
-   "tier": 4,
-   "created_at": "2026-11-11T20:34:15Z",
-   "run_started_at": "2026-11-11T20:34:15Z"
-  },
-  "43096831086": {
-   "status": "queued",
-   "workflow": "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher",
-   "tier": 4,
-   "created_at": "2026-11-11T20:34:15Z",
-   "run_started_at": "2026-11-11T20:34:15Z"
-  },
-  "43096831107": {
-   "status": "queued",
-   "workflow": "Orchestration Regression Guard",
-   "tier": 1,
-   "created_at": "2026-11-11T20:34:15Z",
-   "run_started_at": "2026-11-11T20:34:15Z"
-  },
-  "36803855107": {
-   "status": "queued",
-   "workflow": "PR production ledger",
-   "tier": 4,
-   "created_at": "2026-10-01T02:01:22Z",
-   "run_started_at": "2026-10-01T02:01:22Z"
-  },
-  "36803852632": {
-   "status": "queued",
-   "workflow": "Peer review orchestrator",
-   "tier": 4,
-   "created_at": "2026-10-01T02:01:19Z",
-   "run_started_at": "2026-10-01T02:01:19Z"
-  },
-  "45976699990": {
-   "status": "in_progress",
-   "workflow": "quota-allocation-planner",
-   "tier": 4,
-   "created_at": "2026-11-27T09:47:54Z",
-   "run_started_at": "2026-11-27T09:47:54Z"
-  },
-  "45976679752": {
-   "status": "in_progress",
-   "workflow": "Agent Throughput Evidence",
-   "tier": 4,
-   "created_at": "2026-11-27T09:47:45Z",
-   "run_started_at": "2026-11-27T09:47:45Z"
-  },
-  "45976669635": {
-   "status": "in_progress",
-   "workflow": "PR production ledger",
-   "tier": 4,
-   "created_at": "2026-11-27T09:47:41Z",
-   "run_started_at": "2026-11-27T09:47:41Z"
-  },
-  "45976669495": {
-   "status": "in_progress",
-   "workflow": "PR evidence evaluation",
-   "tier": 4,
-   "created_at": "2026-11-27T09:47:41Z",
-   "run_started_at": "2026-11-27T09:47:41Z"
-  },
-  "45976669501": {
-   "status": "in_progress",
-   "workflow": "Context Relationship + Lead/Lag Audit",
-   "tier": 4,
-   "created_at": "2026-11-27T09:47:41Z",
-   "run_started_at": "2026-11-27T09:47:41Z"
-  },
-  "45976669520": {
-   "status": "in_progress",
-   "workflow": "Peer review orchestrator",
-   "tier": 4,
-   "created_at": "2026-11-27T09:47:41Z",
-   "run_started_at": "2026-11-27T09:47:41Z"
-  },
-  "45976661424": {
+  "45980748074": {
    "status": "in_progress",
    "workflow": "que-feed-collect",
    "tier": 4,
-   "created_at": "2026-11-27T09:47:37Z",
-   "run_started_at": "2026-11-27T09:47:37Z"
+   "created_at": "2026-11-27T10:16:50Z",
+   "run_started_at": "2026-11-27T10:16:50Z"
   },
-  "45976642113": {
+  "45980748278": {
    "status": "in_progress",
-   "workflow": "Context Relationship + Lead/Lag Audit",
+   "workflow": "graph-matrix-probe",
    "tier": 4,
-   "created_at": "2026-11-27T09:47:28Z",
-   "run_started_at": "2026-11-27T09:47:28Z"
+   "created_at": "2026-11-27T10:16:50Z",
+   "run_started_at": "2026-11-27T10:16:50Z"
   },
-  "45976642283": {
+  "45980748149": {
+   "status": "in_progress",
+   "workflow": "DO Statement Style",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:50Z",
+   "run_started_at": "2026-11-27T10:16:50Z"
+  },
+  "45980725565": {
+   "status": "in_progress",
+   "workflow": "Repository development evaluation",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:40Z",
+   "run_started_at": "2026-11-27T10:16:40Z"
+  },
+  "45980725685": {
+   "status": "in_progress",
+   "workflow": "PR production ledger",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:40Z",
+   "run_started_at": "2026-11-27T10:16:40Z"
+  },
+  "45980725526": {
+   "status": "in_progress",
+   "workflow": "CellCog review",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:40Z",
+   "run_started_at": "2026-11-27T10:16:40Z"
+  },
+  "45980725755": {
+   "status": "in_progress",
+   "workflow": "Audit Cycle \u2014 Single PR Feed-Forward",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:40Z",
+   "run_started_at": "2026-11-27T10:16:40Z"
+  },
+  "45980725506": {
    "status": "in_progress",
    "workflow": "Sweep Accountability",
    "tier": 4,
-   "created_at": "2026-11-27T09:47:28Z",
-   "run_started_at": "2026-11-27T09:47:28Z"
+   "created_at": "2026-11-27T10:16:40Z",
+   "run_started_at": "2026-11-27T10:16:40Z"
   },
-  "45976642122": {
+  "45980725468": {
    "status": "in_progress",
-   "workflow": "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher",
+   "workflow": "DeepSeek CI \u2013 Agentic Automation",
    "tier": 4,
-   "created_at": "2026-11-27T09:47:28Z",
-   "run_started_at": "2026-11-27T09:47:28Z"
+   "created_at": "2026-11-27T10:16:40Z",
+   "run_started_at": "2026-11-27T10:16:40Z"
   },
-  "45976433873": {
+  "45980725519": {
+   "status": "in_progress",
+   "workflow": "PR Change Effectiveness Ledger",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:40Z",
+   "run_started_at": "2026-11-27T10:16:40Z"
+  },
+  "45980725555": {
+   "status": "in_progress",
+   "workflow": "termux smoke",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:40Z",
+   "run_started_at": "2026-11-27T10:16:40Z"
+  },
+  "45980718191": {
+   "status": "in_progress",
+   "workflow": "PR evidence evaluation",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:37Z",
+   "run_started_at": "2026-11-27T10:16:37Z"
+  },
+  "45980718197": {
+   "status": "in_progress",
+   "workflow": "PR production ledger",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:37Z",
+   "run_started_at": "2026-11-27T10:16:37Z"
+  },
+  "45980718195": {
+   "status": "in_progress",
+   "workflow": "Peer review orchestrator",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:37Z",
+   "run_started_at": "2026-11-27T10:16:37Z"
+  },
+  "45980683079": {
    "status": "in_progress",
    "workflow": "telemetry-ingest",
    "tier": 4,
-   "created_at": "2026-11-27T09:45:58Z",
-   "run_started_at": "2026-11-27T09:45:58Z"
+   "created_at": "2026-11-27T10:16:22Z",
+   "run_started_at": "2026-11-27T10:16:22Z"
   },
-  "45975515615": {
+  "45980683024": {
    "status": "in_progress",
-   "workflow": "Reviewer metrics collect",
+   "workflow": "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher",
    "tier": 4,
-   "created_at": "2026-11-27T09:39:24Z",
-   "run_started_at": "2026-11-27T09:39:24Z"
+   "created_at": "2026-11-27T10:16:22Z",
+   "run_started_at": "2026-11-27T10:16:22Z"
+  },
+  "45980685219": {
+   "status": "in_progress",
+   "workflow": "Sweep Accountability",
+   "tier": 4,
+   "created_at": "2026-11-27T10:16:22Z",
+   "run_started_at": "2026-11-27T10:16:22Z"
+  },
+  "45979665078": {
+   "status": "in_progress",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-27T10:09:11Z",
+   "run_started_at": "2026-11-27T10:09:11Z"
   },
   "45974690933": {
    "status": "in_progress",

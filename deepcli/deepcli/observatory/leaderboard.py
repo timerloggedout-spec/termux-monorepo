@@ -65,4 +65,4 @@ class Leaderboard:
         return cands[:k]
 
     def worst(self, role: str, task: str, k: int = 5) -> list[dict]:
-        return list(reversed(self.top(role, task, k=len(self.data))))
+        return list(reversed(self.top(role, task, k=len(self.data))))[:k]

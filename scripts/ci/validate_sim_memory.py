@@ -84,7 +84,7 @@ def _schema_errors(value: Any, schema: dict[str, Any], path: str = "$") -> list[
             except ValueError:
                 errors.append(f"{path}: invalid RFC 3339 date-time")
 
-    if isinstance(value, (int, float)) and not isinstance(value, bool):
+    if isinstance(value, (int, float, Decimal)) and not isinstance(value, bool):
         if "minimum" in schema and value < schema["minimum"]:
             errors.append(f"{path}: number is below minimum")
 

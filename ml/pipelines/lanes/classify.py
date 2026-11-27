@@ -22,6 +22,8 @@ def classify_pr(pr: dict[str, Any]) -> Lane:
         return Lane.NEED_EVIDENCE
     if base and base != "master":
         return Lane.NEED_EVIDENCE
-    if not pr.get("gates", {}).get("repo-gate") or not pr.get("gates", {}).get("termux-smoke"):
+    termux_required = pr.get("termux_smoke_required", True)
+    if (not pr.get("gates", {}).get("repo-gate")
+            or (termux_required and not pr.get("gates", {}).get("termux-smoke"))):
         return Lane.NEED_EVIDENCE
     return Lane.CANDIDATE

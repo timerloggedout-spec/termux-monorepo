@@ -10,6 +10,8 @@ feed (ops/ml/pr-lane-feed.json) that any surface can consume.
 Input mapping (GitHub pulls API -> classify_pr dict):
   title/draft/mergeable_state/base.ref/user.login  <- PR object (detail GET)
   changed_files                                    <- PR detail GET
+  changed paths                                    <- PR files API (paginated)
+  termux_smoke_required                            <- shared scripts/ci/gate_admission.py predicate
   age_days                                         <- now - created_at
   gates.repo-gate     <- a completed check run named
                          "hygiene + portability gate" with conclusion
@@ -41,6 +43,7 @@ from datetime import datetime, timezone
 from typing import Any
 
 from ml.pipelines.lanes.classify import classify_pr
+from scripts.ci.gate_admission import termux_smoke_required
 
 API = "https://api.github.com"
 GATE_CHECKS = {"repo-gate": "hygiene + portability gate",
@@ -53,7 +56,7 @@ def _parse_ts(raw: str) -> datetime:
 
 
 def build_pr_dict(pr: dict[str, Any], checks: list[dict[str, Any]],
-                  now: datetime) -> dict[str, Any]:
+                  now: datetime, changed_paths: list[str] | None = None) -> dict[str, Any]:
     """Map one GitHub PR object + its head check runs to the classifier dict."""
     gates: dict[str, bool] = {}
     for key, check_name in GATE_CHECKS.items():
@@ -72,6 +75,7 @@ def build_pr_dict(pr: dict[str, Any], checks: list[dict[str, Any]],
         "changed_files": pr.get("changed_files") or 0,
         "age_days": max(0.0, (now - created).total_seconds() / 86400.0),
         "gates": gates,
+        "termux_smoke_required": termux_smoke_required(changed_paths),
         "wholesale": False,
         "keep_alive": False,
         "product": False,
@@ -144,6 +148,7 @@ def classify_all(pr_dicts: list[dict[str, Any]], now: datetime) -> dict[str, Any
             "age_days": round(float(d.get("age_days") or 0), 1),
             "changed_files": d["changed_files"],
             "gates": d["gates"],
+            "termux_smoke_required": bool(d.get("termux_smoke_required", True)),
             "lane": lane,
         })
     rows.sort(key=lambda r: r["number"])
@@ -177,6 +182,30 @@ def _get_or(path: str, token: str, default: Any, warnings: list[str]) -> Any:
     except Exception as exc:  # HTTPError and transport errors alike
         warnings.append(f"{path}: {exc}")
         return default
+
+
+def _fetch_changed_paths(repo: str, number: int, expected_count: int,
+                         token: str, warnings: list[str]) -> list[str] | None:
+    """Fetch every PR file page; incomplete path evidence keeps Termux required."""
+    paths: list[str] = []
+    page = 1
+    while page <= 10:
+        batch = _get_or(
+            f"/repos/{repo}/pulls/{number}/files?per_page=100&page={page}",
+            token, None, warnings)
+        if not isinstance(batch, list):
+            return None
+        paths.extend(str(item.get("filename") or "") for item in batch
+                     if isinstance(item, dict) and item.get("filename"))
+        if len(batch) < 100:
+            break
+        page += 1
+    if page > 10 or len(paths) < expected_count:
+        warnings.append(
+            f"/repos/{repo}/pulls/{number}/files: incomplete changed-file list "
+            f"({len(paths)}/{expected_count})")
+        return None
+    return paths
 
 
 def main() -> int:
@@ -227,7 +256,10 @@ def _run(token: str) -> int:
             checks_page = _get_or(
                 f"/repos/{repo}/commits/{pr['head']['sha']}/check-runs?per_page=100",
                 token, {}, warnings)
-            pr_dicts.append(build_pr_dict(pr, checks_page.get("check_runs", []), now))
+            paths = _fetch_changed_paths(
+                repo, pr["number"], int(pr.get("changed_files") or 0), token, warnings)
+            pr_dicts.append(build_pr_dict(
+                pr, checks_page.get("check_runs", []), now, changed_paths=paths))
         if len(batch) < 100:
             break
         page += 1

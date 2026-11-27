@@ -66,7 +66,7 @@ python scripts/doe/assert_acs_bridge.py plan \
   --output artifacts/ceel-assert-acs-2x2/PLAN.json
 ~~~
 
-Expected: 12 assignments (3 tasks × 4 cells), with deterministic blocked execution order.
+Expected: 12 analysis observations (3 tasks × 4 cells), with deterministic within-task cell order. The two governance variants produce two inference runs; the native scorer and ASSERT judge each score both trace sets.
 
 ### 2. Run the native control
 
@@ -81,7 +81,7 @@ export CEEL_ACS_AUDIT_PATH=artifacts/ceel-assert-acs-2x2/acs-decisions.jsonl
 assert-ai run --config experiments/doe/assert_acs_2x2/eval_acs.yaml
 ~~~
 
-Both configs point at the same checked-in test-set file, behavior contract, judge model and concurrency. The target callable changes only the governance treatment. Each ASSERT run writes inference_set.jsonl and scores.jsonl under artifacts/results/ceel-assert-acs-2x2/<run>/.
+Both configs point at the same checked-in test-set file, behavior contract, judge model and concurrency. The target callable changes only the governance treatment. Each ASSERT run writes inference_set.jsonl and scores.jsonl under artifacts/results/ceel-assert-acs-2x2/<run>/. The native scorer and ASSERT judge evaluate the same traces within each governance arm.
 
 ### 4. Produce the native evaluator scores
 

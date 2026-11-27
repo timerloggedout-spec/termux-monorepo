@@ -34,7 +34,8 @@ Appendix D specifies run lineage, stable problem IDs, aliases for merged diagnos
 4. Record prediction separately from measured observation. Retain improved, regressed, neutral and unresolved outcomes.
 5. Keep held-out feedback sealed from the optimizer. Use only evolve-split feedback for proposals, selection and memory updates.
 6. Retrieve a bounded compatible subset through `scripts/agent_evolution/sim_memory.py` while retaining the complete source ledger. The adapter exposes source/target policy, benchmark and environment compatibility and preserves negative outcomes. This is a deliberate context-cost adaptation; the paper's implementation reads its complete SIM.
-7. Keep human objectives, credentials, permissions, branch protections, evaluation boundaries and promotion policy outside the self-editable harness surface.
+7. Preserve stable explicit `problem_id` values. The paper supports aliases for merged diagnoses; local v1 defers alias consolidation until a reviewed alias migration exists, keeping identity decisions explicit.
+8. Keep human objectives, credentials, permissions, branch protections, evaluation boundaries and promotion policy outside the self-editable harness surface.
 
 ## Evaluation proposal
 

@@ -77,6 +77,156 @@ candidate -> explicit review + existing promotion gates
 - Composer: intent/context/score composition only.
 - Conductor: cue-sheet compilation and dispatch intent only.
 
+
+## End-to-end score example
+
+The following illustrates the data shape produced by the Composer. The score ID is a placeholder for the SHA-256 digest computed from canonical JSON.
+
+```mermaid
+flowchart TD
+    A["Afferent Signals"] --> B["Context Assembly"]
+    G["Executive Intent"] --> C["Composer"]
+    B --> C
+    P["Ballet dependency plan"] --> C
+    T["Temporal assignments"] --> C
+    C --> D["Orchestra Conductor"]
+    D --> E["Manager approval"]
+    E --> F["Dependency-phase readiness"]
+    F --> Q["QUE admission and claims"]
+    Q --> X["Specialist adapters"]
+    X --> R["ATES receipts"]
+    R --> V["Prediction Error"]
+    R --> H["Homeostasis"]
+    V --> C
+    H --> C
+    S["Action Selection"] --> C
+```
+
+```json
+{
+  "schema_version": "brain.composer.score.v1",
+  "intent": {
+    "schema_version": "brain.intent.v1",
+    "goal": "validate release",
+    "priority": 3,
+    "constraints": ["evidence-required"],
+    "success_criteria": ["tests-green"]
+  },
+  "context": {
+    "schema_version": "brain.context.v1",
+    "signals": [
+      {
+        "signal_id": "sig-ci-42",
+        "source": "ci",
+        "kind": "ready",
+        "sequence": 42,
+        "confidence": 1.0
+      }
+    ],
+    "episode_ids": ["episode-12"],
+    "evidence_refs": ["ates://receipt/12"],
+    "truncated_signal_count": 0
+  },
+  "signal_ids": ["sig-ci-42"],
+  "plan": {
+    "waves": [["build"], ["tests"]],
+    "task_count": 2
+  },
+  "action_shortlist": ["build", "tests"],
+  "action_selection_policy": {
+    "policy_version": "brain.action-selection.write-disjoint.v1",
+    "max_parallel": 2
+  },
+  "timing_feedback": [
+    {
+      "task_id": "build",
+      "run_id": "run-123",
+      "evidence_ref": "ates://receipt/123",
+      "source": "ATES",
+      "schema_version": "brain.prediction-error.v1",
+      "expected_ms": 100,
+      "actual_ms": 130,
+      "drift_ms": 30,
+      "status": "overrun",
+      "policy_action": "observe_only"
+    }
+  ],
+  "wake_recommendation": {
+    "schema_version": "brain.homeostasis.wake.v1",
+    "wake_at_ms": 150,
+    "wake_in_ms": 50,
+    "wake_reason": "window_close"
+  },
+  "cue_sheet": {
+    "schema_version": "orchestra.cue-sheet.v1",
+    "placement": "manager_policy",
+    "policy_version": "orchestra-conductor.v1",
+    "waves": [
+      {
+        "wave": 0,
+        "tasks": [
+          {
+            "task_id": "build",
+            "nominal_at": "2026-11-27T12:00:00Z",
+            "opens_at": "2026-11-27T11:59:00Z",
+            "closes_at": "2026-11-27T12:05:00Z",
+            "expected_duration_ms": 100,
+            "phase": "on_beat",
+            "open_length_ms": 360000,
+            "dependency_barriers": [],
+            "evidence_refs": ["ates://receipt/build"],
+            "depends_on": [],
+            "wake_conditions": ["event", "window_close"]
+          }
+        ]
+      },
+      {
+        "wave": 1,
+        "tasks": [
+          {
+            "task_id": "tests",
+            "nominal_at": "2026-11-27T12:01:00Z",
+            "opens_at": "2026-11-27T12:00:00Z",
+            "closes_at": "2026-11-27T12:06:00Z",
+            "expected_duration_ms": 100,
+            "phase": "on_beat",
+            "open_length_ms": 360000,
+            "dependency_barriers": ["build-ready"],
+            "evidence_refs": ["ates://receipt/tests"],
+            "depends_on": ["build"],
+            "wake_conditions": ["event", "window_close"]
+          }
+        ]
+      }
+    ],
+    "task_count": 2,
+    "authority": "dispatch_intent_only",
+    "dispatch_intent": true
+  },
+  "authority": {
+    "composer": "intent_and_score_composition_only",
+    "readiness": "dependency_phase_engine",
+    "wave_planning": "ballet_coordinator",
+    "admission_and_claims": "QUE",
+    "execution": "specialist_adapters",
+    "evidence": "ATES"
+  },
+  "adaptation": "candidate_only; validated_observations_and_explicit_policy_version_required",
+  "score_id": "<content-derived-sha256>"
+}
+```
+
+## Runtime lifecycle
+
+1. **Observe:** collectors and adapters publish typed signals with stable identities and sequence values.
+2. **Remember:** Context Assembly creates a bounded working view and preserves episode evidence references.
+3. **Decide:** Executive Intent normalizes the goal; Action Selection produces a deterministic candidate shortlist.
+4. **Compose:** Composer joins the intent, context, Ballet plan, timing assignments, and feedback into a versioned score.
+5. **Conduct:** Conductor emits a cue sheet. Manager, dependency-phase, and QUE apply their existing approval, readiness, admission, and claim contracts.
+6. **Execute:** specialist adapters perform admitted work and publish lifecycle facts.
+7. **Verify:** ATES validates canonical receipts. Prediction Error and Homeostasis consume receipt-bound observations.
+8. **Learn:** DoE / Observatory evaluate candidate policy changes; existing promotion gates govern adoption.
+
 ## Safety and reliability invariants
 
 1. Scores are declarative and deterministic for identical normalized inputs.

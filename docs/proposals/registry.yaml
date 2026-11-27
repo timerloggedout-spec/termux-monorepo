@@ -1,7 +1,7 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-09-11T19:00:00Z"
-updated_by: timerloggedout-spec
+updated_at: "2026-11-27T13:15:00Z"
+updated_by: ChatGPT
 
 proposals:
   - id: context-relationship-graph
@@ -247,3 +247,23 @@ proposals:
       developer-role workflow) and any new provider secrets (ARO-7:
       HF_TOKEN) remain unexecuted Tier-4 items pending separate Operator
       action - accepting this proposal does not itself grant them.
+
+  - id: coralogix-foss-observability-reconstruction
+    title: "Coralogix capability reconstruction with FOSS observability and agent-evaluation comparators"
+    author: ChatGPT
+    posted_at: 2026-11-27
+    source: README.md
+    status: executing
+    priority: P1
+    path: active/coralogix-foss-observability-reconstruction/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: ChatGPT
+        role: author-executor
+        status: executing
+    related_issues: [7]
+    related_prs: [5938]
+    related_branches: [timerloggedout/ter-7-p1-expand-reftemplates-with-foss]
+    gates_required: [repo-gate, termux-smoke, siglary-mandate]

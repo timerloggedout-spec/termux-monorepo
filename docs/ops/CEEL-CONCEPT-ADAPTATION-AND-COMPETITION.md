@@ -29,7 +29,7 @@ Platform source: https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry
 | Frontier Week Hack | Build → monitor → evaluate → deploy lifecycle and reusable lab structure | `12_External_Agents/frontier-week-hack` | Harvest individual workflow patterns; compare cycle time and evidence quality | REFERENCE PATTERN |
 | Agentic Factory Hack | Multi-agent orchestration and specialist-agent handoffs | `12_External_Agents/agentic-factory-hack` | Compare single-agent, current multi-agent and adapted orchestration on identical tasks | REFERENCE PATTERN |
 
-Source URLs and observation dates live in `docs/integrations/capability-opportunity-graph.json` and each slot's `SOURCE.txt`. Pin the exact source commit/tag before a reproducible experiment. A mutable A reproducible revision requires an immutable commit or tag; a branch URL establishes discovery provenance.
+Source URLs and observation dates live in `docs/integrations/capability-opportunity-graph.json` and each slot's `SOURCE.txt`. Pin the exact source commit/tag before a reproducible experiment. A reproducible revision requires an immutable commit or tag; a branch URL establishes discovery provenance.
 
 ## RefTemplates pipeline
 
@@ -80,6 +80,19 @@ Secondary: regression rate, evaluator agreement, trace completeness, policy viol
 
 Report uncertainty and missingness. Keep incomparable dimensions separate. Use Pareto analysis across quality, reliability, latency, cost, portability and maintenance. Treat unmeasured outcomes as unknown.
 
+## First runnable adapter
+
+The repository-owned pilot at `experiments/doe/assert_acs_2x2/` executes a deterministic three-case mock-tool cohort through native and ACS-mediated targets. ASSERT scores both runs; a native scorer evaluates the same traces; `scripts/doe/assert_acs_bridge.py` assembles all four evaluator × governance cells into canonical DoE records. The ACS dispatcher emits task-attributed, content-redacted allow/transform/deny receipts. The pilot is adapter conformance evidence, not production-agent efficacy.
+
+Run the pure regression suite:
+
+```bash
+python3 -m unittest discover -s tests -p 'test_assert_acs_bridge.py' -v
+python3 -m unittest discover -s experiments/doe/assert_acs_2x2/acs -p 'test_policy.py' -v
+```
+
+The full provider-backed sequence and artifact commands live in `experiments/doe/assert_acs_2x2/README.md`.
+
 ## Admission rules
 
 1. Keep candidates observational until a source revision and testable capability contract are recorded.
@@ -102,6 +115,7 @@ Report uncertainty and missingness. Keep incomparable dimensions separate. Use P
 ## Validation state
 
 - Source discovery: COMPLETE for the eight listed candidates.
+- ASSERT × ACS adapter: IMPLEMENTED; deterministic mock-tool conformance pilot and four-cell evidence bridge are runnable.
 - Capability graph registration: COMPLETE; candidates remain `discovered`.
 - RefTemplates metadata slots: IN PROGRESS.
 - Category-aware inventory/scoring: IN PROGRESS.

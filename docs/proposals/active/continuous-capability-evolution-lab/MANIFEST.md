@@ -26,11 +26,11 @@ gates_required: [proposal-lifecycle, repo-gate, termux-smoke]
 
 CEEL is the continuous capability-discovery and evolution lane inside existing Integration Intelligence and the DoE family. It discovers candidate capabilities from FOSS and commercial projects, maps them to repository-owned consumers, compares alternatives and combinations, and propagates only verified improvements through the existing proposal/PR lifecycle.
 
-It does not create a second orchestrator, telemetry ledger, integration registry, scheduler, or merge authority. The repository event plane, Integration Intelligence registry/event contract, DoE experiment record schema, ATES execution discipline, Delphi Oracle RFP process, and dual gates remain authoritative.
+The repository event plane, Integration Intelligence registry/event contract, DoE experiment record schema, ATES execution discipline, Delphi Oracle RFP process, and dual gates retain sole authority for orchestration, telemetry, integration registry, scheduling and promotion.
 
 ## Operator authorization
 
-Operator directive received 2026-11-11: "Do everything high Detail at once. Get it committed. iDEAL documentation. MAXIMUM EFFORT. CLAUDE.md is entry. /continue". This authorizes the bounded documentation, schema, validator, and event-trigger integration in this branch. External account setup, paid inference, provider writes, deployment, secret creation, model routing changes, and production promotion are not authorized by this proposal.
+Operator directive received 2026-11-11: "Do everything high Detail at once. Get it committed. iDEAL documentation. MAXIMUM EFFORT. CLAUDE.md is entry. /continue". This authorizes the bounded documentation, schema, validator, and event-trigger integration in this branch. This proposal authorizes bounded repository artifacts; external account setup, paid inference, provider writes, deployment, secret creation, model routing changes, and production promotion require separate authorization.
 
 ## Scope boundaries
 
@@ -38,17 +38,17 @@ Operator directive received 2026-11-11: "Do everything high Detail at once. Get 
 - docs/proposals/registry.yaml is the proposal index; this manifest and ITEMS are the work ledger.
 - docs/integrations/registry.json remains the canonical integration inventory.
 - docs/integrations/schemas/integration-event.schema.json remains the normalized integration event envelope.
-- docs/ops/corpus/EXPERIMENT.schema.json remains the family run-record contract; this work adds no competing experiment receipt.
+- docs/ops/corpus/EXPERIMENT.schema.json remains the family run-record contract; this work reuses the existing experiment receipt.
 - docs/ops/DOE-FAMILY.md remains the family structure record; MVT and ATES stay nested members.
 - docs/ops/AGENT-EVALUATION-LANE-REGISTRY.md remains the evaluator lane registry; external platforms remain observational.
 - GitHub-native events are the primary awareness path. Existing bounded reconciliation jobs remain recovery paths only.
 - External provider capabilities are hypotheses until version-pinned documentation, runtime evidence, or reproducible tests verify them.
 - Keep raw prompts, completions, credentials, private traces, and restricted customer data outside committed artifacts.
-- SIM is optimizer-side improvement history; it reuses the existing evidence substrate and does not add a second execution ledger or authority.
+- SIM is optimizer-side improvement history; the existing evidence substrate remains the execution ledger and authority.
 
 ## Review and promotion
 
-The operator authorized this scoped execution. Independent review and same-SHA repository gates remain required before merge or production promotion. A commit or PR is not a validated integration or completed production rollout.
+The operator authorized this scoped execution. Independent review and same-SHA repository gates remain required before merge or production promotion. Commit and PR state remains pending validation until same-SHA gates and review complete.
 
 ## Checklist
 

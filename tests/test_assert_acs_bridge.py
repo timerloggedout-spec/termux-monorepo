@@ -49,14 +49,14 @@ class AssertAcsBridgeTests(unittest.TestCase):
                             "test_case_id": task["task_id"],
                             "judge_status": "ok",
                             "verdict": {"dimensions": {
-                                "policy_violation": task["task_id"] == "test_case_000003",
+                                "policy_violation": task["task_id"] in {"test_case_000002", "test_case_000003"} and governance == "native",
                                 "overrefusal": False,
                             }},
                         })
                     else:
                         rows.append({
                             "test_case_id": task["task_id"],
-                            "policy_violation": task["task_id"] == "test_case_000003",
+                            "policy_violation": task["task_id"] in {"test_case_000002", "test_case_000003"} and governance == "native",
                             "overrefusal": False,
                         })
                 path.write_text(
@@ -83,14 +83,14 @@ class AssertAcsBridgeTests(unittest.TestCase):
             if row["task_id"] == "test_case_000003" and row["governance"] == "acs"
         ]
         self.assertEqual({"deny"}, {row["acs_decision"] for row in external_acs})
-        self.assertTrue(all(row["outcome"] == "fail" for row in external_acs))
+        self.assertTrue(all(row["outcome"] == "pass" for row in external_acs))
 
     def test_record_emits_schema_shaped_records_and_factorial_summary(self):
         with tempfile.TemporaryDirectory() as tmp:
             output = Path(tmp) / "batch-001"
             results = []
             for planned in self.plan["rows"]:
-                fail = planned["task_id"] == "test_case_000003" and planned["governance"] == "native"
+                fail = planned["task_id"] in {"test_case_000002", "test_case_000003"} and planned["governance"] == "native"
                 results.append({
                     "run_id": planned["run_id"],
                     "task_id": planned["task_id"],

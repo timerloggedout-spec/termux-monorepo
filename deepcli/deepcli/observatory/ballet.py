@@ -10,7 +10,7 @@ import math
 import re
 import tempfile
 from pathlib import Path
-from typing import Any, Iterable, Mapping
+from typing import Any, Callable, Iterable, Mapping
 from .doe import full_factorial
 from .leaderboard import Leaderboard
 from .tournament import campaign
@@ -173,7 +173,8 @@ def run_doe_tournament(tasks: Iterable[Mapping[str, Any]],
                        observations: Mapping[str, Mapping[str, Any]],
                        factors: Mapping[str, list[Any]] | None = None,
                        task_family: str = "orchestration", leaderboard=None,
-                       cohort_id: str | None = None) -> dict[str, Any]:
+                       cohort_id: str | None = None,
+                       receipt_resolver: Callable[[str], Mapping[str, Any]] | None = None) -> dict[str, Any]:
     """Compare receipt-backed policy arms in a cohort-local DoE tournament."""
     cohort = list(tasks)
     if not cohort:
@@ -193,6 +194,8 @@ def run_doe_tournament(tasks: Iterable[Mapping[str, Any]],
     cohort_key = str(cohort_id or cohort_fingerprint(cohort, task_family)).strip()
     if not cohort_key:
         raise ValueError("cohort_id is required")
+    if receipt_resolver is None:
+        raise ValueError("receipt_resolver must resolve canonical ATES receipts")
     arms, plans = [], {}
     seen_run_ids, seen_evidence_refs = set(), set()
     for arm in full_factorial(design):
@@ -209,6 +212,9 @@ def run_doe_tournament(tasks: Iterable[Mapping[str, Any]],
             raise ValueError(f"missing online observation for arm {arm_id}")
         raw = observations[arm_id]
         receipt = _validate_receipt(raw)
+        canonical = _validate_receipt({"receipt": receipt_resolver(receipt["evidence_ref"])})
+        if canonical != receipt:
+            raise ValueError(f"ATES receipt verification mismatch for arm {arm_id}")
         if receipt["cohort_id"] != cohort_key:
             raise ValueError(f"receipt cohort mismatch for arm {arm_id}")
         if receipt["run_id"] in seen_run_ids or receipt["evidence_ref"] in seen_evidence_refs:

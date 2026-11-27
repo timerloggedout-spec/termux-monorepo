@@ -1,0 +1,69 @@
+name: github-profile-refresh
+
+on:
+  schedule:
+    - cron: "17 9 * * 1"
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "docs/PARTNERS.md"
+      - "docs/ops/PUBLIC-VIDEO-LIBRARY-*.md"
+      - "marketing/github-profile/profile.json"
+      - "scripts/marketing/**"
+      - ".github/workflows/github-profile-refresh.yml"
+  push:
+    branches: [master]
+    paths:
+      - "docs/PARTNERS.md"
+      - "docs/ops/PUBLIC-VIDEO-LIBRARY-*.md"
+      - "marketing/github-profile/profile.json"
+      - "scripts/marketing/render_github_profile.py"
+      - ".github/workflows/github-profile-refresh.yml"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: github-profile-refresh
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Render profile README and custom displays
+        run: python3 scripts/marketing/render_github_profile.py --root . --output marketing/github-profile/generated
+      - name: Run profile renderer tests
+        run: python3 -m unittest discover -s scripts/marketing/tests -p 'test_*.py' -v
+      - name: Validate generated output
+        run: |
+          set -euo pipefail
+          test -s marketing/github-profile/generated/README.md
+          test -s marketing/github-profile/generated/assets/hero.svg
+          test -s marketing/github-profile/generated/assets/highlights.svg
+          test -s marketing/github-profile/generated/assets/partner-spotlight.svg
+          grep -q 'Partner links may be referral or affiliate links' marketing/github-profile/generated/README.md
+          git diff --check
+      - name: Open refresh PR when projection changes
+        if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          if [ -z "$(git status --porcelain -- marketing/github-profile/generated)" ]; then
+            echo 'Profile projection is current.'
+            exit 0
+          fi
+          BRANCH="automation/github-profile-refresh-${RUN_ID}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add marketing/github-profile/generated
+          git commit -m "chore(marketing): refresh GitHub profile projection"
+          git push origin "$BRANCH"
+          gh pr create --base master --head "$BRANCH" \
+            --title "chore(marketing): refresh GitHub profile projection" \
+            --body "Generated profile README and SVG display refresh from docs/PARTNERS.md and the canonical public video library. Implements: GPM-001, GPM-002, GPM-003, GPM-004."

@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "identity": {
+    "handle": "timerloggedout-spec",
+    "headline": "Software built in the open — with receipts.",
+    "summary": "A human-directed AI collaborator fleet shipping real software, public demos, and evidence-linked engineering work.",
+    "website": "https://timerloggedout-spec.github.io/",
+    "monorepo": "https://github.com/timerloggedout-spec/termux-monorepo",
+    "youtube_channel": "https://www.youtube.com/@LoggedOutTimer-m9v",
+    "video_library": "https://timerloggedout-spec.github.io/videos.html"
+  },
+  "sources": {
+    "partners": "docs/PARTNERS.md",
+    "videos": "docs/ops/PUBLIC-VIDEO-LIBRARY-2026-11-15.md",
+    "challenge_provenance": "ops/challenge/coordinator.json"
+  },
+  "featured_projects": [
+    {
+      "name": "Termux MonoRepo",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo",
+      "description": "Android/Termux-first agentic development environment and engineering control plane."
+    },
+    {
+      "name": "StudySprint",
+      "url": "https://github.com/timerloggedout-spec/studysprint",
+      "description": "AWS Builder challenge project with a public submission demo."
+    },
+    {
+      "name": "Delphi Oracle",
+      "url": "https://timerloggedout-spec.github.io/delphi-oracle/",
+      "description": "Evidence-first decision and verification workflows."
+    }
+  ],
+  "featured_videos": [
+    {
+      "id": "DNREnvgjIv0",
+      "label": "Termux MonoRepo Short",
+      "kind": "short"
+    },
+    {
+      "id": "i0FusuYuRUs",
+      "label": "Channel update Short",
+      "kind": "short"
+    },
+    {
+      "id": "eFXyOYTpuvg",
+      "label": "Hackathon submission demo",
+      "kind": "hackathon",
+      "highlight": "The StudySprint demo used for the AWS Builder Center D1 challenge submission.",
+      "related_url": "https://builder.aws.com/content/3LRJhGucOZfz9ydzFax8sD2p5yB/studysprint-a-study-plan-you-can-trust-built-with-the-strands-agents-sdk"
+    },
+    {
+      "id": "gUC3RqTZXCQ",
+      "label": "StudySprint 0.5.1 demo",
+      "kind": "demo"
+    },
+    {
+      "id": "AZSeqOI5H9M",
+      "label": "Delphi Oracle walkthrough",
+      "kind": "demo"
+    }
+  ],
+  "rotation": {
+    "cadence": "weekly",
+    "algorithm": "iso-week-round-robin",
+    "source": "docs/PARTNERS.md",
+    "disclosure": "Partner links may be referral or affiliate links. Offers and programme terms vary; verify current terms with the provider."
+  },
+  "publication": {
+    "target_repository": "timerloggedout-spec/timerloggedout-spec",
+    "state": "provisioning-required"
+  }
+}

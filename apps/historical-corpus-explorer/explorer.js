@@ -3,6 +3,7 @@
   const $ = (id) => document.getElementById(id);
   const state = { projection: null, nodes: [], edges: [], nodeIds: new Set(), edgeIds: new Set() };
   let activeAtlasLayer = "all";
+  let activeAtlasDomain = "all";
   const MAX_RESULTS = 200;
 
   function text(id, value) {
@@ -185,6 +186,16 @@
       card.appendChild(el("strong", "", domain.name));
       card.appendChild(el("div", "label", domain.role));
       card.appendChild(el("p", "muted", domain.summary));
+      const inspect = el("button", "", activeAtlasDomain === domain.id ? "Selected domain" : "Inspect connections");
+      inspect.type = "button";
+      inspect.dataset.atlasDomain = domain.id;
+      inspect.setAttribute("aria-pressed", String(activeAtlasDomain === domain.id));
+      inspect.addEventListener("click", () => {
+        activeAtlasDomain = domain.id;
+        renderAtlasDomains();
+        renderAtlasRelationships();
+      });
+      card.appendChild(inspect);
       if (activeAtlasLayer === "evidence") {
         const sources = el("div", "findings");
         for (const source of domain.sources) {
@@ -207,8 +218,9 @@
     clear(body);
     const domains = new Map(state.atlas.domains.map((domain) => [domain.id, domain]));
     const rows = state.atlas.relationships.filter((edge) =>
-      activeAtlasLayer === "all" || activeAtlasLayer === "evidence" ||
-      edge.layers.includes(activeAtlasLayer));
+      (activeAtlasLayer === "all" || activeAtlasLayer === "evidence" ||
+        edge.layers.includes(activeAtlasLayer)) &&
+      (activeAtlasDomain === "all" || edge.source === activeAtlasDomain || edge.target === activeAtlasDomain));
     for (const edge of rows) {
       const tr = el("tr");
       tr.appendChild(el("td", "", edge.type + " · " + edge.classification));
@@ -243,6 +255,9 @@
     }
     document.querySelectorAll("[data-atlas-layer]").forEach((button) => {
       button.setAttribute("aria-pressed", String(button.dataset.atlasLayer === activeAtlasLayer));
+    });
+    document.querySelectorAll("[data-atlas-domain]").forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.dataset.atlasDomain === activeAtlasDomain));
     });
   }
 
@@ -307,6 +322,15 @@
   $("search-button").addEventListener("click", renderSearch);
   $("query").addEventListener("keydown", (event) => { if (event.key === "Enter") renderSearch(); });
   $("reload").addEventListener("click", loadPublished);
+  document.querySelectorAll("[data-atlas-domain]").forEach((button) => {
+    button.addEventListener("click", () => {
+      activeAtlasDomain = button.dataset.atlasDomain;
+      if (state.atlas) {
+        renderAtlasDomains();
+        renderAtlasRelationships();
+      }
+    });
+  });
   document.querySelectorAll("[data-atlas-layer]").forEach((button) => {
     button.addEventListener("click", () => {
       activeAtlasLayer = button.dataset.atlasLayer;

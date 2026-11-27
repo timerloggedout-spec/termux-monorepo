@@ -22,11 +22,30 @@ CSS = ("body{font-family:system-ui,sans-serif;max-width:860px;margin:2rem auto;p
        "a:focus,button:focus{outline:3px solid #1a73e8}")
 
 
-def page(title, body):
-    return (f'<!doctype html><html lang="en"><head><meta charset="utf-8">'
+def page(title, body, locale="en"):
+    direction = "rtl" if locale == "ur" else "ltr"
+    english_href = "../index.html" if locale == "ur" else "./index.html"
+    urdu_href = "./index.html" if locale == "ur" else "./ur/index.html"
+    messages = load_catalog(locale)
+    nav = (
+        '<nav aria-label="Language">'
+        f'<span>{html.escape(messages["nav.language"])}</span> '
+        f'<a href="{english_href}" lang="en" hreflang="en">{html.escape(messages["nav.english"])}</a> · '
+        f'<a href="{urdu_href}" lang="ur" hreflang="ur" aria-current="{"page" if locale == "ur" else "false"}">{html.escape(messages["nav.urdu"])}</a>'
+        '</nav>'
+    )
+    rtl_css = "body{direction:rtl;text-align:right;font-family:\"Noto Naskh Arabic\",\"Noto Sans Arabic\",system-ui,sans-serif} main{unicode-bidi:plaintext} code,pre,a[dir=ltr]{direction:ltr;unicode-bidi:isolate}"
+    style = CSS + (rtl_css if locale == "ur" else "")
+    return (f'<!doctype html><html lang="{locale}" dir="{direction}"><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width,initial-scale=1">'
-            f"<title>{html.escape(title)}</title><style>{CSS}</style></head>"
-            f'<body><main>{body}</main></body></html>')
+            f'<title>{html.escape(title)}</title><style>{style}</style></head>'
+            f'<body><main>{nav}{body}</main></body></html>')
+
+
+def load_catalog(locale):
+    root = pathlib.Path(__file__).resolve().parents[2]
+    path = root / "localization" / "catalogs" / "teammate-portal" / f"{locale}.json"
+    return json.loads(path.read_text(encoding="utf-8"))["messages"]
 
 
 def gh(path):
@@ -97,7 +116,36 @@ def main():
         "this page via <code>teammate-portal-status-publish.yml</code>. Contract: "
         f'<a href="https://github.com/{a.repo}/blob/master/docs/ops/REVIEW-PUBLISHING.md">REVIEW-PUBLISHING</a>.</p>'
     )
-    (out / "index.html").write_text(page("Teammate Portal · reference & status", body))
+    (out / "index.html").write_text(page("Teammate Portal · reference & status", body, "en"))
+
+    # Publish a parallel Urdu shell; source documents remain explicitly English fallbacks.
+    urdu_dir = out / "ur"
+    urdu_dir.mkdir(parents=True, exist_ok=True)
+    urdu_body = body
+    messages = load_catalog("ur")
+    replacements = [
+        ("Teammate Portal — reference &amp; status", html.escape(messages["page.title"])),
+        ("Opportunities ∧ challenges ∧ hackathons.", html.escape(messages["page.description"])),
+        ("Standalone surface, separate from Tribute.", html.escape(messages["page.separation"])),
+        ("Done <strong>", html.escape(messages["status.done"]) + " <strong>"),
+        ("source <code>", html.escape(messages["status.source"]) + " <code>"),
+        ("<h2>Done-board</h2>", "<h2>" + html.escape(messages["section.done_board"]) + "</h2>"),
+        ("<h2>Dispatch (label", "<h2>" + html.escape(messages["section.dispatch"]) + " (لیبل"),
+        ("<h2>Reference</h2>", "<h2>" + html.escape(messages["section.reference"]) + "</h2>"),
+        ("<h2>Route</h2>", "<h2>" + html.escape(messages["section.route"]) + "</h2>"),
+        ("<li>None filed yet.</li>", "<li>" + html.escape(messages["content.empty_dispatch"]) + "</li>")
+    ]
+    for source, translated in replacements:
+        urdu_body = urdu_body.replace(source, translated)
+    urdu_body = (
+        '<p lang="ur" dir="rtl">' + html.escape(messages["content.english_fallback"]) + ' '
+        '<a href="../plan.html" lang="en" dir="ltr">English reference documents</a></p>' + urdu_body
+    )
+    for key, (_, _) in DOCS.items():
+        urdu_body = urdu_body.replace(f'href="{key}.html"', f'href="../{key}.html"')
+    (urdu_dir / "index.html").write_text(
+        page("ٹیم میٹ پورٹل — حوالہ اور صورتحال", urdu_body, "ur")
+    )
 
 
 if __name__ == "__main__":

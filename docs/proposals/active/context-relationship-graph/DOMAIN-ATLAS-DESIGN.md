@@ -30,7 +30,7 @@ Evidence is a view over the same relationships. It is not a separate relationshi
 
 Each relationship has a stable ID, source domain, target domain, typed relation, one or more layers, classification, and evidence references. Direction is always source → target. Verified edges require one or more supporting source records. Candidate and unknown states remain explicit.
 
-The initial curated graph includes five mappings, each grounded in the cited source documents. These mappings express documented architecture and data flow; they do not assert causality or agent identity.
+The initial curated graph includes four verified mappings and one candidate mapping. The Execution Telemetry → Moneyball/3L0 link remains candidate pending an exact run/attempt/source-SHA join between the throughput-event stream and Moneyball records. These mappings express documented architecture and data flow; they do not assert causality or agent identity.
 
 ## Interaction
 

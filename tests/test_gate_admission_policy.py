@@ -6,9 +6,6 @@ from pathlib import Path
 
 from scripts.ci.gate_admission import changed_paths, decide_admission, termux_smoke_required
 
-ROOT = Path(__file__).resolve().parents[1]
-
-
 class TermuxSurfaceClassifierTests(unittest.TestCase):
     def test_exact_runtime_files_admit_smoke(self):
         self.assertTrue(termux_smoke_required(["scripts/ci/termux_smoke.py"]))
@@ -69,40 +66,6 @@ class ChangedPathDiffTests(unittest.TestCase):
         self.assertIsNone(changed_paths("0" * 40, "abc"))
 
 
-class WorkflowAdmissionContractTests(unittest.TestCase):
-    def test_termux_check_stays_visible_and_smoke_steps_are_conditional(self):
-        text = (ROOT / ".github/workflows/termux-smoke.yml").read_text()
-        self.assertIn("pull_request:", text)
-        self.assertIn("scripts/ci/gate_admission.py", text)
-        self.assertIn("id: admission", text)
-        self.assertIn("if: steps.admission.outputs.required == 'true'", text)
-        self.assertIn("Termux surface unchanged", text)
-        self.assertNotIn("Bucket headroom unit", text)
-        self.assertNotIn("pip install", text)
-
-    def test_bucket_contract_has_its_own_path_scope(self):
-        text = (ROOT / ".github/workflows/bucket-headroom-contract.yml").read_text()
-        for path in (
-            "scripts/ops/bucket_headroom.py",
-            "tests/test_bucket_headroom.py",
-            "tests/test_bucket_headroom_workflow.py",
-            ".github/workflows/bucket-headroom-watch.yml",
-        ):
-            self.assertIn(path, text)
-
-    def test_dangle_trigger_covers_reference_targets(self):
-        text = (ROOT / ".github/workflows/archwiz-dangle.yml").read_text()
-        for path in (
-            "docs/**", "scripts/**", "ops/**", "workspace/**", "archwiz/**",
-            ".agents/**", "config/**", "tests/**", "integrations/**",
-        ):
-            self.assertIn(path, text)
-        self.assertIn("--scope .github/ --scope apps/", text)
-
-    def test_repo_gate_remains_universal(self):
-        text = (ROOT / ".github/workflows/repo-gate.yml").read_text()
-        self.assertIn("pull_request:\n    types:", text)
-        self.assertIn("test_gate_admission_policy.py", text)
 
 
 if __name__ == "__main__":

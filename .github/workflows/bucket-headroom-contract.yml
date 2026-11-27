@@ -5,7 +5,6 @@ on:
     paths:
       - 'scripts/ops/bucket_headroom.py'
       - 'tests/test_bucket_headroom.py'
-      - 'tests/test_bucket_headroom_workflow.py'
       - '.github/workflows/bucket-headroom-watch.yml'
       - '.github/workflows/bucket-headroom-contract.yml'
       - 'ops/github-apps/PROCESS.json'
@@ -41,4 +40,4 @@ jobs:
       - name: Bucket headroom unit and workflow-contract tests
         run: |
           python3 -m pip install --disable-pip-version-check --quiet PyYAML pytest
-          python3 -m pytest -q tests/test_bucket_headroom.py tests/test_bucket_headroom_workflow.py
+          python3 -m pytest -q tests/test_bucket_headroom.py

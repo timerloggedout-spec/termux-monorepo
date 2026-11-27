@@ -1,0 +1,41 @@
+name: workflow gate contracts
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - 'tests/test_gate_admission_policy.py'
+      - 'tests/test_workflow_gate_contracts.py'
+      - 'tests/test_bucket_headroom_workflow.py'
+  push:
+    branches: [master, master-staging]
+    paths:
+      - '.github/workflows/**'
+      - 'tests/test_gate_admission_policy.py'
+      - 'tests/test_workflow_gate_contracts.py'
+      - 'tests/test_bucket_headroom_workflow.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: workflow-gate-contracts-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    name: workflow gate contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          submodules: false
+
+      - name: Install workflow contract test dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet PyYAML pytest
+
+      - name: Validate workflow admission contracts
+        run: python3 -m pytest -q tests/test_workflow_gate_contracts.py tests/test_bucket_headroom_workflow.py

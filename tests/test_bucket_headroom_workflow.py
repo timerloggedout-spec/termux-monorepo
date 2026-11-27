@@ -101,7 +101,7 @@ class BucketHeadroomContractRunnerTests(unittest.TestCase):
         self.assertIn("pytest", install.split())
         self.assertEqual(
             command,
-            "python3 -m pytest -q tests/test_bucket_headroom.py tests/test_bucket_headroom_workflow.py",
+            "python3 -m pytest -q tests/test_bucket_headroom.py",
         )
 
         smoke_path = ROOT / ".github" / "workflows" / "termux-smoke.yml"

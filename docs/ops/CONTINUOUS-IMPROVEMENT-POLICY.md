@@ -10,12 +10,12 @@
 
 - Observe: collect current-SHA evidence and relevant historical/template evidence.
 - Contextualize: use the context-relationship graph and exact roots; separate verified relationships from candidates.
-- Adapt: extract the smallest transferable contract; do not copy assumptions, permissions, metrics, or infrastructure blindly.
+- Adapt: extract the smallest transferable contract; preserve local assumptions, permissions, metrics, and infrastructure ownership.
 - Implement: make one bounded change.
 - Verify: run deterministic tests and relevant GitHub workflow gates.
 - Record: preserve source/version, adaptation, evidence, outcome, and remaining uncertainty.
 - Recompare: compare the new version with its predecessor and applicable upstream/template contract.
-- Repeat: continue only while evidence shows a useful delta.
+- Repeat: continue while evidence shows a useful delta.
 
 ## 2. Template/resource adoption
 
@@ -49,6 +49,14 @@ Retain lean-worktree discipline, read-only-by-default reconnaissance, device/res
 
 Local adaptation: these constraints apply when the Termux/MCP hub is the execution surface; repository governance remains authoritative.
 
+### Self-Improvement Memory / Continual Recursive Self-Improvement
+
+Retain optimizer-side memory of recurring harness problems, selected edits, rationale, pre-evaluation predictions, measured outcomes and evaluation context. Keep the proposer and selector as consumers of the same historical evidence. Preserve negative and unresolved outcomes so later rounds can revise inherited edits and test transfer conditions.
+
+Local adaptation: [SELF-IMPROVEMENT-MEMORY.md](SELF-IMPROVEMENT-MEMORY.md) defines an append-only, metadata-only JSONL contract, a read-only validator and deterministic bounded retrieval in `scripts/agent_evolution/sim_memory.py`. Hindsight remains the general-purpose memory backend and separate telemetry-retain sink; SIM remains optimizer-side meta-memory for harness evolution. Deepagent lifecycle hooks retain their separately tracked status. The complete ledger remains durable while retrieval is bounded by problem and compatibility. Evolve-split feedback guides optimization; held-out feedback remains sealed. Runtime integration status: experimental; deployment evidence: pending.
+
+Source: Yu et al., [Self-Improvement Memory Enables Continual Recursive Self-Improvement](https://arxiv.org/abs/2611.18856), 2026-11-13. The preprint reports a +2.36-point mean paired coding advantage across ten independent source runs, with one negative pair; these results remain source-reported until independently reproduced here.
+
 ## 4. ATES + TDQS semantic contract
 
 Tool definition → TDQS; agent execution → ATES; both feed the AEF evidence unit and downstream outcome analysis.
@@ -74,7 +82,7 @@ Promotion requires current immutable SHA, current base/merge relationship, relev
 
 Terminal states: success | clean-no-op | blocked | approval-required | exhausted | stagnated.
 
-Never convert provider failure, skipped review, rate limit, stale SHA, or infrastructure/browser failure into correctness success.
+Classify provider failure, skipped review, rate limit, stale SHA, and infrastructure/browser failure as their observed operational outcomes. Preserve correctness success as a separate evidence-backed conclusion.
 
 ## 7. Reusable adaptation template
 
@@ -99,6 +107,6 @@ Never convert provider failure, skipped review, rate limit, stale SHA, or infras
 
 ## 8. Anti-patterns
 
-Do not dismiss useful lessons solely because they are external; copy external policy without local validation; conflate activity with outcome; overwrite historical evidence; merge on stale-SHA evidence; let throughput optimize correctness; let tool-definition quality masquerade as task success; or let a relationship candidate become an asserted fact.
+Preserve useful external lessons and apply local validation before adoption. Separate activity from outcome, append historical evidence, bind reviews to current SHA, protect correctness from throughput proxies, keep TDQS scoped to tool-definition quality, and retain relationship candidates as candidates until verified.
 
-**Owner boundaries:** CRG owns relationship evidence; adaptive-wait owns asynchronous control; evidence-led-monorepo-ops owns repository evidence discipline; ATES owns execution telemetry; TDQS owns tool-definition quality.
+**Owner boundaries:** CRG owns relationship evidence; adaptive-wait owns asynchronous control; evidence-led-monorepo-ops owns repository evidence discipline; ATES owns execution telemetry; TDQS owns tool-definition quality; SIM records optimizer-side improvement history without becoming a second evidence or execution plane.

@@ -1,7 +1,7 @@
 # Paper2Agent — Paper → Agent Implementation Pattern
 
 **Seed paper / post:** [Toward Recursive Self-Improvement: How GLM Built Its Own Inference Infrastructure](https://z.ai/blog/glm-built-its-inference-infrastructure) (2026-09-17)  
-**Role in monorepo:** Template for turning research into attributable agent loops (not a clone of GLM infra).
+**Role in monorepo:** Template for turning research into attributable agent loops (a local pattern distinct from GLM infrastructure).
 
 ---
 
@@ -13,7 +13,7 @@ End-to-end metrics alone are **sparse feedback**. Agents need **dense feedback**
 2. **Cheap & timely** — microbench / unit / kernel test before full deploy
 3. **Objectively verifiable** — reference impl + controlled experiments
 
-Loop: engineers set objectives & boundaries → agent hypothesizes & patches → environment returns layered feedback → dual-gate style promote only when local + end-to-end agree.
+Loop: engineers set objectives & boundaries → agent hypothesizes & patches → environment returns layered feedback → dual-gate promotion requires local + end-to-end agreement.
 
 ---
 
@@ -25,8 +25,8 @@ Loop: engineers set objectives & boundaries → agent hypothesizes & patches →
 | System behavior feedback | engineering_health, OTEL/spanmetrics, adaptive-wait |
 | Performance feedback | model_performance_index, free-catalog lag, Codespace smoke |
 | Infra Agent | Codespace agent lane + help-wanted LLM assist + evidence-led |
-| Human holds objectives/risk | dual-gate hold matrix; no auto-merge without green |
-| RSI horizon | continuous eval of refTemplates + research agents — not autonomous self-train |
+| Human holds objectives/risk | dual-gate hold matrix; human approval follows green gates |
+| RSI horizon | continuous eval of refTemplates + research agents — bounded evaluation, human-governed objectives |
 
 ---
 
@@ -36,7 +36,7 @@ Paper / post (17_Papers citation)
     → extract method + claims + code links
     → slot under 15_Research or pattern note under CONTINUOUS-EVAL
     → define local checks
-    → agent implements thin adapter (no secret hardcode)
+    → agent implements thin adapter; route credentials through credential-router
     → dual-gate + evidence receipt
     → promote or hold with attributable reason
 
@@ -76,12 +76,31 @@ External references:
 
 ---
 
-## 5. Non-goals
+## 5. Self-Improvement Memory / Continual RSI
+
+The paper [Self-Improvement Memory Enables Continual Recursive Self-Improvement](https://arxiv.org/abs/2611.18856) adds a distinct optimizer-side memory layer. SIM stores the rationale, predicted outcome, observed outcome and evaluation context for selected harness edits, grouped by recurring problem. The proposer and selector both consult it; later attempts append to the history.
+
+Repository adaptation:
+- Hindsight remains the general-purpose memory backend and separate telemetry-retain sink; SIM is optimizer-side meta-memory for harness evolution. Deepagent lifecycle hooks remain tracked in `docs/ops/sessions/HINDSIGHT.md`.
+- Canonical JSONL/receipts, ATES, Action→Effect, manager tournaments and evolutionary replay remain the evidence and execution owners.
+- The append-only contract is [SELF-IMPROVEMENT-MEMORY.md](SELF-IMPROVEMENT-MEMORY.md), with [schema](SELF-IMPROVEMENT-MEMORY.schema.json), read-only validator, deterministic retrieval adapter (`scripts/agent_evolution/sim_memory.py`) and focused tests.
+- Predictions are recorded before evaluation; selected attempts retain negative and unresolved outcomes.
+- Only evolve-split feedback may guide proposals, selection and memory updates. Held-out feedback stays sealed.
+- Model/provider attribution remains evidence-backed; missing identity stays unknown.
+- The paper reads its complete SIM. This repository keeps the full ledger but uses bounded retrieval to control context cost; this is an explicit adaptation.
+- Runtime proposer/selector integration and independent reproduction remain future experimental work.
+
+Source-reported evidence includes ten paired coding continuations where SIM wins nine and averages +2.36 score points; one pair favors SIM-free continuation, and one Gemini generation-chain result trails fresh RSI. The preprint supports transfer in tested settings; universal transfer and guaranteed improvement remain unestablished. Repository replication status: pending.
+
+---
+
+## 6. Non-goals
 
 - Full recursive self-improvement without human objective lock
-- Claiming GLM, AlphaEvolve, or Dream-RSI numbers as our metrics
-- Secret-heavy research agents outside credential-router
+- Claiming GLM, AlphaEvolve, Dream-RSI or SIM numbers as our metrics
+- Credential-bearing research agents remain within credential-router
 - Executing generated source code inside the replay simulator
 - Treating replay score as correctness or as an intelligence ranking
+- Letting SIM modify credentials, permissions, branch protection, objectives, evaluation boundaries or promotion policy
 
 **Agent-Identity:** Grok (Administrator) CXO

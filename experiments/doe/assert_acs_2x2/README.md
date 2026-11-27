@@ -36,6 +36,24 @@ python -m pip install -r experiments/doe/assert_acs_2x2/requirements.txt
 
 The requirements pin ASSERT 0.3.0 and the AGT Python SDK to commit 3233be2338816257700a8dbdf531a21b9f359582. The ACS host uses the upstream HostSession pre_tool_call contract with a custom policy dispatcher. The deterministic fixture uses local mock effects; external tracing remains outside this pilot. Configure the model credentials required by the ASSERT tester and judge through the provider's environment variables. Credential values remain outside logs and artifacts.
 
+## Offline ACS runtime smoke
+
+This path validates the upstream ACS SDK and the local policy adapter without model credentials:
+
+~~~bash
+python experiments/doe/assert_acs_2x2/acs/host.py \
+  --input experiments/doe/assert_acs_2x2/acs/tasks.jsonl \
+  --manifest experiments/doe/assert_acs_2x2/acs/manifest.yaml \
+  --audit artifacts/ceel-assert-acs-2x2/acs-smoke-decisions.jsonl \
+  --output artifacts/ceel-assert-acs-2x2/acs-smoke-results.jsonl
+
+python experiments/doe/assert_acs_2x2/acs/validate_smoke.py \
+  artifacts/ceel-assert-acs-2x2/acs-smoke-results.jsonl \
+  artifacts/ceel-assert-acs-2x2/acs-smoke-decisions.jsonl
+~~~
+
+Expected: internal allow, tracking-token transform, external-recipient deny, and content-redacted task-attributed audit receipts.
+
 ## Execute
 
 Run from the repository root.

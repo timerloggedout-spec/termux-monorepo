@@ -2,7 +2,7 @@
 from __future__ import annotations
 import hashlib
 import json
-from typing import Any, Iterable, Mapping
+from typing import Any, Callable, Iterable, Mapping
 from .action_selection import select_actions
 from .context import build_context
 from .executive import normalize_intent
@@ -10,6 +10,7 @@ from .homeostasis import plan_wake
 from .prediction import timing_error
 from .signals import normalize_signals
 from ..conductor import ConductorPlacement, build_cue_sheet
+from ..ballet import validate_ates_receipt
 
 
 def compose_score(
@@ -23,6 +24,7 @@ def compose_score(
     max_parallel: int = 1,
     timing_observations: Iterable[Mapping[str, Any]] = (),
     wake_context: Mapping[str, Any] | None = None,
+    receipt_resolver: Callable[[str], Mapping[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """Compile a stable, auditable score from intent, signals, plans, and feedback."""
     normalized_intent = normalize_intent(intent)
@@ -33,19 +35,17 @@ def compose_score(
     timing_feedback = []
     for observation in timing_observations:
         task_id = str(observation.get("task_id", "")).strip()
-        run_id = str(observation.get("run_id", "")).strip()
-        evidence_ref = str(observation.get("evidence_ref", "")).strip()
         if not task_id:
             raise ValueError("timing observation requires a task_id")
-        if not run_id:
-            raise ValueError(f"timing observation {task_id} requires a run_id")
-        if not evidence_ref:
-            raise ValueError(f"timing observation {task_id} requires an evidence_ref")
+        if receipt_resolver is None:
+            raise ValueError("timing feedback requires a canonical ATES receipt resolver")
+        receipt = validate_ates_receipt({"receipt": observation.get("receipt")})
+        canonical_receipt = validate_ates_receipt({"receipt": receipt_resolver(receipt["evidence_ref"])})
+        if canonical_receipt != receipt:
+            raise ValueError(f"ATES receipt verification mismatch for timing task {task_id}")
         timing_feedback.append({
             "task_id": task_id,
-            "run_id": run_id,
-            "evidence_ref": evidence_ref,
-            "source": str(observation.get("source", "ATES")),
+            **receipt,
             **timing_error(observation["expected_duration_ms"], observation["actual_duration_ms"]),
         })
     wake_recommendation = plan_wake(**dict(wake_context)) if wake_context is not None else None

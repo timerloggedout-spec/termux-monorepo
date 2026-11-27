@@ -104,18 +104,24 @@ class BrainSystemTests(unittest.TestCase):
             {"id": "tests", "priority": 4, "writes": ["tests/test_app.py"]},
             {"id": "docs", "priority": 2, "writes": ["src/app.py"]},
         ]
-        timing = [{"task_id": "build", "run_id": "run-123", "evidence_ref": "ates://receipt/123", "expected_duration_ms": 100, "actual_duration_ms": 130}]
+        receipt = {"source": "ATES", "run_id": "run-123", "cohort_id": "cohort-1", "evidence_ref": "ates://receipt/123", "sha256": "a" * 64}
+        receipt_resolver = lambda evidence_ref: receipt
+        timing = [{"task_id": "build", "receipt": receipt, "expected_duration_ms": 100, "actual_duration_ms": 130}]
         wake = {"now_ms": 100, "window_close_ms": 150, "max_wait_ms": 100}
         score = compose_score(intent, signals, plan, assignments, action_candidates=candidates,
-                              max_parallel=2, timing_observations=timing, wake_context=wake)
+                              max_parallel=2, timing_observations=timing, wake_context=wake,
+                              receipt_resolver=receipt_resolver)
         repeated = compose_score(intent, signals, plan, assignments, action_candidates=candidates,
-                                  max_parallel=2, timing_observations=timing, wake_context=wake)
+                                  max_parallel=2, timing_observations=timing, wake_context=wake,
+                                  receipt_resolver=receipt_resolver)
         policy_variant = compose_score(intent, signals, plan, assignments, action_candidates=candidates,
-                                        max_parallel=3, timing_observations=timing, wake_context=wake)
+                                        max_parallel=3, timing_observations=timing, wake_context=wake,
+                                        receipt_resolver=receipt_resolver)
         self.assertEqual(score["action_shortlist"], ["build", "tests"])
         self.assertEqual(score["timing_feedback"][0]["drift_ms"], 30)
         self.assertEqual(score["timing_feedback"][0]["run_id"], "run-123")
         self.assertEqual(score["timing_feedback"][0]["evidence_ref"], "ates://receipt/123")
+        self.assertEqual(score["timing_feedback"][0]["cohort_id"], "cohort-1")
         self.assertEqual(score["wake_recommendation"]["wake_at_ms"], 150)
         self.assertEqual(score["schema_version"], "brain.composer.score.v1")
         self.assertEqual(score["authority"]["admission_and_claims"], "QUE")
@@ -139,7 +145,20 @@ class BrainSystemTests(unittest.TestCase):
                 [{"signal_id": "s1", "source": "ci", "kind": "ready", "sequence": 1, "confidence": 1.0}],
                 {"waves": [["build"]]},
                 {"build": {"nominal_at": "n", "opens_at": "o", "closes_at": "c", "expected_duration_ms": 100, "phase": "on_beat", "open_length_ms": 10, "dependency_barriers": [], "evidence_refs": ["ates://build"]}},
-                timing_observations=[{"task_id": "build", "run_id": "run-123", "expected_duration_ms": 100, "actual_duration_ms": 130}],
+                timing_observations=[{"task_id": "build", "receipt": {"source": "ATES", "run_id": "run-123", "cohort_id": "cohort-1", "sha256": "a" * 64}, "expected_duration_ms": 100, "actual_duration_ms": 130}],
+                receipt_resolver=lambda evidence_ref: {},
+            )
+
+    def test_composer_rejects_canonical_receipt_mismatch(self):
+        receipt = {"source": "ATES", "run_id": "run-123", "cohort_id": "cohort-1", "evidence_ref": "ates://receipt/123", "sha256": "a" * 64}
+        with self.assertRaisesRegex(ValueError, "verification mismatch"):
+            compose_score(
+                {"goal": "validate release"},
+                [{"signal_id": "s1", "source": "ci", "kind": "ready", "sequence": 1, "confidence": 1.0}],
+                {"waves": [["build"]]},
+                {"build": {"nominal_at": "n", "opens_at": "o", "closes_at": "c", "expected_duration_ms": 100, "phase": "on_beat", "open_length_ms": 10, "dependency_barriers": [], "evidence_refs": ["ates://build"]}},
+                timing_observations=[{"task_id": "build", "receipt": receipt, "expected_duration_ms": 100, "actual_duration_ms": 130}],
+                receipt_resolver=lambda evidence_ref: {**receipt, "sha256": "b" * 64},
             )
 
     def test_score_id_tracks_evidence_changes(self):

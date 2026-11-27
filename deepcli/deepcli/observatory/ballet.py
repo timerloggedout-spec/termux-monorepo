@@ -108,6 +108,11 @@ def _validate_receipt(observation: Mapping[str, Any]) -> dict[str, str]:
     return normalized
 
 
+def validate_ates_receipt(observation: Mapping[str, Any]) -> dict[str, str]:
+    """Expose the canonical ATES receipt-envelope validator to adjacent modules."""
+    return _validate_receipt(observation)
+
+
 def score_observation(observation: Mapping[str, Any],
                       weights: Mapping[str, float] | None = None) -> dict[str, Any]:
     """Validate a receipt-backed observation and return a versioned score."""

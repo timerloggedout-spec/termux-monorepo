@@ -27,7 +27,8 @@
 - Candidate selection stays deterministic under equal priorities and overlapping write paths.
 - Past event/window boundaries yield a future wake recommendation.
 - Cue-sheet compilation preserves dependency IDs and temporal/evidence metadata.
-- Timing feedback carries both a source run ID and canonical evidence reference.
+- Timing feedback resolves a canonical ATES receipt envelope and preserves source, run ID, cohort ID, evidence reference, and SHA-256.
+- A mismatched receipt resolver result fails closed.
 - Composer score identity captures action-selection policy version and max_parallel, including cases where the resulting shortlist remains equal.
 
 ---

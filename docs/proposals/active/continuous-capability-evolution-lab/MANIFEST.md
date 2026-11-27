@@ -41,7 +41,7 @@ Operator directive received 2026-11-11: "Do everything high Detail at once. Get 
 - docs/ops/AGENT-EVALUATION-LANE-REGISTRY.md remains the evaluator lane registry; external platforms remain observational.
 - GitHub-native events are the primary awareness path. Existing bounded reconciliation jobs remain recovery paths only.
 - External provider capabilities are hypotheses until version-pinned documentation, runtime evidence, or reproducible tests verify them.
-- No raw prompts, completions, credentials, private traces, or restricted customer data are committed.
+- Keep raw prompts, completions, credentials, private traces, and restricted customer data outside committed artifacts.
 - SIM is optimizer-side improvement history; it reuses the existing evidence substrate and does not add a second execution ledger or authority.
 
 ## Review and promotion

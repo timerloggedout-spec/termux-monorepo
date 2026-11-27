@@ -51,15 +51,16 @@ class EmailPolicy:
         return verdict
 
     def _audit(self, policy_input: Mapping[str, Any], point: str | None, verdict: dict) -> None:
-        tool = policy_input.get("tool") or {}
-        call = policy_input.get("tool_call") or {}
+        call = policy_input.get("tool_call")
+        if not isinstance(call, Mapping):
+            call = {}
         row = {
             "test_case_id": self.current_task_id or call.get("call_id") or call.get("id"),
             "intervention_point": point,
             "decision": verdict["decision"],
             "reason": verdict.get("reason"),
             "policy_id": "ceel-email-policy/v1",
-            "tool_name": tool.get("name") or call.get("name"),
+            "tool_name": "send_email",
             "observed_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         }
         self.audit_path.parent.mkdir(parents=True, exist_ok=True)

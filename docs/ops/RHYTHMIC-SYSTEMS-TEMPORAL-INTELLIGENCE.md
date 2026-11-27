@@ -111,6 +111,31 @@ Use the existing experiment record schema and DoE family. Record baseline and ca
 - Polyphonic workload mapping: compare independent role cadences and write-set overlap under concurrent work.
 - Human oversight cost: measure review-window fit, intervention timing, and operator context-switch cost.
 
+## Architecture diagram
+
+```mermaid
+flowchart TD
+  DAG[Dependency Phase Engine] --> BAL[Ballet Coordinator]
+  BAL --> CON[Orchestra Conductor]
+  CON --> MGR[Manager Policy]
+  CON --> TEMP[Temporal Intelligence]
+  TEMP --> WAIT[WAIT to WATCH]
+  TEMP --> BAL
+  MGR --> QUE[QUE Admission and Claims]
+  QUE --> ADAPTER[Specialist Adapters]
+  ADAPTER --> ATES[ATES Receipts]
+  QUE --> COL[QUE Collectors]
+  COL --> ATES
+  ATES --> DOE[DoE and Observatory]
+  DOE --> BAL
+  MUSIC[Music as Code] --> TEMP
+  JAZZ[Jazz Division Taxonomy] --> MUSIC
+  MUSIC --> NOTATION[Shared Notation Registry]
+  NOTATION --> DOE
+```
+
+ELI5: the dependency engine decides which work is ready; Ballet arranges safe waves; Conductor prepares cues; Manager and QUE govern admission; adapters execute; collectors observe; ATES records evidence; DoE compares outcomes. Jazz and Music as Code provide orthogonal rhythmic structures and controlled stimuli for Temporal Intelligence.
+
 ## Qualification
 
 1. Validate deterministic timing primitives and timezone-aware timestamp contracts.

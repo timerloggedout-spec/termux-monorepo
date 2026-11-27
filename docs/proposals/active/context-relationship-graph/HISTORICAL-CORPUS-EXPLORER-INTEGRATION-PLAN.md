@@ -239,4 +239,4 @@ The Vercel project settings update was accepted at 2026-11-27T21:55:45Z:
 - affected-project deployment filtering: enabled;
 - ignore command: exact previous/current Git SHA diff scoped to `apps/historical-corpus-explorer/`.
 
-The app now carries `apps/historical-corpus-explorer/vercel.json`, and the repository helper recognizes the project. The post-update docs/test commit has no corresponding deployment record; the Vercel status context still reports `build-rate-limit`. Provider-side skip behavior remains partially evidenced pending a fresh unrelated/app-change pair.
+The app now carries `apps/historical-corpus-explorer/vercel.json`, and the repository helper recognizes the project. The post-update docs/test commit has zero corresponding deployment records; the Vercel status context still reports `build-rate-limit`. Provider-side skip behavior remains partially evidenced pending a fresh unrelated/app-change pair.

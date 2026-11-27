@@ -100,4 +100,4 @@ The project settings update was accepted at 2026-11-27T21:55:45Z:
 - `enableAffectedProjectsDeployments=true`
 - `commandForIgnoringBuildStep` compares the exact previous/current SHAs against `apps/historical-corpus-explorer/`
 
-The repository now carries `apps/historical-corpus-explorer/vercel.json` and a matching project case in `scripts/ci/vercel_ignore_build.sh`. The project remains a protected preview surface. The first post-update docs/test head has no deployment record for its SHA; its GitHub Vercel status remains `build-rate-limit`. Verify provider behavior with a fresh unrelated change and a relevant app change before promoting the provider gate to fully validated.
+The repository now carries `apps/historical-corpus-explorer/vercel.json` and a matching project case in `scripts/ci/vercel_ignore_build.sh`. The project remains a protected preview surface. The first post-update docs/test head has zero deployment records for its SHA; its GitHub Vercel status remains `build-rate-limit`. Verify provider behavior with a fresh unrelated change and a relevant app change before promoting the provider gate to fully validated.

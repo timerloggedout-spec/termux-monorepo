@@ -25,7 +25,7 @@ From the paginated `pulls/{number}/files` endpoint: changed paths. The shared pr
 - A Termux-surface change requires both repo-gate and Termux smoke evidence.
 - Missing or incomplete changed-path evidence sets `termux_smoke_required=true`, preserving the runtime check.
 
-Session-era signals with no live source (wholesale, keep_alive, product, why) retain their documented fixed values. The minesweeper number set and title tokens apply from `ml/pipelines/lanes` rules.
+Session-era signals (wholesale, keep_alive, product, why) retain documented fixed values until live sources are available. The minesweeper number set and title tokens apply from `ml/pipelines/lanes` rules.
 
 ## Failure record
 
@@ -33,4 +33,4 @@ A failed collector run leaves the last good feed in place; staleness remains vis
 
 ## Boundaries
 
-The classifier is descriptive. It labels PR lanes and writes the committed feed; it performs no merge, comment, deployment, or provider action. If a lane vocabulary or rule changes, update this contract and the reconciliation document in the same PR.
+The classifier is descriptive. It labels PR lanes and writes the committed feed. Merge, comment, deployment, and provider actions remain with their owning workflows. If a lane vocabulary or rule changes, update this contract and the reconciliation document in the same PR.

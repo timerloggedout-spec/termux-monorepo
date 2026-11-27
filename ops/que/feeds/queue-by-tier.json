@@ -1,27 +1,24 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-27T15:13:56Z",
+ "generated_at": "2026-11-27T15:44:34Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 3,
-   "in_progress": 0,
+   "queued": 2,
+   "in_progress": 1,
    "oldest_queued_at": "2026-11-21T07:17:51Z",
    "by_workflow_queued": {
-    "dispatch-watchdog": 1,
     "repo gate": 1,
     "PR scope guard": 1
    }
   },
   "2": {
    "tier": 2,
-   "queued": 1,
-   "in_progress": 1,
-   "oldest_queued_at": "2026-11-27T15:13:53Z",
-   "by_workflow_queued": {
-    "pages build and deployment": 1
-   }
+   "queued": 0,
+   "in_progress": 2,
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "3": {
    "tier": 3,
@@ -32,24 +29,12 @@
   },
   "4": {
    "tier": 4,
-   "queued": 39,
-   "in_progress": 15,
+   "queued": 6,
+   "in_progress": 16,
    "oldest_queued_at": "2026-11-21T07:17:51Z",
    "by_workflow_queued": {
-    "lane events recorder": 11,
-    "Agent Throughput Evidence": 11,
-    "Gemini review after peers": 1,
-    "repo-tracking-collect": 1,
     "n8n SHE bridge": 1,
-    "Agent feedback \u2192 Linear subtasks": 2,
-    "Context Relationship + Lead/Lag Audit": 2,
-    "PR evidence evaluation": 1,
-    "quota-usage-series-refresh": 1,
-    "Sweep Accountability": 1,
-    "Foresight Evidence Spine": 1,
-    "RECON INTEL discovery": 1,
-    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
-    "termux smoke": 1,
+    "termux smoke": 2,
     "Agent PR Jules Handoff": 1,
     "PR Change Effectiveness Ledger": 1,
     "Advisory GitHub Actions lint": 1
@@ -57,8 +42,8 @@
   }
  },
  "totals": {
-  "queued": 43,
-  "in_progress": 16
+  "queued": 8,
+  "in_progress": 19
  },
  "wedged_ancient": [
   {
@@ -96,7 +81,7 @@
    "4": 0
   },
   "explicit_total": 5,
-  "default_t4": 54,
+  "default_t4": 22,
   "unmatched": 0,
   "ancient_excluded": 4,
   "operator_excluded": 1

@@ -23,7 +23,7 @@
 ## Review Focus
 
 - Conflicting duplicate signal IDs fail with a clear validation error.
-- Context truncation preserves explicit episode evidence references.
+- Context truncation preserves explicit episode evidence references and every focused signal record within the context budget.
 - Candidate selection stays deterministic under equal priorities and overlapping write paths.
 - Past event/window boundaries yield a future wake recommendation.
 - Cue-sheet compilation preserves dependency IDs and temporal/evidence metadata.

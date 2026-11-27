@@ -66,6 +66,15 @@ class BrainSystemTests(unittest.TestCase):
         self.assertEqual(result["truncated_signal_count"], 1)
         self.assertEqual(result["evidence_refs"], ["ates://keep"])
 
+    def test_context_retains_prioritized_signals_within_its_budget(self):
+        signals = [
+            {"signal_id": f"s{i}", "source": "sensor", "kind": "event", "sequence": i, "confidence": 1.0}
+            for i in range(70)
+        ]
+        result = build_context(signals, max_items=2, prioritized_ids=["s0"])
+        self.assertEqual([item["signal_id"] for item in result["signals"]], ["s0", "s69"])
+        self.assertEqual(result["truncated_signal_count"], 68)
+
     def test_intent_requires_goal_and_normalizes_constraints(self):
         result = normalize_intent({"goal": "ship validated change", "priority": 4, "constraints": ["tests-green"]})
         self.assertEqual(result["goal"], "ship validated change")
@@ -170,6 +179,20 @@ class BrainSystemTests(unittest.TestCase):
                 timing_observations=[{"task_id": "build", "receipt": {"source": "ATES", "run_id": "run-123", "cohort_id": "cohort-1", "sha256": "a" * 64}, "expected_duration_ms": 100, "actual_duration_ms": 130}],
                 receipt_resolver=lambda evidence_ref: {},
             )
+
+    def test_composer_keeps_older_focused_signal_in_context(self):
+        signals = [
+            {"signal_id": f"s{i}", "source": "sensor", "kind": "event", "sequence": i, "confidence": 1.0,
+             "priority": 5 if i == 0 else 0, "salience": 1.0 if i == 0 else 0.1}
+            for i in range(65)
+        ]
+        assignment = {"build": {"nominal_at": "n", "opens_at": "o", "closes_at": "c", "expected_duration_ms": 10,
+                                "phase": "on_beat", "open_length_ms": 10, "dependency_barriers": [], "evidence_refs": ["ates://build"]}}
+        score = compose_score({"goal": "inspect"}, signals, {"waves": [["build"]]}, assignment, attention_budget=1)
+        context_ids = [item["signal_id"] for item in score["context"]["signals"]]
+        self.assertIn("s0", context_ids)
+        self.assertIn("s64", context_ids)
+        self.assertEqual(score["attention"]["focus_signal_ids"], ["s0"])
 
     def test_composer_rejects_canonical_receipt_mismatch(self):
         receipt = {"source": "ATES", "run_id": "run-123", "cohort_id": "cohort-1", "evidence_ref": "ates://receipt/123", "sha256": "a" * 64}

@@ -31,8 +31,8 @@ def compose_score(
     """Compile a stable, auditable score from intent, signals, plans, and feedback."""
     normalized_intent = normalize_intent(intent)
     normalized_signals = normalize_signals(signals)
-    context = build_context(normalized_signals, episodes=episodes)
     attention = focus_signals(normalized_signals, max_focus=attention_budget)
+    context = build_context(normalized_signals, episodes=episodes, prioritized_ids=attention["focus_signal_ids"])
     cue_sheet = build_cue_sheet(plan, assignments, placement)
     action_shortlist = select_actions(action_candidates, max_parallel=max_parallel)
     timing_feedback = []

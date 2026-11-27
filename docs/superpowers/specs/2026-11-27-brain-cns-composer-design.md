@@ -46,7 +46,7 @@ The names are typed software concepts. The mapping remains explicitly analogical
 
 - **Signal:** required `signal_id`, `source`, `kind`, `sequence`, `confidence`; non-empty identity/source/kind; non-negative integer sequence; confidence in [0, 1]; identical duplicate IDs collapse; conflicting duplicate IDs raise `ValueError`; order by `(sequence, signal_id)`.
 - **Attention:** `focus_signals(signals, max_focus=8)` ranks by descending priority, salience, and confidence, then ascending sequence and signal ID. The output preserves the complete ranking plus focused/deferred IDs; the focus budget contributes to score identity.
-- **Context:** `build_context(signals, episodes=(), max_items=64)` normalizes signals, retains the newest bounded slice, records truncation count, and collects unique episode evidence references. References remain explicit strings; resolution belongs to the evidence layer.
+- **Context:** `build_context(signals, episodes=(), max_items=64, prioritized_ids=())` preserves every focused signal record within the context budget, fills remaining capacity with the newest non-focused records, records truncation count, and collects unique episode evidence references. References remain explicit strings; resolution belongs to the evidence layer.
 - **Intent:** `normalize_intent(intent)` requires a goal, accepts integer priority 0–5 (default 3), and sorts/deduplicates constraints and success criteria.
 - **Action shortlist:** `select_actions(candidates, max_parallel=1)` sorts by descending integer priority and ascending task ID, then chooses a write-disjoint shortlist. QUE retains admission and claim authority; the dependency-phase engine retains readiness authority.
 - **Prediction error:** `timing_error(expected_duration_ms, actual_duration_ms)` returns signed drift, classifies overrun/underrun/on-time, and emits `policy_action=observe_only`. Composer resolves the supplied evidence reference against the canonical ATES receipt, binds the receipt task ID to the assigned task, derives expected duration from assignment metadata, derives actual duration from the resolved receipt payload, and preserves source, run ID, cohort ID, evidence reference, and SHA-256 in feedback.
@@ -241,7 +241,7 @@ This PR delivers pure, composable library contracts and deterministic tests. The
 
 1. **Observe:** collectors and adapters publish typed signals with stable identities and sequence values.
 2. **Remember:** Context Assembly creates a bounded working view and preserves episode evidence references.
-3. **Attend and decide:** Attention Focus ranks salient signals; Executive Intent normalizes the goal; Action Selection produces a deterministic candidate shortlist.
+3. **Attend and decide:** Attention Focus ranks salient signals and supplies priority IDs to Context Assembly; Context Assembly preserves those full records within its bounded view; Executive Intent normalizes the goal; Action Selection produces a deterministic candidate shortlist.
 4. **Compose:** Composer joins the intent, context, Ballet plan, timing assignments, and feedback into a versioned score.
 5. **Conduct:** Conductor emits a cue sheet. Manager, dependency-phase, and QUE apply their existing approval, readiness, admission, and claim contracts.
 6. **Execute:** specialist adapters perform admitted work and publish lifecycle facts.
@@ -279,7 +279,7 @@ This PR delivers pure, composable library contracts and deterministic tests. The
 
 ## Acceptance
 
-Unit tests cover normalization, duplicate conflicts, bounded attention focus, bounded context, intent validation, deterministic shortlist, write conflicts, timing classifications, earliest wake selection, integrated module wiring, canonical ATES receipt resolution, receipt-mismatch and task-binding rejection, repeated-score stability, policy-sensitive score IDs, authority metadata, and cue metadata preservation. Existing focused Observatory tests and repository gates run on the exact pushed SHA. PR #5939 remains open until required checks and review disposition satisfy repository policy.
+Unit tests cover normalization, duplicate conflicts, bounded attention focus, priority-preserving bounded context, intent validation, deterministic shortlist, write conflicts, timing classifications, earliest wake selection, integrated module wiring, canonical ATES receipt resolution, receipt-mismatch and task-binding rejection, repeated-score stability, policy-sensitive score IDs, authority metadata, and cue metadata preservation. Existing focused Observatory tests and repository gates run on the exact pushed SHA. PR #5939 remains open until required checks and review disposition satisfy repository policy.
 
 ## Extension points
 

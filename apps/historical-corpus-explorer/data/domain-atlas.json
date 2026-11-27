@@ -172,12 +172,12 @@
         "semantic",
         "operational"
       ],
-      "classification": "verified",
+      "classification": "candidate",
       "evidence": [
         {
           "path": "docs/ops/HEX-MONEYBALL-INTEGRATION.md",
           "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/084cffa6155f3e22dc0d9d687b4064a5fb0d9090/docs/ops/HEX-MONEYBALL-INTEGRATION.md",
-          "claim": "Sanitized GitHub Actions evidence artifacts feed the Moneyball analytics contract."
+          "claim": "The Moneyball contract consumes sanitized GitHub Actions evidence artifacts; direct binding from this throughput-event stream to Moneyball records remains a candidate pending exact run, attempt, and source-SHA reconciliation."
         },
         {
           "path": "docs/ops/AGENT-THROUGHPUT-METRICS.md",

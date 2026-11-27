@@ -23,6 +23,8 @@ A static integration list or weekly research report is insufficient for a system
 
 CEEL addresses discovery lag, tool-first selection, siloed comparison, evidence drift, and non-compounding adoption. It treats discovery as a continuous sensing function and adoption as an evidence-gated evolutionary process.
 
+The operational source taxonomy, eleven intelligence categories, deterministic-first classifier cascade, cost controls, urgency policy and source-to-consumer routing contract are maintained in [Upstream Intelligence Pipeline](../../integrations/UPSTREAM-INTELLIGENCE-PIPELINE.md). This contract extends CEEL without adding a parallel registry, scheduler or event ledger.
+
 ## 3. Architecture and source-of-truth map
 
 | Concern | Canonical owner | CEEL responsibility | Must not do |

@@ -13,12 +13,18 @@ import json
 import re
 import sys
 from datetime import datetime
+from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMA_PATH = ROOT / "docs" / "ops" / "SELF-IMPROVEMENT-MEMORY.schema.json"
-RFC3339_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$")
+RFC3339_RE = re.compile(
+    r"^(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})T"
+    r"(?P<hour>\d{2}):(?P<minute>\d{2}):(?P<second>\d{2})"
+    r"(?:\.(?P<fraction>\d+))?"
+    r"(?P<zone>Z|(?P<sign>[+-])(?P<offset_hour>\d{2}):(?P<offset_minute>\d{2}))$"
+)
 
 
 class SimMemoryValidationError(ValueError):
@@ -33,9 +39,19 @@ def _type_matches(value: Any, expected: str) -> bool:
     if expected == "string":
         return isinstance(value, str)
     if expected == "integer":
-        return isinstance(value, int) and not isinstance(value, bool)
+        if isinstance(value, bool):
+            return False
+        if isinstance(value, int):
+            return True
+        return isinstance(value, Decimal) and value.is_finite() and value == value.to_integral_value()
     if expected == "number":
-        return isinstance(value, (int, float)) and not isinstance(value, bool)
+        if isinstance(value, bool):
+            return False
+        if isinstance(value, int):
+            return True
+        if isinstance(value, float):
+            return value not in (float("inf"), float("-inf")) and value == value
+        return isinstance(value, Decimal) and value.is_finite()
     if expected == "boolean":
         return isinstance(value, bool)
     if expected == "null":
@@ -64,11 +80,7 @@ def _schema_errors(value: Any, schema: dict[str, Any], path: str = "$") -> list[
             errors.append(f"{path}: string does not match required pattern")
         if schema.get("format") == "date-time":
             try:
-                if RFC3339_RE.fullmatch(value) is None:
-                    raise ValueError("timestamp must use RFC 3339 date-time form")
-                parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
-                if parsed.tzinfo is None:
-                    raise ValueError("timestamp requires a timezone")
+                parse_timestamp(value)
             except ValueError:
                 errors.append(f"{path}: invalid RFC 3339 date-time")
 
@@ -93,7 +105,7 @@ def _schema_errors(value: Any, schema: dict[str, Any], path: str = "$") -> list[
         if len(value) < schema.get("minItems", 0):
             errors.append(f"{path}: array has fewer than minItems")
         if schema.get("uniqueItems"):
-            encoded = [json.dumps(item, sort_keys=True, ensure_ascii=False) for item in value]
+            encoded = [json.dumps(item, sort_keys=True, ensure_ascii=False, default=str) for item in value]
             if len(encoded) != len(set(encoded)):
                 errors.append(f"{path}: array items must be unique")
         item_schema = schema.get("items")
@@ -118,12 +130,45 @@ def _schema_errors(value: Any, schema: dict[str, Any], path: str = "$") -> list[
     return errors
 
 
-def parse_timestamp(value: str) -> datetime:
-    """Parse a schema-validated RFC 3339 timestamp into an aware datetime."""
-    return datetime.fromisoformat(value.replace("Z", "+00:00"))
+def parse_timestamp(value: str) -> tuple[int, Decimal]:
+    """Return exact UTC seconds and fractional seconds for RFC 3339 input."""
+    match = RFC3339_RE.fullmatch(value)
+    if match is None:
+        raise ValueError("timestamp must use RFC 3339 date-time form")
+    parts = match.groupdict()
+    second = int(parts["second"])
+    if second > 59:
+        raise ValueError("leap seconds require an explicit repository policy")
+    offset_seconds = 0
+    if parts["zone"] != "Z":
+        offset_hour = int(parts["offset_hour"])
+        offset_minute = int(parts["offset_minute"])
+        if offset_hour > 23 or offset_minute > 59:
+            raise ValueError("timezone offset is outside RFC 3339 ranges")
+        offset_seconds = (offset_hour * 60 + offset_minute) * 60
+        if parts["sign"] == "-":
+            offset_seconds = -offset_seconds
+    local = datetime(
+        int(parts["year"]), int(parts["month"]), int(parts["day"]),
+        int(parts["hour"]), int(parts["minute"]), second,
+    )
+    utc_seconds = (
+        local.toordinal() * 86400 + local.hour * 3600
+        + local.minute * 60 + local.second - offset_seconds
+    )
+    fraction = Decimal("0." + parts["fraction"]) if parts["fraction"] else Decimal(0)
+    return utc_seconds, fraction
 
 
-def validate_records(path: Path) -> dict[str, int]:
+def _reject_json_constant(value: str) -> None:
+    raise ValueError(f"invalid JSON numeric constant {value}")
+
+
+def _loads_strict(raw: str) -> Any:
+    return json.loads(raw, parse_float=Decimal, parse_constant=_reject_json_constant)
+
+
+def validate_records(path: Path, raw_lines: list[str] | None = None) -> dict[str, int]:
     schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
     opened: dict[str, dict[str, Any]] = {}
     record_ids: set[str] = set()
@@ -131,104 +176,105 @@ def validate_records(path: Path) -> dict[str, int]:
     event_count = 0
     attempt_count = 0
 
-    with path.open(encoding="utf-8") as stream:
-        for line_number, raw in enumerate(stream, start=1):
-            if not raw.strip():
-                continue
-            try:
-                record = json.loads(raw)
-            except json.JSONDecodeError as exc:
-                raise SimMemoryValidationError(
-                    f"line {line_number}: invalid JSON: {exc.msg}"
-                ) from exc
+    lines = raw_lines if raw_lines is not None else path.read_text(encoding="utf-8").splitlines()
+    for line_number, raw in enumerate(lines, start=1):
+        if not raw.strip():
+            continue
+        try:
+            record = _loads_strict(raw)
+        except (json.JSONDecodeError, ValueError) as exc:
+            detail = exc.msg if isinstance(exc, json.JSONDecodeError) else str(exc)
+            raise SimMemoryValidationError(
+                f"line {line_number}: invalid JSON: {detail}"
+            ) from exc
 
-            errors = _schema_errors(record, schema)
-            if errors:
-                raise SimMemoryValidationError(
-                    f"line {line_number}: schema violation: {errors[0]}"
-                )
+        errors = _schema_errors(record, schema)
+        if errors:
+            raise SimMemoryValidationError(
+                f"line {line_number}: schema violation: {errors[0]}"
+            )
 
-            record_id = record["record_id"]
-            if record_id in record_ids:
-                raise SimMemoryValidationError(
-                    f"line {line_number}: duplicate record_id {record_id!r}"
-                )
-            record_ids.add(record_id)
-            event_count += 1
+        record_id = record["record_id"]
+        if record_id in record_ids:
+            raise SimMemoryValidationError(
+                f"line {line_number}: duplicate record_id {record_id!r}"
+            )
+        record_ids.add(record_id)
+        event_count += 1
 
-            problem_id = record["problem_id"]
-            problem = record["problem"]
-            if record["record_type"] == "problem_opened":
-                if problem_id in opened:
-                    raise SimMemoryValidationError(
-                        f"line {line_number}: problem_id {problem_id!r} opened twice"
-                    )
-                opened[problem_id] = {
-                    "problem": problem,
-                    "last_ordinal": 0,
-                    "opened_round": problem["opened_round"],
-                }
-                continue
+        problem_id = record["problem_id"]
+        problem = record["problem"]
+        if record["record_type"] == "problem_opened":
+            if problem_id in opened:
+                raise SimMemoryValidationError(
+                    f"line {line_number}: problem_id {problem_id!r} opened twice"
+                )
+            opened[problem_id] = {
+                "problem": problem,
+                "last_ordinal": 0,
+                "opened_round": problem["opened_round"],
+            }
+            continue
 
-            state = opened.get(problem_id)
-            if state is None:
-                raise SimMemoryValidationError(
-                    f"line {line_number}: attempt references unopened problem_id {problem_id!r}"
-                )
-            if problem != state["problem"]:
-                raise SimMemoryValidationError(
-                    f"line {line_number}: problem definition changed for {problem_id!r}; open a new problem identity"
-                )
+        state = opened.get(problem_id)
+        if state is None:
+            raise SimMemoryValidationError(
+                f"line {line_number}: attempt references unopened problem_id {problem_id!r}"
+            )
+        if problem != state["problem"]:
+            raise SimMemoryValidationError(
+                f"line {line_number}: problem definition changed for {problem_id!r}; open a new problem identity"
+            )
 
-            attempt = record["attempt"]
-            predicted_at = parse_timestamp(attempt["predicted_at"])
-            observed_at = parse_timestamp(attempt["observed_at"])
-            recorded_at = parse_timestamp(record["recorded_at"])
-            if not predicted_at < observed_at <= recorded_at:
-                raise SimMemoryValidationError(
-                    f"line {line_number}: expected predicted_at < observed_at <= recorded_at"
-                )
+        attempt = record["attempt"]
+        predicted_at = parse_timestamp(attempt["predicted_at"])
+        observed_at = parse_timestamp(attempt["observed_at"])
+        recorded_at = parse_timestamp(record["recorded_at"])
+        if not predicted_at < observed_at <= recorded_at:
+            raise SimMemoryValidationError(
+                f"line {line_number}: expected predicted_at < observed_at <= recorded_at"
+            )
 
-            context = attempt["context"]
-            if context["round"] < state["opened_round"]:
-                raise SimMemoryValidationError(
-                    f"line {line_number}: attempt round precedes problem opened_round"
-                )
+        context = attempt["context"]
+        if context["round"] < state["opened_round"]:
+            raise SimMemoryValidationError(
+                f"line {line_number}: attempt round precedes problem opened_round"
+            )
 
-            observation = attempt["observation"]
-            if observation["passed"] > observation["total"]:
-                raise SimMemoryValidationError(
-                    f"line {line_number}: passed count exceeds total evaluation count"
-                )
+        observation = attempt["observation"]
+        if observation["passed"] > observation["total"]:
+            raise SimMemoryValidationError(
+                f"line {line_number}: passed count exceeds total evaluation count"
+            )
 
-            predicted = set(attempt["prediction"]["predicted_task_ids"])
-            fixed = set(observation["fixed_task_ids"])
-            missed = set(observation["missed_task_ids"])
-            unresolved = set(observation.get("unresolved_task_ids", []))
-            if fixed & missed or fixed & unresolved or missed & unresolved:
-                raise SimMemoryValidationError(
-                    f"line {line_number}: fixed, missed and unresolved task sets overlap"
-                )
-            if not (fixed | missed | unresolved).issubset(predicted):
-                raise SimMemoryValidationError(
-                    f"line {line_number}: observed task outcomes exceed the predicted task set"
-                )
+        predicted = set(attempt["prediction"]["predicted_task_ids"])
+        fixed = set(observation["fixed_task_ids"])
+        missed = set(observation["missed_task_ids"])
+        unresolved = set(observation.get("unresolved_task_ids", []))
+        if fixed & missed or fixed & unresolved or missed & unresolved:
+            raise SimMemoryValidationError(
+                f"line {line_number}: fixed, missed and unresolved task sets overlap"
+            )
+        if not (fixed | missed | unresolved).issubset(predicted):
+            raise SimMemoryValidationError(
+                f"line {line_number}: observed task outcomes exceed the predicted task set"
+            )
 
-            attempt_id = attempt["attempt_id"]
-            if attempt_id in attempt_ids:
-                raise SimMemoryValidationError(
-                    f"line {line_number}: duplicate attempt_id {attempt_id!r}"
-                )
-            attempt_ids.add(attempt_id)
+        attempt_id = attempt["attempt_id"]
+        if attempt_id in attempt_ids:
+            raise SimMemoryValidationError(
+                f"line {line_number}: duplicate attempt_id {attempt_id!r}"
+            )
+        attempt_ids.add(attempt_id)
 
-            expected_ordinal = state["last_ordinal"] + 1
-            if attempt["ordinal"] != expected_ordinal:
-                raise SimMemoryValidationError(
-                    f"line {line_number}: problem {problem_id!r} expected attempt ordinal "
-                    f"{expected_ordinal}, received {attempt['ordinal']}"
-                )
-            state["last_ordinal"] = attempt["ordinal"]
-            attempt_count += 1
+        expected_ordinal = state["last_ordinal"] + 1
+        if attempt["ordinal"] != expected_ordinal:
+            raise SimMemoryValidationError(
+                f"line {line_number}: problem {problem_id!r} expected attempt ordinal "
+                f"{expected_ordinal}, received {attempt['ordinal']}"
+            )
+        state["last_ordinal"] = attempt["ordinal"]
+        attempt_count += 1
 
     return {
         "events": event_count,

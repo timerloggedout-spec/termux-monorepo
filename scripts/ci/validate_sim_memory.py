@@ -255,9 +255,14 @@ def validate_records(path: Path, raw_lines: list[str] | None = None) -> dict[str
             raise SimMemoryValidationError(
                 f"line {line_number}: fixed, missed and unresolved task sets overlap"
             )
-        if not (fixed | missed | unresolved).issubset(predicted):
+        observed = fixed | missed | unresolved
+        if not observed.issubset(predicted):
             raise SimMemoryValidationError(
                 f"line {line_number}: observed task outcomes exceed the predicted task set"
+            )
+        if observed != predicted:
+            raise SimMemoryValidationError(
+                f"line {line_number}: predicted tasks are missing observed outcomes"
             )
 
         attempt_id = attempt["attempt_id"]

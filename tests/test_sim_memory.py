@@ -43,10 +43,12 @@ def attempt_event(ordinal=1, record_id="record-attempt-1", attempt_id="attempt-1
                 "diff_sha256": DIGEST,
             },
             "rationale": "A successful process exit does not prove the requested deliverable exists",
+            "predicted_at": "2026-11-27T11:58:00Z",
             "prediction": {
                 "expected_effect": "Reduce false-positive task completion",
                 "target_signals": ["acceptance-evidence", "false-completion-rate"],
             },
+            "observed_at": "2026-11-27T11:59:00Z",
             "observation": {
                 "outcome": "improved",
                 "summary": "Focused contract fixture confirms artifact evidence is required",
@@ -114,6 +116,14 @@ def test_held_out_feedback_is_rejected(tmp_path):
     attempt["attempt"]["context"]["held_out_feedback_exposed"] = True
     path = write_stream(tmp_path, problem_event(), attempt)
     with pytest.raises(SimMemoryValidationError, match="schema violation"):
+        validate_records(path)
+
+
+def test_prediction_precedes_observation_and_record(tmp_path):
+    attempt = attempt_event()
+    attempt["attempt"]["observed_at"] = "2026-11-27T12:01:00Z"
+    path = write_stream(tmp_path, problem_event(), attempt)
+    with pytest.raises(SimMemoryValidationError, match="predicted_at < observed_at"):
         validate_records(path)
 
 

@@ -42,6 +42,11 @@ class TemporalTests(unittest.TestCase):
     def test_que_completion_remains_observation(self):
         self.assertEqual(classify_que_event("completed"), QueObservation.COMPLETED_OBSERVED)
         self.assertEqual(classify_que_event("vanished"), QueObservation.RECONCILE_MISSING)
+    def test_window_close_is_inclusive(self):
+        result = classify_assignment(self.window, self.window.closes_at)
+        self.assertEqual(result.phase, Phase.LATE)
+        self.assertFalse(result.window_expired)
+
     def test_naive_timestamp_rejected(self):
         with self.assertRaises(TemporalError):
             classify_assignment(self.window, datetime(2026, 11, 27, 12, 0))

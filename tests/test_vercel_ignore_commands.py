@@ -19,6 +19,9 @@ CONFIGS = {
         "tribute-dashboard", "scripts/ci/tribute_status.py"
     ),
     "demo-portal/public/vercel.json": ("demo-portal", "demo-portal/public/index.html"),
+    "apps/historical-corpus-explorer/vercel.json": (
+        "historical-corpus-explorer", "apps/historical-corpus-explorer/index.html"
+    ),
 }
 
 

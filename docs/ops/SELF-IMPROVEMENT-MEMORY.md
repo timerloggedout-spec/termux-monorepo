@@ -11,10 +11,10 @@ The paper studies **Continual Recursive Self-Improvement (CRSI)**: continuing ha
 
 SIM groups selected harness edits by recurring problem. Each attempt preserves:
 - the diagnosed root cause;
-- the harness modification and rationale;
-- the predicted outcome, recorded before evaluation;
-- the observed outcome, including regressions or unresolved failures;
-- the evaluation context: domain, benchmark, policy model and optimization round.
+- the harness modification, affected files and rationale;
+- the predicted task IDs and expected effect, recorded before evaluation;
+- the observed fixed, missed and unresolved task IDs, plus passed/total trial counts;
+- the evaluation context: domain, source/target benchmark, source/target policy model, environment and optimization round.
 
 The proposer consults SIM when creating candidates; the selector consults it when evaluating candidates. New selected attempts extend the history rather than overwrite prior attempts. Held-out evaluation remains outside the optimization feedback loop.
 
@@ -51,10 +51,12 @@ Schema: [SELF-IMPROVEMENT-MEMORY.schema.json](SELF-IMPROVEMENT-MEMORY.schema.jso
 
 The contract represents one append-only JSONL stream with two record types:
 
-1. `problem_opened` establishes a stable `problem_id`, concise problem summary, root-cause hypothesis and domain.
-2. `attempt_recorded` appends one selected candidate, with a monotonically increasing ordinal for that problem.
+1. `problem_opened` establishes a stable `problem_id`, concise problem summary, root-cause hypothesis, domain and opening round.
+2. `attempt_recorded` appends one selector-accepted candidate, with a monotonically increasing ordinal for that problem.
 
-Each attempt binds the change to a content hash and artifact reference. It records rationale and prediction separately from measured observation. The context binds source/target commit SHAs, harness version, policy attribution, benchmark/cohort, environment fingerprint, round and candidate/evaluation budgets.
+Each attempt binds the change to affected files, a content hash and an artifact reference. It records rationale and prediction separately from measured observation. The attempt's `accepted: true` records the selector's choice; it remains independent of task outcome. A selected attempt may improve, regress, remain neutral or leave predicted tasks unresolved.
+
+The context binds source/target run IDs and commit SHAs, source/target harness versions, source/target policy attribution, source/target benchmark cohorts, environment fingerprints, evaluator, domain, round and candidate/evaluation budgets. Predictions list task IDs before evaluation; observations partition those IDs into fixed, missed and unresolved sets and preserve passed/total trials.
 
 The schema requires:
 - an explicit `evolve` evaluation split;
@@ -64,7 +66,9 @@ The schema requires:
 - 40-character source/target Git SHAs and a SHA-256 change digest;
 - strict object shapes with `additionalProperties: false`.
 
-The validator additionally checks stream-level invariants: unique record and attempt IDs, problem-open ordering, and contiguous per-problem attempt ordinals. It is read-only and does not create or mutate the ledger.
+The validator additionally checks stream-level invariants: unique record and attempt IDs, problem-open ordering, contiguous per-problem attempt ordinals, prediction → observation → record chronology, attempt rounds relative to problem opening, disjoint predicted/fixed/missed/unresolved task sets, and passed ≤ total.
+
+The local identity contract uses explicit stable `problem_id` values. The proposer or reviewer assigns a matching diagnosis to an existing identity; a materially different diagnosis receives a new identity. The validator preserves each problem definition across its attempts and leaves semantic matching decisions attributable to the optimizer.
 
 ## 4. Local adaptation from the paper
 
@@ -75,18 +79,18 @@ The repository adaptation intentionally differs from the paper in four ways:
 3. **Evidence-linked measurements.** Observations point to existing test, workflow, artifact and Action→Effect evidence. SIM does not copy prompts, completions, raw tool arguments, session transcripts or arbitrary provider payloads.
 4. **Protected control plane.** Harness candidates execute in isolated, reviewable environments. SIM proposals cannot change human objectives, permissions, credential handling, branch protections, evaluation boundaries, merge rules or repository policy. Those remain governed by existing authorization and promotion contracts.
 
-A policy/model field records only evidence-backed attribution. Unknown provider/model identity remains absent and attribution is marked `unknown`; GitHub actor identity alone is insufficient.
+Source/target policy fields record evidence-backed attribution independently. Unknown provider/model identity remains absent and attribution is marked `unknown`; GitHub actor identity alone is insufficient.
 
 ## 5. Operational loop
 
 ```text
 source run + immutable harness revision
   → diagnose recurring harness problem
-  → record prediction before candidate evaluation
+  → record prediction and target task IDs before evaluation
   → propose bounded candidate
   → screen and select candidate
   → evaluate on evolve cohort
-  → append selected attempt + observed result
+  → append accepted attempt + observed fixed/missed/unresolved tasks
   → retrieve compatible lessons for next round
   → repeat on a compatible target model/benchmark
   → sealed held-out evaluation
@@ -107,7 +111,7 @@ A first experiment should compare, on the same compatible cohort and budgets:
 | Problem-only ablation | same source-evolved harness | root causes only |
 | Full SIM | same source-evolved harness | root cause + edit + rationale + prediction + observation + context |
 
-Keep policy model, task cohort, candidate count, optimization rounds, evaluator version and execution environment matched within each comparison. Repeat independent source runs where capacity permits. Report starting and final held-out scores, source-task retention, regressions, wall time, token/context cost, tool cost, retries and human intervention. Do not compare unlike budgets as if they were equivalent.
+Keep policy model, task cohort, candidate count, optimization rounds, evaluator version and execution environment matched within each comparison. Repeat independent source runs where capacity permits. Report starting and final held-out scores, source-task retention, regressions, wall time, token/context cost, tool cost, retries and human intervention. Compare only matched budgets; label unmatched comparisons as non-comparable.
 
 The repository's own quality checks, Action→Effect realization and review findings remain separate outcome evidence. A replay gain or SIM score never authorizes merge or production promotion.
 
@@ -120,7 +124,7 @@ python3 -m pytest tests/test_sim_memory.py -q
 python3 scripts/ci/validate_sim_memory.py --path /path/to/sim-memory.jsonl
 ```
 
-The validator accepts an existing ledger path and performs read-only validation. This change establishes the schema and validator; it does **not** claim that a production manager, proposer or selector already emits or consumes SIM events.
+The validator accepts an existing ledger path and performs read-only validation. This change establishes the schema and validator; production manager, proposer and selector emission/consumption remain future integration work.
 
 ## 8. Sources and limitations
 
@@ -128,4 +132,4 @@ The validator accepts an existing ledger path and performs read-only validation.
 - Author companion: https://lucasxinyu.github.io/sim/
 - Hugging Face Papers record: https://huggingface.co/papers/2611.18856
 
-The paper is a preprint. Its results do not establish universal transfer, unbounded self-improvement, or guaranteed improvement after every model/benchmark change. The repository has not independently reproduced the reported experiments. The schema is an adaptation contract, not a claim of implementation equivalence with the authors' system.
+The paper is a preprint. Its results describe the tested settings and establish neither universal transfer nor guaranteed improvement after every model/benchmark change. The repository has not independently reproduced the reported experiments. The schema is an adaptation contract, not a claim of implementation equivalence with the authors' system.

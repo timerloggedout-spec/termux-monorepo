@@ -193,3 +193,11 @@ Route the repo-wide Siglary mandate through the existing Linguist Matrice and ro
 ## TDQS-CI-001 — Read-only TDQS quality-lane coverage
 
 **Status:** executing. Extend the existing Agent Quality Lane to cover TDQS preparation/aggregation: implementation, focused tests, evidence schema, specification, and admission-matrix path filters; compile the focused test, validate schema JSON, and run the deterministic TDQS tests alongside the existing telemetry tests. Acceptance requires the focused commands, repository gate, and Termux smoke to pass. This item does not authorize external rubric evaluation, prompt/tool execution, or acceptance of the broader notation proposal.
+
+## NSE-025 — Rhythmic and temporal cross-domain nomenclature
+
+Extend the existing concept-first notation and nomenclature proposal with candidate labels and typed relations for music rhythm and software Temporal Intelligence. Preserve separate concepts for musical beat/off-beat/cadence/polyrhythm/polymeter, assignment beat/off-beat, collector cadence/phase, and exact rational subdivision.
+
+**Acceptance:** add stable concept IDs; preserve domain and sense; classify cross-domain mappings as analogy, related term, or evidence-backed match; retain source, confidence, and lifecycle; link to the Temporal Intelligence specification and Observatory modules; keep the Domain Composition Matrix as the research database for domain-specific composition constraints.
+
+**Status:** candidate research crosswalk, linked to PR #5939.

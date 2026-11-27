@@ -1,6 +1,6 @@
 # DoE Questions Matrix
 
-**`doe-questions-matrix` v1** — registered 2026-11-02 under
+**`doe-questions-matrix` v2** — registered 2026-11-27 under
 DoE governance (see `docs/ops/DOE-FAMILY.md`, Method
 versions). Owner directive 2026-11-02: the DoE questions
 matrices require more breadth and depth — larger dimension
@@ -19,7 +19,7 @@ chain, and dimensions that existed only as RULES (instance
 identity, corroboration, accumulation, backfill origin)
 without matrix form.
 
-AFTER: **40 dimensions in 6 clusters**, every dimension
+AFTER: **42 dimensions in 6 clusters**, every dimension
 carrying sub-dimensions in the nested::research scheme:
 
 ```
@@ -179,6 +179,13 @@ misattributed to a listed factor.
     (rule 5)? Subs: {automation ref in DESIGN ·
     admitted_design_only flag} (unbound runs =
     OBSERVATIONAL).
+
+## Version 2 amendment — temporal factors
+
+41. **collector timing policy** (added v2) — Q: which observation wake policy governs a collector? Subs: {event-driven | periodic | hybrid · collector period · phase offset · wake reason · recheck boundary}. Evidence: collector receipts and wake timestamps. Research: wake amplification, polling cost, phase aliasing, and observation latency.
+42. **assignment phase treatment** (added v2) — Q: how does an assignment relate to its nominal beat and admissible window? Subs: {on-beat | early-within-window | late-within-window | window-expiry control · nominal timestamp · open timestamp · close timestamp · expected duration · actual start/finish}. Evidence: assignment and QUE lifecycle receipts. Research: window fairness, duration drift, straggler handling, and late-evidence reconciliation.
+
+Version delta: v1 → v2 adds dimensions 41–42. Existing dimension numbers remain stable. Dimension 41 measures collector cadence and wake policy; dimension 42 measures assignment displacement and window treatment. Keep queue wait, execution duration, collector latency, and evidence-ingestion latency as separate response variables.
 
 ## Use
 

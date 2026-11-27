@@ -703,6 +703,11 @@ version and compared continuously until culling retires a version.
   corroborated confirmed outcomes; validation-yield's
   corroborated_share is this rule's per-plane truth fraction.
 
+- **doe-questions-matrix v2** (registered 2026-11-27, Temporal Intelligence
+  factor amendment) - adds collector timing policy and assignment phase
+  treatment as dimensions 41–42. Existing dimension identities remain stable;
+  the prior v1 remains the historical baseline. Home:
+  docs/ops/DOE-QUESTIONS-MATRIX.md.
 - **doe-questions-matrix v1** (registered 2026-11-02, owner
   directive: breadth + depth, nested::research) - the DoE
   question dimensions as ONE matrix, home
@@ -1230,7 +1235,7 @@ version and compared continuously until culling retires a version.
   n>=30 + minority>=10 + p<.05 - accumulation bars
   30 (mean) / 100 (variance) / ~384 (claim-grade
   proportion) per arm} - {method versions of record:
-  pool-scope-methods/v1 - doe-questions-matrix v1 -
+  pool-scope-methods/v1 - doe-questions-matrix v1 - doe-questions-matrix v2 -
   panel-judge-mirror v0 - egm-evaluation v0 - lens-
   frame v0 - equivalence-proof/v0} - {epoch artifacts:
   DOE-METHODS-EPOCH-2026-11-03 (methods/cycle/iteration/

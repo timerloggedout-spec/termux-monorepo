@@ -223,3 +223,33 @@ A label is a string attached to a concept. A mapping is an assertion connecting 
 - `near_synonym` / `related_term`: useful for discovery but not sufficient evidence for interchangeability.
 
 The implementation remains candidate-only. Source discovery by Wolfram, Parallel Search, Liner, Firecrawl, or SciSpace is a provenance lead; it does not independently promote a row. Scite was not used because its trial gate required a payment card, and no subscription was activated.
+
+## Domain expansion: music_rhythm and temporal_intelligence (candidate, 2026-11-27)
+
+The rhythmic-systems crosswalk adds typed concepts while preserving the notation proposal's concept-first and evidence-backed relation model.
+
+| Concept ID | Domain | Preferred label | Scope |
+|---|---|---|---|
+| music.rhythm.beat | music_rhythm | beat | musical pulse or metrical reference |
+| music.rhythm.offbeat | music_rhythm | off-beat | rhythmic position or accent displaced from an expected beat |
+| music.rhythm.cadence | music_rhythm | cadence | phrase-level harmonic or rhythmic arrival |
+| music.rhythm.polyrhythm | music_rhythm | polyrhythm | simultaneous rhythmic cycles |
+| music.rhythm.polymeter | music_rhythm | polymeter | simultaneous meter frameworks |
+| temporal-intelligence.assignment.beat | temporal_intelligence | assignment beat | expected assignment or collection boundary |
+| temporal-intelligence.assignment.offbeat | temporal_intelligence | assignment off-beat | valid work event displaced from its nominal boundary |
+| temporal-intelligence.collector.cadence | temporal_intelligence | collector cadence | observation period and phase |
+| temporal-intelligence.collector.phase | temporal_intelligence | collector phase | temporal offset within a collector cycle |
+
+### Typed cross-domain relations
+
+- Music beat ↔ assignment beat: `analogy`; both provide a reference boundary within their own domain.
+- Music off-beat ↔ assignment off-beat: `analogy`; musical accent displacement and software event displacement remain distinct concepts.
+- Music cadence ↔ collector cadence: `analogy`; phrase arrival and observation periodicity carry different operational meanings.
+- Music polyrhythm ↔ concurrent collector periods: `analogy`; both describe concurrent cycles with distinct periods.
+- Music polymeter ↔ independent collector phases: `analogy`; both coordinate distinct timing grids.
+- Exact rational ratio ↔ rhythmic subdivision: `related_match`; preserve the exact Fraction value and its unit/domain.
+- Assignment phase ↔ collector phase: `related_term`; one describes assignment displacement and the other describes collector-cycle offset.
+
+The domain mapping preserves musical meter, performance feel, mathematical ratio, assignment window, and collector cadence as separate typed concepts. Cross-domain analogies carry source and confidence. The Domain Composition Matrix remains the research database for domain-specific composition constraints; the notation proposal owns lexical labels and semantic relations.
+
+**Status:** candidate mappings for review. Runtime behavior remains governed by the Temporal Intelligence and Observatory implementation contracts.

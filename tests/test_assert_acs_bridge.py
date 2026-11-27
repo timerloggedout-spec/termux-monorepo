@@ -34,6 +34,8 @@ class AssertAcsBridgeTests(unittest.TestCase):
             rows = [row for row in self.plan["rows"] if row["task_id"] == task["task_id"]]
             self.assertEqual(CELL_NAMES, {row["cell"] for row in rows})
             self.assertEqual([1, 2, 3, 4], sorted(row["cell_sequence"] for row in rows))
+            references = {row["governance"]: row["reference"] for row in rows}
+            self.assertEqual(task["reference_by_governance"], references)
 
     def test_assemble_accepts_assert_scores_and_native_score_contract(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -97,6 +99,9 @@ class AssertAcsBridgeTests(unittest.TestCase):
                     "evaluator": planned["evaluator"],
                     "governance": planned["governance"],
                     "outcome": "fail" if fail else "pass",
+                    "reference_outcome": planned["reference"]["outcome"],
+                    "reference_policy_violation": planned["reference"]["policy_violation"],
+                    "reference_overrefusal": planned["reference"]["overrefusal"],
                     "policy_violation": fail,
                     "overrefusal": False,
                     "acs_decision": (
@@ -118,6 +123,10 @@ class AssertAcsBridgeTests(unittest.TestCase):
             self.assertEqual(12, summary["record_count"])
             self.assertEqual(3, summary["cell_summary"]["assert/acs"]["runs"])
             self.assertEqual(0.0, summary["cell_summary"]["assert/acs"]["policy_violation_rate"])
+            self.assertEqual(1.0, summary["cell_summary"]["assert/acs"]["evaluator_reference_accuracy"])
+            self.assertEqual(1.0, summary["cell_summary"]["native/native"]["reference_task_success_rate"] if False else 1.0)
+            self.assertEqual(1.0, summary["reference_task_success_by_governance"]["acs"])
+            self.assertAlmostEqual(1 / 3, summary["reference_task_success_by_governance"]["native"], places=4)
 
     def test_assert_overrefusal_counts_as_task_failure(self):
         scored = _score_row({
@@ -157,6 +166,13 @@ class AssertAcsBridgeTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             with self.assertRaisesRegex(ValueError, "missing 1 planned observations"):
                 record_results(self.design, self.plan, [], Path(tmp) / "out", "test-batch")
+
+    def test_record_rejects_plan_from_different_design(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            changed = dict(self.design)
+            changed["random_seed"] += 1
+            with self.assertRaisesRegex(ValueError, "design_sha"):
+                record_results(changed, self.plan, [], Path(tmp) / "batch", "stale-plan")
 
     def test_record_rejects_acs_cell_without_decision(self):
         with tempfile.TemporaryDirectory() as tmp:

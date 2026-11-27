@@ -251,7 +251,7 @@ The Domain Atlas is an additional interaction layer inside the existing Historic
 
 ### Initial source-backed map
 
-The first projection connects GitHub Evidence → Context Relationship Graph → SHE, and Agent Team Control Plane → Execution Telemetry → Moneyball/3L0 → SHE. These are documented producer/consumer or projection relationships, not causal claims. Each edge carries the repository documents that support its meaning.
+The first projection connects GitHub Evidence → Context Relationship Graph → SHE, and Agent Team Control Plane → Execution Telemetry → Moneyball/3L0 → SHE. Four mappings are verified from the cited repository contracts. The Execution Telemetry → Moneyball/3L0 link remains a candidate because the exact run/attempt/source-SHA join from the throughput-event stream into Moneyball records has not been established. Each edge carries its supporting repository documents; candidate status remains visible in the UI.
 
 ### Authority and safety
 

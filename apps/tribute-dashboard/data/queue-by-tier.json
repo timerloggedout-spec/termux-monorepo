@@ -1,24 +1,27 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-27T13:32:36Z",
+ "generated_at": "2026-11-27T14:38:23Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 7,
-   "in_progress": 1,
-   "oldest_queued_at": "2026-11-27T13:30:04Z",
+   "queued": 2,
+   "in_progress": 3,
+   "oldest_queued_at": "2026-11-21T07:17:51Z",
    "by_workflow_queued": {
-    "PR scope guard": 5,
-    "repo gate": 2
+    "repo gate": 1,
+    "PR scope guard": 1
    }
   },
   "2": {
    "tier": 2,
-   "queued": 0,
+   "queued": 2,
    "in_progress": 1,
-   "oldest_queued_at": null,
-   "by_workflow_queued": {}
+   "oldest_queued_at": "2026-11-27T14:37:10Z",
+   "by_workflow_queued": {
+    "pages build and deployment": 1,
+    "tribute-dashboard-deploy": 1
+   }
   },
   "3": {
    "tier": 3,
@@ -29,64 +32,72 @@
   },
   "4": {
    "tier": 4,
-   "queued": 192,
+   "queued": 11,
    "in_progress": 17,
-   "oldest_queued_at": "2026-11-27T13:28:01Z",
+   "oldest_queued_at": "2026-11-21T07:17:51Z",
    "by_workflow_queued": {
-    "Agent Throughput Evidence": 109,
-    "Gemini review after peers": 3,
-    "Workflow Surface Evidence": 1,
-    "Operations Cadence Audit": 1,
-    "CellCog review": 2,
-    "archwiz dangle check": 2,
-    "PR Change Effectiveness Ledger": 3,
-    "Advisory CodeQL analysis": 2,
-    "localization-validate": 11,
-    "RECON INTEL discovery": 2,
-    "Issue Comment Router \u2014 modular fan-out reduction": 2,
-    "proposal-lifecycle": 1,
-    "lane events recorder": 23,
+    "Agent Throughput Evidence": 2,
     "n8n SHE bridge": 2,
-    "delphi-ledger-feed-collect": 1,
-    "Agent feedback \u2192 Linear subtasks": 1,
-    "Context Relationship + Lead/Lag Audit": 1,
-    "Agent review \u2192 auto Jules": 3,
-    "DO Statement Style": 3,
-    "DeepSeek CI \u2013 Agentic Automation": 1,
-    "Lane matrix event-driven inventory": 2,
-    "Agent Readability Source Contract": 1,
-    "Repository development evaluation": 2,
-    "termux smoke": 2,
-    "Agent PR Jules Handoff": 2,
-    "PR production ledger": 2,
-    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
-    "PR evidence evaluation": 1,
-    "Sweep Accountability": 2,
-    "Peer review orchestrator": 1,
-    "Action Effectiveness Ledger": 1,
-    "refTemplates continuous eval": 1
+    "repo-tracking-collect": 1,
+    "Quota Dispatch Tree": 1,
+    "RECON INTEL discovery": 1,
+    "termux smoke": 1,
+    "Agent PR Jules Handoff": 1,
+    "PR Change Effectiveness Ledger": 1,
+    "Advisory GitHub Actions lint": 1
    }
   }
  },
  "totals": {
-  "queued": 199,
-  "in_progress": 19
+  "queued": 15,
+  "in_progress": 21
  },
- "wedged_ancient": [],
+ "wedged_ancient": [
+  {
+   "id": 44697056321,
+   "workflow": "DO Statement Style",
+   "created_at": "2026-11-20T07:43:25Z",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/44697056321"
+  },
+  {
+   "id": 44697056380,
+   "workflow": "PR scope guard",
+   "created_at": "2026-11-20T07:43:25Z",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/44697056380"
+  },
+  {
+   "id": 36803855107,
+   "workflow": "PR production ledger",
+   "created_at": "2026-10-01T02:01:22Z",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36803855107"
+  },
+  {
+   "id": 36803852632,
+   "workflow": "Peer review orchestrator",
+   "created_at": "2026-10-01T02:01:19Z",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36803852632"
+  }
+ ],
  "wedged_excluded_from_counts": true,
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 8,
-   "2": 1,
+   "1": 5,
+   "2": 3,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 9,
-  "default_t4": 209,
+  "explicit_total": 8,
+  "default_t4": 28,
   "unmatched": 0,
-  "ancient_excluded": 0,
-  "operator_excluded": 0
+  "ancient_excluded": 4,
+  "operator_excluded": 1
  },
- "operator_excluded": []
+ "operator_excluded": [
+  {
+   "id": 37655538554,
+   "workflow": "Merge Promotion Queue",
+   "class": "ghost-never-queued"
+  }
+ ]
 }

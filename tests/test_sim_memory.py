@@ -1,7 +1,7 @@
 import json
+import tempfile
+import unittest
 from pathlib import Path
-
-import pytest
 
 from scripts.ci.validate_sim_memory import (
     SimMemoryValidationError,
@@ -106,85 +106,87 @@ def attempt_event(ordinal=1, record_id="record-attempt-1", attempt_id="attempt-1
     return event
 
 
-def write_stream(tmp_path: Path, *events):
-    path = tmp_path / "sim-memory.jsonl"
-    path.write_text(
-        "".join(json.dumps(event) + "\n" for event in events),
-        encoding="utf-8",
-    )
-    return path
+class SimMemoryValidatorTests(unittest.TestCase):
+    def setUp(self):
+        self.tempdir = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tempdir.cleanup)
+        self.path = Path(self.tempdir.name) / "sim-memory.jsonl"
+
+    def write_stream(self, *events):
+        self.path.write_text(
+            "".join(json.dumps(event) + "\n" for event in events),
+            encoding="utf-8",
+        )
+        return self.path
+
+    def test_valid_problem_and_attempt_stream(self):
+        path = self.write_stream(problem_event(), attempt_event())
+        self.assertEqual(
+            validate_records(path),
+            {"events": 2, "problems": 1, "attempts": 1},
+        )
+
+    def test_attempt_requires_prior_problem_open(self):
+        path = self.write_stream(attempt_event())
+        with self.assertRaisesRegex(SimMemoryValidationError, "unopened problem_id"):
+            validate_records(path)
+
+    def test_attempt_ordinals_are_contiguous(self):
+        path = self.write_stream(problem_event(), attempt_event(ordinal=2))
+        with self.assertRaisesRegex(SimMemoryValidationError, "expected attempt ordinal 1"):
+            validate_records(path)
+
+    def test_held_out_feedback_is_rejected(self):
+        attempt = attempt_event()
+        attempt["attempt"]["context"]["held_out_feedback_exposed"] = True
+        path = self.write_stream(problem_event(), attempt)
+        with self.assertRaisesRegex(SimMemoryValidationError, "schema violation"):
+            validate_records(path)
+
+    def test_selector_acceptance_is_required(self):
+        attempt = attempt_event()
+        attempt["attempt"]["accepted"] = False
+        path = self.write_stream(problem_event(), attempt)
+        with self.assertRaisesRegex(SimMemoryValidationError, "expected constant"):
+            validate_records(path)
+
+    def test_prediction_precedes_observation_and_record(self):
+        attempt = attempt_event()
+        attempt["attempt"]["observed_at"] = "2026-11-27T12:01:00Z"
+        path = self.write_stream(problem_event(), attempt)
+        with self.assertRaisesRegex(SimMemoryValidationError, "predicted_at < observed_at"):
+            validate_records(path)
+
+    def test_observed_task_ids_are_a_subset_of_predictions(self):
+        attempt = attempt_event()
+        attempt["attempt"]["observation"]["fixed_task_ids"] = ["unpredicted-task"]
+        path = self.write_stream(problem_event(), attempt)
+        with self.assertRaisesRegex(SimMemoryValidationError, "exceed the predicted task set"):
+            validate_records(path)
+
+    def test_passed_count_cannot_exceed_total(self):
+        attempt = attempt_event()
+        attempt["attempt"]["observation"]["passed"] = 2
+        path = self.write_stream(problem_event(), attempt)
+        with self.assertRaisesRegex(SimMemoryValidationError, "passed count exceeds"):
+            validate_records(path)
+
+    def test_regressions_are_valid_observations(self):
+        attempt = attempt_event()
+        attempt["attempt"]["observation"]["outcome"] = "regressed"
+        attempt["attempt"]["observation"]["fixed_task_ids"] = []
+        attempt["attempt"]["observation"]["missed_task_ids"] = ["completion-evidence-contract"]
+        attempt["attempt"]["observation"]["passed"] = 0
+        path = self.write_stream(problem_event(), attempt)
+        self.assertEqual(validate_records(path)["attempts"], 1)
+
+    def test_duplicate_record_ids_are_rejected(self):
+        opened = problem_event()
+        attempt = attempt_event(record_id=opened["record_id"])
+        path = self.write_stream(opened, attempt)
+        with self.assertRaisesRegex(SimMemoryValidationError, "duplicate record_id"):
+            validate_records(path)
 
 
-def test_valid_problem_and_attempt_stream(tmp_path):
-    path = write_stream(tmp_path, problem_event(), attempt_event())
-    assert validate_records(path) == {"events": 2, "problems": 1, "attempts": 1}
-
-
-def test_attempt_requires_prior_problem_open(tmp_path):
-    path = write_stream(tmp_path, attempt_event())
-    with pytest.raises(SimMemoryValidationError, match="unopened problem_id"):
-        validate_records(path)
-
-
-def test_attempt_ordinals_are_contiguous(tmp_path):
-    path = write_stream(tmp_path, problem_event(), attempt_event(ordinal=2))
-    with pytest.raises(SimMemoryValidationError, match="expected attempt ordinal 1"):
-        validate_records(path)
-
-
-def test_held_out_feedback_is_rejected(tmp_path):
-    attempt = attempt_event()
-    attempt["attempt"]["context"]["held_out_feedback_exposed"] = True
-    path = write_stream(tmp_path, problem_event(), attempt)
-    with pytest.raises(SimMemoryValidationError, match="schema violation"):
-        validate_records(path)
-
-
-def test_selector_acceptance_is_required(tmp_path):
-    attempt = attempt_event()
-    attempt["attempt"]["accepted"] = False
-    path = write_stream(tmp_path, problem_event(), attempt)
-    with pytest.raises(SimMemoryValidationError, match="expected constant"):
-        validate_records(path)
-
-
-def test_prediction_precedes_observation_and_record(tmp_path):
-    attempt = attempt_event()
-    attempt["attempt"]["observed_at"] = "2026-11-27T12:01:00Z"
-    path = write_stream(tmp_path, problem_event(), attempt)
-    with pytest.raises(SimMemoryValidationError, match="predicted_at < observed_at"):
-        validate_records(path)
-
-
-def test_observed_task_ids_are_a_subset_of_predictions(tmp_path):
-    attempt = attempt_event()
-    attempt["attempt"]["observation"]["fixed_task_ids"] = ["unpredicted-task"]
-    path = write_stream(tmp_path, problem_event(), attempt)
-    with pytest.raises(SimMemoryValidationError, match="exceed the predicted task set"):
-        validate_records(path)
-
-
-def test_passed_count_cannot_exceed_total(tmp_path):
-    attempt = attempt_event()
-    attempt["attempt"]["observation"]["passed"] = 2
-    path = write_stream(tmp_path, problem_event(), attempt)
-    with pytest.raises(SimMemoryValidationError, match="passed count exceeds"):
-        validate_records(path)
-
-
-def test_regressions_are_valid_observations(tmp_path):
-    attempt = attempt_event()
-    attempt["attempt"]["observation"]["outcome"] = "regressed"
-    attempt["attempt"]["observation"]["fixed_task_ids"] = []
-    attempt["attempt"]["observation"]["missed_task_ids"] = ["completion-evidence-contract"]
-    attempt["attempt"]["observation"]["passed"] = 0
-    path = write_stream(tmp_path, problem_event(), attempt)
-    assert validate_records(path)["attempts"] == 1
-
-
-def test_duplicate_record_ids_are_rejected(tmp_path):
-    opened = problem_event()
-    attempt = attempt_event(record_id=opened["record_id"])
-    path = write_stream(tmp_path, opened, attempt)
-    with pytest.raises(SimMemoryValidationError, match="duplicate record_id"):
-        validate_records(path)
+if __name__ == "__main__":
+    unittest.main()

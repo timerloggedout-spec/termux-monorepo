@@ -61,6 +61,16 @@
       "path": "docs/ops/REVIEW-PUBLISHING.md",
       "role": "filing → admission → route → build → publish chain",
       "blob_sha": "f69091969df0f9e97ec11dd564acb4c763c26ceb"
+    },
+    {
+      "id": "issue-template-census",
+      "path": "docs/ops/generated/issue-template-census.json",
+      "role": "source-derived inventory of all YAML issue forms, labels, titles, and dispatch declarations",
+      "schema": "issue-template-census/v1",
+      "template_count": 14,
+      "dispatch_declared": 2,
+      "intake_only": 12,
+      "observed_at": "2026-11-27"
     }
   ],
   "concepts": [
@@ -450,5 +460,19 @@
       "docs/ops/TRIGGER-WORKFLOW-REGISTRY.json",
       "docs/ops/generated/trigger-workflow-reconciliation.json"
     ]
+  },
+  "reconciliation": {
+    "issue_templates": {
+      "artifact": "docs/ops/generated/issue-template-census.json",
+      "markdown": "docs/ops/ISSUE-TEMPLATE-CENSUS.md",
+      "template_count": 14,
+      "dispatch_declared": 2,
+      "intake_only": 12,
+      "confirmed_dispatch_templates": [
+        "game-development-task",
+        "project-task"
+      ],
+      "status": "SOURCE_ENUMERATED"
+    }
   }
 }

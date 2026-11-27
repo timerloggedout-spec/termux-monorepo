@@ -12,9 +12,10 @@ LAYERS = {"semantic", "operational"}
 RELATIONSHIP_TYPES = {"PRODUCES", "PROJECTED_INTO", "EMITS_AND_MEASURES", "FEEDS_ANALYSIS", "GOVERNS", "CONSUMES", "SUPPORTS", "OPTIONAL_CONSUMER", "UNKNOWN"}
 CLASSIFICATIONS = {"verified", "candidate", "unknown"}
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+ID_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 
 
-def _validate_evidence(value: Any, label: str) -> list[str]:
+def _validate_evidence(value: Any, label: str, source_sha: str) -> list[str]:
     if not isinstance(value, dict):
         return [f"{label} must be an object"]
     errors = []
@@ -26,6 +27,9 @@ def _validate_evidence(value: Any, label: str) -> list[str]:
         parsed = urlparse(url)
         if parsed.scheme != "https" or not parsed.netloc:
             errors.append(f"{label}.url must be an absolute HTTPS URL")
+        expected_prefix = f"https://github.com/timerloggedout-spec/termux-monorepo/blob/{source_sha}/"
+        if not url.startswith(expected_prefix):
+            errors.append(f"{label}.url must point to the pinned source SHA")
     return errors
 
 
@@ -54,6 +58,8 @@ def validate_domain_atlas(value: Any) -> list[str]:
         domain_id = domain.get("id")
         if not isinstance(domain_id, str) or not domain_id:
             errors.append(f"{label}.id must be a non-empty string")
+        elif not ID_RE.fullmatch(domain_id):
+            errors.append(f"{label}.id must be a lowercase slug")
         elif domain_id in domain_ids:
             errors.append(f"{label}.id duplicates {domain_id}")
         else:
@@ -66,7 +72,7 @@ def validate_domain_atlas(value: Any) -> list[str]:
             errors.append(f"{label}.sources must be a non-empty array")
             continue
         for source_index, source in enumerate(sources):
-            errors.extend(_validate_evidence(source, f"{label}.sources[{source_index}]"))
+            errors.extend(_validate_evidence(source, f"{label}.sources[{source_index}]", value.get("source_sha", "")))
     relationships = value.get("relationships")
     if not isinstance(relationships, list):
         errors.append("relationships must be an array")
@@ -80,6 +86,8 @@ def validate_domain_atlas(value: Any) -> list[str]:
         edge_id = edge.get("id")
         if not isinstance(edge_id, str) or not edge_id:
             errors.append(f"{label}.id must be a non-empty string")
+        elif not ID_RE.fullmatch(edge_id):
+            errors.append(f"{label}.id must be a lowercase slug")
         elif edge_id in relationship_ids:
             errors.append(f"{label}.id duplicates {edge_id}")
         else:
@@ -102,7 +110,7 @@ def validate_domain_atlas(value: Any) -> list[str]:
         if classification == "verified" and not evidence:
             errors.append(f"{label}: verified relationships require evidence")
         for evidence_index, item in enumerate(evidence):
-            errors.extend(_validate_evidence(item, f"{label}.evidence[{evidence_index}]"))
+            errors.extend(_validate_evidence(item, f"{label}.evidence[{evidence_index}]", value.get("source_sha", "")))
     return errors
 
 

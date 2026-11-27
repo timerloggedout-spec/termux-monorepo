@@ -76,12 +76,31 @@ External references:
 
 ---
 
-## 5. Non-goals
+## 5. Self-Improvement Memory / Continual RSI
+
+The paper [Self-Improvement Memory Enables Continual Recursive Self-Improvement](https://arxiv.org/abs/2611.18856) adds a distinct optimizer-side memory layer. SIM stores the rationale, predicted outcome, observed outcome and evaluation context for selected harness edits, grouped by recurring problem. The proposer and selector both consult it; later attempts append to the history.
+
+Repository adaptation:
+- Hindsight remains the general-purpose memory backend and separate telemetry-retain sink; SIM is optimizer-side meta-memory for harness evolution. Deepagent lifecycle hooks remain tracked in `docs/ops/sessions/HINDSIGHT.md`.
+- Canonical JSONL/receipts, ATES, Action→Effect, manager tournaments and evolutionary replay remain the evidence and execution owners.
+- The append-only contract is [SELF-IMPROVEMENT-MEMORY.md](SELF-IMPROVEMENT-MEMORY.md), with [schema](SELF-IMPROVEMENT-MEMORY.schema.json), read-only validator and focused tests.
+- Predictions are recorded before evaluation; selected attempts retain negative and unresolved outcomes.
+- Only evolve-split feedback may guide proposals, selection and memory updates. Held-out feedback stays sealed.
+- Model/provider attribution remains evidence-backed; missing identity stays unknown.
+- The paper reads its complete SIM. This repository keeps the full ledger but uses bounded retrieval to control context cost; this is an explicit adaptation.
+- Runtime proposer/selector integration and independent reproduction remain future experimental work.
+
+Source-reported evidence includes ten paired coding continuations where SIM wins nine and averages +2.36 score points; one pair favors no-SIM, and one Gemini generation-chain result trails fresh RSI. The preprint does not establish universal transfer or guaranteed improvement. This repository does not claim to have reproduced those results.
+
+---
+
+## 6. Non-goals
 
 - Full recursive self-improvement without human objective lock
-- Claiming GLM, AlphaEvolve, or Dream-RSI numbers as our metrics
+- Claiming GLM, AlphaEvolve, Dream-RSI or SIM numbers as our metrics
 - Secret-heavy research agents outside credential-router
 - Executing generated source code inside the replay simulator
 - Treating replay score as correctness or as an intelligence ranking
+- Letting SIM modify credentials, permissions, branch protection, objectives, evaluation boundaries or promotion policy
 
 **Agent-Identity:** Grok (Administrator) CXO

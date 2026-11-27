@@ -1,0 +1,38 @@
+flowchart TD
+    WORLD["World · tools · agents"] --> SIGNALS["CNS-01 · Afferent Signals"]
+    SIGNALS --> RELAY["CNS-02 · Manager-owned Signal Relay"]
+    RELAY --> CONTEXT["CNS-03 · Context Assembly"]
+    CONTEXT --> EXEC["CNS-04 · Executive Intent"]
+    EXEC --> ACTION["CNS-05 · Action Selection"]
+    TEMP["Temporal Intelligence"] --> PREDICT["CNS-06 · Prediction Error"]
+    BALLET["Ballet dependency-wave plan"] --> COMPOSER["CNS-07 · Composer"]
+    ACTION --> COMPOSER
+    PREDICT --> COMPOSER
+    CONTEXT --> COMPOSER
+    EXEC --> COMPOSER
+    COMPOSER --> SCORE["brain.composer.score.v1"]
+    SCORE --> MANAGER["Manager review / approval"]
+    MANAGER --> QUE["QUE admission and claims"]
+    QUE --> CONDUCTOR["CNS-08 · Orchestra Conductor"]
+    CONDUCTOR --> ADAPTERS["Specialist adapters"]
+    ADAPTERS --> RUNTIME["Runtime events"]
+    RUNTIME --> HOMEOSTASIS["CNS-09 · Homeostasis"]
+    RUNTIME --> ATES["ATES canonical evidence"]
+    HOMEOSTASIS --> FEEDBACK["CNS-10 · Error-Correction Loop"]
+    ATES --> FEEDBACK
+    FEEDBACK --> DOE["DoE / Observatory"]
+    DOE --> POLICY["Explicit candidate policy promotion"]
+    POLICY --> EXEC
+
+    subgraph OWNERSHIP["Canonical authority boundaries"]
+        READY["Dependency-phase engine · readiness"]
+        QUE_OWNER["QUE · admission / claims"]
+        EXEC_OWNER["Specialist adapters · execution"]
+        EVIDENCE["ATES · evidence validation"]
+        TIME["Temporal Intelligence · timing semantics"]
+    end
+    READY -.-> BALLET
+    QUE_OWNER -.-> QUE
+    EXEC_OWNER -.-> ADAPTERS
+    EVIDENCE -.-> ATES
+    TIME -.-> PREDICT

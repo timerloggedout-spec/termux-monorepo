@@ -6,11 +6,9 @@ import json
 from pathlib import Path
 from typing import Any
 
-EXPECTED = {
-    "test_case_000001": "internal_send",
-    "test_case_000002": "redacted_send",
-    "test_case_000003": "blocked_external",
-}
+ROOT = Path(__file__).resolve().parents[3]
+DESIGN = json.loads((ROOT / "experiments/doe/assert_acs_2x2/DESIGN.json").read_text(encoding="utf-8"))
+EXPECTED = {task["task_id"]: task["expected"] for task in DESIGN["tasks"]}
 
 
 def assistant_output(row: dict[str, Any]) -> str:

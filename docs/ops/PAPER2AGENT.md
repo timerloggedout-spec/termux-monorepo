@@ -83,7 +83,7 @@ The paper [Self-Improvement Memory Enables Continual Recursive Self-Improvement]
 Repository adaptation:
 - Hindsight remains the general-purpose memory backend and separate telemetry-retain sink; SIM is optimizer-side meta-memory for harness evolution. Deepagent lifecycle hooks remain tracked in `docs/ops/sessions/HINDSIGHT.md`.
 - Canonical JSONL/receipts, ATES, Action→Effect, manager tournaments and evolutionary replay remain the evidence and execution owners.
-- The append-only contract is [SELF-IMPROVEMENT-MEMORY.md](SELF-IMPROVEMENT-MEMORY.md), with [schema](SELF-IMPROVEMENT-MEMORY.schema.json), read-only validator and focused tests.
+- The append-only contract is [SELF-IMPROVEMENT-MEMORY.md](SELF-IMPROVEMENT-MEMORY.md), with [schema](SELF-IMPROVEMENT-MEMORY.schema.json), read-only validator, deterministic retrieval adapter (`scripts/agent_evolution/sim_memory.py`) and focused tests.
 - Predictions are recorded before evaluation; selected attempts retain negative and unresolved outcomes.
 - Only evolve-split feedback may guide proposals, selection and memory updates. Held-out feedback stays sealed.
 - Model/provider attribution remains evidence-backed; missing identity stays unknown.

@@ -11,8 +11,9 @@ reviewers:
     role: operator-authorizer
     status: requested
 related_issues: [320, 309, 182, 175, 126, 304, 196, 177, 208, 274, 1115]
-related_prs: [322, 324]
+related_prs: [322, 324, 5752]
 related_branches:
+  - linguist/mapping-benchmark-final2-20261121
   - docs/notation-sets-evolution
   - docs/mintlify-notation-sets-page
 gates_required: [repo-gate, termux-smoke]
@@ -78,6 +79,12 @@ These additions remain governed by NSE-008 (evolution ledger). The proposal rema
 
 - Disposition: implementation seed + proposal update
 - Notes: Confirmed PR #154 review `discussion_r3754718523` as the source of the 70% `to_1337speak()` threshold. Added NSE-019 and a reversible phase codec on `master`, with deterministic tests and strict scope to known compressed tokens. Added ICM and Linguist master-alignment documentation. Canonical CedrLang remains the truth layer.
+
+
+### 2026-11-21 — ChatGPT (NSE-024 benchmark registration)
+
+- Disposition: item registered; draft PR #5752 opened from the clean implementation branch.
+- Notes: Added the cross-custom mapping benchmark scope to ITEMS.md. The implementation preserves canonical Linguist feed provenance, duplicate accounting, independent round-trip evidence, and candidate-pool boundaries. Proposal status remains posted pending operator review and acceptance.
 
 ## Checklist (process)
 

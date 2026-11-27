@@ -148,7 +148,8 @@ def score_observation(observation: Mapping[str, Any],
 
 def cohort_fingerprint(cohort: Iterable[Mapping[str, Any]], task_family: str) -> str:
     """Create a stable cohort identity for receipt binding and leaderboard isolation."""
-    ordered = sorted((dict(task) for task in cohort), key=lambda task: str(task.get("id", "")))
+    normalized = _normalize_tasks(cohort)
+    ordered = [normalized[task_id] for task_id in sorted(normalized)]
     payload = json.dumps({"task_family": task_family, "tasks": ordered},
                          sort_keys=True, separators=(",", ":"), default=str)
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:20]
@@ -197,7 +198,7 @@ def run_doe_tournament(tasks: Iterable[Mapping[str, Any]],
     if receipt_resolver is None:
         raise ValueError("receipt_resolver must resolve canonical ATES receipts")
     arms, plans = [], {}
-    seen_run_ids, seen_evidence_refs = set(), set()
+    seen_arm_ids, seen_run_ids, seen_evidence_refs = set(), set(), set()
     for arm in full_factorial(design):
         strategy, capacity = arm.get("strategy", "adaptive"), arm.get("max_parallel")
         if strategy not in STRATEGIES:
@@ -208,6 +209,9 @@ def run_doe_tournament(tasks: Iterable[Mapping[str, Any]],
             raise ValueError(f"unsupported assignment phase treatment: {arm['assignment_phase_treatment']}")
         plan = plan_choreography(cohort, strategy, capacity)
         arm_id = _arm_id(arm)
+        if arm_id in seen_arm_ids:
+            raise ValueError(f"DoE factor levels produce duplicate arm identity: {arm_id}")
+        seen_arm_ids.add(arm_id)
         if arm_id not in observations:
             raise ValueError(f"missing online observation for arm {arm_id}")
         raw = observations[arm_id]

@@ -3,20 +3,43 @@ from __future__ import annotations
 import hashlib
 import json
 from typing import Any, Iterable, Mapping
+from .action_selection import select_actions
 from .context import build_context
 from .executive import normalize_intent
+from .homeostasis import plan_wake
+from .prediction import timing_error
 from .signals import normalize_signals
 from ..conductor import ConductorPlacement, build_cue_sheet
 
-def compose_score(intent: Mapping[str, Any], signals: Iterable[Mapping[str, Any]],
-                  plan: Mapping[str, Any], assignments: Mapping[str, Mapping[str, Any]],
-                  placement: ConductorPlacement | str = ConductorPlacement.MANAGER_POLICY,
-                  episodes: Iterable[Mapping[str, Any]] = ()) -> dict[str, Any]:
-    """Compile a stable, auditable score from intent, observations, and a Ballet plan."""
+
+def compose_score(
+    intent: Mapping[str, Any],
+    signals: Iterable[Mapping[str, Any]],
+    plan: Mapping[str, Any],
+    assignments: Mapping[str, Mapping[str, Any]],
+    placement: ConductorPlacement | str = ConductorPlacement.MANAGER_POLICY,
+    episodes: Iterable[Mapping[str, Any]] = (),
+    action_candidates: Iterable[Mapping[str, Any]] = (),
+    max_parallel: int = 1,
+    timing_observations: Iterable[Mapping[str, Any]] = (),
+    wake_context: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Compile a stable, auditable score from intent, signals, plans, and feedback."""
     normalized_intent = normalize_intent(intent)
     normalized_signals = normalize_signals(signals)
     context = build_context(normalized_signals, episodes=episodes)
     cue_sheet = build_cue_sheet(plan, assignments, placement)
+    action_shortlist = select_actions(action_candidates, max_parallel=max_parallel)
+    timing_feedback = []
+    for observation in timing_observations:
+        task_id = str(observation.get("task_id", "")).strip()
+        if not task_id:
+            raise ValueError("timing observation requires a task_id")
+        timing_feedback.append({
+            "task_id": task_id,
+            **timing_error(observation["expected_duration_ms"], observation["actual_duration_ms"]),
+        })
+    wake_recommendation = plan_wake(**dict(wake_context)) if wake_context is not None else None
     score = {
         "schema_version": "brain.composer.score.v1",
         "intent": normalized_intent,
@@ -24,6 +47,9 @@ def compose_score(intent: Mapping[str, Any], signals: Iterable[Mapping[str, Any]
         "signal_ids": [item["signal_id"] for item in normalized_signals],
         "plan": {"waves": [list(wave) for wave in plan["waves"]],
                  "task_count": sum(len(wave) for wave in plan["waves"])},
+        "action_shortlist": action_shortlist,
+        "timing_feedback": timing_feedback,
+        "wake_recommendation": wake_recommendation,
         "cue_sheet": cue_sheet,
         "authority": {
             "composer": "intent_and_score_composition_only",

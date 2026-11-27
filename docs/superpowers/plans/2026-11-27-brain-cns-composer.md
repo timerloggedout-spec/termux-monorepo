@@ -56,9 +56,9 @@
 
 **Files:** create `brain/composer.py`; modify `deepcli/deepcli/observatory/conductor.py`, `deepcli/deepcli/observatory/__init__.py`, and `deepcli/tests/test_conductor.py`.
 
-**Interfaces:** Composer consumes normalized intent, signals, context, existing `ConductorPlacement`, and `build_cue_sheet`; it produces `compose_score(intent, signals, plan, assignments, placement=MANAGER_POLICY, episodes=())`.
+**Interfaces:** Composer consumes normalized intent, signals, context, existing `ConductorPlacement`, and `build_cue_sheet`; it wires `select_actions`, `timing_error`, and `plan_wake` through optional action candidates, timing observations, and wake context.
 
-- [ ] Write tests for deterministic score identity, score schema, authority map, and cue metadata preservation.
+- [ ] Write tests for deterministic score identity, score schema, authority map, cue metadata preservation, action shortlisting, timing feedback, and wake recommendations.
 - [ ] Run tests; expected: cue metadata regression fails against current Conductor output.
 - [ ] Update Conductor task records to include phase, open length, dependency barriers, evidence references, dependency IDs, and wake conditions.
 - [ ] Implement deterministic Composer score and canonical SHA-256 score ID.

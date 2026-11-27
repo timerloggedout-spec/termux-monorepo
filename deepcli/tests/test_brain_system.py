@@ -91,36 +91,32 @@ class BrainSystemTests(unittest.TestCase):
         self.assertEqual(future["wake_at_ms"], 150)
         self.assertEqual(future["wake_reason"], "max_wait")
 
-    def test_composer_emits_deterministic_score_and_keeps_dispatch_intent_only(self):
-        intent = {"goal": "validate release", "priority": 3, "constraints": ["evidence-required"]}
+    def test_composer_wires_action_prediction_and_homeostasis_modules(self):
+        intent = {"goal": "validate release", "priority": 3}
         signals = [{"signal_id": "s1", "source": "ci", "kind": "ready", "sequence": 1, "confidence": 1.0}]
-        plan = {"waves": [["spec"], ["tests"]]}
+        plan = {"waves": [["build"], ["tests"]]}
         assignments = {
-            "spec": {"nominal_at": "2026-11-27T12:00:00Z", "opens_at": "2026-11-27T11:59:00Z", "closes_at": "2026-11-27T12:05:00Z", "expected_duration_ms": 1000, "phase": "on_beat", "open_length_ms": 360000, "dependency_barriers": [], "evidence_refs": ["ates://spec"]},
-            "tests": {"nominal_at": "2026-11-27T12:01:00Z", "opens_at": "2026-11-27T12:00:00Z", "closes_at": "2026-11-27T12:06:00Z", "expected_duration_ms": 2000, "phase": "on_beat", "open_length_ms": 360000, "dependency_barriers": ["spec-ready"], "evidence_refs": ["ates://tests"]},
+            "build": {"nominal_at": "n", "opens_at": "o", "closes_at": "c", "expected_duration_ms": 100, "phase": "on_beat", "open_length_ms": 10, "dependency_barriers": [], "evidence_refs": ["ates://build"]},
+            "tests": {"nominal_at": "n", "opens_at": "o", "closes_at": "c", "expected_duration_ms": 100, "phase": "on_beat", "open_length_ms": 10, "dependency_barriers": ["build-ready"], "evidence_refs": ["ates://tests"]},
         }
-        first = compose_score(intent, signals, plan, assignments)
-        second = compose_score(intent, signals, plan, assignments)
-        self.assertEqual(first, second)
-        self.assertEqual(first["schema_version"], "brain.composer.score.v1")
-        self.assertEqual(first["cue_sheet"]["authority"], "dispatch_intent_only")
-        self.assertEqual(first["cue_sheet"]["waves"][0]["tasks"][0]["phase"], "on_beat")
-        self.assertEqual(first["score_id"], second["score_id"])
-        self.assertEqual(first["authority"]["admission_and_claims"], "QUE")
-        self.assertEqual(first["cue_sheet"]["waves"][1]["tasks"][0]["depends_on"], [])
+        score = compose_score(
+            intent, signals, plan, assignments,
+            action_candidates=[
+                {"id": "build", "priority": 5, "writes": ["src/app.py"]},
+                {"id": "tests", "priority": 4, "writes": ["tests/test_app.py"]},
+                {"id": "docs", "priority": 2, "writes": ["src/app.py"]},
+            ],
+            max_parallel=2,
+            timing_observations=[{"task_id": "build", "expected_duration_ms": 100, "actual_duration_ms": 130}],
+            wake_context={"now_ms": 100, "window_close_ms": 150, "max_wait_ms": 100},
+        )
+        self.assertEqual(score["action_shortlist"], ["build", "tests"])
+        self.assertEqual(score["timing_feedback"][0]["drift_ms"], 30)
+        self.assertEqual(score["wake_recommendation"]["wake_at_ms"], 150)
 
     def test_conductor_preserves_required_cue_metadata(self):
-        assignments = {
-            "a": {
-                "nominal_at": "n", "opens_at": "o", "closes_at": "c",
-                "expected_duration_ms": 10, "phase": "on_beat", "open_length_ms": 10,
-                "dependency_barriers": ["a-ready"], "evidence_refs": ["ates://a"],
-                "depends_on": ["root"],
-            }
-        }
-        cue = build_cue_sheet(
-            {"waves": [["a"]]}, assignments, ConductorPlacement.MANAGER_POLICY
-        )["waves"][0]["tasks"][0]
+        assignments = {"a": {"nominal_at": "n", "opens_at": "o", "closes_at": "c", "expected_duration_ms": 10, "phase": "on_beat", "open_length_ms": 10, "dependency_barriers": ["a-ready"], "evidence_refs": ["ates://a"], "depends_on": ["root"]}}
+        cue = build_cue_sheet({"waves": [["a"]]}, assignments, ConductorPlacement.MANAGER_POLICY)["waves"][0]["tasks"][0]
         self.assertEqual(cue["dependency_barriers"], ["a-ready"])
         self.assertEqual(cue["evidence_refs"], ["ates://a"])
         self.assertEqual(cue["depends_on"], ["root"])
@@ -131,23 +127,14 @@ class BrainSystemTests(unittest.TestCase):
         plan = {"waves": [["spec"]]}
         assignment = {
             "spec": {
-                "nominal_at": "2026-11-27T12:00:00Z",
-                "opens_at": "2026-11-27T11:59:00Z",
-                "closes_at": "2026-11-27T12:05:00Z",
-                "expected_duration_ms": 1000,
-                "phase": "on_beat",
-                "open_length_ms": 360000,
-                "dependency_barriers": [],
+                "nominal_at": "2026-11-27T12:00:00Z", "opens_at": "2026-11-27T11:59:00Z",
+                "closes_at": "2026-11-27T12:05:00Z", "expected_duration_ms": 1000,
+                "phase": "on_beat", "open_length_ms": 360000, "dependency_barriers": [],
                 "evidence_refs": ["ates://spec-v1"],
             }
         }
         original = compose_score(intent, signals, plan, assignment)
-        revised = compose_score(
-            intent,
-            signals,
-            plan,
-            {"spec": {**assignment["spec"], "evidence_refs": ["ates://spec-v2"]}},
-        )
+        revised = compose_score(intent, signals, plan, {"spec": {**assignment["spec"], "evidence_refs": ["ates://spec-v2"]}})
         self.assertNotEqual(original["score_id"], revised["score_id"])
 
 

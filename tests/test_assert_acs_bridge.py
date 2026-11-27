@@ -46,7 +46,7 @@ class AssertAcsBridgeTests(unittest.TestCase):
                             "test_case_id": task["task_id"],
                             "judge_status": "ok",
                             "verdict": {"dimensions": {
-                                "policy_violation": task["task_id"] == "external-deny",
+                                "policy_violation": task["task_id"] == "test_case_000003",
                                 "overrefusal": False,
                             }},
                         })
@@ -64,8 +64,8 @@ class AssertAcsBridgeTests(unittest.TestCase):
 
             acs_path = tmp_path / "acs.jsonl"
             acs_rows = [
-                {"test_case_id": "internal-allow", "decision": "allow", "reason": None},
-                {"test_case_id": "tracking-redact", "decision": "transform", "reason": "tracking_token_redacted"},
+                {"test_case_id": "test_case_000001", "decision": "allow", "reason": None},
+                {"test_case_id": "test_case_000002", "decision": "transform", "reason": "tracking_token_redacted"},
                 {"test_case_id": "external-deny", "decision": "deny", "reason": "external_recipient_blocked"},
             ]
             acs_path.write_text(

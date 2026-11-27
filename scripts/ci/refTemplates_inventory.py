@@ -17,7 +17,7 @@ REF = ROOT / "refTemplates"
 SLOT_RE = re.compile(r"^(\d{2}|[0-9]+)_|^smods$")
 CAPABILITY_SLOT_RE = re.compile(r"^(0[1-9]|1[0-4])_")
 METADATA_NAMES = {"metadata", "metadata.json", "metadata.yaml", "metadata.yml", "metadata.txt"}
-FILE_REFERENCE_EXCLUDES = {"README.md", "INDEX.md", "SOURCE-MAP.md"}
+FILE_REFERENCE_EXCLUDES = {"README.MD", "INDEX.MD", "SOURCE-MAP.MD"}
 
 
 def slots() -> list[Path]:

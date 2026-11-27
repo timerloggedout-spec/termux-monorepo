@@ -105,6 +105,11 @@ class TestBalletEvaluation(unittest.TestCase):
    return {**obs["sequential-cap1"]["receipt"],"sha256":"b"*64}
   with self.assertRaises(ValueError):
    run_doe_tournament([{"id":"solo"}],obs,factors={"strategy":["sequential"],"max_parallel":[1]},cohort_id=cohort,receipt_resolver=altered)
+ def test_duplicate_factor_levels_rejected(self):
+  cohort="cohort-e"
+  obs={"parallel-cap1":self.observation(cohort,"run-e")}
+  with self.assertRaises(ValueError):
+   run_doe_tournament(TASKS,obs,factors={"strategy":["parallel","parallel"],"max_parallel":[1]},cohort_id=cohort,receipt_resolver=resolver_for(obs))
  def test_unsupported_factor_rejected(self):
   with self.assertRaises(ValueError):
    run_doe_tournament(TASKS,{},factors={"mystery":["x"]},cohort_id="cohort-a")

@@ -74,3 +74,11 @@ These entries are concept-adaptation targets. The category-aware score reports m
 | Done Gate | [done-gate.md](../13_Third_Party_Refs/done-gate.md) | Completion-evidence and verification pattern |
 | Neo4j Relate | [neo4j-relate.md](../13_Third_Party_Refs/neo4j-relate.md) | In-process graph and working-set pattern |
 
+## 13_Third_Party_Refs — file-based references
+
+| Reference | Local source | Disposition |
+|---|---|---|
+| BOINC distributed-compute template | [boinc-distributed-compute-template.md](../13_Third_Party_Refs/boinc-distributed-compute-template.md) | Work-unit scheduling, host churn and result corroboration |
+| Context retrieval architect | [context-retrieval-architect.md](../13_Third_Party_Refs/context-retrieval-architect.md) | Task-scoped context retrieval and workflow compilation |
+| Done Gate | [done-gate.md](../13_Third_Party_Refs/done-gate.md) | Completion evidence and landed-state verification |
+| Neo4j Relate | [neo4j-relate.md](../13_Third_Party_Refs/neo4j-relate.md) | In-process graph and working-set persistence |

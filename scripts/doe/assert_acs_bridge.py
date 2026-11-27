@@ -177,6 +177,7 @@ def _score_row(row: dict, evaluator: str) -> dict:
         "overrefusal": overrefusal,
         "metrics": row.get("metrics") or {},
         "evidence_refs": row.get("evidence_refs") or [],
+        "observed_at": row.get("observed_at"),
         "judge_status": row.get("judge_status", "ok"),
     }
 
@@ -244,8 +245,8 @@ def assemble_results(plan: dict, score_files: list[str], acs_path: Path | None) 
             "acs_decision": decision,
             "acs_reasons": [item["reason"] for item in decisions if item.get("reason")],
             "metrics": score["metrics"],
-            "evidence_refs": score["evidence_refs"],
-            "observed_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "evidence_refs": list(score["evidence_refs"]) + [score_paths[cell].resolve().as_uri()] + ([acs_path.resolve().as_uri()] if planned["governance"] == "acs" and acs_path else []),
+            "observed_at": score["observed_at"] or datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         })
     return results
 
@@ -326,6 +327,8 @@ def record_results(design: dict, plan: dict, results: list[dict], output_dir: Pa
             "evaluator": planned["evaluator"],
             "governance": planned["governance"],
             "acs_decision": acs_decision,
+            "acs_policy_ids": ";".join(sorted({str(item.get("policy_id")) for item in decisions if item.get("policy_id")})),
+            "acs_intervention_points": ";".join(sorted({str(item.get("intervention_point")) for item in decisions if item.get("intervention_point")})),
         }
         for key, value in (result.get("metrics") or {}).items():
             if isinstance(value, (str, int, float)) or value is None:

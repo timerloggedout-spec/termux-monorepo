@@ -34,7 +34,7 @@ Python 3.11+:
 python -m pip install "assert-ai[acs]"
 ~~~
 
-The acs extra supplies the ACS host SDK used by the governed target. The deterministic fixture uses no external tracing service. Configure the model credentials required by the ASSERT tester and judge through the provider's environment variables. The pilot never reads or prints credential values.
+The acs extra supplies the ACS host SDK used by the governed target. The deterministic fixture uses local mock effects; external tracing remains outside this pilot. Configure the model credentials required by the ASSERT tester and judge through the provider's environment variables. Credential values remain outside logs and artifacts.
 
 ## Execute
 

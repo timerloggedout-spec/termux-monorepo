@@ -15,6 +15,7 @@ related_prs: []
 related_branches:
   - feat/ceel-continuous-capability-evolution-20261111
   - feat/sim-memory-crsi-20261127
+  - feat/sim-memory-final-20261127
 gates_required: [proposal-lifecycle, repo-gate, termux-smoke]
 ---
 

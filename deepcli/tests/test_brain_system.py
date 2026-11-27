@@ -97,7 +97,7 @@ class BrainSystemTests(unittest.TestCase):
         plan = {"waves": [["build"], ["tests"]]}
         assignments = {
             "build": {"nominal_at": "n", "opens_at": "o", "closes_at": "c", "expected_duration_ms": 100, "phase": "on_beat", "open_length_ms": 10, "dependency_barriers": [], "evidence_refs": ["ates://build"]},
-            "tests": {"nominal_at": "n", "opens_at": "o", "closes_at": "c", "expected_duration_ms": 100, "phase": "on_beat", "open_length_ms": 10, "dependency_barriers": ["build-ready"], "evidence_refs": ["ates://tests"]},
+            "tests": {"nominal_at": "n", "opens_at": "o", "closes_at": "c", "expected_duration_ms": 100, "phase": "on_beat", "open_length_ms": 10, "dependency_barriers": ["build-ready"], "evidence_refs": ["ates://tests"], "depends_on": ["spec"]},
         }
         score = compose_score(
             intent, signals, plan, assignments,

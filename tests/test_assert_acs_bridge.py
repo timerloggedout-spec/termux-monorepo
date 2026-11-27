@@ -33,7 +33,7 @@ class AssertAcsBridgeTests(unittest.TestCase):
         for task in self.design["tasks"]:
             rows = [row for row in self.plan["rows"] if row["task_id"] == task["task_id"]]
             self.assertEqual(CELL_NAMES, {row["cell"] for row in rows})
-            self.assertEqual([1, 2, 3, 4], sorted(row["execution_sequence"] for row in rows))
+            self.assertEqual([1, 2, 3, 4], sorted(row["cell_sequence"] for row in rows))
 
     def test_assemble_accepts_assert_scores_and_native_score_contract(self):
         with tempfile.TemporaryDirectory() as tmp:

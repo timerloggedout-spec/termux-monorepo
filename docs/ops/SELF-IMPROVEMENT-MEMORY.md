@@ -117,12 +117,15 @@ The repository's own quality checks, Action→Effect realization and review find
 
 ## 7. Validation
 
-Run the focused contract checks:
+Run the core Termux smoke and focused contract checks:
 
 ```sh
+python3 scripts/ci/termux_smoke.py
 python3 -m pytest tests/test_sim_memory.py -q
 python3 scripts/ci/validate_sim_memory.py --path /path/to/sim-memory.jsonl
 ```
+
+The core Termux smoke runs the checked-in SIM JSONL fixture through the stdlib-only validator.
 
 The validator accepts an existing ledger path and performs read-only validation. This change establishes the schema and validator; production manager, proposer and selector emission/consumption remain future integration work.
 

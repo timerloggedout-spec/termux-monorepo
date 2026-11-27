@@ -28,6 +28,7 @@
 - Past event/window boundaries yield a future wake recommendation.
 - Cue-sheet compilation preserves dependency IDs and temporal/evidence metadata.
 - Timing feedback resolves a canonical ATES receipt envelope and preserves source, run ID, cohort ID, evidence reference, and SHA-256.
+- The plan distinguishes the implemented pure library contract from the follow-on production workflow caller.
 - A mismatched receipt resolver result fails closed.
 - Composer score identity captures action-selection policy version and max_parallel, including cases where the resulting shortlist remains equal.
 

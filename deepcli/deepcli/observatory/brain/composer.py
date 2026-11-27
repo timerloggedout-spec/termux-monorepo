@@ -50,7 +50,7 @@ def compose_score(
         })
     wake_recommendation = plan_wake(**dict(wake_context)) if wake_context is not None else None
     score = {
-        "schema_version": "brain.composer.score.v1",
+        "schema_version": "brain.composer.score.v2",
         "intent": normalized_intent,
         "context": context,
         "signal_ids": [item["signal_id"] for item in normalized_signals],

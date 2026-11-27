@@ -14,7 +14,7 @@ Neuroscience language is an architectural analogy. It supplies memorable names f
 
 - Establish an intent-to-score layer above existing planning and execution owners.
 - Separate signal intake, context assembly, executive intent, action shortlisting, prediction error, and observation cadence into small testable modules.
-- Produce a stable `brain.composer.score.v1` artifact with a content-derived `score_id`.
+- Produce a stable `brain.composer.score.v2` artifact with a content-derived `score_id`.
 - Compile the score into the existing Orchestra Conductor cue-sheet contract.
 - Preserve task identity, dependency metadata, timing windows, dependency barriers, wake conditions, and ATES evidence references through cue compilation.
 - Make decisions replayable from normalized inputs and a versioned policy.
@@ -36,7 +36,7 @@ Neuroscience language is an architectural analogy. It supplies memorable names f
 | `action_selection.py` | Basal-ganglia action selection | Produce deterministic, write-disjoint action shortlist | ordered task IDs |
 | `prediction.py` | Cerebellar prediction/error correction | Compare expected and actual duration | `brain.prediction-error.v1` |
 | `homeostasis.py` | Autonomic / homeostatic regulation | Recommend the earliest observation wake boundary | `brain.homeostasis.wake.v1` |
-| `composer.py` | Distributed integration | Compose normalized intent, context, existing plan, and cue sheet | `brain.composer.score.v1` |
+| `composer.py` | Distributed integration | Compose normalized intent, context, existing plan, and cue sheet | `brain.composer.score.v2` |
 | existing `conductor.py` | Motor planning / coordination | Compile plan plus assignment metadata into dispatch intent | `orchestra.cue-sheet.v1` |
 
 The names are typed software concepts. The mapping remains explicitly analogical.
@@ -104,7 +104,7 @@ flowchart TD
 
 ```json
 {
-  "schema_version": "brain.composer.score.v1",
+  "schema_version": "brain.composer.score.v2",
   "intent": {
     "schema_version": "brain.intent.v1",
     "goal": "validate release",
@@ -218,6 +218,10 @@ flowchart TD
 }
 ```
 
+## Integration maturity
+
+This PR delivers pure, composable library contracts and deterministic tests. The current repository workflows have no production caller for `compose_score`; scheduling it from a Manager/QUE workflow or collector event remains a follow-on integration item. The receipt resolver is a canonical boundary contract, and the ATES adapter implementation remains with its owning runtime surface.
+
 ## Runtime lifecycle
 
 1. **Observe:** collectors and adapters publish typed signals with stable identities and sequence values.
@@ -226,7 +230,7 @@ flowchart TD
 4. **Compose:** Composer joins the intent, context, Ballet plan, timing assignments, and feedback into a versioned score.
 5. **Conduct:** Conductor emits a cue sheet. Manager, dependency-phase, and QUE apply their existing approval, readiness, admission, and claim contracts.
 6. **Execute:** specialist adapters perform admitted work and publish lifecycle facts.
-7. **Verify:** ATES validates canonical receipts. Prediction Error and Homeostasis consume receipt-bound observations.
+7. **Verify:** ATES validates canonical receipts. The Composer receipt adapter accepts canonical envelopes and resolver output; production workflow invocation remains a follow-on integration step.
 8. **Learn:** DoE / Observatory evaluate candidate policy changes; existing promotion gates govern adoption.
 
 ## Safety and reliability invariants

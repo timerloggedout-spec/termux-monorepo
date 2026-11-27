@@ -123,7 +123,7 @@ class BrainSystemTests(unittest.TestCase):
         self.assertEqual(score["timing_feedback"][0]["evidence_ref"], "ates://receipt/123")
         self.assertEqual(score["timing_feedback"][0]["cohort_id"], "cohort-1")
         self.assertEqual(score["wake_recommendation"]["wake_at_ms"], 150)
-        self.assertEqual(score["schema_version"], "brain.composer.score.v1")
+        self.assertEqual(score["schema_version"], "brain.composer.score.v2")
         self.assertEqual(score["authority"]["admission_and_claims"], "QUE")
         self.assertEqual(score["cue_sheet"]["authority"], "dispatch_intent_only")
         self.assertEqual(score["cue_sheet"]["waves"][1]["tasks"][0]["depends_on"], ["build"])
@@ -160,6 +160,19 @@ class BrainSystemTests(unittest.TestCase):
                 timing_observations=[{"task_id": "build", "receipt": receipt, "expected_duration_ms": 100, "actual_duration_ms": 130}],
                 receipt_resolver=lambda evidence_ref: {**receipt, "sha256": "b" * 64},
             )
+
+    def test_default_score_identity_is_stable_with_empty_optional_modules(self):
+        intent = {"goal": "inspect plan"}
+        signals = [{"signal_id": "s1", "source": "ci", "kind": "ready", "sequence": 1, "confidence": 1.0}]
+        plan = {"waves": [["build"]]}
+        assignments = {"build": {"nominal_at": "n", "opens_at": "o", "closes_at": "c", "expected_duration_ms": 10, "phase": "on_beat", "open_length_ms": 10, "dependency_barriers": [], "evidence_refs": ["ates://build"]}}
+        first = compose_score(intent, signals, plan, assignments)
+        second = compose_score(intent, signals, plan, assignments)
+        self.assertEqual(first["schema_version"], "brain.composer.score.v2")
+        self.assertEqual(first["score_id"], second["score_id"])
+        self.assertEqual(first["action_shortlist"], [])
+        self.assertEqual(first["timing_feedback"], [])
+        self.assertIsNone(first["wake_recommendation"])
 
     def test_score_id_tracks_evidence_changes(self):
         intent = {"goal": "validate release", "priority": 3}

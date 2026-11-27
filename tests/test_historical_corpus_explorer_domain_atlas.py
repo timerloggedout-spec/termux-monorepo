@@ -56,3 +56,14 @@ def test_unproven_telemetry_to_moneyball_mapping_remains_candidate():
     atlas = json.loads(ATLAS_PATH.read_text(encoding="utf-8"))
     edge = next(item for item in atlas["relationships"] if item["id"] == "telemetry-feeds-moneyball")
     assert edge["classification"] == "candidate"
+
+def test_evidence_must_resolve_to_the_pinned_source_sha():
+    atlas = json.loads(ATLAS_PATH.read_text(encoding="utf-8"))
+    atlas["domains"][0]["sources"][0]["url"] = atlas["domains"][0]["sources"][0]["url"].replace(atlas["source_sha"], "0" * 40)
+    assert any("pinned source SHA" in error for error in validate_domain_atlas(atlas))
+
+
+def test_domain_ids_must_be_stable_lowercase_slugs():
+    atlas = json.loads(ATLAS_PATH.read_text(encoding="utf-8"))
+    atlas["domains"][0]["id"] = "GitHub Evidence"
+    assert any("lowercase slug" in error for error in validate_domain_atlas(atlas))

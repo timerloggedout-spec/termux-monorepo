@@ -19,7 +19,8 @@ async def send_email(args: dict[str, Any]) -> dict[str, Any]:
     return {"sent": True, "to": args["to"], "body": args["body"]}
 
 
-async def execute_case(control: AgentControl, task: dict[str, Any]) -> dict[str, Any]:
+async def execute_case(control: AgentControl, policy: EmailPolicy, task: dict[str, Any]) -> dict[str, Any]:
+    policy.current_task_id = task["task_id"]
     try:
         result = await control.run_tool(
             "send_email",
@@ -45,7 +46,7 @@ async def run(input_path: Path, manifest_path: Path, audit_path: Path) -> list[d
         for line in input_path.read_text(encoding="utf-8").splitlines()
         if line.strip()
     ]
-    return [await execute_case(control, task) for task in tasks]
+    return [await execute_case(control, policy, task) for task in tasks]
 
 
 def main() -> int:

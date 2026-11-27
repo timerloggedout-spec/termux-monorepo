@@ -40,7 +40,7 @@ class AssertAcsBridgeTests(unittest.TestCase):
             tmp_path = Path(tmp)
             score_args = []
             for cell in sorted(CELL_NAMES):
-                evaluator = cell.split("/")[0]
+                evaluator, governance = cell.split("/")
                 path = tmp_path / (cell.replace("/", "-") + ".jsonl")
                 rows = []
                 for task in self.design["tasks"]:

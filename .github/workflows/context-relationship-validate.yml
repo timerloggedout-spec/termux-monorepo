@@ -4,6 +4,10 @@ on:
   pull_request:
     paths:
       - 'archwiz/context_relationships/**'
+      - 'apps/historical-corpus-explorer/**'
+      - 'config/context_relationships/domain-atlas.schema.json'
+      - 'scripts/ci/validate_historical_corpus_explorer_domain_atlas.py'
+      - 'tests/test_historical_corpus_explorer_domain_atlas.py'
       - 'config/context_relationships/**'
       - 'tests/test_context_relationship_*.py'
       - 'tests/test_context_temporal_lineage.py'
@@ -54,8 +58,10 @@ jobs:
             tests/test_context_relationship_temporal_integrity.py \
             tests/test_context_relationship_explorer_projection.py \
             tests/test_historical_corpus_explorer_snapshot.py \
+            tests/test_historical_corpus_explorer_domain_atlas.py \
             tests/test_context_relationship_rust_accel.py \
             -q
+          python scripts/ci/validate_historical_corpus_explorer_domain_atlas.py
           node --check apps/historical-corpus-explorer/explorer.js
           python scripts/ci/build_historical_corpus_explorer_snapshot.py --check
           python -m archwiz.context_relationships.compiler \

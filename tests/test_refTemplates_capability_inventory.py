@@ -132,6 +132,8 @@ class RefTemplatesCapabilityInventoryTests(unittest.TestCase):
         self.assertEqual(0.0, specificity("https://github.com/org/repo/tree/v1"))
         self.assertEqual(0.0, specificity("https://github.com/org/repo/tree/v1.2"))
         self.assertEqual(0.0, specificity("https://github.com/org/repo/tree/v1.2.3"))
+        self.assertEqual(0.0, specificity("https://github.com/org/repo/tree/v2-experimental"))
+        self.assertEqual(0.0, specificity("https://github.com/org/repo/tree/2026-11-experiment"))
         self.assertEqual(1.0, specificity("https://github.com/org/repo/releases/tag/v1.2.3"))
         self.assertEqual(1.0, specificity(f"https://github.com/org/repo/tree/{sha}"))
         self.assertEqual(1.0, specificity(f"https://github.com/org/repo/commit/{sha}"))

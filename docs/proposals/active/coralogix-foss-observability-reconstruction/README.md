@@ -99,3 +99,7 @@ This change adds metadata references, strengthens the reference inventory contra
 The repository already adopts OpenTelemetry as the neutral boundary through config/agent_stack_integrations.json (otel-core, ADOPT). The current entry defines agent invocation and MCP admission inputs, OTLP-compatible export, canonical JSONL receipts, and version pinning. This adoption records the boundary decision; the Collector reference evaluates a concrete receive/process/export component.
 
 Existing contracts and pipelines are mapped in EXISTING-SYSTEM-MAP.md. Provider adapters extend these contracts through the existing integration-event and agent-evidence schemas. The existing telemetry-ingest pipeline remains the owner of its separate Provenance and HindSight outputs. ForeSight remains the procurement/research evidence spine.
+
+## 11. ForeSight registration
+
+Eleven source-reviewed records are also registered in data/foresight/resource-registry.jsonl with H1 horizon, research_finding evidence status, procurement dimensions, unresolved portability questions, and SHA-256 evidence hashes. This includes the eight observability/evaluation candidates and the My-Jogyo/Docxology research-method references. ForeSight remains the evidence-bearing research registry; refTemplates remains the source/capability index.

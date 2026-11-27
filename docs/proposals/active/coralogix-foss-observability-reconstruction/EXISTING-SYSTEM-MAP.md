@@ -29,3 +29,7 @@ This proposal extends the monorepo's existing evidence, telemetry, procurement, 
 4. Replay the same sanitized cohort into two operational providers and two AI evaluation providers.
 5. Compare completeness, decision quality, privacy, resource use, export, and variance.
 6. Record results in existing ForeSight and telemetry indexes; promote through repository gates.
+
+## ForeSight candidate registration
+
+The current branch appends 11 records to data/foresight/resource-registry.jsonl: OpenTelemetry Collector, SigNoz, HyperDX/ClickStack, OpenObserve, Parca, Grafana Pyroscope, Langfuse, Phoenix, Coralogix, My-Jogyo, and Docxology. Each record carries a resource/item/lane identity, H1 horizon, research_finding status, canonical source, procurement dimensions, unresolved questions, and a recomputed evidence_hash. The older data/briefing/procurement.jsonl remains a briefing-side extract; the Foresight resource registry is the canonical radar/procurement record.

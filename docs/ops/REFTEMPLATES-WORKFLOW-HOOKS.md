@@ -3,23 +3,25 @@
 ## Required visibility
 
 | Surface | How refTemplates participates |
-|---------|------------------------------|
-| Dual-gate | All metadata + gitlink changes on this PR ride dual-gate; no special path |
-| evidence-led-monorepo-ops | Inventory `refTemplates/00_Index/SOURCE-MAP.md` + `smods/` vs `.gitmodules` |
+|---|---|
+| Dual-gate | All metadata + gitlink changes ride the same green path |
+| evidence-led-monorepo-ops | Inventory SOURCE-MAP, reference metadata, and smods vs .gitmodules |
 | adaptive-wait | Submodule sparse-checkout / integrity jobs stay behind dual gates |
 | help-wanted / tribute | Research-template work claimable like other lanes |
 | credential-router + live-catalog | Research agents use free-first routing only |
-| Codespace agent lane | Preferred smoke for any new `smods/` pin |
-| ecc-tools overflow | Large template PRs thin-track if comment volume warrants |
+| Codespace agent lane | Preferred smoke for any new smods pin |
+| ecc-tools overflow | Large template PRs thin-track when comment volume warrants |
 
-## Integrity checklist (for CI / scripts)
+## Integrity contract
 
-1. Every slot under `15_Research_Repo_Templates/*` has `README.md` + `SOURCE.txt`
-2. Every `smods/*` path appears in `.gitmodules` with `shallow = true` when present
-3. Preferred SOURCE URLs are resolvable (HEAD or public)
-4. No hardcoded API keys in template metadata
+1. Every directory under 05_Safety_Observability/, 11_Evaluation_Quality/, and 15_Research_Repo_Templates/ has README.md + SOURCE.txt.
+2. Every smods path appears in .gitmodules with shallow configuration when present.
+3. Preferred SOURCE URLs are resolvable and canonical.
+4. Metadata contains no credentials or API keys.
+5. License labels identify provisional research posture and exact-revision review requirements.
 
 ## Follow-up implementation
 
-- Extend evidence-led inventory script to walk `15_*` and diff `smods` vs `.gitmodules`
-- Optional: thin GHA job on path `refTemplates/**` that asserts SOURCE.txt presence
+- scripts/ci/refTemplates_inventory.py --strict validates metadata contracts for categories 05, 11, and 15.
+- Evidence-led inventory compares 00_Index/SOURCE-MAP.md with category entries and .gitmodules.
+- Optional thin GHA job runs the strict inventory on refTemplates/**.

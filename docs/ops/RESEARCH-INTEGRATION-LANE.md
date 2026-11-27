@@ -103,4 +103,8 @@ refTemplates/
 - Full recursive submodule on every CI run
 - Cross-silo score aggregation that collapses attribution
 
-**Agent-Identity:** Grok (Administrator) CXO  
+**Agent-Identity:** Grok (Administrator) CXO
+
+## Provider references and research-template silos
+
+Observability and evaluation providers are catalogued separately under `refTemplates/05_Safety_Observability/` and `refTemplates/11_Evaluation_Quality/`. They are provider-comparison lanes, not additional tier-A research-template silos. The 12 research-template participants under `15_Research_Repo_Templates/` retain independent attribution and their existing Delphi participation model. See `docs/proposals/active/coralogix-foss-observability-reconstruction/` for the provider tournament and DoE/MVT contract.

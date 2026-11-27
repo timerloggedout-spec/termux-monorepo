@@ -252,3 +252,15 @@ See docs/ops/AGENT-EVALUATION-LANE-REGISTRY.md for the admission, provenance, re
 Issue #184 remains the credential SSOT by **name only**. PR #800 exposed a concrete failure mode: ECC Tools could produce analysis evidence but check publication was unavailable because the installed App lacked the required Checks permission. The repository therefore adds a manual, read-only capability probe rather than assuming that an App credential exists or that its installation permissions are current.
 
 The probe uses GitHub's official actions/create-github-app-token action with a repository configuration variable APP_CLIENT_ID and Actions secret APP_PRIVATE_KEY, then inspects the effective installation permissions. It requires Checks: write and never creates a check, comment, branch, commit, or PR. App permission changes still require the App/installation owner to approve them.
+
+## Coralogix/FOSS capability reconstruction
+
+The parallel adapter tournament is now indexed in `refTemplates/05_Safety_Observability/` and `refTemplates/11_Evaluation_Quality/`. Candidate roles, provisional license posture, and upstream sources are recorded in `docs/proposals/active/coralogix-foss-observability-reconstruction/FOSS-CANDIDATES.md`.
+
+- OpenTelemetry Collector: P0 receive/process/export interoperability boundary.
+- SigNoz, HyperDX/ClickStack, OpenObserve: parallel operational observability candidates.
+- Langfuse and Phoenix: parallel AI experiment/evaluation candidates.
+- Parca and Pyroscope: parallel continuous profiling candidates.
+- Coralogix: commercial capability comparator; optional procurement/benchmark input.
+
+All providers consume the same sanitized cohort and canonical evidence contract. Canonical JSONL/receipts, ATES, and repository promotion gates retain authority. Candidate registration is metadata-only; implementation requires exact-revision review, environment/resource evidence, and reproducible adapter tests.

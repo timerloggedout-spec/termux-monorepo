@@ -96,4 +96,8 @@ Promote when dual gates green and task outcome verified. Agents auto-promote und
 ---
 
 **Agent-Identity:** Grok (Administrator) · CXO  
-**Style:** BIUDL · Continuous Fully Automated Agentic Development · adaptive-wait · evidence-led · review-loop  
+**Style:** BIUDL · Continuous Fully Automated Agentic Development · adaptive-wait · evidence-led · review-loop
+
+## Provider reference categories
+
+The refTemplates tree now uses `05_Safety_Observability/` for telemetry, operational observability, profiling, and commercial comparison references, and `11_Evaluation_Quality/` for AI trace/evaluation providers. Each reference directory carries README.md and SOURCE.txt. These provider lanes remain distinct from the 12 tier-A research-template silos in `15_Research_Repo_Templates/`; registration does not create a live gitlink or runtime dependency. See `docs/proposals/active/coralogix-foss-observability-reconstruction/`.

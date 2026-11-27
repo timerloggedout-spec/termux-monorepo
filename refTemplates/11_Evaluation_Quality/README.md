@@ -1,8 +1,13 @@
 # 11_Evaluation_Quality
 
-Metadata category (from recreate/refTemplates-skeleton).
+Evaluation providers, experiment tooling, benchmark methods, and quality-gate references.
 
-Eval, quality gates, benchmarking patterns. Aligns with dual-gate + evidence-led.
+| Reference | Primary role | Disposition |
+|---|---|---|
+| langfuse | LLM traces, datasets, scores, prompts, experiments | P1 adapter comparison |
+| phoenix | LLM traces, evaluations, datasets, experiments | P1 adapter comparison; ELv2 review |
+
+Providers consume the same canonical cohort and evidence contract. Repository-owned JSONL/receipts, ATES, and dual-gate retain authority.
 
 ## Cited inspiration sources
 
@@ -10,6 +15,6 @@ Eval, quality gates, benchmarking patterns. Aligns with dual-gate + evidence-led
 - [ShipProof — independent acceptance missions, exact-revision evidence, post-deploy replay](../smods/INSPIRATION-SOURCES.md#shipproof)
 - [Unresolved Transcend showcase candidate](../smods/INSPIRATION-SOURCES.md#unresolved-candidate)
 
-These are metadata-only research references under CCEL-006. Their source-reported claims, inspected code, executed tests, and independently reproduced behavior remain separate evidence classes. The unresolved candidate remains unscored pending recon.
+Preserve source claims, inspected code, executed tests, and independently reproduced behavior as distinct evidence classes.
 
-Expand-only; live pins under `../smods/` when required.
+Each reference directory contains README and SOURCE metadata. Registration creates no runtime dependency.

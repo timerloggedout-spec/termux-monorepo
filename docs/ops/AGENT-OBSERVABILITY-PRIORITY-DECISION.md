@@ -77,3 +77,7 @@ A later Phase C review may show that a policy was faster but less effective, or 
 - no secrets/PATs in images, workspaces, telemetry, or artifacts;
 - no automatic rerun merely to obtain a green dashboard;
 - no assumption that Docker and Codespaces are interchangeable environments.
+
+## Provider tournament expansion
+
+See `docs/proposals/active/coralogix-foss-observability-reconstruction/` for the detailed architecture, evidence contract, DoE/MVT plan, Admin Desk integration, and license reconciliation. The refTemplates registry contains OTel Collector, SigNoz, HyperDX/ClickStack, OpenObserve, Langfuse, Phoenix, Parca, Pyroscope, and Coralogix comparator references. These remain parallel adapters over canonical evidence.

@@ -40,6 +40,14 @@ Establish Temporal Intelligence as a first-class temporal policy and measurement
 - Composer assembles intent, bounded context, existing Ballet plans, and cue sheets; it owns no dispatch or execution authority.
 - Music as Code provides creative and experimental stimuli.
 
+## Review log
+
+### 2026-11-27 — timerloggedout-spec (Operator)
+
+- Disposition: accepted
+- Term: `rhythmic-systems-temporal-intelligence/1`
+- Review: Tier 3 Operator self-accept; scope covers RS-001 through RS-006. Integration remains conditional on exact-SHA repository gates, Termux smoke, and review disposition.
+
 ## Checklist
 
 - [x] Registered in docs/proposals/registry.yaml

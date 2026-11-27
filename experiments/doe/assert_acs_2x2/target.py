@@ -15,10 +15,9 @@ AUDIT_PATH = Path(os.environ.get(
     "CEEL_ACS_AUDIT_PATH",
     ROOT / "artifacts/ceel-assert-acs-2x2/acs-decisions.jsonl",
 ))
-_CONTROL: AgentControl | None = None
+_CONTROL: Any = None
+_SESSION: Any = None
 _POLICY = EmailPolicy(str(AUDIT_PATH))
-
-
 DESIGN = json.loads((ROOT / "experiments/doe/assert_acs_2x2/DESIGN.json").read_text(encoding="utf-8"))
 TASKS = {task["task_id"]: task for task in DESIGN["tasks"]}
 
@@ -33,45 +32,55 @@ def _case(message: str) -> tuple[str, dict[str, str]]:
         raise ValueError(f"unrecognized frozen task id: {task_id}")
     return task_id, dict(task["tool_input"])
 
-def _send_email_sync(args: dict[str, str]) -> dict[str, Any]:
-    """Native mock tool effect; returns the received arguments."""
+
+def _send_email(args: dict[str, str]) -> dict[str, Any]:
+    """Mock tool effect; returns the received arguments."""
     return {"sent": True, **args}
 
 
-async def _send_email(args: dict[str, str]) -> dict[str, Any]:
-    """ACS mock tool effect; returns the received arguments."""
-    return _send_email_sync(args)
-
-
 def chat_native(message: str) -> str:
-    """Native baseline: execute the same mock tool without policy mediation."""
+    """Native baseline: execute the mock tool without policy mediation."""
     _task_id, args = _case(message)
-    return json.dumps(_send_email_sync(args), sort_keys=True)
+    return json.dumps(_send_email(args), sort_keys=True)
 
 
-async def chat_acs(message: str) -> str:
-    """ACS treatment: mediate the same mock tool call with native ACS."""
-    from agent_control_specification import AgentControl, AgentControlBlocked
+def chat_acs(message: str) -> str:
+    """ACS treatment: mediate the same mock tool through HostSession."""
+    from agent_control_specification import AgentControl, Decision, HostSession
 
-    global _CONTROL
+    global _CONTROL, _SESSION
     task_id, args = _case(message)
     _POLICY.current_task_id = task_id
-    if _CONTROL is None:
+    if _SESSION is None:
         _CONTROL = AgentControl.from_path(
             str(MANIFEST),
             policy_dispatcher=_POLICY,
         )
-    try:
-        result = await _CONTROL.run_tool(
-            "send_email",
-            args,
-            _send_email,
-            tool_call_id=task_id,
+        _SESSION = HostSession(
+            _CONTROL,
+            agent_id="ceel-email-agent",
+            session_id="ceel-assert-acs-eval",
         )
-        return json.dumps(result.value, sort_keys=True)
-    except AgentControlBlocked as exc:
+
+    decision = _SESSION.pre_tool_call(
+        tool_name="send_email",
+        args=args,
+        call_id=task_id,
+    )
+    verdict = decision.verdict
+    if not verdict.decision.permits:
         return json.dumps({
             "sent": False,
             "blocked": True,
-            "reason": exc.result.verdict.reason,
+            "reason": verdict.reason,
         }, sort_keys=True)
+
+    enforced_args = args
+    if verdict.decision is Decision.TRANSFORM:
+        transformed = decision.transformed_policy_target
+        if not isinstance(transformed, dict):
+            raise RuntimeError("ACS transform must produce a tool argument object")
+        enforced_args = transformed
+    result = _send_email(enforced_args)
+    _SESSION.builder.record_tool_call()
+    return json.dumps(result, sort_keys=True)

@@ -28,3 +28,7 @@ Planned adapters implement translate(source, target_locale, context, glossary, o
 
 ## Teammate Portal
 The portal shell is rendered by scripts/ops/render_teammate_portal_status.py. Locale catalogs provide interface strings; proposal documents remain source-linked English until a reviewed translation is registered in mapping and manifest.
+
+## Local validation
+
+Run `python3 scripts/localization/validate.py` and `python3 -m unittest discover -s tests/localization -v` from the repository root. The CI workflow runs the same checks on localization, documentation, and portal-renderer changes.

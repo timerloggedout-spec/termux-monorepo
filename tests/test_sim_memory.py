@@ -219,16 +219,32 @@ class SimMemoryValidatorTests(unittest.TestCase):
 
     def test_retrieval_preserves_regressed_attempts(self):
         attempt = attempt_event()
+        context = attempt["attempt"]["context"]
+        context["source_policy"] = {
+            "provider": "provider-x",
+            "model": "source-model",
+            "attribution": "invocation_verified",
+        }
+        context["target_policy"] = {
+            "provider": "provider-x",
+            "model": "target-model",
+            "attribution": "invocation_verified",
+        }
         observation = attempt["attempt"]["observation"]
         observation["outcome"] = "regressed"
         observation["fixed_task_ids"] = []
         observation["missed_task_ids"] = ["completion-evidence-contract"]
         observation["passed"] = 0
         path = self.write_stream(problem_event(), attempt)
-        query = RetrievalQuery(domain="repository-engineering", target_model="different-model")
+        query = RetrievalQuery(
+            domain="repository-engineering",
+            target_provider="provider-x",
+            target_model="different-model",
+        )
         lessons = retrieve_sim_memory(path, query)
         self.assertEqual(len(lessons), 1)
         self.assertEqual(lessons[0].outcome, "regressed")
+        self.assertEqual(lessons[0].compatibility["policy"], "cross-model")
         self.assertEqual(lessons[0].missed_task_ids, ("completion-evidence-contract",))
 
     def test_retrieval_filters_domain_and_component(self):

@@ -8,11 +8,9 @@ import re
 from pathlib import Path
 from typing import Any
 
-from agent_control_specification import AgentControl, AgentControlBlocked
-
 from experiments.doe.assert_acs_2x2.acs.policy import EmailPolicy
 
-ROOT = Path(__file__).resolve().parents[4]
+ROOT = Path(__file__).resolve().parents[3]
 MANIFEST = ROOT / "experiments/doe/assert_acs_2x2/acs/manifest.yaml"
 AUDIT_PATH = Path(os.environ.get(
     "CEEL_ACS_AUDIT_PATH",
@@ -52,6 +50,8 @@ def chat_native(message: str) -> str:
 
 async def chat_acs(message: str) -> str:
     """ACS treatment: mediate the same mock tool call with native ACS."""
+    from agent_control_specification import AgentControl, AgentControlBlocked
+
     global _CONTROL
     task_id, args = _case(message)
     _POLICY.current_task_id = task_id

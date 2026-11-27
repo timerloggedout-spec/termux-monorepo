@@ -14,6 +14,11 @@ class ConductorTests(unittest.TestCase):
                 "opens_at": "2026-11-27T11:59:30Z",
                 "closes_at": "2026-11-27T12:05:00Z",
                 "expected_duration_ms": 120000,
+                "phase": "on_beat",
+                "open_length_ms": 330000,
+                "dependency_barriers": ["phase-dag:spec-ready"],
+                "evidence_refs": ["ates://receipt/source-spec"],
+                "depends_on": [],
                 "wake_conditions": ["event", "window_close"],
             }
             for task in ("spec", "tests", "docs")
@@ -24,6 +29,17 @@ class ConductorTests(unittest.TestCase):
         self.assertEqual({sheet["placement"] for sheet in sheets}, {placement.value for placement in ConductorPlacement})
         self.assertTrue(all(sheet["dispatch_intent"] for sheet in sheets))
         self.assertTrue(all(sheet["authority"] == "dispatch_intent_only" for sheet in sheets))
+        cue = sheets[0]["waves"][0]["tasks"][0]
+        self.assertEqual(cue["phase"], "on_beat")
+        self.assertEqual(cue["open_length_ms"], 330000)
+        self.assertEqual(cue["dependency_barriers"], ["phase-dag:spec-ready"])
+        self.assertEqual(cue["evidence_refs"], ["ates://receipt/source-spec"])
+    def test_missing_temporal_metadata_rejected(self):
+        incomplete = dict(self.assignments)
+        incomplete["spec"] = {"nominal_at": "2026-11-27T12:00:00Z"}
+        with self.assertRaises(ValueError):
+            build_cue_sheet(self.plan, incomplete, "manager_policy")
+
     def test_missing_assignment_rejected(self):
         with self.assertRaises(ValueError):
             build_cue_sheet(self.plan, {"spec": {}}, "manager_policy")

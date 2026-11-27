@@ -25,6 +25,7 @@ def problem_event(record_id="record-open", problem_id="premature-completion"):
             "root_cause": "The harness checks process success rather than deliverable acceptance",
             "domain": "repository-engineering",
             "component": "completion-gate",
+            "opened_round": 0,
         },
     }
 
@@ -37,8 +38,11 @@ def attempt_event(ordinal=1, record_id="record-attempt-1", attempt_id="attempt-1
         "attempt": {
             "attempt_id": attempt_id,
             "ordinal": ordinal,
+            "sample_id": "candidate-s1",
+            "accepted": True,
             "change": {
                 "summary": "Bind completion to the requested artifact",
+                "files": ["scripts/ci/validate_sim_memory.py"],
                 "artifact_ref": "docs/ops/SELF-IMPROVEMENT-MEMORY.md",
                 "diff_sha256": DIGEST,
             },
@@ -46,12 +50,18 @@ def attempt_event(ordinal=1, record_id="record-attempt-1", attempt_id="attempt-1
             "predicted_at": "2026-11-27T11:58:00Z",
             "prediction": {
                 "expected_effect": "Reduce false-positive task completion",
+                "predicted_task_ids": ["completion-evidence-contract"],
                 "target_signals": ["acceptance-evidence", "false-completion-rate"],
             },
             "observed_at": "2026-11-27T11:59:00Z",
             "observation": {
                 "outcome": "improved",
                 "summary": "Focused contract fixture confirms artifact evidence is required",
+                "fixed_task_ids": ["completion-evidence-contract"],
+                "missed_task_ids": [],
+                "unresolved_task_ids": [],
+                "passed": 1,
+                "total": 1,
                 "measured_signals": [
                     {"name": "fixture-pass", "baseline": 0, "observed": 1, "unit": "boolean"}
                 ],
@@ -59,17 +69,28 @@ def attempt_event(ordinal=1, record_id="record-attempt-1", attempt_id="attempt-1
             },
             "context": {
                 "repository": "timerloggedout-spec/termux-monorepo",
+                "source_run_id": "source-run-1",
+                "target_run_id": "target-run-1",
                 "source_sha": SHA_A,
                 "target_sha": SHA_B,
-                "harness_version": "completion-gate-v1",
-                "policy": {"attribution": "unknown"},
-                "benchmark": {
-                    "id": "sim-contract-fixtures",
+                "source_harness_version": "seed-v0",
+                "target_harness_version": "candidate-v1",
+                "source_policy": {"attribution": "unknown"},
+                "target_policy": {"attribution": "unknown"},
+                "source_benchmark": {
+                    "id": "source-bench",
                     "version": "1",
-                    "stage": "target",
-                    "cohort_id": "sim-fixture-cohort-1",
+                    "cohort_id": "source-cohort-1",
                 },
-                "environment_fingerprint": "python-ci-linux",
+                "target_benchmark": {
+                    "id": "target-bench",
+                    "version": "1",
+                    "cohort_id": "target-cohort-1",
+                },
+                "source_environment_fingerprint": "source-python-ci-linux",
+                "target_environment_fingerprint": "target-python-ci-linux",
+                "evaluator": "contract-tests-v1",
+                "domain": "repository-engineering",
                 "round": 1,
                 "candidate_budget": 2,
                 "evaluation_budget": 1,
@@ -127,9 +148,28 @@ def test_prediction_precedes_observation_and_record(tmp_path):
         validate_records(path)
 
 
+def test_observed_task_ids_are_a_subset_of_predictions(tmp_path):
+    attempt = attempt_event()
+    attempt["attempt"]["observation"]["fixed_task_ids"] = ["unpredicted-task"]
+    path = write_stream(tmp_path, problem_event(), attempt)
+    with pytest.raises(SimMemoryValidationError, match="exceed the predicted task set"):
+        validate_records(path)
+
+
+def test_passed_count_cannot_exceed_total(tmp_path):
+    attempt = attempt_event()
+    attempt["attempt"]["observation"]["passed"] = 2
+    path = write_stream(tmp_path, problem_event(), attempt)
+    with pytest.raises(SimMemoryValidationError, match="passed count exceeds"):
+        validate_records(path)
+
+
 def test_regressions_are_valid_observations(tmp_path):
     attempt = attempt_event()
     attempt["attempt"]["observation"]["outcome"] = "regressed"
+    attempt["attempt"]["observation"]["fixed_task_ids"] = []
+    attempt["attempt"]["observation"]["missed_task_ids"] = ["completion-evidence-contract"]
+    attempt["attempt"]["observation"]["passed"] = 0
     path = write_stream(tmp_path, problem_event(), attempt)
     assert validate_records(path)["attempts"] == 1
 

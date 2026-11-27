@@ -1,24 +1,22 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-27T18:11:13Z",
+ "generated_at": "2026-11-27T18:26:33Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 6,
-   "in_progress": 0,
+   "queued": 3,
+   "in_progress": 2,
    "oldest_queued_at": "2026-11-21T07:17:51Z",
    "by_workflow_queued": {
-    "Orchestration Regression Guard": 1,
-    "repo gate": 3,
-    "dispatch-watchdog": 1,
+    "repo gate": 2,
     "PR scope guard": 1
    }
   },
   "2": {
    "tier": 2,
    "queued": 0,
-   "in_progress": 3,
+   "in_progress": 1,
    "oldest_queued_at": null,
    "by_workflow_queued": {}
   },
@@ -31,31 +29,13 @@
   },
   "4": {
    "tier": 4,
-   "queued": 27,
-   "in_progress": 16,
+   "queued": 7,
+   "in_progress": 18,
    "oldest_queued_at": "2026-11-21T07:17:51Z",
    "by_workflow_queued": {
-    "Agent Readability Source Contract": 1,
-    "graph-matrix-probe": 1,
-    "termux smoke": 2,
-    "quota-analysis": 1,
-    "que-cadence-kick": 1,
-    "Foresight Evidence Spine": 1,
-    "quota-allocation-planner": 1,
-    "repo-tracking-collect": 1,
     "hitl-control-plane-verify": 1,
-    "Sweep Accountability": 2,
-    "Context Relationship + Lead/Lag Audit": 2,
-    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
-    "RECON INTEL discovery": 1,
-    "Repository development evaluation": 1,
-    "Lane matrix event-driven inventory": 1,
-    "Action Effectiveness Ledger": 1,
-    "DeepSeek CI \u2013 Agentic Automation": 1,
-    "Workflow Surface Policy": 1,
-    "CellCog review": 1,
-    "PR evidence evaluation": 1,
-    "PR production ledger": 1,
+    "termux smoke": 2,
+    "Quota Dispatch Tree": 1,
     "Agent PR Jules Handoff": 1,
     "PR Change Effectiveness Ledger": 1,
     "Advisory GitHub Actions lint": 1
@@ -63,8 +43,8 @@
   }
  },
  "totals": {
-  "queued": 33,
-  "in_progress": 19
+  "queued": 10,
+  "in_progress": 21
  },
  "wedged_ancient": [
   {
@@ -96,13 +76,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 6,
-   "2": 3,
+   "1": 5,
+   "2": 1,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 9,
-  "default_t4": 43,
+  "explicit_total": 6,
+  "default_t4": 25,
   "unmatched": 0,
   "ancient_excluded": 4,
   "operator_excluded": 1

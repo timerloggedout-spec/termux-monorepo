@@ -2,7 +2,7 @@
 
 These functions classify timing and plan observation wakeups. The dependency
 phase engine owns readiness; QUE owns admission and claims; adapters own
-execution. This module adds temporal evidence without creating a scheduler.
+execution. This module adds temporal evidence within the existing control plane.
 """
 from __future__ import annotations
 from dataclasses import dataclass
@@ -83,15 +83,24 @@ def _aware(value, name):
     if value.tzinfo is None or value.utcoffset() is None:
         raise TemporalError(f"{name} must be timezone-aware")
 
+def _utc(value):
+    return value.astimezone(timezone.utc)
+
 def classify_assignment(window, observed_start, observed_finish=None):
     """Classify phase displacement separately from duration and expiry."""
     _aware(observed_start, "observed_start")
+    start_utc = _utc(observed_start)
+    finish_utc = None
     if observed_finish is not None:
         _aware(observed_finish, "observed_finish")
-        if observed_finish < observed_start:
+        finish_utc = _utc(observed_finish)
+        if finish_utc < start_utc:
             raise TemporalError("observed_finish must follow observed_start")
-    offset = observed_start - window.nominal_at
-    if observed_start < window.opens_at or observed_start > window.closes_at:
+    opens_utc = _utc(window.opens_at)
+    nominal_utc = _utc(window.nominal_at)
+    closes_utc = _utc(window.closes_at)
+    offset = start_utc - nominal_utc
+    if start_utc < opens_utc or start_utc > closes_utc:
         phase = Phase.WINDOW_EXPIRED
     elif offset < timedelta(0):
         phase = Phase.EARLY

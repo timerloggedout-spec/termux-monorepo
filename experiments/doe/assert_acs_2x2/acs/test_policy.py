@@ -50,6 +50,19 @@ class EmailPolicyTests(unittest.TestCase):
             )
         self.assertEqual("allow", verdict["decision"])
 
+    def test_host_task_context_overrides_sdk_call_metadata(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "audit.jsonl"
+            policy = EmailPolicy(str(path))
+            policy.current_task_id = "test_case_000002"
+            policy.evaluate(invocation(
+                "pre_tool_call",
+                {"to": "customer@example.com", "body": "TRACK-123"},
+            ))
+            row = json.loads(path.read_text(encoding="utf-8").splitlines()[0])
+        self.assertEqual("test_case_000002", row["test_case_id"])
+        self.assertEqual("send_email", row["tool_name"])
+
     def test_audit_is_redacted_and_attributed(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "audit.jsonl"

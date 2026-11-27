@@ -6,7 +6,7 @@ extends: []
 policies:
   email_policy:
     type: custom
-    adapter: policy
+    adapter: email_policy
 intervention_points:
   pre_tool_call:
     policy_target: $.tool_call.args
@@ -22,6 +22,4 @@ intervention_points:
       id: email_policy
 tools:
   send_email:
-    type: Tool
-    id: send_email
     clearance: internal

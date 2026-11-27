@@ -1,22 +1,22 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-27T01:58:28Z",
+ "generated_at": "2026-11-27T02:46:30Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 4,
-   "in_progress": 1,
-   "oldest_queued_at": "2026-11-25T08:15:08Z",
+   "queued": 3,
+   "in_progress": 0,
+   "oldest_queued_at": "2026-11-21T07:17:51Z",
    "by_workflow_queued": {
-    "PR scope guard": 3,
-    "repo gate": 1
+    "repo gate": 2,
+    "PR scope guard": 1
    }
   },
   "2": {
    "tier": 2,
    "queued": 0,
-   "in_progress": 1,
+   "in_progress": 2,
    "oldest_queued_at": null,
    "by_workflow_queued": {}
   },
@@ -29,36 +29,33 @@
   },
   "4": {
    "tier": 4,
-   "queued": 92,
+   "queued": 89,
    "in_progress": 18,
-   "oldest_queued_at": "2026-11-21T07:17:51Z",
+   "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "Agent Throughput Evidence": 42,
-    "lane events recorder": 5,
-    "Gemini review after peers": 1,
-    "Context Relationship + Lead/Lag Audit": 10,
-    "termux smoke": 3,
-    "DO Statement Style": 1,
-    "PR Change Effectiveness Ledger": 1,
-    "PR production ledger": 2,
+    "Agent Throughput Evidence": 48,
+    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
+    "DO Statement Style": 2,
+    "Sweep Accountability": 1,
     "Agent Readability Source Contract": 1,
-    "archwiz dangle check": 1,
-    "Agent PR Jules Handoff": 2,
-    "Action Effectiveness Ledger": 3,
-    "Audit Cycle \u2014 Single PR Feed-Forward": 2,
-    "Sweep Accountability": 2,
-    "Repository development evaluation": 1,
-    "Lane matrix event-driven inventory": 1,
-    "Peer review orchestrator": 1,
-    "PR evidence evaluation": 2,
-    "Agent feedback \u2192 Linear subtasks": 1,
-    "Agent review \u2192 auto Jules": 1,
-    "Issue Comment Router \u2014 modular fan-out reduction": 9
+    "quota-allocation-planner": 1,
+    "quota-analysis": 1,
+    "hitl-control-plane-verify": 1,
+    "graph-matrix-probe": 1,
+    "Quota Dispatch Tree": 1,
+    "termux smoke": 2,
+    "lane events recorder": 23,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
+    "PR production ledger": 1,
+    "PR evidence evaluation": 1,
+    "Agent PR Jules Handoff": 1,
+    "PR Change Effectiveness Ledger": 1,
+    "Advisory GitHub Actions lint": 1
    }
   }
  },
  "totals": {
-  "queued": 96,
+  "queued": 92,
   "in_progress": 20
  },
  "wedged_ancient": [],
@@ -66,13 +63,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 5,
-   "2": 1,
+   "1": 3,
+   "2": 2,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 6,
-  "default_t4": 110,
+  "explicit_total": 5,
+  "default_t4": 107,
   "unmatched": 0,
   "ancient_excluded": 0,
   "operator_excluded": 0

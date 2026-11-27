@@ -120,8 +120,8 @@ class BrainSystemTests(unittest.TestCase):
             {"id": "docs", "priority": 2, "writes": ["src/app.py"]},
         ]
         receipt = {"source": "ATES", "run_id": "run-123", "cohort_id": "cohort-1", "evidence_ref": "ates://receipt/123", "sha256": "a" * 64}
-        receipt_resolver = lambda evidence_ref: receipt
-        timing = [{"task_id": "build", "receipt": receipt, "expected_duration_ms": 100, "actual_duration_ms": 130}]
+        receipt_resolver = lambda evidence_ref: {**receipt, "task_id": "build", "actual_duration_ms": 130}
+        timing = [{"task_id": "build", "receipt": receipt}]
         wake = {"now_ms": 100, "window_close_ms": 150, "max_wait_ms": 100}
         score = compose_score(intent, signals, plan, assignments, action_candidates=candidates,
                               max_parallel=2, timing_observations=timing, wake_context=wake,
@@ -137,6 +137,8 @@ class BrainSystemTests(unittest.TestCase):
                                            receipt_resolver=receipt_resolver, attention_budget=2)
         self.assertEqual(score["action_shortlist"], ["build", "tests"])
         self.assertEqual(score["timing_feedback"][0]["drift_ms"], 30)
+        self.assertEqual(score["timing_feedback"][0]["expected_ms"], 100)
+        self.assertEqual(score["timing_feedback"][0]["actual_ms"], 130)
         self.assertEqual(score["timing_feedback"][0]["run_id"], "run-123")
         self.assertEqual(score["timing_feedback"][0]["evidence_ref"], "ates://receipt/123")
         self.assertEqual(score["wake_recommendation"]["wake_at_ms"], 150)
@@ -177,8 +179,8 @@ class BrainSystemTests(unittest.TestCase):
                 [{"signal_id": "s1", "source": "ci", "kind": "ready", "sequence": 1, "confidence": 1.0}],
                 {"waves": [["build"]]},
                 {"build": {"nominal_at": "n", "opens_at": "o", "closes_at": "c", "expected_duration_ms": 100, "phase": "on_beat", "open_length_ms": 10, "dependency_barriers": [], "evidence_refs": ["ates://build"]}},
-                timing_observations=[{"task_id": "build", "receipt": receipt, "expected_duration_ms": 100, "actual_duration_ms": 130}],
-                receipt_resolver=lambda evidence_ref: {**receipt, "sha256": "b" * 64},
+                timing_observations=[{"task_id": "build", "receipt": receipt}],
+                receipt_resolver=lambda evidence_ref: {**receipt, "sha256": "b" * 64, "task_id": "build", "actual_duration_ms": 130},
             )
 
     def test_default_score_identity_is_stable_with_empty_optional_modules(self):
@@ -193,6 +195,18 @@ class BrainSystemTests(unittest.TestCase):
         self.assertEqual(first["action_shortlist"], [])
         self.assertEqual(first["timing_feedback"], [])
         self.assertIsNone(first["wake_recommendation"])
+
+    def test_composer_rejects_receipt_for_another_task(self):
+        receipt = {"source": "ATES", "run_id": "run-123", "cohort_id": "cohort-1", "evidence_ref": "ates://receipt/123", "sha256": "a" * 64}
+        with self.assertRaisesRegex(ValueError, "task identity mismatch"):
+            compose_score(
+                {"goal": "validate release"},
+                [{"signal_id": "s1", "source": "ci", "kind": "ready", "sequence": 1, "confidence": 1.0}],
+                {"waves": [["build"]]},
+                {"build": {"nominal_at": "n", "opens_at": "o", "closes_at": "c", "expected_duration_ms": 100, "phase": "on_beat", "open_length_ms": 10, "dependency_barriers": [], "evidence_refs": ["ates://build"]}},
+                timing_observations=[{"task_id": "build", "receipt": receipt}],
+                receipt_resolver=lambda evidence_ref: {**receipt, "task_id": "tests", "actual_duration_ms": 130},
+            )
 
     def test_score_id_tracks_evidence_changes(self):
         intent = {"goal": "validate release", "priority": 3}

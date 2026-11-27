@@ -43,13 +43,22 @@ def compose_score(
         if receipt_resolver is None:
             raise ValueError("timing feedback requires a canonical ATES receipt resolver")
         receipt = validate_ates_receipt({"receipt": observation.get("receipt")})
-        canonical_receipt = validate_ates_receipt({"receipt": receipt_resolver(receipt["evidence_ref"])})
+        resolved_receipt = receipt_resolver(receipt["evidence_ref"])
+        canonical_receipt = validate_ates_receipt({"receipt": resolved_receipt})
         if canonical_receipt != receipt:
             raise ValueError(f"ATES receipt verification mismatch for timing task {task_id}")
+        if str(resolved_receipt.get("task_id", "")).strip() != task_id:
+            raise ValueError(f"ATES receipt task identity mismatch for timing task {task_id}")
+        assignment = assignments.get(task_id)
+        if assignment is None or "expected_duration_ms" not in assignment:
+            raise ValueError(f"timing task {task_id} requires assignment expected_duration_ms")
+        actual_duration_ms = resolved_receipt.get("actual_duration_ms")
+        if actual_duration_ms is None:
+            raise ValueError(f"ATES receipt for timing task {task_id} requires actual_duration_ms")
         timing_feedback.append({
             "task_id": task_id,
             **receipt,
-            **timing_error(observation["expected_duration_ms"], observation["actual_duration_ms"]),
+            **timing_error(assignment["expected_duration_ms"], actual_duration_ms),
         })
     wake_recommendation = plan_wake(**dict(wake_context)) if wake_context is not None else None
     score = {

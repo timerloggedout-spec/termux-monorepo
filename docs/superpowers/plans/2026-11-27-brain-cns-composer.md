@@ -29,7 +29,8 @@
 - Cue-sheet compilation preserves dependency IDs and temporal/evidence metadata.
 - Timing feedback resolves a canonical ATES receipt envelope and preserves source, run ID, cohort ID, evidence reference, and SHA-256.
 - The plan distinguishes the implemented pure library contract from the follow-on production workflow caller.
-- A mismatched receipt resolver result fails closed.
+- A mismatched receipt resolver result or task identity fails closed.
+- Expected duration comes from the assignment; actual duration comes from the resolved canonical receipt payload.
 - Composer score identity captures attention policy and focus budget, action-selection policy version and max_parallel, including cases where the resulting shortlist remains equal.
 
 ---

@@ -16,6 +16,9 @@ on:
       - "refTemplates/**"
       - "scripts/ci/refTemplates_*.py"
       - "scripts/decision_engines.py"
+      - "scripts/doe/assert_acs_bridge.py"
+      - "experiments/doe/assert_acs_2x2/**"
+      - "tests/test_assert_acs_bridge.py"
       - "scripts/laya_decision_stub.py"
   schedule:
     - cron: "17 6 * * *"

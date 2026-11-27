@@ -53,7 +53,7 @@ The operator authorized this scoped execution. Independent review and same-SHA r
 - [x] Proposal and work ledger created on implementation branch
 - [x] Operator authorization recorded
 - [x] CCEL-007 registered for the SIM adaptation
-- [x] SIM paper/reference record, schema, stdlib validator, focused tests, and Termux smoke fixture committed
+- [x] SIM paper/reference record, schema, stdlib validator, bounded retrieval adapter, focused tests, and Termux smoke fixture committed
 - [ ] Focused tests, proposal lifecycle, repo-gate, and Termux smoke pass on the same immutable PR head
 - [ ] Independent review recorded
 - [ ] Evidence, limitations, and deferred runtime work reconciled

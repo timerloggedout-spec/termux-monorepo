@@ -145,3 +145,19 @@ file managers/web apps matching `android|in your browser`, diagnosed and
 re-run under strong-signal rules (49); (2) a service restart killed the
 first refined run pre-write, re-dispatched to completion with dumps saved
 (`dumps.json` stays local — poller-output rule).
+
+
+## 7. New research list — Rust migration and project/tool distinctions
+
+The curated, categorized list is maintained in [`STARLISTS.md`](./STARLISTS.md). This pass adds the two owned migration-tool forks and their upstreams. GitReverse remains a Termux-monorepo development-process note: its approach will inform another Rust.rs implementation/version in the existing migration lane, rather than a separate starlist or DoE campaign.
+
+| Candidate | Provenance / relationship | Research classification | Evidence state |
+|---|---|---|---|
+| `timerloggedout-spec/fast-anything_fork` | owned fork of `EL4CTEO/fast-anything` | selective Rust hot-path migration | Cargo `0.8.0`; source SHA pinned in DoE design |
+| `timerloggedout-spec/rust-anything_fork` | owned fork of `erkamyaman/rust-anything` | incremental cross-language migration | Cargo `3.3.0`; source SHA pinned in DoE design |
+| `EL4CTEO/fast-anything` | external upstream of owned fork | selective hot-path Rust migration | comparison snapshot pinned at `80ab099817b3d07ebe5b5221d4a9c6b881cfd044`; Observatory star provenance pending |
+| `erkamyaman/rust-anything` | external upstream of owned fork | incremental cross-language migration | comparison snapshot pinned at `50d3810b622fdc6cb3aee965fe4c9d4b4f29205b`; Observatory star provenance pending |
+
+**Project/tool distinctions:** `repo-story` is a project. `repo-replay` uses session provenance to build a repository from code extracted from chats. GitReverse is recorded as a development-process reference in `termux-monorepo`, with a future Rust.rs version planned in the existing migration lane.
+
+**Starring status:** the GitHub connector available in this session exposes repository search and content operations, but no star/unstar mutation. The curated starlist is updated here; actual account-star provenance is left to the Observatory's authenticated collector and is not asserted by this document.

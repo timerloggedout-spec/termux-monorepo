@@ -31,13 +31,20 @@ def test_family_members_match_design_records():
                   for m in fam["members"]}
     assert "mvt-campaigns" in member_ids
     assert "design-classes" in member_ids
-    # Every committed design record is a family campaign member.
-    design_ids = set()
+    # Explicitly unadmitted designs remain candidates, outside campaign intake.
+    admitted_ids = set()
+    candidate_ids = set()
     for design_path in CAMPAIGNS.glob("*/DESIGN.json"):
         design = json.loads(design_path.read_text())
-        design_ids.add(design["campaign_id"])
+        if (design.get("status") == "proposed_not_admitted"
+                or design.get("member_kind") == "campaign_candidate"):
+            candidate_ids.add(design["campaign_id"])
+        else:
+            admitted_ids.add(design["campaign_id"])
     campaign_ids = {c["campaign_id"] for c in feed["data"]["campaigns"]}
-    assert campaign_ids == design_ids
+    feed_candidate_ids = {c["campaign_id"] for c in feed["data"]["candidates"]}
+    assert campaign_ids == admitted_ids
+    assert feed_candidate_ids == candidate_ids
 
 
 def test_intake_rule_pilot2_not_admitted():
@@ -168,3 +175,71 @@ def test_configured_instance_identity():
            "status": "observed", "provenance": "manual",
            "confidence": "high"}
     jsonschema.validate(rec, schema)
+
+
+
+def test_blocked_assignment_is_a_permutation_per_block():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "doe_helpers", ROOT / "deepcli/deepcli/observatory/doe.py")
+    doe = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(doe)
+    treatments = ["native", "fast", "rust"]
+    blocks = [(f"task-{task}", replicate)
+              for task in range(6) for replicate in range(3)]
+    assignments = doe.randomized_blocked_assignments(
+        treatments, blocks, seed=20261122)
+    assert len(assignments) == 18
+    doe.validate_blocked_assignments(assignments, treatments, blocks)
+    assert all(set(a["treatments"]) == set(treatments) for a in assignments)
+    try:
+        doe.validate_blocked_assignments(
+            [{"block": list(blocks[0]), "treatments": ["native", "rust", "rust"]}],
+            treatments, blocks)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("duplicate treatment assignment must be rejected")
+    try:
+        doe.validate_blocked_assignments(
+            [{"block": list(blocks[0]), "treatments": treatments}],
+            treatments, blocks)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("missing expected blocks must be rejected")
+
+
+def test_rust_migration_study_remains_unadmitted_candidate():
+    feed = _doe_feed()
+    candidate_ids = {c["campaign_id"] for c in feed["data"]["candidates"]}
+    campaign_ids = {c["campaign_id"] for c in feed["data"]["campaigns"]}
+    assert "rust-migration-tools" in candidate_ids
+    assert "rust-migration-tools" not in campaign_ids
+    candidate = next(c for c in feed["data"]["candidates"]
+                     if c["campaign_id"] == "rust-migration-tools")
+    assert candidate["state"] == "proposed_not_admitted"
+    assert candidate["runs"] == 0
+    assert candidate["results"] is None
+
+
+def test_collector_keeps_unadmitted_design_out_of_campaign_collection():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "surface_feeds", ROOT / "scripts/dashboards/surface_feeds.py")
+    feeds = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(feeds)
+    campaigns = {c["campaign_id"] for c in feeds._doe_campaigns()}
+    candidates = {c["campaign_id"] for c in feeds._doe_candidates()}
+    assert "rust-migration-tools" not in campaigns
+    assert "rust-migration-tools" in candidates
+
+
+def test_rust_migration_design_declares_balanced_randomization():
+    design = json.loads(
+        (CAMPAIGNS / "rust-migration-tools" / "DESIGN.json").read_text())
+    assignment = design["design"]["assignment"]
+    assert assignment["mechanism"] == "seeded_permutation_without_replacement"
+    assert "every expected task_id" in assignment["validation"]
+    assert "exactly once" in assignment["validation"]
+    assert design["automation"]["status"] == "not_implemented"

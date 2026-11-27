@@ -11,6 +11,8 @@ The Repository Observatory maintains a provenance-aware index of repositories ow
 - [`scripts/github/test_repository_observatory.py`](../../scripts/github/test_repository_observatory.py) — dependency-free unit tests.
 - [`.github/workflows/repository-observatory.yml`](../../.github/workflows/repository-observatory.yml) — scheduled/manual publisher and validation gate.
 - [`GRAVITEE-RESEARCH-SEED.md`](./GRAVITEE-RESEARCH-SEED.md) — provenance-aware Gravitee API Management research seed and integration boundary.
+- [`STARLISTS.md`](./STARLISTS.md) — curated, categorized research lists for repository identification and comparison.
+- [`STARS-FORKS-WATCH.md`](./STARS-FORKS-WATCH.md) — human evaluation of owned, starred, forked and watched repositories.
 - [`research-seeds/gravitee-api-management.json`](./research-seeds/gravitee-api-management.json) — machine-readable Gravitee research record.
 
 ## Production contract

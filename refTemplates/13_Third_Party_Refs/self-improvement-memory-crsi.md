@@ -22,6 +22,10 @@ The paper's CRSI setting continues harness optimization after a compatible bench
 
 These are preprint-reported results. This repository has not independently reproduced them. The companion page does not link a public implementation.
 
+## Stored record details
+
+Appendix D specifies run lineage, stable problem IDs, aliases for merged diagnoses, and per-problem attempts containing round, sample, accepted/backfilled flags, edit summary, affected files, predicted/fixed/missed task IDs, passed/total trials and domain. The case studies show why accepted selection and realized task outcome remain separate: selected edits can miss their predicted tasks, and later attempts preserve that history.
+
 ## Local adaptation
 
 1. Reuse the repository's existing evidence substrate, ATES, Action→Effect, manager tournament and evolutionary replay contracts.

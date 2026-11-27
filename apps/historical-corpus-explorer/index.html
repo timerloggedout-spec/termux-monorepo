@@ -38,6 +38,19 @@
 <p class="muted">Warnings preserve conflicting source claims for human review; they do not rewrite coverage.</p>
 <div id="findings" class="findings"><div class="empty">Load a projection JSON file to inspect findings.</div></div>
 </section>
+<section class="panel" style="margin-top:1rem" aria-labelledby="atlas-title">
+<h2 id="atlas-title">Domain Atlas</h2>
+<p class="muted">A curated relationship layer over the canonical evidence graph. Switch between semantic connections, operational flow, and source evidence.</p>
+<div class="tools" role="group" aria-label="Domain Atlas layer">
+<button type="button" data-atlas-layer="all" aria-pressed="true">All layers</button>
+<button type="button" data-atlas-layer="semantic" aria-pressed="false">Semantic</button>
+<button type="button" data-atlas-layer="operational" aria-pressed="false">Operational</button>
+<button type="button" data-atlas-layer="evidence" aria-pressed="false">Evidence</button>
+</div>
+<div id="atlas-status" class="muted" role="status" aria-live="polite">Loading curated domain map…</div>
+<div id="atlas-domains" class="grid" aria-label="Domains"></div>
+<div class="scroll"><table><caption class="sr">Domain relationships and supporting evidence</caption><thead><tr><th scope="col">Relationship</th><th scope="col">From → to</th><th scope="col">Layer</th><th scope="col">Evidence</th></tr></thead><tbody id="atlas-relationships"><tr><td colspan="4">Domain map loading.</td></tr></tbody></table></div>
+</section>
 <section class="panel" style="margin-top:1rem" aria-labelledby="search-title">
 <h2 id="search-title">Bounded record inspection</h2>
 <p class="muted">Optional local files only. Choose JSONL node and edge artifacts from an immutable temporal snapshot. Files are read in this browser session and are not uploaded.</p>

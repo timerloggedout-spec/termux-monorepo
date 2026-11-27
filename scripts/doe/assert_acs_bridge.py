@@ -51,6 +51,8 @@ def validate_design(design: dict) -> list[str]:
     for key in ("campaign_id", "baseline_sha", "candidate_sha", "tasks", "factors"):
         if key not in design:
             errors.append(f"design missing {key}")
+    if not re.fullmatch(r"[a-z0-9][a-z0-9._-]{1,63}", str(design.get("campaign_id", ""))):
+        errors.append("campaign_id must be a safe stable identifier")
     for key in ("baseline_sha", "candidate_sha"):
         if not SHA_RE.fullmatch(str(design.get(key, ""))):
             errors.append(f"{key} must be a 40-character lowercase SHA")
@@ -71,7 +73,10 @@ def validate_design(design: dict) -> list[str]:
             for key in ("task_id", "behavior", "acceptance_contract"):
                 if not isinstance(task.get(key), str) or not task[key].strip():
                     errors.append(f"tasks[{index}].{key} must be non-empty")
-            ids.append(task.get("task_id"))
+            task_id = task.get("task_id")
+            if isinstance(task_id, str) and not re.fullmatch(r"[a-z0-9][a-z0-9._-]{1,63}", task_id):
+                errors.append(f"tasks[{index}].task_id must be a safe stable identifier")
+            ids.append(task_id)
         if len(ids) != len(set(ids)):
             errors.append("task_id values must be unique")
     repetitions = design.get("repetitions", 1)
@@ -183,6 +188,7 @@ def assemble_results(plan: dict, score_files: list[str], acs_path: Path | None) 
         raise ValueError(f"provide exactly one --scores CELL=PATH for each cell; missing {missing}")
 
     score_maps = {}
+    expected_task_ids = {row["task_id"] for row in plan["rows"]}
     for cell, path in score_paths.items():
         evaluator = cell.split("/", 1)[0]
         mapping = {}
@@ -193,6 +199,10 @@ def assemble_results(plan: dict, score_files: list[str], acs_path: Path | None) 
             if task_id in mapping:
                 raise ValueError(f"{path}: duplicate score for {task_id}")
             mapping[task_id] = _score_row(row, evaluator)
+        if set(mapping) != expected_task_ids:
+            missing = sorted(expected_task_ids - set(mapping))
+            extra = sorted(set(mapping) - expected_task_ids)
+            raise ValueError(f"{path}: task set mismatch; missing={missing[:5]} extra={extra[:5]}")
         score_maps[cell] = mapping
 
     acs_map = defaultdict(list)
@@ -262,6 +272,8 @@ def _effect(cell_means: dict[str, float | None], factor: str) -> float | None:
 
 
 def record_results(design: dict, plan: dict, results: list[dict], output_dir: Path, batch_id: str) -> dict:
+    if not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9._-]{0,63}", batch_id):
+        raise ValueError("batch_id must be a safe stable identifier")
     expected = {row["run_id"]: row for row in plan["rows"]}
     received = {}
     for result in results:
@@ -319,6 +331,8 @@ def record_results(design: dict, plan: dict, results: list[dict], output_dir: Pa
             if isinstance(value, (str, int, float)) or value is None:
                 metrics[key] = value
         evidence_refs = result.get("evidence_refs") or []
+        if not isinstance(evidence_refs, list) or not all(isinstance(ref, str) and ref.startswith(("https://", "http://", "file://")) for ref in evidence_refs):
+            raise ValueError(f"{run_id}: evidence_refs must contain URI strings")
         record = {
             "schema_version": "1.0",
             "experiment_id": f"{batch_id}-{run_id}",

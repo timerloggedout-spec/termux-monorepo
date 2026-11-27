@@ -33,6 +33,7 @@ GitHub object creation/retrieval is available in this session; a local checkout 
 - Pull request: #5908
 - Candidate references: 8 metadata-first concept adaptations across five refTemplates categories.
 - Runnable ASSERT × ACS pilot: `experiments/doe/assert_acs_2x2/` (3 fixed tasks × 4 evaluator/governance cells = 12 planned observations).
+- Common reference oracle: pre-registered per-task/per-governance gold labels; the bridge reports evaluator accuracy against the same oracle and governance task-success separately.
 - Adapter: `scripts/doe/assert_acs_bridge.py` (plan, assemble, record); native scorer: `experiments/doe/assert_acs_2x2/native_score.py`; ACS mock host and redacted decision receipt: `experiments/doe/assert_acs_2x2/acs/`.
 - Pure tests: bridge and policy-dispatcher suites are wired into refTemplates continuous-eval CI.
 - Runtime smoke: `.github/workflows/ceel-assert-acs-runtime.yml` builds the ACS SDK at pinned upstream commit `3233be2338816257700a8dbdf531a21b9f359582` and executes allow/transform/deny through HostSession.

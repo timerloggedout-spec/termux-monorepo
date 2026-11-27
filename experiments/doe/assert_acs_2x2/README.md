@@ -14,7 +14,7 @@
 - A deterministic native scorer for the same inference traces.
 - A bridge that normalizes native and ASSERT score files into repository EXPERIMENT.schema.json records and calculates descriptive 2×2 effects.
 
-The email tool is a mock side effect. All tool effects remain in-process. The native arm exposes the three policy outcomes as the control; the ACS arm tests allow, transform and deny at the tool boundary.
+The email tool is a mock side effect. All tool effects remain in-process. The native arm exposes the three policy outcomes as the control; the ACS arm tests allow, transform and deny at the upstream HostSession pre_tool_call boundary.
 
 ## Frozen cohort
 
@@ -31,10 +31,10 @@ The task-set order fixes the canonical ASSERT IDs. The plan uses one observation
 Python 3.11+:
 
 ~~~bash
-python -m pip install "assert-ai[acs]"
+python -m pip install -r experiments/doe/assert_acs_2x2/requirements.txt
 ~~~
 
-The acs extra supplies the ACS host SDK used by the governed target. The deterministic fixture uses local mock effects; external tracing remains outside this pilot. Configure the model credentials required by the ASSERT tester and judge through the provider's environment variables. Credential values remain outside logs and artifacts.
+The requirements pin ASSERT 0.3.0 and the AGT Python SDK to commit 3233be2338816257700a8dbdf531a21b9f359582. The ACS host uses the upstream HostSession pre_tool_call contract with a custom policy dispatcher. The deterministic fixture uses local mock effects; external tracing remains outside this pilot. Configure the model credentials required by the ASSERT tester and judge through the provider's environment variables. Credential values remain outside logs and artifacts.
 
 ## Execute
 

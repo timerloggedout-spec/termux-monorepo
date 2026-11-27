@@ -118,7 +118,7 @@ def build_plan(design: dict) -> dict:
                     "cell": cell_name,
                     "evaluator": cell["evaluator"],
                     "governance": cell["governance"],
-                    "execution_sequence": sequence,
+                    "cell_sequence": sequence,
                 })
     return {
         "campaign_id": design["campaign_id"],

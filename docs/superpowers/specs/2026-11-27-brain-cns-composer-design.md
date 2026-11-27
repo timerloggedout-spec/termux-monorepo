@@ -83,7 +83,7 @@ candidate -> explicit review + existing promotion gates
 2. Signal identity collisions fail closed.
 3. Context size is bounded; truncation is explicit.
 4. Evidence references remain attached through composition.
-5. Action shortlisting never substitutes for QUE admission or readiness claims.
+5. QUE admission and readiness claims remain canonical after action shortlisting.
 6. Timing drift remains an observation until an explicit candidate policy is reviewed.
 7. Cue sheets preserve task IDs, dependencies, phase, nominal/open/close timestamps, expected duration, open length, dependency barriers, wake conditions, and evidence references.
 8. Composer emits declarative score data; adapters consume approved cue sheets.

@@ -15,7 +15,7 @@
 - Preserve dependency-phase readiness, QUE admission and claims, specialist-adapter execution, and ATES evidence authority.
 - Composer returns declarative data through pure transformations.
 - Identical normalized inputs and policy version produce identical score content and score ID.
-- Signal confidence is metadata, not authorization.
+- Signal confidence remains descriptive metadata; control-plane policy governs authorization.
 - Timing feedback and wake selection remain observational recommendations.
 - Keep Python implementation within the standard library.
 - Cite `Implements: RS-006` in commits and PR metadata.
@@ -25,7 +25,7 @@
 - Conflicting duplicate signal IDs fail with a clear validation error.
 - Context truncation preserves explicit episode evidence references.
 - Candidate selection stays deterministic under equal priorities and overlapping write paths.
-- Past event/window boundaries never produce past wake times.
+- Past event/window boundaries yield a future wake recommendation.
 - Cue-sheet compilation preserves dependency IDs and temporal/evidence metadata.
 
 ---

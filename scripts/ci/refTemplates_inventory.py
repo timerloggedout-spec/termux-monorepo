@@ -17,6 +17,7 @@ REF = ROOT / "refTemplates"
 SLOT_RE = re.compile(r"^(\d{2}|[0-9]+)_|^smods$")
 CAPABILITY_SLOT_RE = re.compile(r"^(0[1-9]|1[0-4])_")
 METADATA_NAMES = {"metadata", "metadata.json", "metadata.yaml", "metadata.yml", "metadata.txt"}
+FILE_REFERENCE_EXCLUDES = {"README.md", "INDEX.md", "SOURCE-MAP.md"}
 
 
 def slots() -> list[Path]:
@@ -35,7 +36,38 @@ def _first_line(path: Path) -> str | None:
     return content.splitlines()[0] if content else None
 
 
+def _reference_source_preview(path: Path) -> tuple[str | None, bool]:
+    """Return the first explicit source line and whether source attribution exists."""
+    if not path.is_file():
+        return None, False
+    for line in path.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if not stripped:
+            continue
+        if re.search(r"\b(?:pattern|concept)?\s*source\s*:", stripped, re.IGNORECASE):
+            return stripped, True
+        if re.search(r"https?://\S+", stripped):
+            return stripped, True
+    return _first_line(path), False
+
+
 def capability_child_entry(slot: Path, child: Path) -> dict:
+    if child.is_file():
+        preview, has_source = _reference_source_preview(child)
+        return {
+            "name": child.stem,
+            "category": slot.name,
+            "path": str(child.relative_to(ROOT)),
+            "has_source": has_source,
+            "has_readme": False,
+            "has_reference_document": True,
+            "metadata_files": [child.name],
+            "source_preview": preview,
+            "provenance_state": "source_recorded" if has_source else "metadata_only",
+            "candidate_state": "discovered",
+            "file_reference": True,
+        }
+
     source = child / "SOURCE.txt"
     readme = child / "README.md"
     metadata_files = sorted(
@@ -60,12 +92,13 @@ def capability_child_entry(slot: Path, child: Path) -> dict:
         "path": str(child.relative_to(ROOT)),
         "has_source": source.is_file(),
         "has_readme": readme.is_file(),
+        "has_reference_document": readme.is_file(),
         "metadata_files": metadata_files,
         "source_preview": preview,
         "provenance_state": provenance_state,
         "candidate_state": "discovered",
+        "file_reference": False,
     }
-
 
 def inventory_entry(slot: Path) -> dict:
     children = [
@@ -89,6 +122,12 @@ def inventory_entry(slot: Path) -> dict:
     elif CAPABILITY_SLOT_RE.match(slot.name):
         for child in sorted(slot.iterdir()):
             if child.is_dir():
+                candidate_children.append(capability_child_entry(slot, child))
+            elif (
+                child.is_file()
+                and child.suffix.lower() == ".md"
+                and child.name.upper() not in FILE_REFERENCE_EXCLUDES
+            ):
                 candidate_children.append(capability_child_entry(slot, child))
     return {
         "slot": slot.name,

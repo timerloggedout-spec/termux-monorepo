@@ -71,6 +71,15 @@
       "dispatch_declared": 2,
       "intake_only": 12,
       "observed_at": "2026-11-27"
+    },
+    {
+      "id": "workflow-trigger-census",
+      "path": "docs/ops/generated/workflow-trigger-census.json",
+      "role": "source-verified selected workflow event and selector census",
+      "schema": "workflow-trigger-census/v1",
+      "workflow_count": 7,
+      "scope": "selected exemplars; not exhaustive",
+      "observed_at": "2026-11-27"
     }
   ],
   "concepts": [
@@ -473,6 +482,13 @@
         "project-task"
       ],
       "status": "SOURCE_ENUMERATED"
+    },
+    "workflow_trigger_exemplars": {
+      "artifact": "docs/ops/generated/workflow-trigger-census.json",
+      "markdown": "docs/ops/WORKFLOW-TRIGGER-CENSUS.md",
+      "workflow_count": 7,
+      "status": "SOURCE_VERIFIED_EXEMPLARS",
+      "exhaustive": false
     }
   }
 }

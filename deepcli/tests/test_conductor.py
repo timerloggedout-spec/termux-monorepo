@@ -35,6 +35,27 @@ class ConductorTests(unittest.TestCase):
         self.assertEqual(cue["dependency_barriers"], ["phase-dag:spec-ready"])
         self.assertEqual(cue["evidence_refs"], ["ates://receipt/source-spec"])
         self.assertEqual(sheets[0]["waves"][1]["tasks"][0]["depends_on"], ["spec"])
+    def test_rejects_scalar_cue_list_fields(self):
+        for field in ("dependency_barriers", "evidence_refs", "depends_on", "wake_conditions"):
+            assignments = {key: dict(value) for key, value in self.assignments.items()}
+            assignments["spec"][field] = "scalar-value"
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, field):
+                build_cue_sheet({"waves": [["spec"]]}, assignments, "manager_policy")
+
+    def test_rejects_invalid_durations(self):
+        for field, value in (("expected_duration_ms", 0), ("expected_duration_ms", True), ("open_length_ms", 0), ("open_length_ms", True)):
+            assignments = {key: dict(item) for key, item in self.assignments.items()}
+            assignments["spec"][field] = value
+            with self.subTest(field=field, value=value), self.assertRaisesRegex(ValueError, field):
+                build_cue_sheet({"waves": [["spec"]]}, assignments, "manager_policy")
+
+    def test_rejects_blank_timestamp_fields(self):
+        for field in ("nominal_at", "opens_at", "closes_at"):
+            assignments = {key: dict(item) for key, item in self.assignments.items()}
+            assignments["spec"][field] = " "
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, field):
+                build_cue_sheet({"waves": [["spec"]]}, assignments, "manager_policy")
+
     def test_missing_temporal_metadata_rejected(self):
         incomplete = dict(self.assignments)
         incomplete["spec"] = {"nominal_at": "2026-11-27T12:00:00Z"}

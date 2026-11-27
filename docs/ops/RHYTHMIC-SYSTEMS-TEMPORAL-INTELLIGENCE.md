@@ -51,7 +51,7 @@ An assignment records nominal_at, opens_at, closes_at, and expected_duration. OP
 | QUE COMPLETED | COMPLETED_OBSERVED | lifecycle fact; ATES validation remains separate |
 | QUE VANISHED | RECONCILE_MISSING | missing observation requiring reconciliation |
 
-Collector wake selection chooses the earliest applicable boundary among event readiness, expected completion, window close, and maximum wait. Each collector retains its own period and phase, enabling polyrhythmic cadence through independent tick origins.
+Collector wake selection chooses the earliest applicable boundary among event readiness, expected completion, window close, and maximum wait. Each collector retains its own period and phase, enabling polyrhythmic cadence through independent tick origins. All ordering, duration, and cadence arithmetic uses UTC instants; local timezone rendering remains available at the boundary. This preserves elapsed-time ordering across daylight-saving folds.
 
 ## Jazz division taxonomy
 
@@ -82,7 +82,7 @@ Evaluate all three placements independently:
 
 Keep architecture seed, software placement, wave strategy, and temporal treatment as independent design axes. Compare PC-SEED-009 and PC-SEED-019 as architecture treatments. Compare sequential, parallel, and adaptive wave strategies separately. Compare event-driven, periodic, and hybrid wait policies separately. Record timing, integration correctness, cost, coordination overhead, and censoring in canonical experiment records.
 
-Conductor emits cue sheets and dispatch intent. Manager, phase engine, QUE, specialist adapters, write leases, digest checks, and ATES retain authority. Cue sheets carry phase, expected duration, open length, wake conditions, dependency barriers, and evidence references.
+Conductor emits cue sheets and dispatch intent. Manager, phase engine, QUE, specialist adapters, write leases, digest checks, and ATES retain authority. Cue sheets carry phase, nominal/open/close timestamps, expected duration, open length, wake conditions, dependency barriers, dependency IDs, and evidence references.
 
 ## Placement alternatives and trade-offs
 

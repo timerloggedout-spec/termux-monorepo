@@ -1,6 +1,6 @@
 # DoE Questions Matrix
 
-**`doe-questions-matrix` v2** — registered 2026-11-02 under
+**`doe-questions-matrix` v2** — registered 2026-11-27 under
 DoE governance (see `docs/ops/DOE-FAMILY.md`, Method
 versions). Owner directive 2026-11-02: the DoE questions
 matrices require more breadth and depth — larger dimension

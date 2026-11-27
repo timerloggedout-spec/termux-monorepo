@@ -18,6 +18,10 @@ def receipt(cohort, run):
     return {"source":"ATES","run_id":run,"cohort_id":cohort,
             "evidence_ref":f"ates://receipts/{run}","sha256":"a"*64}
 
+def resolver_for(observations):
+    receipts = {value["receipt"]["evidence_ref"]: value["receipt"] for value in observations.values()}
+    return lambda evidence_ref: receipts[evidence_ref]
+
 class TestBalletPlanner(unittest.TestCase):
  def test_sequential(self):
   p=plan_choreography(TASKS,"sequential"); self.assertEqual(p["wave_count"],4)
@@ -56,7 +60,7 @@ class TestBalletEvaluation(unittest.TestCase):
   cohort="cohort-a"
   obs={f"{s}-cap{n}":self.observation(cohort,f"run-{s}-{n}") for s in ("sequential","parallel","adaptive") for n in (1,2,4)}
   lb=Leaderboard(pathlib.Path(tempfile.mkdtemp())/"lb.json")
-  result=run_doe_tournament(TASKS,obs,leaderboard=lb,cohort_id=cohort)
+  result=run_doe_tournament(TASKS,obs,leaderboard=lb,cohort_id=cohort,receipt_resolver=resolver_for(obs))
   winners=result["tournament"]["winners"]; losers=result["tournament"]["losers"]
   self.assertEqual(len(result["arms"]),9)
   self.assertEqual(len(winners),3)
@@ -69,26 +73,38 @@ class TestBalletEvaluation(unittest.TestCase):
    "parallel-cap1__collector-timing-policy-event-driven":self.observation(cohort,"event-run"),
    "parallel-cap1__collector-timing-policy-periodic":self.observation(cohort,"periodic-run"),
   }
-  result=run_doe_tournament(TASKS,obs,factors=factors,cohort_id=cohort)
+  result=run_doe_tournament(TASKS,obs,factors=factors,cohort_id=cohort,receipt_resolver=resolver_for(obs))
   self.assertEqual(len(result["arms"]),2)
   self.assertEqual(len(set(result["plans"])),2)
  def test_reused_leaderboard_separates_cohorts(self):
   lb=Leaderboard(pathlib.Path(tempfile.mkdtemp())/"lb.json")
   cohort_a="cohort-a"
   obs_a={f"{s}-cap{n}":self.observation(cohort_a,f"run-a-{s}-{n}") for s in ("sequential","parallel","adaptive") for n in (1,2,4)}
-  run_doe_tournament(TASKS,obs_a,leaderboard=lb,cohort_id=cohort_a)
+  run_doe_tournament(TASKS,obs_a,leaderboard=lb,cohort_id=cohort_a,receipt_resolver=resolver_for(obs_a))
   cohort_b="cohort-b"
   obs_b={"sequential-cap1":self.observation(cohort_b,"run-b-sequential")}
   result=run_doe_tournament([{"id":"solo"}],obs_b,
       factors={"strategy":["sequential"],"max_parallel":[1]},
-      task_family="orchestration",leaderboard=lb,cohort_id=cohort_b)
+      task_family="orchestration",leaderboard=lb,cohort_id=cohort_b,receipt_resolver=resolver_for(obs_b))
   self.assertEqual(len(result["tournament"]["winners"]),1)
   self.assertEqual(result["tournament"]["winners"][0]["provider"],"sequential")
  def test_receipt_cohort_mismatch_rejected(self):
   obs={"sequential-cap1":self.observation("cohort-other","run-1")}
   with self.assertRaises(ValueError):
    run_doe_tournament([{"id":"solo"}],obs,
-      factors={"strategy":["sequential"],"max_parallel":[1]},cohort_id="cohort-current")
+      factors={"strategy":["sequential"],"max_parallel":[1]},cohort_id="cohort-current",receipt_resolver=resolver_for(obs))
+ def test_missing_receipt_resolver_rejected(self):
+  cohort="cohort-c"
+  obs={"sequential-cap1":self.observation(cohort,"run-c")}
+  with self.assertRaises(ValueError):
+   run_doe_tournament([{"id":"solo"}],obs,factors={"strategy":["sequential"],"max_parallel":[1]},cohort_id=cohort)
+ def test_canonical_receipt_mismatch_rejected(self):
+  cohort="cohort-d"
+  obs={"sequential-cap1":self.observation(cohort,"run-d")}
+  def altered(_):
+   return {**obs["sequential-cap1"]["receipt"],"sha256":"b"*64}
+  with self.assertRaises(ValueError):
+   run_doe_tournament([{"id":"solo"}],obs,factors={"strategy":["sequential"],"max_parallel":[1]},cohort_id=cohort,receipt_resolver=altered)
  def test_unsupported_factor_rejected(self):
   with self.assertRaises(ValueError):
    run_doe_tournament(TASKS,{},factors={"mystery":["x"]},cohort_id="cohort-a")

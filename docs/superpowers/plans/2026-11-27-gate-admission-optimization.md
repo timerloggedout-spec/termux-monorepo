@@ -83,4 +83,4 @@
 - Agreement between helper path registry, workflow admission, and PR classifier.
 - Bucket-headroom test ownership and package isolation.
 - Dangle target-path coverage and unchanged baseline semantics.
-- Vercel provider-effect claims and Devin entitlement/referral evidence.
+- Vercel rootDirectory/affected-project settings, unrelated-change skip evidence, and Devin entitlement/referral evidence.

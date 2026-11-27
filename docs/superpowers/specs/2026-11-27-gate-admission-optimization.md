@@ -14,7 +14,7 @@ Select validation and provider work from the changed execution surface, referenc
 - `.github/workflows/termux-smoke.yml` currently starts on every pull request and configured integration push. Its job installs PyYAML and pytest to run bucket-headroom tests alongside Termux smoke.
 - `scripts/ci/termux_smoke.py` checks the Termux runtime contract, repository gate files, SIM-memory contract, connector smoke, and optional deepcli/archwiz surfaces.
 - `.github/workflows/archwiz-dangle.yml` currently triggers on dangle implementation files, `.github/workflows/**`, and `apps/**`. Its census scope is `.github/` and `apps/`; its baseline ratchet and rename mode remain read-only.
-- Vercel already has project-scoped `ignoreCommand` configuration and `scripts/ci/vercel_ignore_build.sh`. `tests/test_vercel_ignore_commands.py` covers unrelated-change skips, relevant-change builds, missing SHAs, and project scoping. The quota-aware batch deploy lane has reserve and cooldown logic.
+- Vercel has project-scoped ignore helpers and a quota-aware batch lane. Live inspection found the linked `historical-corpus-explorer` project building from repository entrypoint `.`; its latest 24-hour window contained 96 deployments, including 42 from `master` and multiple unrelated refresh branches. The docs/test-only PR received a `build-rate-limit` status. The project was updated to root `apps/historical-corpus-explorer`, enable affected-project deployment filtering, and compare changes against that app path. A checked-in `vercel.json` and helper mapping now keep this policy in source control. The post-update docs-only head has no matching deployment record; its Vercel status still reports `build-rate-limit`, so provider-effect verification remains pending.
 - The current gate register records Devin API access as paid-organization-only and card-blocked for the Free organization. The referral programme index names other providers and does not establish a Devin credit route. The operator's 2026-11-27 report of free-tier availability and referral replenishment is retained as a fresh evidence lead pending a current account/entitlement receipt.
 
 ## Chosen design
@@ -47,7 +47,7 @@ Expand dangle workflow triggers to include the target roots used by workflow scr
 
 ### 5. Provider lanes
 
-**Vercel:** preserve the existing project-scoped path selector, deployment-disabled Git settings, quota-aware batch dispatcher, reserve, and cooldown. Add no parallel deploy orchestrator. Track provider-side skip/build confirmation as a separate evidence state; configuration and local tests alone do not prove provider effect.
+**Vercel:** preserve the existing project-scoped path selector, quota-aware batch dispatcher, reserve, and cooldown. Scope `historical-corpus-explorer` to `apps/historical-corpus-explorer`, enable affected-project deployment filtering, and use the project-specific ignore command. Keep preview deployments available for relevant app changes. Track provider-side skip/build confirmation as a separate evidence state; configuration and local tests establish setup while deployment receipts establish provider effect.
 
 **Devin:** treat Devin as an optional bounded worker, never a required merge gate. Admission requires current evidence for API eligibility, free quota remaining, task fit, billing boundary, and referral-credit provenance. Keep subscription eligibility, API quota, and marketing referral rewards as separate fields. The operator-reported availability remains a lead until a current provider/account receipt supports it.
 
@@ -61,7 +61,7 @@ Expand dangle workflow triggers to include the target roots used by workflow scr
 | `BLOCKED` | Admission requires evidence or authorization that is currently unavailable |
 | `PENDING` | Gate admitted and awaiting execution/result |
 
-A skipped conditional gate is an applicability result, not a pass. A provider quota deferral is a capacity result, not a code failure.
+A skipped conditional gate records applicability; execution evidence is represented by PASS or FAIL. A provider quota deferral records capacity; code correctness remains separate.
 
 ## Alternatives considered
 
@@ -76,6 +76,6 @@ A skipped conditional gate is an applicability result, not a pass. A provider qu
 - Bucket-headroom tests execute in a dedicated path-scoped workflow.
 - The PR classifier treats a non-Termux slice as eligible without Termux smoke while preserving required evidence for Termux slices.
 - Dangle triggers cover both source and target path changes while retaining its baseline and report contract.
-- Vercel behavior remains project-scoped and quota-aware; provider effect remains explicitly measured.
+- Vercel `historical-corpus-explorer` uses its app root and affected-project filtering; an unrelated post-update commit produces no deployment record and a relevant app change produces an app-root deployment.
 - Devin remains optional until fresh account and referral evidence supports no-cost admission.
 - Repository policy, proposal records, tests, and workflow behavior agree.

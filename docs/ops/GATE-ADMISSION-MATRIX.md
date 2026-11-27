@@ -33,13 +33,13 @@ The dangle scanner continues to report findings from `.github/` and `apps/`. Its
 
 ### Vercel
 
-The three checked-in project configurations use project-specific ignore commands. The helper skips unchanged project roots and continues a build for relevant changes or incomplete Git evidence. The batch deploy lane applies its quota reserve, observed-count reconciliation, and project cooldown.
+The checked-in project configurations use project-specific ignore commands. The linked `historical-corpus-explorer` project previously built from repository entrypoint `.`. Live deployment inventory showed 96 deployments in the preceding 24 hours: 42 from `master`, 12 from `telemetry-ingest/refresh`, 11 from `reviewer-metrics/refresh`, 10 from `delphi-ledger-feed/refresh`, and 10 from `delphi-rfp-feed/refresh`. A docs/test-only PR received the `build-rate-limit` status.
 
-Current evidence status: **configured and locally regression-tested; provider-side skip/build effect requires a deployment event receipt on an unrelated and a relevant SHA.**
+The Vercel project settings update was accepted at 2026-11-27T21:55:45Z: `rootDirectory=apps/historical-corpus-explorer`, `enableAffectedProjectsDeployments=true`, and a root-aware ignore command scoped to `apps/historical-corpus-explorer/`. The repository now contains the matching `vercel.json` and helper mapping. The next docs/test-only commit has no corresponding deployment record; its Vercel status still reports `build-rate-limit`. **Provider effect: partially evidenced; confirm with a fresh unrelated commit and a relevant app change.**
 
 ### Devin
 
-The operator reported free-tier availability and referral marketing replenishment on 2026-11-27. The current repository gate register still records Devin API access as paid-organization-only/card-blocked for the Free organization; the current referral programme index does not list Devin. Treat the operator report as a fresh lead and obtain a current account/entitlement receipt before admission.
+The operator reported free-tier availability and referral marketing replenishment on 2026-11-27. The current repository gate register records Devin API access as paid-organization-only/card-blocked for the Free organization; the current referral programme index leaves Devin credit eligibility unverified. Treat the operator report as a fresh lead and obtain a current account/entitlement receipt before admission.
 
 Admission ledger fields:
 

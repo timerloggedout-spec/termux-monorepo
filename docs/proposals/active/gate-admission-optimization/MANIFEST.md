@@ -21,7 +21,7 @@ gates_required: [repo-gate, termux-smoke]
 
 ## Summary
 
-Optimize repository gate admission by matching validation and provider execution to changed surfaces, reference impact, quota, and incremental evidence. Keep the repository gate universal, make Termux smoke conditional on the Termux execution surface, separate bucket-headroom contracts, expand dangle target-path coverage, preserve Vercel's existing quota-aware path selector, and treat Devin as an optional worker pending current entitlement evidence.
+Optimize repository gate admission by matching validation and provider execution to changed surfaces, reference impact, quota, and incremental evidence. Keep the repository gate universal, make Termux smoke conditional on the Termux execution surface, separate bucket-headroom contracts, expand dangle target-path coverage, scope the linked historical-corpus-explorer Vercel project to its app root, and treat Devin as an optional worker pending current entitlement evidence.
 
 ## Boundaries
 

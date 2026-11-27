@@ -227,3 +227,16 @@ Failed validation blocks publication of a new snapshot but preserves the last kn
 ## Delivery status
 
 The temporal integrity validator and focused tests have been committed on the proposal branch. Test execution is not claimed here; consult the PR's current checks. The The static Explorer MVP and deterministic snapshot publisher are committed on the proposal branch and included in CI. Automatic snapshot publication into the deployed site, Vercel/Pages root integration, spatial graph visualization, and deployment remain unimplemented. Repository changes should be tracked through CRG-15 and the normal proposal/PR lifecycle.
+
+
+## Deployment admission update — 2026-11-27
+
+A linked Vercel project named `historical-corpus-explorer` is now present. Live project inspection showed the latest build entrypoint as repository root `.`; the project had 96 deployments in the preceding 24 hours, including 42 from `master` and repeated telemetry/reviewer/Delphi refresh branches. A docs/test-only PR received a `build-rate-limit` status.
+
+The Vercel project settings update was accepted at 2026-11-27T21:55:45Z:
+
+- root directory: `apps/historical-corpus-explorer`;
+- affected-project deployment filtering: enabled;
+- ignore command: exact previous/current Git SHA diff scoped to `apps/historical-corpus-explorer/`.
+
+The app now carries `apps/historical-corpus-explorer/vercel.json`, and the repository helper recognizes the project. The post-update docs/test commit has no corresponding deployment record; the Vercel status context still reports `build-rate-limit`. Provider-side skip behavior remains partially evidenced pending a fresh unrelated/app-change pair.

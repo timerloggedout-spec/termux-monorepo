@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parent
 
 
 async def send_email(args: dict[str, Any]) -> dict[str, Any]:
-    """Mock side effect; the fixture has no external mail integration."""
+    """Mock side effect; the fixture returns data in process."""
     return {"sent": True, "to": args["to"], "body": args["body"]}
 
 

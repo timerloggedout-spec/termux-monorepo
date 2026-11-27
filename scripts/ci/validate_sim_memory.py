@@ -168,15 +168,13 @@ def _loads_strict(raw: str) -> Any:
     return json.loads(raw, parse_float=Decimal, parse_constant=_reject_json_constant)
 
 
-def validate_records(path: Path, raw_lines: list[str] | None = None) -> dict[str, int]:
-    schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+def _validate_lines(lines: Any, schema: dict[str, Any]) -> dict[str, int]:
     opened: dict[str, dict[str, Any]] = {}
     record_ids: set[str] = set()
     attempt_ids: set[str] = set()
     event_count = 0
     attempt_count = 0
 
-    lines = raw_lines if raw_lines is not None else path.read_text(encoding="utf-8").splitlines()
     for line_number, raw in enumerate(lines, start=1):
         if not raw.strip():
             continue
@@ -286,6 +284,14 @@ def validate_records(path: Path, raw_lines: list[str] | None = None) -> dict[str
         "problems": len(opened),
         "attempts": attempt_count,
     }
+
+
+def validate_records(path: Path, raw_lines: list[str] | None = None) -> dict[str, int]:
+    schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+    if raw_lines is not None:
+        return _validate_lines(raw_lines, schema)
+    with path.open(encoding="utf-8") as stream:
+        return _validate_lines(stream, schema)
 
 
 def main() -> int:

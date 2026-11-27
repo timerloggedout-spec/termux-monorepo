@@ -89,11 +89,11 @@ def test_step_order_collect_before_evaluate_before_page():
     assert collect_i < eval_i < page_i < commit_i
 
 
-class SmokeWorkflowRunnerTests(unittest.TestCase):
-    def test_bucket_headroom_function_tests_use_pytest(self):
-        smoke_path = ROOT / ".github" / "workflows" / "termux-smoke.yml"
-        smoke = yaml.safe_load(smoke_path.read_text())
-        steps = smoke["jobs"]["smoke"]["steps"]
+class BucketHeadroomContractRunnerTests(unittest.TestCase):
+    def test_bucket_headroom_function_tests_use_dedicated_workflow(self):
+        contract_path = ROOT / ".github" / "workflows" / "bucket-headroom-contract.yml"
+        contract = yaml.safe_load(contract_path.read_text())
+        steps = contract["jobs"]["contract"]["steps"]
         test_step = next(s for s in steps
                          if s.get("name") == "Bucket headroom unit and workflow-contract tests")
         install = test_step["run"].splitlines()[0]
@@ -103,3 +103,8 @@ class SmokeWorkflowRunnerTests(unittest.TestCase):
             command,
             "python3 -m pytest -q tests/test_bucket_headroom.py tests/test_bucket_headroom_workflow.py",
         )
+
+        smoke_path = ROOT / ".github" / "workflows" / "termux-smoke.yml"
+        smoke = yaml.safe_load(smoke_path.read_text())
+        smoke_steps = smoke["jobs"]["smoke"]["steps"]
+        self.assertFalse(any("Bucket headroom" in s.get("name", "") for s in smoke_steps))

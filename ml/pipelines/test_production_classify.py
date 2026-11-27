@@ -39,6 +39,24 @@ class BuildPrDict(unittest.TestCase):
         d = build_pr_dict(pr(), [], NOW)
         self.assertEqual(d["gates"], {"repo-gate": False, "termux-smoke": False})
 
+    def test_non_termux_paths_mark_smoke_inapplicable(self):
+        checks = [{"name": "hygiene + portability gate", "conclusion": "success"}]
+        d = build_pr_dict(pr(), checks, NOW, changed_paths=["docs/notes.md"])
+        self.assertFalse(d["termux_smoke_required"])
+        feed = classify_all([d], NOW)
+        self.assertEqual(feed["prs"][0]["lane"], "CANDIDATE")
+
+    def test_termux_paths_keep_smoke_required(self):
+        checks = [{"name": "hygiene + portability gate", "conclusion": "success"}]
+        d = build_pr_dict(pr(), checks, NOW, changed_paths=["archwiz/probe.py"])
+        self.assertTrue(d["termux_smoke_required"])
+        feed = classify_all([d], NOW)
+        self.assertEqual(feed["prs"][0]["lane"], "NEED_EVIDENCE")
+
+    def test_missing_changed_paths_fail_closed_to_smoke(self):
+        d = build_pr_dict(pr(), [], NOW, changed_paths=None)
+        self.assertTrue(d["termux_smoke_required"])
+
     def test_age_and_shape(self):
         d = build_pr_dict(pr(), GREEN, NOW)
         self.assertAlmostEqual(d["age_days"], 8.0, places=0)

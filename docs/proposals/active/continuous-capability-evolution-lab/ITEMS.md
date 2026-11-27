@@ -16,6 +16,9 @@
 - python3 scripts/integrations/validate_capability_graph.py
 - python3 -m unittest discover -s tests -p 'test_capability_opportunity_graph.py' -v
 - python3 -m unittest discover -s tests -p 'test_refTemplates_capability_inventory.py' -v
+- python3 -m unittest discover -s tests -p 'test_assert_acs_bridge.py' -v
+- python3 -m unittest discover -s experiments/doe/assert_acs_2x2/acs -p 'test_policy.py' -v
+- python3 scripts/doe/assert_acs_bridge.py plan --design experiments/doe/assert_acs_2x2/DESIGN.json --output /tmp/ceel-assert-acs-plan.json
 - python3 scripts/integrations/validate_portfolio.py
 - python3 scripts/proposals/validate_registry.py
 - python3 scripts/ci/repo_gate.py
@@ -29,6 +32,10 @@ GitHub object creation/retrieval is available in this session; a local checkout 
 - Branch: `feat/ceel-006-concept-competition-20261125`
 - Pull request: #5908
 - Candidate references: 8 metadata-first concept adaptations across five refTemplates categories.
+- Runnable ASSERT × ACS pilot: `experiments/doe/assert_acs_2x2/` (3 fixed tasks × 4 evaluator/governance cells = 12 planned observations).
+- Adapter: `scripts/doe/assert_acs_bridge.py` (plan, assemble, record); native scorer: `experiments/doe/assert_acs_2x2/native_score.py`; ACS mock host and redacted decision receipt: `experiments/doe/assert_acs_2x2/acs/`.
+- Pure tests: bridge and policy-dispatcher suites are wired into refTemplates continuous-eval CI.
+- Provider-backed execution: PENDING credentials and a same-cohort ASSERT run; mock adapter conformance is distinct from efficacy.
 - Capability graph: 21 nodes, 31 edges; structural validation reports 0 unresolved endpoints or duplicate IDs/edges. The managed Foundry platform is recorded separately from its component projects.
 - Inventory: categories 01–14; research-template scoring remains a separate profile under 15_.
 - Capability score: metadata readiness only; efficacy remains unmeasured until controlled runs.

@@ -49,6 +49,14 @@ Retain lean-worktree discipline, read-only-by-default reconnaissance, device/res
 
 Local adaptation: these constraints apply when the Termux/MCP hub is the execution surface; repository governance remains authoritative.
 
+### Self-Improvement Memory / Continual Recursive Self-Improvement
+
+Retain optimizer-side memory of recurring harness problems, selected edits, rationale, pre-evaluation predictions, measured outcomes and evaluation context. Keep the proposer and selector as consumers of the same historical evidence. Append negative and unresolved outcomes so later rounds can revise inherited edits rather than treating them as universal fixes.
+
+Local adaptation: [SELF-IMPROVEMENT-MEMORY.md](SELF-IMPROVEMENT-MEMORY.md) defines an append-only, metadata-only JSONL contract and a read-only validator. Hindsight remains task/session memory; SIM remains meta-memory for harness optimization. The complete ledger remains durable while retrieval is bounded by problem and compatibility. Evolve-split feedback guides optimization; held-out feedback remains sealed. Runtime integration is experimental and has not been claimed as deployed.
+
+Source: Yu et al., [Self-Improvement Memory Enables Continual Recursive Self-Improvement](https://arxiv.org/abs/2611.18856), 2026-11-13. The preprint reports a +2.36-point mean paired coding advantage across ten independent source runs, with one negative pair; these results remain source-reported until independently reproduced here.
+
 ## 4. ATES + TDQS semantic contract
 
 Tool definition → TDQS; agent execution → ATES; both feed the AEF evidence unit and downstream outcome analysis.
@@ -101,4 +109,4 @@ Never convert provider failure, skipped review, rate limit, stale SHA, or infras
 
 Do not dismiss useful lessons solely because they are external; copy external policy without local validation; conflate activity with outcome; overwrite historical evidence; merge on stale-SHA evidence; let throughput optimize correctness; let tool-definition quality masquerade as task success; or let a relationship candidate become an asserted fact.
 
-**Owner boundaries:** CRG owns relationship evidence; adaptive-wait owns asynchronous control; evidence-led-monorepo-ops owns repository evidence discipline; ATES owns execution telemetry; TDQS owns tool-definition quality.
+**Owner boundaries:** CRG owns relationship evidence; adaptive-wait owns asynchronous control; evidence-led-monorepo-ops owns repository evidence discipline; ATES owns execution telemetry; TDQS owns tool-definition quality; SIM records optimizer-side improvement history without becoming a second evidence or execution plane.

@@ -1,4 +1,4 @@
-"""Brain/CNS-inspired coordination primitives; a software analogy, not neuroscience."""
+"""Brain/CNS-inspired software coordination analogies and pure primitives."""
 from .action_selection import select_actions
 from .composer import compose_score
 from .context import build_context

@@ -165,4 +165,4 @@ The Brain/CNS layer is a typed software analogy for distributed coordination. It
 
 Composer consumes an existing Ballet plan and Temporal assignment metadata, then delegates cue-sheet generation to Orchestra Conductor. It emits a content-addressed `brain.composer.score.v1` artifact. The score remains declarative: dependency-phase engine owns readiness, Ballet owns wave planning, Manager owns routing and approval, QUE owns admission and claims, specialist adapters own execution, and ATES owns evidence. Prediction and homeostasis return observations and recommendations; policy changes require explicit candidate evaluation and existing promotion gates.
 
-The anatomical vocabulary is an analogy for software responsibility boundaries. The implementation models software coordination contracts, with no claim to reproduce biological neural activity, cognition, consciousness, or clinical processes.
+The anatomical vocabulary is an analogy for software responsibility boundaries. The implementation models software coordination contracts; biological neural activity, cognition, consciousness, and clinical processes remain outside scope.

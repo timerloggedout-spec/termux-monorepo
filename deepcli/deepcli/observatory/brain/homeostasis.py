@@ -1,4 +1,4 @@
-"""Homeostatic observation planning; returns a wake recommendation, never a timer."""
+"""Homeostatic observation planning; returns a wake recommendation for collector-owned timer scheduling."""
 from __future__ import annotations
 
 def plan_wake(now_ms: int, event_deadline_ms: int | None = None,

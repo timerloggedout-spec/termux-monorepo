@@ -1,4 +1,4 @@
-"""Executive intent normalization; goals and constraints carry no execution authority."""
+"""Executive intent normalization; goals and constraints route through existing execution authority."""
 from __future__ import annotations
 from typing import Any, Mapping
 

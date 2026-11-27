@@ -8,7 +8,7 @@
 
 Build a modular coordination layer inspired by distributed nervous-system functions. The software accepts typed signals, assembles bounded context, normalizes a goal, proposes compatible actions, composes a deterministic score, and interprets timing feedback for future candidate policies.
 
-Neuroscience language is an architectural analogy. It supplies memorable names for software responsibilities; it makes no claim of biological equivalence, medical validity, or brain simulation.
+Neuroscience language is an architectural analogy. It supplies memorable names for software responsibilities, with biological equivalence, medical validity, and brain simulation outside scope.
 
 ## Outcomes
 
@@ -44,11 +44,11 @@ The names are typed software concepts. The mapping remains explicitly analogical
 ## Data contracts
 
 - **Signal:** required `signal_id`, `source`, `kind`, `sequence`, `confidence`; non-empty identity/source/kind; non-negative integer sequence; confidence in [0, 1]; identical duplicate IDs collapse; conflicting duplicate IDs raise `ValueError`; order by `(sequence, signal_id)`.
-- **Context:** `build_context(signals, episodes=(), max_items=64)` normalizes signals, retains the newest bounded slice, records truncation count, and collects unique episode evidence references. References remain explicit strings and are not resolved here.
+- **Context:** `build_context(signals, episodes=(), max_items=64)` normalizes signals, retains the newest bounded slice, records truncation count, and collects unique episode evidence references. References remain explicit strings; resolution belongs to the evidence layer.
 - **Intent:** `normalize_intent(intent)` requires a goal, accepts integer priority 0–5 (default 3), and sorts/deduplicates constraints and success criteria.
 - **Action shortlist:** `select_actions(candidates, max_parallel=1)` sorts by descending integer priority and ascending task ID, then chooses a write-disjoint shortlist. QUE retains admission and claim authority; the dependency-phase engine retains readiness authority.
 - **Prediction error:** `timing_error(expected_duration_ms, actual_duration_ms)` returns signed drift, classifies overrun/underrun/on-time, and emits `policy_action=observe_only`.
-- **Wake recommendation:** `plan_wake(now_ms, event_deadline_ms=None, window_close_ms=None, max_wait_ms=60000)` returns the earliest future boundary and creates no timer.
+- **Wake recommendation:** `plan_wake(now_ms, event_deadline_ms=None, window_close_ms=None, max_wait_ms=60000)` returns the earliest future boundary for collector-owned timer scheduling.
 - **Composer:** `compose_score(intent, signals, plan, assignments, placement, episodes=())` returns normalized intent/context, ordered signal IDs, supplied Ballet plan projection, Conductor cue sheet, authority map, candidate-only adaptation marker, and SHA-256 `score_id` over canonical JSON of preceding score fields.
 
 Identical normalized inputs and policy version produce an identical score ID.
@@ -86,7 +86,7 @@ candidate -> explicit review + existing promotion gates
 5. Action shortlisting never substitutes for QUE admission or readiness claims.
 6. Timing drift remains an observation until an explicit candidate policy is reviewed.
 7. Cue sheets preserve task IDs, dependencies, phase, nominal/open/close timestamps, expected duration, open length, dependency barriers, wake conditions, and evidence references.
-8. Composer invokes no adapters or external side effects.
+8. Composer emits declarative score data; adapters consume approved cue sheets.
 9. Score ID covers canonical content for audit and replay.
 10. CNS terminology is descriptive analogy; production code and docs state this boundary.
 

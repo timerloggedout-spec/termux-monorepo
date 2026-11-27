@@ -4,7 +4,7 @@
 
 **Goal:** Add a deterministic Brain/CNS-inspired Composer and pure coordination modules to PR #5939.
 
-**Architecture:** Small pure Python modules under `deepcli/deepcli/observatory/brain/`. Composer consumes the existing Ballet plan and delegates cue generation to Conductor. It returns declarative data and retains no control-plane authority.
+**Architecture:** Small pure Python modules under `deepcli/deepcli/observatory/brain/`. Composer consumes the existing Ballet plan and delegates cue generation to Conductor. It returns declarative data while control-plane authority remains with current owners.
 
 **Tech Stack:** Python standard library, unittest, existing Observatory modules.
 
@@ -13,7 +13,7 @@
 ## Global Constraints
 
 - Preserve dependency-phase readiness, QUE admission and claims, specialist-adapter execution, and ATES evidence authority.
-- Composer returns declarative data and has no external side effects.
+- Composer returns declarative data through pure transformations.
 - Identical normalized inputs and policy version produce identical score content and score ID.
 - Signal confidence is metadata, not authorization.
 - Timing feedback and wake selection remain observational recommendations.

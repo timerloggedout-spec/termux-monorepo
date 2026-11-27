@@ -2,7 +2,7 @@
 
 **Registry ID:** `termux-monorepo.trigger-workflow`  
 **Schema:** `trigger-workflow-registry/v1`  
-**Status:** INITIAL_BASELINE · reconciliation in progress  
+**Status:** INITIAL_BASELINE + ISSUE-TEMPLATE-CENSUS · workflow reconciliation in progress  
 **As of:** 2026-11-27
 
 ## Purpose
@@ -43,7 +43,16 @@ This registry is an **index and normalized relationship layer**. Existing specia
 
 **Important distinction:** an issue template is the human-facing entry method; `issues.opened` is the GitHub event that wakes a workflow. A label or mention is a selector only when an owning workflow explicitly parses it.
 
-## 2. Confirmed route examples
+## 2. Issue-template census
+
+Source enumeration of `.github/ISSUE_TEMPLATE/` found **14 YAML forms**: **2 declare `issue-dispatch/v1`** (`project-task`, `game-development-task`) and **12 are intake-only** in the current source snapshot. The census preserves each form's title, labels, source blob SHA, and parsed dispatch fields.
+
+- Machine-readable source census: `docs/ops/generated/issue-template-census.json`
+- Human-readable census: `docs/ops/ISSUE-TEMPLATE-CENSUS.md`
+
+The 12 intake-only forms remain available to workflow-specific consumers; this classification means only that their template source has no `SWARM-DISPATCH` block. The contract's conversion checklist identifies these as remaining conversions.
+
+## 3. Confirmed route examples
 
 ### Issue filing → QUE admission → route
 
@@ -82,7 +91,7 @@ issue-template filing
 
 See `docs/ops/REVIEW-PUBLISHING.md` for current publish workflow and preview rules.
 
-## 3. Workflow event catalog
+## 4. Workflow event catalog
 
 The generated catalog at `docs/ops/generated/automation-workflow-catalog.json` is the exhaustive per-workflow inventory. The inspected snapshot reports 331 workflows and records:
 
@@ -97,7 +106,7 @@ The generated catalog at `docs/ops/generated/automation-workflow-catalog.json` i
 
 The catalog's event-name summary does not fully encode activity types, branch/path filters, selector expressions, inputs, payload schemas, or permissions. Those require parsing the workflow source.
 
-## 4. Labels, mentions, and commands
+## 5. Labels, mentions, and commands
 
 | Signal | Current interpretation | Reconciliation rule |
 |---|---|---|
@@ -108,7 +117,7 @@ The catalog's event-name summary does not fully encode activity types, branch/pa
 
 Labels are additive taxonomy signals. The registry preserves original names and meaning; it does not rename labels or invent dispatch behavior.
 
-## 5. Registry record model
+## 6. Registry record model
 
 The JSON companion defines stable IDs and these relationships:
 
@@ -125,7 +134,7 @@ entry_method
 
 Every relationship carries status and source provenance. Use `CONFIRMED`, `PARTIAL`, `CANDIDATE`, `UNKNOWN`, or `RETIRED` for inventory confidence. Runtime state remains a separate vocabulary: `QUEUED`, `IN_PROGRESS`, `COMPLETED`, `FAILED`, `CANCELLED`, `SKIPPED`. Admission and promotion states remain separate.
 
-## 6. Feed and HUD integration
+## 7. Feed and HUD integration
 
 The dashboard consumes this registry as a read-only projection and joins it with the existing workflow catalog and per-surface feeds.
 
@@ -135,16 +144,16 @@ Recommended normalized feed fields:
 
 Use existing feed freshness contracts, including `generated_at`, source SHA, and stale indicators. GitHub and owning workflow artifacts remain authoritative. The HUD stays read-only.
 
-## 7. Known gaps — explicit work queue
+## 8. Known gaps — explicit work queue
 
-1. Parse every `.github/ISSUE_TEMPLATE/*` and extract its dispatch block, labels, title prefix, and route.
+1. Extend the issue-template census into a refreshable deterministic extractor; initial source census is complete.
 2. Parse every workflow's `on` block, activity types, branches, paths, inputs, permissions, selector expressions, and outputs.
 3. Census current GitHub labels and identify every workflow/template consumer.
 4. Extract all `@mention` spellings, slash commands, and HTML marker parsers.
 5. Join routes/workflows to `desk.html`, `admin-graph.html`, `proposals.html`, `dispatch-tree.html`, `pr-lanes.html`, and `tracking.html` through `SURFACES-MAP.md` and exact feed contracts.
 6. Generate a deterministic reconciliation report with source fingerprint, timestamp, coverage counts, and unresolved edges.
 
-## 8. Automation and update strategy
+## 9. Automation and update strategy
 
 - Reuse `scripts/ci/automation_docs.py` and its existing workflow catalog refresh lane.
 - Add a dedicated registry extractor only after the field mapping and parser fixtures are agreed.
@@ -153,7 +162,7 @@ Use existing feed freshness contracts, including `generated_at`, source SHA, and
 - Publish a feed only from validated registry output; preserve partial/unknown coverage explicitly.
 - Keep the source registry and generated runtime feed distinct.
 
-## 9. Non-negotiable boundaries
+## 10. Non-negotiable boundaries
 
 - GitHub remains the source of truth for issues, PRs, labels, comments, workflow runs, and commits.
 - Existing specialized contracts retain authority over their domain.
@@ -167,5 +176,6 @@ Use existing feed freshness contracts, including `generated_at`, source SHA, and
 
 - Machine-readable registry: `docs/ops/TRIGGER-WORKFLOW-REGISTRY.json`
 - Workflow inventory: `docs/ops/generated/automation-workflow-catalog.json`
+- Issue-template census: `docs/ops/ISSUE-TEMPLATE-CENSUS.md` and `docs/ops/generated/issue-template-census.json`
 - Issue dispatch contract: `docs/ops/ISSUE-TEMPLATE-DISPATCH.md`
 - Surface ownership map: `docs/ops/SURFACES-MAP.md`

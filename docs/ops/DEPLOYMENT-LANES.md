@@ -92,7 +92,7 @@ n8n remains optional and does not replace GitHub Actions, SHE reducers, or the s
 
 ## Historical Corpus Explorer Vercel admission — 2026-11-27
 
-The linked Vercel project `historical-corpus-explorer` was building from repository entrypoint `.`. Its latest 24-hour inventory contained 96 deployments, including 42 from `master` and 44 across refresh/feature branches. A documentation/test-only PR received a `build-rate-limit` status.
+The linked Vercel project `historical-corpus-explorer` was building from repository entrypoint `.`. Its latest 24-hour inventory contained 96 deployments, including 42 from `master` and 54 across refresh/feature branches. A documentation/test-only PR received a `build-rate-limit` status.
 
 The project settings update was accepted at 2026-11-27T21:55:45Z:
 

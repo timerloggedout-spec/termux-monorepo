@@ -70,9 +70,9 @@ This validator is a foundation, not the Explorer UI and not a replacement for th
 
 ## Implemented Explorer MVP increment
 
-A first accessible static UI now lives at `apps/historical-corpus-explorer/`. It renders source-provided coverage, node/edge counts, observation time, source and manifest SHAs, and reconciliation findings. It includes bounded search over locally selected node/edge JSONL artifacts, rejects malformed records and duplicate IDs, caps displayed results, uses text-only DOM insertion for untrusted record content, and does not upload selected files. No graph data or snapshot values are fabricated when a published projection is absent.
+A first accessible static UI now lives at `apps/historical-corpus-explorer/`. It renders source-provided coverage, node/edge counts, observation time, source and manifest SHAs, and reconciliation findings. It includes bounded search over locally selected node/edge JSONL artifacts, rejects malformed records and duplicate IDs, caps displayed results, uses text-only DOM insertion for untrusted record content, and keeps selected files local. The UI uses source-provided graph data and snapshot values; absent published projections remain explicitly unpopulated.
 
-The deterministic publisher `scripts/ci/build_historical_corpus_explorer_snapshot.py` writes `apps/historical-corpus-explorer/data/snapshot.json` from the canonical manifest and build summary, binds the Git commit and manifest blob SHA, and preserves the declared coverage status while surfacing contradictions. The existing context-relationship validation workflow now tests the publisher and runs its input/provenance check. This establishes the data contract; it does not yet connect the UI to a deployed Vercel/Pages project or implement a spatial graph canvas.
+The deterministic publisher `scripts/ci/build_historical_corpus_explorer_snapshot.py` writes `apps/historical-corpus-explorer/data/snapshot.json` from the canonical manifest and build summary, binds the Git commit and manifest blob SHA, and preserves the declared coverage status while surfacing contradictions. The existing context-relationship validation workflow now tests the publisher and runs its input/provenance check. This establishes the data contract. At the time of this plan entry, the UI was a local static artifact; the 2026-11-27 deployment addendum records the subsequent Vercel project link and root correction.
 
 ## Product design
 
@@ -212,7 +212,7 @@ Failed validation blocks publication of a new snapshot but preserves the last kn
 - **Temporal:** lineage validity, delta correctness, snapshot identity, unavailable-data behavior.
 - **Integration:** frozen canonical-shaped fixtures; source SHA and manifest blob SHA binding; source count reconciliation; evidence deep links; no write/dispatch capability.
 - **UI acceptance:** coverage visible; verified/candidate distinction; bounded rendering; keyboard operation; semantic table fallback; explicit stale/error/unknown states.
-- **Repository gates:** run `python3 scripts/ci/repo_gate.py` and `python3 scripts/ci/termux_smoke.py` on the same immutable head SHA, and record actual results. Do not infer green from queued/in-progress states.
+- **Repository gates:** run `python3 scripts/ci/repo_gate.py` and `python3 scripts/ci/termux_smoke.py` on the same immutable head SHA, and record actual results. Treat queued/in-progress states as pending until a completed result is present.
 
 ## Immediate next actions
 

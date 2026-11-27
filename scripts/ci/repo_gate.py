@@ -718,6 +718,42 @@ def check_secrets(report: Report, paths: list[str], index: dict[str, IndexEntry]
     return checked
 
 
+def check_mobile_agent_test_contract(report: Report, paths: list[str]) -> None:
+    """Run the focused adapter contract suite when its implementation changes."""
+    targets = {
+        "scripts/integrations/mobile_agent_testers_adapter.py",
+        "tests/test_mobile_agent_testers_adapter.py",
+    }
+    if not targets.intersection(paths):
+        return
+    command = [
+        sys.executable,
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_mobile_agent_testers_adapter.py",
+        "-v",
+    ]
+    result = subprocess.run(
+        command,
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    output = "\n".join(part for part in (result.stdout, result.stderr) if part).strip()
+    if result.returncode:
+        report.fail("mobile-agent-testers-tests", output[-4000:] or "adapter contract tests failed")
+    else:
+        print("  mobile-agent-testers adapter tests: passed")
+        if output:
+            print(output)
+
+
 # --------------------------------------------------------------------------- #
 # RATCHET counters (repo-wide)
 # --------------------------------------------------------------------------- #
@@ -883,6 +919,7 @@ def main() -> int:
                 "scanned": check_secrets(report, paths, by_path),
             }
             check_new_debt_paths(report, paths)
+            check_mobile_agent_test_contract(report, paths)
             print(
                 "  hard checks: "
                 + ", ".join(f"{k}={v}" for k, v in counts.items())

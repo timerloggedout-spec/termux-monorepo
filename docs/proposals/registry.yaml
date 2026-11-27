@@ -1,5 +1,5 @@
 version: 1
-updated_at: '2026-11-21T00:00:00Z'
+updated_at: '2026-11-23T00:00:00Z'
 updated_by: ChatGPT
 proposals:
   - id: repository-architecture-entry
@@ -1392,5 +1392,29 @@ proposals:
     related_branches:
       - feat/repository-provisioner-workflow
     gates_required:
+      - repo-gate
+      - termux-smoke
+
+  - id: mobile-agent-testers-integration
+    title: "Mobile Agent Testers — persona-driven exploratory QA integration"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/mobile-agent-testers-integration/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_prs:
+      - 5834
+    related_branches:
+      - feat/mobile-agent-testers-integration
+    related_repos:
+      - https://github.com/timerloggedout-spec/mobile-agent-testers_fork
+    gates_required:
+      - proposal-lifecycle
       - repo-gate
       - termux-smoke

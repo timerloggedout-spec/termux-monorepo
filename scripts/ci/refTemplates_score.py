@@ -73,7 +73,7 @@ def score_capability_child(child: dict) -> dict:
     """Score source/metadata readiness; report efficacy as unmeasured until controlled runs."""
     source_preview = child.get("source_preview")
     has_source = bool(child.get("has_source"))
-    has_readme = bool(child.get("has_readme"))
+    has_readme = bool(child.get("has_readme") or child.get("has_reference_document"))
     metadata_files = child.get("metadata_files", [])
     category = str(child.get("category", ""))
     layers = {
@@ -109,7 +109,9 @@ def score_capability_child(child: dict) -> dict:
         "layers": layers,
         "weights": weights,
         "has_source": has_source,
-        "has_readme": has_readme,
+        "has_readme": bool(child.get("has_readme")),
+        "has_reference_document": bool(child.get("has_reference_document") or child.get("has_readme")),
+        "file_reference": bool(child.get("file_reference")),
         "metadata_files": metadata_files,
         "source_preview": source_preview,
         "efficacy_score": None,

@@ -110,6 +110,16 @@ class ComposerTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "extra"):
             compose_score(self.intent, assignments)
 
+    def test_rejects_non_string_assignment_keys(self):
+        intent = ComposerIntent("i", "objective", ({"id": "1"},), ("done",))
+        with self.assertRaisesRegex(ValueError, "assignment keys"):
+            compose_score(intent, {1: assignment()})
+
+    def test_rejects_malformed_dependency_sequence(self):
+        intent = ComposerIntent("i", "objective", ({"id": "spec", "depends_on": "other"},), ("done",))
+        with self.assertRaisesRegex(ValueError, "depends_on"):
+            compose_score(intent, {"spec": assignment()})
+
     def test_rejects_duplicate_task_ids(self):
         invalid = ComposerIntent("i", "objective", ({"id": "same"}, {"id": "same"}), ("done",))
         with self.assertRaisesRegex(ValueError, "unique"):

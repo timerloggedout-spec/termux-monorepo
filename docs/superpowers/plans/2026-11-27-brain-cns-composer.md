@@ -42,10 +42,10 @@
 
 **Interfaces:** `normalize_signals(signals)`; `build_context(signals, episodes=(), max_items=64)`; `normalize_intent(intent)`.
 
-- [ ] Write tests for ordering, identical deduplication, conflicting duplicate rejection, confidence bounds, bounded attention ranking and focus-budget identity, evidence retention, truncation, goal validation, and priority range.
-- [ ] Run the focused test file; expected: imports fail before module creation.
-- [ ] Implement the pure modules and public exports.
-- [ ] Run focused tests; expected: Task 1 assertions pass.
+- [x] Write tests for ordering, identical deduplication, conflicting duplicate rejection, confidence bounds, bounded attention ranking and focus-budget identity, evidence retention, truncation, goal validation, and priority range.
+- [x] Run the focused test file; expected: imports fail before module creation.
+- [x] Implement the pure modules and public exports.
+- [x] Run focused tests; expected: Task 1 assertions pass.
 
 ### Task 2: Action selection, prediction error, and homeostasis
 
@@ -53,10 +53,10 @@
 
 **Interfaces:** `select_actions(candidates, max_parallel=1)`; `timing_error(expected_duration_ms, actual_duration_ms)`; `plan_wake(now_ms, event_deadline_ms=None, window_close_ms=None, max_wait_ms=60000)`.
 
-- [ ] Write tests for priority ordering, write conflicts, invalid candidate IDs, signed timing drift, negative/non-finite values, and earliest future wake boundary.
-- [ ] Run focused tests; expected: missing module imports fail before implementation.
-- [ ] Implement pure helpers with deterministic ordering and explicit validation.
-- [ ] Run focused tests; expected: Task 2 assertions pass.
+- [x] Write tests for priority ordering, write conflicts, invalid candidate IDs, signed timing drift, negative/non-finite values, and earliest future wake boundary.
+- [x] Run focused tests; expected: missing module imports fail before implementation.
+- [x] Implement pure helpers with deterministic ordering and explicit validation.
+- [x] Run focused tests; expected: Task 2 assertions pass.
 
 ### Task 3: Composer and Conductor integration
 
@@ -64,21 +64,29 @@
 
 **Interfaces:** Composer consumes normalized intent, signals, context, existing `ConductorPlacement`, and `build_cue_sheet`; it wires `select_actions`, `timing_error`, and `plan_wake` through optional action candidates, timing observations, and wake context.
 
-- [ ] Write tests for deterministic score identity, score schema, authority map, cue metadata preservation, action shortlisting, timing feedback, and wake recommendations.
-- [ ] Run tests; expected: cue metadata regression fails against current Conductor output.
-- [ ] Update Conductor task records to include phase, open length, dependency barriers, evidence references, dependency IDs, and wake conditions.
-- [ ] Implement deterministic Composer score and canonical SHA-256 score ID.
-- [ ] Run focused tests; expected: Composer and Conductor contracts pass.
+- [x] Write tests for deterministic score identity, score schema, authority map, cue metadata preservation, action shortlisting, timing feedback, and wake recommendations.
+- [x] Run tests; expected: cue metadata regression fails against current Conductor output.
+- [x] Update Conductor task records to include phase, open length, dependency barriers, evidence references, dependency IDs, and wake conditions.
+- [x] Implement deterministic Composer score and canonical SHA-256 score ID.
+- [x] Run focused tests; expected: Composer and Conductor contracts pass.
 
 ### Task 4: Proposal integration and verification
 
 **Files:** update `docs/ops/RHYTHMIC-SYSTEMS-TEMPORAL-INTELLIGENCE.md`, proposal `ITEMS.md` and `MANIFEST.md`; create this design and plan; export Brain functions from the Observatory package.
 
-- [ ] Register RS-006 with acceptance evidence and update architecture/specification links.
+- [x] Register RS-006 with acceptance evidence and update architecture/specification links.
 - [ ] Run `python -m unittest discover -s tests -v` from `deepcli/`; expected: focused Observatory tests pass.
 - [ ] Run `python -m compileall -q deepcli tests` from `deepcli/`; expected: exit 0.
 - [ ] Run repository gate, Siglary validator, and Termux smoke on the exact pushed SHA.
-- [ ] Commit with `docs(brain): register Composer architecture Implements: RS-006`.
+- [x] Commit Composer implementation, specification, plan, and proposal evidence with RS-006 citations.
+
+## Verification snapshot
+
+- 23 focused Brain/Conductor tests pass in the local implementation mirror.
+- Python compileall passes for the Brain modules and focused tests in the local implementation mirror.
+- Full repository tests, repo gate, Termux smoke, and proposal-lifecycle checks remain pending on the current remote head.
+- Vercel reports a deployment-rate-limit failure with a 24-hour retry window.
+- Eight pre-existing Ballet/Temporal/DoE review threads remain open; PR merge remains held pending their disposition.
 
 ## Review and release
 

@@ -74,13 +74,15 @@ def capability_child_entry(slot: Path, child: Path) -> dict:
         p.name for p in child.iterdir()
         if p.is_file() and (p.name in METADATA_NAMES or p.name == "SOURCE.txt")
     )
-    preview = _first_line(source)
+    source_preview = _first_line(source)
+    has_source = bool(source_preview)
+    preview = source_preview
     if preview is None:
         for name in sorted(METADATA_NAMES):
             preview = _first_line(child / name)
             if preview:
                 break
-    if source.is_file():
+    if has_source:
         provenance_state = "source_recorded"
     elif metadata_files or readme.is_file():
         provenance_state = "metadata_only"
@@ -90,7 +92,7 @@ def capability_child_entry(slot: Path, child: Path) -> dict:
         "name": child.name,
         "category": slot.name,
         "path": str(child.relative_to(ROOT)),
-        "has_source": source.is_file(),
+        "has_source": has_source,
         "has_readme": readme.is_file(),
         "has_reference_document": readme.is_file(),
         "metadata_files": metadata_files,

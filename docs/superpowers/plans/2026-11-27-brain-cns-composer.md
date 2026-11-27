@@ -76,6 +76,16 @@
 - [ ] Run repository gate, Siglary validator, and Termux smoke on the exact pushed SHA.
 - [ ] Commit with `docs(brain): register Composer architecture Implements: RS-006`.
 
+### Task 5: Publish score schema, architecture atlas, and offline example
+
+**Files:** create `docs/schemas/brain.composer.score.v1.schema.json`, `docs/architecture/BRAIN-CNS-COMPOSER.md`, `docs/architecture/BRAIN-CNS-COMPOSER.mmd`, `deepcli/examples/brain_composer_score.py`, and `deepcli/tests/test_brain_composer_schema.py`; extend `deepcli/tests/test_conductor.py`.
+
+- [x] Define the exact `brain.composer.score.v1` envelope, including content hash, authority map, cue sheet, and receipt-backed timing feedback.
+- [x] Add the ten-role CNS architecture atlas and canonical Mermaid source; distinguish implemented modules from delegated authority roles.
+- [x] Add an offline end-to-end example with signal, context, intent, Ballet plan, Conductor assignments, action shortlist, timing provenance, and wake recommendation.
+- [x] Add deterministic identity and schema contract tests; harden Conductor validation for cue arrays, timestamps, durations, and policy version.
+- [ ] Run the full Brain/Observatory suite, JSON Schema validation against a generated score, repository gates, and independent review on the exact final SHA.
+
 ## Review and release
 
 - Verify all files and the exact branch SHA after each remote commit.

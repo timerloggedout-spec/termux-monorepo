@@ -45,5 +45,6 @@ Compare seed/cold-start, harness-only transfer, root-cause-only memory and full 
 - Schema: docs/ops/SELF-IMPROVEMENT-MEMORY.schema.json
 - Read-only stream validator: scripts/ci/validate_sim_memory.py
 - Contract tests: tests/test_sim_memory.py
-- Runtime manager integration: NOT YET IMPLEMENTED
+- Bounded retrieval adapter: scripts/agent_evolution/sim_memory.py
+- Proposer/selector runtime wiring: NOT YET IMPLEMENTED
 - Independent paper replication: NOT YET PERFORMED

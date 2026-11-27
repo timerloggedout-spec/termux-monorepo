@@ -33,7 +33,7 @@ def page(title, body, locale="en"):
         f'<a href="{urdu_href}" lang="ur" hreflang="ur" aria-current="{"page" if locale == "ur" else "false"}">اردو</a>'
         '</nav>'
     )
-    rtl_css = "body{direction:rtl;text-align:right} main{unicode-bidi:plaintext} code,pre,a[dir=ltr]{direction:ltr;unicode-bidi:isolate}"
+    rtl_css = "body{direction:rtl;text-align:right;font-family:\"Noto Naskh Arabic\",\"Noto Sans Arabic\",system-ui,sans-serif} main{unicode-bidi:plaintext} code,pre,a[dir=ltr]{direction:ltr;unicode-bidi:isolate}"
     style = CSS + (rtl_css if locale == "ur" else "")
     return (f'<!doctype html><html lang="{locale}" dir="{direction}"><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width,initial-scale=1">'

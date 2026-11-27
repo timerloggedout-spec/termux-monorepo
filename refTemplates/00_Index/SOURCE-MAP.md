@@ -33,8 +33,8 @@
 | jdingel-projecttemplate | https://github.com/jdingel/projecttemplate |
 | 3rdCore-Research_Project_Template | https://github.com/3rdCore/Research_Project_Template |
 | dicklesworthstone-agentic-flywheel | https://github.com/Dicklesworthstone/agentic_coding_flywheel_setup |
-| opencode-research-papers | https://github.com/opensrcdev/opencode-research-papers |
-| cactus-needle | https://github.com/cactus-needle/cactus-needle |
+| opencode-research-papers | https://github.com/saim-x/opencode-research-papers |
+| cactus-needle | https://github.com/cactus-compute/needle |
 
 The Flywheel slot is metadata-first and tracks a composable stack; it is not a request to run the upstream installer. See docs/ops/DICKLESWORTHSTONE-FLYWHEEL-INTEGRATION.md.
 

@@ -16,6 +16,7 @@ class EmailPolicy:
 
     def __init__(self, audit_path: str | None = None) -> None:
         self.audit_path = Path(audit_path or os.environ.get("CEEL_ACS_AUDIT_PATH", "acs-decisions.jsonl"))
+        self.current_task_id: str | None = None
 
     def evaluate(self, invocation: Mapping[str, Any]) -> dict[str, Any]:
         policy_input = invocation["input"]
@@ -53,7 +54,7 @@ class EmailPolicy:
         tool = policy_input.get("tool") or {}
         call = policy_input.get("tool_call") or {}
         row = {
-            "test_case_id": call.get("call_id") or call.get("id"),
+            "test_case_id": self.current_task_id or call.get("call_id") or call.get("id"),
             "intervention_point": point,
             "decision": verdict["decision"],
             "reason": verdict.get("reason"),

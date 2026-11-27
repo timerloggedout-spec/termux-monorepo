@@ -14,6 +14,8 @@ related_issues: []
 related_prs: []
 related_branches:
   - feat/ceel-continuous-capability-evolution-20261111
+  - feat/sim-memory-crsi-20261127
+  - feat/sim-memory-final-20261127
 gates_required: [proposal-lifecycle, repo-gate, termux-smoke]
 ---
 
@@ -40,7 +42,8 @@ Operator directive received 2026-11-11: "Do everything high Detail at once. Get 
 - docs/ops/AGENT-EVALUATION-LANE-REGISTRY.md remains the evaluator lane registry; external platforms remain observational.
 - GitHub-native events are the primary awareness path. Existing bounded reconciliation jobs remain recovery paths only.
 - External provider capabilities are hypotheses until version-pinned documentation, runtime evidence, or reproducible tests verify them.
-- No raw prompts, completions, credentials, private traces, or restricted customer data are committed.
+- Keep raw prompts, completions, credentials, private traces, and restricted customer data outside committed artifacts.
+- SIM is optimizer-side improvement history; it reuses the existing evidence substrate and does not add a second execution ledger or authority.
 
 ## Review and promotion
 
@@ -50,10 +53,13 @@ The operator authorized this scoped execution. Independent review and same-SHA r
 
 - [x] Proposal and work ledger created on implementation branch
 - [x] Operator authorization recorded
+- [x] CCEL-007 registered for the SIM adaptation
+- [x] SIM paper/reference record, schema, stdlib validator, bounded retrieval adapter, focused tests, and Termux smoke fixture committed
+- [ ] Focused tests, proposal lifecycle, repo-gate, and Termux smoke pass on the same immutable PR head
 - [ ] Independent review recorded
-- [ ] Proposal lifecycle, repo-gate, and Termux smoke pass on the same immutable PR head
 - [ ] Evidence, limitations, and deferred runtime work reconciled
 - [ ] Merge/promotion only under repository policy
+- [ ] Runtime proposer/selector integration separately scoped and validated
 
 ## Links
 

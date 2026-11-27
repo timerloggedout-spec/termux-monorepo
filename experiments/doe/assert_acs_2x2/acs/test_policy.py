@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from policy import EmailPolicy
+from experiments.doe.assert_acs_2x2.acs.policy import EmailPolicy
 
 
 def invocation(point: str, args: dict) -> dict:

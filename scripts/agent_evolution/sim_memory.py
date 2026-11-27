@@ -7,11 +7,28 @@ It preserves negative outcomes and exposes compatibility labels to callers.
 from __future__ import annotations
 
 from dataclasses import dataclass
-import json
+from decimal import Decimal
+from math import isfinite
 from pathlib import Path
 from typing import Any
 
 from scripts.ci.validate_sim_memory import _loads_strict, parse_timestamp, validate_records
+
+
+def _json_compatible(value: Any) -> Any:
+    """Convert validated Decimal measurements into standard JSON numbers."""
+    if isinstance(value, Decimal):
+        if value == value.to_integral_value():
+            return int(value)
+        converted = float(value)
+        if not isfinite(converted):
+            raise ValueError("SIM measurement exceeds the JSON consumer numeric range")
+        return converted
+    if isinstance(value, dict):
+        return {key: _json_compatible(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_json_compatible(item) for item in value]
+    return value
 
 
 @dataclass(frozen=True)
@@ -171,7 +188,7 @@ def _compatibility(query: RetrievalQuery, problem: dict[str, Any], attempt: dict
 
 def retrieve_sim_memory(path: Path, query: RetrievalQuery) -> list[RetrievedLesson]:
     """Return the highest-compatibility lessons; preserve all outcome classes."""
-    raw_lines = path.read_text(encoding="utf-8").splitlines()
+    raw_lines = path.read_text(encoding="utf-8").split("\n")
     validate_records(path, raw_lines=raw_lines)
     problems: dict[str, dict[str, Any]] = {}
     lessons: list[RetrievedLesson] = []
@@ -179,7 +196,7 @@ def retrieve_sim_memory(path: Path, query: RetrievalQuery) -> list[RetrievedLess
     for raw in raw_lines:
         if not raw.strip():
             continue
-        record = _loads_strict(raw)
+        record = _json_compatible(_loads_strict(raw))
         problem_id = record["problem_id"]
         if record["record_type"] == "problem_opened":
             problems[problem_id] = record["problem"]

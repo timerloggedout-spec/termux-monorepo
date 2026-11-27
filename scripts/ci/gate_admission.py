@@ -68,7 +68,7 @@ def decide_admission(event_name: str, paths: Iterable[str] | None) -> tuple[bool
     if event_name == "workflow_dispatch":
         return True, "manual workflow dispatch"
     if paths is None:
-        return True, "diff unavailable; fail closed to smoke"
+        return True, "diff unavailable; run smoke by default"
     if termux_smoke_required(paths):
         return True, "Termux execution surface changed"
     return False, "Termux surface unchanged"

@@ -23,7 +23,7 @@ class TermuxSurfaceClassifierTests(unittest.TestCase):
         self.assertFalse(termux_smoke_required(["docs/notes.md", "apps/tribute-dashboard/index.html"]))
         self.assertFalse(termux_smoke_required([]))
 
-    def test_missing_path_evidence_fails_closed(self):
+    def test_uncertain_path_evidence_runs_smoke(self):
         self.assertTrue(termux_smoke_required(None))
         required, reason = decide_admission("pull_request", None)
         self.assertTrue(required)
@@ -63,7 +63,7 @@ class ChangedPathDiffTests(unittest.TestCase):
 
             self.assertEqual(set(changed_paths(base, head, root)), {"old.txt", "new.txt"})
 
-    def test_missing_base_or_head_returns_unknown(self):
+    def test_incomplete_base_head_returns_unknown(self):
         self.assertIsNone(changed_paths(None, "abc"))
         self.assertIsNone(changed_paths("abc", None))
         self.assertIsNone(changed_paths("0" * 40, "abc"))

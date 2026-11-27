@@ -57,7 +57,7 @@ class BuildPrDict(unittest.TestCase):
         feed = classify_all([d], NOW)
         self.assertEqual(feed["prs"][0]["lane"], "NEED_EVIDENCE")
 
-    def test_missing_changed_paths_fail_closed_to_smoke(self):
+    def test_uncertain_changed_paths_keep_smoke_required(self):
         d = build_pr_dict(pr(), [], NOW, changed_paths=None)
         self.assertTrue(d["termux_smoke_required"])
 

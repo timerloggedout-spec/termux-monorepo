@@ -9,6 +9,12 @@ This is the navigation entry point for the SHE dashboard contract and its surrou
 - SHE-DASHBOARD-UI-UX-CONTROL-PLANE.md — implementation-ready interactive UI/UX, responsive behavior, accessibility, surface matrix, and promotion gates.
 - SHE-DASHBOARD-ARCHITECTURE.mmd — authoritative architecture source.
 
+## Trigger and workflow registry
+
+- TRIGGER-WORKFLOW-REGISTRY.md — human-readable entry-method, trigger, selector, QUE admission, workflow, and feed map.
+- TRIGGER-WORKFLOW-REGISTRY.json — machine-readable registry (`trigger-workflow-registry/v1`).
+- The registry indexes (and does not duplicate) the generated 331-workflow catalog at `docs/ops/generated/automation-workflow-catalog.json`.
+
 ## Visual pipeline
 
 ```text

@@ -1,10 +1,56 @@
 {
-  "schema_version":1,"adapter_contract":"localization.adapters.v1",
-  "providers":[
-    {"id":"azure-translator","name":"Azure AI Translator","class":"commercial_api","urdu_support":"verify_at_run","adapter":"localization.providers.azure_translator","credential_ref":"AZURE_TRANSLATOR_KEY","enabled":false},
-    {"id":"deepl","name":"DeepL API","class":"commercial_api","urdu_support":"verify_at_run","adapter":"localization.providers.deepl","credential_ref":"DEEPL_AUTH_KEY","enabled":false},
-    {"id":"google-cloud-translation","name":"Google Cloud Translation","class":"commercial_api","urdu_support":"verify_at_run","adapter":"localization.providers.google_cloud_translation","credential_ref":"GOOGLE_APPLICATION_CREDENTIALS","enabled":false},
-    {"id":"openai","name":"OpenAI API","class":"model_api","urdu_support":"verify_at_run","adapter":"localization.providers.openai","credential_ref":"OPENAI_API_KEY","enabled":false},
-    {"id":"human-baseline","name":"Human Urdu reviewer","class":"human_baseline","urdu_support":"native_review","adapter":"localization.providers.human_review","credential_ref":null,"enabled":true}
+  "schema_version": 1,
+  "adapter_contract": "localization.adapters.v1",
+  "providers": [
+    {
+      "id": "azure-translator",
+      "name": "Azure AI Translator",
+      "class": "commercial_api",
+      "urdu_support": "verify_at_run",
+      "adapter": "localization.providers.azure_translator",
+      "credential_ref": "AZURE_TRANSLATOR_KEY",
+      "enabled": false,
+      "implementation_status": "planned"
+    },
+    {
+      "id": "deepl",
+      "name": "DeepL API",
+      "class": "commercial_api",
+      "urdu_support": "verify_at_run",
+      "adapter": "localization.providers.deepl",
+      "credential_ref": "DEEPL_AUTH_KEY",
+      "enabled": false,
+      "implementation_status": "planned"
+    },
+    {
+      "id": "google-cloud-translation",
+      "name": "Google Cloud Translation",
+      "class": "commercial_api",
+      "urdu_support": "verify_at_run",
+      "adapter": "localization.providers.google_cloud_translation",
+      "credential_ref": "GOOGLE_APPLICATION_CREDENTIALS",
+      "enabled": false,
+      "implementation_status": "planned"
+    },
+    {
+      "id": "openai",
+      "name": "OpenAI API",
+      "class": "model_api",
+      "urdu_support": "verify_at_run",
+      "adapter": "localization.providers.openai",
+      "credential_ref": "OPENAI_API_KEY",
+      "enabled": false,
+      "implementation_status": "planned"
+    },
+    {
+      "id": "human-baseline",
+      "name": "Human Urdu reviewer",
+      "class": "human_baseline",
+      "urdu_support": "native_review",
+      "adapter": "localization.providers.human_review",
+      "credential_ref": null,
+      "enabled": false,
+      "implementation_status": "manual_protocol"
+    }
   ]
 }

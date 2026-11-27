@@ -181,15 +181,19 @@
       card.appendChild(el("strong", "", domain.name));
       card.appendChild(el("div", "label", domain.role));
       card.appendChild(el("p", "muted", domain.summary));
-      const sources = el("div", "findings");
-      for (const source of domain.sources) {
-        const link = el("a", "", source.path);
-        link.href = source.url;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        sources.appendChild(link);
+      if (activeAtlasLayer === "evidence") {
+        const sources = el("div", "findings");
+        for (const source of domain.sources) {
+          const link = el("a", "", source.path);
+          link.href = source.url;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          sources.appendChild(link);
+        }
+        card.appendChild(sources);
+      } else {
+        card.appendChild(el("div", "label", domain.sources.length + " source document(s) · select Evidence view"));
       }
-      card.appendChild(sources);
       box.appendChild(card);
     }
   }
@@ -207,16 +211,21 @@
       tr.appendChild(el("td", "", domains.get(edge.source).name + " → " + domains.get(edge.target).name));
       tr.appendChild(el("td", "", edge.layers.join(", ")));
       const evidenceCell = el("td");
-      if (!edge.evidence.length) evidenceCell.appendChild(el("span", "muted", "Evidence unavailable"));
-      for (const item of edge.evidence) {
-        const wrapper = el("div");
-        const link = el("a", "", item.path);
-        link.href = item.url;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        wrapper.appendChild(link);
-        wrapper.appendChild(el("div", "muted", item.claim));
-        evidenceCell.appendChild(wrapper);
+      if (activeAtlasLayer !== "evidence") {
+        evidenceCell.appendChild(el("span", "muted", edge.evidence.length + " source reference(s) · select Evidence view"));
+      } else if (!edge.evidence.length) {
+        evidenceCell.appendChild(el("span", "muted", "Evidence unavailable"));
+      } else {
+        for (const item of edge.evidence) {
+          const wrapper = el("div");
+          const link = el("a", "", item.path);
+          link.href = item.url;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          wrapper.appendChild(link);
+          wrapper.appendChild(el("div", "muted", item.claim));
+          evidenceCell.appendChild(wrapper);
+        }
       }
       tr.appendChild(evidenceCell);
       body.appendChild(tr);
@@ -297,7 +306,10 @@
   document.querySelectorAll("[data-atlas-layer]").forEach((button) => {
     button.addEventListener("click", () => {
       activeAtlasLayer = button.dataset.atlasLayer;
-      if (state.atlas) renderAtlasRelationships();
+      if (state.atlas) {
+        renderAtlasDomains();
+        renderAtlasRelationships();
+      }
     });
   });
   loadAtlas();

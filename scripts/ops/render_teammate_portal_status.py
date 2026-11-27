@@ -41,6 +41,12 @@ def page(title, body, locale="en"):
             f'<body><main>{nav}{body}</main></body></html>')
 
 
+def load_catalog(locale):
+    root = pathlib.Path(__file__).resolve().parents[2]
+    path = root / "localization" / "catalogs" / "teammate-portal" / f"{locale}.json"
+    return json.loads(path.read_text(encoding="utf-8"))["messages"]
+
+
 def gh(path):
     try:
         return json.loads(subprocess.run(["gh", "api", path], capture_output=True, text=True, check=True).stdout)
@@ -115,22 +121,23 @@ def main():
     urdu_dir = out / "ur"
     urdu_dir.mkdir(parents=True, exist_ok=True)
     urdu_body = body
+    messages = load_catalog("ur")
     replacements = [
-        ("Teammate Portal — reference &amp; status", "ٹیم میٹ پورٹل — حوالہ اور صورتحال"),
-        ("Opportunities ∧ challenges ∧ hackathons.", "مواقع، چیلنجز اور ہیکاتھون۔"),
+        ("Teammate Portal — reference &amp; status", html.escape(messages["page.title"])),
+        ("Opportunities ∧ challenges ∧ hackathons.", html.escape(messages["page.description"])),
         ("Standalone surface, separate from Tribute.", "یہ ایک الگ پورٹل ہے اور Tribute سے علیحدہ ہے۔"),
-        ("Done <strong>", "مکمل <strong>"),
-        ("source <code>", "ماخذ <code>"),
-        ("<h2>Done-board</h2>", "<h2>مکمل کام</h2>"),
-        ("<h2>Dispatch (label", "<h2>کام کی ترسیل (لیبل"),
-        ("<h2>Reference</h2>", "<h2>حوالہ</h2>"),
-        ("<h2>Route</h2>", "<h2>طریقۂ کار</h2>"),
-        ("<p>None filed yet.</p>", "<p>ابھی کوئی درخواست درج نہیں ہوئی۔</p>")
+        ("Done <strong>", html.escape(messages["status.done"]) + " <strong>"),
+        ("source <code>", html.escape(messages["status.source"]) + " <code>"),
+        ("<h2>Done-board</h2>", "<h2>" + html.escape(messages["section.done_board"]) + "</h2>"),
+        ("<h2>Dispatch (label", "<h2>" + html.escape(messages["section.dispatch"]) + " (لیبل"),
+        ("<h2>Reference</h2>", "<h2>" + html.escape(messages["section.reference"]) + "</h2>"),
+        ("<h2>Route</h2>", "<h2>" + html.escape(messages["section.route"]) + "</h2>"),
+        ("<li>None filed yet.</li>", "<li>ابھی کوئی درخواست درج نہیں ہوئی۔</li>")
     ]
     for source, translated in replacements:
         urdu_body = urdu_body.replace(source, translated)
     urdu_body = (
-        '<p lang="ur" dir="rtl">یہ صفحہ اردو میں دستیاب ہے۔ حوالہ جاتی دستاویزات فی الحال انگریزی میں ہیں۔ '
+        '<p lang="ur" dir="rtl">' + html.escape(messages["content.english_fallback"]) + ' '
         '<a href="../plan.html" lang="en" dir="ltr">English reference documents</a></p>' + urdu_body
     )
     for key, (_, _) in DOCS.items():

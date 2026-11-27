@@ -47,6 +47,7 @@ Use BIUDL: Broad then Integrate then Validate then Develop then Learn. Execute a
 The session ∧ lane source of truth is [`docs/ops/LANE-MATRIX.md`](docs/ops/LANE-MATRIX.md). The ICM chart is [`docs/architecture/AGENT-TEAM-CONTROL-PLANE.md`](docs/architecture/AGENT-TEAM-CONTROL-PLANE.md). Reference pins live under `refTemplates/smods/` ∧ remain read-only inputs.
 
 
+
 ## Continuous Capability Evolution (CEEL)
 
-Route external capability discovery and concept-adaptation experiments through the CEEL proposal work ledger. Preserve the native repository implementation as the control; keep source provenance, licensing duty, security review and runtime admission as distinct responsibilities. Start with `docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md`, `docs/proposals/active/continuous-capability-evolution-lab/ITEMS.md` and `docs/ops/CEEL-CONCEPT-ADAPTATION-AND-COMPETITION.md`.
+Route external capability discovery ∧ concept-adaptation experiments through the CEEL proposal work ledger. Preserve the native repository implementation as the control; keep source provenance, licensing duty, security review ∧ runtime admission as distinct responsibilities. Start with `docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md`, `docs/proposals/active/continuous-capability-evolution-lab/ITEMS.md` ∧ `docs/ops/CEEL-CONCEPT-ADAPTATION-AND-COMPETITION.md`.

@@ -26,11 +26,12 @@ def page(title, body, locale="en"):
     direction = "rtl" if locale == "ur" else "ltr"
     english_href = "../index.html" if locale == "ur" else "./index.html"
     urdu_href = "./index.html" if locale == "ur" else "./ur/index.html"
+    messages = load_catalog(locale)
     nav = (
         '<nav aria-label="Language">'
-        f'<span>{html.escape("زبان" if locale == "ur" else "Language")}</span> '
-        f'<a href="{english_href}" lang="en" hreflang="en">English</a> · '
-        f'<a href="{urdu_href}" lang="ur" hreflang="ur" aria-current="{"page" if locale == "ur" else "false"}">اردو</a>'
+        f'<span>{html.escape(messages["nav.language"])}</span> '
+        f'<a href="{english_href}" lang="en" hreflang="en">{html.escape(messages["nav.english"])}</a> · '
+        f'<a href="{urdu_href}" lang="ur" hreflang="ur" aria-current="{"page" if locale == "ur" else "false"}">{html.escape(messages["nav.urdu"])}</a>'
         '</nav>'
     )
     rtl_css = "body{direction:rtl;text-align:right;font-family:\"Noto Naskh Arabic\",\"Noto Sans Arabic\",system-ui,sans-serif} main{unicode-bidi:plaintext} code,pre,a[dir=ltr]{direction:ltr;unicode-bidi:isolate}"
@@ -125,14 +126,14 @@ def main():
     replacements = [
         ("Teammate Portal — reference &amp; status", html.escape(messages["page.title"])),
         ("Opportunities ∧ challenges ∧ hackathons.", html.escape(messages["page.description"])),
-        ("Standalone surface, separate from Tribute.", "یہ ایک الگ پورٹل ہے اور Tribute سے علیحدہ ہے۔"),
+        ("Standalone surface, separate from Tribute.", html.escape(messages["page.separation"])),
         ("Done <strong>", html.escape(messages["status.done"]) + " <strong>"),
         ("source <code>", html.escape(messages["status.source"]) + " <code>"),
         ("<h2>Done-board</h2>", "<h2>" + html.escape(messages["section.done_board"]) + "</h2>"),
         ("<h2>Dispatch (label", "<h2>" + html.escape(messages["section.dispatch"]) + " (لیبل"),
         ("<h2>Reference</h2>", "<h2>" + html.escape(messages["section.reference"]) + "</h2>"),
         ("<h2>Route</h2>", "<h2>" + html.escape(messages["section.route"]) + "</h2>"),
-        ("<li>None filed yet.</li>", "<li>ابھی کوئی درخواست درج نہیں ہوئی۔</li>")
+        ("<li>None filed yet.</li>", "<li>" + html.escape(messages["content.empty_dispatch"]) + "</li>")
     ]
     for source, translated in replacements:
         urdu_body = urdu_body.replace(source, translated)

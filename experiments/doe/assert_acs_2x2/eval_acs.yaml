@@ -15,7 +15,6 @@ default_model:
 pipeline:
   inference:
     test_set_path: experiments/doe/assert_acs_2x2/test_set.jsonl
-    taxonomy_path: experiments/doe/assert_acs_2x2/taxonomy.json
     target:
       callable: experiments.doe.assert_acs_2x2.target:chat_acs
     max_turns: 1

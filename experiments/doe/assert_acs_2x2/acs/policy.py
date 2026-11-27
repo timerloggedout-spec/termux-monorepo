@@ -12,7 +12,7 @@ TRACKING_TOKEN = re.compile(r"TRACK-[A-Za-z0-9-]+")
 
 
 class EmailPolicy:
-    """Stateless decision logic; audit attribution is supplied by the host."""
+    """Decision logic; the host supplies per-call audit attribution."""
 
     def __init__(self, audit_path: str | None = None) -> None:
         self.audit_path = Path(audit_path or os.environ.get("CEEL_ACS_AUDIT_PATH", "acs-decisions.jsonl"))

@@ -1,0 +1,171 @@
+{
+  "schema_version": "workflow-trigger-census/v1",
+  "repository": "timerloggedout-spec/termux-monorepo",
+  "ref": "feat/trigger-workflow-registry",
+  "observed_at": "2026-11-27",
+  "scope": "Selected high-value routing and command workflows; source-verified exemplar set, not a complete parse of all 331 catalogued workflows.",
+  "records": [
+    {
+      "id": "swarm-admission",
+      "path": ".github/workflows/swarm-admission.yml",
+      "blob_sha": "992280510273f542dc62ec863b561a6e886031dd",
+      "events": [
+        {
+          "name": "issues",
+          "types": [
+            "opened",
+            "reopened"
+          ]
+        }
+      ],
+      "selector": "Template matching by declared labels or title prefix in scripts/ops/swarm_admission.py",
+      "gate": "issue-dispatch/v1 template match + QUE tier → after → chain → flow projection",
+      "effect": "ADMITTED/DEFERRED stamp and swarm-admitted/deferred-by-tier label",
+      "authority": "bounded-state-write"
+    },
+    {
+      "id": "project-task-dispatch",
+      "path": ".github/workflows/project-task-dispatch.yml",
+      "blob_sha": "c1ed901ad05b6e9428b4c00e44460d448569ce5e",
+      "events": [
+        {
+          "name": "issues",
+          "types": [
+            "opened",
+            "reopened"
+          ]
+        }
+      ],
+      "selector": "issue has project-task label OR title starts [task] OR body contains ### Task / spec",
+      "gate": "intake parser; only valid parse proceeds to dispatch queue",
+      "effect": "routing receipt + dispatch-queued or intake diagnosis + intake-incomplete",
+      "authority": "bounded-state-write"
+    },
+    {
+      "id": "game-development-dispatch",
+      "path": ".github/workflows/game-development-dispatch.yml",
+      "blob_sha": "06755eaf03f9ce8f05504ed5ec5f4cbd4583b8de",
+      "events": [
+        {
+          "name": "workflow_run",
+          "workflows": [
+            "swarm-admission"
+          ],
+          "types": [
+            "completed"
+          ]
+        }
+      ],
+      "selector": "admission handoff artifact identifies game-development-task and decision admitted",
+      "gate": "upstream conclusion success + handoff artifact validation + task parser",
+      "effect": "queueing comment and game-development/dispatch-queued labels on valid filing",
+      "authority": "bounded-state-write"
+    },
+    {
+      "id": "agent-jules-on-issues",
+      "path": ".github/workflows/agent-jules-on-issues.yml",
+      "blob_sha": "20cbe8d50a92cca77a446893e0b177d814532680",
+      "events": [
+        {
+          "name": "issues",
+          "types": [
+            "labeled"
+          ]
+        },
+        {
+          "name": "issue_comment",
+          "types": [
+            "created"
+          ]
+        }
+      ],
+      "selector": "Label jules/Jules/JULES; or comment body starts @jules/@Jules from User with OWNER/MEMBER/COLLABORATOR association on non-PR issue",
+      "gate": "label path has trusted-actor verification; mention path has trusted association and user/non-PR context",
+      "effect": "label path invokes Jules API or fallback; mention path reacts and coordinates existing agent PRs before invocation",
+      "authority": "bounded-state-write"
+    },
+    {
+      "id": "build-dispatch",
+      "path": ".github/workflows/build-dispatch.yml",
+      "blob_sha": "ba7b23d7a26f01983db0db3ed440fa5e3c0b0b7c",
+      "events": [
+        {
+          "name": "issue_comment",
+          "types": [
+            "created"
+          ]
+        },
+        {
+          "name": "workflow_dispatch",
+          "inputs": [
+            "issue_number",
+            "branch",
+            "arm",
+            "quota_class"
+          ]
+        }
+      ],
+      "selector": "manual dispatch OR comment starts @gemini-cli /build from OWNER/MEMBER/COLLABORATOR",
+      "gate": "workflow job condition + route/arm validation",
+      "effect": "build receipt and PR or failure receipt",
+      "authority": "writer"
+    },
+    {
+      "id": "provider-command-dispatch",
+      "path": ".github/workflows/provider-command-dispatch.yml",
+      "blob_sha": "10e4dea83d1d32d6fe61e11f8970a1ce3608ac69",
+      "events": [
+        {
+          "name": "workflow_dispatch",
+          "inputs": [
+            "pr_number",
+            "provider",
+            "action",
+            "head_sha",
+            "confirm_branch_write",
+            "gitlab_sha",
+            "policy_version"
+          ]
+        },
+        {
+          "name": "repository_dispatch",
+          "types": [
+            "provider-command"
+          ]
+        }
+      ],
+      "selector": "explicit provider-command event or operator-supplied manual inputs",
+      "gate": "allowlisted provider/action, PR/head SHA and policy validations",
+      "effect": "provider command receipt on PR and dispatch stamp fan-out",
+      "authority": "bounded-state-write"
+    },
+    {
+      "id": "delphi-intake",
+      "path": ".github/workflows/delphi-intake.yml",
+      "blob_sha": "680fd097335a6bee2ef4f311980ac19ad08f106c",
+      "events": [
+        {
+          "name": "issue_comment",
+          "types": [
+            "created"
+          ]
+        },
+        {
+          "name": "workflow_dispatch",
+          "inputs": [
+            "surface_id",
+            "lane",
+            "quota",
+            "reset",
+            "auth",
+            "lock_in"
+          ]
+        }
+      ],
+      "selector": "comment body contains <!-- request-delphi-intake --> OR manual dispatch",
+      "gate": "intake job condition and form/input validation",
+      "effect": "Delphi RFP intake receipt and finished intake record",
+      "authority": "bounded-state-write"
+    }
+  ]
+}

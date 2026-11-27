@@ -33,7 +33,7 @@ Appendix D specifies run lineage, stable problem IDs, aliases for merged diagnos
 3. Bind each selected attempt to the source/target SHA, harness artifact hash, model/policy attribution, benchmark/cohort, environment and evaluator evidence.
 4. Record prediction separately from measured observation. Retain improved, regressed, neutral and unresolved outcomes.
 5. Keep held-out feedback sealed from the optimizer. Use only evolve-split feedback for proposals, selection and memory updates.
-6. Retrieve a bounded compatible subset for the proposer and selector while retaining the complete source ledger. This is a deliberate context-cost adaptation; the paper's implementation reads its complete SIM.
+6. Retrieve a bounded compatible subset through `scripts/agent_evolution/sim_memory.py` while retaining the complete source ledger. The adapter exposes source/target policy, benchmark and environment compatibility and preserves negative outcomes. This is a deliberate context-cost adaptation; the paper's implementation reads its complete SIM.
 7. Keep human objectives, credentials, permissions, branch protections, evaluation boundaries and promotion policy outside the self-editable harness surface.
 
 ## Evaluation proposal

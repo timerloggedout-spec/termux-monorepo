@@ -30,6 +30,15 @@ class RhythmTests(unittest.TestCase):
         ])
         self.assertEqual(result.supercycle, Fraction(1))
         self.assertIn(Fraction(1, 6), [event.at for event in result.onsets])
+    def test_phase_and_offset_wrap_across_supercycle(self):
+        result = overlay_layers([
+            RhythmicLayer("anchor", Fraction(1, 3), (Fraction(0),)),
+            RhythmicLayer("shifted", Fraction(1, 2), (Fraction(1, 3),), Fraction(1, 4)),
+        ])
+        times = [event.at for event in result.onsets]
+        self.assertIn(Fraction(1, 12), times)
+        self.assertIn(Fraction(7, 12), times)
+
     def test_invalid_ratio_and_layer(self):
         with self.assertRaises(ValueError):
             exact_ratio(1, 0)

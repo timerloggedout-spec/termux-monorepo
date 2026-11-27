@@ -140,9 +140,11 @@ flowchart TD
   "timing_feedback": [
     {
       "task_id": "build",
-      "run_id": "run-123",
-      "evidence_ref": "ates://receipt/123",
       "source": "ATES",
+      "run_id": "run-123",
+      "cohort_id": "cohort-1",
+      "evidence_ref": "ates://receipt/123",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
       "schema_version": "brain.prediction-error.v1",
       "expected_ms": 100,
       "actual_ms": 130,

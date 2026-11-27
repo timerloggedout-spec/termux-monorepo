@@ -27,7 +27,8 @@
 - Candidate selection stays deterministic under equal priorities and overlapping write paths.
 - Past event/window boundaries yield a future wake recommendation.
 - Cue-sheet compilation preserves dependency IDs and temporal/evidence metadata.
-- Timing feedback resolves a canonical ATES receipt envelope and preserves source, run ID, cohort ID, evidence reference, and SHA-256.
+- Timing feedback resolves a canonical ATES receipt envelope plus task_id and actual_duration_ms; the resolver return shape is specified in the design doc.
+- Composer derives expected_duration_ms from the assignment and verifies the resolved task ID before calculating drift.
 - The plan distinguishes the implemented pure library contract from the follow-on production workflow caller.
 - A mismatched receipt resolver result or task identity fails closed.
 - Expected duration comes from the assignment; actual duration comes from the resolved canonical receipt payload.

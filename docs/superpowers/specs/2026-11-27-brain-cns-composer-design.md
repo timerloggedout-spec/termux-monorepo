@@ -80,6 +80,22 @@ candidate -> explicit review + existing promotion gates
 - Conductor: cue-sheet compilation and dispatch intent only.
 
 
+## Canonical receipt resolver contract
+
+Composer accepts a `receipt_resolver(evidence_ref)` callback. The callback returns one canonical mapping with the validated receipt envelope and the task measurement fields:
+
+| Field | Type | Authority |
+|---|---|---|
+| `source` | non-empty string; `ATES` | receipt envelope |
+| `run_id` | non-empty string | receipt envelope |
+| `cohort_id` | non-empty string | receipt envelope |
+| `evidence_ref` | non-empty string | receipt envelope; must match the lookup key |
+| `sha256` | 64 lowercase hexadecimal characters | receipt envelope digest |
+| `task_id` | non-empty string | measured receipt payload; must match the assignment key |
+| `actual_duration_ms` | finite non-negative number | measured receipt payload |
+
+Composer validates the envelope through Ballet's shared ATES validator, compares the resolved envelope with the observation envelope, binds the resolved `task_id` to the assignment, takes `expected_duration_ms` from that assignment, and takes `actual_duration_ms` from the resolved receipt payload. The observation supplies the task ID and envelope reference; it supplies neither duration.
+
 ## End-to-end score example
 
 The following illustrates the data shape produced by the Composer. The score ID is a placeholder for the SHA-256 digest computed from canonical JSON.

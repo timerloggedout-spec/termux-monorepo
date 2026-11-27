@@ -117,4 +117,4 @@ The output contains one canonical experiment record per planned observation and 
 
 ## Boundary
 
-This pilot validates the adapter and the ACS tool-boundary concept. It does not establish production-agent efficacy, provider-independent performance, or a deployment decision. The current native implementation remains the control. The campaign's next version expands the task cohort and repetition count after the first provider-backed execution has been reviewed.
+This pilot validates the adapter and the ACS tool-boundary concept. Its evidence scope is adapter conformance; production-agent efficacy, provider-independent performance, and deployment readiness remain unmeasured. The current native implementation remains the control. The campaign's next version expands the task cohort and repetition count after the first provider-backed execution has been reviewed.

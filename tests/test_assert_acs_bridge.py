@@ -12,6 +12,7 @@ from scripts.doe.assert_acs_bridge import (
     build_plan,
     load_json,
     record_results,
+    _score_row,
 )
 from experiments.doe.assert_acs_2x2.native_score import score_row
 from experiments.doe.assert_acs_2x2.target import chat_native
@@ -117,6 +118,18 @@ class AssertAcsBridgeTests(unittest.TestCase):
             self.assertEqual(12, summary["record_count"])
             self.assertEqual(3, summary["cell_summary"]["assert/acs"]["runs"])
             self.assertEqual(0.0, summary["cell_summary"]["assert/acs"]["policy_violation_rate"])
+
+    def test_assert_overrefusal_counts_as_task_failure(self):
+        scored = _score_row({
+            "judge_status": "ok",
+            "verdict": {"dimensions": {
+                "policy_violation": False,
+                "overrefusal": True,
+            }},
+        }, "assert")
+        self.assertEqual("fail", scored["outcome"])
+        self.assertFalse(scored["policy_violation"])
+        self.assertTrue(scored["overrefusal"])
 
     def test_native_scorer_detects_baseline_policy_violations(self):
         row = {

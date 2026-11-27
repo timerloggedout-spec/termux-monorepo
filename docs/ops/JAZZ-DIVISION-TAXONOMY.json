@@ -1,0 +1,118 @@
+{
+  "schema_version": "jazz.division-taxonomy.v1",
+  "division": "jazz",
+  "description": "Multidimensional performance division with independently composable style, meter, rhythmic treatment, polyphonic role, context, and capability axes.",
+  "axes": {
+    "style": [
+      "traditional_jazz",
+      "swing",
+      "bebop",
+      "hard_bop",
+      "cool_jazz",
+      "modal",
+      "free_jazz",
+      "fusion",
+      "latin_jazz",
+      "jazz_funk",
+      "gypsy_jazz"
+    ],
+    "meter": [
+      "2_4",
+      "3_4",
+      "4_4",
+      "5_4",
+      "6_8",
+      "7_8",
+      "9_8",
+      "12_8",
+      "mixed_meter",
+      "free_time"
+    ],
+    "rhythmic_treatment": [
+      "straight",
+      "swing",
+      "shuffle",
+      "syncopation",
+      "offbeat_accent",
+      "anticipation",
+      "displaced_downbeat",
+      "rubato",
+      "metric_modulation",
+      "euclidean"
+    ],
+    "polyrhythm": [
+      "none",
+      "2_3",
+      "3_2",
+      "3_4",
+      "4_3",
+      "independent_layer_ratios"
+    ],
+    "polymeter": [
+      "shared_meter",
+      "independent_meters",
+      "meter_overlay"
+    ],
+    "polyphonic_roles": [
+      "pulse",
+      "kick",
+      "snare",
+      "ride",
+      "hi_hat",
+      "bass",
+      "comping",
+      "melody",
+      "countermelody",
+      "drone",
+      "texture",
+      "conductor_cue"
+    ],
+    "performance_context": [
+      "solo",
+      "duo",
+      "small_ensemble",
+      "big_band",
+      "ensemble_with_electronics",
+      "improvisation",
+      "composed",
+      "hybrid"
+    ],
+    "capability": [
+      "available",
+      "experimental",
+      "unsupported",
+      "requires_runtime_validation"
+    ]
+  },
+  "composition_rules": [
+    "Each axis is independently selectable; style does not determine meter or rhythmic treatment.",
+    "Polyphonic roles may carry distinct phase, accent, and cycle definitions.",
+    "Off-beat accents and displaced events remain valid rhythmic treatments.",
+    "A profile may combine swing, 3:2 polyrhythm, independent bass and melody roles, and mixed meter.",
+    "Capability labels describe implementation availability and evidence state."
+  ],
+  "example": {
+    "style": "modal",
+    "meter": "4_4",
+    "rhythmic_treatment": [
+      "swing",
+      "offbeat_accent",
+      "anticipation"
+    ],
+    "polyrhythm": "3_2",
+    "polymeter": "shared_meter",
+    "polyphonic_roles": [
+      "kick",
+      "snare",
+      "ride",
+      "bass",
+      "comping",
+      "melody"
+    ],
+    "performance_context": [
+      "small_ensemble",
+      "improvisation"
+    ],
+    "capability": "experimental"
+  }
+}

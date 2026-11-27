@@ -66,7 +66,7 @@ The schema requires:
 - 40-character source/target Git SHAs and a SHA-256 change digest;
 - strict object shapes with `additionalProperties: false`.
 
-The validator additionally checks stream-level invariants: unique record and attempt IDs, problem-open ordering, contiguous per-problem attempt ordinals, prediction → observation → record chronology, attempt rounds relative to problem opening, disjoint predicted/fixed/missed/unresolved task sets, and passed ≤ total.
+The validator additionally checks stream-level invariants: unique record and attempt IDs, problem-open ordering, contiguous per-problem attempt ordinals, prediction → observation → record chronology, attempt rounds relative to problem opening, disjoint predicted/fixed/missed/unresolved task sets, and passed ≤ total. The retrieval adapter revalidates the ledger before ranking and returns source/target lineage with each lesson.
 
 The local identity contract uses explicit stable `problem_id` values. The proposer or reviewer assigns a matching diagnosis to an existing identity; a materially different diagnosis receives a new identity. The validator preserves each problem definition across its attempts and leaves semantic matching decisions attributable to the optimizer.
 
@@ -75,7 +75,7 @@ The local identity contract uses explicit stable `problem_id` values. The propos
 The repository adaptation intentionally differs from the paper in four ways:
 
 1. **Append-only evidence stream.** Store problem and attempt events as JSONL records so history is reviewable and can be linked to GitHub commits and Actions artifacts. Preserve the canonical evidence corpus as the execution source of truth.
-2. **Bounded retrieval.** The paper gives the proposer and selector the complete SIM. This repository keeps the full ledger durable but retrieves a bounded, relevance-ranked subset by problem, component, benchmark compatibility and policy context. Retrieval limits are recorded. This controls context cost; it is an explicit adaptation, not a reproduced paper implementation.
+2. **Bounded retrieval.** The paper gives the proposer and selector the complete SIM. This repository keeps the full ledger durable and uses `scripts/agent_evolution/sim_memory.py` to retrieve a bounded, deterministically ranked subset by domain, component, task overlap, source/target policy, benchmark and environment compatibility. Each result retains the complete validated event and explicit compatibility labels; improved, regressed, neutral and unresolved outcomes remain eligible. The limit is capped at 32. This controls context cost; it is an explicit adaptation, not a reproduced paper implementation.
 3. **Evidence-linked measurements.** Observations point to existing test, workflow, artifact and Action→Effect evidence. SIM does not copy prompts, completions, raw tool arguments, session transcripts or arbitrary provider payloads.
 4. **Protected control plane.** Harness candidates execute in isolated, reviewable environments. SIM proposals cannot change human objectives, permissions, credential handling, branch protections, evaluation boundaries, merge rules or repository policy. Those remain governed by existing authorization and promotion contracts.
 
@@ -127,7 +127,7 @@ python3 scripts/ci/validate_sim_memory.py --path /path/to/sim-memory.jsonl
 
 The core Termux smoke runs the checked-in SIM JSONL fixture through the stdlib-only validator.
 
-The validator accepts an existing ledger path and performs read-only validation. This change establishes the schema and validator; production manager, proposer and selector emission/consumption remain future integration work.
+The validator accepts an existing ledger path and performs read-only validation. The bounded retrieval API is implemented and tested; production manager, proposer and selector event emission and call-site wiring remain future integration work.
 
 ## 8. Sources and limitations
 

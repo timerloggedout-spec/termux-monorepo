@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 """Validate append-only Self-Improvement Memory JSONL streams.
 
-The validator is read-only. It checks each event against the closed JSON Schema,
-then checks ordering and identity invariants that span multiple JSONL records.
+The validator is read-only and stdlib-only. It evaluates the JSON Schema subset
+used by the SIM contract, then checks ordering and identity invariants across
+multiple JSONL records.
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Any
-
-from jsonschema import Draft202012Validator, FormatChecker
 
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMA_PATH = ROOT / "docs" / "ops" / "SELF-IMPROVEMENT-MEMORY.schema.json"
@@ -24,6 +24,97 @@ class SimMemoryValidationError(ValueError):
     """Raised when a SIM event or stream invariant is invalid."""
 
 
+def _type_matches(value: Any, expected: str) -> bool:
+    if expected == "object":
+        return isinstance(value, dict)
+    if expected == "array":
+        return isinstance(value, list)
+    if expected == "string":
+        return isinstance(value, str)
+    if expected == "integer":
+        return isinstance(value, int) and not isinstance(value, bool)
+    if expected == "number":
+        return isinstance(value, (int, float)) and not isinstance(value, bool)
+    if expected == "boolean":
+        return isinstance(value, bool)
+    if expected == "null":
+        return value is None
+    return False
+
+
+def _schema_errors(value: Any, schema: dict[str, Any], path: str = "$") -> list[str]:
+    """Evaluate the closed JSON Schema keywords used by this contract."""
+    errors: list[str] = []
+    expected_type = schema.get("type")
+    if expected_type is not None:
+        types = expected_type if isinstance(expected_type, list) else [expected_type]
+        if not any(_type_matches(value, item) for item in types):
+            return [f"{path}: expected {' or '.join(types)}"]
+
+    if "const" in schema and value != schema["const"]:
+        errors.append(f"{path}: expected constant {schema['const']!r}")
+    if "enum" in schema and value not in schema["enum"]:
+        errors.append(f"{path}: value {value!r} is outside the allowed enum")
+    if isinstance(value, str):
+        if len(value) < schema.get("minLength", 0):
+            errors.append(f"{path}: string is shorter than minLength")
+        pattern = schema.get("pattern")
+        if pattern and re.fullmatch(pattern, value) is None:
+            errors.append(f"{path}: string does not match required pattern")
+        if schema.get("format") == "date-time":
+            try:
+                parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+                if parsed.tzinfo is None:
+                    errors.append(f"{path}: date-time requires a timezone")
+            except ValueError:
+                errors.append(f"{path}: invalid date-time")
+
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        if "minimum" in schema and value < schema["minimum"]:
+            errors.append(f"{path}: number is below minimum")
+
+    if isinstance(value, dict):
+        for key in schema.get("required", []):
+            if key not in value:
+                errors.append(f"{path}: missing required property {key!r}")
+        properties = schema.get("properties", {})
+        if schema.get("additionalProperties") is False:
+            extras = sorted(set(value) - set(properties))
+            if extras:
+                errors.append(f"{path}: additional properties are forbidden: {extras}")
+        for key, child_schema in properties.items():
+            if key in value:
+                errors.extend(_schema_errors(value[key], child_schema, f"{path}.{key}"))
+
+    if isinstance(value, list):
+        if len(value) < schema.get("minItems", 0):
+            errors.append(f"{path}: array has fewer than minItems")
+        if schema.get("uniqueItems"):
+            encoded = [json.dumps(item, sort_keys=True, ensure_ascii=False) for item in value]
+            if len(encoded) != len(set(encoded)):
+                errors.append(f"{path}: array items must be unique")
+        item_schema = schema.get("items")
+        if item_schema:
+            for index, item in enumerate(value):
+                errors.extend(_schema_errors(item, item_schema, f"{path}[{index}]"))
+
+    for index, child_schema in enumerate(schema.get("allOf", [])):
+        errors.extend(_schema_errors(value, child_schema, f"{path}.allOf[{index}]"))
+
+    condition = schema.get("if")
+    if condition is not None:
+        condition_errors = _schema_errors(value, condition, f"{path}.if")
+        branch = schema.get("then") if not condition_errors else schema.get("else")
+        if branch is not None:
+            errors.extend(_schema_errors(value, branch, f"{path}.conditional"))
+
+    negative_schema = schema.get("not")
+    if negative_schema is not None and not _schema_errors(value, negative_schema, f"{path}.not"):
+        errors.append(f"{path}: value matches a forbidden schema")
+
+    return errors
+
+
 def parse_timestamp(value: str) -> datetime:
     """Parse a schema-validated RFC 3339 timestamp into an aware datetime."""
     return datetime.fromisoformat(value.replace("Z", "+00:00"))
@@ -31,7 +122,6 @@ def parse_timestamp(value: str) -> datetime:
 
 def validate_records(path: Path) -> dict[str, int]:
     schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
-    validator = Draft202012Validator(schema, format_checker=FormatChecker())
     opened: dict[str, dict[str, Any]] = {}
     record_ids: set[str] = set()
     attempt_ids: set[str] = set()
@@ -49,16 +139,10 @@ def validate_records(path: Path) -> dict[str, int]:
                     f"line {line_number}: invalid JSON: {exc.msg}"
                 ) from exc
 
-            errors = sorted(
-                validator.iter_errors(record),
-                key=lambda error: (list(error.absolute_path), error.message),
-            )
+            errors = _schema_errors(record, schema)
             if errors:
-                first = errors[0]
-                location = ".".join(str(part) for part in first.absolute_path)
-                suffix = f" at {location}" if location else ""
                 raise SimMemoryValidationError(
-                    f"line {line_number}: schema violation{suffix}: {first.message}"
+                    f"line {line_number}: schema violation: {errors[0]}"
                 )
 
             record_id = record["record_id"]

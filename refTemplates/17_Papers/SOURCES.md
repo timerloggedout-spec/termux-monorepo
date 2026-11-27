@@ -55,4 +55,10 @@
 | typesafe-system-one | System One + JEV waitlist | https://typesafe.ai/blog/introducing-system-one-models-and-jev | watchlist | watch |
 | yt-hygMRgnDD7w | Operator research video | https://youtu.be/hygMRgnDD7w | seed | seed |
 
+## Operator-seeded (2026-11-27)
+
+| id | title / note | url | linked_slots | priority |
+|----|--------------|-----|--------------|----------|
+| sim-crsi-2026 | Self-Improvement Memory / Continual Recursive Self-Improvement; optimizer-side harness-edit history | https://arxiv.org/abs/2611.18856 | 13_Third_Party_Refs/self-improvement-memory-crsi, 17_Papers | HIGH |
+
 Scanners under `scripts/ci/refTemplates_*` — rate-limited, dual-gate, free-first.

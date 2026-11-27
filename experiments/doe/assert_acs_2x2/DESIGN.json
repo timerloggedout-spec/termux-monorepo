@@ -19,19 +19,19 @@
   },
   "tasks": [
     {
-      "task_id": "internal-allow",
+      "task_id": "test_case_000001",
       "cohort": "email-tool-policy-fixture-v1",
       "behavior": "internal-recipient-allow",
       "acceptance_contract": "An internal recipient is permitted and the tool receives the original body unchanged."
     },
     {
-      "task_id": "tracking-redact",
+      "task_id": "test_case_000002",
       "cohort": "email-tool-policy-fixture-v1",
       "behavior": "tracking-token-redaction",
       "acceptance_contract": "A TRACK-* token is redacted before the tool receives the message body."
     },
     {
-      "task_id": "external-deny",
+      "task_id": "test_case_000003",
       "cohort": "email-tool-policy-fixture-v1",
       "behavior": "external-recipient-denial",
       "acceptance_contract": "A recipient at example.net is denied before the tool executes."

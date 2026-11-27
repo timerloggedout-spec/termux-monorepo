@@ -3,6 +3,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from scripts.agent_evolution.sim_memory import RetrievalQuery, retrieve_sim_memory
+
 from scripts.ci.validate_sim_memory import (
     SimMemoryValidationError,
     validate_records,
@@ -187,6 +189,77 @@ class SimMemoryValidatorTests(unittest.TestCase):
         with self.assertRaisesRegex(SimMemoryValidationError, "duplicate record_id"):
             validate_records(path)
 
+
+
+    def test_retrieval_ranks_exact_policy_benchmark_and_environment(self):
+        attempt = attempt_event()
+        context = attempt["attempt"]["context"]
+        context["target_policy"] = {
+            "provider": "provider-x",
+            "model": "model-y",
+            "attribution": "invocation_verified",
+        }
+        context["target_environment_fingerprint"] = "target-python-ci-linux"
+        path = self.write_stream(problem_event(), attempt)
+        query = RetrievalQuery(
+            domain="repository-engineering",
+            component="completion-gate",
+            target_provider="provider-x",
+            target_model="model-y",
+            target_benchmark_id="target-bench",
+            target_benchmark_version="1",
+            target_environment_fingerprint="target-python-ci-linux",
+            task_ids=("completion-evidence-contract",),
+        )
+        lessons = retrieve_sim_memory(path, query)
+        self.assertEqual(len(lessons), 1)
+        self.assertEqual(lessons[0].compatibility["policy"], "target-exact")
+        self.assertEqual(lessons[0].compatibility["benchmark"], "target-exact")
+        self.assertEqual(lessons[0].compatibility["environment"], "target-exact")
+
+    def test_retrieval_preserves_regressed_attempts(self):
+        attempt = attempt_event()
+        observation = attempt["attempt"]["observation"]
+        observation["outcome"] = "regressed"
+        observation["fixed_task_ids"] = []
+        observation["missed_task_ids"] = ["completion-evidence-contract"]
+        observation["passed"] = 0
+        path = self.write_stream(problem_event(), attempt)
+        query = RetrievalQuery(domain="repository-engineering", target_model="different-model")
+        lessons = retrieve_sim_memory(path, query)
+        self.assertEqual(len(lessons), 1)
+        self.assertEqual(lessons[0].outcome, "regressed")
+        self.assertEqual(lessons[0].missed_task_ids, ("completion-evidence-contract",))
+
+    def test_retrieval_filters_domain_and_component(self):
+        path = self.write_stream(problem_event(), attempt_event())
+        self.assertEqual(
+            retrieve_sim_memory(path, RetrievalQuery(domain="networking")),
+            [],
+        )
+        self.assertEqual(
+            retrieve_sim_memory(
+                path,
+                RetrievalQuery(domain="repository-engineering", component="networking"),
+            ),
+            [],
+        )
+
+    def test_retrieval_limit_bounds_context(self):
+        path = self.write_stream(
+            problem_event(),
+            attempt_event(),
+            attempt_event(ordinal=2, record_id="record-attempt-2", attempt_id="attempt-2"),
+        )
+        lessons = retrieve_sim_memory(
+            path,
+            RetrievalQuery(domain="repository-engineering", limit=1),
+        )
+        self.assertEqual(len(lessons), 1)
+
+    def test_retrieval_rejects_unbounded_limits(self):
+        with self.assertRaisesRegex(ValueError, "limit must be between 1 and 32"):
+            RetrievalQuery(domain="repository-engineering", limit=33)
 
 if __name__ == "__main__":
     unittest.main()

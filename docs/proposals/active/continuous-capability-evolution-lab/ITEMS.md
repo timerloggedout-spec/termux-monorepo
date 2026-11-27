@@ -40,6 +40,9 @@ GitHub object creation/retrieval is available in this session; a local checkout 
 - Provider-backed execution: PENDING credentials and a same-cohort ASSERT run; mock adapter conformance is distinct from efficacy.
 - Capability graph: 21 nodes, 31 edges; structural validation reports 0 unresolved endpoints or duplicate IDs/edges. The managed Foundry platform is recorded separately from its component projects.
 - Inventory: categories 01–14; research-template scoring remains a separate profile under 15_.
+- File-based Markdown references in `13_Third_Party_Refs`: four reference files now receive candidate records and metadata-readiness scores; index files remain excluded.
+- Source scoring: attribution requires non-empty source content; revision credit requires full commit SHA or complete release-tag form. Regression cases cover mutable version-named branches and SHA tree URLs.
+- Root instructions: CEEL route added to `CLAUDE.hum.md` and its generated `CLAUDE.md` projection.
 - Capability score: metadata readiness only; efficacy remains unmeasured until controlled runs.
 - Licensing: designated licensing duty owner retains that responsibility; CEEL records capability/source evidence and the handoff boundary.
 - Experiment order: ASSERT × ACS 2×2; then independent runtime, local inference, prompt/context and lifecycle comparisons.

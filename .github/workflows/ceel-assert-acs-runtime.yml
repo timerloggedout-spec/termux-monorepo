@@ -22,11 +22,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - name: Install pinned ACS Python SDK
-        run: python -m pip install "agent-control-specification==0.3.1b1"
+        run: python -m pip install "git+https://github.com/microsoft/agent-governance-toolkit.git@3233be2338816257700a8dbdf531a21b9f359582#subdirectory=policy-engine/sdk/python"
       - name: Execute real ACS host fixture
         run: |
           python experiments/doe/assert_acs_2x2/acs/host.py \

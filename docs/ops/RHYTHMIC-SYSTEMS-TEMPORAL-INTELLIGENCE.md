@@ -84,6 +84,17 @@ Keep architecture seed, software placement, wave strategy, and temporal treatmen
 
 Conductor emits cue sheets and dispatch intent. Manager, phase engine, QUE, specialist adapters, write leases, digest checks, and ATES retain authority. Cue sheets carry phase, expected duration, open length, wake conditions, dependency barriers, and evidence references.
 
+## Placement alternatives and trade-offs
+
+| Placement | Advantage | Cost to measure | Control boundary |
+|---|---|---|---|
+| Manager policy | shortest integration path to current approval and routing | policy-context load and manager intervention rate | Manager approves cue sheets |
+| Temporal Intelligence | explicit phase, window, and collector semantics | temporal-model complexity and overlap with readiness metadata | phase engine retains readiness; Temporal Intelligence supplies annotations |
+| Agent-team orchestration | direct composition of team roles and handoffs | coordination overhead, duplicate work, and integration variance | existing agent-team contract and Manager approval |
+| Dedicated scheduler | centralized timing surface | duplicated queue, claims, readiness, and evidence ownership | existing owners remain canonical; this architecture stays outside the candidate set |
+
+Run the three approved placements as separate arms. Keep architecture seed, placement, wave strategy, and wake policy as independent factors.
+
 ## Music as Code
 
 Music as Code operates both as an independent creative/experimental subsystem and as a mixed-mode stimulus source. Independent mode evaluates composition, rhythmic structure, exact ratios, and render/export adapters. Mixed mode supplies controlled rhythmic stimuli to temporal-policy experiments. Production dispatch authority stays with the existing control plane.
@@ -145,4 +156,4 @@ ELI5: the dependency engine decides which work is ready; Ballet arranges safe wa
 5. Validate cue-sheet intent through Manager and existing adapters in shadow mode.
 6. Promote a treatment after correctness, integration, safety, cost, and operator approval gates pass.
 
-Implementation: deepcli/deepcli/observatory/temporal.py. The module classifies timing and calculates collector wake boundaries while existing control planes retain dispatch and scheduling authority.
+Implementation modules: deepcli/deepcli/observatory/temporal.py (assignment windows and WAIT wake selection); deepcli/deepcli/observatory/rhythm.py (exact Fraction ratios, rational supercycles, common subdivisions, polyphonic overlays, and coincidence detection); deepcli/deepcli/observatory/conductor.py (cue-sheet generation for all three placements); music/jazz-3-2-offbeat.strudel.js (polyphonic Jazz 3:2 stimulus fixture). Strudel runtime rendering and audio qualification remain in the qualification sequence. PC-SEED-009 and PC-SEED-019 remain design treatments referenced by the separate architecture seed tournament PR #5531.

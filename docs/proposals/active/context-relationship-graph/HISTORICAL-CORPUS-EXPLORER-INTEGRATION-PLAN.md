@@ -235,7 +235,7 @@ The Domain Atlas is an additional interaction layer inside the existing Historic
 - **Semantic:** show what each domain represents and how domains relate.
 - **Operational:** show producer/consumer and control-flow relationships.
 - **Evidence:** show the source document and exact claim supporting each relationship.
-- Domain cards expose the domain role, plain-language summary, and canonical source links. Relationship rows expose type, direction, classification, layer, and supporting evidence.
+- Domain cards expose the domain role, plain-language summary, and a per-domain Inspect connections action. Selecting a domain filters the relationship rows to its incoming and outgoing edges. Relationship rows expose type, direction, classification, layer, and supporting evidence. The All domains control resets the selection.
 - Use accessible buttons with aria-pressed, semantic tables, keyboard focus, and text-only rendering for repository-supplied values.
 
 ### Data contract

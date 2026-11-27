@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/SELF-IMPROVEMENT-MEMORY.schema.json",
+  "title": "Self-Improvement Memory Event",
+  "description": "Append-only optimizer-side history for harness changes. Task-solving memory and canonical execution evidence remain separate.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "record_id", "recorded_at", "record_type", "problem_id", "problem"],
+  "properties": {
+    "schema_version": { "const": "sim.memory.v1" },
+    "record_id": { "type": "string", "minLength": 1 },
+    "recorded_at": { "type": "string", "format": "date-time" },
+    "record_type": { "enum": ["problem_opened", "attempt_recorded"] },
+    "problem_id": { "type": "string", "minLength": 1 },
+    "problem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summary", "root_cause", "domain"],
+      "properties": {
+        "summary": { "type": "string", "minLength": 1 },
+        "root_cause": { "type": "string", "minLength": 1 },
+        "domain": { "type": "string", "minLength": 1 },
+        "component": { "type": "string", "minLength": 1 }
+      }
+    },
+    "attempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["attempt_id", "ordinal", "change", "rationale", "prediction", "observation", "context", "selection"],
+      "properties": {
+        "attempt_id": { "type": "string", "minLength": 1 },
+        "ordinal": { "type": "integer", "minimum": 1 },
+        "change": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["summary", "artifact_ref", "diff_sha256"],
+          "properties": {
+            "summary": { "type": "string", "minLength": 1 },
+            "artifact_ref": { "type": "string", "minLength": 1 },
+            "diff_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+          }
+        },
+        "rationale": { "type": "string", "minLength": 1 },
+        "prediction": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["expected_effect", "target_signals"],
+          "properties": {
+            "expected_effect": { "type": "string", "minLength": 1 },
+            "target_signals": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+          }
+        },
+        "observation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["outcome", "summary", "evidence_refs"],
+          "properties": {
+            "outcome": { "enum": ["improved", "regressed", "neutral", "unresolved"] },
+            "summary": { "type": "string", "minLength": 1 },
+            "measured_signals": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["name", "observed"],
+                "properties": {
+                  "name": { "type": "string", "minLength": 1 },
+                  "baseline": { "type": ["number", "null"] },
+                  "observed": { "type": ["number", "null"] },
+                  "unit": { "type": "string", "minLength": 1 }
+                }
+              }
+            },
+            "evidence_refs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } }
+          }
+        },
+        "context": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["repository", "source_sha", "target_sha", "harness_version", "policy", "benchmark", "environment_fingerprint", "round", "candidate_budget", "evaluation_budget", "evaluation_split", "held_out_feedback_exposed"],
+          "properties": {
+            "repository": { "type": "string", "minLength": 1 },
+            "source_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "target_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "harness_version": { "type": "string", "minLength": 1 },
+            "policy": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["attribution"],
+              "properties": {
+                "provider": { "type": "string", "minLength": 1 },
+                "model": { "type": "string", "minLength": 1 },
+                "adapter": { "type": "string", "minLength": 1 },
+                "attribution": { "enum": ["invocation_verified", "workflow_attributed", "inferred", "unknown"] }
+              }
+            },
+            "benchmark": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "version", "stage", "cohort_id"],
+              "properties": {
+                "id": { "type": "string", "minLength": 1 },
+                "version": { "type": "string", "minLength": 1 },
+                "stage": { "enum": ["source", "target"] },
+                "cohort_id": { "type": "string", "minLength": 1 }
+              }
+            },
+            "environment_fingerprint": { "type": "string", "minLength": 1 },
+            "round": { "type": "integer", "minimum": 0 },
+            "candidate_budget": { "type": "integer", "minimum": 1 },
+            "evaluation_budget": { "type": "integer", "minimum": 1 },
+            "evaluation_split": { "const": "evolve" },
+            "held_out_feedback_exposed": { "const": false }
+          }
+        },
+        "selection": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "rationale"],
+          "properties": {
+            "status": { "const": "selected" },
+            "rationale": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "record_type": { "const": "problem_opened" } }, "required": ["record_type"] },
+      "then": { "not": { "required": ["attempt"] } }
+    },
+    {
+      "if": { "properties": { "record_type": { "const": "attempt_recorded" } }, "required": ["record_type"] },
+      "then": { "required": ["attempt"] }
+    }
+  ]
+}

@@ -10,7 +10,7 @@ reviewers:
   - id: timerloggedout-spec
     role: operator-authorizer
     status: accepted
-related_prs: []
+related_prs: [5940]
 related_branches:
   - feat/polyglot-urdu-portal-20261127
 gates_required: [repo-gate, termux-smoke]

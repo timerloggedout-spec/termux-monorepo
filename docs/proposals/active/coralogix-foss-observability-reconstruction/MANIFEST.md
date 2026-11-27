@@ -14,7 +14,7 @@ reviewers:
     role: author-executor
     status: executing
 related_issues: [7]
-related_prs: []
+related_prs: [5938]
 related_branches:
   - timerloggedout/ter-7-p1-expand-reftemplates-with-foss
 gates_required: [repo-gate, termux-smoke, siglary-mandate]
@@ -43,7 +43,7 @@ Compare Coralogix and FOSS observability/evaluation systems, extract capabilitie
 ### 2026-11-27 — ChatGPT
 
 - Disposition: commented
-- Notes: Candidate references and ForeSight records prepared. Existing schemas, telemetry ingestion, and otel-core catalog entry mapped as the implementation foundation. Staging gates pending.
+- Notes: Candidate references and ForeSight records prepared. Existing schemas, telemetry ingestion, and otel-core catalog entry mapped as the implementation foundation. PR #5938 opened against master-staging; gates pending.
 
 ## Checklist (process)
 

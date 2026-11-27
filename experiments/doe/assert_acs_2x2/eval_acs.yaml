@@ -15,15 +15,14 @@ default_model:
 pipeline:
   inference:
     test_set_path: experiments/doe/assert_acs_2x2/test_set.jsonl
+    taxonomy_path: experiments/doe/assert_acs_2x2/taxonomy.json
     target:
       callable: experiments.doe.assert_acs_2x2.target:chat_acs
-      trace:
-        backend: phoenix
-        group_by: session.id
     max_turns: 1
     concurrency: 1
     max_tool_calls: 2
   judge:
+    taxonomy_path: experiments/doe/assert_acs_2x2/taxonomy.json
     model:
       name: azure/gpt-5.4-mini
     n: 1

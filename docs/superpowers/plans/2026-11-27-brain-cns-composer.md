@@ -27,6 +27,7 @@
 - Candidate selection stays deterministic under equal priorities and overlapping write paths.
 - Past event/window boundaries yield a future wake recommendation.
 - Cue-sheet compilation preserves dependency IDs and temporal/evidence metadata.
+- Timing feedback carries both a source run ID and canonical evidence reference.
 
 ---
 

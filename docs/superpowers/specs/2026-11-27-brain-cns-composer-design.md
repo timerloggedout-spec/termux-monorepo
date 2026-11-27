@@ -47,9 +47,9 @@ The names are typed software concepts. The mapping remains explicitly analogical
 - **Context:** `build_context(signals, episodes=(), max_items=64)` normalizes signals, retains the newest bounded slice, records truncation count, and collects unique episode evidence references. References remain explicit strings; resolution belongs to the evidence layer.
 - **Intent:** `normalize_intent(intent)` requires a goal, accepts integer priority 0–5 (default 3), and sorts/deduplicates constraints and success criteria.
 - **Action shortlist:** `select_actions(candidates, max_parallel=1)` sorts by descending integer priority and ascending task ID, then chooses a write-disjoint shortlist. QUE retains admission and claim authority; the dependency-phase engine retains readiness authority.
-- **Prediction error:** `timing_error(expected_duration_ms, actual_duration_ms)` returns signed drift, classifies overrun/underrun/on-time, and emits `policy_action=observe_only`.
+- **Prediction error:** `timing_error(expected_duration_ms, actual_duration_ms)` returns signed drift, classifies overrun/underrun/on-time, and emits `policy_action=observe_only`. Composer feedback additionally carries the originating run ID and evidence reference.
 - **Wake recommendation:** `plan_wake(now_ms, event_deadline_ms=None, window_close_ms=None, max_wait_ms=60000)` returns the earliest future boundary for collector-owned timer scheduling.
-- **Composer:** `compose_score(...)` joins normalized intent/context, ordered signal IDs, supplied Ballet plan, Conductor cue sheet, deterministic action shortlist, timing-error observations, optional homeostasis wake recommendation, authority map, candidate-only adaptation marker, and SHA-256 `score_id` over canonical JSON of preceding score fields.
+- **Composer:** `compose_score(...)` joins normalized intent/context, ordered signal IDs, supplied Ballet plan, Conductor cue sheet, deterministic action shortlist, receipt-bound timing-error observations (run ID and evidence reference), optional homeostasis wake recommendation, authority map, candidate-only adaptation marker, and SHA-256 `score_id` over canonical JSON of preceding score fields.
 
 Identical normalized inputs and policy version produce an identical score ID.
 
@@ -108,7 +108,7 @@ candidate -> explicit review + existing promotion gates
 
 ## Acceptance
 
-Unit tests cover normalization, duplicate conflicts, bounded context, intent validation, deterministic shortlist, write conflicts, timing classifications, earliest wake selection, integrated module wiring, deterministic score IDs, authority metadata, and cue metadata preservation. Existing focused Observatory tests and repository gates run on the exact pushed SHA. PR #5939 remains open until required checks and review disposition satisfy repository policy.
+Unit tests cover normalization, duplicate conflicts, bounded context, intent validation, deterministic shortlist, write conflicts, timing classifications, earliest wake selection, integrated module wiring, receipt-bound timing feedback, deterministic score IDs, authority metadata, and cue metadata preservation. Existing focused Observatory tests and repository gates run on the exact pushed SHA. PR #5939 remains open until required checks and review disposition satisfy repository policy.
 
 ## Extension points
 

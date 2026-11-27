@@ -107,7 +107,7 @@ class BrainSystemTests(unittest.TestCase):
                 {"id": "docs", "priority": 2, "writes": ["src/app.py"]},
             ],
             max_parallel=2,
-            timing_observations=[{"task_id": "build", "expected_duration_ms": 100, "actual_duration_ms": 130}],
+            timing_observations=[{"task_id": "build", "run_id": "run-123", "evidence_ref": "ates://receipt/123", "expected_duration_ms": 100, "actual_duration_ms": 130}],
             wake_context={"now_ms": 100, "window_close_ms": 150, "max_wait_ms": 100},
         )
         self.assertEqual(score["action_shortlist"], ["build", "tests"])
@@ -120,6 +120,16 @@ class BrainSystemTests(unittest.TestCase):
         self.assertEqual(cue["dependency_barriers"], ["a-ready"])
         self.assertEqual(cue["evidence_refs"], ["ates://a"])
         self.assertEqual(cue["depends_on"], ["root"])
+
+    def test_composer_requires_receipt_provenance_for_timing_feedback(self):
+        with self.assertRaisesRegex(ValueError, "evidence_ref"):
+            compose_score(
+                {"goal": "validate release"},
+                [{"signal_id": "s1", "source": "ci", "kind": "ready", "sequence": 1, "confidence": 1.0}],
+                {"waves": [["build"]]},
+                {"build": {"nominal_at": "n", "opens_at": "o", "closes_at": "c", "expected_duration_ms": 100, "phase": "on_beat", "open_length_ms": 10, "dependency_barriers": [], "evidence_refs": ["ates://build"]}},
+                timing_observations=[{"task_id": "build", "run_id": "run-123", "expected_duration_ms": 100, "actual_duration_ms": 130}],
+            )
 
     def test_score_id_tracks_evidence_changes(self):
         intent = {"goal": "validate release", "priority": 3}

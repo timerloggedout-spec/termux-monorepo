@@ -33,10 +33,19 @@ def compose_score(
     timing_feedback = []
     for observation in timing_observations:
         task_id = str(observation.get("task_id", "")).strip()
+        run_id = str(observation.get("run_id", "")).strip()
+        evidence_ref = str(observation.get("evidence_ref", "")).strip()
         if not task_id:
             raise ValueError("timing observation requires a task_id")
+        if not run_id:
+            raise ValueError(f"timing observation {task_id} requires a run_id")
+        if not evidence_ref:
+            raise ValueError(f"timing observation {task_id} requires an evidence_ref")
         timing_feedback.append({
             "task_id": task_id,
+            "run_id": run_id,
+            "evidence_ref": evidence_ref,
+            "source": str(observation.get("source", "ATES")),
             **timing_error(observation["expected_duration_ms"], observation["actual_duration_ms"]),
         })
     wake_recommendation = plan_wake(**dict(wake_context)) if wake_context is not None else None

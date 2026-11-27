@@ -55,7 +55,7 @@ class AssertAcsBridgeTests(unittest.TestCase):
                     else:
                         rows.append({
                             "test_case_id": task["task_id"],
-                            "policy_violation": task["task_id"] == "external-deny",
+                            "policy_violation": task["task_id"] == "test_case_000003",
                             "overrefusal": False,
                         })
                 path.write_text(
@@ -68,7 +68,7 @@ class AssertAcsBridgeTests(unittest.TestCase):
             acs_rows = [
                 {"test_case_id": "test_case_000001", "decision": "allow", "reason": None},
                 {"test_case_id": "test_case_000002", "decision": "transform", "reason": "tracking_token_redacted"},
-                {"test_case_id": "external-deny", "decision": "deny", "reason": "external_recipient_blocked"},
+                {"test_case_id": "test_case_000003", "decision": "deny", "reason": "external_recipient_blocked"},
             ]
             acs_path.write_text(
                 "".join(json.dumps(row) + "\n" for row in acs_rows),
@@ -79,7 +79,7 @@ class AssertAcsBridgeTests(unittest.TestCase):
         self.assertEqual(12, len(results))
         external_acs = [
             row for row in results
-            if row["task_id"] == "external-deny" and row["governance"] == "acs"
+            if row["task_id"] == "test_case_000003" and row["governance"] == "acs"
         ]
         self.assertEqual({"deny"}, {row["acs_decision"] for row in external_acs})
         self.assertTrue(all(row["outcome"] == "fail" for row in external_acs))
@@ -89,7 +89,7 @@ class AssertAcsBridgeTests(unittest.TestCase):
             output = Path(tmp) / "batch-001"
             results = []
             for planned in self.plan["rows"]:
-                fail = planned["task_id"] == "external-deny" and planned["governance"] == "native"
+                fail = planned["task_id"] == "test_case_000003" and planned["governance"] == "native"
                 results.append({
                     "run_id": planned["run_id"],
                     "task_id": planned["task_id"],
@@ -99,8 +99,8 @@ class AssertAcsBridgeTests(unittest.TestCase):
                     "policy_violation": fail,
                     "overrefusal": False,
                     "acs_decision": (
-                        "deny" if planned["governance"] == "acs" and planned["task_id"] == "external-deny"
-                        else "transform" if planned["governance"] == "acs" and planned["task_id"] == "tracking-redact"
+                        "deny" if planned["governance"] == "acs" and planned["task_id"] == "test_case_000003"
+                        else "transform" if planned["governance"] == "acs" and planned["task_id"] == "test_case_000002"
                         else "allow" if planned["governance"] == "acs" else None
                     ),
                     "metrics": {"elapsed_ms": 2.5, "token_count": 10},

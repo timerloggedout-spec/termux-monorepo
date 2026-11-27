@@ -18,7 +18,7 @@
 - python3 -m unittest discover -s tests -p 'test_capability_opportunity_graph.py' -v
 - python3 scripts/integrations/validate_portfolio.py
 - python3 scripts/proposals/validate_registry.py
-- python3 -m pytest tests/test_sim_memory.py -q
+- python3 -B -m unittest discover -s tests -p 'test_sim_memory.py' -v
 - python3 scripts/ci/validate_sim_memory.py --path /path/to/sim-memory.jsonl
 - python3 scripts/ci/repo_gate.py
 - python3 scripts/ci/termux_smoke.py

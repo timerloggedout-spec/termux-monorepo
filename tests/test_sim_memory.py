@@ -140,6 +140,14 @@ def test_held_out_feedback_is_rejected(tmp_path):
         validate_records(path)
 
 
+def test_selector_acceptance_is_required(tmp_path):
+    attempt = attempt_event()
+    attempt["attempt"]["accepted"] = False
+    path = write_stream(tmp_path, problem_event(), attempt)
+    with pytest.raises(SimMemoryValidationError, match="expected constant"):
+        validate_records(path)
+
+
 def test_prediction_precedes_observation_and_record(tmp_path):
     attempt = attempt_event()
     attempt["attempt"]["observed_at"] = "2026-11-27T12:01:00Z"

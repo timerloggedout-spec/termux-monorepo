@@ -82,7 +82,7 @@ Report uncertainty and missingness. Keep incomparable dimensions separate. Use P
 
 ## First runnable adapter
 
-The repository-owned pilot at `experiments/doe/assert_acs_2x2/` executes a deterministic three-case mock-tool cohort through native and ACS-mediated targets. ASSERT scores both runs; a native scorer evaluates the same traces; `scripts/doe/assert_acs_bridge.py` assembles all four evaluator × governance cells into canonical DoE records. The ACS dispatcher emits task-attributed, content-redacted allow/transform/deny receipts. The pilot provides adapter-conformance evidence; production-agent efficacy remains unmeasured.
+The repository-owned pilot at `experiments/doe/assert_acs_2x2/` executes a deterministic three-case mock-tool cohort through native and ACS-mediated targets. ASSERT scores both runs; a native scorer evaluates the same traces; `scripts/doe/assert_acs_bridge.py` assembles all four evaluator × governance cells into canonical DoE records. The ACS dispatcher emits task-attributed, content-redacted allow/transform/deny receipts. The pilot provides adapter-conformance evidence; production-agent efficacy remains unmeasured. A pre-registered gold reference oracle supplies common task-success, policy-violation and overrefusal labels to both evaluators, separating governance outcomes from grading accuracy.
 
 The pinned upstream ACS SDK runtime smoke executes allow, transform and deny against the same mock tool without model credentials. Workflow: `.github/workflows/ceel-assert-acs-runtime.yml`.
 

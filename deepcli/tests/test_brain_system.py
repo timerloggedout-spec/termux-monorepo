@@ -121,6 +121,30 @@ class BrainSystemTests(unittest.TestCase):
         self.assertEqual(cue["evidence_refs"], ["ates://a"])
         self.assertEqual(cue["depends_on"], ["root"])
 
+    def test_composer_score_is_deterministic_and_intent_only(self):
+        intent = {"goal": "validate release", "priority": 3, "constraints": ["evidence-required"]}
+        signals = [{"signal_id": "s1", "source": "ci", "kind": "ready", "sequence": 1, "confidence": 1.0}]
+        plan = {"waves": [["spec"]]}
+        assignments = {
+            "spec": {
+                "nominal_at": "2026-11-27T12:00:00Z",
+                "opens_at": "2026-11-27T11:59:00Z",
+                "closes_at": "2026-11-27T12:05:00Z",
+                "expected_duration_ms": 1000,
+                "phase": "on_beat",
+                "open_length_ms": 360000,
+                "dependency_barriers": [],
+                "evidence_refs": ["ates://spec"],
+            }
+        }
+        first = compose_score(intent, signals, plan, assignments)
+        second = compose_score(intent, signals, plan, assignments)
+        self.assertEqual(first, second)
+        self.assertEqual(first["schema_version"], "brain.composer.score.v1")
+        self.assertEqual(len(first["score_id"]), 64)
+        self.assertEqual(first["cue_sheet"]["authority"], "dispatch_intent_only")
+        self.assertEqual(first["authority"]["composer"], "intent_and_score_composition_only")
+
     def test_score_id_tracks_evidence_changes(self):
         intent = {"goal": "validate release", "priority": 3}
         signals = [{"signal_id": "s1", "source": "ci", "kind": "ready", "sequence": 1, "confidence": 1.0}]

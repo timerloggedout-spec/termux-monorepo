@@ -14,7 +14,7 @@
 | Dangle census | Reference-conditional | A supported reference source or target root changes | Existing baseline ratchet and JSON report | Outside supported roots: defer to scheduled/manual census |
 | Bucket-headroom contracts | Quota-code-conditional | Bucket logic, watcher workflow, process contract, or its tests change | PyYAML/pytest contract suite | Path-scoped workflow stays idle |
 | Vercel deploy | Project-conditional | Project-scoped source changes and quota/cooldown admission succeeds | `vercel_ignore_build.sh`, project config, batch-dispatch receipt | Skip unchanged projects; defer on quota/cooldown |
-| Devin worker | Optional capacity lane | Task fit plus fresh no-cost API entitlement and quota evidence | Provider/account receipt, task output, tests, integration review | `BLOCKED` pending entitlement evidence or `SKIPPED_CAPACITY` |
+| Devin worker | Optional capacity lane | Task fit plus fresh free-tier API entitlement and quota evidence | Provider/account receipt, task output, tests, integration review | `BLOCKED` pending entitlement evidence or `SKIPPED_CAPACITY` |
 
 ## Canonical Termux surface
 
@@ -35,7 +35,7 @@ The dangle scanner continues to report findings from `.github/` and `apps/`. Its
 
 The checked-in project configurations use project-specific ignore commands. The linked `historical-corpus-explorer` project previously built from repository entrypoint `.`. Live deployment inventory showed 96 deployments in the preceding 24 hours: 42 from `master`, 12 from `telemetry-ingest/refresh`, 11 from `reviewer-metrics/refresh`, 10 from `delphi-ledger-feed/refresh`, and 10 from `delphi-rfp-feed/refresh`. A docs/test-only PR received the `build-rate-limit` status.
 
-The Vercel project settings update was accepted at 2026-11-27T21:55:45Z: `rootDirectory=apps/historical-corpus-explorer`, `enableAffectedProjectsDeployments=true`, and a root-aware ignore command scoped to `apps/historical-corpus-explorer/`. The repository now contains the matching `vercel.json` and helper mapping. The next docs/test-only commit has no corresponding deployment record; its Vercel status still reports `build-rate-limit`. **Provider effect: partially evidenced; confirm with a fresh unrelated commit and a relevant app change.**
+The Vercel project settings update was accepted at 2026-11-27T21:55:45Z: `rootDirectory=apps/historical-corpus-explorer`, `enableAffectedProjectsDeployments=true`, and a root-aware ignore command scoped to `apps/historical-corpus-explorer/`. The repository now contains the matching `vercel.json` and helper mapping. The next docs/test-only commit has zero corresponding deployment records; its Vercel status still reports `build-rate-limit`. **Provider effect: partially evidenced; confirm with a fresh unrelated commit and a relevant app change.**
 
 ### Devin
 

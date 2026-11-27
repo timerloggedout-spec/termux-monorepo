@@ -13,9 +13,9 @@
 - Keep bucket-headroom PyYAML/pytest dependencies in a separate path-scoped workflow.
 - Preserve dangle baseline, `.github/` + `apps/` finding scope, rename mode, and read-only behavior.
 - Preserve Vercel project-scoped path selection and quota/cooldown machinery.
-- Keep Devin optional; verify no-cost entitlement and referral-credit provenance independently.
+- Keep Devin optional; verify free-tier entitlement and referral-credit provenance independently.
 - Keep every required result bound to one immutable candidate SHA.
-- Record `SKIPPED` as applicability, not as test execution evidence.
+- Record `SKIPPED` as applicability; keep execution evidence separate.
 - Use the remote feature branch as the isolated workspace; the available GitHub connector provides repository operations, while a local worktree/shell is unavailable in this session. Run verification through repository CI and report its exact evidence.
 
 ## Task 1 — Path classifier and downstream PR classification

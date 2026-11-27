@@ -14,8 +14,8 @@ Select validation and provider work from the changed execution surface, referenc
 - `.github/workflows/termux-smoke.yml` currently starts on every pull request and configured integration push. Its job installs PyYAML and pytest to run bucket-headroom tests alongside Termux smoke.
 - `scripts/ci/termux_smoke.py` checks the Termux runtime contract, repository gate files, SIM-memory contract, connector smoke, and optional deepcli/archwiz surfaces.
 - `.github/workflows/archwiz-dangle.yml` currently triggers on dangle implementation files, `.github/workflows/**`, and `apps/**`. Its census scope is `.github/` and `apps/`; its baseline ratchet and rename mode remain read-only.
-- Vercel has project-scoped ignore helpers and a quota-aware batch lane. Live inspection found the linked `historical-corpus-explorer` project building from repository entrypoint `.`; its latest 24-hour window contained 96 deployments, including 42 from `master` and multiple unrelated refresh branches. The docs/test-only PR received a `build-rate-limit` status. The project was updated to root `apps/historical-corpus-explorer`, enable affected-project deployment filtering, and compare changes against that app path. A checked-in `vercel.json` and helper mapping now keep this policy in source control. The post-update docs-only head has no matching deployment record; its Vercel status still reports `build-rate-limit`, so provider-effect verification remains pending.
-- The current gate register records Devin API access as paid-organization-only and card-blocked for the Free organization. The referral programme index names other providers and does not establish a Devin credit route. The operator's 2026-11-27 report of free-tier availability and referral replenishment is retained as a fresh evidence lead pending a current account/entitlement receipt.
+- Vercel has project-scoped ignore helpers and a quota-aware batch lane. Live inspection found the linked `historical-corpus-explorer` project building from repository entrypoint `.`; its latest 24-hour window contained 96 deployments, including 42 from `master` and 54 across refresh/feature branches. The docs/test-only PR received a `build-rate-limit` status. The project was updated to root `apps/historical-corpus-explorer`, enable affected-project deployment filtering, and compare changes against that app path. A checked-in `vercel.json` and helper mapping now keep this policy in source control. The post-update docs-only head has zero matching deployment records; its Vercel status still reports `build-rate-limit`, so provider-effect verification remains pending.
+- The current gate register records Devin API access as paid-organization-only and card-blocked for the Free organization. The referral programme index names other providers and leaves Devin credit eligibility unverified. The operator's 2026-11-27 report of free-tier availability and referral replenishment is retained as a fresh evidence lead pending a current account/entitlement receipt.
 
 ## Chosen design
 
@@ -33,7 +33,7 @@ Keep the `agentic termux smoke` workflow check present for every pull request an
 - Unmatched paths emit an explicit `SKIPPED` reason and finish the workflow check successfully for branch-protection continuity.
 - Missing base/head evidence or diff errors fail closed to executing smoke.
 - Manual `workflow_dispatch` executes smoke.
-- The downstream PR classifier reads changed paths and a separate `termux_smoke_required` field. A successful admission skip is treated as not applicable, rather than as smoke execution evidence.
+- The downstream PR classifier reads changed paths and a separate `termux_smoke_required` field. A successful admission skip is marked inapplicable while smoke execution evidence remains separate.
 
 The initial Termux surface registry covers the smoke script and its required files, SIM-memory contract files, connector smoke, deepcli/multi-ai launchers, ArchWiz, and the Termux multi-agent/dashboard surfaces.
 
@@ -49,7 +49,7 @@ Expand dangle workflow triggers to include the target roots used by workflow scr
 
 **Vercel:** preserve the existing project-scoped path selector, quota-aware batch dispatcher, reserve, and cooldown. Scope `historical-corpus-explorer` to `apps/historical-corpus-explorer`, enable affected-project deployment filtering, and use the project-specific ignore command. Keep preview deployments available for relevant app changes. Track provider-side skip/build confirmation as a separate evidence state; configuration and local tests establish setup while deployment receipts establish provider effect.
 
-**Devin:** treat Devin as an optional bounded worker, never a required merge gate. Admission requires current evidence for API eligibility, free quota remaining, task fit, billing boundary, and referral-credit provenance. Keep subscription eligibility, API quota, and marketing referral rewards as separate fields. The operator-reported availability remains a lead until a current provider/account receipt supports it.
+**Devin:** treat Devin as an optional bounded worker, outside the required merge-gate set. Admission requires current evidence for API eligibility, free quota remaining, task fit, billing boundary, and referral-credit provenance. Keep subscription eligibility, API quota, and marketing referral rewards as separate fields. The operator-reported availability remains a lead until a current provider/account receipt supports it.
 
 ## Gate result vocabulary
 
@@ -76,6 +76,6 @@ A skipped conditional gate records applicability; execution evidence is represen
 - Bucket-headroom tests execute in a dedicated path-scoped workflow.
 - The PR classifier treats a non-Termux slice as eligible without Termux smoke while preserving required evidence for Termux slices.
 - Dangle triggers cover both source and target path changes while retaining its baseline and report contract.
-- Vercel `historical-corpus-explorer` uses its app root and affected-project filtering; an unrelated post-update commit produces no deployment record and a relevant app change produces an app-root deployment.
-- Devin remains optional until fresh account and referral evidence supports no-cost admission.
+- Vercel `historical-corpus-explorer` uses its app root and affected-project filtering; an unrelated post-update commit produces zero deployment records and a relevant app change produces an app-root deployment.
+- Devin remains optional until fresh account and referral evidence supports free-tier admission.
 - Repository policy, proposal records, tests, and workflow behavior agree.

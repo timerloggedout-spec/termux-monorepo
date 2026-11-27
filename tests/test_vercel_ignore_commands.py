@@ -40,6 +40,12 @@ class VercelIgnoreCommandTests(unittest.TestCase):
                 self.assertIn(project, command)
                 self.assertLessEqual(len(command), 256)
 
+        explorer_command = json.loads(
+            (ROOT / "apps/historical-corpus-explorer/vercel.json").read_text(encoding="utf-8")
+        )["ignoreCommand"]
+        self.assertIn("helper absent; build", explorer_command)
+        self.assertIn("exit 1", explorer_command)
+
         helper = (ROOT / "scripts/ci/vercel_ignore_build.sh").read_text(encoding="utf-8")
         self.assertIn("VERCEL_GIT_PREVIOUS_SHA", helper)
         self.assertIn("VERCEL_GIT_COMMIT_SHA", helper)

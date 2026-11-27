@@ -11,7 +11,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from scripts.ci.validate_sim_memory import parse_timestamp, validate_records
+from scripts.ci.validate_sim_memory import _loads_strict, parse_timestamp, validate_records
 
 
 @dataclass(frozen=True)
@@ -171,38 +171,39 @@ def _compatibility(query: RetrievalQuery, problem: dict[str, Any], attempt: dict
 
 def retrieve_sim_memory(path: Path, query: RetrievalQuery) -> list[RetrievedLesson]:
     """Return the highest-compatibility lessons; preserve all outcome classes."""
-    validate_records(path)
+    raw_lines = path.read_text(encoding="utf-8").splitlines()
+    validate_records(path, raw_lines=raw_lines)
     problems: dict[str, dict[str, Any]] = {}
     lessons: list[RetrievedLesson] = []
 
-    with path.open(encoding="utf-8") as stream:
-        for raw in stream:
-            if not raw.strip():
-                continue
-            record = json.loads(raw)
-            problem_id = record["problem_id"]
-            if record["record_type"] == "problem_opened":
-                problems[problem_id] = record["problem"]
-                continue
+    for raw in raw_lines:
+        if not raw.strip():
+            continue
+        record = _loads_strict(raw)
+        problem_id = record["problem_id"]
+        if record["record_type"] == "problem_opened":
+            problems[problem_id] = record["problem"]
+            continue
 
-            problem = problems[problem_id]
-            if problem["domain"] != query.domain:
-                continue
-            if query.component and problem.get("component") not in (None, query.component):
-                continue
+        problem = problems[problem_id]
+        if problem["domain"] != query.domain:
+            continue
+        if query.component and problem.get("component") not in (None, query.component):
+            continue
 
-            attempt = record["attempt"]
-            compatibility, score = _compatibility(query, problem, attempt)
-            lessons.append(RetrievedLesson(
-                record=record,
-                compatibility=compatibility,
-                retrieval_score=score,
-            ))
+        attempt = record["attempt"]
+        compatibility, score = _compatibility(query, problem, attempt)
+        lessons.append(RetrievedLesson(
+            record=record,
+            compatibility=compatibility,
+            retrieval_score=score,
+        ))
 
     lessons.sort(
         key=lambda item: (
             -item.retrieval_score,
-            -parse_timestamp(item.recorded_at).timestamp(),
+            -parse_timestamp(item.recorded_at)[0],
+            -parse_timestamp(item.recorded_at)[1],
             item.problem_id,
             item.record["attempt"]["ordinal"],
         )

@@ -9,7 +9,7 @@
 
 - A fixed three-case cohort with stable ASSERT IDs.
 - Two ASSERT callable targets that execute the same mock tool: native execution and ACS-mediated execution.
-- A custom ACS dispatcher with pre_tool_call and post_tool_call intervention points.
+- A custom ACS dispatcher at the pre_tool_call intervention point.
 - A redacted ACS decision receipt keyed to the frozen test case.
 - A deterministic native scorer for the same inference traces.
 - A bridge that normalizes native and ASSERT score files into repository EXPERIMENT.schema.json records and calculates descriptive 2×2 effects.

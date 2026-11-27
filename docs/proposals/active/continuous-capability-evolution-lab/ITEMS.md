@@ -35,6 +35,7 @@ GitHub object creation/retrieval is available in this session; a local checkout 
 - Runnable ASSERT × ACS pilot: `experiments/doe/assert_acs_2x2/` (3 fixed tasks × 4 evaluator/governance cells = 12 planned observations).
 - Adapter: `scripts/doe/assert_acs_bridge.py` (plan, assemble, record); native scorer: `experiments/doe/assert_acs_2x2/native_score.py`; ACS mock host and redacted decision receipt: `experiments/doe/assert_acs_2x2/acs/`.
 - Pure tests: bridge and policy-dispatcher suites are wired into refTemplates continuous-eval CI.
+- Runtime smoke: `.github/workflows/ceel-assert-acs-runtime.yml` builds the ACS SDK at pinned upstream commit `3233be2338816257700a8dbdf531a21b9f359582` and executes allow/transform/deny through HostSession.
 - Provider-backed execution: PENDING credentials and a same-cohort ASSERT run; mock adapter conformance is distinct from efficacy.
 - Capability graph: 21 nodes, 31 edges; structural validation reports 0 unresolved endpoints or duplicate IDs/edges. The managed Foundry platform is recorded separately from its component projects.
 - Inventory: categories 01–14; research-template scoring remains a separate profile under 15_.

@@ -1,6 +1,6 @@
 ---
 id: rhythmic-systems-temporal-intelligence
-title: "Rhythmic Systems: Temporal Intelligence, Ballet coordination, Jazz taxonomy, and Music as Code"
+title: "Rhythmic Systems: Temporal Intelligence, Ballet coordination, Brain/CNS Composer, Jazz taxonomy, and Music as Code"
 author: ChatGPT
 posted_at: 2026-11-27
 source: source.md
@@ -20,7 +20,7 @@ gates_required: [proposal-lifecycle, repo-gate, termux-smoke]
 
 ## Summary
 
-Establish Temporal Intelligence as a first-class temporal policy and measurement domain over the existing dependency-phase, Ballet, QUE, specialist-adapter, and ATES control planes. Integrate exact-ratio rhythmic composition, Jazz division taxonomy, three Conductor placements, and Music as Code as independent and mixed-mode experimental capabilities.
+Establish Temporal Intelligence as a first-class temporal policy and measurement domain over the existing dependency-phase, Ballet, QUE, specialist-adapter, and ATES control planes. Integrate exact-ratio rhythmic composition, a Brain/CNS-inspired Composer, Jazz division taxonomy, three Conductor placements, and Music as Code as independent and mixed-mode experimental capabilities.
 
 ## Operator disposition
 
@@ -37,6 +37,7 @@ Establish Temporal Intelligence as a first-class temporal policy and measurement
 - ATES owns canonical evidence receipts.
 - Temporal Intelligence classifies phase and observation timing.
 - Conductor emits cue sheets and dispatch intent through existing control planes.
+- Composer assembles intent, bounded context, existing Ballet plans, and cue sheets; it owns no dispatch or execution authority.
 - Music as Code provides creative and experimental stimuli.
 
 ## Checklist
@@ -45,6 +46,7 @@ Establish Temporal Intelligence as a first-class temporal policy and measurement
 - [x] ITEMS.md itemized
 - [x] Operator authorization recorded
 - [ ] Repository gates pass on the final head SHA
+- [ ] RS-006 Brain/CNS Composer tests and cue metadata contract pass
 - [ ] Merge PR #5939 after required checks pass
 
 ## Links

@@ -18,7 +18,7 @@ class ConductorTests(unittest.TestCase):
                 "open_length_ms": 330000,
                 "dependency_barriers": ["phase-dag:spec-ready"],
                 "evidence_refs": ["ates://receipt/source-spec"],
-                "depends_on": [],
+                "depends_on": ["spec"] if task == "tests" else [],
                 "wake_conditions": ["event", "window_close"],
             }
             for task in ("spec", "tests", "docs")
@@ -34,6 +34,7 @@ class ConductorTests(unittest.TestCase):
         self.assertEqual(cue["open_length_ms"], 330000)
         self.assertEqual(cue["dependency_barriers"], ["phase-dag:spec-ready"])
         self.assertEqual(cue["evidence_refs"], ["ates://receipt/source-spec"])
+        self.assertEqual(sheets[0]["waves"][1]["tasks"][0]["depends_on"], ["spec"])
     def test_missing_temporal_metadata_rejected(self):
         incomplete = dict(self.assignments)
         incomplete["spec"] = {"nominal_at": "2026-11-27T12:00:00Z"}

@@ -157,3 +157,12 @@ ELI5: the dependency engine decides which work is ready; Ballet arranges safe wa
 6. Promote a treatment after correctness, integration, safety, cost, and operator approval gates pass.
 
 Implementation modules: deepcli/deepcli/observatory/temporal.py (assignment windows and WAIT wake selection); deepcli/deepcli/observatory/rhythm.py (exact Fraction ratios, rational supercycles, common subdivisions, polyphonic overlays, and coincidence detection); deepcli/deepcli/observatory/conductor.py (cue-sheet generation for all three placements); music/jazz-3-2-offbeat.strudel.js (polyphonic Jazz 3:2 stimulus fixture). Strudel runtime rendering and audio qualification remain in the qualification sequence. PC-SEED-009 and PC-SEED-019 remain design treatments referenced by the separate architecture seed tournament PR #5531.
+
+
+## Brain/CNS-inspired Composer
+
+The Brain/CNS layer is a typed software analogy for distributed coordination. It introduces pure modules for Afferent Signals (validated observation intake), Context Assembly (bounded working context and evidence references), Executive Intent (goals and constraints), Action Selection (deterministic candidate shortlist), Prediction Error (expected-versus-actual timing), Homeostasis (earliest observation wake recommendation), and Composer (deterministic intent-to-score assembly). Detailed contracts live in `deepcli/deepcli/observatory/brain/` and `docs/superpowers/specs/2026-11-27-brain-cns-composer-design.md`.
+
+Composer consumes an existing Ballet plan and Temporal assignment metadata, then delegates cue-sheet generation to Orchestra Conductor. It emits a content-addressed `brain.composer.score.v1` artifact. The score remains declarative: dependency-phase engine owns readiness, Ballet owns wave planning, Manager owns routing and approval, QUE owns admission and claims, specialist adapters own execution, and ATES owns evidence. Prediction and homeostasis return observations and recommendations; policy changes require explicit candidate evaluation and existing promotion gates.
+
+The anatomical vocabulary is an analogy for software responsibility boundaries. The implementation models software coordination contracts, with no claim to reproduce biological neural activity, cognition, consciousness, or clinical processes.

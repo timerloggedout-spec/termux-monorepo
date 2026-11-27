@@ -1,0 +1,423 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:termux-monorepo:schema:brain.composer.score.v1",
+  "title": "Brain Composer Score v1",
+  "description": "Content-addressed, declarative score from the Brain/CNS-inspired software coordination modules. Dispatch and policy authority remain with existing control planes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "intent",
+    "context",
+    "signal_ids",
+    "plan",
+    "action_shortlist",
+    "timing_feedback",
+    "wake_recommendation",
+    "cue_sheet",
+    "authority",
+    "adaptation",
+    "score_id"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "brain.composer.score.v1"
+    },
+    "intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "goal",
+        "priority",
+        "constraints",
+        "success_criteria"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "brain.intent.v1"
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "success_criteria": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "signals",
+        "episode_ids",
+        "evidence_refs",
+        "truncated_signal_count"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "brain.context.v1"
+        },
+        "signals": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "signal_id",
+              "source",
+              "kind",
+              "sequence",
+              "confidence"
+            ],
+            "properties": {
+              "signal_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source": {
+                "type": "string",
+                "minLength": 1
+              },
+              "kind": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sequence": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "confidence": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "episode_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "truncated_signal_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "signal_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "waves",
+        "task_count"
+      ],
+      "properties": {
+        "waves": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "task_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "action_shortlist": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "timing_feedback": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "task_id",
+          "schema_version",
+          "expected_ms",
+          "actual_ms",
+          "drift_ms",
+          "status",
+          "policy_action"
+        ],
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "schema_version": {
+            "const": "brain.prediction-error.v1"
+          },
+          "expected_ms": {
+            "type": "number",
+            "minimum": 0
+          },
+          "actual_ms": {
+            "type": "number",
+            "minimum": 0
+          },
+          "drift_ms": {
+            "type": "number"
+          },
+          "status": {
+            "enum": [
+              "overrun",
+              "underrun",
+              "on_time"
+            ]
+          },
+          "policy_action": {
+            "const": "observe_only"
+          }
+        }
+      }
+    },
+    "wake_recommendation": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema_version",
+            "wake_at_ms",
+            "wake_in_ms",
+            "wake_reason"
+          ],
+          "properties": {
+            "schema_version": {
+              "const": "brain.homeostasis.wake.v1"
+            },
+            "wake_at_ms": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "wake_in_ms": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "wake_reason": {
+              "enum": [
+                "event_deadline",
+                "window_close",
+                "max_wait"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "cue_sheet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "placement",
+        "policy_version",
+        "waves",
+        "task_count",
+        "authority",
+        "dispatch_intent"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "orchestra.cue-sheet.v1"
+        },
+        "placement": {
+          "enum": [
+            "manager_policy",
+            "temporal_intelligence",
+            "agent_team_orchestration"
+          ]
+        },
+        "policy_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "task_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "authority": {
+          "const": "dispatch_intent_only"
+        },
+        "dispatch_intent": {
+          "const": true
+        },
+        "waves": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "wave",
+              "tasks"
+            ],
+            "properties": {
+              "wave": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "tasks": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "task_id",
+                    "nominal_at",
+                    "opens_at",
+                    "closes_at",
+                    "expected_duration_ms",
+                    "phase",
+                    "open_length_ms",
+                    "dependency_barriers",
+                    "evidence_refs",
+                    "depends_on",
+                    "wake_conditions"
+                  ],
+                  "properties": {
+                    "task_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "nominal_at": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "opens_at": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "closes_at": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "expected_duration_ms": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "phase": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "open_length_ms": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "dependency_barriers": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "evidence_refs": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "depends_on": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "wake_conditions": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "composer",
+        "readiness",
+        "wave_planning",
+        "admission_and_claims",
+        "execution",
+        "evidence"
+      ],
+      "properties": {
+        "composer": {
+          "const": "intent_and_score_composition_only"
+        },
+        "readiness": {
+          "const": "dependency_phase_engine"
+        },
+        "wave_planning": {
+          "const": "ballet_coordinator"
+        },
+        "admission_and_claims": {
+          "const": "QUE"
+        },
+        "execution": {
+          "const": "specialist_adapters"
+        },
+        "evidence": {
+          "const": "ATES"
+        }
+      }
+    },
+    "adaptation": {
+      "const": "candidate_only; validated_observations_and_explicit_policy_version_required"
+    },
+    "score_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

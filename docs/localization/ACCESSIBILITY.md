@@ -13,4 +13,4 @@
 - Keep untranslated fallback content explicitly marked with its actual language and direction.
 
 ## Release evidence
-Automated checks cover markup, links, metadata, and selected contrast rules. Manual review covers keyboard-only navigation, screen-reader announcements, focus visibility, zoom/reflow, RTL reading order, and native Urdu typography. Automated checks alone do not certify WCAG conformance.
+Automated checks cover markup, links, metadata, and selected contrast rules. Manual review covers keyboard-only navigation, screen-reader announcements, focus visibility, zoom/reflow, RTL reading order, and native Urdu typography. Combine automated checks with manual assistive-technology review as the WCAG conformance evidence set.

@@ -4,14 +4,10 @@ import sys
 import unittest
 from pathlib import Path
 
+REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from deepcli.observatory.composer import (
-    ComposerIntent,
-    ComposerPolicy,
-    compose_score,
-    serialize_score,
-)
+from deepcli.observatory.composer import ComposerIntent, ComposerPolicy, compose_score, serialize_score
 from deepcli.observatory.conductor import ConductorPlacement
 
 
@@ -57,11 +53,7 @@ class ComposerTests(unittest.TestCase):
 
     def test_preserves_temporal_provenance_and_task_dependencies(self):
         score = compose_score(self.intent, self.assignments)
-        cues = {
-            cue["task_id"]: cue
-            for wave in score["cue_sheet"]["waves"]
-            for cue in wave["tasks"]
-        }
+        cues = {cue["task_id"]: cue for wave in score["cue_sheet"]["waves"] for cue in wave["tasks"]}
         cue = cues["spec"]
         self.assertEqual(cue["phase"], "on_beat")
         self.assertEqual(cue["open_length_ms"], 330000)
@@ -85,24 +77,20 @@ class ComposerTests(unittest.TestCase):
         self.assertEqual(serialize_score(first), json.dumps(first, sort_keys=True, separators=(",", ":"), ensure_ascii=False))
 
     def test_rejects_blank_intent_id(self):
-        invalid = ComposerIntent(" ", "objective", self.intent.tasks, ("done",))
         with self.assertRaisesRegex(ValueError, "intent_id"):
-            compose_score(invalid, self.assignments)
+            compose_score(ComposerIntent(" ", "objective", self.intent.tasks, ("done",)), self.assignments)
 
     def test_rejects_blank_objective(self):
-        invalid = ComposerIntent("i", " ", self.intent.tasks, ("done",))
         with self.assertRaisesRegex(ValueError, "objective"):
-            compose_score(invalid, self.assignments)
+            compose_score(ComposerIntent("i", " ", self.intent.tasks, ("done",)), self.assignments)
 
     def test_rejects_empty_success_criteria(self):
-        invalid = ComposerIntent("i", "objective", self.intent.tasks, ())
         with self.assertRaisesRegex(ValueError, "success_criteria"):
-            compose_score(invalid, self.assignments)
+            compose_score(ComposerIntent("i", "objective", self.intent.tasks, ()), self.assignments)
 
     def test_rejects_blank_context_reference(self):
-        invalid = ComposerIntent("i", "objective", self.intent.tasks, ("done",), (" ",))
         with self.assertRaisesRegex(ValueError, "context_refs"):
-            compose_score(invalid, self.assignments)
+            compose_score(ComposerIntent("i", "objective", self.intent.tasks, ("done",), (" ",)), self.assignments)
 
     def test_rejects_invalid_strategy(self):
         with self.assertRaisesRegex(ValueError, "strategy"):
@@ -140,6 +128,24 @@ class ComposerTests(unittest.TestCase):
         original = json.loads(json.dumps(self.assignments))
         compose_score(self.intent, self.assignments)
         self.assertEqual(self.assignments, original)
+
+    def test_public_package_exports_composer_api(self):
+        from deepcli.observatory import ComposerIntent as PublicIntent
+        from deepcli.observatory import ComposerPolicy as PublicPolicy
+        from deepcli.observatory import compose_score as public_compose
+        from deepcli.observatory import serialize_score as public_serialize
+        self.assertIs(PublicIntent, ComposerIntent)
+        self.assertIs(PublicPolicy, ComposerPolicy)
+        self.assertIs(public_compose, compose_score)
+        self.assertIs(public_serialize, serialize_score)
+
+    def test_score_schema_declares_required_contract_and_intent_only_authority(self):
+        schema_path = REPO_ROOT / "docs" / "schemas" / "composer.score.v1.schema.json"
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        self.assertEqual(schema["properties"]["schema_version"]["const"], "composer.score.v1")
+        self.assertEqual(schema["properties"]["authority"]["const"], "dispatch_intent_only")
+        self.assertIn("cue_sheet", schema["required"])
+        self.assertIn("decision_trace", schema["required"])
 
 
 if __name__ == "__main__":

@@ -124,7 +124,7 @@ class AssertAcsBridgeTests(unittest.TestCase):
             self.assertEqual(3, summary["cell_summary"]["assert/acs"]["runs"])
             self.assertEqual(0.0, summary["cell_summary"]["assert/acs"]["policy_violation_rate"])
             self.assertEqual(1.0, summary["cell_summary"]["assert/acs"]["evaluator_reference_accuracy"])
-            self.assertEqual(1.0, summary["cell_summary"]["native/native"]["reference_task_success_rate"] if False else 1.0)
+            self.assertAlmostEqual(1 / 3, summary["cell_summary"]["native/native"]["reference_task_success_rate"], places=4)
             self.assertEqual(1.0, summary["reference_task_success_by_governance"]["acs"])
             self.assertAlmostEqual(1 / 3, summary["reference_task_success_by_governance"]["native"], places=4)
 

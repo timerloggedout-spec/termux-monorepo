@@ -126,8 +126,12 @@
   }
 
 
-  function safeEvidenceUrl(value) {
-    try { return new URL(value).protocol === "https:"; }
+  function safeEvidenceUrl(value, sourceSha) {
+    try {
+      const url = new URL(value);
+      return url.protocol === "https:" && url.hostname === "github.com" &&
+        url.pathname.startsWith("/timerloggedout-spec/termux-monorepo/blob/" + sourceSha + "/");
+    }
     catch (_) { return false; }
   }
 
@@ -144,7 +148,7 @@
           !domain.sources.length) throw new Error("Domain Atlas contains an invalid or duplicate domain.");
       domainMap.set(domain.id, domain);
       for (const source of domain.sources) {
-        if (!validObject(source) || !safeEvidenceUrl(source.url) ||
+        if (!validObject(source) || !safeEvidenceUrl(source.url, data.source_sha) ||
             typeof source.path !== "string" || typeof source.claim !== "string") {
           throw new Error("Domain source evidence must use an HTTPS URL, path, and claim.");
         }
@@ -162,7 +166,7 @@
       if (edge.classification === "verified" && !edge.evidence.length)
         throw new Error("Verified Domain Atlas relationships require evidence.");
       for (const item of edge.evidence) {
-        if (!validObject(item) || !safeEvidenceUrl(item.url) ||
+        if (!validObject(item) || !safeEvidenceUrl(item.url, data.source_sha) ||
             typeof item.path !== "string" || typeof item.claim !== "string")
           throw new Error("Relationship evidence must use HTTPS URLs, paths, and claims.");
       }

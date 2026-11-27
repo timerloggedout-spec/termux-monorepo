@@ -75,9 +75,8 @@ def overlay_layers(layers: Iterable[RhythmicLayer]) -> Overlay:
         for repeat_index in range(repeat_count):
             base = layer.phase + repeat_index * layer.period
             for offset in layer.offsets:
-                onset = base + offset
-                if onset < cycle:
-                    events.append(RhythmicOnset(onset, layer.voice))
+                onset = (base + offset) % cycle
+                events.append(RhythmicOnset(onset, layer.voice))
     events.sort()
     voices_by_time: dict[Fraction, set[str]] = {}
     for event in events:

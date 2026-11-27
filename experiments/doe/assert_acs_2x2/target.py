@@ -1,7 +1,6 @@
 """Deterministic ASSERT callable target for the ACS tool-boundary pilot."""
 from __future__ import annotations
 
-import asyncio
 import json
 import os
 import re
@@ -25,7 +24,7 @@ TASKS = {task["task_id"]: task for task in DESIGN["tasks"]}
 
 
 def _case(message: str) -> tuple[str, dict[str, str]]:
-    match = re.search(r"\\[(test_case_\\d{6})\\]", message)
+    match = re.search(r"\[(test_case_\d{6})\]", message)
     if not match:
         raise ValueError("ASSERT test prompt must carry its frozen test_case_id")
     task_id = match.group(1)

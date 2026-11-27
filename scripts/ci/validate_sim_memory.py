@@ -76,7 +76,11 @@ def validate_records(path: Path) -> dict[str, int]:
                     raise SimMemoryValidationError(
                         f"line {line_number}: problem_id {problem_id!r} opened twice"
                     )
-                opened[problem_id] = {"problem": problem, "last_ordinal": 0}
+                opened[problem_id] = {
+                    "problem": problem,
+                    "last_ordinal": 0,
+                    "opened_round": problem["opened_round"],
+                }
                 continue
 
             state = opened.get(problem_id)
@@ -96,6 +100,31 @@ def validate_records(path: Path) -> dict[str, int]:
             if not predicted_at < observed_at <= recorded_at:
                 raise SimMemoryValidationError(
                     f"line {line_number}: expected predicted_at < observed_at <= recorded_at"
+                )
+
+            context = attempt["context"]
+            if context["round"] < state["opened_round"]:
+                raise SimMemoryValidationError(
+                    f"line {line_number}: attempt round precedes problem opened_round"
+                )
+
+            observation = attempt["observation"]
+            if observation["passed"] > observation["total"]:
+                raise SimMemoryValidationError(
+                    f"line {line_number}: passed count exceeds total evaluation count"
+                )
+
+            predicted = set(attempt["prediction"]["predicted_task_ids"])
+            fixed = set(observation["fixed_task_ids"])
+            missed = set(observation["missed_task_ids"])
+            unresolved = set(observation.get("unresolved_task_ids", []))
+            if fixed & missed or fixed & unresolved or missed & unresolved:
+                raise SimMemoryValidationError(
+                    f"line {line_number}: fixed, missed and unresolved task sets overlap"
+                )
+            if not (fixed | missed | unresolved).issubset(predicted):
+                raise SimMemoryValidationError(
+                    f"line {line_number}: observed task outcomes exceed the predicted task set"
                 )
 
             attempt_id = attempt["attempt_id"]

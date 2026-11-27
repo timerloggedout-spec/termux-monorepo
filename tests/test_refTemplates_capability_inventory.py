@@ -98,6 +98,25 @@ class RefTemplatesCapabilityInventoryTests(unittest.TestCase):
         self.assertTrue(score["file_reference"])
         self.assertTrue(score["has_reference_document"])
 
+    def test_empty_source_file_keeps_attribution_and_pin_credit_unearned(self):
+        sha = "b" * 40
+        with tempfile.TemporaryDirectory(dir=REF) as temp:
+            slot = Path(temp) / "11_Evaluation_Quality"
+            child = slot / "empty-source"
+            child.mkdir(parents=True)
+            (child / "README.md").write_text("# Empty source candidate\n", encoding="utf-8")
+            (child / "SOURCE.txt").write_text("  \n", encoding="utf-8")
+            (child / "metadata.yaml").write_text(
+                f"source: https://github.com/org/repo/tree/{sha}\n", encoding="utf-8"
+            )
+            row = inventory_entry(slot)
+        candidate = row["candidate_children"][0]
+        score = score_capability_child(candidate)
+        self.assertFalse(candidate["has_source"])
+        self.assertEqual("metadata_only", candidate["provenance_state"])
+        self.assertEqual(0.0, score["layers"]["source_attribution"])
+        self.assertEqual(0.0, score["layers"]["revision_specificity"])
+
     def test_revision_pin_requires_complete_immutable_revision(self):
         def specificity(preview: str) -> float:
             return score_capability_child({

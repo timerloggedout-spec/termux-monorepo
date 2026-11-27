@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -21,6 +22,11 @@ SCHEMA_PATH = ROOT / "docs" / "ops" / "SELF-IMPROVEMENT-MEMORY.schema.json"
 
 class SimMemoryValidationError(ValueError):
     """Raised when a SIM event or stream invariant is invalid."""
+
+
+def parse_timestamp(value: str) -> datetime:
+    """Parse a schema-validated RFC 3339 timestamp into an aware datetime."""
+    return datetime.fromisoformat(value.replace("Z", "+00:00"))
 
 
 def validate_records(path: Path) -> dict[str, int]:
@@ -84,6 +90,14 @@ def validate_records(path: Path) -> dict[str, int]:
                 )
 
             attempt = record["attempt"]
+            predicted_at = parse_timestamp(attempt["predicted_at"])
+            observed_at = parse_timestamp(attempt["observed_at"])
+            recorded_at = parse_timestamp(record["recorded_at"])
+            if not predicted_at < observed_at <= recorded_at:
+                raise SimMemoryValidationError(
+                    f"line {line_number}: expected predicted_at < observed_at <= recorded_at"
+                )
+
             attempt_id = attempt["attempt_id"]
             if attempt_id in attempt_ids:
                 raise SimMemoryValidationError(

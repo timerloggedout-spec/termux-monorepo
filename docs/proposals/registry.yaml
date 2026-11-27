@@ -9,7 +9,21 @@ proposals:
     priority: P1
     path: active/polyglot-localization/
     reviewers:
-      - id: repository-architecture-entry
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues: []
+    related_prs:
+      - 5940
+    related_branches:
+      - feat/polyglot-urdu-portal-20261127
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: repository-architecture-entry
     title: Repository architecture entry, system taxonomy, and data-flow map
     author: ChatGPT
     status: executing

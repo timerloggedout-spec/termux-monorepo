@@ -45,19 +45,20 @@ The names are typed software concepts. The mapping remains explicitly analogical
 ## Data contracts
 
 - **Signal:** required `signal_id`, `source`, `kind`, `sequence`, `confidence`; non-empty identity/source/kind; non-negative integer sequence; confidence in [0, 1]; identical duplicate IDs collapse; conflicting duplicate IDs raise `ValueError`; order by `(sequence, signal_id)`.
+- **Attention:** `focus_signals(signals, max_focus=8)` ranks by descending priority, salience, and confidence, then ascending sequence and signal ID. The output preserves the complete ranking plus focused/deferred IDs; the focus budget contributes to score identity.
 - **Context:** `build_context(signals, episodes=(), max_items=64)` normalizes signals, retains the newest bounded slice, records truncation count, and collects unique episode evidence references. References remain explicit strings; resolution belongs to the evidence layer.
 - **Intent:** `normalize_intent(intent)` requires a goal, accepts integer priority 0–5 (default 3), and sorts/deduplicates constraints and success criteria.
 - **Action shortlist:** `select_actions(candidates, max_parallel=1)` sorts by descending integer priority and ascending task ID, then chooses a write-disjoint shortlist. QUE retains admission and claim authority; the dependency-phase engine retains readiness authority.
 - **Prediction error:** `timing_error(expected_duration_ms, actual_duration_ms)` returns signed drift, classifies overrun/underrun/on-time, and emits `policy_action=observe_only`. Composer resolves the supplied evidence reference against the canonical ATES receipt and preserves source, run ID, cohort ID, evidence reference, and SHA-256 in feedback.
 - **Wake recommendation:** `plan_wake(now_ms, event_deadline_ms=None, window_close_ms=None, max_wait_ms=60000)` returns the earliest future boundary for collector-owned timer scheduling.
-- **Composer:** `compose_score(...)` joins normalized intent/context, ordered signal IDs, supplied Ballet plan, Conductor cue sheet, deterministic action shortlist, timing observations mapped through the canonical ATES receipt envelope and resolver (run ID, cohort ID, evidence reference, and SHA-256), optional homeostasis wake recommendation, authority map, candidate-only adaptation marker, and SHA-256 `score_id` over canonical JSON of preceding score fields.
+- **Composer:** `compose_score(...)` joins normalized intent/context, ordered signal IDs, bounded Attention Focus result, supplied Ballet plan, Conductor cue sheet, deterministic action shortlist, timing observations mapped through the canonical ATES receipt envelope and resolver (run ID, cohort ID, evidence reference, and SHA-256), optional homeostasis wake recommendation, authority map, candidate-only adaptation marker, and SHA-256 `score_id` over canonical JSON of preceding score fields.
 
 Identical normalized inputs and policy version produce an identical score ID. Changes to action-selection policy inputs, including max_parallel, produce distinct score IDs even when the selected task IDs remain equal.
 
 ## Authority and data flow
 
 ```text
-typed observations -> Afferent Signals -> Context Assembly
+typed observations -> Afferent Signals -> Attention Focus -> Context Assembly
 goal + constraints -> Executive Intent -> Action Shortlist
 Ballet plan + Temporal assignment data -> COMPOSER
 COMPOSER -> Orchestra Conductor cue sheet
@@ -122,12 +123,24 @@ flowchart TD
         "source": "ci",
         "kind": "ready",
         "sequence": 42,
-        "confidence": 1.0
+        "confidence": 1.0,
+        "priority": 4,
+        "salience": 0.9
       }
     ],
     "episode_ids": ["episode-12"],
     "evidence_refs": ["ates://receipt/12"],
     "truncated_signal_count": 0
+  },
+  "attention": {
+    "schema_version": "brain.attention.focus.v1",
+    "policy_version": "brain.attention.lexicographic.v1",
+    "max_focus": 8,
+    "focus_signal_ids": ["sig-ci-42"],
+    "deferred_signal_ids": [],
+    "ranking": [
+      {"signal_id": "sig-ci-42", "priority": 4, "salience": 0.9, "confidence": 1.0, "sequence": 42}
+    ]
   },
   "signal_ids": ["sig-ci-42"],
   "plan": {

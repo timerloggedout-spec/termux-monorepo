@@ -40,7 +40,7 @@
 
 **Interfaces:** `normalize_signals(signals)`; `build_context(signals, episodes=(), max_items=64)`; `normalize_intent(intent)`.
 
-- [ ] Write tests for ordering, identical deduplication, conflicting duplicate rejection, confidence bounds, bounded attention ranking, evidence retention, truncation, goal validation, and priority range.
+- [ ] Write tests for ordering, identical deduplication, conflicting duplicate rejection, confidence bounds, bounded attention ranking and focus-budget identity, evidence retention, truncation, goal validation, and priority range.
 - [ ] Run the focused test file; expected: imports fail before module creation.
 - [ ] Implement the pure modules and public exports.
 - [ ] Run focused tests; expected: Task 1 assertions pass.

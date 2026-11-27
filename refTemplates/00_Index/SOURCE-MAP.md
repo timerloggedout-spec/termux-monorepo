@@ -64,3 +64,13 @@ These entries are concept-adaptation targets. The category-aware score reports m
 | Reference | Preferred SOURCE | Disposition |
 |---|---|---|
 | Microsoft Foundry managed platform | https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry | Managed Azure platform/control-plane reference; separate from independently published component projects |
+
+## 13_Third_Party_Refs (file-based concept references)
+
+| Reference | Local source | Disposition |
+|---|---|---|
+| BOINC distributed-compute template | [boinc-distributed-compute-template.md](../13_Third_Party_Refs/boinc-distributed-compute-template.md) | Distributed work-unit and corroboration pattern |
+| Context retrieval architect | [context-retrieval-architect.md](../13_Third_Party_Refs/context-retrieval-architect.md) | Task-scoped retrieval and workflow compilation pattern |
+| Done Gate | [done-gate.md](../13_Third_Party_Refs/done-gate.md) | Completion-evidence and verification pattern |
+| Neo4j Relate | [neo4j-relate.md](../13_Third_Party_Refs/neo4j-relate.md) | In-process graph and working-set pattern |
+

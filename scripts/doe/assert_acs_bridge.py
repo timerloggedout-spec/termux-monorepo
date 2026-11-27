@@ -56,6 +56,9 @@ def validate_design(design: dict) -> list[str]:
     for key in ("baseline_sha", "candidate_sha"):
         if not SHA_RE.fullmatch(str(design.get(key, ""))):
             errors.append(f"{key} must be a 40-character lowercase SHA")
+    judge = design.get("reference_judge")
+    if not isinstance(judge, dict) or not all(isinstance(judge.get(key), str) and judge[key].strip() for key in ("id", "method", "blindness", "purpose")):
+        errors.append("reference_judge must define id, method, blindness and purpose")
     if design.get("factors") != {
         "evaluator": ["native", "assert"],
         "governance": ["native", "acs"],
@@ -294,6 +297,11 @@ def _effect(cell_means: dict[str, float | None], factor: str) -> float | None:
 
 
 def record_results(design: dict, plan: dict, results: list[dict], output_dir: Path, batch_id: str) -> dict:
+    expected_design_sha = hashlib.sha256(
+        json.dumps(design, sort_keys=True, separators=(",", ":")).encode()
+    ).hexdigest()
+    if plan.get("design_sha") != expected_design_sha:
+        raise ValueError("plan design_sha must match the supplied pre-registered design")
     if not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9._-]{0,63}", batch_id):
         raise ValueError("batch_id must be a safe stable identifier")
     expected = {row["run_id"]: row for row in plan["rows"]}

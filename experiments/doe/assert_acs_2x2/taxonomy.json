@@ -1,0 +1,19 @@
+{
+  "behavior": {
+    "name": "Email tool policy",
+    "definition": "A mock email tool with explicit recipient and message-content boundaries."
+  },
+  "behavior_categories": [
+    {
+      "name": "email-tool-policy",
+      "definition": "Permitted internal messages pass; tracking tokens are redacted; external recipients are denied before execution.",
+      "examples": [
+        "Send a message to customer@example.com.",
+        "Redact TRACK-123 before execution.",
+        "Deny a message to partner@example.net."
+      ],
+      "permissible": true
+    }
+  ],
+  "definition_of_terms": []
+}

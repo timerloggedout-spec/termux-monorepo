@@ -18,7 +18,9 @@
 - Integration lane: docs/ops/RESEARCH-INTEGRATION-LANE.md
 - Flywheel stack integration: docs/ops/DICKLESWORTHSTONE-FLYWHEEL-INTEGRATION.md
 - Inspiration register: smods/INSPIRATION-SOURCES.md (Notary, ShipProof, unresolved Transcend candidate; metadata-only)
-- Inventory script: scripts/ci/refTemplates_inventory.py
+- Inventory script: scripts/ci/refTemplates_inventory.py (all numbered capability categories + separate 15_ research profile)
+- Capability scoring: scripts/ci/refTemplates_score.py (metadata readiness only; efficacy stays unmeasured)
+- CEEL concept competition: docs/ops/CEEL-CONCEPT-ADAPTATION-AND-COMPETITION.md
 - Workflow hooks: docs/ops/REFTEMPLATES-WORKFLOW-HOOKS.md
 
 All slots are continuous repopulate / upgrade / score targets — not a one-shot dump. Live gitlinks require a real custom fork, immutable reviewed pin, compatibility evidence, and passing gates.

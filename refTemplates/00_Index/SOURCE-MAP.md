@@ -43,3 +43,42 @@ Pins intentional; no auto-advance without dual-gate green. New live pins require
 | Slot | Preferred SOURCE | Disposition |
 |------|------------------|-------------|
 | osx-forge | https://github.com/credkellar/OSx | Pattern candidate; Docker Hub overview reviewed, upstream source inspection pending |
+
+## Capability pattern candidates (metadata-first)
+
+| Category | Slot | Preferred SOURCE | Disposition |
+|---|---|---|---|
+| 01_Agent_Runtime | microsoft-agent-framework | https://github.com/microsoft/agent-framework | Concept adaptation; runtime tournament |
+| 01_Agent_Runtime | foundry-local | https://github.com/microsoft/Foundry-Local | Local inference compatibility experiment |
+| 05_Safety_Observability | agent-governance-toolkit | https://github.com/microsoft/agent-governance-toolkit | ACS policy-contract adaptation |
+| 05_Safety_Observability | foundry-e2e-agent-observability-workshop | https://github.com/Azure-Samples/microsoft-foundry-e2e-agent-observability-workshop | Observability/evaluation pipeline pattern |
+| 07_Prompt_Context | microsoft-foundry-skills | https://github.com/microsoft/skills/tree/main/.github/plugins/azure-skills/skills/microsoft-foundry | Selective instruction-pattern harvest |
+| 11_Evaluation_Quality | assert | https://github.com/responsibleai/ASSERT | First evaluation-pattern experiment |
+| 12_External_Agents | frontier-week-hack | https://github.com/microsoft/FrontierWeekHack | Agent lifecycle reference patterns |
+| 12_External_Agents | agentic-factory-hack | https://github.com/microsoft/agentic-factory-hack | Multi-agent architecture reference |
+
+These entries are concept-adaptation targets. The category-aware score reports metadata readiness; task efficacy requires controlled experiments. Licensing disposition is routed to the designated licensing duty owner.
+
+## Foundry platform boundary
+
+| Reference | Preferred SOURCE | Disposition |
+|---|---|---|
+| Microsoft Foundry managed platform | https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry | Managed Azure platform/control-plane reference; separate from independently published component projects |
+
+## 13_Third_Party_Refs (file-based concept references)
+
+| Reference | Local source | Disposition |
+|---|---|---|
+| BOINC distributed-compute template | [boinc-distributed-compute-template.md](../13_Third_Party_Refs/boinc-distributed-compute-template.md) | Distributed work-unit and corroboration pattern |
+| Context retrieval architect | [context-retrieval-architect.md](../13_Third_Party_Refs/context-retrieval-architect.md) | Task-scoped retrieval and workflow compilation pattern |
+| Done Gate | [done-gate.md](../13_Third_Party_Refs/done-gate.md) | Completion-evidence and verification pattern |
+| Neo4j Relate | [neo4j-relate.md](../13_Third_Party_Refs/neo4j-relate.md) | In-process graph and working-set pattern |
+
+## 13_Third_Party_Refs — file-based references
+
+| Reference | Local source | Disposition |
+|---|---|---|
+| BOINC distributed-compute template | [boinc-distributed-compute-template.md](../13_Third_Party_Refs/boinc-distributed-compute-template.md) | Work-unit scheduling, host churn and result corroboration |
+| Context retrieval architect | [context-retrieval-architect.md](../13_Third_Party_Refs/context-retrieval-architect.md) | Task-scoped context retrieval and workflow compilation |
+| Done Gate | [done-gate.md](../13_Third_Party_Refs/done-gate.md) | Completion evidence and landed-state verification |
+| Neo4j Relate | [neo4j-relate.md](../13_Third_Party_Refs/neo4j-relate.md) | In-process graph and working-set persistence |

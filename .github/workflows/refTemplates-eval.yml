@@ -6,6 +6,9 @@ on:
       - "refTemplates/**"
       - "scripts/ci/refTemplates_*.py"
       - "scripts/decision_engines.py"
+      - "scripts/doe/assert_acs_bridge.py"
+      - "experiments/doe/assert_acs_2x2/**"
+      - "tests/test_assert_acs_bridge.py"
       - "scripts/laya_decision_stub.py"
       - ".github/workflows/refTemplates-eval.yml"
   pull_request:
@@ -13,6 +16,9 @@ on:
       - "refTemplates/**"
       - "scripts/ci/refTemplates_*.py"
       - "scripts/decision_engines.py"
+      - "scripts/doe/assert_acs_bridge.py"
+      - "experiments/doe/assert_acs_2x2/**"
+      - "tests/test_assert_acs_bridge.py"
       - "scripts/laya_decision_stub.py"
   schedule:
     - cron: "17 6 * * *"
@@ -48,6 +54,11 @@ jobs:
           python3 scripts/ci/refTemplates_score.py \
             --inventory docs/ops/generated/refTemplates/inventory.jsonl \
             --output docs/ops/generated/refTemplates/scores.jsonl
+      - name: CEEL ASSERT × ACS adapter tests
+        run: |
+          python3 -m unittest discover -s tests -p 'test_refTemplates_capability_inventory.py' -v
+          python3 -m unittest discover -s tests -p 'test_assert_acs_bridge.py' -v
+          python3 -m unittest discover -s experiments/doe/assert_acs_2x2/acs -p 'test_policy.py' -v
       - name: papers seed
         run: python3 scripts/ci/refTemplates_papers_seed.py
       - name: commit-slice (github API when token present)

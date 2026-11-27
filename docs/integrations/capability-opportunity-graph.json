@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "graph_id": "termux-monorepo.ceel.opportunity-graph",
   "repository": "timerloggedout-spec/termux-monorepo",
-  "updated_at": "2026-11-20",
+  "updated_at": "2026-11-27",
   "authority": "repository-maintained-capability-index",
   "nodes": [
     {
@@ -561,6 +561,395 @@
         "doe-candidate",
         "restricted-license"
       ]
+    },
+    {
+      "id": "assert",
+      "kind": "foss_project",
+      "name": "ASSERT",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "source_repository",
+        "locator": "https://github.com/responsibleai/ASSERT",
+        "revision": "45da4c56768436dd255cd0a0fe8bb7cf7d7e466c",
+        "observed_at": "2026-11-27T12:55:32Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "agent.specification.to.tests",
+          "status": "documented"
+        },
+        {
+          "capability_id": "agent.trace.grounded.evaluation",
+          "status": "documented"
+        },
+        {
+          "capability_id": "evaluation.local.artifacts",
+          "status": "documented"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "assert-source-review-2026-11-27",
+          "status": "partial",
+          "reference": "https://github.com/responsibleai/ASSERT/tree/45da4c56768436dd255cd0a0fe8bb7cf7d7e466c",
+          "notes": "Source surface rechecked 2026-11-27 at immutable revision 45da4c56768436dd255cd0a0fe8bb7cf7d7e466c; README and project surface reviewed; capability extraction is documented, local harness fit remains to be experimentally verified."
+        }
+      ],
+      "owner": "ceel",
+      "internal_consumers": [
+        "refTemplates/11_Evaluation_Quality/assert",
+        "ATES",
+        "agent-evaluation-lane-registry"
+      ],
+      "tags": [
+        "concept-adaptation",
+        "candidate",
+        "evaluation-quality"
+      ]
+    },
+    {
+      "id": "agent-governance-toolkit",
+      "kind": "foss_project",
+      "name": "Agent Governance Toolkit / Agent Control Specification",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "source_repository",
+        "locator": "https://github.com/microsoft/agent-governance-toolkit",
+        "revision": "3233be2338816257700a8dbdf531a21b9f359582",
+        "observed_at": "2026-11-27T12:55:32Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "agent.policy.portable.contract",
+          "status": "documented"
+        },
+        {
+          "capability_id": "agent.checkpoint.enforcement",
+          "status": "documented"
+        },
+        {
+          "capability_id": "agent.audit.evidence",
+          "status": "documented"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "agent-governance-toolkit-source-review-2026-11-27",
+          "status": "partial",
+          "reference": "https://github.com/microsoft/agent-governance-toolkit/tree/3233be2338816257700a8dbdf531a21b9f359582",
+          "notes": "Source surface rechecked 2026-11-27 at immutable revision 3233be2338816257700a8dbdf531a21b9f359582; Repository and Microsoft Foundry control documentation reviewed; local adapter and enforcement semantics remain experimental."
+        }
+      ],
+      "owner": "ceel",
+      "internal_consumers": [
+        "refTemplates/05_Safety_Observability/agent-governance-toolkit",
+        "safety-observability",
+        "ATES"
+      ],
+      "tags": [
+        "concept-adaptation",
+        "candidate",
+        "safety-observability"
+      ]
+    },
+    {
+      "id": "microsoft-agent-framework",
+      "kind": "foss_project",
+      "name": "Microsoft Agent Framework",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "source_repository",
+        "locator": "https://github.com/microsoft/agent-framework",
+        "revision": null,
+        "observed_at": "2026-11-27T12:55:32Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "agent.workflow.composition",
+          "status": "documented"
+        },
+        {
+          "capability_id": "agent.runtime.middleware",
+          "status": "documented"
+        },
+        {
+          "capability_id": "agent.framework.portability",
+          "status": "documented"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "microsoft-agent-framework-source-review-2026-11-27",
+          "status": "partial",
+          "reference": "https://github.com/microsoft/agent-framework",
+          "notes": "Source surface rechecked 2026-11-27; immutable revision retrieval remains pending; Open-source framework surface reviewed; evaluate concepts against current runtime before any replacement decision."
+        }
+      ],
+      "owner": "ceel",
+      "internal_consumers": [
+        "refTemplates/01_Agent_Runtime/microsoft-agent-framework",
+        "agent-runtime",
+        "manager-tournament"
+      ],
+      "tags": [
+        "concept-adaptation",
+        "candidate",
+        "agent-runtime"
+      ]
+    },
+    {
+      "id": "foundry-local",
+      "kind": "foss_project",
+      "name": "Microsoft Foundry Local",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "source_repository",
+        "locator": "https://github.com/microsoft/Foundry-Local",
+        "revision": null,
+        "observed_at": "2026-11-27T12:55:32Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "inference.local.runtime",
+          "status": "documented"
+        },
+        {
+          "capability_id": "inference.hardware.acceleration",
+          "status": "documented"
+        },
+        {
+          "capability_id": "inference.android.termux.compatibility",
+          "status": "hypothesis"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "foundry-local-source-review-2026-11-27",
+          "status": "partial",
+          "reference": "https://github.com/microsoft/Foundry-Local",
+          "notes": "Source surface rechecked 2026-11-27; immutable revision retrieval remains pending; Local inference runtime documented; Android/Termux compatibility remains an explicit test question."
+        }
+      ],
+      "owner": "ceel",
+      "internal_consumers": [
+        "refTemplates/01_Agent_Runtime/foundry-local",
+        "Termux runtime qualification",
+        "local-inference"
+      ],
+      "tags": [
+        "concept-adaptation",
+        "candidate",
+        "agent-runtime"
+      ]
+    },
+    {
+      "id": "microsoft-foundry-skills",
+      "kind": "foss_project",
+      "name": "Microsoft Foundry Skills",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "source_repository",
+        "locator": "https://github.com/microsoft/skills/tree/main/.github/plugins/azure-skills/skills/microsoft-foundry",
+        "revision": "47eb3888eb42aef074fcb617931bf6e5934e45d9",
+        "observed_at": "2026-11-27T12:55:32Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "prompt.context.task.skill",
+          "status": "documented"
+        },
+        {
+          "capability_id": "foundry.workflow.guidance",
+          "status": "documented"
+        },
+        {
+          "capability_id": "skill.pattern.selective.harvest",
+          "status": "hypothesis"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "microsoft-foundry-skills-source-review-2026-11-27",
+          "status": "partial",
+          "reference": "https://github.com/microsoft/skills/tree/47eb3888eb42aef074fcb617931bf6e5934e45d9/.github/plugins/azure-skills/skills/microsoft-foundry/SKILL.md",
+          "notes": "Source surface rechecked 2026-11-27 at immutable revision 47eb3888eb42aef074fcb617931bf6e5934e45d9; Official skill surface reviewed; selective pattern extraction and repo-specific utility require local evaluation."
+        }
+      ],
+      "owner": "ceel",
+      "internal_consumers": [
+        "refTemplates/07_Prompt_Context/microsoft-foundry-skills",
+        "prompt-context",
+        "agent-instructions"
+      ],
+      "tags": [
+        "concept-adaptation",
+        "candidate",
+        "prompt-context"
+      ]
+    },
+    {
+      "id": "frontier-week-hack",
+      "kind": "foss_project",
+      "name": "Microsoft Frontier Week Hack",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "source_repository",
+        "locator": "https://github.com/microsoft/FrontierWeekHack",
+        "revision": "cd7ec1717fbf109bf6e76edfa38a5a7cfc0d88ea",
+        "observed_at": "2026-11-27T12:55:32Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "agent.lifecycle.build.monitor.evaluate.deploy",
+          "status": "documented"
+        },
+        {
+          "capability_id": "agent.hackathon.reference.patterns",
+          "status": "documented"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "frontier-week-hack-source-review-2026-11-27",
+          "status": "partial",
+          "reference": "https://github.com/microsoft/FrontierWeekHack/tree/cd7ec1717fbf109bf6e76edfa38a5a7cfc0d88ea",
+          "notes": "Source surface rechecked 2026-11-27 at immutable revision cd7ec1717fbf109bf6e76edfa38a5a7cfc0d88ea; Hackathon reference collection; harvest patterns and test individual components rather than importing the project as a runtime."
+        }
+      ],
+      "owner": "ceel",
+      "internal_consumers": [
+        "refTemplates/12_External_Agents/frontier-week-hack",
+        "agent-lifecycle-reference"
+      ],
+      "tags": [
+        "concept-adaptation",
+        "candidate",
+        "external-agent-pattern"
+      ]
+    },
+    {
+      "id": "foundry-e2e-agent-observability-workshop",
+      "kind": "foss_project",
+      "name": "Microsoft Foundry E2E Agent Observability Workshop",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "source_repository",
+        "locator": "https://github.com/Azure-Samples/microsoft-foundry-e2e-agent-observability-workshop",
+        "revision": "75eb82dfe36e5aae3375829a85433d940e422070",
+        "observed_at": "2026-11-27T12:55:32Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "agent.trace.to.evaluation.pipeline",
+          "status": "documented"
+        },
+        {
+          "capability_id": "agent.observability.control.pattern",
+          "status": "documented"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "foundry-e2e-agent-observability-workshop-source-review-2026-11-27",
+          "status": "partial",
+          "reference": "https://github.com/Azure-Samples/microsoft-foundry-e2e-agent-observability-workshop/tree/75eb82dfe36e5aae3375829a85433d940e422070",
+          "notes": "Source surface rechecked 2026-11-27 at immutable revision 75eb82dfe36e5aae3375829a85433d940e422070; Workshop architecture reviewed; map OTel trace, evaluation, optimization and red-team stages to native evidence."
+        }
+      ],
+      "owner": "ceel",
+      "internal_consumers": [
+        "refTemplates/05_Safety_Observability/foundry-e2e-agent-observability-workshop",
+        "observability-workshop-reference"
+      ],
+      "tags": [
+        "concept-adaptation",
+        "candidate",
+        "safety-observability"
+      ]
+    },
+    {
+      "id": "agentic-factory-hack",
+      "kind": "foss_project",
+      "name": "Microsoft Agentic Factory Hack",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "source_repository",
+        "locator": "https://github.com/microsoft/agentic-factory-hack",
+        "revision": "26b906d3e2e3f073ced52bd15ee2ae6c150625fe",
+        "observed_at": "2026-11-27T12:55:32Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "multiagent.workflow.orchestration",
+          "status": "documented"
+        },
+        {
+          "capability_id": "agentic.factory.reference.patterns",
+          "status": "documented"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "agentic-factory-hack-source-review-2026-11-27",
+          "status": "partial",
+          "reference": "https://github.com/microsoft/agentic-factory-hack/tree/26b906d3e2e3f073ced52bd15ee2ae6c150625fe",
+          "notes": "Source surface rechecked 2026-11-27 at immutable revision 26b906d3e2e3f073ced52bd15ee2ae6c150625fe; Predictive-maintenance multi-agent example; use as a competition architecture and pattern source."
+        }
+      ],
+      "owner": "ceel",
+      "internal_consumers": [
+        "refTemplates/12_External_Agents/agentic-factory-hack",
+        "multiagent-architecture-reference"
+      ],
+      "tags": [
+        "concept-adaptation",
+        "candidate",
+        "external-agent-pattern"
+      ]
+    },
+    {
+      "id": "microsoft-foundry-managed-platform",
+      "kind": "external_platform",
+      "name": "Microsoft Foundry managed platform",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "official_documentation",
+        "locator": "https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry",
+        "revision": null,
+        "observed_at": "2026-11-27T12:55:32Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "foundry.agent.managed.platform",
+          "status": "documented"
+        },
+        {
+          "capability_id": "foundry.control.plane.rbac.policy",
+          "status": "documented"
+        },
+        {
+          "capability_id": "foundry.observability.evaluation",
+          "status": "documented"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "microsoft-foundry-managed-platform-docs-2026-11-27",
+          "status": "partial",
+          "reference": "https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry",
+          "notes": "Official Microsoft Foundry platform documentation rechecked 2026-11-27; the managed Azure platform remains a separate boundary reference from independently published component repositories."
+        }
+      ],
+      "owner": "ceel",
+      "internal_consumers": [
+        "Foundry platform boundary reference",
+        "manager-comparison"
+      ],
+      "tags": [
+        "managed-platform",
+        "foundry-boundary",
+        "reference-only"
+      ]
     }
   ],
   "edges": [
@@ -670,6 +1059,84 @@
       "from": "rust-zero-drift-guardrails",
       "to": "doe-family",
       "relationship": "informs",
+      "status": "hypothesis"
+    },
+    {
+      "from": "assert",
+      "to": "doe-family",
+      "relationship": "measures",
+      "status": "hypothesis"
+    },
+    {
+      "from": "assert",
+      "to": "agent-governance-toolkit",
+      "relationship": "complements",
+      "status": "hypothesis"
+    },
+    {
+      "from": "agent-governance-toolkit",
+      "to": "doe-family",
+      "relationship": "informs",
+      "status": "hypothesis"
+    },
+    {
+      "from": "microsoft-agent-framework",
+      "to": "doe-family",
+      "relationship": "measures",
+      "status": "hypothesis"
+    },
+    {
+      "from": "foundry-local",
+      "to": "doe-family",
+      "relationship": "measures",
+      "status": "hypothesis"
+    },
+    {
+      "from": "microsoft-foundry-skills",
+      "to": "integration-intelligence",
+      "relationship": "informs",
+      "status": "hypothesis"
+    },
+    {
+      "from": "frontier-week-hack",
+      "to": "microsoft-agent-framework",
+      "relationship": "informs",
+      "status": "hypothesis"
+    },
+    {
+      "from": "foundry-e2e-agent-observability-workshop",
+      "to": "agent-governance-toolkit",
+      "relationship": "complements",
+      "status": "hypothesis"
+    },
+    {
+      "from": "agentic-factory-hack",
+      "to": "microsoft-agent-framework",
+      "relationship": "informs",
+      "status": "hypothesis"
+    },
+    {
+      "from": "microsoft-foundry-managed-platform",
+      "to": "microsoft-agent-framework",
+      "relationship": "complements",
+      "status": "hypothesis"
+    },
+    {
+      "from": "microsoft-foundry-managed-platform",
+      "to": "foundry-local",
+      "relationship": "complements",
+      "status": "hypothesis"
+    },
+    {
+      "from": "microsoft-foundry-managed-platform",
+      "to": "agent-governance-toolkit",
+      "relationship": "complements",
+      "status": "hypothesis"
+    },
+    {
+      "from": "microsoft-foundry-managed-platform",
+      "to": "microsoft-foundry-skills",
+      "relationship": "complements",
       "status": "hypothesis"
     }
   ]

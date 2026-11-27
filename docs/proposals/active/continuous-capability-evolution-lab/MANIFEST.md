@@ -11,9 +11,10 @@ reviewers:
     role: operator-authorizer
     status: accepted
 related_issues: []
-related_prs: []
+related_prs:
+  - 5908
 related_branches:
-  - feat/ceel-continuous-capability-evolution-20261111
+  - feat/ceel-006-concept-competition-20261125
 gates_required: [proposal-lifecycle, repo-gate, termux-smoke]
 ---
 
@@ -62,3 +63,5 @@ The operator authorized this scoped execution. Independent review and same-SHA r
 - docs/superpowers/plans/2026-11-11-continuous-capability-evolution-lab.md
 - docs/integrations/capability-opportunity-graph.json
 - docs/integrations/PLATFORM-COMPARISON.md
+- docs/ops/CEEL-CONCEPT-ADAPTATION-AND-COMPETITION.md
+- refTemplates/00_Index/SOURCE-MAP.md

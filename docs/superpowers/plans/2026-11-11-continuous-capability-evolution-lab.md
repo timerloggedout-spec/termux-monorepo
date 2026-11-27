@@ -2,7 +2,7 @@
 
 **Design:** 2026-11-11-continuous-capability-evolution-lab.md  
 **Proposal:** CCEL-001 through CCEL-006  
-**Branch:** feat/ceel-continuous-capability-evolution-20261111
+**Branch:** feat/ceel-006-concept-competition-20261125
 
 ## Delivery strategy
 
@@ -16,11 +16,14 @@ Land a complete, reviewable foundation: proposal registration, capability graph 
 4. **Integrate validation.** Extend existing integration-portfolio.yml to run graph validator/tests. Do not create a new cron or parallel workflow. Preserve contents: read.
 5. **DoE/Delphi design.** Define four binary factors and 16 factorial combinations. Preregister cohorts, outcomes, evaluator versions, configured-instance tuple, blocking, assignment, replication and stopping rule. Use canonical experiment schema. Delphi compares proposals; EGM applies only under its stakes rule.
 6. **Event-driven awareness.** Reuse PR, push, release, issue, workflow_run and repository_dispatch. Use provider webhooks when supported; otherwise bounded cursor reads. Existing integration mesh polling is recovery/reconciliation, not awareness. Add no weekly-only discovery scheduler.
-7. **Validate and deliver.** Run in a full checkout:
+7. **CCEL-006 concept adaptation.** Add source-attributed metadata-first entries under the correct `01`–`14` category. Keep research-template layout scoring separate from capability metadata-readiness scoring. Run ASSERT × ACS as the first 2×2 experiment; then compare Agent Framework architecture, Foundry Local inference and selected Foundry Skills patterns in separate cohorts. Route licensing disposition to the designated licensing duty owner.
+8. **Build ASSERT × ACS adapter.** Implement a frozen three-case cohort, native/ACS tool targets, ACS redacted audit receipts, native trace scoring, and a four-cell bridge that emits canonical DoE records. Keep mock conformance and provider-backed efficacy as separate evidence states.
+9. **Validate and deliver.** Run in a full checkout:
    
    ```bash
    python3 scripts/integrations/validate_capability_graph.py
    python3 -m unittest discover -s tests -p 'test_capability_opportunity_graph.py' -v
+   python3 -m unittest discover -s tests -p 'test_refTemplates_capability_inventory.py' -v
    python3 scripts/integrations/validate_portfolio.py
    python3 scripts/proposals/validate_registry.py
    python3 scripts/ci/repo_gate.py

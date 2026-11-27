@@ -1394,3 +1394,20 @@ proposals:
     gates_required:
       - repo-gate
       - termux-smoke
+  - id: gate-admission-optimization
+    title: "Evidence-driven gate admission optimization"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/gate-admission-optimization/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_issues: []
+    related_prs: []
+    related_branches:
+      - feat/gate-admission-optimization-20261127
+    gates_required:
+      - repo-gate
+      - termux-smoke

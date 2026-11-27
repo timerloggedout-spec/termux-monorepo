@@ -1,13 +1,13 @@
 name: termux smoke
 
 # Agentic Termux runtime surface check.
-# Sits *after* repo-gate (hygiene) and *before* language-specific / provider work.
+# The workflow check stays visible; the smoke suite runs for matching surfaces.
 #
 # On device:
 #     python3 scripts/ci/termux_smoke.py
 #     python3 scripts/ci/termux_smoke.py --with-optional
 #
-# No cargo, no node, no pip, no network required for the default path.
+# The admission and default smoke paths use Python stdlib only.
 
 on:
   pull_request:
@@ -30,21 +30,37 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
           submodules: false
 
+      - name: Determine Termux surface
+        id: admission
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before || '' }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          python3 scripts/ci/gate_admission.py \
+            --event "$EVENT_NAME" \
+            --base "$BASE_SHA" \
+            --head "$HEAD_SHA" \
+            --github-output "$GITHUB_OUTPUT"
+
       - name: Smoke gate regression tests
+        if: steps.admission.outputs.required == 'true'
         run: python3 -B -m unittest discover -s tests -p 'test_termux_smoke.py' -v
 
-      - name: Bucket headroom unit and workflow-contract tests
-        run: |
-          python3 -m pip install --disable-pip-version-check --quiet PyYAML pytest
-          python3 -m pytest -q tests/test_bucket_headroom.py tests/test_bucket_headroom_workflow.py
-
       - name: Core smoke (required)
+        if: steps.admission.outputs.required == 'true'
         run: python3 scripts/ci/termux_smoke.py
 
       - name: Optional agent-surface probes
+        if: steps.admission.outputs.required == 'true'
         run: python3 scripts/ci/termux_smoke.py --with-optional
         # Optional probes never fail the job unless --strict is used later.
         continue-on-error: true
+
+      - name: Termux surface unchanged
+        if: steps.admission.outputs.required != 'true'
+        run: echo "Termux surface unchanged; smoke execution skipped by admission."

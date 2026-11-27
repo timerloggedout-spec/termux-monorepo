@@ -1,0 +1,44 @@
+name: bucket-headroom-contract
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/ops/bucket_headroom.py'
+      - 'tests/test_bucket_headroom.py'
+      - 'tests/test_bucket_headroom_workflow.py'
+      - '.github/workflows/bucket-headroom-watch.yml'
+      - '.github/workflows/bucket-headroom-contract.yml'
+      - 'ops/github-apps/PROCESS.json'
+  push:
+    branches: [master, master-staging]
+    paths:
+      - 'scripts/ops/bucket_headroom.py'
+      - 'tests/test_bucket_headroom.py'
+      - 'tests/test_bucket_headroom_workflow.py'
+      - '.github/workflows/bucket-headroom-watch.yml'
+      - '.github/workflows/bucket-headroom-contract.yml'
+      - 'ops/github-apps/PROCESS.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bucket-headroom-contract-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contract:
+    name: bucket headroom contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          submodules: false
+
+      - name: Bucket headroom unit and workflow-contract tests
+        run: |
+          python3 -m pip install --disable-pip-version-check --quiet PyYAML pytest
+          python3 -m pytest -q tests/test_bucket_headroom.py tests/test_bucket_headroom_workflow.py

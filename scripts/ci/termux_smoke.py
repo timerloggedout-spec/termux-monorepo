@@ -177,15 +177,27 @@ def check_self_compile(report: SmokeReport) -> None:
 
 
 def check_sim_memory_contract(report: SmokeReport) -> None:
-    """Validate the checked-in SIM fixture through the stdlib-only contract gate."""
+    """Run the SIM fixture and focused stdlib unit tests."""
     validator = REPO_ROOT / "scripts/ci/validate_sim_memory.py"
     fixture = REPO_ROOT / "tests/fixtures/sim-memory-smoke.jsonl"
     rc, out, err = run_cmd(
         [sys.executable, "-B", str(validator), "--path", str(fixture)],
         timeout=15.0,
     )
-    detail = (out or err or f"rc={rc}").replace("\n", " | ")[:240]
     if rc != 0:
+        detail = (err or out or f"rc={rc}").replace("\n", " | ")[:240]
+        report.add(CheckResult("sim-memory-contract", "FAIL", detail))
+        return
+
+    test_rc, test_out, test_err = run_cmd(
+        [
+            sys.executable, "-B", "-m", "unittest", "discover",
+            "-s", "tests", "-p", "test_sim_memory.py", "-v",
+        ],
+        timeout=30.0,
+    )
+    detail = (out + " | " + (test_out or test_err or f"tests rc={test_rc}")).replace("\n", " | ")[:240]
+    if test_rc != 0:
         report.add(CheckResult("sim-memory-contract", "FAIL", detail))
     else:
         report.add(CheckResult("sim-memory-contract", "PASS", detail or "ok"))

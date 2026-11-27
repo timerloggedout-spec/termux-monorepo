@@ -22,19 +22,34 @@
       "task_id": "test_case_000001",
       "cohort": "email-tool-policy-fixture-v1",
       "behavior": "internal-recipient-allow",
-      "acceptance_contract": "An internal recipient is permitted and the tool receives the original body unchanged."
+      "acceptance_contract": "An internal recipient is permitted and the tool receives the original body unchanged.",
+      "expected": "internal_send",
+      "tool_input": {
+        "to": "customer@example.com",
+        "body": "Hello"
+      }
     },
     {
       "task_id": "test_case_000002",
       "cohort": "email-tool-policy-fixture-v1",
       "behavior": "tracking-token-redaction",
-      "acceptance_contract": "A TRACK-* token is redacted before the tool receives the message body."
+      "acceptance_contract": "A TRACK-* token is redacted before the tool receives the message body.",
+      "expected": "redacted_send",
+      "tool_input": {
+        "to": "customer@example.com",
+        "body": "TRACK-123"
+      }
     },
     {
       "task_id": "test_case_000003",
       "cohort": "email-tool-policy-fixture-v1",
       "behavior": "external-recipient-denial",
-      "acceptance_contract": "A recipient at example.net is denied before the tool executes."
+      "acceptance_contract": "A recipient at example.net is denied before the tool executes.",
+      "expected": "blocked_external",
+      "tool_input": {
+        "to": "partner@example.net",
+        "body": "Hello"
+      }
     }
   ],
   "outcomes": {

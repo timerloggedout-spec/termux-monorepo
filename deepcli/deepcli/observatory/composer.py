@@ -110,11 +110,23 @@ def compose_score(
         if not isinstance(task, dict):
             raise ValueError(f"tasks[{index}] must be an object")
         task_ids.append(_required_text(task.get("id"), f"tasks[{index}].id"))
+        dependencies = task.get("depends_on", [])
+        if not isinstance(dependencies, list):
+            raise ValueError(f"tasks[{index}].depends_on must be a sequence of task IDs")
+        task["depends_on"] = [
+            _required_text(dependency, f"tasks[{index}].depends_on")
+            for dependency in dependencies
+        ]
     if len(task_ids) != len(set(task_ids)):
         raise ValueError("tasks must have unique task IDs")
 
     if not isinstance(assignments, Mapping):
         raise ValueError("assignments must be a task-keyed mapping")
+    if any(
+        not isinstance(key, str) or not key.strip() or key != key.strip()
+        for key in assignments
+    ):
+        raise ValueError("assignment keys must be non-empty trimmed strings")
     normalized_assignments = _json_clone(assignments, "assignments")
     if not isinstance(normalized_assignments, dict):
         raise ValueError("assignments must be a task-keyed object")
@@ -134,9 +146,7 @@ def compose_score(
     # The intent task graph is canonical for dependencies. Assignment metadata
     # supplies timing and evidence; stale caller dependency copies are replaced.
     for task in tasks:
-        normalized_assignments[task["id"]]["depends_on"] = list(
-            task.get("depends_on", [])
-        )
+        normalized_assignments[task["id"]]["depends_on"] = task["depends_on"]
     cue_sheet = build_cue_sheet(
         plan, normalized_assignments, placement=placement,
     )

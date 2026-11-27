@@ -25,6 +25,15 @@ def build_cue_sheet(
     missing = set(flattened) - assignments.keys()
     if missing:
         raise ValueError(f"assignment metadata missing for tasks: {sorted(missing)}")
+    required = {"nominal_at", "opens_at", "closes_at", "expected_duration_ms", "phase", "open_length_ms", "dependency_barriers", "evidence_refs"}
+    for task_id in flattened:
+        absent = required - assignments[task_id].keys()
+        if absent:
+            raise ValueError(f"assignment {task_id} missing cue metadata: {sorted(absent)}")
+        if not str(assignments[task_id]["phase"]).strip():
+            raise ValueError(f"assignment {task_id} requires a phase")
+        if int(assignments[task_id]["open_length_ms"]) <= 0:
+            raise ValueError(f"assignment {task_id} open_length_ms must be positive")
     cues = []
     for wave_index, wave in enumerate(waves):
         cues.append({

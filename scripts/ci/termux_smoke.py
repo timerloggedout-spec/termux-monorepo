@@ -144,6 +144,9 @@ def check_repo_layout(report: SmokeReport) -> None:
         "scripts/ci/repo_gate.py",
         "scripts/ci/termux_smoke.py",
         "docs/ARCHW1Z-GATE.md",
+        "docs/ops/SELF-IMPROVEMENT-MEMORY.schema.json",
+        "scripts/ci/validate_sim_memory.py",
+        "tests/fixtures/sim-memory-smoke.jsonl",
     ]
     missing = [p for p in required_paths if not (REPO_ROOT / p).exists()]
     if missing:
@@ -171,6 +174,21 @@ def check_self_compile(report: SmokeReport) -> None:
         report.add(CheckResult("smoke-self-compile", "FAIL", err or out or f"rc={rc}"))
     else:
         report.add(CheckResult("smoke-self-compile", "PASS", "compiles clean"))
+
+
+def check_sim_memory_contract(report: SmokeReport) -> None:
+    """Validate the checked-in SIM fixture through the stdlib-only contract gate."""
+    validator = REPO_ROOT / "scripts/ci/validate_sim_memory.py"
+    fixture = REPO_ROOT / "tests/fixtures/sim-memory-smoke.jsonl"
+    rc, out, err = run_cmd(
+        [sys.executable, "-B", str(validator), "--path", str(fixture)],
+        timeout=15.0,
+    )
+    detail = (out or err or f"rc={rc}").replace("\n", " | ")[:240]
+    if rc != 0:
+        report.add(CheckResult("sim-memory-contract", "FAIL", detail))
+    else:
+        report.add(CheckResult("sim-memory-contract", "PASS", detail or "ok"))
 
 
 def check_git_available(report: SmokeReport) -> None:
@@ -366,6 +384,7 @@ def main() -> int:
     check_repo_layout(report)
     check_repo_gate_importable(report)
     check_self_compile(report)
+    check_sim_memory_contract(report)
 
     if not args.light:
         check_git_available(report)

@@ -18,6 +18,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMA_PATH = ROOT / "docs" / "ops" / "SELF-IMPROVEMENT-MEMORY.schema.json"
+RFC3339_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$")
 
 
 class SimMemoryValidationError(ValueError):
@@ -63,11 +64,13 @@ def _schema_errors(value: Any, schema: dict[str, Any], path: str = "$") -> list[
             errors.append(f"{path}: string does not match required pattern")
         if schema.get("format") == "date-time":
             try:
+                if RFC3339_RE.fullmatch(value) is None:
+                    raise ValueError("timestamp must use RFC 3339 date-time form")
                 parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
                 if parsed.tzinfo is None:
-                    errors.append(f"{path}: date-time requires a timezone")
+                    raise ValueError("timestamp requires a timezone")
             except ValueError:
-                errors.append(f"{path}: invalid date-time")
+                errors.append(f"{path}: invalid RFC 3339 date-time")
 
     if isinstance(value, (int, float)) and not isinstance(value, bool):
         if "minimum" in schema and value < schema["minimum"]:

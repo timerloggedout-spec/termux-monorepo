@@ -40,10 +40,11 @@ All ITEMS terminal + Review log outcome + move active/ → closed/ + registry up
 
 ## Gate coupling
 
-1. repo-gate green
-2. termux-smoke green
-3. Item IDs cited
-4. No unresolved critical PR threads
+1. repo-gate green on the exact candidate SHA
+2. Siglary validator green on the exact candidate SHA
+3. termux-smoke green when `scripts/ci/gate_admission.py` admits the Termux surface; otherwise record `SKIPPED` with the classifier reason
+4. Item IDs cited
+5. Critical PR threads resolved or dispositioned
 
 ## Agent entrypoint
 

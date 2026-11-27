@@ -60,6 +60,15 @@ SEEDS = [
         "priority": "normal",
         "eval_notes": "Local-first research agents",
     },
+    {
+        "id": "sim-crsi-2026",
+        "title": "Self-Improvement Memory Enables Continual Recursive Self-Improvement",
+        "url": "https://arxiv.org/abs/2611.18856",
+        "source_class": "arxiv",
+        "linked_slots": ["13_Third_Party_Refs/self-improvement-memory-crsi", "17_Papers"],
+        "priority": "HIGH",
+        "eval_notes": "Optimizer-side harness-edit history; adapted contract in docs/ops/SELF-IMPROVEMENT-MEMORY.md. Preprint results remain source-reported; no public implementation linked.",
+    },
 ]
 
 

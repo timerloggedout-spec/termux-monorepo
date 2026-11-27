@@ -39,3 +39,20 @@ def test_source_sha_must_be_immutable_full_revision():
     atlas = json.loads(ATLAS_PATH.read_text(encoding="utf-8"))
     atlas["source_sha"] = "master"
     assert any("full 40-character" in error for error in validate_domain_atlas(atlas))
+
+SCHEMA_PATH = ROOT / "config/context_relationships/domain-atlas.schema.json"
+
+
+def test_json_schema_pins_provenance_and_relationship_classification():
+    schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+    assert {"schema_version", "projection", "source_ref", "source_sha", "domains", "relationships"} <= set(schema["required"])
+    relationship = schema["properties"]["relationships"]["items"]["properties"]
+    assert relationship["classification"]["enum"] == ["verified", "candidate", "unknown"]
+    source_url = schema["properties"]["domains"]["items"]["properties"]["sources"]["items"]["properties"]["url"]
+    assert source_url["pattern"] == "^https://"
+
+
+def test_unproven_telemetry_to_moneyball_mapping_remains_candidate():
+    atlas = json.loads(ATLAS_PATH.read_text(encoding="utf-8"))
+    edge = next(item for item in atlas["relationships"] if item["id"] == "telemetry-feeds-moneyball")
+    assert edge["classification"] == "candidate"

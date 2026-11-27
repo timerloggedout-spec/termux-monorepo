@@ -14,12 +14,6 @@ intervention_points:
     tool_name_from: $.tool_call.name
     policy:
       id: email_policy
-  post_tool_call:
-    policy_target: $.tool_result.value
-    policy_target_kind: tool_result
-    tool_name_from: $.tool_call.name
-    policy:
-      id: email_policy
 tools:
   send_email:
     clearance: internal

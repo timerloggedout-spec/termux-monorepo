@@ -24,7 +24,7 @@ Repository-owned localization contract for websites, Teammate Portal, and docume
 10. Treat human review and assistive-technology checks as release evidence.
 
 ## Provider adapter boundary
-Adapters implement translate(source, target_locale, context, glossary, options) and return normalized output with provider/model/version, request ID, detected source, latency, usage/cost metadata when available, and warnings. Adapters never write directly to published catalogs.
+Planned adapters implement translate(source, target_locale, context, glossary, options) and return normalized output with provider/model/version, request ID, detected source, latency, usage/cost metadata when available, and warnings. The current registry records candidate providers and credential references; provider adapters remain planned and disabled. Adapters write draft artifacts and provenance records; a human review gate controls catalog publication.
 
 ## Teammate Portal
 The portal shell is rendered by scripts/ops/render_teammate_portal_status.py. Locale catalogs provide interface strings; proposal documents remain source-linked English until a reviewed translation is registered in mapping and manifest.

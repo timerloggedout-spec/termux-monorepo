@@ -1,7 +1,9 @@
+import json
 import sys
 from pathlib import Path
 import unittest
 
+REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from deepcli.observatory.brain.signals import normalize_signals
@@ -144,6 +146,16 @@ class BrainSystemTests(unittest.TestCase):
         self.assertEqual(len(first["score_id"]), 64)
         self.assertEqual(first["cue_sheet"]["authority"], "dispatch_intent_only")
         self.assertEqual(first["authority"]["composer"], "intent_and_score_composition_only")
+
+    def test_brain_composer_schema_declares_score_and_authority_contract(self):
+        schema_path = REPO_ROOT / "docs" / "schemas" / "brain.composer.score.v1.schema.json"
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        self.assertEqual(schema["properties"]["schema_version"]["const"], "brain.composer.score.v1")
+        self.assertEqual(schema["properties"]["score_id"]["pattern"], "^[0-9a-f]{64}$")
+        self.assertEqual(schema["properties"]["cue_sheet"]["properties"]["authority"]["const"], "dispatch_intent_only")
+        self.assertIn("action_shortlist", schema["required"])
+        self.assertIn("timing_feedback", schema["required"])
+        self.assertIn("wake_recommendation", schema["required"])
 
     def test_score_id_tracks_evidence_changes(self):
         intent = {"goal": "validate release", "priority": 3}

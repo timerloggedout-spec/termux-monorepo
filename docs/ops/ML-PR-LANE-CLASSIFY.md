@@ -1,60 +1,36 @@
 # ML PR lane classify — production run of the vocab-v2 PR classifier
 
-Contract for `.github/workflows/ml-pr-lane-classify.yml` +
-`ml/pipelines/production_classify.py`. Closes gap 1 of
-docs/ops/TIER1-CLASSIFIER-RECON-2026-10-28.md: `classify_pr`
-(ml/pipelines/lanes) had no production trigger — the keep-alive
-workflow only unit-tests the package when ml/** paths change (last
-fired 2026-10-21), so the fleet's own PR-disposition vocabulary
-classified nothing live.
+Contract for `.github/workflows/ml-pr-lane-classify.yml` and
+`ml/pipelines/production_classify.py`.
 
 ## What runs
 
-Daily 05:37 UTC + workflow_dispatch. The collector is invoked as a
-module from the repo root (`python3 -m ml.pipelines.production_classify`) —
-script-path invocation puts ml/pipelines/ at sys.path[0], where its
-operator/ subpackage shadows the stdlib operator module. It lists every open PR,
-maps each to the classifier's input dict, runs `classify_pr`, and
-writes the feed to `ops/ml/pr-lane-feed.json` (schema `pr-lane-feed/v1`:
-generated_at, open_prs, per-lane counts, per-PR rows with lane, gates,
-age, size, base_ref, mergeable_state — the last two added 2026-10-31
-so replaying the classifier over a frozen feed reproduces it exactly;
-live-2-prlane-tuning phase 0 found non-master bases unreplayable
-without them). The workflow commits the feed only when it changed. Each
-successful run also appends one counts-only line to
-`ops/ml/pr-lane-series.jsonl` ({generated_at, open_prs, counts,
-delta_vs_previous, fetch_warnings}) — the trend series for renderers,
-so nobody has to mine git history for past counts. Error runs do not
-append.
+Daily 05:37 UTC + `workflow_dispatch`. The collector runs as a module from the repo root:
 
-## Input mapping (honest, by design)
+```bash
+python3 -m ml.pipelines.production_classify
+```
 
-From the pulls API directly: title, draft, mergeable_state, base ref,
-author, changed_files, age from created_at. Gates come from the head
-sha's check runs: `repo-gate` = a completed "hygiene + portability
-gate" run with conclusion success; `termux-smoke` = same for "agentic
-termux smoke". A PR whose checks have not run classifies
-NEED_EVIDENCE — that is the classifier's verdict on missing evidence.
+It lists open PRs, reads each head SHA and check runs, fetches the paginated changed-file list, applies the shared Termux surface predicate, runs `classify_pr`, and writes `ops/ml/pr-lane-feed.json` (`pr-lane-feed/v1`). Each PR row includes lane, gates, `termux_smoke_required`, age, size, base ref, and mergeable state. The workflow commits the feed when its content changes. Successful runs append one counts-only line to `ops/ml/pr-lane-series.jsonl`.
 
-Session-era signals with no live source (wholesale, keep_alive,
-product, why) are fixed False/"" and documented here rather than
-silently implied; the minesweeper number set and title tokens apply
-verbatim from ml/pipelines/lanes rules.
+## Input mapping
+
+From the pulls API: title, draft, mergeable state, base ref, author, changed-file count, and age from `created_at`.
+
+From the paginated `pulls/{number}/files` endpoint: changed paths. The shared predicate in `scripts/ci/gate_admission.py` derives `termux_smoke_required`.
+
+- `repo-gate`: completed `hygiene + portability gate` check with conclusion `success`.
+- `termux-smoke`: completed `agentic termux smoke` check with conclusion `success`, required only when `termux_smoke_required=true`.
+- A complete changed-path list outside the Termux surface allows `CANDIDATE` with repo-gate evidence.
+- A Termux-surface change requires both repo-gate and Termux smoke evidence.
+- Missing or incomplete changed-path evidence sets `termux_smoke_required=true`, preserving the runtime check.
+
+Session-era signals with no live source (wholesale, keep_alive, product, why) retain their documented fixed values. The minesweeper number set and title tokens apply from `ml/pipelines/lanes` rules.
 
 ## Failure record
 
-A failed run writes nothing: the last good feed stays in place
-(staleness is visible in its generated_at) and no error state ever
-reaches consumers or the dashboard mirror. The failure surfaces as a
-`::error::` stage annotation on the run (exception type + message) —
-annotations are readable through the fleet's API route even though
-job logs are not. (This reverses the original error-feed design after
-the 2026-10-28 series-parse failure overwrote a good feed with an
-error payload.)
+A failed collector run leaves the last good feed in place; staleness remains visible in `generated_at`. The run surfaces the failure through a `::error::` stage annotation with exception type and message. The counts series appends only after a successful run.
 
 ## Boundaries
 
-Descriptive only: the run labels nothing, comments nowhere, and gates
-nothing. Consumers read the committed feed. If a lane vocabulary or
-rule changes, this contract and the recon doc's section B update in
-the same PR.
+The classifier is descriptive. It labels PR lanes and writes the committed feed; it performs no merge, comment, deployment, or provider action. If a lane vocabulary or rule changes, update this contract and the reconciliation document in the same PR.

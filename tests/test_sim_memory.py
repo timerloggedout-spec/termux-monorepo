@@ -166,6 +166,42 @@ class SimMemoryValidatorTests(unittest.TestCase):
         with self.assertRaisesRegex(SimMemoryValidationError, "exceed the predicted task set"):
             validate_records(path)
 
+    def test_predicted_tasks_require_observed_outcomes(self):
+        attempt = attempt_event()
+        attempt["attempt"]["observation"]["fixed_task_ids"] = []
+        attempt["attempt"]["observation"]["missed_task_ids"] = []
+        path = self.write_stream(problem_event(), attempt)
+        with self.assertRaisesRegex(SimMemoryValidationError, "missing observed outcomes"):
+            validate_records(path)
+
+    def test_json_nan_is_rejected(self):
+        path = self.write_stream(problem_event(), attempt_event())
+        raw = path.read_text(encoding="utf-8").replace('"observed": 1', '"observed": NaN')
+        path.write_text(raw, encoding="utf-8")
+        with self.assertRaisesRegex(SimMemoryValidationError, "invalid JSON numeric constant NaN"):
+            validate_records(path)
+
+    def test_integral_decimal_json_number_is_an_integer(self):
+        path = self.write_stream(problem_event(), attempt_event())
+        raw = path.read_text(encoding="utf-8").replace('"passed": 1', '"passed": 1.0')
+        path.write_text(raw, encoding="utf-8")
+        self.assertEqual(validate_records(path)["attempts"], 1)
+
+    def test_timestamp_rejects_out_of_range_offset(self):
+        attempt = attempt_event()
+        attempt["attempt"]["predicted_at"] = "2026-11-27T11:59:00+00:60"
+        path = self.write_stream(problem_event(), attempt)
+        with self.assertRaisesRegex(SimMemoryValidationError, "invalid RFC 3339"):
+            validate_records(path)
+
+    def test_timestamp_comparison_preserves_nanosecond_precision(self):
+        attempt = attempt_event()
+        attempt["recorded_at"] = "2026-11-27T12:00:00.000000003Z"
+        attempt["attempt"]["predicted_at"] = "2026-11-27T12:00:00.000000001Z"
+        attempt["attempt"]["observed_at"] = "2026-11-27T12:00:00.000000002Z"
+        path = self.write_stream(problem_event(), attempt)
+        self.assertEqual(validate_records(path)["attempts"], 1)
+
     def test_passed_count_cannot_exceed_total(self):
         attempt = attempt_event()
         attempt["attempt"]["observation"]["passed"] = 2

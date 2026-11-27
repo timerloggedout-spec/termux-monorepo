@@ -4,7 +4,7 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
-from scripts.ci.gate_admission import decide_admission, termux_smoke_required
+from scripts.ci.gate_admission import changed_paths, decide_admission, termux_smoke_required
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -33,6 +33,40 @@ class TermuxSurfaceClassifierTests(unittest.TestCase):
         required, reason = decide_admission("workflow_dispatch", [])
         self.assertTrue(required)
         self.assertIn("manual", reason)
+
+
+
+class ChangedPathDiffTests(unittest.TestCase):
+    def test_exact_base_head_diff_includes_added_and_deleted_paths(self):
+        import subprocess
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            def git(*args):
+                return subprocess.run(
+                    ["git", *args], cwd=root, text=True, capture_output=True, check=True
+                ).stdout.strip()
+
+            git("init", "-q")
+            git("config", "user.email", "gate-admission@example.invalid")
+            git("config", "user.name", "Gate admission test")
+            (root / "old.txt").write_text("old\\n", encoding="utf-8")
+            git("add", ".")
+            git("commit", "-qm", "base")
+            base = git("rev-parse", "HEAD")
+            (root / "old.txt").unlink()
+            (root / "new.txt").write_text("new\\n", encoding="utf-8")
+            git("add", "-A")
+            git("commit", "-qm", "rename as add/delete")
+            head = git("rev-parse", "HEAD")
+
+            self.assertEqual(set(changed_paths(base, head, root)), {"old.txt", "new.txt"})
+
+    def test_missing_base_or_head_returns_unknown(self):
+        self.assertIsNone(changed_paths(None, "abc"))
+        self.assertIsNone(changed_paths("abc", None))
+        self.assertIsNone(changed_paths("0" * 40, "abc"))
 
 
 class WorkflowAdmissionContractTests(unittest.TestCase):

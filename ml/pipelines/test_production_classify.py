@@ -10,7 +10,11 @@ from unittest import mock
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from ml.pipelines import production_classify
-from ml.pipelines.production_classify import build_pr_dict, classify_all
+from ml.pipelines.production_classify import (
+    _fetch_changed_paths,
+    build_pr_dict,
+    classify_all,
+)
 
 NOW = datetime(2026, 10, 28, tzinfo=timezone.utc)
 GREEN = [{"name": "hygiene + portability gate", "conclusion": "success"},

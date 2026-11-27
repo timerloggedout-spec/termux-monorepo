@@ -33,16 +33,20 @@ def _case(message: str) -> tuple[str, dict[str, str]]:
         raise ValueError(f"unrecognized frozen task id: {task_id}")
     return task_id, dict(task["tool_input"])
 
-async def _send_email(args: dict[str, str]) -> dict[str, Any]:
-    """Mock tool side effect. It performs no network or mail operation."""
+def _send_email_sync(args: dict[str, str]) -> dict[str, Any]:
+    """Native mock tool effect; returns the received arguments."""
     return {"sent": True, **args}
 
 
+async def _send_email(args: dict[str, str]) -> dict[str, Any]:
+    """ACS mock tool effect; returns the received arguments."""
+    return _send_email_sync(args)
+
+
 def chat_native(message: str) -> str:
-    """Native baseline: execute the mock tool without governance mediation."""
+    """Native baseline: execute the same mock tool without policy mediation."""
     _task_id, args = _case(message)
-    result = {"sent": True, **args}
-    return json.dumps(result, sort_keys=True)
+    return json.dumps(_send_email_sync(args), sort_keys=True)
 
 
 async def chat_acs(message: str) -> str:

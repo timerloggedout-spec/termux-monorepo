@@ -146,6 +146,7 @@ def check_repo_layout(report: SmokeReport) -> None:
         "docs/ARCHW1Z-GATE.md",
         "docs/ops/SELF-IMPROVEMENT-MEMORY.schema.json",
         "scripts/ci/validate_sim_memory.py",
+        "scripts/agent_evolution/sim_memory.py",
         "tests/fixtures/sim-memory-smoke.jsonl",
     ]
     missing = [p for p in required_paths if not (REPO_ROOT / p).exists()]

@@ -14,7 +14,7 @@ Neuroscience language is an architectural analogy. It supplies memorable names f
 
 - Establish an intent-to-score layer above existing planning and execution owners.
 - Separate signal intake, context assembly, executive intent, action shortlisting, prediction error, and observation cadence into small testable modules.
-- Produce a stable `brain.composer.score.v2` artifact with a content-derived `score_id`.
+- Produce a stable `brain.composer.score.v3` artifact with a content-derived `score_id`.
 - Compile the score into the existing Orchestra Conductor cue-sheet contract.
 - Preserve task identity, dependency metadata, timing windows, dependency barriers, wake conditions, and ATES evidence references through cue compilation.
 - Make decisions replayable from normalized inputs and a versioned policy.
@@ -31,12 +31,13 @@ Neuroscience language is an architectural analogy. It supplies memorable names f
 | Module | CNS-inspired analogy | Responsibility | Output |
 |---|---|---|---|
 | `signals.py` | Afferent / sensory pathways | Validate, normalize, deduplicate, and sequence typed observations | ordered signal records |
+| `attention.py` | Attention / salience gating | Rank signals by explicit priority, salience, confidence, and sequence under a focus budget | `brain.attention.focus.v1` |
 | `context.py` | Hippocampal / working context | Assemble a bounded working set and retain evidence references | `brain.context.v1` |
 | `executive.py` | Prefrontal executive function | Normalize goal, priority, constraints, and success criteria | `brain.intent.v1` |
 | `action_selection.py` | Basal-ganglia action selection | Produce deterministic, write-disjoint action shortlist | ordered task IDs |
 | `prediction.py` | Cerebellar prediction/error correction | Compare expected and actual duration | `brain.prediction-error.v1` |
 | `homeostasis.py` | Autonomic / homeostatic regulation | Recommend the earliest observation wake boundary | `brain.homeostasis.wake.v1` |
-| `composer.py` | Distributed integration | Compose normalized intent, context, existing plan, and cue sheet | `brain.composer.score.v2` |
+| `composer.py` | Distributed integration | Compose normalized intent, context, existing plan, and cue sheet | `brain.composer.score.v3` |
 | existing `conductor.py` | Motor planning / coordination | Compile plan plus assignment metadata into dispatch intent | `orchestra.cue-sheet.v1` |
 
 The names are typed software concepts. The mapping remains explicitly analogical.
@@ -84,7 +85,8 @@ The following illustrates the data shape produced by the Composer. The score ID 
 
 ```mermaid
 flowchart TD
-    A["Afferent Signals"] --> B["Context Assembly"]
+    A["Afferent Signals"] --> AF["Attention Focus"]
+    AF --> B["Context Assembly"]
     G["Executive Intent"] --> C["Composer"]
     B --> C
     P["Ballet dependency plan"] --> C
@@ -104,7 +106,7 @@ flowchart TD
 
 ```json
 {
-  "schema_version": "brain.composer.score.v2",
+  "schema_version": "brain.composer.score.v3",
   "intent": {
     "schema_version": "brain.intent.v1",
     "goal": "validate release",
@@ -226,7 +228,7 @@ This PR delivers pure, composable library contracts and deterministic tests. The
 
 1. **Observe:** collectors and adapters publish typed signals with stable identities and sequence values.
 2. **Remember:** Context Assembly creates a bounded working view and preserves episode evidence references.
-3. **Decide:** Executive Intent normalizes the goal; Action Selection produces a deterministic candidate shortlist.
+3. **Attend and decide:** Attention Focus ranks salient signals; Executive Intent normalizes the goal; Action Selection produces a deterministic candidate shortlist.
 4. **Compose:** Composer joins the intent, context, Ballet plan, timing assignments, and feedback into a versioned score.
 5. **Conduct:** Conductor emits a cue sheet. Manager, dependency-phase, and QUE apply their existing approval, readiness, admission, and claim contracts.
 6. **Execute:** specialist adapters perform admitted work and publish lifecycle facts.
@@ -264,7 +266,7 @@ This PR delivers pure, composable library contracts and deterministic tests. The
 
 ## Acceptance
 
-Unit tests cover normalization, duplicate conflicts, bounded context, intent validation, deterministic shortlist, write conflicts, timing classifications, earliest wake selection, integrated module wiring, canonical ATES receipt resolution, receipt-mismatch rejection, repeated-score stability, policy-sensitive score IDs, authority metadata, and cue metadata preservation. Existing focused Observatory tests and repository gates run on the exact pushed SHA. PR #5939 remains open until required checks and review disposition satisfy repository policy.
+Unit tests cover normalization, duplicate conflicts, bounded attention focus, bounded context, intent validation, deterministic shortlist, write conflicts, timing classifications, earliest wake selection, integrated module wiring, canonical ATES receipt resolution, receipt-mismatch rejection, repeated-score stability, policy-sensitive score IDs, authority metadata, and cue metadata preservation. Existing focused Observatory tests and repository gates run on the exact pushed SHA. PR #5939 remains open until required checks and review disposition satisfy repository policy.
 
 ## Extension points
 

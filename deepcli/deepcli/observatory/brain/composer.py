@@ -4,6 +4,7 @@ import hashlib
 import json
 from typing import Any, Callable, Iterable, Mapping
 from .action_selection import select_actions
+from .attention import focus_signals
 from .context import build_context
 from .executive import normalize_intent
 from .homeostasis import plan_wake
@@ -25,11 +26,13 @@ def compose_score(
     timing_observations: Iterable[Mapping[str, Any]] = (),
     wake_context: Mapping[str, Any] | None = None,
     receipt_resolver: Callable[[str], Mapping[str, Any]] | None = None,
+    attention_budget: int = 8,
 ) -> dict[str, Any]:
     """Compile a stable, auditable score from intent, signals, plans, and feedback."""
     normalized_intent = normalize_intent(intent)
     normalized_signals = normalize_signals(signals)
     context = build_context(normalized_signals, episodes=episodes)
+    attention = focus_signals(normalized_signals, max_focus=attention_budget)
     cue_sheet = build_cue_sheet(plan, assignments, placement)
     action_shortlist = select_actions(action_candidates, max_parallel=max_parallel)
     timing_feedback = []
@@ -50,9 +53,10 @@ def compose_score(
         })
     wake_recommendation = plan_wake(**dict(wake_context)) if wake_context is not None else None
     score = {
-        "schema_version": "brain.composer.score.v2",
+        "schema_version": "brain.composer.score.v3",
         "intent": normalized_intent,
         "context": context,
+        "attention": attention,
         "signal_ids": [item["signal_id"] for item in normalized_signals],
         "plan": {"waves": [list(wave) for wave in plan["waves"]],
                  "task_count": sum(len(wave) for wave in plan["waves"])},

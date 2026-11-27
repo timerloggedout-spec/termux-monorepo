@@ -30,17 +30,17 @@
 - Timing feedback resolves a canonical ATES receipt envelope and preserves source, run ID, cohort ID, evidence reference, and SHA-256.
 - The plan distinguishes the implemented pure library contract from the follow-on production workflow caller.
 - A mismatched receipt resolver result fails closed.
-- Composer score identity captures action-selection policy version and max_parallel, including cases where the resulting shortlist remains equal.
+- Composer score identity captures attention policy and focus budget, action-selection policy version and max_parallel, including cases where the resulting shortlist remains equal.
 
 ---
 
-### Task 1: Signal intake, context, and executive intent
+### Task 1: Signal intake, attention, context, and executive intent
 
-**Files:** create `deepcli/deepcli/observatory/brain/{__init__,signals,context,executive}.py`; test `deepcli/tests/test_brain_system.py`.
+**Files:** create `deepcli/deepcli/observatory/brain/{__init__,signals,attention,context,executive}.py`; test `deepcli/tests/test_brain_system.py`.
 
 **Interfaces:** `normalize_signals(signals)`; `build_context(signals, episodes=(), max_items=64)`; `normalize_intent(intent)`.
 
-- [ ] Write tests for ordering, identical deduplication, conflicting duplicate rejection, confidence bounds, evidence retention, truncation, goal validation, and priority range.
+- [ ] Write tests for ordering, identical deduplication, conflicting duplicate rejection, confidence bounds, bounded attention ranking, evidence retention, truncation, goal validation, and priority range.
 - [ ] Run the focused test file; expected: imports fail before module creation.
 - [ ] Implement the pure modules and public exports.
 - [ ] Run focused tests; expected: Task 1 assertions pass.

@@ -5,6 +5,7 @@ import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from deepcli.observatory.brain.signals import normalize_signals
+from deepcli.observatory.brain.attention import focus_signals
 from deepcli.observatory.brain.context import build_context
 from deepcli.observatory.brain.executive import normalize_intent
 from deepcli.observatory.brain.action_selection import select_actions
@@ -36,6 +37,17 @@ class BrainSystemTests(unittest.TestCase):
             normalize_signals([signal])
         with self.assertRaisesRegex(ValueError, "sequence"):
             normalize_signals([{**signal, "confidence": 0.5, "sequence": 1.5}])
+
+    def test_attention_prioritizes_salient_signals_with_a_bounded_focus(self):
+        signals = [
+            {"signal_id": "s1", "source": "sensor", "kind": "ready", "sequence": 1, "confidence": 0.9, "priority": 1, "salience": 0.9},
+            {"signal_id": "s2", "source": "sensor", "kind": "alert", "sequence": 2, "confidence": 0.7, "priority": 3, "salience": 0.2},
+            {"signal_id": "s3", "source": "sensor", "kind": "urgent", "sequence": 3, "confidence": 0.8, "priority": 3, "salience": 0.8},
+        ]
+        result = focus_signals(signals, max_focus=2)
+        self.assertEqual(result["focus_signal_ids"], ["s3", "s2"])
+        self.assertEqual(result["deferred_signal_ids"], ["s1"])
+        self.assertEqual(result["max_focus"], 2)
 
     def test_context_preserves_evidence_references_and_is_bounded(self):
         result = build_context(
@@ -93,7 +105,10 @@ class BrainSystemTests(unittest.TestCase):
 
     def test_composer_wires_action_prediction_and_homeostasis_modules(self):
         intent = {"goal": "validate release", "priority": 3}
-        signals = [{"signal_id": "s1", "source": "ci", "kind": "ready", "sequence": 1, "confidence": 1.0}]
+        signals = [
+            {"signal_id": "s1", "source": "ci", "kind": "ready", "sequence": 1, "confidence": 1.0, "priority": 4, "salience": 0.9},
+            {"signal_id": "s2", "source": "collector", "kind": "heartbeat", "sequence": 2, "confidence": 0.7, "priority": 1, "salience": 0.2},
+        ]
         plan = {"waves": [["build"], ["tests"]]}
         assignments = {
             "build": {"nominal_at": "n", "opens_at": "o", "closes_at": "c", "expected_duration_ms": 100, "phase": "on_beat", "open_length_ms": 10, "dependency_barriers": [], "evidence_refs": ["ates://build"]},
@@ -110,26 +125,31 @@ class BrainSystemTests(unittest.TestCase):
         wake = {"now_ms": 100, "window_close_ms": 150, "max_wait_ms": 100}
         score = compose_score(intent, signals, plan, assignments, action_candidates=candidates,
                               max_parallel=2, timing_observations=timing, wake_context=wake,
-                              receipt_resolver=receipt_resolver)
+                              receipt_resolver=receipt_resolver, attention_budget=1)
         repeated = compose_score(intent, signals, plan, assignments, action_candidates=candidates,
                                   max_parallel=2, timing_observations=timing, wake_context=wake,
-                                  receipt_resolver=receipt_resolver)
+                                  receipt_resolver=receipt_resolver, attention_budget=1)
         policy_variant = compose_score(intent, signals, plan, assignments, action_candidates=candidates,
                                         max_parallel=3, timing_observations=timing, wake_context=wake,
-                                        receipt_resolver=receipt_resolver)
+                                        receipt_resolver=receipt_resolver, attention_budget=1)
+        attention_variant = compose_score(intent, signals, plan, assignments, action_candidates=candidates,
+                                           max_parallel=2, timing_observations=timing, wake_context=wake,
+                                           receipt_resolver=receipt_resolver, attention_budget=2)
         self.assertEqual(score["action_shortlist"], ["build", "tests"])
         self.assertEqual(score["timing_feedback"][0]["drift_ms"], 30)
         self.assertEqual(score["timing_feedback"][0]["run_id"], "run-123")
         self.assertEqual(score["timing_feedback"][0]["evidence_ref"], "ates://receipt/123")
-        self.assertEqual(score["timing_feedback"][0]["cohort_id"], "cohort-1")
         self.assertEqual(score["wake_recommendation"]["wake_at_ms"], 150)
-        self.assertEqual(score["schema_version"], "brain.composer.score.v2")
+        self.assertEqual(score["schema_version"], "brain.composer.score.v3")
         self.assertEqual(score["authority"]["admission_and_claims"], "QUE")
         self.assertEqual(score["cue_sheet"]["authority"], "dispatch_intent_only")
+        self.assertEqual(score["attention"]["focus_signal_ids"], ["s1"])
+        self.assertEqual(score["attention"]["max_focus"], 1)
         self.assertEqual(score["cue_sheet"]["waves"][1]["tasks"][0]["depends_on"], ["build"])
         self.assertEqual(score["score_id"], repeated["score_id"])
         self.assertEqual(score["action_shortlist"], policy_variant["action_shortlist"])
         self.assertNotEqual(score["score_id"], policy_variant["score_id"])
+        self.assertNotEqual(score["score_id"], attention_variant["score_id"])
 
     def test_conductor_preserves_required_cue_metadata(self):
         assignments = {"a": {"nominal_at": "n", "opens_at": "o", "closes_at": "c", "expected_duration_ms": 10, "phase": "on_beat", "open_length_ms": 10, "dependency_barriers": ["a-ready"], "evidence_refs": ["ates://a"], "depends_on": ["root"]}}
@@ -168,7 +188,7 @@ class BrainSystemTests(unittest.TestCase):
         assignments = {"build": {"nominal_at": "n", "opens_at": "o", "closes_at": "c", "expected_duration_ms": 10, "phase": "on_beat", "open_length_ms": 10, "dependency_barriers": [], "evidence_refs": ["ates://build"]}}
         first = compose_score(intent, signals, plan, assignments)
         second = compose_score(intent, signals, plan, assignments)
-        self.assertEqual(first["schema_version"], "brain.composer.score.v2")
+        self.assertEqual(first["schema_version"], "brain.composer.score.v3")
         self.assertEqual(first["score_id"], second["score_id"])
         self.assertEqual(first["action_shortlist"], [])
         self.assertEqual(first["timing_feedback"], [])

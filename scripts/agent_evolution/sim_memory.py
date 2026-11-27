@@ -6,7 +6,7 @@ It preserves negative outcomes and exposes compatibility labels to callers.
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 import json
 from pathlib import Path
 from typing import Any
@@ -37,31 +37,32 @@ class RetrievalQuery:
 
 @dataclass(frozen=True)
 class RetrievedLesson:
-    problem_id: str
-    problem_summary: str
-    root_cause: str
-    component: str | None
-    attempt_id: str
-    ordinal: int
-    sample_id: str
-    outcome: str
-    accepted: bool
-    change_summary: str
-    files: tuple[str, ...]
-    rationale: str
-    predicted_task_ids: tuple[str, ...]
-    fixed_task_ids: tuple[str, ...]
-    missed_task_ids: tuple[str, ...]
-    unresolved_task_ids: tuple[str, ...]
-    passed: int
-    total: int
-    evidence_refs: tuple[str, ...]
+    record: dict[str, Any]
     compatibility: dict[str, str]
     retrieval_score: int
-    recorded_at: str
+
+    @property
+    def problem_id(self) -> str:
+        return self.record["problem_id"]
+
+    @property
+    def outcome(self) -> str:
+        return self.record["attempt"]["observation"]["outcome"]
+
+    @property
+    def missed_task_ids(self) -> tuple[str, ...]:
+        return tuple(self.record["attempt"]["observation"]["missed_task_ids"])
+
+    @property
+    def recorded_at(self) -> str:
+        return self.record["recorded_at"]
 
     def as_dict(self) -> dict[str, Any]:
-        return asdict(self)
+        return {
+            "record": self.record,
+            "compatibility": self.compatibility,
+            "retrieval_score": self.retrieval_score,
+        }
 
 
 def _policy_match(query: RetrievalQuery, policy: dict[str, Any]) -> bool:
@@ -191,34 +192,11 @@ def retrieve_sim_memory(path: Path, query: RetrievalQuery) -> list[RetrievedLess
                 continue
 
             attempt = record["attempt"]
-            context = attempt["context"]
             compatibility, score = _compatibility(query, problem, attempt)
-            observation = attempt["observation"]
-            prediction = attempt["prediction"]
-            change = attempt["change"]
             lessons.append(RetrievedLesson(
-                problem_id=problem_id,
-                problem_summary=problem["summary"],
-                root_cause=problem["root_cause"],
-                component=problem.get("component"),
-                attempt_id=attempt["attempt_id"],
-                ordinal=attempt["ordinal"],
-                sample_id=attempt["sample_id"],
-                outcome=observation["outcome"],
-                accepted=attempt["accepted"],
-                change_summary=change["summary"],
-                files=tuple(change["files"]),
-                rationale=attempt["rationale"],
-                predicted_task_ids=tuple(prediction["predicted_task_ids"]),
-                fixed_task_ids=tuple(observation["fixed_task_ids"]),
-                missed_task_ids=tuple(observation["missed_task_ids"]),
-                unresolved_task_ids=tuple(observation.get("unresolved_task_ids", [])),
-                passed=observation["passed"],
-                total=observation["total"],
-                evidence_refs=tuple(observation["evidence_refs"]),
+                record=record,
                 compatibility=compatibility,
                 retrieval_score=score,
-                recorded_at=record["recorded_at"],
             ))
 
     lessons.sort(
@@ -226,7 +204,7 @@ def retrieve_sim_memory(path: Path, query: RetrievalQuery) -> list[RetrievedLess
             -item.retrieval_score,
             -parse_timestamp(item.recorded_at).timestamp(),
             item.problem_id,
-            item.ordinal,
+            item.record["attempt"]["ordinal"],
         )
     )
     return lessons[:query.limit]

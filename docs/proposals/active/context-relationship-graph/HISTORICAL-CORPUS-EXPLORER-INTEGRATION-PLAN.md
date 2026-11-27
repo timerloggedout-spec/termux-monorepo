@@ -224,6 +224,48 @@ Failed validation blocks publication of a new snapshot but preserves the last kn
 6. Add temporal comparison only after the repository-native query output and source-SHA binding are tested end to end.
 7. Wire publication/deployment into the existing SHE path and capture a provenance receipt.
 
+
+## Domain Atlas layer — CRG-16
+
+The Domain Atlas is an additional interaction layer inside the existing Historical Corpus Explorer. It is a curated projection over the canonical relationship corpus and repository specifications; it does not create a second graph store, collector, scheduler, or authority plane.
+
+### User interaction
+
+- **All layers:** show every registered domain and relationship.
+- **Semantic:** show what each domain represents and how domains relate.
+- **Operational:** show producer/consumer and control-flow relationships.
+- **Evidence:** show the source document and exact claim supporting each relationship.
+- Domain cards expose the domain role, plain-language summary, and canonical source links. Relationship rows expose type, direction, classification, layer, and supporting evidence.
+- Use accessible buttons with aria-pressed, semantic tables, keyboard focus, and text-only rendering for repository-supplied values.
+
+### Data contract
+
+- Schema: config/context_relationships/domain-atlas.schema.json.
+- Curated projection: apps/historical-corpus-explorer/data/domain-atlas.json.
+- Validator: scripts/ci/validate_historical_corpus_explorer_domain_atlas.py.
+- Regression tests: tests/test_historical_corpus_explorer_domain_atlas.py.
+- Relationship types are typed and direction is explicit (source → target).
+- Every domain has at least one source. Every verified relationship has at least one HTTPS evidence reference with a repository path and a claim.
+- verified, candidate, and unknown remain separate classifications. The first curated seed contains only relationships directly supported by the cited repository contracts; future candidates require explicit evidence and review.
+- Semantic and operational layers are edge facets. Evidence is a presentation mode over those same edges, not a separate graph.
+
+### Initial source-backed map
+
+The first projection connects GitHub Evidence → Context Relationship Graph → SHE, and Agent Team Control Plane → Execution Telemetry → Moneyball/3L0 → SHE. These are documented producer/consumer or projection relationships, not causal claims. Each edge carries the repository documents that support its meaning.
+
+### Authority and safety
+
+The canonical corpus, schemas, and source documents remain authoritative. The Atlas is read-only and metadata-first. It displays no discussion bodies, credentials, tokens, or private session content. It does not grant routing, execution, workflow-dispatch, or merge authority. A relationship without evidence remains candidate/unknown and cannot be upgraded by visual proximity.
+
+### Acceptance
+
+1. Schema and validator reject duplicate IDs, unresolved endpoints, unsupported layers/types/classifications, unsafe URLs, and verified edges without evidence.
+2. UI loads the curated projection independently from the corpus coverage snapshot and reports unavailable data explicitly.
+3. All/semantic/operational/evidence controls update the visible relationship view and expose their selected state accessibly.
+4. Domain and relationship evidence links use HTTPS and safe new-tab behavior.
+5. Node syntax, focused Python tests, validator, and existing context-relationship CI pass on the exact PR head.
+6. The UI remains a static read-only projection and introduces no external service dependency.
+
 ## Delivery status
 
 The temporal integrity validator and focused tests have been committed on the proposal branch. Test execution is not claimed here; consult the PR's current checks. The The static Explorer MVP and deterministic snapshot publisher are committed on the proposal branch and included in CI. Automatic snapshot publication into the deployed site, Vercel/Pages root integration, spatial graph visualization, and deployment remain unimplemented. Repository changes should be tracked through CRG-15 and the normal proposal/PR lifecycle.

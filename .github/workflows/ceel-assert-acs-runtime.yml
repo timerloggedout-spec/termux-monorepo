@@ -38,3 +38,5 @@ jobs:
           python experiments/doe/assert_acs_2x2/acs/validate_smoke.py \
             /tmp/ceel-acs-results.jsonl \
             /tmp/ceel-acs-decisions.jsonl
+          python experiments/doe/assert_acs_2x2/acs/validate_target_smoke.py \
+            /tmp/ceel-acs-target-decisions.jsonl

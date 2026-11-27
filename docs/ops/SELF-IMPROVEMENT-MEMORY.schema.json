@@ -32,7 +32,7 @@
         "attempt_id": { "type": "string", "minLength": 1 },
         "ordinal": { "type": "integer", "minimum": 1 },
         "sample_id": { "type": "string", "minLength": 1 },
-        "accepted": { "const": true },
+        "accepted": { "type": "boolean", "const": true },
         "backfilled": { "type": "boolean" },
         "change": {
           "type": "object",
@@ -149,7 +149,7 @@
             "candidate_budget": { "type": "integer", "minimum": 1 },
             "evaluation_budget": { "type": "integer", "minimum": 1 },
             "evaluation_split": { "const": "evolve" },
-            "held_out_feedback_exposed": { "const": false }
+            "held_out_feedback_exposed": { "type": "boolean", "const": false }
           }
         },
         "selection": {

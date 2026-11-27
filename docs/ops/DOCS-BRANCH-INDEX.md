@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-11-26T16:57:02Z` UTC  
+**Generated:** `2026-11-27T13:26:39Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 338 docs-lane branch(es)
+**Count:** 339 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -140,6 +140,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/flywheel-central-navigation-r2-20261125`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/flywheel-central-navigation-r2-20261125) | `cfb0e70da685` | — | — | orphan lane |
 | [`docs/flywheel-comms-policy`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/flywheel-comms-policy) | `212627b4ebf4` | — | — | orphan lane |
 | [`docs/flywheel-context-routing-20261125`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/flywheel-context-routing-20261125) | `cb1accba79ab` | [#5906](https://github.com/timerloggedout-spec/termux-monorepo/pull/5906)→`master` | — | PR without registry link |
+| [`docs/flywheel-pointer-tags-update-20261126`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/flywheel-pointer-tags-update-20261126) | `41bbbce69c4e` | — | — | orphan lane |
 | [`docs/flywheel-siglary-mandate`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/flywheel-siglary-mandate) | `aa9ceeec442c` | [#5879](https://github.com/timerloggedout-spec/termux-monorepo/pull/5879)→`master` | — | PR without registry link |
 | [`docs/foresight-evidence-spine-2026-10-03-rebased`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/foresight-evidence-spine-2026-10-03-rebased) | `0b9bbffb143f` | — | — | orphan lane |
 | [`docs/free-inference-production-receipt`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/free-inference-production-receipt) | `7422b87bc9d6` | — | — | orphan lane |

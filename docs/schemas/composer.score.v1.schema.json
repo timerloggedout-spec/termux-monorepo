@@ -1,0 +1,319 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://timerloggedout-spec.github.io/termux-monorepo/schemas/composer.score.v1.schema.json",
+  "title": "Composer Score v1",
+  "description": "Deterministic intent-to-cue composition output. Dispatch intent only; execution and evidence authority remain with existing control planes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "intent",
+    "policy",
+    "plan",
+    "cue_sheet",
+    "context_refs",
+    "success_criteria",
+    "decision_trace",
+    "authority"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "composer.score.v1"
+    },
+    "intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "objective"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "objective": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "placement",
+        "strategy",
+        "max_parallel"
+      ],
+      "properties": {
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "placement": {
+          "enum": [
+            "manager_policy",
+            "temporal_intelligence",
+            "agent_team_orchestration"
+          ]
+        },
+        "strategy": {
+          "enum": [
+            "sequential",
+            "parallel",
+            "adaptive"
+          ]
+        },
+        "max_parallel": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "plan": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "strategy",
+        "max_parallel",
+        "waves",
+        "task_count",
+        "wave_count",
+        "dependency_edges",
+        "estimated_makespan_ms",
+        "estimated_serial_ms"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "ballet.choreography.v1"
+        },
+        "strategy": {
+          "enum": [
+            "sequential",
+            "parallel",
+            "adaptive"
+          ]
+        },
+        "max_parallel": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "waves": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "task_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "wave_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "dependency_edges": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "estimated_makespan_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "estimated_serial_ms": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": true
+    },
+    "cue_sheet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "placement",
+        "policy_version",
+        "waves",
+        "task_count",
+        "authority",
+        "dispatch_intent"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "orchestra.cue-sheet.v1"
+        },
+        "placement": {
+          "enum": [
+            "manager_policy",
+            "temporal_intelligence",
+            "agent_team_orchestration"
+          ]
+        },
+        "policy_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "task_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "authority": {
+          "const": "dispatch_intent_only"
+        },
+        "dispatch_intent": {
+          "const": true
+        },
+        "waves": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "wave",
+              "tasks"
+            ],
+            "properties": {
+              "wave": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "tasks": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "task_id",
+                    "nominal_at",
+                    "opens_at",
+                    "closes_at",
+                    "expected_duration_ms",
+                    "phase",
+                    "open_length_ms",
+                    "dependency_barriers",
+                    "evidence_refs",
+                    "depends_on",
+                    "wake_conditions"
+                  ],
+                  "properties": {
+                    "task_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "nominal_at": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "opens_at": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "closes_at": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "expected_duration_ms": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "phase": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "open_length_ms": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "dependency_barriers": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "evidence_refs": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "depends_on": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "wake_conditions": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "context_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "success_criteria": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "decision_trace": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "required": [
+          "stage"
+        ],
+        "properties": {
+          "stage": {
+            "enum": [
+              "intent.accepted",
+              "ballet.plan_created",
+              "conductor.cue_sheet_created"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "authority": {
+      "const": "dispatch_intent_only"
+    }
+  }
+}

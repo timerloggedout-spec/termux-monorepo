@@ -309,6 +309,38 @@ class SimMemoryValidatorTests(unittest.TestCase):
         )
         self.assertEqual(len(lessons), 1)
 
+    def test_unicode_line_separator_survives_validation_and_retrieval(self):
+        opened = problem_event()
+        attempt = attempt_event()
+        summary = "Line one\u2028Line two"
+        opened["problem"]["summary"] = summary
+        attempt["problem"]["summary"] = summary
+        self.path.write_text(
+            json.dumps(opened, ensure_ascii=False) + "\n"
+            + json.dumps(attempt, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+        self.assertEqual(validate_records(self.path)["attempts"], 1)
+        lessons = retrieve_sim_memory(
+            self.path,
+            RetrievalQuery(domain="repository-engineering"),
+        )
+        self.assertEqual(len(lessons), 1)
+        self.assertEqual(lessons[0].record["problem"]["summary"], summary)
+
+    def test_retrieval_serializes_decimal_measurements(self):
+        attempt = attempt_event()
+        attempt["attempt"]["observation"]["measured_signals"][0]["baseline"] = 0.25
+        attempt["attempt"]["observation"]["measured_signals"][0]["observed"] = 1.5
+        path = self.write_stream(problem_event(), attempt)
+        lessons = retrieve_sim_memory(
+            path,
+            RetrievalQuery(domain="repository-engineering"),
+        )
+        encoded = json.dumps(lessons[0].as_dict(), allow_nan=False)
+        self.assertIn('"baseline": 0.25', encoded)
+        self.assertIn('"observed": 1.5', encoded)
+
     def test_retrieval_rejects_unbounded_limits(self):
         with self.assertRaisesRegex(ValueError, "limit must be between 1 and 32"):
             RetrievalQuery(domain="repository-engineering", limit=33)

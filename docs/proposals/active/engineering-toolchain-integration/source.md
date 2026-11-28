@@ -44,4 +44,4 @@ Termux is the lightweight control plane. The initial hub integration validates t
 
 ## Loopy adaptation
 
-The repository-native feedback loop remains authoritative: Observe → Contextualize → Adapt → Implement → Verify → Record → Recompare → Repeat. The six-step Loopy mechanics are applied inside this loop: Observe → Choose → Act → Verify → Record → Repeat. Each run has bounded scope, current-state re-read, measurable progress and a named terminal state: success, clean-no-op, blocked, approval-required, exhausted or stagnated. Loop design remains separate from execution and scheduling.
+The repository-native feedback loop remains authoritative: Observe → Contextualize → Adapt → Implement → Verify → Record → Recompare → Repeat. The six-step Loopy mechanics are applied inside this loop: Observe → Choose → Act → Verify → Record → Repeat. Each run has bounded scope, current-state re-read, measurable progress and a named terminal state: success, cleanly-skipped, blocked, approval-required, exhausted or stagnated. Loop design remains separate from execution and scheduling.

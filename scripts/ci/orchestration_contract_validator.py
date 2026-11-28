@@ -22,6 +22,19 @@ EXPECTED_PROMOTIONS = {"PROMOTABLE", "NOT_PROMOTABLE", "UNKNOWN"}
 EXPECTED_TREATMENT_STATUSES = {
     "candidate", "experimental", "accepted", "deprecated", "rejected",
 }
+EXPECTED_WORKSPACE_ENUMS = {
+    "isolation_mode": {
+        "shared_read_only", "shared_coordinated", "git_worktree",
+        "container", "remote_workspace",
+    },
+    "writer_policy": {
+        "read_only", "single_writer", "explicit_path_ownership",
+        "serialized_writers",
+    },
+    "integration_policy": {
+        "manual_review", "manager_reconcile", "pull_request_review",
+    },
+}
 
 
 def _load(path: Path, errors: list[str]) -> dict[str, Any] | None:
@@ -65,6 +78,39 @@ def _check_schema(name: str, schema: dict[str, Any], errors: list[str]) -> bool:
     return True
 
 
+def _check_workspace_treatment(treatment: dict[str, Any], errors: list[str]) -> None:
+    workspace = treatment["properties"].get("workspace")
+    if workspace is None:
+        errors.append(f"{TREATMENT}: workspace treatment property is missing")
+        return
+    if not isinstance(workspace, dict) or workspace.get("type") != "object":
+        errors.append(f"{TREATMENT}: workspace must be an object")
+        return
+    if workspace.get("additionalProperties") is not False:
+        errors.append(f"{TREATMENT}: workspace must reject undeclared properties")
+
+    required = workspace.get("required")
+    properties = workspace.get("properties")
+    if not isinstance(required, list) or not isinstance(properties, dict):
+        errors.append(f"{TREATMENT}: workspace required/properties are malformed")
+        return
+    for key in ("isolation_mode", "writer_policy", "integration_policy"):
+        if key not in required:
+            errors.append(f"{TREATMENT}: workspace.{key} must be required")
+        field = properties.get(key)
+        actual = field.get("enum") if isinstance(field, dict) else None
+        expected = EXPECTED_WORKSPACE_ENUMS[key]
+        if not isinstance(actual, list) or not all(isinstance(x, str) for x in actual) or set(actual) != expected:
+            errors.append(f"{TREATMENT}: workspace.{key} enum drifted")
+
+    parallel = properties.get("max_parallel_sessions")
+    if not isinstance(parallel, dict) or parallel.get("type") != "integer" or parallel.get("minimum") != 1:
+        errors.append(f"{TREATMENT}: workspace.max_parallel_sessions must be a positive integer")
+    base_ref = properties.get("base_ref")
+    if not isinstance(base_ref, dict) or base_ref.get("type") != "string":
+        errors.append(f"{TREATMENT}: workspace.base_ref must be a string")
+
+
 def validate_contracts(root: Path = ROOT) -> list[str]:
     errors: list[str] = []
     schema_dir = root / "docs" / "ops"
@@ -84,6 +130,7 @@ def validate_contracts(root: Path = ROOT) -> list[str]:
         sha = props.get("source_sha", {})
         if not isinstance(sha, dict) or sha.get("pattern") != "^[0-9a-f]{40}$":
             errors.append(f"{TREATMENT}: source_sha must be a lowercase 40-character commit SHA")
+        _check_workspace_treatment(treatment, errors)
 
     if receipt is not None and _check_schema(RECEIPT, receipt, errors):
         props = receipt["properties"]
@@ -119,7 +166,7 @@ def validate_contracts(root: Path = ROOT) -> list[str]:
         for required_ref in (
             TREATMENT, RECEIPT, "EVIDENCE-ENVELOPE.schema.json",
             "ACTION-EFFECT-EVENT.schema.json", "adaptive-wait",
-            "context-relationship-graph",
+            "context-relationship-graph", "workspace",
         ):
             if required_ref not in skill:
                 errors.append(f"orchestration-treatment-registry skill missing reference: {required_ref}")

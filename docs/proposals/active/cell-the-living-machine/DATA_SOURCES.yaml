@@ -141,6 +141,106 @@ sources:
     usage_review: asset_level_license_and_attribution
     priority: high
 
+  - id: PDBe_KB
+    domain: structural_annotations_and_residue_features
+    url: https://www.ebi.ac.uk/pdbe/pdbe-kb/
+    api_docs: https://www.ebi.ac.uk/pdbe/pdbe-kb/services
+    access: public_REST_API_and_graph_downloads
+    identifiers: [PDB_ID, UniProt_accession, entity_id, residue_id]
+    formats: [JSON, graph_database, mmCIF]
+    usage_review: source_specific_attribution_and_data_terms
+    priority: high
+  - id: IntAct
+    domain: experimentally_curated_molecular_interactions
+    url: https://www.ebi.ac.uk/intact/
+    api_docs: https://www.ebi.ac.uk/Tools/webservices/psicquic/registry/registry?action=STATUS&name=IntAct
+    access: PSICQUIC_REST_MIQL
+    identifiers: [UniProt_accession, IntAct_interaction_ID, PMID, PSI_MI]
+    formats: [MITAB, PSI_MI_XML, JSON]
+    usage_review: source_specific_terms_and_attribution
+    priority: high
+  - id: BioGRID
+    domain: protein_genetic_and_chemical_interactions
+    url: https://thebiogrid.org/
+    api_docs: https://wiki.thebiogrid.org/doku.php/biogridrest
+    access: REST_API_access_key_required
+    identifiers: [BioGRID_interaction_ID, GeneID, UniProt_accession, PMID]
+    formats: [JSON, TAB2, TAB3]
+    usage_review: access_key_policy_rate_limits_and_bulk_download_terms
+    priority: high
+  - id: STRING
+    domain: protein_association_networks
+    url: https://string-db.org/
+    api_docs: https://string-db.org/help/api/
+    access: public_HTTP_API
+    identifiers: [STRING_ID, UniProt_accession, NCBI_taxon_ID]
+    formats: [JSON, TSV, TSV_network]
+    usage_review: caller_identity_version_pinning_and_rate_policy
+    priority: high
+  - id: SABIO_RK
+    domain: experimentally_curated_enzyme_kinetics
+    url: https://sabiork.h-its.org/
+    api_docs: https://www.sabio.h-its.org/layouts/content/documentation.gsp
+    access: public_REST_API
+    identifiers: [SABIO_entry_ID, reaction_ID, EC_number, UniProt_accession, PMID]
+    formats: [JSON, CSV, SBML, EnzymeML, BioPAX]
+    usage_review: source_specific_terms_and_versioned_query_snapshots
+    priority: critical
+  - id: BRENDA
+    domain: enzyme_function_and_kinetic_parameters
+    url: https://www.brenda-enzymes.org/
+    api_docs: https://www.brenda-enzymes.org/help.php
+    access: web_search_downloads_and_registered_SOAP_API
+    identifiers: [EC_number, BRENDA_ID, UniProt_accession, PMID]
+    formats: [SOAP, SPARQL, SBML, tabular]
+    usage_review: online_data_CC_BY_4_0_SOAP_account_registration
+    priority: high
+  - id: Rhea
+    domain: curated_biochemical_reactions
+    url: https://www.rhea-db.org/
+    api_docs: https://www.rhea-db.org/help/rest-api
+    access: public_REST_API_and_SPARQL
+    identifiers: [Rhea_ID, CHEBI_ID, EC_number, UniProt_accession]
+    formats: [RXN, RD, TSV, RDF]
+    usage_review: release_pinning_and_source_attribution
+    priority: high
+  - id: Cellosaurus
+    domain: cell_line_identity_and_metadata
+    url: https://www.cellosaurus.org/
+    api_docs: https://api.cellosaurus.org/
+    access: public_REST_API
+    identifiers: [CVCL_ID, Cellosaurus_accession, Cell_line_name]
+    formats: [JSON, TSV, XML]
+    usage_review: release_version_and_source_attribution
+    priority: medium
+  - id: Human_Protein_Atlas
+    domain: tissue_cellular_and_subcellular_expression
+    url: https://www.proteinatlas.org/
+    api_docs: https://www.proteinatlas.org/about/help/dataaccess
+    access: public_download_and_per_entry_API
+    identifiers: [Ensembl_gene_ID, UniProt_accession, HPA_ID]
+    formats: [JSON, TSV, XML, RDF]
+    usage_review: version_pinning_and_source_attribution
+    priority: high
+  - id: Expression_Atlas
+    domain: baseline_and_differential_gene_expression
+    url: https://www.ebi.ac.uk/gxa/
+    api_docs: https://www.ebi.ac.uk/gxa/json/experiments
+    access: public_JSON_API_and_downloads
+    identifiers: [Experiment_ID, Ensembl_gene_ID, UniProt_accession, GEO_accession]
+    formats: [JSON, TSV, experiment_downloads]
+    usage_review: CC_BY_4_0_attribution_and_experiment_level_provenance
+    priority: high
+  - id: EMBL_EBI_Proteins_API
+    domain: integrated_protein_sequence_variation_and_proteomics
+    url: https://www.ebi.ac.uk/proteins/
+    api_docs: https://www.ebi.ac.uk/proteins/api/doc/index.html
+    access: public_REST_API
+    identifiers: [UniProt_accession, Ensembl_ID, RefSeq_accession, taxonomy_ID]
+    formats: [JSON, XML, FASTA]
+    usage_review: API_terms_rate_policy_and_attribution
+    priority: high
+
 admission_requirements:
   - documented API contract and current endpoint
   - source-specific terms and redistribution review

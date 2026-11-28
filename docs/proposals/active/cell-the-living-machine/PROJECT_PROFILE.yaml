@@ -1,0 +1,163 @@
+schema: project-profile/v1
+project_id: project:cell-the-living-machine
+slug: cell-the-living-machine
+display_name: "CELL: THE LIVING MACHINE"
+status: proposed
+created_at: "2026-11-27"
+owner: timerloggedout-spec
+purpose: "Original molecular-to-cellular simulation game grounded in structural biology and cellular systems"
+
+repositories:
+  product:
+    full_name: timerloggedout-spec/cell-the-living-machine
+    url: https://github.com/timerloggedout-spec/cell-the-living-machine
+    lifecycle: provisioning_pending
+    default_branch: main
+    ownership: pending_confirmation
+    repository_id: pending
+  control_plane:
+    full_name: timerloggedout-spec/termux-monorepo
+    url: https://github.com/timerloggedout-spec/termux-monorepo
+    role: project_profiles_lanes_tooling_ci_qa_orchestration
+    profile_path: docs/projects/cell-the-living-machine/PROJECT_PROFILE.yaml
+  research:
+    research_astute:
+      repository: NDuma/ResearchAstute
+      url: https://github.com/NDuma/ResearchAstute
+      role: reusable_research_references
+      reuse_status: rights_review_required
+    search_astutely:
+      organization: search-astute-ly
+      url: https://github.com/search-astute-ly
+      candidate_repositories:
+        - search-astute-ly/termux-monorepo_enterprise
+        - search-astute-ly/termux-monorepo_enterprise_too
+        - search-astute-ly/redesigned-octo-rotary-phone
+        - search-astute-ly/manus-public-ui-research
+      role: search_execution_result_aggregation_source_snapshots
+      integration_status: endpoint_and_connector_pending
+
+architecture:
+  planes:
+    - id: product
+      owner: dedicated_game_repository
+      outputs: [game_source, assets, runtime, builds, tests, releases]
+    - id: developer_control
+      owner: termux-monorepo
+      outputs: [project_profile, lanes, tool_profiles, task_routing, ci, qa, release_contracts]
+    - id: reusable_research
+      owner: research_astute
+      outputs: [curated_references, research_notes, reusable_knowledge_artifacts]
+    - id: search_aggregation
+      owner: search_astutely
+      outputs: [queries, result_sets, normalized_records, source_snapshots, deduplication_lineage]
+    - id: scientific_authorities
+      owner: upstream_databases
+      outputs: [structures, sequences, annotations, pathways, molecules, literature]
+
+integration:
+  contract: versioned_manifests_and_api_adapters
+  stable_project_ref: project:cell-the-living-machine
+  local_workspace_links: optional_symlinks
+  source_identity: canonical_url_plus_upstream_accession_plus_version
+  synchronization: scheduled_and_event_driven_after_adapter_admission
+  provenance: required_for_every_external_claim_and_asset
+
+game:
+  project_kind: new_game
+  dimensions: [3d, mixed]
+  genre_facets: [simulation, systems_strategy, exploration, puzzle, educational, rpg_progression]
+  session_model: single_player_first
+  time_model: simulation_with_scenario_challenges
+  scales: [molecular, membrane, organelle, cellular, tissue, organism]
+  core_loop: [observe, hypothesize, manipulate, simulate, interpret, improve]
+  engine:
+    selection: pending_prototype_comparison
+    candidates: [godot, unity, unreal, browser_runtime]
+  first_slice:
+    scope: single_cell_membrane
+    mechanisms: [sodium_potassium_pump, aquaporin, atp_synthase]
+    evidence_gate: source_linked_scientific_review
+
+knowledge_access:
+  policy: ubiquitous
+  age_classification: excluded_from_progression
+  shared_knowledge_graph: true
+  lenses:
+    - id: field
+      purpose: intuitive orientation, visual cues, plain-language concepts
+    - id: mechanism
+      purpose: causal steps, molecular interactions, state transitions
+    - id: quantitative
+      purpose: kinetics, gradients, thermodynamics, equations, parameter controls
+    - id: structural
+      purpose: PDB/EMDB accessions, chains, domains, residues, confidence, conformational states
+    - id: research
+      purpose: papers, methods, uncertainty, competing models, open questions
+  challenge_profiles:
+    - guided
+    - exploratory
+    - constrained_resources
+    - time_pressure
+    - coupled_systems
+    - research_investigation
+
+lanes:
+  primary:
+    - Game Development & Production
+    - Research & Intelligence
+    - Orchestration & Quality Control
+  supporting:
+    - Game Player Machines & Genre Teams
+    - Game QA & Accessibility
+    - Game ML Research
+    - Delivery Reliability / CI-CD
+    - Design of Experiments
+
+specialists:
+  contexts:
+    - game_design_systems
+    - gameplay_engineering
+    - engine_runtime_architecture
+    - graphics_rendering
+    - 3d_art_environment
+    - animation_rigging
+    - physics_simulation
+    - ui_ux_accessibility
+    - tools_content_pipeline
+    - platform_performance
+    - build_release_cicd
+    - ml_vision_telemetry
+    - scientific_research
+    - structural_biology
+    - cell_biology
+    - scientific_visualization
+    - science_communication
+  work_package_limit: 3
+  reviewer_separation: development_and_qa
+
+content_pipeline:
+  seed_surface: https://www.youtube.com/@iJEPStudio
+  inventory_status: queued
+  required_fields: [video_id, title, description, published_at, duration, transcript_ref, topic_tags, source_refs, structure_accessions, rights_status]
+  source_classes: [experimental_structure, predicted_structure, curated_annotation, primary_literature, educational_visual, gameplay_abstraction]
+
+tooling:
+  molecular_visualization:
+    candidates: [Blender, Molecular_Nodes]
+    status: candidate_review
+  game_engine:
+    status: pending_selection
+  data_adapters:
+    status: research_and_contract_review
+
+quality:
+  science_integrity: source_claim_traceability
+  accessibility: [captions, transcripts, text_equivalents, adjustable_motion, color_independent_encoding, input_flexibility, adjustable_information_density]
+  deterministic_scenarios: required
+  independent_qa: required
+  source_version_pinning: required
+
+release:
+  status: planning
+  artifacts: [build, source_revision, dependency_manifest, asset_manifest, science_review, qa_report, accessibility_report]

@@ -1,26 +1,25 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-28T08:14:02Z",
+ "generated_at": "2026-11-28T08:26:20Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 2,
-   "in_progress": 2,
+   "queued": 5,
+   "in_progress": 0,
    "oldest_queued_at": "2026-11-25T08:15:08Z",
    "by_workflow_queued": {
     "Orchestration Regression Guard": 1,
-    "repo gate": 1
+    "repo gate": 3,
+    "PR scope guard": 1
    }
   },
   "2": {
    "tier": 2,
-   "queued": 1,
+   "queued": 0,
    "in_progress": 2,
-   "oldest_queued_at": "2026-11-28T08:13:31Z",
-   "by_workflow_queued": {
-    "pages build and deployment": 1
-   }
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "3": {
    "tier": 3,
@@ -31,27 +30,37 @@
   },
   "4": {
    "tier": 4,
-   "queued": 13,
-   "in_progress": 15,
+   "queued": 24,
+   "in_progress": 17,
    "oldest_queued_at": "2026-11-25T08:15:08Z",
    "by_workflow_queued": {
-    "Foresight Evidence Spine": 1,
-    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
-    "quota-served-probe": 1,
-    "graph-matrix-probe": 1,
-    "termux smoke": 2,
+    "Quota Dispatch Tree": 1,
+    "repo-tracking-collect": 1,
+    "DO Statement Style": 3,
+    "Sweep Accountability": 1,
+    "Agent Readability Source Contract": 1,
     "hitl-control-plane-verify": 1,
-    "quota-usage-series-refresh": 1,
-    "DO Statement Style": 1,
+    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
+    "graph-matrix-probe": 1,
+    "quota-allocation-planner": 1,
     "que-cadence-kick": 1,
-    "n8n SHE bridge": 1,
+    "quota-analysis": 1,
+    "DeepSeek CI \u2013 Agentic Automation": 1,
+    "Repository development evaluation": 1,
+    "qdesk self-repair": 1,
+    "RECON INTEL discovery": 1,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
     "Context Relationship + Lead/Lag Audit": 1,
-    "Quota Dispatch Tree": 1
+    "Action Effectiveness Ledger": 1,
+    "PR Change Effectiveness Ledger": 1,
+    "Workflow Surface Policy": 1,
+    "PR evidence evaluation": 1,
+    "termux smoke": 1
    }
   }
  },
  "totals": {
-  "queued": 16,
+  "queued": 29,
   "in_progress": 19
  },
  "wedged_ancient": [
@@ -108,13 +117,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 4,
-   "2": 3,
+   "1": 5,
+   "2": 2,
    "3": 0,
    "4": 0
   },
   "explicit_total": 7,
-  "default_t4": 28,
+  "default_t4": 41,
   "unmatched": 0,
   "ancient_excluded": 8,
   "operator_excluded": 1

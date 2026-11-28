@@ -108,6 +108,26 @@
     };
   }
 
+  function normalizePriorityTimebox(value) {
+    return pick(value, ["wall", "landing", "cushion", "escalation", "final", "source", "wall_source"]);
+  }
+
+  function normalizeDateValue(value) {
+    if (typeof value === "string" || value === null) return value;
+    return isRecord(value) ? pick(value, ["at", "tz", "source"]) : null;
+  }
+
+  function normalizeDates(value) {
+    if (!isRecord(value)) return {};
+    const output = {};
+    DATE_FIELDS.forEach((field) => {
+      if (Object.prototype.hasOwnProperty.call(value, field)) {
+        output[field] = normalizeDateValue(value[field]);
+      }
+    });
+    return output;
+  }
+
   function normalizeOpportunityFeed(payload, now) {
     if (payload === null || payload === undefined) return invalidEnvelope("unavailable");
     if (!isRecord(payload)
@@ -117,20 +137,19 @@
       return invalidEnvelope("invalid", isRecord(payload) ? payload.source : null);
     }
     const fresh = freshness(payload, now, 72);
-    const active = payload.opportunities.map((item) => ({
-      ...pick(item, [
+    const normalizeOpportunity = (item, active) => {
+      const record = pick(item, [
         "id", "slug", "rank", "tier", "score", "name", "host", "state",
-        "verdict", "prep_state", "next_gate", "days_to_gate", "priority_timebox",
-      ]),
-      active: true,
-    }));
-    const terminal = payload.terminal_opportunities.map((item) => ({
-      ...pick(item, [
-        "id", "slug", "rank", "tier", "score", "name", "host", "state",
-        "verdict", "prep_state", "next_gate", "days_to_gate", "priority_timebox",
-      ]),
-      active: false,
-    }));
+        "verdict", "prep_state", "next_gate", "days_to_gate",
+      ]);
+      if (isRecord(item.priority_timebox)) {
+        record.priority_timebox = normalizePriorityTimebox(item.priority_timebox);
+      }
+      record.active = active;
+      return record;
+    };
+    const active = payload.opportunities.map((item) => normalizeOpportunity(item, true));
+    const terminal = payload.terminal_opportunities.map((item) => normalizeOpportunity(item, false));
     return {
       status: fresh.state === "stale" ? "stale" : "fresh",
       source: payload.source || "ops/que/feeds/opportunity-priority.json",
@@ -150,16 +169,27 @@
     ];
     envelope.records = envelope.records.map((event) => {
       const out = pick(event, eventFields);
-      if (isRecord(event.dates)) out.dates = pick(event.dates, DATE_FIELDS);
+      if (isRecord(event.dates)) out.dates = normalizeDates(event.dates);
+      if (Array.isArray(event.also_platforms)) {
+        out.also_platforms = event.also_platforms.filter((item) => typeof item === "string");
+      }
+      if (typeof event.constraints === "string") out.constraints = event.constraints;
+      else if (Array.isArray(event.constraints)) {
+        out.constraints = event.constraints.filter((item) => typeof item === "string");
+      }
       if (Array.isArray(event.organizers)) {
         out.organizers = event.organizers.map((item) => pick(item, [
           "name", "role", "source", "source_url", "fetched_at",
         ]));
       }
       if (Array.isArray(event.matches)) {
-        out.matches = event.matches.map((item) => pick(item, [
-          "id", "name", "points", "state", "tasks", "rules", "deadline", "dates",
-        ]));
+        out.matches = event.matches.map((item) => {
+          const match = pick(item, ["id", "name", "points", "state", "tasks", "rules", "deadline"]);
+          if (Object.prototype.hasOwnProperty.call(item, "dates")) {
+            match.dates = normalizeDateValue(item.dates);
+          }
+          return match;
+        });
       }
       if (Array.isArray(event.gates)) {
         out.gates = event.gates.map((item) => pick(item, [

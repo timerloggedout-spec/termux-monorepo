@@ -37,10 +37,10 @@ The repository issue form `.github/ISSUE_TEMPLATE/engineering-toolchain.yml` dec
 
 ## Queue ownership
 
-QUE remains the only queue and lifecycle authority. QDesk remains the existing recurring self-repair and oversight cycle. Engineering adds typed task metadata and capability discovery; it creates no scheduler, claim system, ranker, promotion engine or alternate task store.
+QUE remains the only queue and lifecycle authority. QDesk remains the existing recurring self-repair and oversight cycle. Engineering adds typed task metadata and capability discovery; existing QUE/QDesk machinery retains scheduling, claims, ranking, promotion and task storage.
 
 ## Terminal states
 
-success | clean-no-op | blocked | approval-required | exhausted | stagnated
+success | cleanly-skipped | blocked | approval-required | exhausted | stagnated
 
-A queued/running job is pending. A successful process exit is not a validated engineering design. Missing evidence remains unknown.
+A queued/running job is pending. A successful process exit earns process-success status; engineering validity requires its verification plan and evidence. Missing evidence retains the `unknown` state.

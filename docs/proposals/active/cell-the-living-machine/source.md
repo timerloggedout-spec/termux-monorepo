@@ -18,8 +18,8 @@
 
 - Repository: https://github.com/timerloggedout-spec/cell-the-living-machine
 - Provisioned through the existing MonoRepo Repository Provisioner workflow, run `46108047424`; workflow job and all four steps completed successfully.
-- Repository ID: `1475194740`; owner: `timerloggedout-spec`; visibility: private; default branch: `main`.
-- Seeded README, architecture, knowledge lenses, research/provenance, engine evaluation, decision log, project-control links, contribution guide, and license-decision record.
+- Repository ID: `1475194740`; owner: `timerloggedout-spec`; visibility: public; default branch: `main`.
+- Seeded product README, architecture, engineering-to-making, central player profile, hardware/rendering, Blender MCP toolchain, AMD/NVIDIA academy pathways, research/provenance, engine evaluation, decision log, project-control links, contribution guide and license-decision record.
 
 ## Research Astute
 
@@ -84,7 +84,7 @@ This architecture is a proposal based on repository evidence and the user's stat
 
 ## Current delivery references
 
-- Project profile and 36-file architecture package: PR #5954, based on current master.
+- Project profile and 36-file architecture package: PR #5954, merged to master.
 - Public product visibility: owner-authorized GitHub Actions workflow merged through PR #5953; run [46112664857](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/46112664857) completed successfully.
 - Product repository: `timerloggedout-spec/cell-the-living-machine` (ID `1475194740`), public, default branch `main`.
 - Shared equipment and fabrication registries are seeded as schemas with empty verified inventories.

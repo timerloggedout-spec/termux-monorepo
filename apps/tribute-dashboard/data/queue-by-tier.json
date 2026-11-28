@@ -1,12 +1,12 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-28T03:19:04Z",
+ "generated_at": "2026-11-28T03:32:48Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
    "queued": 2,
-   "in_progress": 2,
+   "in_progress": 0,
    "oldest_queued_at": "2026-11-21T07:17:51Z",
    "by_workflow_queued": {
     "repo gate": 1,
@@ -15,12 +15,11 @@
   },
   "2": {
    "tier": 2,
-   "queued": 2,
-   "in_progress": 1,
-   "oldest_queued_at": "2026-11-28T03:18:33Z",
+   "queued": 1,
+   "in_progress": 2,
+   "oldest_queued_at": "2026-11-28T03:32:26Z",
    "by_workflow_queued": {
-    "pages build and deployment": 1,
-    "tribute-dashboard-deploy": 1
+    "pages build and deployment": 1
    }
   },
   "3": {
@@ -32,13 +31,15 @@
   },
   "4": {
    "tier": 4,
-   "queued": 7,
-   "in_progress": 18,
+   "queued": 56,
+   "in_progress": 15,
    "oldest_queued_at": "2026-11-21T07:17:51Z",
    "by_workflow_queued": {
-    "hitl-control-plane-verify": 1,
-    "DO Statement Style": 1,
     "Quota Dispatch Tree": 1,
+    "Agent Throughput Evidence": 26,
+    "lane events recorder": 23,
+    "n8n SHE bridge": 1,
+    "quota-served-probe": 1,
     "termux smoke": 1,
     "Agent PR Jules Handoff": 1,
     "PR Change Effectiveness Ledger": 1,
@@ -47,8 +48,8 @@
   }
  },
  "totals": {
-  "queued": 11,
-  "in_progress": 21
+  "queued": 59,
+  "in_progress": 17
  },
  "wedged_ancient": [
   {
@@ -80,13 +81,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 4,
+   "1": 2,
    "2": 3,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 7,
-  "default_t4": 25,
+  "explicit_total": 5,
+  "default_t4": 71,
   "unmatched": 0,
   "ancient_excluded": 4,
   "operator_excluded": 1

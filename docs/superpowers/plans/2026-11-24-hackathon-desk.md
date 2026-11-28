@@ -47,7 +47,7 @@
 
 **Interfaces:**
 - Produces: an allowlisted `challenge-public-feed/v1` artifact plus HackathonDesk.normalizeOpportunityFeed(payload, now), normalizeChallengeFeed(payload), normalizeCountdownFeed(payload), normalizePipelineFeed(payload), and safeExternalUrl(value).
-- The browser fetches `https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/que/feeds/opportunity-priority.json` for ranked opportunities and `./data/challenge-public-feed.json` for challenge events/gates. It fetches countdown, desk, QUE queue, and dispatch mirrors from `./data/challenge-countdowns-feed.json`, `./data/desk-feed.json`, and `./data/que-queue-feed.json`. Pipeline dispatch evidence is read from the `dispatch_claims` object embedded in the QUE queue feed; the separate `dispatch-state-feed.json` is empty on master and stays outside browser requests until it contains a valid published contract.
+- The browser fetches `https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/que/feeds/opportunity-priority.json` for ranked opportunities and `./data/challenge-public-feed.json` for challenge events/gates. It fetches countdown, desk, QUE queue, and dispatch mirrors from `./data/challenge-countdowns-feed.json`, `./data/desk-feed.json`, and `./data/que-queue-feed.json`. Pipeline dispatch evidence is read from the `dispatch_claims` object embedded in `./data/que-queue-feed.json` (`que-queue-feed/v1`), folded from the versioned `dispatch-state-feed/v1`. The normalizer selects display fields only and omits ranking scores/components; the separate dispatch feed remains an existing source, but the page avoids a second request.
 - The browser MUST NOT fetch `ops/challenge/coordinator.json`. The generator copies only explicitly allowlisted public fields, recursively excludes `metrics_internal` and `win_probability`, and tests the exclusion at every nesting level. C11 M1–M6 and C12's alternate date keys remain represented. The generated artifact is deployed with the dashboard tree and refreshed alongside the countdown feed.
 - The dedicated Hackathon Desk Contract workflow runs the public-feed projection tests on pull requests and later adds the Desk's Node/Python contracts as those tasks land.
 - Returns normalized records with source, generated_at, freshness, and explicit status values.
@@ -146,10 +146,11 @@
 - Produces: onboarding, navigation, proposal, contribution, pipeline, permissions, accessibility, and troubleshooting documentation.
 
 - [ ] Write failing tests for guide links and required sections.
-- [ ] Verify the deployed guide URLs `https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/teammates/HACKATHON-DESK-GUIDE.md` and `https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/teammates/ACCESSIBILITY.md` return successfully from the canonical deployed route `https://timerloggedout-spec.github.io/tribute/hackathon.html`; source-tree existence alone is insufficient.
+- [ ] Write failing tests for guide links and required sections.
 - [ ] Verify RED.
-- [ ] Write both guides and connect them from the page using the deployed raw-content URLs.
-- [ ] Run documentation link, heading, and deployed-URL checks.
+- [ ] Write both guides and connect them from the page using pinned-master raw-content URLs.
+- [ ] Verify the feature-branch raw URLs for both guides return successfully before promotion; validate headings and required sections.
+- [ ] After promotion and publication, verify the canonical master raw URLs from the live page in Task 9.
 - [ ] Commit with Implements: HD-007, HD-008.
 
 ### Task 7: Accessibility and responsive verification

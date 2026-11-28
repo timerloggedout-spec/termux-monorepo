@@ -1,6 +1,6 @@
 name: Repository Provisioner
 
-run-name: "Provision repository: ${{ inputs.repo_name }}"
+run-name: "Provision repository: ${{ inputs.target_owner }}/${{ inputs.repo_name }}"
 
 on:
   workflow_dispatch:
@@ -9,6 +9,19 @@ on:
         description: "New repository slug (lowercase letters, numbers, hyphens)"
         required: true
         type: string
+      target_owner:
+        description: "Personal account or organization that will own the repository"
+        required: true
+        type: string
+        default: timerloggedout-spec
+      owner_type:
+        description: "Owner account type"
+        required: true
+        type: choice
+        options:
+          - user
+          - organization
+        default: user
       description:
         description: "Repository description"
         required: false
@@ -21,9 +34,13 @@ on:
           - private
           - public
         default: private
+      confirmation:
+        description: "For organization creation, enter CREATE owner/repository"
+        required: false
+        type: string
 
 concurrency:
-  group: repository-provisioner-${{ inputs.repo_name }}
+  group: repository-provisioner-${{ inputs.target_owner }}-${{ inputs.repo_name }}
   cancel-in-progress: false
 
 permissions:
@@ -38,23 +55,33 @@ jobs:
       GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
       CREDENTIAL_REF: ${{ secrets.ARCHWIZ_GITHUB_TOKEN != '' && 'ARCHWIZ_GITHUB_TOKEN' || secrets.OPERATOR_GITHUB_TOKEN != '' && 'OPERATOR_GITHUB_TOKEN' || secrets.OPERATOR_TOKEN != '' && 'OPERATOR_TOKEN' || 'GITHUB_TOKEN' }}
       EXPECTED_OWNER: timerloggedout-spec
+      TARGET_OWNER: ${{ inputs.target_owner }}
+      OWNER_TYPE: ${{ inputs.owner_type }}
       REPO_NAME: ${{ inputs.repo_name }}
       REPO_DESCRIPTION: ${{ inputs.description }}
       REPO_VISIBILITY: ${{ inputs.visibility }}
+      CONFIRMATION: ${{ inputs.confirmation }}
     steps:
       - name: Validate request and create repository
         id: create
         shell: bash
         run: |
           set -euo pipefail
-          : "${GH_TOKEN:?Configure the existing OPERATOR_GITHUB_TOKEN Actions secret}"
-
-          if [[ ! "${REPO_NAME}" =~ ^[a-z0-9]([a-z0-9-]{0,98}[a-z0-9])?$ ]]; then
-            echo "::error::Use a 1-100 character lowercase repository slug with letters, numbers, and interior hyphens."
+          if [[ -z "$GH_TOKEN" ]]; then
+            echo "::error::Configure the existing operator GitHub PAT secret."
             exit 1
           fi
 
-          case "${REPO_VISIBILITY}" in
+          if [[ ! "$REPO_NAME" =~ ^[a-z0-9]([a-z0-9-]{0,98}[a-z0-9])?$ ]]; then
+            echo "::error::Use a 1-100 character lowercase repository slug with letters, numbers, and interior hyphens."
+            exit 1
+          fi
+          if [[ ! "$TARGET_OWNER" =~ ^[A-Za-z0-9-]+$ ]]; then
+            echo "::error::Use a valid GitHub owner or organization slug."
+            exit 1
+          fi
+
+          case "$REPO_VISIBILITY" in
             private) private=true ;;
             public) private=false ;;
             *)
@@ -63,54 +90,91 @@ jobs:
               ;;
           esac
 
-          owner="$(gh api user --jq '.login')"
-          if [[ -z "${owner}" || "${owner,,}" != "${EXPECTED_OWNER,,}" ]]; then
-            echo "::error::Provisioning credential identity must be ${EXPECTED_OWNER}; received ${owner:-empty}."
+          actor="$(gh api user --jq '.login')"
+          if [[ -z "$actor" || "${actor,,}" != "${EXPECTED_OWNER,,}" ]]; then
+            echo "::error::Provisioning credential identity must be $EXPECTED_OWNER; received ${actor:-empty}."
             exit 1
           fi
 
-          if gh api "/repos/${owner}/${REPO_NAME}" >/dev/null 2>&1; then
-            echo "::error::Repository ${owner}/${REPO_NAME} already exists."
+          owner_plan="personal"
+          if [[ "$OWNER_TYPE" == "user" ]]; then
+            if [[ "${TARGET_OWNER,,}" != "${actor,,}" ]]; then
+              echo "::error::User-owned repositories must target the authenticated account."
+              exit 1
+            fi
+            create_endpoint="/user/repos"
+          elif [[ "$OWNER_TYPE" == "organization" ]]; then
+            if [[ "$CREDENTIAL_REF" == "GITHUB_TOKEN" ]]; then
+              echo "::error::Organization provisioning requires the configured operator PAT."
+              exit 1
+            fi
+            membership="$(gh api "/user/memberships/orgs/$TARGET_OWNER" --jq '[.role, .state] | join(":")')"
+            if [[ "$membership" != "admin:active" ]]; then
+              echo "::error::Active organization-owner membership is required; received $membership."
+              exit 1
+            fi
+            owner_plan="$(gh api "/orgs/$TARGET_OWNER" --jq '.plan.name // empty')"
+            if [[ "${owner_plan,,}" != "free" ]]; then
+              echo "::error::Organization-owned provisioning requires a GitHub Free destination; received ${owner_plan:-unavailable}."
+              exit 1
+            fi
+            required_confirmation="CREATE $TARGET_OWNER/$REPO_NAME"
+            if [[ "$CONFIRMATION" != "$required_confirmation" ]]; then
+              echo "::error::Enter the exact confirmation: $required_confirmation"
+              exit 1
+            fi
+            create_endpoint="/orgs/$TARGET_OWNER/repos"
+          else
+            echo "::error::Unsupported owner type."
             exit 1
           fi
 
-          created="$(gh api --method POST /user/repos \
-            -f "name=${REPO_NAME}" \
-            -f "description=${REPO_DESCRIPTION}" \
-            -F "private=${private}" \
+          if gh api "/repos/$TARGET_OWNER/$REPO_NAME" >/dev/null 2>&1; then
+            echo "::error::Repository $TARGET_OWNER/$REPO_NAME already exists."
+            exit 1
+          fi
+
+          created="$(gh api --method POST "$create_endpoint" \
+            -f "name=$REPO_NAME" \
+            -f "description=$REPO_DESCRIPTION" \
+            -F "private=$private" \
             -F "auto_init=true" \
             -F "has_issues=true" \
             -F "has_wiki=false")"
 
-          created_owner="$(jq -r '.owner.login // empty' <<<"${created}")"
-          created_name="$(jq -r '.name // empty' <<<"${created}")"
-          default_branch="$(jq -r '.default_branch // empty' <<<"${created}")"
-          if [[ "${created_owner,,}" != "${owner,,}" || "${created_name}" != "${REPO_NAME}" || -z "${default_branch}" ]]; then
+          created_owner="$(jq -r '.owner.login // empty' <<<"$created")"
+          created_name="$(jq -r '.name // empty' <<<"$created")"
+          default_branch="$(jq -r '.default_branch // empty' <<<"$created")"
+          if [[ "${created_owner,,}" != "${TARGET_OWNER,,}" || "$created_name" != "$REPO_NAME" || -z "$default_branch" ]]; then
             echo "::error::GitHub returned repository metadata outside the requested identity."
             exit 1
           fi
 
-          repo_url="$(jq -r '.html_url' <<<"${created}")"
-          repo_id="$(jq -r '.id' <<<"${created}")"
-          printf 'owner=%s\nname=%s\nurl=%s\nid=%s\ndefault_branch=%s\n' \
-            "${owner}" "${REPO_NAME}" "${repo_url}" "${repo_id}" "${default_branch}" >> "${GITHUB_OUTPUT}"
+          repo_url="$(jq -r '.html_url' <<<"$created")"
+          repo_id="$(jq -r '.id' <<<"$created")"
+          printf 'owner=%s\nname=%s\nurl=%s\nid=%s\ndefault_branch=%s\nplan=%s\nendpoint=%s\n' \
+            "$TARGET_OWNER" "$REPO_NAME" "$repo_url" "$repo_id" "$default_branch" "$owner_plan" "$create_endpoint" >> "$GITHUB_OUTPUT"
 
       - name: Publish provisioning receipt
         env:
           REPOSITORY_URL: ${{ steps.create.outputs.url }}
           REPOSITORY_ID: ${{ steps.create.outputs.id }}
           DEFAULT_BRANCH: ${{ steps.create.outputs.default_branch }}
+          OWNER_PLAN: ${{ steps.create.outputs.plan }}
+          CREATE_ENDPOINT: ${{ steps.create.outputs.endpoint }}
         shell: bash
         run: |
           {
             echo "## Repository created"
             echo
-            echo "- Repository: [${REPOSITORY_URL}](${REPOSITORY_URL})"
-            echo "- Repository ID: ${REPOSITORY_ID}"
-            echo "- Visibility: ${REPO_VISIBILITY}"
-            echo "- Default branch: ${DEFAULT_BRANCH}"
+            echo "- Repository: [$REPOSITORY_URL]($REPOSITORY_URL)"
+            echo "- Repository ID: $REPOSITORY_ID"
+            echo "- Owner: $TARGET_OWNER ($OWNER_TYPE)"
+            echo "- Owner plan: $OWNER_PLAN"
+            echo "- Visibility: $REPO_VISIBILITY"
+            echo "- Default branch: $DEFAULT_BRANCH"
             echo "- Initialization: GitHub auto_init (default README.md)"
-          echo "- Authenticated owner: ${EXPECTED_OWNER}"
-          echo "- Credential reference: ${CREDENTIAL_REF} (value withheld)"
-          echo "- Provisioning action: POST /user/repos; identity verified via GET /user"
-          } >> "${GITHUB_STEP_SUMMARY}"
+            echo "- Authenticated owner: $EXPECTED_OWNER"
+            echo "- Credential reference: $CREDENTIAL_REF (value withheld)"
+            echo "- Provisioning action: POST $CREATE_ENDPOINT"
+          } >> "$GITHUB_STEP_SUMMARY"

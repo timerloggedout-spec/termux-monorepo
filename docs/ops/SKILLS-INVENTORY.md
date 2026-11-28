@@ -1,6 +1,6 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-30 22:00 UTC · **Master tip:** `fc22deb8`
+**Version:** 2026-11-25 UTC · **Master base:** `bdabbd68` · **Active branch:** `feat/enterprise-org-preservation-20261125b`
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)
 **Collaborator short entry:** [`SKILLS.md`](../../SKILLS.md)
 
@@ -20,7 +20,7 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | Role | Load first | Then |
 |------|------------|------|
 | **Admin / Grok Administrator** | `superpowers` · `evidence-led-monorepo-ops` + `adaptive-wait` + **`stepie-stepwise-ops`** + `ml-pipeline-ops` | `review-loop` · `tribute-lane` · `github-pages-operator` · `icm-cctv-ops` |
-| **Admin / Termux stewardship** | `termux-mcp-project-steward` + `adaptive-wait` | `context-relationship-graph` · `wingman-project-integration` |
+| **Admin / Termux stewardship** | `termux-mcp-project-steward` + `adaptive-wait` | `github-enterprise-org-preservation` · `context-relationship-graph` · `wingman-project-integration` |
 | **Wingman adaptation** | `wingman-project-integration` | `adaptive-wait` · `context-relationship-graph` | `review-loop` · `tribute-lane` · `github-pages-operator` · `approxination-lane` |
 | **Collaborator** | `superpowers` · `adaptive-feedback-cycle` | dual-gate · `find-skills` |
 | **Oversight / external contrib** | `tribute-lane` | evidence-led + adaptive-wait · living status board |
@@ -38,6 +38,7 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | blind-agent-evaluation | `.agents/skills/blind-agent-evaluation/SKILL.md` |
 | context-relationship-graph | `.agents/skills/context-relationship-graph/SKILL.md` |
 | evidence-led-monorepo-ops | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` |
+| github-enterprise-org-preservation | `.agents/skills/github-enterprise-org-preservation/SKILL.md` |
 | find-skills | `.agents/skills/find-skills/SKILL.md` |
 | gemini-performance-psychology | `.agents/skills/gemini-performance-psychology/SKILL.md` |
 | github-pages-operator | `.agents/skills/github-pages-operator/SKILL.md` |
@@ -148,3 +149,10 @@ Session-local tool availability is not proof of repository adapter implementatio
 - Canonical notation register: [`CAVEMAN-MICRO-DENSE-V2.md`](../proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md).
 - Standard and enforcement profile: [`SIGLARY-STANDARD.md`](../proposals/active/notation-sets/SIGLARY-STANDARD.md).
 - Apply DO-first CAVEMAN-6 and class-correct Siglary notation across repository-authored instructions and skills.
+
+
+## GitHub Enterprise organization preservation
+
+- `github-enterprise-org-preservation` — preserve organization assets during Enterprise trial expiry; capture a metadata baseline, select direct detachment or Free-org repository transfer, reconcile organization-level resources, and prove the result through the adaptive WAIT/WATCH loop.
+- Runbook: `docs/ops/ENTERPRISE-TRIAL-PRESERVATION.md`.
+- Automation: `.github/workflows/enterprise-org-detachment-verify.yml` and `.github/workflows/enterprise-org-repository-transfer.yml`.

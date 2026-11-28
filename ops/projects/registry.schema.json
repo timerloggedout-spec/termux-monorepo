@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/projects/registry.schema.json",
+  "title": "MonoRepo Project Registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "updated_at",
+    "projects"
+  ],
+  "properties": {
+    "schema": {
+      "const": "project-registry/v1"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "projects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "project_id",
+          "name",
+          "class",
+          "scope_profile",
+          "manifest",
+          "proposal",
+          "status"
+        ],
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "pattern": "^project:[a-z0-9][a-z0-9-]*$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "class": {
+            "enum": [
+              "custom-project",
+              "challenge",
+              "certification",
+              "user-project",
+              "artifact"
+            ]
+          },
+          "scope_profile": {
+            "type": "string"
+          },
+          "manifest": {
+            "type": "string"
+          },
+          "proposal": {
+            "type": "string"
+          },
+          "product_repository": {
+            "type": "string"
+          },
+          "product_repository_state": {
+            "enum": [
+              "provisioning_pending",
+              "active",
+              "archived"
+            ]
+          },
+          "status": {
+            "enum": [
+              "proposed",
+              "active",
+              "paused",
+              "archived"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

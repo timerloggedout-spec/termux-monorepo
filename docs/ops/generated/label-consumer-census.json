@@ -1,0 +1,354 @@
+{
+  "schema_version": "label-consumer-census/v1",
+  "repository": "timerloggedout-spec/termux-monorepo",
+  "ref": "feat/trigger-workflow-registry-generator",
+  "observed_at": "2026-11-27",
+  "scope": "Source-referenced label examples and their confirmed producers/consumers. This is not a live exhaustive repository label inventory.",
+  "coverage": {
+    "label_collection": "UNAVAILABLE_THROUGH_CURRENT_GITHUB_READ_CONNECTOR",
+    "catalog_basis": "workflow/script/document source references",
+    "live_label_count": null,
+    "consumer_completeness": "selected examples; exhaustive cross-repository scan pending"
+  },
+  "summary": {
+    "label_records": 13,
+    "records_with_consumers": 10,
+    "records_with_producers": 12,
+    "records_with_unresolved_consumers": [
+      "intake-incomplete",
+      "swarm-admitted",
+      "deferred-by-tier"
+    ]
+  },
+  "sources": [
+    {
+      "path": ".github/workflows/project-task-dispatch.yml",
+      "blob_sha": "c1ed901ad05b6e9428b4c00e44460d448569ce5e"
+    },
+    {
+      "path": ".github/workflows/agent-jules-on-issues.yml",
+      "blob_sha": "20cbe8d50a92cca77a446893e0b177d814532680"
+    },
+    {
+      "path": ".github/workflows/swarm-admission.yml",
+      "blob_sha": "992280510273f542dc62ec863b561a6e886031dd"
+    },
+    {
+      "path": ".github/workflows/game-development-dispatch.yml",
+      "blob_sha": "06755eaf03f9ce8f05504ed5ec5f4cbd4583b8de"
+    },
+    {
+      "path": ".github/workflows/delphi-gate.yml",
+      "blob_sha": "adcaaba048bb639ed7585c0247b305d0a598c3b9"
+    },
+    {
+      "path": ".github/workflows/target-intake.yml",
+      "blob_sha": "4f7c1136194ef7cf75539a3746bdbd12a4ee95ff"
+    },
+    {
+      "path": ".github/workflows/hark-enqueue.yml",
+      "blob_sha": "7cb2bfe463660a86fc4f3356421257eefe702785"
+    },
+    {
+      "path": ".github/workflows/issue-lifecycle-triage.yml",
+      "blob_sha": "4f24bf8923ae48244fac7de904925c595fe05b36"
+    },
+    {
+      "path": "scripts/issue_lifecycle/triage_labels.py",
+      "blob_sha": "8b85508d4093914207d350758f7588acd9fa4973"
+    },
+    {
+      "path": "scripts/dispatch/claim_task.py",
+      "blob_sha": "ad4f713b00645a68fafd6615b0e06371b232f105"
+    },
+    {
+      "path": "scripts/dispatch/auto_claim.py",
+      "blob_sha": "fc6fff401e99463b59cd062304953cef6b164294"
+    },
+    {
+      "path": "scripts/delphi/signals.py",
+      "blob_sha": "a5272c73b813ae3d872a5429f23b23e6db3ef75f"
+    },
+    {
+      "path": "scripts/que/self_repair.py",
+      "blob_sha": "0aa728eaaf3e2f6d0c197a2f5e21c2ca740600c3"
+    },
+    {
+      "path": "docs/hark-bridge.md",
+      "blob_sha": "75933852a79fa5c5fad6b3b1588ca76b3e37bee9"
+    },
+    {
+      "path": "docs/ops/ISSUE-LIFECYCLE.md",
+      "blob_sha": "4e91cd1cac329779223884715d3a4ef0c189b106"
+    },
+    {
+      "path": "docs/ops/CLAIMABLE-ROUTES.md",
+      "blob_sha": "d2ce27cbc41723dd890a70a42f3945f1e6ed1f7c"
+    }
+  ],
+  "records": [
+    {
+      "id": "project-task",
+      "kind": "intake-selector",
+      "label": "project-task",
+      "producer": {
+        "kind": "issue-template",
+        "path": ".github/ISSUE_TEMPLATE/project-task.yml"
+      },
+      "consumers": [
+        {
+          "path": ".github/workflows/project-task-dispatch.yml",
+          "event": "issues.opened/reopened",
+          "behavior": "selects when label is present; title-prefix and body-heading selectors are alternate arms",
+          "blob_sha": "c1ed901ad05b6e9428b4c00e44460d448569ce5e"
+        }
+      ],
+      "state": "routing-input"
+    },
+    {
+      "id": "jules",
+      "kind": "agent-selector",
+      "label": "jules",
+      "producers": [
+        {
+          "path": "operator-applied issue label"
+        }
+      ],
+      "consumers": [
+        {
+          "path": ".github/workflows/agent-jules-on-issues.yml",
+          "event": "issues.labeled",
+          "behavior": "case-insensitive explicit variants jules/Jules/JULES; trusted label actor verification",
+          "blob_sha": "20cbe8d50a92cca77a446893e0b177d814532680"
+        }
+      ],
+      "state": "agent-dispatch-input"
+    },
+    {
+      "id": "dispatch-queued",
+      "kind": "queue-state",
+      "label": "dispatch-queued",
+      "producers": [
+        {
+          "path": ".github/workflows/project-task-dispatch.yml",
+          "blob_sha": "c1ed901ad05b6e9428b4c00e44460d448569ce5e"
+        },
+        {
+          "path": ".github/workflows/game-development-dispatch.yml",
+          "blob_sha": "06755eaf03f9ce8f05504ed5ec5f4cbd4583b8de"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "scripts/dispatch/claim_task.py",
+          "behavior": "claim/lease transition applies dispatch-claimed",
+          "blob_sha": "ad4f713b00645a68fafd6615b0e06371b232f105"
+        },
+        {
+          "path": "scripts/dispatch/auto_claim.py",
+          "behavior": "reads issue labels and uses dispatch queue state in automatic claim flow",
+          "blob_sha": "fc6fff401e99463b59cd062304953cef6b164294"
+        }
+      ],
+      "state": "queue-ready"
+    },
+    {
+      "id": "dispatch-claimed",
+      "kind": "queue-state",
+      "label": "dispatch-claimed",
+      "producers": [
+        {
+          "path": "scripts/dispatch/claim_task.py",
+          "behavior": "applied as part of claim/lease motion",
+          "blob_sha": "ad4f713b00645a68fafd6615b0e06371b232f105"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "scripts/dispatch/auto_claim.py",
+          "behavior": "claim eligibility and lease state logic",
+          "blob_sha": "fc6fff401e99463b59cd062304953cef6b164294"
+        }
+      ],
+      "state": "claimed"
+    },
+    {
+      "id": "intake-incomplete",
+      "kind": "intake-outcome",
+      "label": "intake-incomplete",
+      "producers": [
+        {
+          "path": ".github/workflows/project-task-dispatch.yml",
+          "behavior": "invalid project-task parse diagnostic",
+          "blob_sha": "c1ed901ad05b6e9428b4c00e44460d448569ce5e"
+        },
+        {
+          "path": ".github/workflows/game-development-dispatch.yml",
+          "behavior": "invalid game task parse diagnostic",
+          "blob_sha": "06755eaf03f9ce8f05504ed5ec5f4cbd4583b8de"
+        }
+      ],
+      "consumers": [],
+      "state": "validation-failure"
+    },
+    {
+      "id": "swarm-admitted",
+      "kind": "admission-outcome",
+      "label": "swarm-admitted",
+      "producers": [
+        {
+          "path": ".github/workflows/swarm-admission.yml",
+          "behavior": "ADMITTED decision label",
+          "blob_sha": "992280510273f542dc62ec863b561a6e886031dd"
+        }
+      ],
+      "consumers": [],
+      "state": "admitted"
+    },
+    {
+      "id": "deferred-by-tier",
+      "kind": "admission-outcome",
+      "label": "deferred-by-tier",
+      "producers": [
+        {
+          "path": ".github/workflows/swarm-admission.yml",
+          "behavior": "DEFERRED decision label; filing remains queued for later re-evaluation",
+          "blob_sha": "992280510273f542dc62ec863b561a6e886031dd"
+        }
+      ],
+      "consumers": [],
+      "state": "deferred"
+    },
+    {
+      "id": "delphi-rfp",
+      "kind": "domain-queue",
+      "label": "delphi:rfp",
+      "producers": [
+        {
+          "path": ".github/ISSUE_TEMPLATE/delphi-rfp.yml",
+          "behavior": "template label at filing"
+        }
+      ],
+      "consumers": [
+        {
+          "path": ".github/workflows/delphi-gate.yml",
+          "event": "issues.opened/edited/labeled/reopened and issue_comment.created",
+          "behavior": "requires delphi:rfp label on issue events and comments",
+          "blob_sha": "adcaaba048bb639ed7585c0247b305d0a598c3b9"
+        },
+        {
+          "path": "scripts/delphi/rfp_flood_fetch.py",
+          "behavior": "lists open issues with delphi:rfp for collector input",
+          "evidence": "GitHub code-search result; full source SHA pending"
+        }
+      ],
+      "state": "domain-intake"
+    },
+    {
+      "id": "target-brief",
+      "kind": "intake-selector",
+      "label": "target-brief",
+      "producers": [
+        {
+          "path": ".github/ISSUE_TEMPLATE/target-brief.yml",
+          "behavior": "template label at filing"
+        }
+      ],
+      "consumers": [
+        {
+          "path": ".github/workflows/target-intake.yml",
+          "event": "issues opened/edited/reopened",
+          "behavior": "job selector requires target-brief label",
+          "blob_sha": "4f7c1136194ef7cf75539a3746bdbd12a4ee95ff"
+        }
+      ],
+      "state": "routing-input"
+    },
+    {
+      "id": "hark-queue",
+      "kind": "external-work-queue",
+      "label": "hark:queue",
+      "producers": [
+        {
+          "path": ".github/workflows/hark-enqueue.yml",
+          "event": "workflow_dispatch",
+          "behavior": "creates or appends queue issue; ensures queue/result labels exist",
+          "blob_sha": "7cb2bfe463660a86fc4f3356421257eefe702785"
+        },
+        {
+          "path": "scripts/que/self_repair.py",
+          "behavior": "creates owner packet on Hark queue",
+          "blob_sha": "0aa728eaaf3e2f6d0c197a2f5e21c2ca740600c3"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "docs/hark-bridge.md",
+          "event": "scheduled poll every 2 hours",
+          "behavior": "Hark poller reads open hark:queue issues by priority then age",
+          "blob_sha": "75933852a79fa5c5fad6b3b1588ca76b3e37bee9"
+        },
+        {
+          "path": "scripts/que/self_repair.py",
+          "behavior": "reads open hark:queue issues when posting owner packets",
+          "blob_sha": "0aa728eaaf3e2f6d0c197a2f5e21c2ca740600c3"
+        }
+      ],
+      "state": "queued-for-hark"
+    },
+    {
+      "id": "delphi-shadow",
+      "kind": "domain-state",
+      "label": "delphi:shadow",
+      "producers": [
+        {
+          "path": "Delphi gate award/state process"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "scripts/delphi/signals.py",
+          "behavior": "requires delphi:shadow and recent successful conclusions; suppresses promotion if delphi:promoted present",
+          "blob_sha": "a5272c73b813ae3d872a5429f23b23e6db3ef75f"
+        }
+      ],
+      "state": "shadow-monitoring"
+    },
+    {
+      "id": "sr-verified",
+      "kind": "learning-outcome",
+      "label": "sr:verified",
+      "producers": [
+        {
+          "path": "self-repair verification close-out"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "scripts/que/self_repair.py",
+          "behavior": "closed issue outcome increments role/class weight",
+          "blob_sha": "0aa728eaaf3e2f6d0c197a2f5e21c2ca740600c3"
+        }
+      ],
+      "state": "positive-learning-signal"
+    },
+    {
+      "id": "sr-regression",
+      "kind": "learning-outcome",
+      "label": "sr:regression",
+      "producers": [
+        {
+          "path": "self-repair regression close-out"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "scripts/que/self_repair.py",
+          "behavior": "closed issue outcome decrements role/class weight",
+          "blob_sha": "0aa728eaaf3e2f6d0c197a2f5e21c2ca740600c3"
+        }
+      ],
+      "state": "negative-learning-signal"
+    }
+  ]
+}

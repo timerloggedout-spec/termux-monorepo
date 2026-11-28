@@ -1,0 +1,437 @@
+{
+  "schema_version": "comment-trigger-census/v1",
+  "repository": "timerloggedout-spec/termux-monorepo",
+  "ref": "feat/trigger-workflow-registry-generator",
+  "observed_at": "2026-11-27",
+  "scope": "Seventeen source-verified comment-command, mention, and HTML-marker routes found through repository code search and direct workflow reads. This is a selected census, not a claim that every issue_comment workflow has been parsed.",
+  "summary": {
+    "records": 17,
+    "slashCommands": 5,
+    "mentions": 6,
+    "htmlMarkers": 5,
+    "providerCommands": 1
+  },
+  "sources": [
+    {
+      "path": ".github/workflows/sweep-accountability.yml",
+      "blob_sha": "3cccda22cae474cc02cb0eca2fde221122283034"
+    },
+    {
+      "path": ".github/workflows/build-dispatch.yml",
+      "blob_sha": "ba7b23d7a26f01983db0db3ed440fa5e3c0b0b7c"
+    },
+    {
+      "path": ".github/workflows/agent-jules-on-issues.yml",
+      "blob_sha": "20cbe8d50a92cca77a446893e0b177d814532680"
+    },
+    {
+      "path": ".github/workflows/agent-pr-jules-handoff.yml",
+      "blob_sha": "1332bff003ba4c8f41f0f364d778bdd970c2ab61"
+    },
+    {
+      "path": ".github/workflows/deepseek-ci.yml",
+      "blob_sha": "a932adf756dfa35ada9fae2944cda975208a8486"
+    },
+    {
+      "path": ".github/workflows/deepseek-termux-agent.yml",
+      "blob_sha": "122a33c316cbd260f736e5951d62a996d51540dc"
+    },
+    {
+      "path": ".github/workflows/agent-ecc-tools-ops.yml",
+      "blob_sha": "651147a6291e2b0c24c7261a3ea63c9ebe3b824b"
+    },
+    {
+      "path": ".github/workflows/ox-alpha-smoke.yml",
+      "blob_sha": "5208c7e37ad0785bf98c3d4089dfbf08a6b1fd2d"
+    },
+    {
+      "path": ".github/workflows/pr-evidence-evaluation.yml",
+      "blob_sha": "cefb42f8d1982f6ebfdfe2765ccef2ae3778b761"
+    },
+    {
+      "path": ".github/workflows/action-effectiveness-ledger.yml",
+      "blob_sha": "4a787002f0e6bfce8501b37f30bade260ec8d562"
+    },
+    {
+      "path": ".github/workflows/cellcog-review.yml",
+      "blob_sha": "a33857921dbe61154b8623f8482e4d6721045636"
+    },
+    {
+      "path": ".github/workflows/research-intake.yml",
+      "blob_sha": "f28646309a57c6fd4c4ef066fa15ab45a69aff55"
+    },
+    {
+      "path": ".github/workflows/delphi-intake.yml",
+      "blob_sha": "680fd097335a6bee2ef4f311980ac19ad08f106c"
+    },
+    {
+      "path": ".github/workflows/operator-wake.yml",
+      "blob_sha": "95de3774e86e7ef2de0e1ea47b0fbc08dc7442da"
+    },
+    {
+      "path": ".github/workflows/phantom-secrets-audit.yml",
+      "blob_sha": "01a336385344d8109500b3744d3e6e512a441d4f"
+    },
+    {
+      "path": ".github/workflows/operator-variable-provision.yml",
+      "blob_sha": "9a39d96a5f274389de9aa8dd17cf1bcb4b371e35"
+    },
+    {
+      "path": ".github/workflows/peer-review-orchestrator.yml",
+      "blob_sha": "5b24f9feda3342e6a010f1e2927468c8c302931e"
+    }
+  ],
+  "records": [
+    {
+      "id": "sweep-command",
+      "workflow": "sweep-accountability",
+      "path": ".github/workflows/sweep-accountability.yml",
+      "blob_sha": "3cccda22cae474cc02cb0eca2fde221122283034",
+      "event": "issue_comment.created",
+      "selector": "comment body starts with /sweep",
+      "guards": [
+        "workflow condition also permits non-comment event paths; command arm is the explicit issue-comment selector"
+      ],
+      "line_refs": [
+        35,
+        38,
+        53,
+        55
+      ],
+      "class": "slash-command",
+      "target": "sweep accountability ledger and findings"
+    },
+    {
+      "id": "gemini-build-command",
+      "workflow": "build-dispatch",
+      "path": ".github/workflows/build-dispatch.yml",
+      "blob_sha": "ba7b23d7a26f01983db0db3ed440fa5e3c0b0b7c",
+      "event": "issue_comment.created",
+      "selector": "comment body starts with @gemini-cli /build",
+      "guards": [
+        "author association OWNER/MEMBER/COLLABORATOR"
+      ],
+      "line_refs": [
+        25,
+        26,
+        65,
+        67,
+        68
+      ],
+      "class": "mention-plus-command",
+      "target": "Gemini build dispatch"
+    },
+    {
+      "id": "jules-issue-mention",
+      "workflow": "agent-jules-on-issues",
+      "path": ".github/workflows/agent-jules-on-issues.yml",
+      "blob_sha": "20cbe8d50a92cca77a446893e0b177d814532680",
+      "event": "issue_comment.created",
+      "selector": "comment body starts with @jules or @Jules",
+      "guards": [
+        "non-PR issue",
+        "sender type User",
+        "author association OWNER/MEMBER/COLLABORATOR"
+      ],
+      "line_refs": [
+        18,
+        19,
+        29,
+        33,
+        35,
+        36
+      ],
+      "class": "mention",
+      "target": "Jules issue coordination and session dispatch"
+    },
+    {
+      "id": "jules-pr-handoff",
+      "workflow": "agent-pr-jules-handoff",
+      "path": ".github/workflows/agent-pr-jules-handoff.yml",
+      "blob_sha": "1332bff003ba4c8f41f0f364d778bdd970c2ab61",
+      "event": "issue_comment.created",
+      "selector": "comment body matches ^@jules or ^@Jules with whitespace or end boundary",
+      "guards": [
+        "user association OWNER/MEMBER/COLLABORATOR or allowed github-actions bot path",
+        "PR synchronize is a separate event arm"
+      ],
+      "line_refs": [
+        3,
+        4,
+        19,
+        22,
+        25,
+        38
+      ],
+      "class": "mention",
+      "target": "Jules PR-side handoff"
+    },
+    {
+      "id": "deepseek-ci-mention",
+      "workflow": "deepseek-ci",
+      "path": ".github/workflows/deepseek-ci.yml",
+      "blob_sha": "a932adf756dfa35ada9fae2944cda975208a8486",
+      "event": "issue_comment.created",
+      "selector": "comment body contains @deepcore, @deepCore, @deepseek, @deepseek-ci, deepseek, or DeepSeek",
+      "guards": [
+        "workflow also handles pull_request and workflow_dispatch; selector includes broad text matches"
+      ],
+      "line_refs": [
+        15,
+        16,
+        40,
+        45,
+        50
+      ],
+      "class": "mention-or-keyword",
+      "target": "DeepSeek CI invocation"
+    },
+    {
+      "id": "deepseek-agent-mention",
+      "workflow": "deepseek-termux-agent",
+      "path": ".github/workflows/deepseek-termux-agent.yml",
+      "blob_sha": "122a33c316cbd260f736e5951d62a996d51540dc",
+      "event": "issue_comment.created",
+      "selector": "comment body contains @deepseek",
+      "guards": [
+        "issues.assigned, pull_request.assigned, and workflow_dispatch are separate event arms"
+      ],
+      "line_refs": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        35,
+        37
+      ],
+      "class": "mention",
+      "target": "DeepSeek Termux agent"
+    },
+    {
+      "id": "ecc-tools-command-marker",
+      "workflow": "agent-ecc-tools-ops",
+      "path": ".github/workflows/agent-ecc-tools-ops.yml",
+      "blob_sha": "651147a6291e2b0c24c7261a3ea63c9ebe3b824b",
+      "event": "issue_comment.created",
+      "selector": "comment starts /ecc-tools-ops or /ecc ops, or contains <!-- request-ecc-tools-ops -->",
+      "guards": [
+        "author association OWNER/MEMBER/COLLABORATOR",
+        "non-PR issue and PR lanes are distinct job conditions"
+      ],
+      "line_refs": [
+        20,
+        21,
+        132,
+        139,
+        141,
+        202,
+        204
+      ],
+      "class": "slash-command-plus-marker",
+      "target": "ECC Tools app operations"
+    },
+    {
+      "id": "ox-run-model-command",
+      "workflow": "ox-alpha-smoke",
+      "path": ".github/workflows/ox-alpha-smoke.yml",
+      "blob_sha": "5208c7e37ad0785bf98c3d4089dfbf08a6b1fd2d",
+      "event": "issue_comment.created",
+      "selector": "comment body starts with /run-model followed by a space",
+      "guards": [
+        "comment must belong to a pull request",
+        "workflow_dispatch is a separate event arm"
+      ],
+      "line_refs": [
+        28,
+        29,
+        36,
+        39
+      ],
+      "class": "slash-command",
+      "target": "OX Alpha model smoke run"
+    },
+    {
+      "id": "pr-evaluate-command",
+      "workflow": "pr-evidence-evaluation",
+      "path": ".github/workflows/pr-evidence-evaluation.yml",
+      "blob_sha": "cefb42f8d1982f6ebfdfe2765ccef2ae3778b761",
+      "event": "issue_comment.created",
+      "selector": "comment body starts with /evaluate",
+      "guards": [
+        "comment must belong to a pull request",
+        "workflow also handles PR, review, review-comment and workflow_dispatch events"
+      ],
+      "line_refs": [
+        16,
+        17,
+        37
+      ],
+      "class": "slash-command",
+      "target": "PR evidence evaluation"
+    },
+    {
+      "id": "pr-ledger-command",
+      "workflow": "action-effectiveness-ledger",
+      "path": ".github/workflows/action-effectiveness-ledger.yml",
+      "blob_sha": "4a787002f0e6bfce8501b37f30bade260ec8d562",
+      "event": "issue_comment.created",
+      "selector": "comment body starts with /ledger",
+      "guards": [
+        "comment must belong to a pull request",
+        "workflow concurrency group includes event_name to isolate comment and PR runs"
+      ],
+      "line_refs": [
+        10,
+        11,
+        28,
+        34,
+        36
+      ],
+      "class": "slash-command",
+      "target": "action effectiveness ledger"
+    },
+    {
+      "id": "cellcog-pr-mention",
+      "workflow": "cellcog-review",
+      "path": ".github/workflows/cellcog-review.yml",
+      "blob_sha": "a33857921dbe61154b8623f8482e4d6721045636",
+      "event": "issue_comment.created",
+      "selector": "comment body contains @cellcog or @CellCog",
+      "guards": [
+        "comment must belong to a pull request",
+        "comment author must be non-bot"
+      ],
+      "line_refs": [
+        17,
+        18,
+        36,
+        38,
+        43
+      ],
+      "class": "mention",
+      "target": "CellCog PR review"
+    },
+    {
+      "id": "research-intake-marker",
+      "workflow": "research-intake",
+      "path": ".github/workflows/research-intake.yml",
+      "blob_sha": "f28646309a57c6fd4c4ef066fa15ab45a69aff55",
+      "event": "issue_comment.created",
+      "selector": "comment contains <!-- request-research -->",
+      "guards": [
+        "non-PR issue",
+        "workflow also accepts issues opened/reopened/edited"
+      ],
+      "line_refs": [
+        20,
+        21,
+        37,
+        44
+      ],
+      "class": "html-marker",
+      "target": "research registry intake"
+    },
+    {
+      "id": "delphi-intake-marker",
+      "workflow": "delphi-intake",
+      "path": ".github/workflows/delphi-intake.yml",
+      "blob_sha": "680fd097335a6bee2ef4f311980ac19ad08f106c",
+      "event": "issue_comment.created",
+      "selector": "comment contains <!-- request-delphi-intake -->",
+      "guards": [
+        "workflow_dispatch is a separate entry arm"
+      ],
+      "line_refs": [
+        27,
+        28,
+        67,
+        69
+      ],
+      "class": "html-marker",
+      "target": "Delphi RFP intake"
+    },
+    {
+      "id": "operator-wake-marker",
+      "workflow": "operator-wake",
+      "path": ".github/workflows/operator-wake.yml",
+      "blob_sha": "95de3774e86e7ef2de0e1ea47b0fbc08dc7442da",
+      "event": "issue_comment.created",
+      "selector": "comment contains <!-- request-operator-wake -->",
+      "guards": [
+        "workflow_dispatch is a separate entry arm"
+      ],
+      "line_refs": [
+        38,
+        39,
+        57,
+        59
+      ],
+      "class": "html-marker",
+      "target": "operator wake and allowlisted command dispatch"
+    },
+    {
+      "id": "phantom-secrets-marker",
+      "workflow": "phantom-secrets-audit",
+      "path": ".github/workflows/phantom-secrets-audit.yml",
+      "blob_sha": "01a336385344d8109500b3744d3e6e512a441d4f",
+      "event": "issue_comment.created",
+      "selector": "comment contains <!-- request-phantom-secrets-audit -->",
+      "guards": [
+        "workflow_dispatch and schedule are separate event arms"
+      ],
+      "line_refs": [
+        42,
+        43,
+        58,
+        62
+      ],
+      "class": "html-marker",
+      "target": "phantom secrets audit"
+    },
+    {
+      "id": "operator-variable-marker",
+      "workflow": "operator-variable-provision",
+      "path": ".github/workflows/operator-variable-provision.yml",
+      "blob_sha": "9a39d96a5f274389de9aa8dd17cf1bcb4b371e35",
+      "event": "issue_comment.created",
+      "selector": "comment contains <!-- request-variable-provision -->",
+      "guards": [
+        "author association OWNER/MEMBER/COLLABORATOR",
+        "workflow_dispatch is a separate event arm"
+      ],
+      "line_refs": [
+        22,
+        23,
+        35,
+        39,
+        40
+      ],
+      "class": "html-marker",
+      "target": "operator variable provisioning"
+    },
+    {
+      "id": "peer-review-provider-commands",
+      "workflow": "peer-review-orchestrator",
+      "path": ".github/workflows/peer-review-orchestrator.yml",
+      "blob_sha": "5b24f9feda3342e6a010f1e2927468c8c302931e",
+      "event": "issue_comment.created",
+      "selector": "PR comment contains @coderabbitai, @qodo, devin review, or operator-action",
+      "guards": [
+        "comment must belong to a pull request",
+        "bot/receipt filters and authorized-association checks apply in the orchestration path"
+      ],
+      "line_refs": [
+        42,
+        43,
+        59,
+        64,
+        66,
+        69
+      ],
+      "class": "provider-command",
+      "target": "peer review provider orchestration"
+    }
+  ]
+}

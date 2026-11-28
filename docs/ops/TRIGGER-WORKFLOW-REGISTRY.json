@@ -77,9 +77,10 @@
       "path": "docs/ops/generated/workflow-trigger-census.json",
       "role": "source-verified selected workflow event and selector census",
       "schema": "workflow-trigger-census/v1",
-      "workflow_count": 7,
-      "scope": "selected exemplars; not exhaustive",
-      "observed_at": "2026-11-27"
+      "workflow_count": 8,
+      "scope": "eight source-verified exemplars; one additional workflow reconciles directory/catalog drift",
+      "observed_at": "2026-11-27",
+      "uncatalogued_workflow_count": 1
     },
     {
       "id": "label-consumer-census",
@@ -506,6 +507,17 @@
       "status": "SOURCE_REFERENCED_EXAMPLES",
       "exhaustive": false,
       "live_label_inventory": "UNAVAILABLE_THROUGH_CURRENT_GITHUB_READ_CONNECTOR"
+    },
+    "workflow_inventory": {
+      "directory_yaml_count": 332,
+      "catalog_record_count": 331,
+      "uncatalogued_workflows": [
+        ".github/workflows/project-repository-visibility.yml"
+      ],
+      "status": "SOURCE_VERIFIED_DRIFT",
+      "catalog_fingerprint": "4a497cdac2e70a6fc07866e869010cadb96b90db96ac60a79157414b740ba553",
+      "workflow_census": "docs/ops/generated/workflow-trigger-census.json",
+      "observed_at": "2026-11-27"
     }
   }
 }

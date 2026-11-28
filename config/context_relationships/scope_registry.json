@@ -153,6 +153,28 @@
         "methodology optimization"
       ],
       "labels": []
+    },
+    {
+      "id": "delphi-oracle-intake",
+      "title": "Delphi Oracle general intake, reconciliation, and research selection",
+      "path_globs": [
+        ".github/ISSUE_TEMPLATE/delphi-oracle-intake.yml",
+        ".github/workflows/delphi-oracle-intake.yml",
+        "scripts/delphi/intake.py",
+        "ops/delphi/selection-catalogue.json",
+        "docs/proposals/active/delphi-oracle-harmonious-intake/**",
+        "docs/superpowers/specs/2026-11-24-delphi-oracle-harmonious-intake-design.md",
+        "docs/superpowers/plans/2026-11-24-delphi-oracle-harmonious-intake.md",
+        "tests/test_delphi_intake.py",
+        "ops/delphi/selection-catalogue/**",
+        "tests/test_termux_smoke.py"
+      ],
+      "aliases": [
+        "Delphi Oracle intake",
+        "Harmonious Reconciliation",
+        "research selection",
+        "Question Matrix"
+      ]
     }
   ]
 }

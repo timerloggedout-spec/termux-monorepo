@@ -7,6 +7,14 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
+def load_tests(loader, standard_tests, pattern):
+    from test_delphi_intake import DelphiIntakeContractTests
+
+    standard_tests.addTests(
+        loader.loadTestsFromTestCase(DelphiIntakeContractTests)
+    )
+    return standard_tests
+
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("termux_smoke_gate", ROOT / "scripts/ci/termux_smoke.py")
 smoke = importlib.util.module_from_spec(SPEC)

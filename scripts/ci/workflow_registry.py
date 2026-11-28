@@ -56,9 +56,13 @@ def permissions(document: dict[str, Any]) -> dict[str, Any]:
     return {"workflow": workflow, "jobs": jobs}
 
 
-def source_authority(permission_data: dict[str, Any]) -> str:
-    groups = [mapping(permission_data.get("workflow"))]
-    groups.extend(mapping(value) for value in mapping(permission_data.get("jobs")).values())
+def source_authority(permission_data: dict[str, Any], job_names: list[str]) -> str:
+    workflow = mapping(permission_data.get("workflow"))
+    job_permissions = mapping(permission_data.get("jobs"))
+    groups = [
+        mapping(job_permissions.get(name, workflow))
+        for name in job_names
+    ] if job_names else [workflow, *[mapping(value) for value in job_permissions.values()]]
     if any(value == "write-all" for group in groups for value in group.values()):
         return "writer"
     if any(scope in {"contents", "pull-requests"} and value == "write"
@@ -134,7 +138,7 @@ def parse_workflow_text(source: str, path: str) -> dict[str, Any]:
         "concurrency": document.get("concurrency") or {},
         "action_refs": sorted(action_refs),
         "action_pins": action_pins,
-        "source_authority": source_authority(permission_data),
+        "source_authority": source_authority(permission_data, [str(name) for name in jobs]),
     }
 
 

@@ -54,6 +54,12 @@ test("classifies missing and malformed opportunity feeds explicitly", () => {
     generated_at: "2026-11-28T00:00:00Z",
     opportunities: {},
   }).status, "invalid");
+  assert.equal(Desk.normalizeOpportunityFeed({
+    schema: "que.opportunity-priority/v1",
+    generated_at: "not-a-timestamp",
+    opportunities: [],
+    terminal_opportunities: [],
+  }).status, "invalid");
 });
 
 test("normalizes public challenges while retaining C11 matches and C12 dates", () => {

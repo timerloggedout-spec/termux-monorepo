@@ -11,6 +11,19 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts" / "tracki
 from repo_tracking import (build_doe_join, classify, derive_next, derive_state,  # noqa: E402
                            _find_instances, NOT_ESTABLISHED)
 
+import json
+PROJECTS_PATH = ROOT / "ops" / "tracking" / "projects.json"
+
+
+def test_engineering_toolchain_is_registered_in_lane_tracking():
+    registry = json.loads(PROJECTS_PATH.read_text(encoding="utf-8"))
+    assert "engineering" in registry["domains"]
+    match = classify("Engineering toolchain activation", registry["projects"])
+    assert match is not None
+    assert match["id"] == "engineering-toolchain-integration"
+    assert match["lane"] == "engineering-toolchain"
+
+
 PROJECTS = [
     {"id": "d1", "lane": "challenge-entries-d1", "project": "D1", "domain": "challenges",
      "match": ["studysprint", "d1-"]},

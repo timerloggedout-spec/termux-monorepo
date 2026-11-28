@@ -1,25 +1,28 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-28T02:27:38Z",
+ "generated_at": "2026-11-28T02:44:55Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 5,
-   "in_progress": 1,
+   "queued": 7,
+   "in_progress": 0,
    "oldest_queued_at": "2026-11-21T07:17:51Z",
    "by_workflow_queued": {
-    "Orchestration Regression Guard": 2,
     "repo gate": 2,
-    "PR scope guard": 1
+    "Orchestration Regression Guard": 1,
+    "PR scope guard": 2,
+    "delphi-gate": 1,
+    "dispatch-watchdog": 1
    }
   },
   "2": {
    "tier": 2,
-   "queued": 1,
-   "in_progress": 2,
-   "oldest_queued_at": "2026-11-28T02:26:52Z",
+   "queued": 2,
+   "in_progress": 1,
+   "oldest_queued_at": "2026-11-28T02:44:20Z",
    "by_workflow_queued": {
+    "pages build and deployment": 1,
     "tribute-dashboard-deploy": 1
    }
   },
@@ -32,37 +35,41 @@
   },
   "4": {
    "tier": 4,
-   "queued": 26,
-   "in_progress": 16,
+   "queued": 35,
+   "in_progress": 17,
    "oldest_queued_at": "2026-11-21T07:17:51Z",
    "by_workflow_queued": {
-    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 2,
-    "hitl-control-plane-verify": 2,
-    "quota-allocation-planner": 1,
-    "quota-analysis": 1,
-    "Foresight Evidence Spine": 1,
-    "Agent Readability Source Contract": 2,
-    "DO Statement Style": 1,
-    "termux smoke": 2,
-    "que-cadence-kick": 1,
-    "quota-served-probe": 1,
-    "graph-matrix-probe": 1,
-    "quota-usage-series-refresh": 1,
-    "Agent Throughput Evidence": 2,
-    "lane events recorder": 1,
-    "Peer review orchestrator": 1,
+    "Agent Throughput Evidence": 3,
+    "PR production ledger": 2,
+    "Workflow Surface Policy": 1,
+    "Lane matrix event-driven inventory": 1,
+    "DO Statement Style": 3,
+    "Repository development evaluation": 1,
+    "DeepSeek CI \u2013 Agentic Automation": 1,
+    "Action Effectiveness Ledger": 2,
+    "RECON INTEL discovery": 1,
+    "termux smoke": 3,
+    "PR Change Effectiveness Ledger": 2,
+    "Agent PR Jules Handoff": 2,
+    "Sweep Accountability": 1,
+    "CellCog review": 1,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
     "Context Relationship + Lead/Lag Audit": 1,
-    "Agent feedback \u2192 Linear subtasks": 1,
+    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
+    "graph-matrix-probe": 1,
+    "quota-served-probe": 1,
+    "que-cadence-kick": 1,
+    "quota-allocation-planner": 1,
+    "Foresight Evidence Spine": 1,
+    "Peer review orchestrator": 1,
     "Quota Dispatch Tree": 1,
-    "Agent PR Jules Handoff": 1,
-    "PR Change Effectiveness Ledger": 1,
     "Advisory GitHub Actions lint": 1
    }
   }
  },
  "totals": {
-  "queued": 32,
-  "in_progress": 19
+  "queued": 44,
+  "in_progress": 18
  },
  "wedged_ancient": [
   {
@@ -94,13 +101,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 6,
+   "1": 7,
    "2": 3,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 9,
-  "default_t4": 42,
+  "explicit_total": 10,
+  "default_t4": 52,
   "unmatched": 0,
   "ancient_excluded": 4,
   "operator_excluded": 1

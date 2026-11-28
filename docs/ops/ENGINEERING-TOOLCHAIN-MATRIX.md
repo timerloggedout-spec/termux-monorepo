@@ -56,3 +56,7 @@
 - `remote-runner-preferred`: heavy GUI/solver workloads use an approved, pinned runner with bounded resources and artifact retention.
 
 The probe currently establishes only executable presence. Tool version, solver correctness, format round-trip, resource use and engineering validity require separate validation receipts.
+
+## Remote execution profile
+
+The default free hosted lane is a standard GitHub Actions runner on this public repository for synthetic/non-confidential fixtures. The documented `ubuntu-latest` x64 VM provides 4 CPU, 16 GB RAM and 14 GB SSD; standard runners are free for public repositories. Pin the Ubuntu image and tool versions for reproducibility. Self-hosted runners have no GitHub runner-minute charge and are the preferred lane for confidential CAD, GUI workflows and large solvers; hardware, power and maintenance remain owner costs. See [Engineering Remote Runner Profile](ENGINEERING-REMOTE-RUNNER-PROFILE.md) and the [official GitHub billing](https://docs.github.com/en/actions/concepts/billing-and-usage) / [runner specification](https://docs.github.com/en/actions/how-tos/write-workflows/choose-where-workflows-run/choose-the-runner-for-a-job) references.

@@ -100,7 +100,7 @@
     }
     const fresh = freshness(payload, now, fallbackHours);
     return {
-      status: fresh.state === "stale" ? "stale" : "fresh",
+      status: fresh.state === "stale" ? "stale" : fresh.state === "unknown" ? "invalid" : "fresh",
       source: payload.source || null,
       generated_at: payload.generated_at || null,
       freshness: fresh,

@@ -91,6 +91,11 @@ game:
         evidence_gate: deterministic_simulation_and_engineering_review
 
 engineering_platform:
+  shared_equipment_registry: ops/equipment/registry.yaml
+  equipment_asset_schema: ops/equipment/asset.schema.json
+  equipment_reservation_schema: ops/equipment/reservation.schema.json
+  fabrication_provider_registry: ops/fabrication/registry.yaml
+  fabrication_provider_schema: ops/fabrication/provider.schema.json
   concept_to_production: [discover, define, design, simulate, review, prototype, fabricate, inspect, iterate, publish]
   internal_equipment_registry: shared_across_projects_and_grants
   external_services: provider_directory_with_user_approval

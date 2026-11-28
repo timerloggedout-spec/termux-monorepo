@@ -1,6 +1,6 @@
 # Workflow trigger census — selected routes
 
-Snapshot: `feat/trigger-workflow-registry-refresh`, 2026-11-27. Scope: eight source-read workflows demonstrating issue admission, issue intake, workflow handoff, mentions, slash commands, manual dispatch, and typed repository events. This is a verified exemplar set, not the exhaustive 332-workflow directory inventory. The generated automation catalog contains 331 entries; `project-repository-visibility.yml` is present in the workflow directory but absent from that catalog snapshot.
+Snapshot: `feat/trigger-workflow-registry-generator`, 2026-11-27. Scope: eight source-read workflows demonstrating issue admission, issue intake, workflow handoff, mentions, slash commands, manual dispatch, and typed repository events. This is a verified exemplar set, not the exhaustive 332-workflow directory inventory. The generated automation catalog contains 331 entries; `project-repository-visibility.yml` is present in the workflow directory but absent from that catalog snapshot.
 
 | Workflow | Event(s) | Selector / gate | Authority |
 |---|---|---|---|

@@ -44,7 +44,7 @@
 
 ## Engineering Toolchain
 - **ops/engineering/taxonomy.py** — Validates and queries the independent Engineering taxonomy and ordered CAD/EDA/CAE/RTL toolchains
-- **scripts/engineering/toolchain_probe.py** — Read-only inventory of registered engineering CLI executables on Termux/Linux PATH; emits JSON evidence
+- **scripts/engineering/toolchain_probe.py** — Read-only inventory of registered engineering CLI executables on Termux/Linux PATH; emits JSON evidence; launched from Termux Hyper-Forge cockpit option [21]
 - **.agents/skills/engineering-toolchains/SKILL.md** — Routes mechanical CAD, electronics, simulation, manufacturing, semiconductor and cross-domain engineering work
 
 ## Installed FOSS Stack

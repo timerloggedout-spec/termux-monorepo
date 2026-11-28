@@ -30,7 +30,7 @@ gates_required:
 
 ## Summary
 
-Establish an original science game that makes molecular and cellular systems playable through exploration, simulation, systems strategy, puzzles, and specialist research. The project uses three coordinated planes: Research Astute for reusable research references; Search Astutely for search execution, aggregation, and result snapshots; and Termux MonoRepo for developer lanes, tools, project profiles, and orchestration. A dedicated game repository owns the playable product and is registered through the MonoRepo project-profile family.
+Establish an original science game that makes molecular and cellular systems playable through exploration, simulation, systems strategy, puzzles, and specialist research. The project uses three coordinated planes: Research Astute for reusable research references; Search Astutely for search execution, aggregation, and result snapshots; and Termux MonoRepo for developer lanes, tools, project profiles, and orchestration. The initial database map spans 26 candidate sources across structures, sequences, interactions, pathways, chemistry, enzyme kinetics, cell context, literature, and education. A dedicated game repository owns the playable product and is registered through the MonoRepo project-profile family.
 
 ## Architecture decision
 

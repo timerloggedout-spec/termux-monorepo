@@ -47,7 +47,7 @@ These are agent skills, separate from AMD-issued course certificates and ROCm ce
 
 ## AMD certification details
 
-AMD's official ROCm Certified Associate program is live through AMD AI Academy. The online Associate path is free and includes five modules covering ROCm setup, AMD Instinct architecture, ROCm libraries/frameworks, HIP and CUDA porting, and profiling/optimization, followed by an exam. The credential includes a verifiable digital badge; AMD's current program agreement specifies a 24-month validity period. Professional is listed for Q1 2027 and Expert as coming soon. Recheck the official program page before enrollment and renewal.
+AMD's official ROCm Certified Associate program is live through AMD AI Academy. The online Associate path is free and includes five modules covering ROCm setup, AMD Instinct architecture, ROCm libraries/frameworks, HIP and CUDA porting, and profiling/optimization, followed by an exam. The credential includes a verifiable digital badge. The Associate credential is valid for 24 months; the renewal window opens 180 days before expiry under AMD's current program agreement. Professional is listed for Q1 2027 and Expert as coming soon. Recheck the official program page before enrollment and renewal.
 
 AMD AI Academy also offers self-paced learning paths and course-completion certificates. Course certificates and the formal ROCm Certified Associate credential remain distinct records.
 

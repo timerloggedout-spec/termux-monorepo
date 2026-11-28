@@ -136,7 +136,7 @@ def page(title, body, locale="en", title_key=None, root=None):
         'body{direction:rtl;text-align:right;font-family:"Noto Naskh Arabic","Noto Sans Arabic",system-ui,sans-serif}'
         'main{unicode-bidi:plaintext}code,pre,a[dir=ltr]{direction:ltr;unicode-bidi:isolate}'
     )
-    style = CSS + (rtl_css if locale == "ur" else "")
+    style = CSS + (rtl_css if content_locale == "ur" else "")
     return (
         f'<!doctype html><html lang="{content_locale}" dir="{direction}"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width,initial-scale=1">'

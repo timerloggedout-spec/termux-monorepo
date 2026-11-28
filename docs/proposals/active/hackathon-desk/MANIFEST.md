@@ -69,7 +69,7 @@ Build a teammate-facing Hackathon Desk inside the existing Tribute dashboard. Th
 - [ ] Implementation plan reviewed
 - [ ] Focused tests and accessibility checks pass
 - [ ] Repository gate, focused tests, and accessibility checks pass on the same head
-- [x] Termux runtime remains offline and is excluded from execution; no Termux runtime validation is claimed
+- [x] Termux device/session execution is recorded as NOT PERFORMED — OFFLINE; any Ubuntu-hosted `agentic termux smoke` result is recorded separately as Linux CI only
 - [ ] Required PR checks complete and head SHA re-fetched
 - [ ] Deployment freshness and live route verified
 - [ ] All items terminal and proposal closed through the lifecycle

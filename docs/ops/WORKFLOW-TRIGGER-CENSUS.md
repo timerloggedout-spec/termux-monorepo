@@ -1,6 +1,6 @@
 # Workflow trigger census — selected routes
 
-Snapshot: `feat/trigger-workflow-registry-generator`, 2026-11-27. Scope: eight source-read workflows demonstrating issue admission, issue intake, workflow handoff, mentions, slash commands, manual dispatch, and typed repository events. This is a verified exemplar set, not the exhaustive 333-workflow directory inventory. The generated automation catalog contains 332 entries. `research-astute-private-repo-provisioner.yml` is present in the directory but absent from the catalog; `project-repository-visibility.yml` is catalogued with an authority mismatch.
+Snapshot: `feat/trigger-workflow-registry-generator`, 2026-11-27. Scope: nine source-read workflows demonstrating issue admission, issue intake, workflow handoff, mentions, slash commands, manual dispatch, and typed repository events. This is a verified exemplar set, not the exhaustive 333-workflow directory inventory. The generated automation catalog contains 332 entries. `research-astute-private-repo-provisioner.yml` is present in the directory but absent from the catalog; `project-repository-visibility.yml` is catalogued with an authority mismatch.
 
 | Workflow | Event(s) | Selector / gate | Authority |
 |---|---|---|---|
@@ -11,6 +11,8 @@ Snapshot: `feat/trigger-workflow-registry-generator`, 2026-11-27. Scope: eight s
 | `build-dispatch` | `issue_comment` [created]; `workflow_dispatch` | manual dispatch OR comment starts @gemini-cli /build from OWNER/MEMBER/COLLABORATOR; gate: workflow job condition + route/arm validation | writer |
 | `provider-command-dispatch` | `workflow_dispatch`; `repository_dispatch` [provider-command] | explicit provider-command event or operator-supplied manual inputs; gate: allowlisted provider/action, PR/head SHA and policy validations | bounded-state-write |
 | `delphi-intake` | `issue_comment` [created]; `workflow_dispatch` | comment body contains <!-- request-delphi-intake --> OR manual dispatch; gate: intake job condition and form/input validation | bounded-state-write |
+| `project-repository-visibility` | `push` (master, path-filtered) | Versioned owner request + authenticated owner/admin + repository identity checks | writer |
+| `research-astute-private-repo-provisioner` | `push` (master, path-filtered) | Versioned private-repository request + authenticated owner + Research-Astute admin + target/allocation checks | writer |
 
 ## Source-level findings
 
@@ -19,8 +21,7 @@ Snapshot: `feat/trigger-workflow-registry-generator`, 2026-11-27. Scope: eight s
 - Delphi intake recognizes the exact HTML marker `<!-- request-delphi-intake -->` or manual dispatch with structured inputs.
 - Provider command dispatch accepts manual input or `repository_dispatch` type `provider-command`; provider and action are bounded by the workflow's allowlist checks.
 - Game-development dispatch is a downstream `workflow_run` consumer of successful `swarm-admission` runs and validates the one-run handoff artifact before queueing.
-
-| `project-repository-visibility` | `push` (master, path-filtered) | Versioned owner request + authenticated owner/admin + repository identity checks | writer |
+- Research Astute provisioning uses `gh api --method POST /orgs/$ORG_NAME/repos` to create an external private repository. Its declared `contents: read` permission is narrower than its effective external-token action; source-level authority is writer.
 
 ## Evidence and limits
 

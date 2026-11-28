@@ -112,7 +112,22 @@ _CAPABILITIES: dict[str, CapabilitySpec] = {
         description="Run the repository's deterministic Termux smoke gate.",
         timeout_seconds=180,
         command=("python3", "{repository}/scripts/ci/termux_smoke.py"),
+    ),,
+    "engineering.toolchain_probe": CapabilitySpec(
+        name="engineering.toolchain_probe",
+        approval=ApprovalLevel.OBSERVE,
+        description="Read-only inventory of registered engineering CLI tools on the local Termux/Linux PATH.",
+        timeout_seconds=30,
+        command=("python3", "{repository}/scripts/engineering/toolchain_probe.py", "--json"),
     ),
+    "engineering.taxonomy_validate": CapabilitySpec(
+        name="engineering.taxonomy_validate",
+        approval=ApprovalLevel.OPERATE,
+        description="Validate the repository-owned engineering taxonomy and ordered toolchain references.",
+        timeout_seconds=30,
+        command=("python3", "-m", "ops.engineering.taxonomy", "validate"),
+    ),
+
 }
 
 

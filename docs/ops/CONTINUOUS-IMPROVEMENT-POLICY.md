@@ -45,7 +45,7 @@ Local adaptation: asynchronous agents are evidence-producing collaborators, not 
 
 ### Engineering toolchain learning
 
-Engineering toolchain observations enter the existing Learnings lane through `docs/ops/ENGINEERING-LEARNINGS-MATRIX.md`. Record runtime compatibility, license/access constraints, format interoperability, solver validity, resource use, failure/recovery and physical-world risk as distinct evidence classes. A PATH probe is an observation, not an installation or correctness claim. Promote reusable learnings only after reproducibility, source attribution and independent review appropriate to the risk.
+Engineering toolchain observations enter the existing Learnings lane through `docs/ops/ENGINEERING-LEARNINGS-MATRIX.md`. Record runtime compatibility, license/access constraints, format interoperability, solver validity, resource use, failure/recovery and physical-world risk as distinct evidence classes. A PATH probe records executable presence; installation and correctness require separate evidence. Promote reusable learnings only after reproducibility, source attribution and independent review appropriate to the risk.
 
 ### Termux MCP project stewardship
 

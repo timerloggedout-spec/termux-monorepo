@@ -1,0 +1,53 @@
+schema: fabrication-provider-candidate-map/v1
+status: discovery_only
+observed_at: 2026-11-28
+project_ref: project:cell-the-living-machine
+review_policy:
+  provider_identity: verify_legal_entity_and_service_region
+  capability: verify_current_service_catalog_and_acceptance_limits
+  terms: review_ip_confidentiality_data_retention_and_commercial_scope
+  compliance: review_jurisdiction_provider_screening_and_institutional_requirements
+  order_authorization: explicit_user_approval_required
+  payment_authorization: explicit_user_approval_required
+  biological_services: licensed_professional_and_biosafety_ethics_review
+providers:
+  - provider_id: provider:idt-gene-synthesis
+    public_name: Integrated DNA Technologies (IDT)
+    status: candidate
+    service_categories: [gene_synthesis, gene_fragments, custom_vector_onboarding, sequence_verification]
+    source_url: https://www.idtdna.com/pages/products/genes-and-gene-fragments/custom-gene-synthesis
+    commercial_path: quote_or_online_order
+    verification_state: candidate
+    notes: Official service page describes custom gene synthesis, sequence verification and vector onboarding; provider terms and sequence acceptance policy require review.
+  - provider_id: provider:genewiz-gene-synthesis
+    public_name: GENEWIZ / Azenta
+    status: candidate
+    service_categories: [gene_synthesis, bulk_gene_synthesis, sequence_verification]
+    source_url: https://www.genewiz.com/public/resources/faqs/faqs-gene-synthesis
+    commercial_path: quote_then_user_confirmed_order
+    verification_state: candidate
+    notes: Official FAQ describes quote review and order confirmation; current service scope, jurisdiction and screening policy require review.
+  - provider_id: provider:thermofisher-geneart
+    public_name: Thermo Fisher GeneArt
+    status: candidate
+    service_categories: [gene_synthesis, sequence_design, sequence_optimization, quote_management]
+    source_url: https://www.thermofisher.com/us/en/home/life-science/cloning/gene-synthesis/geneart-gene-synthesis.html
+    commercial_path: dashboard_quote_or_order
+    verification_state: candidate
+    notes: Official service page describes design, quote and order management; provider terms and screening policy require review.
+  - provider_id: provider:genscript-genbrick
+    public_name: GenScript GenBrick
+    status: candidate
+    service_categories: [gene_synthesis, synthetic_genomes, plasmid_related_services, protein_expression_evaluation]
+    source_url: https://www.genscript.com/services/gene_synthesis.html
+    commercial_path: online_order_or_quote
+    verification_state: candidate
+    notes: Official service information describes gene synthesis and downstream service categories; current terms and acceptance criteria require review.
+  - provider_id: provider:cambrian-genomics-historical
+    public_name: Cambrian Genomics
+    status: historical_reference
+    service_categories: [historical_dna_laser_printing]
+    source_url: https://pitchbook.com/profiles/company/59930-11
+    verification_state: historical_secondary_source
+    current_provider_eligibility: excluded_pending_new_evidence
+    notes: Historical inspiration for automated DNA printing and laboratory-scale production. PitchBook currently lists the company as out of business; treat as a historical concept reference rather than an available service provider.

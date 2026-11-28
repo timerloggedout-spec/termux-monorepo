@@ -15,7 +15,7 @@ The engineering cohort is enrolled in `docs/ops/AGENT-EVALUATION-LANE-REGISTRY.m
 - AEF owns the evaluation unit and task outcome.
 - Learnings receives verified setup, compatibility and failure learnings after review.
 
-Each record has one primary home. Cross-surface use is a citation, not a copied payload.
+Each record has one primary home; cross-surface use carries a citation.
 
 ## Experiment factors
 
@@ -48,4 +48,4 @@ Use the existing `cohort × task × arm × repetition` identity. Retain task fin
 6. CalculiX/Elmer solver fixture with reference outputs and convergence checks.
 7. Yosys synthesis and OpenROAD/KLayout flow on a bounded open RTL fixture.
 
-The cohort is a plan until an execution receipt exists. One successful run does not establish a general tool ranking or production readiness.
+The cohort is a plan until an execution receipt exists. General tool ranking and production readiness require repeated runs, reference comparisons and independent review.

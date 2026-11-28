@@ -2,7 +2,7 @@
 
 | ID | Item | Priority | Status | Owner lane | Evidence of completion | Dependencies |
 |---|---|---:|---|---|---|---|
-| CLM-01 | Establish the MonoRepo project registry, profile schema, and canonical project profile. | P1 | executing | Orchestration & Quality Control | Schema-valid profile, registry entry, stable project ID, repository and lane references. | None |
+| CLM-01 | Establish the ArchWiz scope profile, game-specific project manifest, and project registry entry. | P1 | executing | Orchestration & Quality Control | Scope profile validated by `ops/projects/profile.schema.json`, manifest, registry entry, stable project ID, repository and lane references. | None |
 | CLM-02 | Reconcile Research Astute and Search Astutely identity, ownership, access, and reuse boundaries. | P1 | proposed | Research & Intelligence | Verified repository/org identity, connector capability record, rights review, and source-plane contract. | CLM-01 |
 | CLM-03 | Map molecular biology databases and cross-reference identifiers for structures, sequences, annotations, pathways, molecules, and literature. | P1 | proposed | Research & Intelligence | Versioned data-source catalog, API/terms records, identifier crosswalk, sample records, and provenance fields. | CLM-01 |
 | CLM-04 | Inventory the full iJEP Studio channel and derive a source-linked content graph. | P1 | proposed | Research & Intelligence + Game Design & Systems | Video/short inventory, timestamps, topics, linked sources, structure IDs, and asset-use disposition. | CLM-02, CLM-03 |

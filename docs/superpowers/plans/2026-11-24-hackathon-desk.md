@@ -48,7 +48,7 @@
 **Interfaces:**
 - Produces: an allowlisted `challenge-public-feed/v1` artifact plus HackathonDesk.normalizeOpportunityFeed(payload, now), normalizeChallengeFeed(payload), normalizeCountdownFeed(payload), normalizePipelineFeed(payload), and safeExternalUrl(value).
 - The browser fetches `https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/que/feeds/opportunity-priority.json` for ranked opportunities and `./data/challenge-public-feed.json` for challenge events/gates. It fetches countdown, desk, QUE queue, and dispatch mirrors from `./data/challenge-countdowns-feed.json`, `./data/desk-feed.json`, and `./data/que-queue-feed.json`. Pipeline dispatch evidence is read from the `dispatch_claims` object embedded in `./data/que-queue-feed.json` (`que-queue-feed/v1`), folded from the versioned `dispatch-state-feed/v1`. The normalizer selects display fields only and omits ranking scores/components; the separate dispatch feed remains an existing source, but the page avoids a second request.
-- The browser MUST NOT fetch `ops/challenge/coordinator.json`. The generator copies only explicitly allowlisted public fields, recursively excludes `metrics_internal` and `win_probability`, and tests the exclusion at every nesting level. C11 M1–M6 and C12's alternate date keys remain represented. The generated artifact is deployed with the dashboard tree and refreshed alongside the countdown feed.
+- The browser consumes the generated public projection; `ops/challenge/coordinator.json` remains a build-time input only. The generator copies only explicitly allowlisted public fields, recursively excludes `metrics_internal` and `win_probability`, and tests the exclusion at every nesting level. C11 M1–M6 and C12's alternate date keys remain represented. The generated artifact is deployed with the dashboard tree and refreshed alongside the countdown feed.
 - The dedicated Hackathon Desk Contract workflow runs the public-feed projection tests on pull requests and later adds the Desk's Node/Python contracts as those tasks land.
 - Returns normalized records with source, generated_at, freshness, and explicit status values.
 
@@ -190,6 +190,6 @@
 - [ ] Run pytest -q tests/test_hackathon_desk.py and the repository test suite.
 - [ ] Update ITEMS.md with implementation evidence and final state, then commit that update before final-head validation.
 - [ ] Run python3 scripts/ci/repo_gate.py and all focused tests/accessibility checks on the resulting head.
-- [ ] Termux remains offline; do not invoke a Termux device/session or claim Termux runtime validation. The existing Ubuntu-hosted `termux smoke` PR workflow may appear in checks, but classify it as Linux CI only, never as a Termux runtime test.
+- [ ] Termux device/session execution remains OFFLINE. The existing Ubuntu-hosted `termux smoke` PR workflow is Linux CI evidence and carries a separate label from Termux runtime validation.
 - [ ] Verify required GitHub jobs on the same immutable final head SHA; record SHA-dependent run evidence in the PR or an artifact outside the commit.
 - [ ] Verify deployed page, feed freshness, GitHub navigation, public projection, and guide routes against that same deployed commit.

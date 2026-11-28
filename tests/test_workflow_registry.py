@@ -253,6 +253,7 @@ jobs:
             self.assertEqual(index["reconciliation"]["missing_from_directory"], [".github/workflows/stale.yml"])
             self.assertEqual(index["uncatalogued_source_writers"], [".github/workflows/actual.yml"])
             self.assertIn(".github/workflows/actual.yml", workflow_registry.markdown_index(index))
+            self.assertIn("POST", workflow_registry.markdown_index(index))
 
 
 if __name__ == "__main__":

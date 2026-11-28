@@ -1,7 +1,7 @@
 # Source reconnaissance — cell-the-living-machine
 
 **Observed:** 2026-11-27  
-**Branch:** `feature/cell-living-machine-architecture`  
+**Branch:** `feature/cell-living-machine-architecture-v2`  
 **Scope:** project lanes, repository identities, reusable research, search aggregation, and molecular data authorities.
 
 ## MonoRepo evidence
@@ -80,3 +80,12 @@ The three-plane model preserves independent ownership and reuse:
 5. Scientific databases remain canonical upstream data authorities; the research planes index and reconcile their records.
 
 This architecture is a proposal based on repository evidence and the user's stated responsibilities. Search Astutely service capabilities and Research Astute reuse rights remain pending direct verification. The project profile follows the existing ArchWiz scope schema; game-specific metadata lives in a linked project manifest.
+
+
+## Current delivery references
+
+- Project profile and 36-file architecture package: PR #5954, based on current master.
+- Public product visibility: owner-authorized GitHub Actions workflow merged through PR #5953; request is committed and the workflow run is queued behind repository Actions load.
+- Product repository: `timerloggedout-spec/cell-the-living-machine` (ID `1475194740`); current visibility remains private until the workflow receipt confirms public.
+- Shared equipment and fabrication registries are seeded as schemas with empty verified inventories.
+- Blender MCP: DCC-MCP Blender v0.2.30 pinned candidate; live workstation session and self-hosted Blender runner verification remain pending.

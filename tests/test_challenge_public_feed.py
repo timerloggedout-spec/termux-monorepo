@@ -38,14 +38,26 @@ def test_real_coordinator_projects_events_without_internal_metrics():
     assert FORBIDDEN.isdisjoint(set(_walk_keys(feed)))
     assert all("projects" not in event for event in feed["events"])
     assert all("opportunity_cost" not in event for event in feed["events"])
+    source_events = {event["id"]: event for event in coordinator["events"]}
     c11 = next(event for event in feed["events"] if event["id"] == "C11")
-    assert [match["id"] for match in c11["matches"]] == ["M1", "M2", "M3", "M4", "M5", "M6"]
-    assert c11["matches"][4]["name"] == "AI-Powered Code Repository Repair"
-    assert "queue" not in c11["matches"][1]
-    assert c11["deadline"] == "2026-12-01T11:00:00-08:00"
+    c11_source = source_events["C11"]
+    assert [match["id"] for match in c11["matches"]] == [
+        match["id"] for match in c11_source["matches"]
+    ]
+    assert next(match for match in c11["matches"] if match["id"] == "M5")["name"] == (
+        "AI-Powered Code Repository Repair"
+    )
+    assert "queue" not in next(match for match in c11["matches"] if match["id"] == "M2")
+    assert c11["deadline"] == c11_source["deadline"]
+    assert c11["source_url"] == c11_source["source_url"]
+    assert c11["organizers"][0]["source_url"] == c11_source["organizers"][0]["source_url"]
+    assert c11["prizes"]["tiers"][0]["source_url"] == (
+        c11_source["prizes"]["tiers"][0]["source_url"]
+    )
     c12 = next(event for event in feed["events"] if event["id"] == "C12")
-    assert c12["dates"]["final_due"] == "2026-11-30T23:45:00-08:00"
-    assert isinstance(c12["prizes"]["tiers"], str)
+    c12_source = source_events["C12"]
+    assert c12["dates"]["final_due"] == c12_source["dates"]["final_due"]
+    assert c12["prizes"]["tiers"] == c12_source["prizes"]["tiers"]
 
 
 def test_committed_projection_matches_current_collector():

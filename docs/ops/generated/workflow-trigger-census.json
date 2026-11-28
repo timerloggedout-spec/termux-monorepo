@@ -3,7 +3,7 @@
   "repository": "timerloggedout-spec/termux-monorepo",
   "ref": "feat/trigger-workflow-registry-generator",
   "observed_at": "2026-11-27",
-  "scope": "Eight source-read workflows demonstrating issue admission, issue intake, workflow handoff, mentions, slash commands, manual dispatch, typed repository events, and path-filtered push automation. The workflow directory contains 332 YAML files while the generated catalog contains 331; project-repository-visibility.yml is absent from that catalog snapshot.",
+  "scope": "Nine source-read workflows demonstrating issue admission, issue intake, workflow handoff, mentions, slash commands, manual dispatch, typed repository events, and path-filtered push automation. The workflow directory contains 333 YAML files while the generated catalog contains 332; research-astute-private-repo-provisioner.yml is absent from the catalog. project-repository-visibility.yml is catalogued with an authority mismatch.",
   "records": [
     {
       "id": "swarm-admission",
@@ -188,6 +188,33 @@
       "authority": "writer",
       "risk": "external-repository-visibility-change",
       "notes": "Source configuration includes an explicit owner-authored request file and runtime identity/permission checks; the census records configured behavior, not a run result."
+    },
+    {
+      "id": "research-astute-private-repo-provisioner",
+      "path": ".github/workflows/research-astute-private-repo-provisioner.yml",
+      "blob_sha": "2b5c96c951221f3b91508d05bfc07aa2624a2182",
+      "events": [
+        {
+          "name": "push",
+          "branches": [
+            "master"
+          ],
+          "paths": [
+            "ops/requests/research-astute-private-repo.yaml"
+          ]
+        }
+      ],
+      "selector": "Push to master touching the versioned Research Astute private-repository request",
+      "gate": "Authenticated owner timerloggedout-spec + Research-Astute organization admin + exact organization/repository/private-visibility/approval/request-id checks + target absence + one-private-repository allocation",
+      "effect": "Creates and verifies Research-Astute/molecular-biology-research as a private repository and writes a non-secret provisioning receipt",
+      "authority": "writer",
+      "declared_permission_authority": "read-only-or-advisory",
+      "api_write_methods": [
+        "POST"
+      ],
+      "risk": "external-organization-repository-creation",
+      "catalog_status": "NOT_IN_CATALOG",
+      "notes": "The workflow calls gh api --method POST /orgs/$ORG_NAME/repos through an existing Actions secret fallback chain; declared contents:read permissions do not represent the external organization write."
     }
   ]
 }

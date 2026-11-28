@@ -1,26 +1,25 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-28T07:15:57Z",
+ "generated_at": "2026-11-28T07:41:12Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 3,
-   "in_progress": 2,
-   "oldest_queued_at": "2026-11-21T07:17:51Z",
+   "queued": 2,
+   "in_progress": 1,
+   "oldest_queued_at": "2026-11-25T08:15:08Z",
    "by_workflow_queued": {
-    "Orchestration Regression Guard": 1,
-    "repo gate": 1,
-    "PR scope guard": 1
+    "repo gate": 2
    }
   },
   "2": {
    "tier": 2,
-   "queued": 1,
-   "in_progress": 2,
-   "oldest_queued_at": "2026-11-28T07:15:49Z",
+   "queued": 2,
+   "in_progress": 1,
+   "oldest_queued_at": "2026-11-28T07:40:38Z",
    "by_workflow_queued": {
-    "pages build and deployment": 1
+    "pages build and deployment": 1,
+    "tribute-dashboard-deploy": 1
    }
   },
   "3": {
@@ -32,24 +31,44 @@
   },
   "4": {
    "tier": 4,
-   "queued": 6,
-   "in_progress": 16,
-   "oldest_queued_at": "2026-11-21T07:17:51Z",
+   "queued": 2,
+   "in_progress": 17,
+   "oldest_queued_at": "2026-11-25T08:15:08Z",
    "by_workflow_queued": {
-    "quota-served-probe": 1,
-    "Quota Dispatch Tree": 1,
-    "termux smoke": 1,
-    "Agent PR Jules Handoff": 1,
-    "PR Change Effectiveness Ledger": 1,
-    "Advisory GitHub Actions lint": 1
+    "DO Statement Style": 1,
+    "termux smoke": 1
    }
   }
  },
  "totals": {
-  "queued": 10,
-  "in_progress": 20
+  "queued": 6,
+  "in_progress": 19
  },
  "wedged_ancient": [
+  {
+   "id": 44879580896,
+   "workflow": "Agent PR Jules Handoff",
+   "created_at": "2026-11-21T07:17:51Z",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/44879580896"
+  },
+  {
+   "id": 44879580866,
+   "workflow": "PR Change Effectiveness Ledger",
+   "created_at": "2026-11-21T07:17:51Z",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/44879580866"
+  },
+  {
+   "id": 44879580877,
+   "workflow": "PR scope guard",
+   "created_at": "2026-11-21T07:17:51Z",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/44879580877"
+  },
+  {
+   "id": 44879580844,
+   "workflow": "Advisory GitHub Actions lint",
+   "created_at": "2026-11-21T07:17:51Z",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/44879580844"
+  },
   {
    "id": 44697056321,
    "workflow": "DO Statement Style",
@@ -79,15 +98,15 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 5,
+   "1": 3,
    "2": 3,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 8,
-  "default_t4": 22,
+  "explicit_total": 6,
+  "default_t4": 19,
   "unmatched": 0,
-  "ancient_excluded": 4,
+  "ancient_excluded": 8,
   "operator_excluded": 1
  },
  "operator_excluded": [

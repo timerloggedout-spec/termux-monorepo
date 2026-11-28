@@ -41,6 +41,6 @@ QUE remains the only queue and lifecycle authority. QDesk remains the existing r
 
 ## Terminal states
 
-success | cleanly-skipped | blocked | approval-required | exhausted | stagnated
+`success` | `clean-no-op` | `blocked` | `approval-required` | `exhausted` | `stagnated`
 
 A queued/running job is pending. A successful process exit earns process-success status; engineering validity requires its verification plan and evidence. Missing evidence retains the `unknown` state.

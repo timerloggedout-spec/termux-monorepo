@@ -29,4 +29,4 @@ description: Discover, route, validate and evaluate FOSS-first mechanical CAD, e
 10. Record verified operational learnings through the existing Learnings lane.
 
 ## Execution boundary
-The inventory probe is read-only. The Termux Agentic Hub exposes named capabilities only. Tool installation, remote-runner provisioning, manufacturing submission, device programming and physical actuation require their own approved path. A catalog entry is not an installation receipt; a probe pass is not design validation; simulation is not certification.
+The inventory probe is read-only. The Termux Agentic Hub exposes named capabilities only. Tool installation, remote-runner provisioning, manufacturing submission, device programming and physical actuation require their own approved path. Catalog entries, probe receipts, design validation and certification each retain separate evidence states.

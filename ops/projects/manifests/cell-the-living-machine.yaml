@@ -135,7 +135,9 @@ specialists:
 
 content_pipeline:
   seed_surface: https://www.youtube.com/@iJEPStudio
-  inventory_status: queued
+  inventory_status: metadata_inventory_complete_source_extraction_pending
+  inventory_path: docs/proposals/active/cell-the-living-machine/research/ijep-studio-channel-inventory.json
+  inventory_count: 125
   required_fields: [video_id, title, description, published_at, duration, transcript_ref, topic_tags, source_refs, structure_accessions, rights_status]
   source_classes: [experimental_structure, predicted_structure, curated_annotation, primary_literature, educational_visual, gameplay_abstraction]
 

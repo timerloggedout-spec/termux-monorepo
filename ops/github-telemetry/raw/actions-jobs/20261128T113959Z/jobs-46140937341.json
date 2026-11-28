@@ -1,0 +1,40 @@
+{
+  "collected_at": "2026-11-28T11:40:10.589326+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 46140937341,
+    "endpoint": ".../runs/46140937341/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 140966499485,
+        "run_id": 46140937341,
+        "workflow_name": "PR Change Effectiveness Ledger",
+        "head_branch": "reviewer-metrics/refresh",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/46140937341",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAg0kIUnQ",
+        "head_sha": "96a349675c756ff1f19dba9d2aee3c60d20b6175",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/140966499485",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/46140937341/job/140966499485",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "created_at": "2026-11-28T11:39:55Z",
+        "started_at": "2026-11-28T11:39:55Z",
+        "completed_at": "2026-11-28T11:39:56Z",
+        "name": "ledger",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/140966499485",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 0,
+        "runner_name": "",
+        "runner_group_id": 0,
+        "runner_group_name": ""
+      }
+    ]
+  }
+}

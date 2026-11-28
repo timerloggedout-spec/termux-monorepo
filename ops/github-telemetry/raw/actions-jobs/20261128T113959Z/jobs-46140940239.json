@@ -1,0 +1,40 @@
+{
+  "collected_at": "2026-11-28T11:40:05.875708+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 46140940239,
+    "endpoint": ".../runs/46140940239/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 140966507239,
+        "run_id": 46140940239,
+        "workflow_name": "CellCog review",
+        "head_branch": "reviewer-metrics/refresh",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/46140940239",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAg0kIy5w",
+        "head_sha": "96a349675c756ff1f19dba9d2aee3c60d20b6175",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/140966507239",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/46140940239/job/140966507239",
+        "status": "queued",
+        "conclusion": null,
+        "created_at": "2026-11-28T11:39:57Z",
+        "started_at": "2026-11-28T11:39:57Z",
+        "completed_at": null,
+        "name": "cellcog-review",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/140966507239",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      }
+    ]
+  }
+}

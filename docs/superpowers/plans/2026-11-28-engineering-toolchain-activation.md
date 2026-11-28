@@ -56,4 +56,4 @@ python3 scripts/ci/validate_siglary_mandate.py --base origin/master
 python3 scripts/ci/termux_smoke.py
 ```
 
-Record each command's actual exit status and exact commit SHA. Unavailable device or runner checks remain blocked, not passed.
+Record each command's actual exit status and exact commit SHA. Device and runner checks retain `blocked` until their receipts arrive.

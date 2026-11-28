@@ -37,6 +37,7 @@
 
 **Files:**
 - Create: scripts/dashboards/challenge_public_feed.py (allowlisted public projection from the coordinator)
+- Modify: .github/workflows/challenge-countdowns-feed-collect.yml (generate and publish both challenge feeds in the same refresh PR)
 - Create: apps/tribute-dashboard/data/challenge-public-feed.json (generated dashboard artifact)
 - Create: apps/tribute-dashboard/hackathon.js
 - Create: tests/hackathon-desk.test.cjs
@@ -52,6 +53,7 @@
 - [ ] Write Node tests for fresh/stale/missing/malformed opportunity feeds, public challenge projection states, closed events, null deadlines, and safe URL validation.
 - [ ] Assert the deployed opportunity URL and all three dashboard-relative feed URLs resolve from the deployed Hackathon Desk origin; treat unavailable feeds as explicit unavailable states.
 - [ ] Run pytest -q tests/test_hackathon_desk.py and node --test tests/hackathon-desk.test.cjs; verify each new behavior fails for its expected reason.
+- [ ] Implement the allowlisted projection generator and wire it into the existing challenge-countdowns-feed-collect workflow so coordinator changes regenerate both feeds in one refresh PR.
 - [ ] Implement pure normalizers and escaping/link validation in hackathon.js.
 - [ ] Run focused Node tests and pytest -q tests/test_hackathon_desk.py.
 - [ ] Commit with Implements: HD-002.
@@ -185,6 +187,6 @@
 - [ ] Run pytest -q tests/test_hackathon_desk.py and the repository test suite.
 - [ ] Update ITEMS.md with implementation evidence and final state, then commit that update before final-head validation.
 - [ ] Run python3 scripts/ci/repo_gate.py and all focused tests/accessibility checks on the resulting head.
-- [ ] Termux remains offline and excluded from execution; do not run Termux or claim Termux runtime validation. Record this gate disposition explicitly.
+- [ ] Termux remains offline; do not invoke a Termux device/session or claim Termux runtime validation. The existing Ubuntu-hosted `termux smoke` PR workflow may appear in checks, but classify it as Linux CI only, never as a Termux runtime test.
 - [ ] Verify required GitHub jobs on the same immutable final head SHA; record SHA-dependent run evidence in the PR or an artifact outside the commit.
 - [ ] Verify deployed page, feed freshness, GitHub navigation, public projection, and guide routes against that same deployed commit.

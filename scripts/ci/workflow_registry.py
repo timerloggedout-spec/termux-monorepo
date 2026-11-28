@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -106,16 +107,20 @@ def parse_workflow_text(source: str, path: str) -> dict[str, Any]:
     events = event_config(document.get("on"))
     permission_data = permissions(document)
     jobs = mapping(document.get("jobs"))
-    pins = {
+    action_refs = {
         str(step["uses"])
         for job in jobs.values()
         for step in mapping(job).get("steps", []) or []
         if isinstance(step, dict) and "uses" in step and "@" in str(step["uses"])
     }
-    pins.update(
+    action_refs.update(
         str(job["uses"])
         for job in jobs.values()
         if isinstance(job, dict) and "uses" in job and "@" in str(job["uses"])
+    )
+    action_pins = sorted(
+        reference for reference in action_refs
+        if re.fullmatch(r"[0-9a-fA-F]{40}", reference.rsplit("@", 1)[1])
     )
     return {
         "path": path,
@@ -127,7 +132,8 @@ def parse_workflow_text(source: str, path: str) -> dict[str, Any]:
         "job_selectors": job_selectors(document),
         "jobs": sorted(str(name) for name in jobs),
         "concurrency": document.get("concurrency") or {},
-        "action_pins": sorted(pins),
+        "action_refs": sorted(action_refs),
+        "action_pins": action_pins,
         "source_authority": source_authority(permission_data),
     }
 

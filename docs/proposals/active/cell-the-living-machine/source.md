@@ -37,6 +37,9 @@
 
 ## iJEP Studio
 
+- Live channel record: 125 videos, 28K subscribers, approximately 4.57M views at observation time 2026-11-27.
+- The uploads playlist returned 100 records on page one and 25 on page two; 125 unique video IDs were indexed in `research/ijep-studio-channel-inventory.json`.
+- Indexed metadata: video ID, title, URL, publication metadata, duration, view count, thumbnail, and title-derived topic candidates. Playlist-level description fields were empty; per-video details and transcripts remain a follow-up.
 - Channel: https://www.youtube.com/@iJEPStudio
 - Official site: https://ijepstudio.com/
 - Official site describes structural biology animation, scientific review, use of real structural references, and a production workflow involving structural data.

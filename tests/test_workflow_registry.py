@@ -35,6 +35,9 @@ on:
         default: staging
 permissions:
   contents: read
+concurrency:
+  group: workflow-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
   deploy:
     if: github.ref == 'refs/heads/main'
@@ -49,6 +52,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo validate
+  reusable:
+    uses: example/automation/.github/workflows/reusable.yml@abcdefabcdefabcdefabcdefabcdefabcdefabcd
 """
         record = workflow_registry.parse_workflow_text(source, ".github/workflows/dispatch.yml")
         self.assertEqual(record["events"], ["issue_comment", "push", "workflow_dispatch"])
@@ -62,6 +67,11 @@ jobs:
         self.assertEqual(record["job_selectors"]["deploy"]["if"], "github.ref == 'refs/heads/main'")
         self.assertEqual(record["job_selectors"]["validate"]["if"], "contains(github.event.comment.body, '/deploy')")
         self.assertEqual(record["job_selectors"]["deploy"]["needs"], ["validate"])
+        self.assertEqual(record["concurrency"]["cancel-in-progress"], "false")
+        self.assertEqual(record["action_pins"], [
+            "actions/checkout@0123456789012345678901234567890123456789",
+            "example/automation/.github/workflows/reusable.yml@abcdefabcdefabcdefabcdefabcdefabcdefabcd",
+        ])
         self.assertEqual(record["action_pins"], ["actions/checkout@0123456789012345678901234567890123456789"])
 
     def test_parses_sequence_event_syntax(self) -> None:

@@ -94,6 +94,7 @@ The full iJEP Studio channel is the initial visual and topic-discovery surface. 
 - [ITEMS](./ITEMS.md)
 - [DEBATE](./DEBATE.md)
 - [Source evidence](./source.md)
+- [Audience and challenge opportunity map](./AUDIENCE_AND_OPPORTUNITY_MAP.yaml)
 - [Research Astute contract](./RESEARCH_ASTUTE_CONTRACT.yaml)
 - [Search aggregation contract](./SEARCH_AGGREGATION_CONTRACT.yaml)
 - [Research Astute science repository](https://github.com/Research-Astute/molecular-biology-research)

@@ -177,7 +177,7 @@ def klass(state):
     return "s-pending"
 
 
-def render_body(messages, rows, done, pr_state, source_ref, source_sha, now, issues, docs, repo, pr):
+def render_body(messages, rows, done, pr_state, source_ref, source_sha, now, issues, docs, repo, pr, locale="en"):
     table_rows = "".join(
         f'<tr class="{klass(row[3])}"><td>{html.escape(row[0])}</td><td>{html.escape(row[1])}</td>'
         f'<td>{html.escape(row[2])}</td><td><strong>{html.escape(row[3])}</strong></td></tr>'
@@ -189,8 +189,9 @@ def render_body(messages, rows, done, pr_state, source_ref, source_sha, now, iss
         f'{html.escape(", ".join(label["name"] for label in issue.get("labels", [])))}</li>'
         for issue in issues if "pull_request" not in issue
     ) or f'<li>{html.escape(messages["content.empty_dispatch"])}</li>'
+    doc_prefix = "../" if locale == "ur" else ""
     doc_items = "".join(
-        f'<li><a href="{key}.html">{html.escape(title)}</a></li>'
+        f'<li><a href="{doc_prefix}{key}.html">{html.escape(title)}</a></li>'
         for key, (title, _) in DOCS.items()
     )
     status = (
@@ -256,7 +257,7 @@ def main():
     )
     urdu_content = render_body(
         messages_ur, rows, done, pr_state, args.source_ref, args.source_sha,
-        now, issues, DOCS, args.repo, args.pr,
+        now, issues, DOCS, args.repo, args.pr, locale="ur",
     )
     if translation_is_fresh("ur"):
         body_ur = (

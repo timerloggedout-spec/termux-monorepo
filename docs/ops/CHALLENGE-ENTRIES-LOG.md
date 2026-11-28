@@ -156,6 +156,8 @@ free-tier / mesh-resiliency engineering (device pull queue, quota systems);
 | C10 | Agentware — Hackathon Raptors | Build **Nov 27–30, 2026**; submissions close Dec 7, 18:00 UTC (organizer page, checked 2026-10-30) | Autonomous agent; **new code only** in the 72h window (pre-window code disqualifies) | Free; Discord | I1 △ — repo-maintenance agent framing; 72h new-code constraint = rebuild, not reuse |
 | C11 | AMD AI League — AMD × lablab.ai. **REGISTERED 2026-10-30 (see R6) — state Approved.** | League Sep 1 – **Dec 1, 2026**; submission deadline **Dec 1, 2026, 11:00 AM PST**; final Match ends Nov 14 (official event page, read 2026-10-30) | **Individual participation only** (no teams). Points league: Onboarding (300 pts: AMD sign-up, claim $100 GPU credits, first Academy course, complete AMD profile, join lablab Discord — **required for Match participation**, join AMD Discord) ∘ Academy course milestones (5 courses = League-podium eligibility gate) ∘ 6 Matches (Match 4 LIVE: Intelligent Web Information Retrieval, 1,800 pts; Match 5: AI-Powered Code Repository Repair, 2,100 pts; Match 6 Nov 10–14, 2,400 pts; closed Matches stay open for points only) ∘ per-Match project submitted via event page (solo-team create ⇒ Submit Project) | Free; lablab account + AMD SSO (live); no card at any step (verified at join) | Prizes: League podium $2,500/$1,500/$1,000 (gate: ≥5 Academy courses) · per Match $500 cash / $250 GPU credits / $100 GPU credits top-50 · Referral Leaders $1,000/$600/$400 · ROCm Certified Associate credential. Fit: Match 4 = web-retrieval agent (fleet web-RE surface); Match 5 = repo-repair multi-agent. **Candidate, unassigned — packet decision = Manager** |
 
+| C17 | GitLab Community Hackathon — January 2027 (Contributor Platform) | **Jan 21–28, 2027 UTC**; qualifying MRs merge within 31 days after event end | Accept Contributor Platform rules; start onboarding; choose an eligible GitLab issue; get assigned BEFORE opening an MR; open MR during the seven-day event; maintainer merge within 31 days. AI allowed with review/testing responsibility; 20 MRs + 20 issues/day caps; scripted labeling prohibited. | Free; store credits (200 / 150 / 100 for top three; 50 per qualifying merged MR). Cash component: NONE_LISTED. | Contribution-lane fit; code/docs/translation/issue work. Owner onboarding, rule acceptance, issue assignment, and contribution state: NOT_ESTABLISHED; Devpost registration: NOT_REQUIRED. See C17 in coordinator candidate_events. |
+
 ### Idea bank (unassigned concepts)
 
 | # | Idea | Source | Concept (1-line) | Matched ⇒ status |
@@ -303,14 +305,14 @@ this log is the human view of the same verified state.
 | D4 | REGISTERING — Devpost profile COMPLETE 2026-10-29 (timerloggedout); Kiro account exists (no editable fields); Kiroween registration + exact Kiro ID still blocked | eligibility opens Oct 30 09:00 PDT (rules s.1); closes Dec 4 14:00 | no project creation before the window opens |
 | D5 | REGISTERED — spot pending review | opens Nov 17 9:00 AM; closes Nov 19 12:00 PT (official Contest Rules) | spot confirmation email |
 
-<!-- countdown:BLOCK -->⏳ countdowns — D0: CLOSED · D1: closes in 7d 12h · D2: opens in 7d 12h (closes Nov 8 15:00 PT) · D3: closes in 12d 12h · D4: opens in 2d 0h (closes Dec 4 14:00 PT) · D5: opens in 19d 21h (closes Nov 19 12:00 PT) (computed 2026-10-28 12:55 PT)<!-- /countdown:BLOCK -->
+<!-- countdown:BLOCK -->⏳ countdowns — D0: CLOSED · D1: OVERDUE (closes Nov 4 23:59 PT) · D2: OVERDUE (closes Nov 8 15:00 PT) · D3: OVERDUE (closes Nov 9 23:59 PT) · D4: closes in 12d 11h · D5: OVERDUE (closes Nov 19 12:00 PT) (computed 2026-11-22 02:17 PT)<!-- /countdown:BLOCK -->
 
 ### D0 — for R2, Weekend Challenge: Give your Agent a Tool — COMPLETED 2026-10-27
 
 - **ROLE (owner framing, 2026-10-30): prerequisite-practice.** D0 is the mandate practice — the prerequisite pattern for the whole slate: agent + one new tool + article + demo; its completion package is the template every entry follows. D1 executes the D0 pattern formally (workshop agent + tool; StudySprint article + demo per the D0 shape). The opportunity ledger is UNCHANGED (OC-002 LOST $200 stands) — this framing is not a reclassification. (owner ruling 2026-10-27; date set: Oct 29)
 
 <!-- countdown-data:D0 opens=- closes=2026-10-26T13:00:00-07:00 -->
-<!-- countdown:D0 -->⏳ CLOSED (computed 2026-10-28 12:55 PT)<!-- /countdown:D0 -->
+<!-- countdown:D0 -->⏳ CLOSED (computed 2026-11-22 02:17 PT)<!-- /countdown:D0 -->
 
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
@@ -373,7 +375,7 @@ this log is the human view of the same verified state.
 
 <!-- countdown-data:D1 opens=2026-10-28T00:00:00-07:00 closes=2026-11-04T23:59:00-08:00 -->
 <!-- submission-data:D1 state=SUBMITTED at=2026-11-03T10:01:00-08:00 ref=https://builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint -->
-<!-- countdown:D1 -->⏳ closes in 7d 12h (computed 2026-10-28 12:55 PT)<!-- /countdown:D1 -->
+<!-- countdown:D1 -->⏳ OVERDUE (computed 2026-11-22 02:17 PT)<!-- /countdown:D1 -->
 
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
@@ -441,7 +443,7 @@ this log is the human view of the same verified state.
 ### D2 — for C2, Vultr Agent Rush (Foundry entry) — IN PROGRESS
 
 <!-- countdown-data:D2 opens=2026-11-03T15:00:00Z closes=2026-11-08T15:00:00-08:00 -->
-<!-- countdown:D2 -->⏳ opens in 7d 12h (computed 2026-10-28 12:55 PT)<!-- /countdown:D2 -->
+<!-- countdown:D2 -->⏳ OVERDUE (computed 2026-11-22 02:17 PT)<!-- /countdown:D2 -->
 
 `entrant{entrantLablabAi}[platform:lablab-ai]` + `entrant{entrantVultr}[platform:vultr]`
 
@@ -491,7 +493,7 @@ this log is the human view of the same verified state.
 ### D3 — for C3, Builder.io Agent-Native Hackathon — concept #42 QUESTIONED 2026-10-28 (under review; not the active build)
 
 <!-- countdown-data:D3 opens=- closes=2026-11-09T23:59:00-08:00 -->
-<!-- countdown:D3 -->⏳ closes in 12d 12h (computed 2026-10-28 12:55 PT)<!-- /countdown:D3 -->
+<!-- countdown:D3 -->⏳ OVERDUE (computed 2026-11-22 02:17 PT)<!-- /countdown:D3 -->
 
 `entrant{entrantBuilderIo}[platform:builder-io]`
 
@@ -595,7 +597,7 @@ this log is the human view of the same verified state.
 - **DEBATE LANDED 2026-10-30** (PR #2563, calibration-only under the enacted freeze): skeleton-crew 23.288 > frankenstein 22.865 > resurrection 22.481 (10 LOCAL_BASELINE ballots; revision-only 23.308 / 22.462 / 21.692) — rank agreement 3/3 with the brief-author priors; calibration supports the freeze. Pass status = debate_recorded; receipts in the pass cycle/ (FEEDBACK.json, debate-ballots.json, DEBATE.md). Owner ballot still open.
 
 <!-- countdown-data:D4 opens=2026-10-30T09:00:00-07:00 closes=2026-12-04T14:00:00-08:00 -->
-<!-- countdown:D4 -->⏳ opens in 2d 0h (computed 2026-10-28 12:55 PT)<!-- /countdown:D4 -->
+<!-- countdown:D4 -->⏳ closes in 12d 11h (computed 2026-11-22 02:17 PT)<!-- /countdown:D4 -->
 
 `entrant{entrantDevpost}[platform:devpost]` + `entrant{entrantKiro}[platform:kiro]` — account creation owned by the dedicated Devpost + Kiro ID creation chat (owner order 2026-10-27, fleet Google identity route); registration completes with this lane on its handoff.
 
@@ -655,7 +657,7 @@ this log is the human view of the same verified state.
 ### D5 — for Aha! AI Builder Day Hackathon (Aha.io) — REGISTERED 2026-10-27 (spot pending review)
 
 <!-- countdown-data:D5 opens=2026-11-17T09:00:00-08:00 closes=2026-11-19T12:00:00-08:00 -->
-<!-- countdown:D5 -->⏳ opens in 19d 21h (computed 2026-10-28 12:55 PT)<!-- /countdown:D5 -->
+<!-- countdown:D5 -->⏳ OVERDUE (computed 2026-11-22 02:17 PT)<!-- /countdown:D5 -->
 
 `entrant{n0nAha}[platform:aha-io]` (assigned via the registry process,
 PR #1970 merged 2e99fadd).
@@ -696,12 +698,50 @@ PR #1970 merged 2e99fadd).
   recording demonstrating your application no later than **Thursday,
   Nov. 19 at 12 p.m. PT**." Countdown now carries Nov 19 12:00 PT.
 
+### GitLab program-family watchlist — future editions and historical editions
+
+Keep the programs separate. The February–March AI Hackathon and October
+Transcend edition are closed; the Community Hackathon has an upcoming
+January 2027 event.
+
+| Program | State | Verified window / result | Planning disposition |
+|---|---|---|---|
+| GitLab AI Hackathon — “You Orchestrate. AI Accelerates.” | CLOSED | Submissions Feb 9–Mar 25; judging Mar 30–Apr 17; winners Apr 22; $65,000 pool | Watch next edition; next dates NOT_ESTABLISHED |
+| GitLab Transcend — “Life After Code” | CLOSED | Submissions Oct 5–27; judging/results timeline has rules-vs-connector discrepancies; $45,000 pool | Watch next edition; next dates NOT_ESTABLISHED |
+| GitLab Community Hackathon | **UPCOMING — C17** | **Jan 21–28, 2027 UTC**; qualifying MRs merge within 31 days after event end | Candidate event; 200/150/100 store credits for top three; 50 credits per qualifying merged MR |
+
+The October 2026 Community Hackathon edition is historical: the current
+Contributor Platform page reports 76 prize winners and 636 merged MRs.
+Current rules version is 2026-10-v2.
+
+**Source hierarchy:** `https://gitlab.com/gitlab-ai-hackathon` is the public root
+group. The supplied
+`https://gitlab.com/gitlab-ai-hackathon/gitlab-devsecops-flow-hackathon`
+resolves to a subgroup, observed empty on 2026-11-22. The sibling
+`/transcend` subgroup has 312 public projects with event-cycle mapping
+NOT_ESTABLISHED. The archived `/transcend-october-2026` subgroup contains
+1,273 child subgroups and 1,820 public archived projects. The
+`/project-templates/participant-template` project is the public agent/flow starter.
+The source map and evidence are in
+`docs/ops/GITLAB-AI-HACKATHON-OSINT.md`,
+`ops/challenge/osint/gitlab-sources.json`, and the dated 312-project snapshot
+`ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json`.
+
+**Registration:** C17 remains pre-registration. The official sequence is
+start onboarding → accept rules → choose an issue → obtain assignment →
+open an MR in the event window → get it merged within the 31-day post-event
+window. Owner onboarding, registration, issue assignment, and contribution
+state remain NOT_ESTABLISHED. The February–March AI Hackathon's group-access
+form is historical and closed.
+
 ## 5. Sweep sources
 
 AWS Builder Center hackathons listing; Devpost (AI/agent, Nov–Dec 2026);
-lablab.ai events; Builder.io hackathon page; Aha.io academy events;
-vendor developer-competition pages (Google, Microsoft, Anthropic,
-Hugging Face). Each sweep re-verifies deadlines from the official page
+GitLab AI Hackathon group + Transcend subgroup + Participant Template;
+GitLab Contributor Platform hackathon + rules + onboarding + issue finder;
+GitLab Community Discord; lablab.ai events; Builder.io hackathon page;
+Aha.io academy events; vendor developer-competition pages (Google,
+Microsoft, Anthropic, Hugging Face). Each sweep re-verifies deadlines from the official page
 before touching §3. **November watcher (owner, 2026-10-27):** through the
 fall season the sweep scopes November listings on every source, Aha.io
 included.

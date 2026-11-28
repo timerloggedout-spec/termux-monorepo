@@ -106,12 +106,17 @@ def parse_workflow_text(source: str, path: str) -> dict[str, Any]:
     events = event_config(document.get("on"))
     permission_data = permissions(document)
     jobs = mapping(document.get("jobs"))
-    pins = sorted({
+    pins = {
         str(step["uses"])
         for job in jobs.values()
         for step in mapping(job).get("steps", []) or []
         if isinstance(step, dict) and "uses" in step and "@" in str(step["uses"])
-    })
+    }
+    pins.update(
+        str(job["uses"])
+        for job in jobs.values()
+        if isinstance(job, dict) and "uses" in job and "@" in str(job["uses"])
+    )
     return {
         "path": path,
         "name": str(document.get("name") or Path(path).stem),
@@ -121,7 +126,8 @@ def parse_workflow_text(source: str, path: str) -> dict[str, Any]:
         "permissions": permission_data,
         "job_selectors": job_selectors(document),
         "jobs": sorted(str(name) for name in jobs),
-        "action_pins": pins,
+        "concurrency": document.get("concurrency") or {},
+        "action_pins": sorted(pins),
         "source_authority": source_authority(permission_data),
     }
 

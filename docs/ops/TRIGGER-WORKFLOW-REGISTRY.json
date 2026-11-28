@@ -80,6 +80,15 @@
       "workflow_count": 7,
       "scope": "selected exemplars; not exhaustive",
       "observed_at": "2026-11-27"
+    },
+    {
+      "id": "label-consumer-census",
+      "path": "docs/ops/generated/label-consumer-census.json",
+      "role": "source-backed selected label producer/consumer relationships",
+      "schema": "label-consumer-census/v1",
+      "label_count": 13,
+      "scope": "selected examples; not exhaustive",
+      "observed_at": "2026-11-27"
     }
   ],
   "concepts": [
@@ -489,6 +498,14 @@
       "workflow_count": 7,
       "status": "SOURCE_VERIFIED_EXEMPLARS",
       "exhaustive": false
+    },
+    "label_consumers": {
+      "artifact": "docs/ops/generated/label-consumer-census.json",
+      "markdown": "docs/ops/LABEL-CONSUMER-CENSUS.md",
+      "label_records": 13,
+      "status": "SOURCE_REFERENCED_EXAMPLES",
+      "exhaustive": false,
+      "live_label_inventory": "UNAVAILABLE_THROUGH_CURRENT_GITHUB_READ_CONNECTOR"
     }
   }
 }

@@ -147,6 +147,23 @@
           "role": "3d-asset-interchange",
           "source": "https://www.khronos.org/gltf/",
           "license": "specification"
+        },
+        {
+          "id": "dcc-mcp-blender",
+          "name": "DCC-MCP Blender Adapter",
+          "role": "typed-blender-scene-modeling-rendering-validation-mcp",
+          "source": "https://github.com/dcc-mcp/dcc-mcp-blender",
+          "license": "MIT-source-and-pypi; Blender Extensions package GPL-3.0-or-later",
+          "availability_state": "candidate_review",
+          "security_profile": "typed-tools-loopback-local-session",
+          "verification": "release-pin-and-local-session-smoke-required"
+        },
+        {
+          "id": "openusd",
+          "name": "OpenUSD",
+          "role": "interchange-digital-twin-scene-composition",
+          "source": "https://openusd.org/",
+          "license": "Apache-2.0"
         }
       ]
     },
@@ -322,6 +339,23 @@
           "role": "web-game-build-tooling",
           "source": "https://nodejs.org/",
           "license": "MIT"
+        },
+        {
+          "id": "dcc-mcp-cli",
+          "name": "DCC-MCP CLI",
+          "role": "agent-gateway-tool-discovery-and-invocation",
+          "source": "https://github.com/dcc-mcp/dcc-mcp-core",
+          "license": "upstream-license-review",
+          "availability_state": "candidate_review"
+        },
+        {
+          "id": "mcp-for-blender",
+          "name": "MCP for Blender",
+          "role": "alternate-blender-mcp-adapter",
+          "source": "https://github.com/ahujasid/mcp-for-blender",
+          "license": "MIT",
+          "availability_state": "secondary_candidate",
+          "security_profile": "localhost-only-safe-mode-required-no-authentication-or-encryption"
         }
       ]
     },

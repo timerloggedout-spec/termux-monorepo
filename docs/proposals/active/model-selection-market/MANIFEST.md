@@ -13,6 +13,7 @@ reviewers:
   - id: timerloggedout-spec
     role: operator-authorizer
     status: requested
+related_issues: [1521, 129]
 related_prs: []
 related_branches:
   - docs/model-selection-market-3l0-20261001
@@ -75,3 +76,7 @@ market (Itself|Others|Job) with **trading-card** code/meta sharing and a total r
 - ITEMS: ./ITEMS.md
 - Design SSOT: ./DESIGN.md
 - Schemas sketch: ./schemas/
+
+### 2026-10-22 — Cue — proposal recording and tracking
+
+Owner requested proposals in Docs, issues/subissues, Project and milestones. [PAPER-WALLET-ACCOUNTING.md](PAPER-WALLET-ACCOUNTING.md) is posted for design review; owning issue [wallet / #1521](https://github.com/timerloggedout-spec/termux-monorepo/issues/1521) continues the existing lane. [Tracking index](../termux-agentic-hub/RESEARCH-WALLET-TRACKING.md) records the native hierarchy and evidence gates. This is authorization to record proposals, not acceptance/completion of runtime changes, merge or deployment. PR #1470 remains open at `d2778bcc`; prior implementation logs are historical, not proof of the absent integration/accounting engine. No reviewer vote is fabricated.

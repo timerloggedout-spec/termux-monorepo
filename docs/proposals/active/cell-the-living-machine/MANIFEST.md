@@ -30,7 +30,7 @@ gates_required:
 
 ## Summary
 
-Establish an original science game that makes molecular and cellular systems playable through exploration, simulation, systems strategy, puzzles, and specialist research. The project uses three coordinated planes: Research Astute for reusable research references; Search Astutely for search execution, aggregation, and result snapshots; and Termux MonoRepo for developer lanes, tools, project profiles, and orchestration. A dedicated game repository owns the playable product and is registered as a project in MonoRepo.
+Establish an original science game that makes molecular and cellular systems playable through exploration, simulation, systems strategy, puzzles, and specialist research. The project uses three coordinated planes: Research Astute for reusable research references; Search Astutely for search execution, aggregation, and result snapshots; and Termux MonoRepo for developer lanes, tools, project profiles, and orchestration. A dedicated game repository owns the playable product and is registered through the MonoRepo project-profile family.
 
 ## Architecture decision
 
@@ -60,7 +60,7 @@ The full iJEP Studio channel is the initial visual and topic-discovery surface. 
 
 ## Current status
 
-- MonoRepo project profile: proposed in this branch.
+- MonoRepo scope profile: proposed under `.config/llm_map/profiles/projects/`; game manifest and registry are in `ops/projects/`.
 - Dedicated game repository: provisioning pending; GitHub repository-creation action is outside the current connected GitHub tool surface.
 - Research Astute: repository identified; reusable content scope requires rights and license review.
 - Search Astutely: organization identified; candidate repositories found; search-aggregation runtime and connector identity require verification.
@@ -94,7 +94,10 @@ The full iJEP Studio channel is the initial visual and topic-discovery surface. 
 - [ITEMS](./ITEMS.md)
 - [DEBATE](./DEBATE.md)
 - [Source evidence](./source.md)
-- [Project profile](./PROJECT_PROFILE.yaml)
+- [Scope profile pointer](./PROJECT_PROFILE.yaml)
+- [Canonical scope profile](../../../.config/llm_map/profiles/projects/cell-the-living-machine.json)
+- [Game project manifest](../../../ops/projects/manifests/cell-the-living-machine.yaml)
+- [Project registry](../../../ops/projects/registry.yaml)
 - [Research map](./RESEARCH_MAP.yaml)
 - [Database catalog](./DATA_SOURCES.yaml)
 - [Content taxonomy](./CONTENT_TAXONOMY.yaml)

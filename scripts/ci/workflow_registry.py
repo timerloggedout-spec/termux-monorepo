@@ -139,6 +139,7 @@ def parse_workflow_text(source: str, path: str) -> dict[str, Any]:
         "action_refs": sorted(action_refs),
         "action_pins": action_pins,
         "source_authority": source_authority(permission_data, [str(name) for name in jobs]),
+        "authority_basis": "declared GitHub workflow/job permissions",
     }
 
 
@@ -210,7 +211,7 @@ def markdown_index(index: dict[str, Any]) -> str:
         f"| Reconciliation | `{counts['status']}` |", "",
         f"Catalog source fingerprint: `{index.get('source_fingerprint')}`.", "",
         f"Authority conflicts: {len(index['authority_conflicts'])}.", "",
-        "| Workflow | Events | Dispatch inputs | Job selectors | Source authority |",
+        "| Workflow | Events | Dispatch inputs | Job selectors | Declared permission authority |",
         "|---|---|---|---|---|",
     ]
     for item in index["workflows"]:
@@ -223,7 +224,7 @@ def markdown_index(index: dict[str, Any]) -> str:
     lines.extend([
         "", "## Coverage semantics", "",
         "The JSON record preserves each event's complete YAML configuration, including activity types and branch/path/tag/workflow filters. It also preserves workflow_dispatch inputs, workflow/job permissions, job conditions, dependencies, runners, environments, matrices, action references, and source blob SHAs.", "",
-        "The index describes configured behavior. Workflow-run evidence establishes execution; job conclusions and artifacts establish outcomes.", "",
+        "Authority is inferred from declared workflow/job permission scopes. External-token effects still require source review. The index describes configured behavior; workflow-run evidence establishes execution, while job conclusions and artifacts establish outcomes.", "",
         "Machine-readable index: `docs/ops/generated/workflow-event-index.json`.", "",
     ])
     return "\n".join(lines)

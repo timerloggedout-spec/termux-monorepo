@@ -29,6 +29,7 @@
 | MSM-023 | Opt-in private OpenRouter current-key quota service observation | **done** | MSM-022 | Official GET /api/v1/key only; manual trusted-master/private secret pathway, default off. Request counters, monetary key limits and account tier remain separate; private exclusive output and status-only projection. No inference, retries, schedules, key hopping, paid fallback or routing/admission changes. |
 
 | MSM-024 | Batch passive quota management on existing provider catalog responses and operational readiness | **executing** | MSM-019, MSM-023 | Owner-authorized batch: reuse canonical managers and existing responses; expose status only, unknown when no endpoint-specific contract exists. Reconcile Felo daily-credit eligibility separately from the ended OX Alpha preview without duplicating its adapter. No new requests, inference, account/key/terms action, paid fallback, routing/admission or schedule changes. |
+| MSM-025 | Full provider/model pool catalogue competition and DoE tournament population | **executing** | MSM-024 | Incumbent v6.0.0 vs repository-owned VultrInspired v2.0.0 over 172 service records/118 provider keys, 89 model-lane providers, 4,241 g4f working pairs, 9,588 enumerated pairs and separate 7,341 historical Actions-verified endpoints; offline population and projection, task execution remains admission-gated |
 
 ## Runtime package
 

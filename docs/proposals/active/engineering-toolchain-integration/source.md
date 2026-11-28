@@ -12,7 +12,7 @@ The request covers the complete engineering stack previously researched and its 
 | Engineering taxonomy | `ops/engineering/taxonomy.json` | New sibling domain registry |
 | Reverse Engineering | `ops/reverse_engineering/taxonomy.json` | Preserve RE-only root and validator; link by artifacts and evidence |
 | Device execution | `hub_mcp/policy.py`, `hub_mcp/protocol.py`, `hub_mcp/runner.py` | Add fixed named capabilities; preserve argv-only execution and replay protection |
-| Operator surface | `archwiz/TOOL_INDEX.md`, `.agents/skills/` | Add discoverability, not a second executor |
+| Operator surface | `archwiz/TOOL_INDEX.md`, `.agents/skills/` | Add discoverability while preserving the existing executor |
 | Queue and review | QUE/QDesk contracts | Reuse existing admission, rank, claim, lease, escalation and Desk |
 | Measurement | Agent Evaluation Framework, DoE family, MVT, ATES | Use canonical experiment identity and outcome semantics |
 | Learnings | Existing Learnings lane and continuous-improvement policy | Record verified setup and tool behavior only |
@@ -20,7 +20,7 @@ The request covers the complete engineering stack previously researched and its 
 
 ## Tool coverage
 
-Mechanical: FreeCAD, OpenSCAD, SolveSpace, LibreCAD; Onshape Free is a proprietary $0 cloud tier with public-document/non-commercial constraints; its Free-plan card requirement is unconfirmed by the pricing page. SOLIDWORKS for Makers is paid ($48/year or $15/month before tax), personal/non-commercial, with no free version or trial; commercial SOLIDWORKS licensing is separate.
+Mechanical: FreeCAD, OpenSCAD, SolveSpace, LibreCAD; Onshape Free is a proprietary $0 cloud tier with public-document/non-commercial constraints; its Free-plan card requirement is unconfirmed by the pricing page. SOLIDWORKS for Makers is paid ($48/year or $15/month before tax), personal/non-commercial, and available through paid subscriptions; commercial SOLIDWORKS licensing is separate.
 
 Electronics/electrical: KiCad, LibrePCB, QElectroTech, ngspice and Qucs-S.
 
@@ -36,7 +36,7 @@ The repository ignores `refTemplates/` by policy. This proposal keeps upstream p
 
 ## FOSS and access policy
 
-Local FOSS applications are free to obtain and run under their respective licenses; commercial-use rights follow each license and upstream dependency. Cloud-free tiers are recorded separately from FOSS. A free tier with public documents or non-commercial limits is not classified as FOSS. Paid proprietary products remain interoperability targets, not baseline dependencies. Card requirements are recorded as false, true or unknown from evidence.
+Local FOSS applications are free to obtain and run under their respective licenses; commercial-use rights follow each license and upstream dependency. Cloud-free tiers are recorded separately from FOSS. A free tier with public documents or non-commercial limits remains classified as proprietary. The FOSS baseline uses local open-source applications; paid proprietary products serve as interoperability targets. Card requirements are recorded as false, true or unknown from evidence.
 
 ## Termux execution model
 
@@ -44,4 +44,4 @@ Termux is the lightweight control plane. The initial hub integration validates t
 
 ## Loopy adaptation
 
-The repository-native feedback loop remains authoritative: Observe → Contextualize → Adapt → Implement → Verify → Record → Recompare → Repeat. The six-step Loopy mechanics are applied inside this loop: Observe → Choose → Act → Verify → Record → Repeat. Each run has bounded scope, current-state re-read, measurable progress and a named terminal state: success, clean-no-op, blocked, approval-required, exhausted or stagnated. Crafting a loop does not run or schedule it.
+The repository-native feedback loop remains authoritative: Observe → Contextualize → Adapt → Implement → Verify → Record → Recompare → Repeat. The six-step Loopy mechanics are applied inside this loop: Observe → Choose → Act → Verify → Record → Repeat. Each run has bounded scope, current-state re-read, measurable progress and a named terminal state: success, clean-no-op, blocked, approval-required, exhausted or stagnated. Loop design remains separate from execution and scheduling.

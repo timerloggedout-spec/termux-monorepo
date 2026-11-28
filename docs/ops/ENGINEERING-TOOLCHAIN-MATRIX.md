@@ -52,10 +52,11 @@
 - `FOSS + local-free`: subscription-free, card-free local acquisition; license obligations and dependency licenses still apply.
 - `cloud-free-tier`: proprietary hosted service with a free usage tier; terms, document visibility and commercial restrictions remain explicit.
 - `commercial-paid`: paid proprietary product; retained as interoperability target only.
-- `detected`: the named executable is present on the probed PATH. PATH presence confirms executable discovery; startup, GUI dependencies, job completion and engineering validity require separate checks.
+- `detection_state=present|absent`: local executable discovery on the probed PATH.
+- `detection_state=external`: vendor-hosted or commercial products; availability uses separate account/contract evidence.
 - `remote-runner-preferred`: heavy GUI/solver workloads use an approved, pinned runner with bounded resources and artifact retention.
 
-The probe currently establishes only executable presence. Tool version, solver correctness, format round-trip, resource use and engineering validity require separate validation receipts.
+The probe reports local executable presence and external product classification. Tool version, solver correctness, format round-trip, resource use and engineering validity require separate validation receipts.
 
 ## Remote execution profile
 

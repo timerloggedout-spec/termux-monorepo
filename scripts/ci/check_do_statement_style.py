@@ -51,6 +51,13 @@ def inspect_git_range(base: str, head: str) -> None:
         if line.startswith("+++ b/"):
             current_path = line[6:]
         elif line.startswith("+") and not line.startswith("+++"):
+            path_obj = Path(current_path)
+            resolved = path_obj.resolve() if path_obj.is_symlink() else None
+            vendor_root = (Path("vendor/skills-mirror")).resolve()
+            if current_path.startswith("docs/ops/skills/source/"):
+                continue
+            if resolved and (resolved == vendor_root or vendor_root in resolved.parents):
+                continue
             added = line[1:]
             if NEGATIVE_FIRST.match(added):
                 errors.append(

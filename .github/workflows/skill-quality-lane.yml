@@ -16,6 +16,10 @@ on:
       - "docs/ops/SKILL-EVALUATION.md"
       - "docs/ops/SKILL-EVALUATION-EVIDENCE.schema.json"
       - "docs/ops/SKILLS-INVENTORY.md"
+      - "experiments/doe/skill-content-preservation/**"
+      - "experiments/doe/cmp-register/DESIGN.json"
+      - "scripts/ci/verify_skill_lineage.py"
+      - "tests/test_skill_lineage.py"
       - ".github/workflows/skill-quality-lane.yml"
   workflow_dispatch:
 
@@ -57,6 +61,18 @@ jobs:
       - name: Run focused evaluator tests
         run: python -m unittest tests.test_skill_evaluation -v
 
+      - name: Verify immutable skill source and candidate lineage
+        env:
+          BASELINE_REF: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          if [ -n "$BASELINE_REF" ]; then
+            python scripts/ci/verify_skill_lineage.py --manifest experiments/doe/skill-content-preservation/manifest.json --baseline-ref "$BASELINE_REF"
+          else
+            python scripts/ci/verify_skill_lineage.py --manifest experiments/doe/skill-content-preservation/manifest.json
+          fi
+
+      - name: Run source-lineage verifier tests
+        run: python -m unittest tests.test_skill_lineage -v
       - name: Check source diff whitespace hygiene
         if: github.event_name == 'pull_request'
         env:

@@ -2,7 +2,7 @@
 
 ## High concept
 
-Explore, operate, protect, and understand living systems by interacting with the molecular machines and cellular networks that sustain them. The player begins with a bounded cell system and progressively connects molecular mechanisms to cellular behavior, tissue context, and organism-level outcomes.
+Explore, engineer, automate, manufacture, protect, and understand living and physical systems. The player moves from biological mechanisms and cellular networks into engineering studios, factory automation, digital twins, robotics, fabrication and professional production pathways. The game supports both scientific discovery and the creation of real concepts.
 
 ## Core loop
 
@@ -12,6 +12,10 @@ Explore, operate, protect, and understand living systems by interacting with the
 4. Run a simulation and inspect the state transition.
 5. Compare the result with source-backed evidence.
 6. Refine the model, unlock tools, and investigate a wider system.
+
+## Modes and play shape
+
+Exploration is a first-class mode across all content. Additional modes include Arcade/Challenge, Engineering Studio, Factory/Automation, Research Lab, Simulation/Digital Twin, Collaboration and Production/Marketplace. All modes share one central player identity and creator portfolio.
 
 ## Genre and play shape
 
@@ -23,6 +27,12 @@ The game uses genre facets rather than a single exclusive category:
 - Puzzle: solve constrained mechanistic scenarios.
 - Educational: connect player actions to explainable scientific concepts.
 - RPG progression: earn tools, capabilities, and research access through demonstrated mastery.
+- Engineering/automation: design production chains, logistics, machines, controls and quality systems.
+- Creator/manufacturing: convert reviewed concepts into prototype-ready design packages and approved fabrication pathways.
+
+## Engineering and real-world making
+
+The platform includes requirements, components, materials, tolerances, energy and material flows, production lines, automation, logistics, sensors, controls, robotics, CAD/CAE, digital twins, quality and lifecycle operations. Players can export versioned designs and route eligible concepts to approved fabrication providers or internal equipment through human-reviewed workflows.
 
 ## World and scales
 

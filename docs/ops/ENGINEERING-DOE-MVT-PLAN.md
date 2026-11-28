@@ -7,6 +7,8 @@
 
 ## Surface ownership
 
+The engineering cohort is enrolled in `docs/ops/AGENT-EVALUATION-LANE-REGISTRY.md` and the repository cross-domain lane feed through `ops/tracking/projects.json`. The registry identifies the lane; the tracking collector alone generates state/last-merge/next projections.
+
 - DoE owns experimental design and factor selection.
 - MVT is nested inside the DoE family and records multi-arm comparisons.
 - ATES supplies execution discipline and run receipts.

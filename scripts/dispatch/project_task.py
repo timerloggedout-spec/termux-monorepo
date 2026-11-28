@@ -93,25 +93,25 @@ def receipt_comment(issue_number: int, fields: dict) -> str:
         ("physical-world-effect", "physical-world effect"),
         ("risk-tier", "risk tier"),
     )
-    engineering_context = "\\n".join(
+    engineering_context = "\n".join(
         f"- {label}: {fields[key]}"
         for key, label in engineering_labels
         if str(fields.get(key, "")).strip()
     )
     if engineering_context:
-        engineering_context = "\\n- engineering context:\\n" + engineering_context
+        engineering_context = "\n- engineering context:\n" + engineering_context
     return (
         "[MUSEai]@{role:{project-task-dispatch}} ROUTING RECEIPT — "
-        "task accepted into the system.\\n\\n"
-        f"- intake id: issue #{issue_number}\\n"
-        f"- entry: {fields.get('entry', '')}\\n"
-        f"- scope: {fields.get('scope', '')}\\n"
+        "task accepted into the system.\n\n"
+        f"- intake id: issue #{issue_number}\n"
+        f"- entry: {fields.get('entry', '')}\n"
+        f"- scope: {fields.get('scope', '')}\n"
         f"- target repo: {fields.get('target-repo', '')}"
-        f"{engineering_context}\\n"
-        "- selection: system across all wired providers; the dispatch system resolves the provider at pickup\\n"
+        f"{engineering_context}\n"
+        "- selection: system across all wired providers; the dispatch system resolves the provider at pickup\n"
         "- instance stamps: pending — filled post-hoc after execution "
-        "{resolved provider x model · session/run ids · outcomes}\\n\\n"
-        "Status: `dispatch-queued` — ownership begins at claim.\\n\\n"
+        "{resolved provider x model · session/run ids · outcomes}\n\n"
+        "Status: `dispatch-queued` — ownership begins at claim.\n\n"
         "Claim/lease: the producing seat claims at pickup with "
         "`scripts/dispatch/claim_task.py` (claim comment + "
         "`dispatch-claimed` label). Unclaimed tasks are flagged at "

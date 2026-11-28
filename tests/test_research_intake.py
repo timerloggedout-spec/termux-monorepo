@@ -51,6 +51,12 @@ class ResearchIntakeTests(unittest.TestCase):
         self.assertIn("provider-recon-compound", rec["starter"]["pipeline"])
         self.assertEqual(rec["classification"]["adoption"], "research-only")
 
+    def test_h4_subheadings_preserved_in_form(self):
+        form_with_h4 = PROVIDER_FORM + "\n#### Subheading Details\n\nAdditional text under H4\n"
+        fields = ri.parse_form(form_with_h4)
+        self.assertIn("#### Subheading Details", fields["evidence"])
+        self.assertIn("Additional text under H4", fields["evidence"])
+
     def test_service_command_seed_matches_research_seeds_schema(self):
         rec = ri.build_record("service", ri.parse_command(SERVICE_CMD))
         self.assertEqual(rec["seed_id"],

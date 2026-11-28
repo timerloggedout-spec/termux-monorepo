@@ -1,0 +1,112 @@
+schema: game-research-map/v1
+project_ref: project:cell-the-living-machine
+status: proposed
+
+research_domains:
+  structural_biology:
+    questions:
+      - Which experimentally resolved structures describe each selected molecular machine?
+      - Which conformational states and ligand-bound states are available?
+      - What resolution, method, construct, organism, and confidence metadata apply?
+    sources: [RCSB_PDB, EMDB, BMRB, AlphaFold_DB]
+    identifiers: [PDB_ID, EMDB_ID, BMRB_ID, UniProt_accession]
+  sequence_and_annotation:
+    questions:
+      - Which gene and protein sequences correspond to each structure?
+      - Which domains, motifs, variants, and functional annotations are curated?
+    sources: [UniProtKB, NCBI_Gene, NCBI_Protein, InterPro, Pfam, Ensembl]
+    identifiers: [UniProt_accession, GeneID, RefSeq_accession, Ensembl_ID, InterPro_ID, Pfam_ID]
+  pathways_and_cellular_context:
+    questions:
+      - Which pathways, reactions, compartments, and interacting entities contextualize each mechanism?
+      - Which organism-specific pathway records are curated or inferred?
+    sources: [Reactome, KEGG, BioCyc, EcoCyc, Gene_Ontology]
+    identifiers: [Reactome_stable_ID, KEGG_ID, BioCyc_frame_ID, GO_ID]
+  chemistry:
+    questions:
+      - Which metabolites, ligands, ions, cofactors, and substrates participate?
+      - Which structures, charges, and physicochemical properties are relevant?
+    sources: [ChEBI, PubChem, RCSB_PDB]
+    identifiers: [CHEBI_ID, PubChem_CID, PDB_ligand_ID]
+  literature:
+    questions:
+      - Which primary studies support each mechanism, structure, and parameter?
+      - Which reviews, methods, and corrections update the evidence?
+    sources: [PubMed, PubMed_Central, Europe_PMC, Crossref]
+    identifiers: [PMID, PMCID, DOI, Europe_PMC_ID]
+  visual_and_educational:
+    questions:
+      - Which videos and diagrams provide useful explanatory sequences?
+      - Which visual assets carry explicit reuse rights?
+    sources: [iJEP_Studio, PDB_101, BioImage_Archive]
+    identifiers: [YouTube_video_ID, DOI, PDB_ID, EMDB_ID, asset_license_id]
+
+crosswalks:
+  - from: UniProt_accession
+    to: PDB_entity_and_chain
+    provider: RCSB_PDB
+  - from: UniProt_accession
+    to: AlphaFold_model_ID
+    provider: AlphaFold_DB
+  - from: PDB_ID
+    to: EMDB_ID
+    provider: wwPDB_cross_references
+  - from: protein_or_gene_identifier
+    to: pathway_stable_ID
+    provider: Reactome_or_KEGG
+  - from: molecular_entity
+    to: literature_identifier
+    provider: NCBI_or_Europe_PMC
+
+record_contract:
+  required:
+    - source_id
+    - canonical_url
+    - source_database
+    - source_accession
+    - retrieved_at
+    - release_or_revision
+    - organism
+    - evidence_class
+    - attribution
+    - license_or_terms
+    - checksum
+  evidence_class:
+    - experimentally_determined
+    - curated_database_annotation
+    - computational_prediction
+    - primary_literature
+    - educational_representation
+    - gameplay_abstraction
+  confidence_fields:
+    - experimental_method
+    - resolution
+    - local_confidence
+    - global_confidence
+    - plddt
+    - pae
+    - curator_evidence_code
+  update_policy:
+    mode: versioned_snapshot
+    preserve_previous_versions: true
+    detect_upstream_changes: true
+    require_revalidation_after_source_change: true
+
+priority_targets:
+  - sodium_potassium_pump
+  - aquaporin
+  - ATP_synthase
+  - CFTR
+  - SERCA
+  - MscL
+  - AcrB
+  - ribosome
+  - bacterial_flagellar_motor
+  - DNA_replisome
+
+initial_slice:
+  organism: pending_selection
+  cell_type: pending_selection
+  mechanism_count: 3
+  first_mechanisms: [sodium_potassium_pump, aquaporin, ATP_synthase]
+  selection_criteria: [structure_availability, literature_quality, mechanistic_complementarity, visual_clarity, gameplay_potential]

@@ -145,6 +145,36 @@
    ],
    "review_point": "2026-12-31 or when either store passes 10k units",
    "status": "open_ongoing_test"
+  },
+  {
+    "id": "CMP-7",
+    "opened": "2026-11-22",
+    "question": "Tournament placement for external architecture/method portfolios: extend existing versioned tournaments with compatible treatment arms vs create a dedicated tournament lane vs use a shared typed portfolio with distinct capability, composition, and complete-implementation competition units?",
+    "arms": {
+      "extend_existing": "Add each compatible Ksarith-derived method as a versioned treatment arm in an existing capability, graph/composition, or manager tournament, preserving the canonical cohort and per-run record contracts.",
+      "dedicated_lane": "Create a dedicated Ksarith tournament lane with its own registry, cohort, evaluator, lifecycle, and promotion process.",
+      "hybrid_typed": "Maintain one shared source/candidate intake and common cohort/run contracts; compare capabilities, compositions, and complete implementations in typed competition units; create a dedicated lane only when a distinct task population, outcome contract, or execution boundary justifies it."
+    },
+    "first_instance": "Ksarith portfolio intake documented in PR #5769: eight public repositories and seven treatment families. All candidates are design references at opening; no adapters, assignments, or run records exist.",
+    "responses": [
+      "elapsed time from source intake to preregistered design and first schema-valid run",
+      "share of candidate families fitting existing role, graph, and manager contracts without schema changes",
+      "comparability under shared task contract, cohort, environment, and evaluator",
+      "registry, adapter, ownership, and maintenance overhead",
+      "ability to isolate component effects and complete-system interaction effects",
+      "license, provenance, and independent-verification completeness",
+      "promotion recommendation quality and candidate-lineage traceability"
+    ],
+    "evidence_sources": [
+      "PR #5769 Ksarith portfolio integration intake and source revision table",
+      "PR #5761 draft tournament architecture and classifier graph registry",
+      "docs/ops/MANAGER-TOURNAMENT.schema.json",
+      "docs/ops/corpus/EXPERIMENT.schema.json",
+      "future preregistered design records, schema-valid run receipts, and registry diffs"
+    ],
+    "review_point": "after the first two Ksarith treatment families each complete one matched, schema-valid run under a shared control, or at the first material schema/ownership conflict, whichever occurs first",
+    "status": "open",
+    "owner_note": "Opening hypothesis: hybrid_typed offers the best fit with current architecture because it preserves common evidence contracts while keeping capability, composition, and complete implementation as distinct comparison units. This is a design hypothesis, not a verdict. The intake has zero run observations; no treatment assignment or promotion is authorized by this register entry. Record rights and source provenance before any code or substantial text reuse."
   }
  ],
  "registration": {

@@ -7,6 +7,11 @@ on:
     branches: [master]
     paths:
       - 'scripts/ci/automation_docs.py'
+      - 'scripts/ci/workflow_registry.py'
+      - 'tests/test_workflow_registry.py'
+      - 'docs/ops/generated/workflow-event-index.json'
+      - 'docs/ops/TRIGGER-WORKFLOW-REGISTRY.json'
+      - 'docs/ops/WORKFLOW-EVENT-INDEX.md'
       - '.github/workflows/**'
       - '.github/actions/**'
       - 'scripts/model_router.py'
@@ -21,6 +26,11 @@ on:
     types: [opened, synchronize, reopened]
     paths:
       - 'scripts/ci/automation_docs.py'
+      - 'scripts/ci/workflow_registry.py'
+      - 'tests/test_workflow_registry.py'
+      - 'docs/ops/generated/workflow-event-index.json'
+      - 'docs/ops/TRIGGER-WORKFLOW-REGISTRY.json'
+      - 'docs/ops/WORKFLOW-EVENT-INDEX.md'
       - '.github/workflows/**'
       - '.github/actions/**'
       - 'scripts/model_router.py'
@@ -59,6 +69,9 @@ jobs:
         with:
           python-version: "3.12"
         timeout-minutes: 5
+      - name: Install workflow YAML parser
+        run: python -m pip install --disable-pip-version-check PyYAML==6.0.3
+        timeout-minutes: 5
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: "20"
@@ -90,6 +103,12 @@ jobs:
       - name: Validate generated catalog
         timeout-minutes: 5
         run: python3 scripts/ci/automation_docs.py --check
+      - name: Generate and validate workflow event index
+        timeout-minutes: 5
+        run: |
+          python3 scripts/ci/workflow_registry.py --write
+          python3 scripts/ci/workflow_registry.py --check
+          python3 tests/test_workflow_registry.py
 
   refresh-trusted:
     if: github.event_name != 'pull_request'
@@ -107,6 +126,9 @@ jobs:
       - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
         with:
           python-version: "3.12"
+        timeout-minutes: 5
+      - name: Install workflow YAML parser
+        run: python -m pip install --disable-pip-version-check PyYAML==6.0.3
         timeout-minutes: 5
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
@@ -139,17 +161,23 @@ jobs:
       - name: Validate generated catalog + diagram assets
         timeout-minutes: 5
         run: python3 scripts/ci/automation_docs.py --check
+      - name: Generate and validate workflow event index
+        timeout-minutes: 5
+        run: |
+          python3 scripts/ci/workflow_registry.py --write
+          python3 scripts/ci/workflow_registry.py --check
+          python3 tests/test_workflow_registry.py
       - name: Commit generated automation documentation + renders
         timeout-minutes: 5
         run: |
           set -euo pipefail
-          if git diff --quiet -- docs/ops/generated; then
+          if git diff --quiet -- docs/ops/generated docs/ops/WORKFLOW-EVENT-INDEX.md docs/ops/TRIGGER-WORKFLOW-REGISTRY.json; then
             echo 'Automation documentation and diagram renders already current.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add docs/ops/generated
+          git add docs/ops/generated docs/ops/WORKFLOW-EVENT-INDEX.md docs/ops/TRIGGER-WORKFLOW-REGISTRY.json
           git commit -m 'docs(ops): refresh generated automation catalog + mmdc renders'
           git fetch origin master
           git rebase origin/master

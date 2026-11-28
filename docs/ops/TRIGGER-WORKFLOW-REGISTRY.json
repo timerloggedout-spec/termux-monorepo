@@ -1,0 +1,582 @@
+{
+  "schema_version": "trigger-workflow-registry/v1",
+  "registry_id": "termux-monorepo.trigger-workflow",
+  "status": "INITIAL_BASELINE",
+  "generated_at": "2026-11-28",
+  "repository": "timerloggedout-spec/termux-monorepo",
+  "default_branch": "master",
+  "purpose": "Canonical relationship index for repository work-entry methods, event triggers, admission/routing, workflows, effects, and evidence feeds. Existing specialized registries and generated catalogs remain authoritative for their own domains.",
+  "authority": {
+    "repository_truth": "GitHub issues, pull requests, comments, labels, refs, workflow runs, jobs, artifacts, and commits.",
+    "workflow_inventory": "docs/ops/generated/automation-workflow-catalog.json",
+    "workflow_inventory_generator": "scripts/ci/automation_docs.py",
+    "issue_dispatch_contract": "docs/ops/ISSUE-TEMPLATE-DISPATCH.md",
+    "issue_dispatch_schema": "issue-dispatch/v1",
+    "admission_implementation": ".github/workflows/swarm-admission.yml + scripts/ops/swarm_admission.py + ops/quota/dispatch-tiers.json",
+    "labels": "GitHub repository labels; semantic interpretation remains distributed across owning workflow/template contracts.",
+    "role_identity": "AGENT-MONIKERS / role references and authored MUSEai stamps; role identity alone does not imply dispatch.",
+    "dashboard_projection": "SHE read-only projections and surface feeds; dashboard is not a dispatch authority or database."
+  },
+  "sources": [
+    {
+      "id": "workflow-catalog",
+      "path": "docs/ops/generated/automation-workflow-catalog.json",
+      "role": "generated exhaustive workflow inventory",
+      "observed_workflow_count": 332,
+      "source_fingerprint": "d1fc2a62d098070ccae2d73efe34528bf17d3c3f1245d3137b4ba80ea41b689e",
+      "blob_sha": "56afde58d2df4f8741c1f650fbc533561888b195",
+      "freshness": "generated; refresh through existing automation-docs lane"
+    },
+    {
+      "id": "issue-dispatch-contract",
+      "path": "docs/ops/ISSUE-TEMPLATE-DISPATCH.md",
+      "role": "canonical issue filing → QUE admission contract",
+      "schema": "issue-dispatch/v1",
+      "blob_sha": "5cce6f9d43b5f2beede2dea3eaa74d3977154ca8"
+    },
+    {
+      "id": "research-trigger-contract",
+      "path": "docs/ops/RESEARCH-TRIGGERS.md",
+      "role": "research-specific event and template mapping",
+      "blob_sha": "8c331755ae635c04cbd7ad38d4776f7b025b7133"
+    },
+    {
+      "id": "surface-map",
+      "path": "docs/ops/SURFACES-MAP.md",
+      "role": "dashboard ownership and feed consumer map",
+      "blob_sha": "1f115a4574d3474fea545f93bdffa27ff59960a2"
+    },
+    {
+      "id": "role-label-dispatch",
+      "path": "docs/recon/team-formation/ROLE_LABEL_DISPATCH.md",
+      "role": "role/label/provider dispatch constraints"
+    },
+    {
+      "id": "label-taxonomy",
+      "path": "docs/recon/team-formation/LABEL_TAXONOMY.md",
+      "role": "additive label and team taxonomy"
+    },
+    {
+      "id": "review-publishing",
+      "path": "docs/ops/REVIEW-PUBLISHING.md",
+      "role": "filing → admission → route → build → publish chain",
+      "blob_sha": "f69091969df0f9e97ec11dd564acb4c763c26ceb"
+    },
+    {
+      "id": "issue-template-census",
+      "path": "docs/ops/generated/issue-template-census.json",
+      "role": "source-derived inventory of all YAML issue forms, labels, titles, and dispatch declarations",
+      "schema": "issue-template-census/v1",
+      "template_count": 14,
+      "dispatch_declared": 2,
+      "intake_only": 12,
+      "observed_at": "2026-11-27"
+    },
+    {
+      "id": "workflow-trigger-census",
+      "path": "docs/ops/generated/workflow-trigger-census.json",
+      "role": "source-verified selected workflow event and selector census",
+      "schema": "workflow-trigger-census/v1",
+      "workflow_count": 9,
+      "scope": "nine source-verified exemplars, including the uncatalogued Research Astute provisioner",
+      "observed_at": "2026-11-28",
+      "uncatalogued_workflow_count": 1
+    },
+    {
+      "id": "label-consumer-census",
+      "path": "docs/ops/generated/label-consumer-census.json",
+      "role": "source-backed selected label producer/consumer relationships",
+      "schema": "label-consumer-census/v1",
+      "label_count": 13,
+      "scope": "selected examples; not exhaustive",
+      "observed_at": "2026-11-27"
+    },
+    {
+      "id": "workflow-event-index",
+      "path": "docs/ops/generated/workflow-event-index.json",
+      "role": "catalog-level workflow snapshot with source-level v2 enrichment for event filters, inputs, permissions, job selectors, concurrency, action references, Git blob provenance, declared-permission authority, and explicit gh api write methods",
+      "schema": "workflow-event-index/v1",
+      "workflow_count": 332,
+      "observed_at": "2026-11-28",
+      "generator": "scripts/ci/workflow_registry.py",
+      "next_schema": "workflow-event-index/v2",
+      "refresh": "Generated v2 snapshot is produced by the trusted master refresh after this generator lands",
+      "authority_basis": "Declared workflow/job permissions plus explicit gh api write methods; indirect external-token effects remain a source-review requirement"
+    },
+    {
+      "id": "comment-trigger-census",
+      "path": "docs/ops/generated/comment-trigger-census.json",
+      "role": "source-verified comment mentions, slash commands, provider commands, and HTML marker selectors",
+      "schema": "comment-trigger-census/v1",
+      "record_count": 17,
+      "scope": "selected exemplars; not exhaustive",
+      "observed_at": "2026-11-27"
+    }
+  ],
+  "concepts": [
+    {
+      "kind": "entry_method",
+      "id": "issue-template",
+      "description": "Human-facing GitHub issue form or Markdown template that collects structured intake.",
+      "initiates": "issues.opened or issues.reopened after filing",
+      "declaration": "A template dispatches only when it contains a valid SWARM-DISPATCH block; filing alone is not blanket authorization.",
+      "status": "CONFIRMED"
+    },
+    {
+      "kind": "trigger",
+      "id": "github-issues-event",
+      "events": [
+        "issues.opened",
+        "issues.reopened",
+        "issues.edited"
+      ],
+      "description": "Issue lifecycle event consumed by workflows; exact activity types are workflow-specific.",
+      "status": "CONFIRMED"
+    },
+    {
+      "kind": "trigger",
+      "id": "github-issue-comment",
+      "events": [
+        "issue_comment.created",
+        "issue_comment.edited"
+      ],
+      "description": "Comment event used by workflow-specific command, marker, or bot-feedback handlers.",
+      "status": "CONFIRMED"
+    },
+    {
+      "kind": "trigger",
+      "id": "github-label",
+      "events": [
+        "issues.labeled",
+        "issues.unlabeled"
+      ],
+      "description": "Label changes can select a route when a workflow explicitly subscribes and validates the label. Labels are also classification/admission signals.",
+      "status": "CONFIRMED"
+    },
+    {
+      "kind": "trigger",
+      "id": "github-pull-request",
+      "events": [
+        "pull_request"
+      ],
+      "description": "PR lifecycle and path-filtered validation/automation; activity types are workflow-specific.",
+      "status": "CONFIRMED"
+    },
+    {
+      "kind": "trigger",
+      "id": "github-review",
+      "events": [
+        "pull_request_review",
+        "pull_request_review_comment"
+      ],
+      "description": "Review submission and inline review-comment events; used by feedback and review automation.",
+      "status": "CONFIRMED"
+    },
+    {
+      "kind": "trigger",
+      "id": "workflow-manual",
+      "events": [
+        "workflow_dispatch"
+      ],
+      "description": "Explicit operator-initiated workflow run with declared inputs.",
+      "status": "CONFIRMED"
+    },
+    {
+      "kind": "trigger",
+      "id": "workflow-schedule",
+      "events": [
+        "schedule"
+      ],
+      "description": "Cron-based workflow initiation.",
+      "status": "CONFIRMED"
+    },
+    {
+      "kind": "trigger",
+      "id": "workflow-completion",
+      "events": [
+        "workflow_run"
+      ],
+      "description": "Downstream workflow initiation after a named upstream workflow reaches a configured conclusion.",
+      "status": "CONFIRMED"
+    },
+    {
+      "kind": "trigger",
+      "id": "workflow-reusable",
+      "events": [
+        "workflow_call"
+      ],
+      "description": "Reusable workflow invocation by a caller workflow; execution context and provenance belong to caller/callee contract.",
+      "status": "CONFIRMED"
+    },
+    {
+      "kind": "trigger",
+      "id": "repository-event",
+      "events": [
+        "repository_dispatch"
+      ],
+      "description": "External or internal repository event with a typed event_type and client payload.",
+      "status": "CONFIRMED"
+    },
+    {
+      "kind": "trigger",
+      "id": "git-change",
+      "events": [
+        "push"
+      ],
+      "description": "Branch/ref update trigger, usually scoped by branches and paths.",
+      "status": "CONFIRMED"
+    },
+    {
+      "kind": "trigger",
+      "id": "external-provider-event",
+      "events": [
+        "workflow_run",
+        "repository_dispatch",
+        "push"
+      ],
+      "description": "Provider-specific completion or webhook bridge. Record concrete provider and payload contract per workflow.",
+      "status": "PARTIAL"
+    }
+  ],
+  "interaction_signals": [
+    {
+      "id": "label",
+      "syntax": "GitHub label name",
+      "semantics": [
+        "classification",
+        "routing selector",
+        "admission state",
+        "queue state"
+      ],
+      "dispatch_behavior": "A label is executable only where a workflow explicitly subscribes to its event or a filing contract maps it to a route.",
+      "examples": [
+        "swarm-admitted",
+        "deferred-by-tier",
+        "delphi:rfp",
+        "target-brief",
+        "dispatch-claimed"
+      ],
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "mention-role-stamp",
+      "syntax": "[MUSEai]@{role:{role-id}}",
+      "semantics": [
+        "actor/role attribution",
+        "ownership/provenance",
+        "human-readable routing context"
+      ],
+      "dispatch_behavior": "Treat as an identity/provenance stamp. A workflow-specific parser must explicitly consume it before it can act as a trigger.",
+      "status": "CONFIRMED_AS_IDENTITY; TRIGGER_SEMANTICS_WORKFLOW_SPECIFIC"
+    },
+    {
+      "id": "agent-mention",
+      "syntax": "@jules (example)",
+      "semantics": [
+        "agent invocation signal"
+      ],
+      "dispatch_behavior": "Workflow-specific mention detection; Jules on Issues is catalogued as listening to issue_comment and issues events.",
+      "workflow": "agent-jules-on-issues.yml",
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "comment-command",
+      "syntax": "workflow-specific slash command or HTML marker",
+      "semantics": [
+        "operator command",
+        "idempotent request key",
+        "intake signal"
+      ],
+      "dispatch_behavior": "A handler must define parser, authorization, dedupe key, and receipt.",
+      "examples": [
+        "<!-- request-delphi-intake -->",
+        "<!-- hark-key -->"
+      ],
+      "status": "CONFIRMED; INDIVIDUAL COMMAND CATALOG INCOMPLETE"
+    }
+  ],
+  "admission": {
+    "id": "que-admission",
+    "workflow": ".github/workflows/swarm-admission.yml",
+    "evaluator": "scripts/ops/swarm_admission.py",
+    "tier_registry": "ops/quota/dispatch-tiers.json",
+    "order": [
+      "tier",
+      "after",
+      "chain",
+      "flow_projection"
+    ],
+    "decisions": [
+      "ADMITTED",
+      "DEFERRED"
+    ],
+    "receipt": "First fleet comment on the filing; includes decision and admission evidence.",
+    "labels": {
+      "admitted": "swarm-admitted",
+      "deferred": "deferred-by-tier"
+    },
+    "invariant": "Issue template dispatch reaches the swarm only through QUE admission. Deferral preserves the issue in the queue for later re-evaluation.",
+    "status": "CONFIRMED"
+  },
+  "routes": [
+    {
+      "id": "issue-template-to-swarm",
+      "entry": "issue-template",
+      "trigger": "github-issues-event",
+      "gate": "que-admission",
+      "route": "Declared route in SWARM-DISPATCH block",
+      "contract": "docs/ops/ISSUE-TEMPLATE-DISPATCH.md",
+      "outputs": [
+        "admission stamp",
+        "admission label",
+        "route-specific intake receipt"
+      ],
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "jules-issue-mention",
+      "entry": "issue-or-comment",
+      "trigger": "github-issue-comment",
+      "selectors": [
+        "@jules",
+        "workflow-specific label"
+      ],
+      "workflow": ".github/workflows/agent-jules-on-issues.yml",
+      "catalog_name": "Jules on Issues (label / @jules)",
+      "status": "CONFIRMED; exact selector logic remains in workflow source"
+    },
+    {
+      "id": "research-intake",
+      "entry": "research issue templates and repository signals",
+      "trigger": "workflow-specific issue, PR, schedule, workflow_dispatch, workflow_run",
+      "contract": "docs/ops/RESEARCH-TRIGGERS.md",
+      "outputs": [
+        "repository index",
+        "research seed records",
+        "provider/research registry artifacts"
+      ],
+      "status": "CONFIRMED; see owning contract"
+    },
+    {
+      "id": "filing-to-publish",
+      "entry": "issue-template filing",
+      "trigger": "issues.opened / issues.reopened",
+      "gate": "que-admission",
+      "route": "project-task-dispatch.yml → QDesk claim → build-dispatch.yml → per-surface publish workflow",
+      "contract": "docs/ops/REVIEW-PUBLISHING.md",
+      "outputs": [
+        "intake receipt",
+        "build receipt",
+        "PR",
+        "GitHub Pages publication"
+      ],
+      "status": "CONFIRMED"
+    }
+  ],
+  "workflow_event_catalog": {
+    "authoritative_path": "docs/ops/generated/automation-workflow-catalog.json",
+    "schema_version": 1,
+    "observed_workflow_count": 332,
+    "supported_event_types": [
+      "push",
+      "pull_request",
+      "pull_request_target",
+      "issues",
+      "issue_comment",
+      "pull_request_review",
+      "pull_request_review_comment",
+      "schedule",
+      "workflow_dispatch",
+      "workflow_run",
+      "workflow_call",
+      "repository_dispatch"
+    ],
+    "additional_event_types_may_exist": true,
+    "fields": [
+      "name",
+      "path",
+      "domain",
+      "triggers",
+      "schedules",
+      "jobs",
+      "authority",
+      "concurrency",
+      "action_pins"
+    ],
+    "authority_values": [
+      "read-only-or-advisory",
+      "bounded-state-write",
+      "writer"
+    ],
+    "rule": "The generated catalog lists 332 workflows while .github/workflows contains 333; research-astute-private-repo-provisioner.yml is the current uncatalogued workflow. The source-derived index preserves all directory workflows and reports this drift."
+  },
+  "feed_contract": {
+    "dashboard_surfaces": [
+      "desk.html",
+      "admin-graph.html",
+      "proposals.html",
+      "dispatch-tree.html",
+      "pr-lanes.html",
+      "tracking.html"
+    ],
+    "source_map": "docs/ops/SURFACES-MAP.md",
+    "refresh": "Consume existing generated workflow catalog and surface feeds; preserve each feed's generated_at/source SHA/freshness contract.",
+    "event_fields": [
+      "event_id",
+      "event_type",
+      "entry_method_id",
+      "selector",
+      "workflow_path",
+      "workflow_run_id",
+      "issue_or_pr_number",
+      "decision",
+      "authority",
+      "source_sha",
+      "occurred_at",
+      "observed_at",
+      "evidence_url",
+      "status"
+    ],
+    "privacy": "Store references and bounded metadata. Exclude credentials, prompt/completion bodies, arbitrary comment bodies, and raw provider payloads unless a separate reviewed schema explicitly allows a field.",
+    "authority": "Read-only projection; GitHub and owning workflow artifacts remain authoritative."
+  },
+  "status_vocabulary": {
+    "inventory": [
+      "CONFIRMED",
+      "PARTIAL",
+      "CANDIDATE",
+      "UNKNOWN",
+      "RETIRED"
+    ],
+    "execution": [
+      "QUEUED",
+      "IN_PROGRESS",
+      "COMPLETED",
+      "FAILED",
+      "CANCELLED",
+      "SKIPPED"
+    ],
+    "admission": [
+      "ADMITTED",
+      "DEFERRED"
+    ],
+    "promotion": [
+      "COMMITTED",
+      "EXECUTED",
+      "VALIDATED",
+      "PROMOTED"
+    ]
+  },
+  "reconciliation_rules": [
+    "One stable ID per method, trigger, selector, route, workflow, and feed.",
+    "Keep event type separate from activity type, selector, and admission decision.",
+    "Keep labels as typed signals; one label may classify, route, or record state depending on its owning contract.",
+    "Keep role/mention identity separate from executable command semantics.",
+    "Keep issue-template filing separate from the GitHub issues event that wakes the workflow.",
+    "A workflow's catalog authority class describes its write posture; it does not prove a particular run succeeded.",
+    "Preserve source paths, source SHA/fingerprint, timestamps, and evidence links.",
+    "Unknown mappings remain UNKNOWN and become explicit reconciliation work."
+  ],
+  "known_gaps": [
+    "Complete repository label census and each label's consumer workflow are not embedded; GitHub labels plus owning workflow contracts remain authoritative.",
+    "All @mention spellings, slash commands, and HTML comment markers have not been exhaustively extracted.",
+    "Event payload schemas and cross-workflow handoff artifact contracts remain to be normalized; workflow YAML parsing now captures event filters, activity types, dispatch inputs, permissions, job selectors, concurrency, action references, and source blob provenance.",
+    "Existing feed schemas and refresh cadence vary by surface; map each surface to its exact feed contract during the next reconciliation pass.",
+    "External-token and third-party credential effects can exceed declared GITHUB_TOKEN permission scopes and remain subject to source review."
+  ],
+  "next_reconciliation": {
+    "phase": "P1_EXHAUSTIVE_SELECTOR_MAPPING",
+    "steps": [
+      "parse all .github/ISSUE_TEMPLATE/*",
+      "extract SWARM-DISPATCH blocks",
+      "parse all workflow on/activity filters and selector expressions",
+      "census labels and locate consumers",
+      "extract @mention/command/marker parsers",
+      "join workflows to generated feeds and dashboard surfaces",
+      "emit deterministic validation report and freshness receipt"
+    ],
+    "candidate_outputs": [
+      "docs/ops/TRIGGER-WORKFLOW-REGISTRY.md",
+      "docs/ops/TRIGGER-WORKFLOW-REGISTRY.json",
+      "docs/ops/generated/trigger-workflow-reconciliation.json"
+    ]
+  },
+  "reconciliation": {
+    "issue_templates": {
+      "artifact": "docs/ops/generated/issue-template-census.json",
+      "markdown": "docs/ops/ISSUE-TEMPLATE-CENSUS.md",
+      "template_count": 14,
+      "dispatch_declared": 2,
+      "intake_only": 12,
+      "confirmed_dispatch_templates": [
+        "game-development-task",
+        "project-task"
+      ],
+      "status": "SOURCE_ENUMERATED"
+    },
+    "workflow_trigger_exemplars": {
+      "artifact": "docs/ops/generated/workflow-trigger-census.json",
+      "markdown": "docs/ops/WORKFLOW-TRIGGER-CENSUS.md",
+      "workflow_count": 9,
+      "status": "SOURCE_VERIFIED_EXEMPLARS",
+      "exhaustive": false
+    },
+    "label_consumers": {
+      "artifact": "docs/ops/generated/label-consumer-census.json",
+      "markdown": "docs/ops/LABEL-CONSUMER-CENSUS.md",
+      "label_records": 13,
+      "status": "SOURCE_REFERENCED_EXAMPLES",
+      "exhaustive": false,
+      "live_label_inventory": "UNAVAILABLE_THROUGH_CURRENT_GITHUB_READ_CONNECTOR"
+    },
+    "workflow_inventory": {
+      "directory_yaml_count": 333,
+      "catalog_record_count": 332,
+      "indexed_record_count": 332,
+      "status": "DRIFT",
+      "catalog_fingerprint": "d1fc2a62d098070ccae2d73efe34528bf17d3c3f1245d3137b4ba80ea41b689e",
+      "workflow_index": "docs/ops/generated/workflow-event-index.json",
+      "observed_at": "2026-11-28",
+      "missing_from_catalog": [
+        ".github/workflows/research-astute-private-repo-provisioner.yml"
+      ],
+      "missing_from_index": [
+        ".github/workflows/research-astute-private-repo-provisioner.yml"
+      ],
+      "missing_from_directory": []
+    },
+    "workflow_authority_conflicts": [
+      {
+        "workflow": ".github/workflows/project-repository-visibility.yml",
+        "catalog_authority": "read-only-or-advisory",
+        "source_authority": "writer",
+        "source_blob_sha": "5a42fc64c81632c38ffa892a1a890d685114fcda",
+        "reason": "Source executes a GitHub REST PATCH to change an external repository visibility and verifies the result.",
+        "status": "SOURCE_VERIFIED_CONFLICT"
+      }
+    ],
+    "comment_triggers": {
+      "artifact": "docs/ops/generated/comment-trigger-census.json",
+      "markdown": "docs/ops/COMMENT-TRIGGER-CENSUS.md",
+      "record_count": 17,
+      "status": "SOURCE_VERIFIED_SELECTED",
+      "exhaustive": false
+    }
+  },
+  "workflow_source_authority_overrides": [
+    {
+      "workflow": ".github/workflows/research-astute-private-repo-provisioner.yml",
+      "source_blob_sha": "2b5c96c951221f3b91508d05bfc07aa2624a2182",
+      "catalog_status": "NOT_IN_CATALOG",
+      "declared_permission_authority": "read-only-or-advisory",
+      "source_authority": "writer",
+      "api_write_methods": [
+        "POST"
+      ],
+      "authority_basis": "Explicit gh api --method POST /orgs/$ORG_NAME/repos",
+      "effect": "Creates and verifies the private Research-Astute/molecular-biology-research repository using the configured Actions credential fallback chain.",
+      "risk": "external-organization-repository-creation",
+      "status": "SOURCE_VERIFIED_UNCATALOGUED_WRITER"
+    }
+  ]
+}

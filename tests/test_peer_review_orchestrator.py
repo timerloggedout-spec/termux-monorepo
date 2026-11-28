@@ -26,13 +26,23 @@ class PeerReviewOrchestratorTests(unittest.TestCase):
             self.workflow,
         )
 
-    def test_only_state_advancing_events_are_subscribed_and_coalesced(self) -> None:
+    def test_only_state_advancing_events_are_subscribed_without_cancelling_collects(self) -> None:
         self.assertIn("issue_comment:\n    types: [created]", self.workflow)
         self.assertIn("pull_request_review:\n    types: [submitted]", self.workflow)
         self.assertNotIn("pull_request_review_comment:", self.workflow)
         self.assertNotIn("types: [created, edited]", self.workflow)
-        self.assertIn("cancel-in-progress: true", self.workflow)
-        self.assertNotIn("cancel-in-progress: false", self.workflow)
+        self.assertIn("cancel-in-progress: false", self.workflow)
+        self.assertIn("github.event_name", self.workflow.split("group:", 1)[1].split("\n", 1)[0])
+
+    def test_collect_reuses_one_comment_snapshot_and_does_not_poll(self) -> None:
+        fetch_start = self.workflow.index("async function fetchEvidence(comments)")
+        fetch_end = self.workflow.index("function controlEntries", fetch_start)
+        fetcher = self.workflow[fetch_start:fetch_end]
+        self.assertNotIn("issues.listComments", fetcher)
+        self.assertIn("const evidence = await fetchEvidence(initialComments);", self.workflow)
+        self.assertNotIn("MAX_WAIT_SEC", self.workflow)
+        self.assertNotIn("POLL_SEC", self.workflow)
+        self.assertNotIn("await sleep(", self.workflow)
 
     def test_pending_state_is_advisory_until_explicitly_enforced(self) -> None:
         self.assertIn("ENFORCE_PROVIDER_COMPLETION", self.workflow)

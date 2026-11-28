@@ -717,11 +717,11 @@
    "window": "daily",
    "reset": "00:00 UTC",
    "zone": "UTC",
-   "source": "https://developers.cloudflare.com/d1/platform/pricing/",
-   "live": "none",
+   "source": "https://developers.cloudflare.com/d1/platform/limits/",
+   "live": "Cloudflare GraphQL Analytics API: d1AnalyticsAdaptiveGroups readQueries; account Analytics Read. Exact account usage counts remain in private oversight; query counts differ from row-level quota units.",
    "planned_use": {
     "safety": 0.9,
-    "note": "fleet: Cloudflare account state NOT ESTABLISHED chat-side; entitlement documented only"
+    "note": "Account inventory verified 2026-11-23. GraphQL Analytics confirms D1 read activity; row-level quota consumption remains unmeasured."
    }
   },
   {
@@ -734,11 +734,11 @@
    "window": "daily",
    "reset": "00:00 UTC",
    "zone": "UTC",
-   "source": "https://developers.cloudflare.com/d1/platform/pricing/",
-   "live": "none",
+   "source": "https://developers.cloudflare.com/d1/platform/limits/",
+   "live": "Cloudflare GraphQL Analytics API: d1AnalyticsAdaptiveGroups writeQueries; account Analytics Read. Exact account usage counts remain in private oversight; query counts differ from row-level quota units.",
    "planned_use": {
     "safety": 0.8,
-    "note": "the binding constraint for queue/receipt designs: budget ~10 row-writes per task event (P1 spec)"
+    "note": "Account inventory verified 2026-11-23. GraphQL Analytics confirms D1 write activity; row-level quota consumption remains unmeasured."
    }
   },
   {
@@ -751,10 +751,10 @@
    "window": "point-in-time",
    "reset": "n/a",
    "zone": "UTC",
-   "source": "https://developers.cloudflare.com/d1/platform/pricing/",
-   "live": "none",
+   "source": "https://developers.cloudflare.com/d1/platform/limits/",
+   "live": "Cloudflare D1 database list API plus read-only sqlite_master query. Three databases and four application tables plus three _cf_KV system tables verified 2026-11-23; detailed file sizes remain in private oversight.",
    "planned_use": {
-    "note": "10 databases, 500 MB each on Free"
+    "note": "Account inventory verified 2026-11-23; 10 databases/account and 500 MB/database on Free. Direct sqlite_master reads confirm application tables."
    }
   },
   {
@@ -767,10 +767,10 @@
    "window": "daily",
    "reset": "daily",
    "zone": "UTC",
-   "source": "https://developers.cloudflare.com/d1/platform/pricing/",
-   "live": "none",
+   "source": "https://developers.cloudflare.com/queues/platform/pricing/",
+   "live": "GET /accounts/{account_id}/queues; connected-account inventory returned zero provisioned Queues on 2026-11-23.",
    "planned_use": {
-    "note": "figure carried from the 2026-10-19 registry stub (Platform201 report); 24h message retention on Free per the same stub"
+    "note": "Free plan includes 10,000 operations/day and 24-hour message retention. Owner review precedes activation."
    }
   },
   {
@@ -788,7 +788,7 @@
    "live": "GitHub Settings > Billing > Usage (Codespaces)",
    "planned_use": {
     "safety": 0.9,
-    "note": "= 60 h/mo on a 2-core machine; Pro plan = 180. Orgs get NO free quota. Fleet: 3 codespaces exist (census 2026-10-21); the heavy-build lane that offloads the B160V (mesh C2)"
+    "note": "Owner HOLD dated 2026-10-27 after a prior full-allocation burn. Codespaces allocation remains 0% with 100% reserve; reopen after explicit owner decision and current billing evidence."
    }
   },
   {
@@ -805,7 +805,7 @@
    "live": "GitHub Settings > Billing > Usage (Codespaces)",
    "planned_use": {
     "safety": 0.9,
-    "note": "past quota: $0.07/GB-month storage, compute from $0.18/h (2-core); no payment method on file = hard block at quota, not a bill"
+    "note": "Owner HOLD dated 2026-10-27 after a prior full-allocation burn. Codespaces allocation remains 0% with 100% reserve; reopen after explicit owner decision and current billing evidence."
    }
   },
   {
@@ -818,11 +818,11 @@
    "window": "daily",
    "reset": "00:00 UTC",
    "zone": "UTC",
-   "source": "https://developers.cloudflare.com/workers/platform/pricing/",
-   "live": "none",
+   "source": "https://developers.cloudflare.com/workers/platform/limits/",
+   "live": "Cloudflare GraphQL Analytics API: workersInvocationsAdaptive; account Analytics Read. Activity confirmed on both deployed Workers; exact request counts remain in private oversight.",
    "planned_use": {
     "safety": 0.9,
-    "note": "10 ms CPU per invocation on Free; static assets free and unmetered. The P1 pull-queue Worker budget (spec in this folder)"
+    "note": "Account inventory verified 2026-11-23. Preserve Worker request activity as the initial baseline; current-day headroom requires a recurring snapshot."
    }
   },
   {
@@ -836,10 +836,10 @@
    "reset": "calendar month",
    "zone": "UTC",
    "source": "https://developers.cloudflare.com/r2/pricing/",
-   "live": "none",
+   "live": "GET /accounts/{account_id}/r2/buckets; connected-account inventory returned activation-required on 2026-11-23.",
    "planned_use": {
     "safety": 0.9,
-    "note": "includes 1M Class A + 10M Class B operations/mo; egress free. Artifact/receipt blob lane (GitHub artifacts retain only 90 days)"
+    "note": "Free allowance includes 10 GB-month Standard storage, 1M Class A and 10M Class B operations/month, and free egress. Account activation remains owner-gated."
    }
   },
   {

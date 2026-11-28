@@ -37,6 +37,13 @@
 - The `manus-public-ui-research` repository describes a public userscript/library research lane; the inspected README gives it a separate scope from search aggregation. `redesigned-octo-rotary-phone` is a small placeholder-style repository with a README focused on placeholder-style content with search-service capability unverified.
 - Integration status: organization identity verified; service endpoint, canonical data repository, connector, account relationship, and migration state pending verification.
 
+## Scientific database map
+
+- The initial catalog contains 26 candidate sources across structural biology, sequence/annotation, molecular interactions, pathways, chemistry, enzyme kinetics, cell models/expression, literature, and structural-biology education.
+- Structural annotation candidates include RCSB PDB and PDBe-KB; interaction sources include IntAct/PSICQUIC, BioGRID, and STRING; kinetic sources include SABIO-RK, BRENDA, and Rhea; cell context includes Cellosaurus, Human Protein Atlas, and Expression Atlas.
+- API and policy gates are source-specific: BioGRID uses a registered access key; STRING recommends version-specific endpoints, caller identity, and paced requests; BRENDA's online data uses CC BY 4.0 while SOAP access requires registration; SABIO-RK exposes REST services; Cellosaurus exposes a REST API; PDBe-KB exposes REST annotations; Rhea exposes REST and SPARQL access.
+- Catalog entries remain candidates until sample retrieval, attribution, terms, rate policy, versioning, and provenance are verified.
+
 ## iJEP Studio
 
 - Live channel record: 125 videos, 28K subscribers, approximately 4.57M views at observation time 2026-11-27.

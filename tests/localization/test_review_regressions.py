@@ -109,19 +109,22 @@ class LocalizationReviewRegressionTests(unittest.TestCase):
         self.assertIn("<title>Catalog page title</title>", page)
 
     def test_urdu_review_notice_reflects_manifest_state(self):
-        with tempfile.TemporaryDirectory() as temp:
-            root = Path(temp)
-            manifest_dir = root / "localization" / "manifests"
-            manifest_dir.mkdir(parents=True)
-            (manifest_dir / "teammate-portal.json").write_text(json.dumps({
-                "translations": [{
-                    "locale": "ur",
-                    "review": {"status": "review_required"},
-                    "publication": "preview_only"
-                }]
-            }), encoding="utf-8")
-            with patch.dict(os.environ, {"POLYGLOT_REPO_ROOT": temp}):
-                notice = renderer.review_notice("ur")
+        messages = {
+            "status.review_required": "Awaiting native review",
+            "nav.language": "زبان",
+            "nav.english": "انگریزی",
+            "nav.urdu": "اردو",
+            "page.title": "اردو",
+        }
+        manifest = {
+            "translations": [{
+                "locale": "ur",
+                "review": {"status": "review_required"},
+                "publication": "preview_only",
+            }]
+        }
+        with patch.object(renderer, "load_catalog", return_value=messages), patch.object(renderer, "load_manifest", return_value=manifest):
+            notice = renderer.review_notice("ur")
         self.assertIn("review_required", notice)
         self.assertIn("preview_only", notice)
 

@@ -1,23 +1,22 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-28T09:21:12Z",
+ "generated_at": "2026-11-28T09:34:07Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 3,
-   "in_progress": 3,
+   "queued": 1,
+   "in_progress": 1,
    "oldest_queued_at": "2026-11-25T08:15:08Z",
    "by_workflow_queued": {
-    "repo gate": 2,
-    "PR scope guard": 1
+    "repo gate": 1
    }
   },
   "2": {
    "tier": 2,
    "queued": 2,
    "in_progress": 1,
-   "oldest_queued_at": "2026-11-28T09:20:43Z",
+   "oldest_queued_at": "2026-11-28T09:30:31Z",
    "by_workflow_queued": {
     "pages build and deployment": 1,
     "tribute-dashboard-deploy": 1
@@ -32,29 +31,22 @@
   },
   "4": {
    "tier": 4,
-   "queued": 14,
-   "in_progress": 12,
+   "queued": 40,
+   "in_progress": 17,
    "oldest_queued_at": "2026-11-25T08:15:08Z",
    "by_workflow_queued": {
-    "PR production ledger": 1,
-    "Context Relationship + Lead/Lag Audit": 1,
-    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
-    "Repository development evaluation": 1,
-    "Action Effectiveness Ledger": 2,
-    "DeepSeek CI \u2013 Agentic Automation": 1,
-    "CellCog review": 1,
-    "DO Statement Style": 1,
-    "Agent PR Jules Handoff": 1,
-    "Workflow Surface Policy": 1,
-    "PR evidence evaluation": 1,
+    "lane events recorder": 15,
+    "repo-tracking-collect": 1,
     "Quota Dispatch Tree": 1,
-    "termux smoke": 1
+    "Agent Throughput Evidence": 20,
+    "DO Statement Style": 1,
+    "termux smoke": 2
    }
   }
  },
  "totals": {
-  "queued": 19,
-  "in_progress": 16
+  "queued": 43,
+  "in_progress": 19
  },
  "wedged_ancient": [
   {
@@ -110,13 +102,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 6,
+   "1": 2,
    "2": 3,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 9,
-  "default_t4": 26,
+  "explicit_total": 5,
+  "default_t4": 57,
   "unmatched": 0,
   "ancient_excluded": 8,
   "operator_excluded": 1

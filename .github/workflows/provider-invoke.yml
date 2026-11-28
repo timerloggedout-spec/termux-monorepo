@@ -8,6 +8,10 @@ name: Provider invoke (inference batch)
 on:
   workflow_dispatch:
     inputs:
+      focus:
+        description: "Allocation focus slice this dispatch draws on (quota.slice join key); blank = unjoined, counted in the consumption gap"
+        required: false
+        type: string
       mode:
         description: "invoke (one completion) or catalog (count live models)"
         required: false
@@ -65,6 +69,10 @@ jobs:
       contents: read
       issues: write
     timeout-minutes: 10
+    outputs:
+      tokens_in: ${{ steps.invoke.outputs.tokens_in }}
+      tokens_out: ${{ steps.invoke.outputs.tokens_out }}
+      latency_ms: ${{ steps.invoke.outputs.latency_ms }}
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
@@ -119,6 +127,8 @@ jobs:
             --out /tmp/invoke-completion.md \
             ${{ inputs.mode == 'catalog' && '--catalog-only' || '' }} 2>&1 | tee /tmp/invoke.log
           grep -E '^(INVOKE|CATALOG)_VERDICT ' /tmp/invoke.log | tail -1 | sed -E 's/^(INVOKE|CATALOG)_VERDICT //' > /tmp/verdict.json
+          python3 -c "import json; v=json.load(open('/tmp/verdict.json')); open('/tmp/tokens.env','w').write('tokens_in=%s\ntokens_out=%s\nlatency_ms=%s\n' % ('' if v.get('tokens_in') is None else v['tokens_in'], '' if v.get('tokens_out') is None else v['tokens_out'], '' if v.get('latency_ms') is None else v['latency_ms']))"
+          cat /tmp/tokens.env >> "$GITHUB_OUTPUT"
           python3 - <<'PYEOF'
           import json
           v = json.load(open('/tmp/verdict.json'))
@@ -157,6 +167,9 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           UPSTREAM_RESULT: ${{ needs.invoke.result }}
+          TOKENS_IN: ${{ needs.invoke.outputs.tokens_in }}
+          TOKENS_OUT: ${{ needs.invoke.outputs.tokens_out }}
+          LATENCY_MS: ${{ needs.invoke.outputs.latency_ms }}
         run: |
           export TS="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           STAMP=$(python3 - <<'PYEOF'
@@ -172,11 +185,15 @@ jobs:
             "role": "builder",
             "moniker": "optimizations-assurance",
             "context": "provider-invoke mode=${{ inputs.mode }}",
+            "focus": "${{ inputs.focus }}" or None,
             "run": {"workflow": "provider-invoke.yml", "run_id": "${{ github.run_id }}", "session_id": None},
             "outcome": {"status": "completed" if os.environ.get("UPSTREAM_RESULT") == "success" else "failed",
                         "summary": "provider-invoke.yml run ${{ github.run_id }} result=" + str(os.environ.get("UPSTREAM_RESULT")),
                         "artifact": "actions run ${{ github.run_id }}", "gate_call": None, "confirmed": None},
             "quota": {"pool": "${{ inputs.provider }}", "cost_class": "free-tier", "slice": None},
+            "usage": {"tokens_in": int(os.environ["TOKENS_IN"]) if os.environ.get("TOKENS_IN") else None,
+                      "tokens_out": int(os.environ["TOKENS_OUT"]) if os.environ.get("TOKENS_OUT") else None,
+                      "latency_ms": int(os.environ["LATENCY_MS"]) if os.environ.get("LATENCY_MS") else None},
           }
           print(json.dumps(stamp))
           PYEOF

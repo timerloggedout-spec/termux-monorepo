@@ -89,3 +89,5 @@ This architecture is a proposal based on repository evidence and the user's stat
 - Product repository: `timerloggedout-spec/cell-the-living-machine` (ID `1475194740`), public, default branch `main`.
 - Shared equipment and fabrication registries are seeded as schemas with empty verified inventories.
 - Blender MCP: DCC-MCP Blender v0.2.30 pinned candidate; live workstation session and self-hosted Blender runner verification remain pending.
+
+- Engine evaluation: Godot 4.7.2 is the provisional prototype lead; Compatibility is the low-tier/web baseline, Mobile is the higher-tier mobile path, and physical-device benchmarks gate final selection.

@@ -23,23 +23,30 @@
 
 ## Research Astute
 
-- Repository: https://github.com/NDuma/ResearchAstute
-- README: description remains in progress; Biology section lists PhyloAnnotator, a Mittweida resource, and SimTK.
-- `resources_tools.md`: short Biology resource list with those three links.
-- LICENSE: contains an open licensing discussion followed by Apache License 2.0 text. The intended license and file coverage require owner confirmation before content reuse.
-- Integration status: reference discovery available; automated ingestion and reusable-content rights pending review.
+- Organization: https://github.com/Research-Astute
+- Signed-in GitHub account `timerloggedout-spec` is listed as an organization owner.
+- Existing `manus-ui-research-hub` is an integration hub for public-source Manus UI research and deterministic development lanes. Its `.gitmodules` pins `search-astute-ly/manus-public-ui-research` and `Research-Astute/manus-ui-adapter-lab`.
+- Existing `manus-ui-research-hub` and `manus-ui-adapter-lab` have a Manus UI / deterministic adapter scope. They provide an integration pattern; the molecular biology research store uses a dedicated repository.
+- New reusable science repository: https://github.com/Research-Astute/molecular-biology-research
+- Repository ID: `183701786`; visibility: private; default branch: `main`.
+- Research contracts: `RESEARCH_ASTUTE_CONTRACT.yaml`; source registry seed: 26 candidate providers; initial mechanism dossiers: sodium-potassium pump, aquaporin, ATP synthase.
+- The third-party `NDuma/ResearchAstute` repository is a separate public resource. Its license and ownership scope remain review-required; it is excluded from the canonical Research-Astute project plane.
+- Integration status: owner organization and dedicated repository verified; curated record population and adapter workflow pending.
 
 ## Search Astutely
 
 - Organization: https://github.com/search-astute-ly
+- Signed-in GitHub account `timerloggedout-spec` is listed as an organization owner.
+- The organization is a member of the `AdAstraNeoNexus` GitHub Enterprise account. Its Enterprise trial is expired and the owner dashboard shows an account-preservation/deletion warning. Account and billing details remain in private owner context; the MonoRepo records the integration state only.
+- The organization's `manus-public-ui-research` repository is scoped to public Manus UI source inventories, static assessments, license/provenance reviews, and synthetic fixtures. It serves as a research-lane example rather than a general scientific search service.
 - Candidate repositories visible through GitHub search:
   - https://github.com/search-astute-ly/termux-monorepo_enterprise
   - https://github.com/search-astute-ly/termux-monorepo_enterprise_too
   - https://github.com/search-astute-ly/redesigned-octo-rotary-phone
   - https://github.com/search-astute-ly/manus-public-ui-research
 - The two Enterprise-named repositories are accessible to the connected GitHub identity `timerloggedout-spec` with admin/push permissions in repository search results. Their inspected README surfaces describe Termux recovery and developer environment planning; a canonical search-aggregation API and result store remain unverified.
-- The connected GitHub identity is `timerloggedout-spec`; its organization and membership listing returned empty lists. Repository-level grants provide access to the `search-astute-ly` repositories.
-- The requested plugin reference `Plugin_60aea7460bd4819199fd97a9553a5e12` returned `plugin_not_found` from plugin dependency lookup. Plugin discovery for the name/capability surfaced Scite, Firecrawl, Notion, and other adjacent services; a Search Astutely connector remains unverified.
+- The GitHub UI identifies `timerloggedout-spec` as an organization owner for both `Research-Astute` and `search-astute-ly`.
+- The requested plugin reference `Plugin_60aea7460bd4819199fd97a9553a5e12` returned `plugin_not_found` from plugin dependency lookup. Plugin discovery surfaced adjacent research tools; a Search Astutely connector remains unverified.
 - `AsAstraNeoNexus` remains unverified in the connected GitHub scope. Account ownership, Enterprise trial status, migration state, and the account-header deletion notice require direct account/organization settings review by the owner.
 - The `manus-public-ui-research` repository describes a public userscript/library research lane; the inspected README gives it a separate scope from search aggregation. `redesigned-octo-rotary-phone` is a small placeholder-style repository with a README focused on placeholder-style content with search-service capability unverified.
 - Integration status: organization identity verified; service endpoint, canonical data repository, connector, account relationship, and migration state pending verification.

@@ -59,6 +59,9 @@ jobs:
         with:
           python-version: "3.12"
         timeout-minutes: 5
+      - name: Install workflow YAML parser
+        run: python -m pip install --disable-pip-version-check PyYAML==6.0.3
+        timeout-minutes: 5
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: "20"
@@ -90,6 +93,12 @@ jobs:
       - name: Validate generated catalog
         timeout-minutes: 5
         run: python3 scripts/ci/automation_docs.py --check
+      - name: Generate and validate workflow event index
+        timeout-minutes: 5
+        run: |
+          python3 scripts/ci/workflow_registry.py --write
+          python3 scripts/ci/workflow_registry.py --check
+          python3 -m unittest tests.test_workflow_registry
 
   refresh-trusted:
     if: github.event_name != 'pull_request'
@@ -107,6 +116,9 @@ jobs:
       - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
         with:
           python-version: "3.12"
+        timeout-minutes: 5
+      - name: Install workflow YAML parser
+        run: python -m pip install --disable-pip-version-check PyYAML==6.0.3
         timeout-minutes: 5
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
@@ -139,11 +151,17 @@ jobs:
       - name: Validate generated catalog + diagram assets
         timeout-minutes: 5
         run: python3 scripts/ci/automation_docs.py --check
+      - name: Generate and validate workflow event index
+        timeout-minutes: 5
+        run: |
+          python3 scripts/ci/workflow_registry.py --write
+          python3 scripts/ci/workflow_registry.py --check
+          python3 -m unittest tests.test_workflow_registry
       - name: Commit generated automation documentation + renders
         timeout-minutes: 5
         run: |
           set -euo pipefail
-          if git diff --quiet -- docs/ops/generated; then
+          if git diff --quiet -- docs/ops/generated docs/ops/WORKFLOW-EVENT-INDEX.md; then
             echo 'Automation documentation and diagram renders already current.'
             exit 0
           fi

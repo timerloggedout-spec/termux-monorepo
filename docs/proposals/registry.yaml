@@ -1418,3 +1418,25 @@ proposals:
     gates_required:
       - repo-gate
       - termux-smoke
+
+  - id: actions-architecture-evolution
+    title: "Actions architecture evolution — typed automation registry, automated updates, DoE evidence, BRR provenance, and GitHub Pages feed"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/actions-architecture-evolution/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_prs:
+      - 5776
+    related_branches:
+      - docs/actions-architecture-evolution-20261122
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke

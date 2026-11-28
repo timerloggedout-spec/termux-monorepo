@@ -103,4 +103,8 @@ refTemplates/
 - Full recursive submodule on every CI run
 - Cross-silo score aggregation that collapses attribution
 
-**Agent-Identity:** Grok (Administrator) CXO  
+**Agent-Identity:** Grok (Administrator) CXO
+
+## FCE research-template application
+
+The FCE shadow implementation explicitly consumes the metadata-only dicklesworthstone-agentic-flywheel slot for the coordination/task-graph/memory capability map, the jogyo-research-lab slot for hypothesis → experiment → finding → adversarial review, and 11_Evaluation_Quality for benchmark/quality-gate patterns. These remain reference inputs: no upstream installer, recursive clone, or new live gitlink is introduced.

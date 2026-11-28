@@ -252,3 +252,7 @@ See docs/ops/AGENT-EVALUATION-LANE-REGISTRY.md for the admission, provenance, re
 Issue #184 remains the credential SSOT by **name only**. PR #800 exposed a concrete failure mode: ECC Tools could produce analysis evidence but check publication was unavailable because the installed App lacked the required Checks permission. The repository therefore adds a manual, read-only capability probe rather than assuming that an App credential exists or that its installation permissions are current.
 
 The probe uses GitHub's official actions/create-github-app-token action with a repository configuration variable APP_CLIENT_ID and Actions secret APP_PRIVATE_KEY, then inspects the effective installation permissions. It requires Checks: write and never creates a check, comment, branch, commit, or PR. App permission changes still require the App/installation owner to approve them.
+
+## Flywheel Compounding Efficiency adapter
+
+FCE is a repository-native derived metric over the existing canonical JSONL/Action→Effect/ATES evidence spine. It does not introduce a new telemetry vendor. The scorer retains benefit/cost components and provenance; optional adapters (Hex, Phoenix, Langfuse) consume the same observation only after schema/privacy validation. The manager tournament should compare matched FCE distributions beside correctness, integration, attribution, retries, conflicts, and intervention—not rank by FCE alone.

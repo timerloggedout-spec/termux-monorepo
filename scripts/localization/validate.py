@@ -32,7 +32,7 @@ def git_blob_hash(path: Path) -> str:
 
 
 def validate_instance(instance, schema, label: str, errors: list[str]) -> None:
-    validator = jsonschema.Draft202012Validator(schema)
+    validator = jsonschema.Draft202012Validator(schema, format_checker=jsonschema.FormatChecker())
     for error in sorted(
         validator.iter_errors(instance),
         key=lambda item: tuple(str(part) for part in item.absolute_path),
@@ -155,10 +155,12 @@ def validate() -> list[str]:
             )
         if freshness["state"] == "stale" and is_fresh:
             errors.append(f"manifest: translation {locale} is marked stale while its source hash is current")
-        if translation["review"]["status"] == "approved" and not is_fresh:
-            errors.append(f"manifest: approved translation {locale} requires a current source hash")
-        if translation["publication"] in {"approved", "published"} and translation["review"]["status"] != "approved":
-            errors.append(f"manifest: translation {locale} publication requires approval")
+        approved = translation["review"]["status"] == "approved"
+        freshness_is_current = freshness["state"] == "fresh" and is_fresh
+        if approved and not freshness_is_current:
+            errors.append(f"manifest: approved translation {locale} requires a fresh state and current source hash")
+        if translation["publication"] in {"approved", "published"} and not (approved and freshness_is_current):
+            errors.append(f"manifest: translation {locale} publication requires approval and a current source hash")
 
     providers = read("localization/providers/registry.json")
     provider_ids = {provider["id"] for provider in providers["providers"]}

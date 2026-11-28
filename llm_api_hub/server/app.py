@@ -406,7 +406,21 @@ def chat_completions(request: ChatCompletionRequest, raw_request: Request) -> An
             value = getattr(request, key)
             if value is not None:
                 upstream_payload[key] = value
-        response = research_providers.complete(provider, exact_model, upstream_payload, REQUEST_TIMEOUT)
+        if provider == "puter_pool":
+            correlation = {
+                "task_or_entry_ref": raw_request.headers.get("x-task-or-entry-ref") or raw_request.headers.get("x-que-entry"),
+                "doe_run_id": raw_request.headers.get("x-doe-run-id"),
+                "workflow_run_id": raw_request.headers.get("x-workflow-run-id"),
+                "run_attempt": raw_request.headers.get("x-run-attempt"),
+                "temporal_workflow_id": raw_request.headers.get("x-temporal-workflow-id"),
+                "temporal_run_id": raw_request.headers.get("x-temporal-run-id"),
+                "request_id": raw_request.headers.get("x-request-id"),
+            }
+            response = research_providers.complete(
+                provider, exact_model, upstream_payload, REQUEST_TIMEOUT, correlation=correlation
+            )
+        else:
+            response = research_providers.complete(provider, exact_model, upstream_payload, REQUEST_TIMEOUT)
     elif "/" not in model and os.environ.get("OPENROUTER_API_KEY"):
         response = runtime.complete_upstream("openrouter", request)
     else:

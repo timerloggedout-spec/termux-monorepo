@@ -153,3 +153,17 @@ app_bot leg is transport (publisher), not authorship. Window re-score:
 547 single-leg · 52 unattributed · 0 corroborated · 0 disputed —
 details + remaining gap (per-PR token-history join) in
 `ops/telemetry/attribution-rescore-1.4.json`.
+
+
+### Puter Pool runtime stream
+
+The LLM Hub appends per-request `provider.inference.completed` EPS v1 events,
+and Temporal appends aggregate `provider.pool.observed` events for `g4f.puter`,
+to `agent_telemetry_stream.json`. Temporal also writes the current aggregate snapshot to
+`apps/tribute-dashboard/data/puter-pool-runtime.json`. The event carries
+`task_or_entry_ref`, `doe_run_id`, `workflow_run_id`, `run_attempt`,
+`temporal_workflow_id`, and `temporal_run_id` with model/request/queue
+counters. The existing agent-stream extractor normalizes the top-level
+`provider` field to `g4f-puter`; Provenance and HindSight payloads retain
+the event identity and source hash. The Tribute telemetry feed projects the
+snapshot into `data.provider_runtime`; quota readings remain unknown.

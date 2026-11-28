@@ -32,9 +32,11 @@ def test_schema_and_envelope(tmp_path):
         "apps/tribute-dashboard/data/quota-usage.json",
         "scripts/dashboards/workflow_observations.json",
         "scripts/dashboards/actions_observations.json",
+        "apps/tribute-dashboard/data/puter-pool-runtime.json",
+        "agent_telemetry_stream.json",
     }
     assert set(feed["data"]) == {"golden", "executions", "actions",
-                                 "outcomes", "quota"}
+                                 "outcomes", "quota", "provider_runtime"}
 
 
 def test_outcomes_equal_source(tmp_path):
@@ -119,3 +121,62 @@ def test_actions_block_matches_snapshot(tmp_path):
     assert "unexecuted" in a["join"]["status"]
     assert feed["data"]["golden"]["actions_runs_sampled"] == snap["totals"]["runs"]
     assert any(g.startswith("G1 partial") for g in feed["gaps"])
+
+
+def test_puter_pool_runtime_is_projected_with_task_correlation_and_unknown_quota(tmp_path):
+    feed = _collect(tmp_path)
+    runtime = json.loads((DATA / "puter-pool-runtime.json").read_text())
+    projected = feed["data"]["provider_runtime"]
+    assert projected["provider_id"] == "g4f.puter"
+    assert projected["observed_at"] == runtime["observed_at"]
+    assert projected["correlation"] == runtime["correlation"]
+    assert projected["quota"]["status"] == "unknown"
+    assert projected["quota"]["used"] is None
+    assert projected["quota"]["limit"] is None
+    assert isinstance(projected["recent_requests"], list)
+
+
+def test_recent_puter_inference_events_project_task_correlation_without_payloads(tmp_path, monkeypatch):
+    import shutil
+    from scripts.dashboards import telemetry_feed as module
+
+    for rel in (module.STATUS, module.QUOTA, module.QUOTA_USAGE,
+                module.OBSERVATIONS, module.ACTIONS_OBS, module.PROVIDER_RUNTIME):
+        source = ROOT / rel
+        target = tmp_path / rel
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source, target)
+    event = {
+        "schema_version": "eps.v1",
+        "event_type": "provider.inference.completed",
+        "occurred_at": "2026-11-23T12:00:00.123456Z",
+        "provider": "g4f/Puter",
+        "entity_id": "g4f.puter",
+        "provider_id": "g4f.puter",
+        "attributes": {
+            "request_id": "request-77",
+            "exact_model_id": "model-a",
+            "outcome": "success",
+            "latency_ms": 180,
+            "input_tokens": 12,
+            "output_tokens": 24,
+            "task_or_entry_ref": "QUE-77",
+            "doe_run_id": "DOE-77",
+            "workflow_run_id": "GHA-77",
+            "run_attempt": 1,
+            "temporal_workflow_id": "puter-pool-observability",
+            "temporal_run_id": "temporal-77",
+            "prompt": "PRIVATE PROMPT",
+            "completion": "PRIVATE COMPLETION",
+        },
+    }
+    (tmp_path / module.AGENT_STREAM).write_text(json.dumps(event) + "\n", encoding="utf-8")
+    monkeypatch.setattr(module, "ROOT", tmp_path)
+    feed = module.collect()
+    recent = feed["data"]["provider_runtime"]["recent_requests"]
+    assert recent[0]["request_id"] == "request-77"
+    assert recent[0]["task_or_entry_ref"] == "QUE-77"
+    assert recent[0]["doe_run_id"] == "DOE-77"
+    assert recent[0]["temporal_workflow_id"] == "puter-pool-observability"
+    assert "PRIVATE PROMPT" not in json.dumps(feed)
+    assert "PRIVATE COMPLETION" not in json.dumps(feed)

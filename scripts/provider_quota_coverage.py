@@ -17,7 +17,9 @@ def _providers():
     # Load registries as source-of-truth rather than freezing a provider list.
     from llm_api_hub.server import research_providers
     from scripts import provider_model_catalog
-    return sorted(set(research_providers.ENDPOINTS) | set(provider_model_catalog.ENDPOINTS))
+    aliases = {"puter_pool": "g4f/puter"}
+    providers = set(research_providers.ENDPOINTS) | set(provider_model_catalog.ENDPOINTS)
+    return sorted({aliases.get(provider, provider) for provider in providers})
 
 def build_coverage(root: Path = ROOT) -> dict[str, Any]:
     from scripts import quota_poll

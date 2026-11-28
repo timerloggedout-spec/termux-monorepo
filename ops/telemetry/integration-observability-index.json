@@ -1,6 +1,6 @@
 {
   "schema": "integration-observability-index/v1",
-  "generated_at": "2026-11-05",
+  "generated_at": "2026-11-23",
   "kind": "static_inventory_contract",
   "canonical_results_index": "ops/telemetry/results-index.json",
   "systems": [
@@ -102,6 +102,24 @@
       "role": "OpenAI-compatible and Anthropic-compatible LLM gateway",
       "observed_state": "authenticated dynamic GET /v1/models adapter and unit tests added in PR; owner reports API key provisioned; authenticated account model discovery pending workflow evidence; per-inference quota/token/usage and performance metrics are provider-logged per owner; inference not admitted",
       "authority": "official provider guide and per-key model catalogue"
+    },
+    {
+      "id": "puter-pool",
+      "domain": "provider_catalog_and_inference_transport",
+      "status": "request_and_temporal_telemetry_implemented",
+      "record_of_record": "agent_telemetry_stream.json (EPS v1) + apps/tribute-dashboard/data/puter-pool-runtime.json + ops/quota/registry.json#g4f.puter",
+      "role": "Puter Pool model catalog, local inference dispatch, per-request task/DoE telemetry, aggregate scheduler observations, and dashboard runtime projection",
+      "observed_state": "LLM Hub emits per-request provider.inference.completed events; Temporal emits aggregate provider.pool.observed events and refreshes the Tribute runtime snapshot. Local CreditTracker heuristic is excluded from quota readings; provider quota remains unknown.",
+      "authority": "Puter Pool fork API contract + provider-model-catalog/v5; no independent provider or quota ledger"
+    },
+    {
+      "id": "puter-pool",
+      "domain": "provider_datastore",
+      "status": "local_temporal_observer_implemented",
+      "record_of_record": "agent_telemetry_stream.json (EPS v1) + ops/quota/registry.json#g4f.puter",
+      "role": "Puter Pool model discovery, aggregate scheduler telemetry, task/DoE correlation and local runtime observation",
+      "observed_state": "Temporal workflow appends sanitized model/request/queue counters; local CreditTracker heuristic is excluded from quota readings; provider quota remains unknown",
+      "authority": "scripts/puter_pool_catalog.py + scripts/puter_pool_observation.py + scripts/temporal/puter_pool_observation/"
     }
   ],
   "shared_observation_contract": {

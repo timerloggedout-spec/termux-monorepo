@@ -1,9 +1,12 @@
 """Explicitly admitted native free-account inference providers."""
 from __future__ import annotations
 
+import hashlib
 import json
+import logging
 import os
 import re
+import time
 import urllib.error
 import urllib.request
 from datetime import datetime, timezone
@@ -20,6 +23,7 @@ except ImportError:
 
 SCHEMA = "research-provider-admission/v1"
 ENDPOINTS = {
+    "puter_pool": ("http://127.0.0.1:3000/v1/chat/completions", ("PUTER_POOL_API_KEY",)),
     "groq": ("https://api.groq.com/openai/v1/chat/completions", ("GROQ_API_KEY",)),
     "huggingface": ("https://router.huggingface.co/v1/chat/completions", ("HUGGINGFACE_TOKEN", "HUGGING_FACE_HUB_TOKEN", "HF_API_TOKEN", "HF_TOKEN")),
     "cerebras": ("https://api.cerebras.ai/v1/chat/completions", ("CEREBRAS_API_KEY",)),
@@ -143,8 +147,9 @@ class _NoRedirect(urllib.request.HTTPRedirectHandler):
         return None
 
 
-def post_json(url: str, payload: dict[str, Any], key: str, timeout: float, *, response_provider: str | None = None, model: str = "") -> dict[str, Any]:
-    req = urllib.request.Request(url, data=json.dumps(payload).encode(), method="POST", headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json", "Accept": "application/json"})
+def post_json(url: str, payload: dict[str, Any], key: str, timeout: float, *, response_provider: str | None = None, model: str = "", auth_header: str = "Authorization") -> dict[str, Any]:
+    auth_value = key if auth_header.lower() == "x-api-key" else f"Bearer {key}"
+    req = urllib.request.Request(url, data=json.dumps(payload).encode(), method="POST", headers={auth_header: auth_value, "Content-Type": "application/json", "Accept": "application/json"})
     opener = urllib.request.build_opener(_NoRedirect)
     try:
         with opener.open(req, timeout=timeout) as res:
@@ -182,10 +187,127 @@ def post_json(url: str, payload: dict[str, Any], key: str, timeout: float, *, re
     return value
 
 
-def complete(provider: str, model: str, payload: dict[str, Any], timeout: float) -> dict[str, Any]:
+def _safe_correlation_value(value: Any) -> str | None:
+    if not isinstance(value, str) or not re.fullmatch(r"[A-Za-z0-9_.:/@-]{1,256}", value):
+        return None
+    if value.startswith(("sk-", "ghp_", "github_pat_")):
+        return None
+    return value
+
+
+def _token_count(usage: Any, *keys: str) -> int | None:
+    if not isinstance(usage, dict):
+        return None
+    for key in keys:
+        value = usage.get(key)
+        if isinstance(value, int) and not isinstance(value, bool) and value >= 0:
+            return value
+    return None
+
+
+def _emit_puter_pool_request_event(
+    model: str,
+    correlation: Mapping[str, Any] | None,
+    outcome: str,
+    latency_ms: int,
+    request_id: str | None,
+    usage: Any = None,
+    error_code: str | None = None,
+) -> None:
+    corr = correlation if isinstance(correlation, Mapping) else {}
+    attempt = corr.get("run_attempt")
+    if isinstance(attempt, str) and attempt.isdigit():
+        attempt = int(attempt)
+    if not isinstance(attempt, int) or isinstance(attempt, bool) or attempt < 1:
+        attempt = None
+    attributes = {
+        "provider_id": "g4f.puter",
+        "provider_family": "g4f/Puter",
+        "exact_model_id": model,
+        "endpoint_or_route_id": "puter-pool-local",
+        "request_id": _safe_correlation_value(request_id),
+        "task_or_entry_ref": _safe_correlation_value(corr.get("task_or_entry_ref")),
+        "doe_run_id": _safe_correlation_value(corr.get("doe_run_id")),
+        "workflow_run_id": _safe_correlation_value(corr.get("workflow_run_id")),
+        "run_attempt": attempt,
+        "temporal_workflow_id": _safe_correlation_value(corr.get("temporal_workflow_id")),
+        "temporal_run_id": _safe_correlation_value(corr.get("temporal_run_id")),
+        "outcome": outcome,
+        "latency_ms": max(0, int(latency_ms)),
+        "input_tokens": _token_count(usage, "prompt_tokens", "input_tokens"),
+        "output_tokens": _token_count(usage, "completion_tokens", "output_tokens"),
+        "error_code": _safe_correlation_value(error_code),
+    }
+    occurred_at = datetime.now(timezone.utc).isoformat(timespec="microseconds").replace("+00:00", "Z")
+    event = {
+        "schema_version": "eps.v1",
+        "event_type": "provider.inference.completed",
+        "occurred_at": occurred_at,
+        "source": "llm-api-hub-puter-pool-dispatch",
+        "repo": "timerloggedout-spec/termux-monorepo",
+        "provider": "g4f/Puter",
+        "model_provider": "g4f/Puter",
+        "entity_type": "provider",
+        "entity_id": "g4f.puter",
+        "provider_id": "g4f.puter",
+        "status": outcome,
+        "run_id": attributes["workflow_run_id"] or attributes["temporal_workflow_id"] or attributes["task_or_entry_ref"],
+        "run_attempt": attempt,
+        "provenance": {
+            "source_repository": "timerloggedout-spec/puter-pool_fork",
+            "transport": "OpenAI-compatible local chat completions",
+        },
+        "attributes": attributes,
+    }
+    stable = json.dumps(event, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    event["event_id"] = "eps-" + hashlib.sha256(stable).hexdigest()[:32]
+    output = Path(os.environ.get(
+        "PUTER_POOL_EVENT_OUT",
+        str(Path(__file__).resolve().parents[2] / "agent_telemetry_stream.json"),
+    ))
+    try:
+        output.parent.mkdir(parents=True, exist_ok=True)
+        flags = os.O_WRONLY | os.O_CREAT | os.O_APPEND | getattr(os, "O_NOFOLLOW", 0)
+        descriptor = os.open(str(output), flags, 0o600)
+        try:
+            line = json.dumps(event, sort_keys=True, separators=(",", ":")).encode("utf-8") + b"\x0a"
+            written = os.write(descriptor, line)
+            if written != len(line):
+                raise OSError("short telemetry append")
+            os.fsync(descriptor)
+        finally:
+            os.close(descriptor)
+    except OSError as exc:
+        logging.getLogger(__name__).warning("Puter Pool telemetry append failed: %s", type(exc).__name__)
+
+
+def complete(provider: str, model: str, payload: dict[str, Any], timeout: float, *, correlation: Mapping[str, Any] | None = None) -> dict[str, Any]:
     key = authorize(provider, model)
     if not isinstance(payload, dict) or payload.get("model") != model:
         raise ProviderAdmissionError(403, "request model does not match admitted model", "provider_not_admitted")
+    if provider == "puter_pool":
+        try:
+            from llm_api_hub.server import puter_pool_protocol
+        except ImportError:
+            import puter_pool_protocol  # type: ignore
+        base_url = os.environ.get("PUTER_POOL_BASE_URL", "http://127.0.0.1:3000")
+        try:
+            url = puter_pool_protocol.chat_url(base_url)
+        except puter_pool_protocol.PuterPoolProtocolError:
+            raise ProviderAdmissionError(503, "Puter Pool endpoint must be a loopback origin", "provider_endpoint_invalid")
+        started = time.monotonic()
+        request_id = _safe_correlation_value(correlation.get("request_id")) if isinstance(correlation, Mapping) else None
+        try:
+            response = post_json(url, payload, key, timeout, auth_header="x-api-key")
+        except Exception as exc:
+            elapsed_ms = int((time.monotonic() - started) * 1000)
+            error_code = exc.code if isinstance(exc, ProviderAdmissionError) else "upstream_error"
+            _emit_puter_pool_request_event(model, correlation, "failure", elapsed_ms, request_id, error_code=error_code)
+            raise
+        elapsed_ms = int((time.monotonic() - started) * 1000)
+        request_id = request_id or _safe_correlation_value(response.get("id"))
+        _emit_puter_pool_request_event(model, correlation, "success", elapsed_ms, request_id, response.get("usage"))
+        return response
     if provider in provider_extensions.ENDPOINTS:
         if provider == "typhoon":
             try:

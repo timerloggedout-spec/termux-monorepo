@@ -11,6 +11,10 @@ Join the provider, gateway, orchestration, deployment, attestation, quota, and e
 
 The existing `ops/telemetry/results-index.json` remains the canonical four-system results projection for **ATES, 3L0, Temporal, and HindSight**. This index links to it and adds the integration/provider dimensions; it does not replace or rewrite it.
 
+## Puter Pool provider harvest
+
+The Puter Pool fork is integrated as a source-backed local transport under the existing `g4f/Puter` provider identity. `scripts/puter_pool_catalog.py` reads the documented local `GET /v1/models` endpoint, validates loopback-only origin, and emits the canonical provider-model-catalog/v5 envelope. Model visibility remains catalog evidence; entitlement, balances, quota reset, and inference success are independently measured. The canonical integration runbook is [PUTER-POOL-PROVIDER-INTEGRATION.md](PUTER-POOL-PROVIDER-INTEGRATION.md).
+
 ## System topology
 
 ```text
@@ -178,3 +182,15 @@ One dispatched/executed run = one experiment observation. A catalog/registry ent
 - `experiments/doe/util-1-provider-rotation/DESIGN.json` + `docs/ops/DOE-FAMILY.md` — live provider-rotation experiment contract.
 
 This document records an integration baseline. It does not assert that all integrations are credentialed, deployed, healthy, or approved for production traffic.
+
+
+### Puter Pool
+
+Puter Pool is registered as datastore/provider `g4f.puter`. The integration
+uses a loopback-only catalog reader and aggregate runtime observer, with
+Temporal workflow cadence and EPS task/DoE correlation. Source manifests
+capture allowlisted code paths and hashes. Runtime observations flow through
+`agent_telemetry_stream.json` into the existing Provenance/HindSight ingest
+contracts. Request counts and queue metrics are operational telemetry; quota
+remains unknown until an authoritative provider quota signal is observed.
+See [Puter Pool integration](PUTER-POOL-PROVIDER-INTEGRATION.md).

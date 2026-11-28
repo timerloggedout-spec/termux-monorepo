@@ -56,6 +56,11 @@
 </section>
 
 <section>
+  <div class="head"><h2>Puter Pool runtime</h2><span class="note" id="provider-runtime-note">Loading…</span></div>
+  <div id="provider-runtime"><p class="empty">Loading Puter Pool runtime…</p></div>
+</section>
+
+<section>
   <div class="head"><h2>Quota</h2><span class="note" id="quota-note">Loading…</span></div>
   <div id="quota"><p class="empty">Loading quota…</p></div>
 </section>
@@ -80,7 +85,7 @@ async function load(){
   try{
     const r=await fetch('./data/telemetry-feed.json',{cache:'no-store'});
     if(!r.ok)throw new Error(r.status);
-    const f=await r.json(),d=f.data||{},g=d.golden||{},ex=d.executions||{},ac=d.actions||{},oc=d.outcomes||{},q=d.quota||{};
+    const f=await r.json(),d=f.data||{},g=d.golden||{},ex=d.executions||{},ac=d.actions||{},oc=d.outcomes||{},q=d.quota||{},pr=d.provider_runtime||{};
     $('meta').textContent='Feed '+(f.schema||'')+' · generated '+(f.generated_at||'')+' · surface '+(f.surface||'');
     let sat=g.quota_saturation==null?'<span class="pill bad">NOT OBSERVED</span>':esc(g.quota_saturation);
     $('golden').innerHTML=
@@ -138,6 +143,29 @@ async function load(){
     const ap=(q.usage_pack||{}).api_core||{};
     if(ap.title){qh+='<p class="muted">'+esc(ap.title)+' · limit '+num(ap.limit)+' '+esc(ap.unit)+' · replenishment '+esc(ap.replenishment)+' · next reset observed '+esc(ap.next_reset_observed)+' — full burn-down on <a href="./quota-usage.html">Quota Usage</a>.</p>'}
     $('quota').innerHTML=qh;
+    $('provider-runtime-note').textContent='Provider '+(pr.provider_id||'g4f.puter')+' · observed '+(pr.observed_at||'not yet observed')+' · readiness '+(pr.readiness||'unknown');
+    let ph='<div class="grid grid-3">'+
+      card('Provider',esc(pr.provider||'g4f/Puter'),'registry identity g4f.puter')+
+      card('Readiness',esc(pr.readiness||'unknown'),'local pool readiness')+
+      card('Models',num(pr.model_count),'catalog-visible model count')+
+      card('Requests',num((pr.counters||{}).totalRequests),'aggregate pool requests')+
+      card('Succeeded',num((pr.counters||{}).successfulRequests),'aggregate successful requests')+
+      card('Failed',num((pr.counters||{}).failedRequests),'aggregate failed requests')+
+      card('Queued',num((pr.counters||{}).queuedRequests),'current queue depth')+
+      card('Active',num((pr.counters||{}).activeRequests),'current active requests')+
+      card('Average latency ms',num((pr.counters||{}).averageLatency),'local pool observation')+'</div>';
+    ph+='<h3>Task and DoE correlation</h3>'+kvTable(pr.correlation);
+    ph+='<h3>Provider quota</h3>'+kvTable({status:(pr.quota||{}).status,used:(pr.quota||{}).used,limit:(pr.quota||{}).limit,remaining:(pr.quota||{}).remaining,reset:(pr.quota||{}).reset});
+    ph+='<h3>Recent inference dispatches</h3>';
+    const recent=pr.recent_requests||[];
+    ph+=recent.length?recent.map(r=>'<details><summary>'+esc(r.exact_model_id||'model unknown')+' · '+esc(r.outcome||'unknown')+' · '+esc(r.task_or_entry_ref||'unlinked')+'</summary>'+kvTable({
+      request_id:r.request_id,doe_run_id:r.doe_run_id,workflow_run_id:r.workflow_run_id,
+      run_attempt:r.run_attempt,temporal_workflow_id:r.temporal_workflow_id,
+      temporal_run_id:r.temporal_run_id,latency_ms:r.latency_ms,
+      input_tokens:r.input_tokens,output_tokens:r.output_tokens
+    })+'</details>').join(''):'<p class="empty">No Puter Pool inference events observed yet.</p>';
+    ph+='<p class="muted">Local scheduler counters are operational telemetry. Provider-authoritative quota remains unknown until a provider quota signal is observed.</p>';
+    $('provider-runtime').innerHTML=ph;
     let gh='';
     for(const gap of (f.gaps||[])){gh+='<p>'+esc(gap)+'</p>'}
     gh+='<h3>Honesty rules</h3><ul>';for(const rule of (f.honesty_rules||[])){gh+='<li>'+esc(rule)+'</li>'}gh+='</ul>';
@@ -149,6 +177,7 @@ async function load(){
     $('actions').innerHTML='<p class="empty">Feed unavailable.</p>';
     $('outcomes').innerHTML='<p class="empty">Feed unavailable.</p>';
     $('quota').innerHTML='<p class="empty">Feed unavailable.</p>';
+    $('provider-runtime').innerHTML='<p class="empty">Feed unavailable.</p>';
     $('gaps').innerHTML='<p class="empty">Feed unavailable.</p>';
   }
 }

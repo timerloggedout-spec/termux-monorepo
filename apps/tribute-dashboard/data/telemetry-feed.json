@@ -22,6 +22,14 @@
   {
    "path": "scripts/dashboards/actions_observations.json",
    "stamped_at": "2026-10-30T07:47:29Z"
+  },
+  {
+   "path": "apps/tribute-dashboard/data/puter-pool-runtime.json",
+   "stamped_at": null
+  },
+  {
+   "path": "agent_telemetry_stream.json",
+   "stamped_at": null
   }
  ],
  "honesty_rules": [
@@ -198,15 +206,15 @@
      },
      "concluded": 12,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 12,
       "sample_rate_per_hour": 7.3381,
       "duration_s": {
        "n": 12,
-       "median": 1.0,
-       "p95": 201.0,
+       "median": 1,
+       "p95": 201,
        "mean": 30.92
       }
      },
@@ -232,16 +240,16 @@
      },
      "concluded": 2,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 2,
       "sample_rate_per_hour": 1.223,
       "duration_s": {
        "n": 2,
-       "median": 66.0,
-       "p95": 66.0,
-       "mean": 55.0
+       "median": 66,
+       "p95": 66,
+       "mean": 55
       }
      },
      "latest": {
@@ -268,16 +276,16 @@
      },
      "concluded": 7,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 9,
       "sample_rate_per_hour": 5.5036,
       "duration_s": {
        "n": 7,
-       "median": 11.0,
-       "p95": 91.0,
-       "mean": 30.0
+       "median": 11,
+       "p95": 91,
+       "mean": 30
       }
      },
      "latest": {
@@ -302,16 +310,16 @@
      },
      "concluded": 7,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 8,
       "sample_rate_per_hour": 4.8921,
       "duration_s": {
        "n": 7,
-       "median": 1.0,
-       "p95": 1.0,
-       "mean": 1.0
+       "median": 1,
+       "p95": 1,
+       "mean": 1
       }
      },
      "latest": {
@@ -338,15 +346,15 @@
      },
      "concluded": 9,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 10,
       "sample_rate_per_hour": 6.1151,
       "duration_s": {
        "n": 9,
-       "median": 2.0,
-       "p95": 8.0,
+       "median": 2,
+       "p95": 8,
        "mean": 3.44
       }
      },
@@ -362,7 +370,7 @@
      }
     },
     ".github/workflows/agent-review-auto-jules.yml": {
-     "name": "Agent review \u2192 auto Jules",
+     "name": "Agent review → auto Jules",
      "runs": 10,
      "conclusions": {
       "skipped": 8,
@@ -373,15 +381,15 @@
      },
      "concluded": 9,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 10,
       "sample_rate_per_hour": 6.1151,
       "duration_s": {
        "n": 9,
-       "median": 2.0,
-       "p95": 26.0,
+       "median": 2,
+       "p95": 26,
        "mean": 4.89
       }
      },
@@ -407,15 +415,15 @@
      },
      "concluded": 19,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 20,
       "sample_rate_per_hour": 12.2302,
       "duration_s": {
        "n": 19,
-       "median": 1.0,
-       "p95": 11.0,
+       "median": 1,
+       "p95": 11,
        "mean": 3.21
       }
      },
@@ -431,7 +439,7 @@
      }
     },
     ".github/workflows/audit-cycle.yml": {
-     "name": "Audit Cycle \u2014 Single PR Feed-Forward",
+     "name": "Audit Cycle — Single PR Feed-Forward",
      "runs": 11,
      "conclusions": {
       "cancelled": 6,
@@ -443,15 +451,15 @@
      },
      "concluded": 9,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 11,
       "sample_rate_per_hour": 6.7266,
       "duration_s": {
        "n": 9,
-       "median": 4.0,
-       "p95": 71.0,
+       "median": 4,
+       "p95": 71,
        "mean": 19.44
       }
      },
@@ -477,16 +485,16 @@
      },
      "concluded": 1,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 1,
       "sample_rate_per_hour": 0.6115,
       "duration_s": {
        "n": 1,
-       "median": 88.0,
-       "p95": 88.0,
-       "mean": 88.0
+       "median": 88,
+       "p95": 88,
+       "mean": 88
       }
      },
      "latest": {
@@ -514,15 +522,15 @@
      },
      "concluded": 10,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 11,
       "sample_rate_per_hour": 6.7266,
       "duration_s": {
        "n": 10,
-       "median": 2.0,
-       "p95": 43.0,
+       "median": 2,
+       "p95": 43,
        "mean": 5.9
       }
      },
@@ -551,15 +559,15 @@
      },
      "concluded": 10,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 14,
       "sample_rate_per_hour": 8.5611,
       "duration_s": {
        "n": 10,
-       "median": 4.0,
-       "p95": 172.0,
+       "median": 4,
+       "p95": 172,
        "mean": 23.8
       }
      },
@@ -575,7 +583,7 @@
      }
     },
     ".github/workflows/deepseek-ci.yml": {
-     "name": "DeepSeek CI \u2013 Agentic Automation",
+     "name": "DeepSeek CI – Agentic Automation",
      "runs": 10,
      "conclusions": {
       "skipped": 9,
@@ -587,15 +595,15 @@
      },
      "concluded": 10,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 10,
       "sample_rate_per_hour": 6.1151,
       "duration_s": {
        "n": 10,
-       "median": 1.0,
-       "p95": 43.0,
+       "median": 1,
+       "p95": 43,
        "mean": 7.8
       }
      },
@@ -621,15 +629,15 @@
      },
      "concluded": 10,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 10,
       "sample_rate_per_hour": 6.1151,
       "duration_s": {
        "n": 10,
-       "median": 1.0,
-       "p95": 8.0,
+       "median": 1,
+       "p95": 8,
        "mean": 2.4
       }
      },
@@ -655,15 +663,15 @@
      },
      "concluded": 7,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 8,
       "sample_rate_per_hour": 4.8921,
       "duration_s": {
        "n": 7,
-       "median": 1.0,
-       "p95": 10.0,
+       "median": 1,
+       "p95": 10,
        "mean": 2.43
       }
      },
@@ -689,15 +697,15 @@
      },
      "concluded": 7,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 8,
       "sample_rate_per_hour": 4.8921,
       "duration_s": {
        "n": 7,
-       "median": 1.0,
-       "p95": 2.0,
+       "median": 1,
+       "p95": 2,
        "mean": 1.29
       }
      },
@@ -724,16 +732,16 @@
      },
      "concluded": 2,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 3,
       "sample_rate_per_hour": 1.8345,
       "duration_s": {
        "n": 2,
-       "median": 32.0,
-       "p95": 32.0,
-       "mean": 23.0
+       "median": 32,
+       "p95": 32,
+       "mean": 23
       }
      },
      "latest": {
@@ -758,15 +766,15 @@
      },
      "concluded": 3,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 3,
       "sample_rate_per_hour": 1.8345,
       "duration_s": {
        "n": 3,
-       "median": 20.0,
-       "p95": 28.0,
+       "median": 20,
+       "p95": 28,
        "mean": 22.67
       }
      },
@@ -792,16 +800,16 @@
      },
      "concluded": 3,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 3,
       "sample_rate_per_hour": 1.8345,
       "duration_s": {
        "n": 3,
-       "median": 1.0,
-       "p95": 1.0,
-       "mean": 1.0
+       "median": 1,
+       "p95": 1,
+       "mean": 1
       }
      },
      "latest": {
@@ -826,15 +834,15 @@
      },
      "concluded": 4,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 4,
       "sample_rate_per_hour": 2.446,
       "duration_s": {
        "n": 4,
-       "median": 2.0,
-       "p95": 11.0,
+       "median": 2,
+       "p95": 11,
        "mean": 3.75
       }
      },
@@ -882,7 +890,7 @@
      }
     },
     ".github/workflows/gemini-dispatch.yml": {
-     "name": "\ud83d\udd00 Gemini Dispatch (free-tier agentic)",
+     "name": "🔀 Gemini Dispatch (free-tier agentic)",
      "runs": 8,
      "conclusions": {
       "skipped": 8
@@ -892,16 +900,16 @@
      },
      "concluded": 8,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 8,
       "sample_rate_per_hour": 4.8921,
       "duration_s": {
        "n": 8,
-       "median": 2.0,
-       "p95": 8.0,
-       "mean": 3.0
+       "median": 2,
+       "p95": 8,
+       "mean": 3
       }
      },
      "latest": {
@@ -926,16 +934,16 @@
      },
      "concluded": 1,
      "failures": 1,
-     "failure_rate": 1.0,
+     "failure_rate": 1,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 1,
       "sample_rate_per_hour": 0.6115,
       "duration_s": {
        "n": 1,
-       "median": 32.0,
-       "p95": 32.0,
-       "mean": 32.0
+       "median": 32,
+       "p95": 32,
+       "mean": 32
       }
      },
      "latest": {
@@ -960,15 +968,15 @@
      },
      "concluded": 3,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 4,
       "sample_rate_per_hour": 2.446,
       "duration_s": {
        "n": 3,
-       "median": 1.0,
-       "p95": 9.0,
+       "median": 1,
+       "p95": 9,
        "mean": 3.67
       }
      },
@@ -984,7 +992,7 @@
      }
     },
     ".github/workflows/issue-comment-router.yml": {
-     "name": "Issue Comment Router \u2014 modular fan-out reduction",
+     "name": "Issue Comment Router — modular fan-out reduction",
      "runs": 8,
      "conclusions": {
       "success": 2,
@@ -995,15 +1003,15 @@
      },
      "concluded": 7,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 8,
       "sample_rate_per_hour": 4.8921,
       "duration_s": {
        "n": 7,
-       "median": 11.0,
-       "p95": 69.0,
+       "median": 11,
+       "p95": 69,
        "mean": 17.29
       }
      },
@@ -1030,15 +1038,15 @@
      },
      "concluded": 6,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 7,
       "sample_rate_per_hour": 4.2806,
       "duration_s": {
        "n": 6,
-       "median": 1.0,
-       "p95": 89.0,
+       "median": 1,
+       "p95": 89,
        "mean": 15.83
       }
      },
@@ -1064,16 +1072,16 @@
      },
      "concluded": 3,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 3,
       "sample_rate_per_hour": 1.8345,
       "duration_s": {
        "n": 3,
-       "median": 1.0,
-       "p95": 1.0,
-       "mean": 1.0
+       "median": 1,
+       "p95": 1,
+       "mean": 1
       }
      },
      "latest": {
@@ -1100,15 +1108,15 @@
      },
      "concluded": 3,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 4,
       "sample_rate_per_hour": 2.446,
       "duration_s": {
        "n": 3,
-       "median": 10.0,
-       "p95": 89.0,
+       "median": 10,
+       "p95": 89,
        "mean": 33.33
       }
      },
@@ -1134,16 +1142,16 @@
      },
      "concluded": 2,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 2,
       "sample_rate_per_hour": 1.223,
       "duration_s": {
        "n": 2,
-       "median": 38.0,
-       "p95": 38.0,
-       "mean": 36.0
+       "median": 38,
+       "p95": 38,
+       "mean": 36
       }
      },
      "latest": {
@@ -1168,15 +1176,15 @@
      },
      "concluded": 9,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 9,
       "sample_rate_per_hour": 5.5036,
       "duration_s": {
        "n": 9,
-       "median": 1.0,
-       "p95": 11.0,
+       "median": 1,
+       "p95": 11,
        "mean": 2.33
       }
      },
@@ -1202,15 +1210,15 @@
      },
      "concluded": 8,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 9,
       "sample_rate_per_hour": 5.5036,
       "duration_s": {
        "n": 8,
-       "median": 1.0,
-       "p95": 11.0,
+       "median": 1,
+       "p95": 11,
        "mean": 2.38
       }
      },
@@ -1236,15 +1244,15 @@
      },
      "concluded": 9,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 9,
       "sample_rate_per_hour": 5.5036,
       "duration_s": {
        "n": 9,
-       "median": 1.0,
-       "p95": 11.0,
+       "median": 1,
+       "p95": 11,
        "mean": 3.22
       }
      },
@@ -1274,15 +1282,15 @@
      },
      "concluded": 11,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 12,
       "sample_rate_per_hour": 7.3381,
       "duration_s": {
        "n": 11,
-       "median": 1.0,
-       "p95": 118.0,
+       "median": 1,
+       "p95": 118,
        "mean": 30.45
       }
      },
@@ -1308,15 +1316,15 @@
      },
      "concluded": 8,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 9,
       "sample_rate_per_hour": 5.5036,
       "duration_s": {
        "n": 8,
-       "median": 1.0,
-       "p95": 11.0,
+       "median": 1,
+       "p95": 11,
        "mean": 2.38
       }
      },
@@ -1344,16 +1352,16 @@
      },
      "concluded": 2,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 2,
       "sample_rate_per_hour": 1.223,
       "duration_s": {
        "n": 2,
-       "median": 29.0,
-       "p95": 29.0,
-       "mean": 18.0
+       "median": 29,
+       "p95": 29,
+       "mean": 18
       }
      },
      "latest": {
@@ -1382,15 +1390,15 @@
      },
      "concluded": 10,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 11,
       "sample_rate_per_hour": 6.7266,
       "duration_s": {
        "n": 10,
-       "median": 2.0,
-       "p95": 28.0,
+       "median": 2,
+       "p95": 28,
        "mean": 5.2
       }
      },
@@ -1418,15 +1426,15 @@
      },
      "concluded": 9,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 10,
       "sample_rate_per_hour": 6.1151,
       "duration_s": {
        "n": 9,
-       "median": 9.0,
-       "p95": 60.0,
+       "median": 9,
+       "p95": 60,
        "mean": 22.22
       }
      },
@@ -1453,15 +1461,15 @@
      },
      "concluded": 2,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 2,
       "sample_rate_per_hour": 1.223,
       "duration_s": {
        "n": 2,
-       "median": 109.0,
-       "p95": 109.0,
+       "median": 109,
+       "p95": 109,
        "mean": 101.5
       }
      },
@@ -1487,16 +1495,16 @@
      },
      "concluded": 1,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 1,
       "sample_rate_per_hour": 0.6115,
       "duration_s": {
        "n": 1,
-       "median": 7.0,
-       "p95": 7.0,
-       "mean": 7.0
+       "median": 7,
+       "p95": 7,
+       "mean": 7
       }
      },
      "latest": {
@@ -1521,16 +1529,16 @@
      },
      "concluded": 2,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 2,
       "sample_rate_per_hour": 1.223,
       "duration_s": {
        "n": 2,
-       "median": 171.0,
-       "p95": 171.0,
-       "mean": 101.0
+       "median": 171,
+       "p95": 171,
+       "mean": 101
       }
      },
      "latest": {
@@ -1555,16 +1563,16 @@
      },
      "concluded": 1,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 1,
       "sample_rate_per_hour": 0.6115,
       "duration_s": {
        "n": 1,
-       "median": 55.0,
-       "p95": 55.0,
-       "mean": 55.0
+       "median": 55,
+       "p95": 55,
+       "mean": 55
       }
      },
      "latest": {
@@ -1589,15 +1597,15 @@
      },
      "concluded": 9,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 9,
       "sample_rate_per_hour": 5.5036,
       "duration_s": {
        "n": 9,
-       "median": 1.0,
-       "p95": 2.0,
+       "median": 1,
+       "p95": 2,
        "mean": 1.11
       }
      },
@@ -1623,15 +1631,15 @@
      },
      "concluded": 2,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 4,
       "sample_rate_per_hour": 2.446,
       "duration_s": {
        "n": 2,
-       "median": 26.0,
-       "p95": 26.0,
+       "median": 26,
+       "p95": 26,
        "mean": 17.5
       }
      },
@@ -1661,15 +1669,15 @@
      },
      "concluded": 12,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 13,
       "sample_rate_per_hour": 7.9496,
       "duration_s": {
        "n": 12,
-       "median": 1.0,
-       "p95": 36.0,
+       "median": 1,
+       "p95": 36,
        "mean": 6.75
       }
      },
@@ -1695,16 +1703,16 @@
      },
      "concluded": 1,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 1,
       "sample_rate_per_hour": 0.6115,
       "duration_s": {
        "n": 1,
-       "median": 17.0,
-       "p95": 17.0,
-       "mean": 17.0
+       "median": 17,
+       "p95": 17,
+       "mean": 17
       }
      },
      "latest": {
@@ -1729,16 +1737,16 @@
      },
      "concluded": 1,
      "failures": 0,
-     "failure_rate": 0.0,
+     "failure_rate": 0,
      "duration_excluded": 0,
      "red": {
       "rate_runs_sampled": 1,
       "sample_rate_per_hour": 0.6115,
       "duration_s": {
        "n": 1,
-       "median": 44.0,
-       "p95": 44.0,
-       "mean": 44.0
+       "median": 44,
+       "p95": 44,
+       "mean": 44
       }
      },
      "latest": {
@@ -1756,7 +1764,7 @@
    "join": {
     "key": "run_id",
     "s1_source": "Neon lane_events (append-only; run_id + run_attempt + subject)",
-    "status": "join key defined and carried per workflow as latest.id; the join itself is unexecuted \u2014 lane_events is not page-readable and no committed lane-events projection exists (G3)."
+    "status": "join key defined and carried per workflow as latest.id; the join itself is unexecuted — lane_events is not page-readable and no committed lane-events projection exists (G3)."
    }
   },
   "outcomes": {
@@ -1806,7 +1814,7 @@
    "usage_pack": {
     "generated_at": "2026-11-02T08:20:44Z",
     "api_core": {
-     "title": "GitHub API core \u2014 shared PAT bucket",
+     "title": "GitHub API core — shared PAT bucket",
      "limit": 5000,
      "unit": "requests/hour",
      "replenishment": "rolling hourly",
@@ -1834,26 +1842,26 @@
        "at": "2026-10-29T05:50:14Z",
        "remaining": 0,
        "kind": "wall",
-       "provenance": "cadence lane timeline 2026-10-29 (rate-limit record PR #2321/#2322) \u2014 core 403 blocked a pat_publish first call"
+       "provenance": "cadence lane timeline 2026-10-29 (rate-limit record PR #2321/#2322) — core 403 blocked a pat_publish first call"
       },
       {
        "at": "2026-10-29T11:41:45Z",
        "remaining": 0,
        "kind": "wall",
-       "provenance": "rate-limit lane incident record (PR #2321/#2322, via fleet memory) \u2014 incident 2: full 5000-call window burned in ~25 min (11:41:45Z\u2013~12:06Z)"
+       "provenance": "rate-limit lane incident record (PR #2321/#2322, via fleet memory) — incident 2: full 5000-call window burned in ~25 min (11:41:45Z–~12:06Z)"
       },
       {
        "at": "2026-10-29T21:39:53Z",
        "remaining": 0,
        "kind": "wall",
-       "provenance": "cadence lane timeline 2026-10-29 \u2014 ECC ack run annotation: 'API rate limit exceeded for user ID 233432881'"
+       "provenance": "cadence lane timeline 2026-10-29 — ECC ack run annotation: 'API rate limit exceeded for user ID 233432881'"
       },
       {
        "at": "2026-10-30T01:32:00Z",
        "remaining": 0,
        "kind": "wall",
        "provenance": "quota-specialist pack 2026-10-29 (~18:32 PT)",
-       "note": "prior window exhausted; post-fix recurrence in shape, not in mechanism TBD \u2014 burn shape resolved by convergence correction: sustained ramp (see event-burn-shape)"
+       "note": "prior window exhausted; post-fix recurrence in shape, not in mechanism TBD — burn shape resolved by convergence correction: sustained ramp (see event-burn-shape)"
       },
       {
        "at": "2026-10-30T01:36:00Z",
@@ -1865,19 +1873,19 @@
        "at": "2026-10-30T01:43:00Z",
        "remaining": 4999,
        "kind": "observed",
-       "provenance": "viz pat_publish preflight read (uncounted /rate_limit) \u2014 new window just opened, used 1"
+       "provenance": "viz pat_publish preflight read (uncounted /rate_limit) — new window just opened, used 1"
       },
       {
        "at": "2026-10-30T01:45:00Z",
        "remaining": 4645,
        "kind": "reported",
-       "provenance": "convergence lane via quota-specialist (verified from reset epochs) \u2014 new window, used 355"
+       "provenance": "convergence lane via quota-specialist (verified from reset epochs) — new window, used 355"
       },
       {
        "at": "2026-10-30T01:54:00Z",
        "remaining": 3230,
        "kind": "reported",
-       "provenance": "convergence lane via quota-specialist (verified from reset epochs) \u2014 used 1770, reset 02:42:19Z"
+       "provenance": "convergence lane via quota-specialist (verified from reset epochs) — used 1770, reset 02:42:19Z"
       },
       {
        "at": "2026-11-02T06:30:06Z",
@@ -1894,8 +1902,8 @@
      }
     },
     "actions_corpus": {
-     "title": "Actions run volume \u2014 reconstructed corpus (daily increments)",
-     "method": "Delta of run_count/total_jobs between consecutive daily docs/ops/generated/actions-performance-reconstructed-*.json files (cumulative, label locally_reconstructed, source_count == run_count). minutes_est = jobs_delta \u00d7 that day's avg_job_duration_ms / 60000 \u2014 an estimate. Corpus grows ~40 runs/day by reconstruction sampling: increments are corpus growth, NOT total fleet Actions volume.",
+     "title": "Actions run volume — reconstructed corpus (daily increments)",
+     "method": "Delta of run_count/total_jobs between consecutive daily docs/ops/generated/actions-performance-reconstructed-*.json files (cumulative, label locally_reconstructed, source_count == run_count). minutes_est = jobs_delta × that day's avg_job_duration_ms / 60000 — an estimate. Corpus grows ~40 runs/day by reconstruction sampling: increments are corpus growth, NOT total fleet Actions volume.",
      "days": [
       {
        "date": "2026-08-25",
@@ -2127,8 +2135,8 @@
       "workflow": "delphi-gate",
       "fires": "delphi-rfp-feed-collect",
       "provenance": "quota-specialist pack 2026-10-29 + cadence lane timeline 2026-10-29 (rate-limit record PR #2321/#2322, burst-fix record PR #2341, history-verified per cadence lane)",
-      "outcome": "burst-fix PR #2341 (merged 97938a583f50): retry \u00d74 (Retry-After / X-RateLimit-Reset, 120s cap) in both collectors + 15-min freshness gate on delphi-rfp-feed-collect workflow_run (loop breaker); 3 workflows re-enabled with green proof each",
-      "detail": "Each collect ran ~30\u201380 calls on the installation token (1000/hr bucket); mid-storm the reviewer map crossed 24h staleness, so every orchestrator completion launched a ~750-call reviewer-metrics collect on the OPERATOR (PAT user) token \u2014 the PAT-bucket burn mechanism."
+      "outcome": "burst-fix PR #2341 (merged 97938a583f50): retry ×4 (Retry-After / X-RateLimit-Reset, 120s cap) in both collectors + 15-min freshness gate on delphi-rfp-feed-collect workflow_run (loop breaker); 3 workflows re-enabled with green proof each",
+      "detail": "Each collect ran ~30–80 calls on the installation token (1000/hr bucket); mid-storm the reviewer map crossed 24h staleness, so every orchestrator completion launched a ~750-call reviewer-metrics collect on the OPERATOR (PAT user) token — the PAT-bucket burn mechanism."
      }
     },
     "annotations_count": 8,
@@ -2145,7 +2153,7 @@
       "name": "github.api.github_token (installation, per-repo)",
       "limit": 1000,
       "unit": "req/hr",
-      "note": "delphi-rfp-feed-collect runs spend here, ~30\u201380 calls each; 1000/hr per repo",
+      "note": "delphi-rfp-feed-collect runs spend here, ~30–80 calls each; 1000/hr per repo",
       "provenance": "cadence lane timeline 2026-10-29"
      },
      {
@@ -2159,16 +2167,59 @@
       "name": "vercel.deployments",
       "limit": 100,
       "unit": "deployments/day",
-      "note": "rolling 24h daily cap \u2014 separate from the API buckets; see state timeline",
+      "note": "rolling 24h daily cap — separate from the API buckets; see state timeline",
       "provenance": "quota registry / cadence lane graph note"
      }
     ]
    }
+  },
+  "provider_runtime": {
+   "provider_id": "g4f.puter",
+   "provider": "g4f/Puter",
+   "source_repository": "timerloggedout-spec/puter-pool_fork",
+   "observed_at": null,
+   "health": "unknown",
+   "readiness": "unknown",
+   "strategy": null,
+   "model_count": null,
+   "model_ids": [],
+   "counters": {
+    "totalAccounts": null,
+    "activeAccounts": null,
+    "disabledAccounts": null,
+    "exhaustedAccounts": null,
+    "errorAccounts": null,
+    "totalRequests": null,
+    "successfulRequests": null,
+    "failedRequests": null,
+    "queuedRequests": null,
+    "activeRequests": null,
+    "averageLatency": null,
+    "uptime": null
+   },
+   "quota": {
+    "status": "unknown",
+    "used": null,
+    "limit": null,
+    "remaining": null,
+    "reset": null,
+    "reason": "Provider-authoritative quota has not been observed."
+   },
+   "correlation": {
+    "task_or_entry_ref": null,
+    "doe_run_id": null,
+    "workflow_run_id": null,
+    "run_attempt": null,
+    "temporal_workflow_id": null,
+    "temporal_run_id": null
+   },
+   "recent_requests": []
   }
  },
  "gaps": [
+  "Puter Pool per-request inference events not yet observed in agent_telemetry_stream.json.",
   "G3: executions are proxied from the checked-in observations snapshot (read_at 2026-10-27T12:29:50Z, 5 workflows) plus status.json lane receipts; the Neon lane_events table is not page-readable. The consolidated Actions corpus lives in the actions block (Slice 2, G1 partial).",
-  "G1 partial: the Actions corpus is a budgeted stride-sample snapshot (read_at 2026-10-30T07:47:29Z, 300 runs sampled, pages [1, 50, 100]); it is not the full run history \u2014 that remains the locally reconstructed daily corpus (quota usage_pack.actions_corpus).",
+  "G1 partial: the Actions corpus is a budgeted stride-sample snapshot (read_at 2026-10-30T07:47:29Z, 300 runs sampled, pages [1, 50, 100]); it is not the full run history — that remains the locally reconstructed daily corpus (quota usage_pack.actions_corpus).",
   "quota saturation NOT OBSERVED: 0 of 170 readings carry both used and limit; saturation renders as absent, never 0."
  ]
 }

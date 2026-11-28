@@ -52,23 +52,23 @@ audience_segments:
 opportunity_classes:
   - id: game_jams_and_hackathons
     registry_source: ops/challenge/coordinator.json
-    fit_facets: [simulation, systems_strategy, exploration, puzzle, educational, sandbox]
+    fit_facets: [strategy_4x, action_arcade, simulation_builder, puzzle_educational, multiplayer, accessibility, exploration, engineering, factory_automation, sandbox, creator, digital_twin]
     deliverables: [playable_prototype, vertical_slice, demo, pitch, source_evidence_pack]
   - id: science_education_challenges
     registry_source: external_verified_opportunity
-    fit_facets: [educational, exploration, research]
+    fit_facets: [puzzle_educational, exploration, research_lab, simulation_builder]
     deliverables: [lesson_scenarios, assessment, learning_outcomes, educator_guide]
   - id: scientific_visualization_challenges
     registry_source: external_verified_opportunity
-    fit_facets: [structural, quantitative, simulation]
+    fit_facets: [structural, quantitative, simulation_builder, engineering]
     deliverables: [molecular_viewer, structure_importer, source_linked_visualization]
   - id: research_data_challenges
     registry_source: external_verified_opportunity
-    fit_facets: [research, simulation]
+    fit_facets: [research_lab, simulation_builder, engineering]
     deliverables: [data_adapter, curated_dataset, provenance_pipeline, reproducible_analysis]
   - id: ai_and_ml_challenges
     registry_source: ops/challenge/coordinator.json
-    fit_facets: [game_ml_research, simulation, adaptive_scenarios]
+    fit_facets: [game_ml_research, simulation_builder, adaptive_scenarios, multiplayer]
     deliverables: [research_assistant, model_evaluation, simulation_augmentation]
   - id: accessibility_challenges
     registry_source: external_verified_opportunity

@@ -1,6 +1,11 @@
 schema: fabrication-provider-registry/v1
 status: schema_seeded_provider_discovery_pending
 providers: []
+candidate_map: ops/fabrication/provider-candidates.yaml
+service_category_map: ops/fabrication/service-category-map.yaml
+candidate_provider_count: 4
+historical_reference_count: 1
+verified_provider_count: 0
 service_categories:
   - 3d_printing
   - cnc_machining

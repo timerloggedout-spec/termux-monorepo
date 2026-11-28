@@ -73,7 +73,7 @@ architecture:
 game:
   project_kind: new_game
   dimensions: [3d, mixed]
-  genre_facets: [simulation, systems_strategy, exploration, puzzle, educational, rpg_progression, engineering, factory_automation, sandbox, creator, digital_twin, manufacturing]
+  genre_facets: [strategy_4x, action_arcade, simulation_builder, puzzle_educational, multiplayer, accessibility, exploration, engineering, factory_automation, creator, digital_twin, manufacturing, research_lab, production_marketplace]
   session_model: shared_player_identity_across_modes_and_game_types
   time_model: simulation_with_scenario_challenges
   scales: [molecular, membrane, organelle, cellular, tissue, organism]
@@ -98,6 +98,8 @@ engineering_platform:
   equipment_reservation_schema: ops/equipment/reservation.schema.json
   fabrication_provider_registry: ops/fabrication/registry.yaml
   fabrication_provider_schema: ops/fabrication/provider.schema.json
+  fabrication_provider_candidates: ops/fabrication/provider-candidates.yaml
+  service_category_map: ops/fabrication/service-category-map.yaml
   concept_to_production: [discover, define, design, simulate, review, prototype, fabricate, inspect, iterate, publish]
   internal_equipment_registry: shared_across_projects_and_grants
   external_services: provider_directory_with_user_approval

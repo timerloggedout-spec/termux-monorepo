@@ -1,0 +1,29 @@
+schema: lab-and-fabrication-service-category-map/v1
+project_ref: project:cell-the-living-machine
+status: category_map_seeded_provider_discovery_pending
+categories:
+  - id: digital_design_and_simulation
+    services: [cad, cae, digital_twin, simulation, scientific_visualization]
+    handoff_artifacts: [native_design, interchange_asset, simulation_report, provenance_manifest]
+  - id: physical_prototyping
+    services: [fdm_3d_printing, resin_3d_printing, sls, metal_printing, cnc_machining, laser_cutting, sheet_metal, pcb_fabrication_and_assembly]
+    handoff_artifacts: [step, stl, 3mf, glb, usd, bom, drawings, inspection_plan]
+  - id: molecular_design_and_synthesis
+    services: [gene_synthesis, gene_fragments, oligo_synthesis, sequence_design, vector_onboarding]
+    handoff_artifacts: [reviewed_request_record, source_provenance, provider_screening_receipt]
+    governance: licensed_provider_review_and_applicable_sequence_screening
+  - id: molecular_quality_and_analysis
+    services: [sequencing, sequence_verification, plasmid_prep, analytical_qc, materials_characterization]
+    handoff_artifacts: [qc_report, certificate_of_analysis, raw_data_reference]
+  - id: protein_and_cell_services
+    services: [protein_expression, protein_purification, cell_assay, microscopy, cell_model_services]
+    handoff_artifacts: [service_scope, sample_chain_of_custody, method_record, qc_report]
+    governance: institutional_and_professional_review
+  - id: equipment_and_facility_services
+    services: [calibration, metrology, maintenance, machine_operator, facility_access]
+    handoff_artifacts: [qualification_record, calibration_certificate, maintenance_record, reservation_receipt]
+workflow:
+  stages: [discover, verify_identity, verify_capability, review_terms, assess_safety_and_compliance, prepare_quote, user_approval, authorized_order, fulfillment, inspection, closeout]
+  quote_authority: user
+  payment_authority: user
+  provider_statuses: [candidate, identity_verified, capability_verified, terms_reviewed, approved, suspended]

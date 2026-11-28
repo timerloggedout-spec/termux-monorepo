@@ -32,7 +32,7 @@ Make the researched FOSS-first engineering ecosystem discoverable and safely rou
 | Queue/evaluation/cross-domain contracts | `docs/ops/ENGINEERING-*.md` | Reuse QUE/QDesk and DoE/MVT/ATES ownership; cross-domain links remain citation-only |
 | refTemplates and Learnings | `docs/ops/ENGINEERING-REFERENCE-SET.json`, local `refTemplates/engineering/`, Learnings matrix | Tracked metadata stays in docs; local source checkouts remain gitignored and read-only; reusable learning requires validated evidence |
 | Remote runner profile | `docs/ops/ENGINEERING-REMOTE-RUNNER-PROFILE.md` | Public standard runner vs self-hosted placement, resource and data constraints, and workflow permission blocker |
-| Review and gates | PR + repo-gate + Siglary + Termux smoke | Same immutable head SHA; no promotion from pending/skipped checks |
+| Review and gates | PR + repo-gate + Siglary + Termux smoke | Same immutable head SHA; promotion requires green checks |
 
 ## Known constraints
 

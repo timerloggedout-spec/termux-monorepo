@@ -7,7 +7,7 @@
 
 ## Purpose
 
-Establish Engineering as a first-class domain for mechanical design, electronics, electrical systems, computational simulation, manufacturing and semiconductor development. Engineering is a sibling to Reverse Engineering, not a child of it. Shared hardware, firmware, artifact and evidence relationships use explicit cross-domain links.
+Establish Engineering as a first-class domain for mechanical design, electronics, electrical systems, computational simulation, manufacturing and semiconductor development. Engineering and Reverse Engineering retain independent sibling ownership. Shared hardware, firmware, artifact and evidence relationships use explicit cross-domain links.
 
 ## Canonical sources
 
@@ -36,11 +36,11 @@ Establish Engineering as a first-class domain for mechanical design, electronics
 ## Toolchain principles
 
 1. Source files are authoritative; neutral exports are interchange artifacts.
-2. Toolchains are ordered stage handoffs, not lists of unrelated applications.
+2. Toolchains express ordered stage handoffs with explicit dependencies and artifacts.
 3. Every run binds tool/version, source SHA, input hashes, environment fingerprint, parameters, output hashes, validation and provenance.
 4. Tool discovery, local installation, authenticated access, execution, validation and promotion are distinct states.
 5. FOSS, proprietary free tiers and paid proprietary products are separate classes.
-6. A design or simulation result is not a certification, safety approval or manufacturing authorization.
+6. Design and simulation results require separate certification, safety approval and manufacturing authorization.
 
 ## Execution topology
 

@@ -25,6 +25,24 @@ The engine decision remains open pending a playable comparison. Godot is a stron
 - Offer quality presets backed by measured device capability and user choice.
 - Keep core exploration and saved projects usable offline after content download.
 
+## Renderer compatibility evidence
+
+Godot 4.7.2 is the provisional prototype lead. The documented Compatibility path supports OpenGL ES 3.0-class Android hardware and Android 7.0, and it is Godot's web renderer. The Mobile renderer uses Vulkan/Metal/Direct3D 12 and targets newer devices; Forward+ is the advanced desktop path. These are engine compatibility floors, not guaranteed performance results.
+
+Unity 6 supports Android Vulkan and OpenGL ES 3.x paths, with automatic API fallback. Unreal's Android path can prefer Vulkan and retain OpenGL ES 3.2 as a fallback. Both remain comparison candidates for the same measured scenes.
+
+Prototype tier mapping:
+- L0: Godot Compatibility; OpenGL ES 3.0; baked lighting, reduced materials, strict draw-call/texture budgets.
+- L1/L2: Godot Mobile; Vulkan-capable devices; measured shadows and post-processing.
+- L3: Godot Forward+ or a validated Unity/Unreal path for desktop workstations.
+- Browser: Godot Compatibility baseline, with separate browser-specific memory and download budgets.
+
+Official engine references:
+- Godot requirements: https://docs.godotengine.org/en/stable/about/system_requirements.html
+- Godot renderer comparison: https://docs.godotengine.org/en/stable/tutorials/rendering/renderers.html
+- Unity Android graphics APIs: https://docs.unity3d.com/Manual/class-PlayerSettingsAndroid.html
+- Unreal mobile rendering: https://dev.epicgames.com/documentation/en-us/unreal-engine/performance-and-optimization-for-mobile-in-unreal-engine
+
 ## Performance gates
 Set numeric budgets after measuring the first vertical slice on representative devices. Each benchmark records device model, OS, engine/runtime version, renderer, scene, resolution, thermal state, duration, frame-time percentiles, memory, load time, battery/energy observations and artifact hash.
 

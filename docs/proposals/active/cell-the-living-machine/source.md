@@ -19,7 +19,7 @@
 - Repository: https://github.com/timerloggedout-spec/cell-the-living-machine
 - Provisioned through the existing MonoRepo Repository Provisioner workflow, run `46108047424`; workflow job and all four steps completed successfully.
 - Repository ID: `1475194740`; owner: `timerloggedout-spec`; visibility: public; default branch: `main`.
-- Seeded product README, architecture, engineering-to-making, central player profile, hardware/rendering, Blender MCP toolchain, AMD/NVIDIA academy pathways, research/provenance, engine evaluation, decision log, project-control links, contribution guide and license-decision record.
+- Seeded product README, architecture, engineering-to-making, central player profile, hardware/rendering, Blender MCP toolchain, AMD/NVIDIA academy pathways, research/provenance, engine evaluation, decision log, project-control links, contribution guide and license-decision record. Product PR #1 adds the deterministic factory-cell reference kernel, shared player-profile schema, design/BOM schemas and passing hosted simulation tests.
 
 ## Research Astute
 
@@ -89,3 +89,5 @@ This architecture is a proposal based on repository evidence and the user's stat
 - Product repository: `timerloggedout-spec/cell-the-living-machine` (ID `1475194740`), public, default branch `main`.
 - Shared equipment and fabrication registries are seeded as schemas with empty verified inventories.
 - Blender MCP: DCC-MCP Blender v0.2.30 pinned candidate; live workstation session and self-hosted Blender runner verification remain pending.
+
+- Engine evaluation: Godot 4.7.2 is the provisional prototype lead; Compatibility is the low-tier/web baseline, Mobile is the higher-tier mobile path, and physical-device benchmarks gate final selection.

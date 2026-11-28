@@ -64,6 +64,7 @@ The full iJEP Studio channel is the initial visual and topic-discovery surface. 
 
 - MonoRepo scope profile, project manifest and registry are merged to master in PR #5954.
 - Dedicated game repository: `timerloggedout-spec/cell-the-living-machine` (repository ID `1475194740`, default branch `main`) is **public**. Owner-authorized GitHub Actions run [46112664857](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/46112664857) promoted the exact allowlisted repository and verified its public visibility.
+- First implementation increment merged in product PR [#1](https://github.com/timerloggedout-spec/cell-the-living-machine/pull/1): deterministic factory-cell reference kernel, six tests, shared player profile schema, design-artifact/BOM schemas and hosted simulation CI.
 - Research Astute: owner organization verified; private `molecular-biology-research` repository created (ID `183701786`) with a 26-provider reusable source registry and three initial mechanism dossiers.
 - Search Astutely: owner organization verified; current `manus-public-ui-research` repository is scoped to public Manus UI research. Scientific search aggregation endpoint and Enterprise account preservation require review.
 - Scientific database catalog: 26 candidate sources mapped across nine research domains; source-specific adapter admission follows API, terms, and provenance review.
@@ -101,6 +102,7 @@ The full iJEP Studio channel is the initial visual and topic-discovery surface. 
 - [DEBATE](./DEBATE.md)
 - [Source evidence](./source.md)
 - [Audience and challenge opportunity map](./AUDIENCE_AND_OPPORTUNITY_MAP.yaml)
+- [Engine evaluation and provisional prototype decision](./ENGINE_DECISION.md)
 - [Research Astute contract](./RESEARCH_ASTUTE_CONTRACT.yaml)
 - [Search aggregation contract](./SEARCH_AGGREGATION_CONTRACT.yaml)
 - [Research Astute science repository](https://github.com/Research-Astute/molecular-biology-research)

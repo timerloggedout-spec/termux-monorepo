@@ -30,6 +30,11 @@ An engineering task carries these typed fields in its normal QUE filing:
 6. Send independent review and owner-gated decisions through existing QDesk/Desk authority.
 7. Keep fabrication purchases, external submissions, device programming and physical actions approval-gated.
 
+
+## Active intake surface
+
+The repository issue form `.github/ISSUE_TEMPLATE/engineering-toolchain.yml` declares `issue-dispatch/v1`, lane `engineering-toolchain`, tier 3 and route `project-task-dispatch.yml`. Its unique `[engineering]` title prefix lets the existing `swarm-admission.yml` match the filing; the rendered `Task / spec`, `Scope` and `Done-evidence` headings feed the existing project-task intake parser. QUE admission stamps `swarm-admitted` or `deferred-by-tier`; the existing project dispatch and QDesk claim/lease flow remain the execution owners.
+
 ## Queue ownership
 
 QUE remains the only queue and lifecycle authority. QDesk remains the existing recurring self-repair and oversight cycle. Engineering adds typed task metadata and capability discovery; it creates no scheduler, claim system, ranker, promotion engine or alternate task store.

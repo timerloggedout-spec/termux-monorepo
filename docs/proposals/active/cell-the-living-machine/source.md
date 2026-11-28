@@ -29,7 +29,7 @@
 - Existing `manus-ui-research-hub` and `manus-ui-adapter-lab` have a Manus UI / deterministic adapter scope. They provide an integration pattern; the molecular biology research store uses a dedicated repository.
 - New reusable science repository: https://github.com/Research-Astute/molecular-biology-research
 - Repository ID: `183701786`; visibility: private; default branch: `main`.
-- Research contracts: `RESEARCH_ASTUTE_CONTRACT.yaml`; source registry seed: 26 candidate providers; initial mechanism dossiers: sodium-potassium pump, aquaporin, ATP synthase.
+- Research contracts: `RESEARCH_ASTUTE_CONTRACT.yaml`; the MonoRepo candidate catalog covers 26 providers; the new repository contains initial mechanism dossiers for sodium-potassium pump, aquaporin, and ATP synthase.
 - The third-party `NDuma/ResearchAstute` repository is a separate public resource. Its license and ownership scope remain review-required; it is excluded from the canonical Research-Astute project plane.
 - Integration status: owner organization and dedicated repository verified; curated record population and adapter workflow pending.
 
@@ -47,9 +47,9 @@
 - The two Enterprise-named repositories are accessible to the connected GitHub identity `timerloggedout-spec` with admin/push permissions in repository search results. Their inspected README surfaces describe Termux recovery and developer environment planning; a canonical search-aggregation API and result store remain unverified.
 - The GitHub UI identifies `timerloggedout-spec` as an organization owner for both `Research-Astute` and `search-astute-ly`.
 - The requested plugin reference `Plugin_60aea7460bd4819199fd97a9553a5e12` returned `plugin_not_found` from plugin dependency lookup. Plugin discovery surfaced adjacent research tools; a Search Astutely connector remains unverified.
-- `AsAstraNeoNexus` remains unverified in the connected GitHub scope. Account ownership, Enterprise trial status, migration state, and the account-header deletion notice require direct account/organization settings review by the owner.
+- The Enterprise account label visible in the owner UI is `AdAstraNeoNexus`. Organization origin and lifecycle path remain pending owner review.
 - The `manus-public-ui-research` repository describes a public userscript/library research lane; the inspected README gives it a separate scope from search aggregation. `redesigned-octo-rotary-phone` is a small placeholder-style repository with a README focused on placeholder-style content with search-service capability unverified.
-- Integration status: organization identity verified; service endpoint, canonical data repository, connector, account relationship, and migration state pending verification.
+- Integration status: organization identity and ownership verified; canonical scientific-search endpoint, connector, and organization lifecycle path remain pending.
 
 ## Scientific database map
 

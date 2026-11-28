@@ -56,7 +56,7 @@ Knowledge access is ubiquitous. Every participant can reach the same underlying 
 
 ## Seed surface
 
-The full iJEP Studio channel is the initial visual and topic-discovery surface. The inventory process captures videos, shorts, descriptions, source references, comments with technical value, linked papers, structure IDs, and asset rights. iJEP Studio's own production descriptions emphasize scientific review and real structural references; media reuse follows the creator's published license terms and any separately granted permissions.
+The full iJEP Studio channel is the initial visual and topic-discovery surface. The initial upload inventory captures all 125 channel entries across two playlist pages, including video IDs, titles, publication metadata, durations, views, and title-derived topic candidates. Per-video descriptions, transcripts, linked papers, structure IDs, technical comments, and asset rights form the next extraction pass. iJEP Studio's own production descriptions emphasize scientific review and real structural references; media reuse follows the creator's published license terms and any separately granted permissions.
 
 ## Current status
 
@@ -100,6 +100,7 @@ The full iJEP Studio channel is the initial visual and topic-discovery surface. 
 - [Project registry](../../../ops/projects/registry.yaml)
 - [Research map](./RESEARCH_MAP.yaml)
 - [Database catalog](./DATA_SOURCES.yaml)
+- [iJEP Studio 125-item channel inventory](./research/ijep-studio-channel-inventory.json)
 - [Content taxonomy](./CONTENT_TAXONOMY.yaml)
 - [Game design](./GAME_DESIGN.md)
 - [Provenance contract](./PROVENANCE.md)

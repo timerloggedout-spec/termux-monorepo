@@ -28,8 +28,8 @@
 - Existing `manus-ui-research-hub` is an integration hub for public-source Manus UI research and deterministic development lanes. Its `.gitmodules` pins `search-astute-ly/manus-public-ui-research` and `Research-Astute/manus-ui-adapter-lab`.
 - Existing `manus-ui-research-hub` and `manus-ui-adapter-lab` have a Manus UI / deterministic adapter scope. They provide an integration pattern; the molecular biology research store uses a dedicated repository.
 - New reusable science repository: https://github.com/Research-Astute/molecular-biology-research
-- Repository ID: `183701786`; visibility: private; default branch: `main`.
-- Research contracts: `RESEARCH_ASTUTE_CONTRACT.yaml`; `sources/registry.yaml` in Research Astute contains 26 reusable provider records at revision `e9c51ef`; initial mechanism dossiers cover sodium-potassium pump, aquaporin, and ATP synthase.
+- Target visibility: private; default branch: `main`; repository ID awaits the provisioning workflow receipt.
+- Research contracts: `RESEARCH_ASTUTE_CONTRACT.yaml`; the 26-provider candidate catalog remains in the MonoRepo at `DATA_SOURCES.yaml`; the private Research Astute registry seed and initial mechanism dossiers await repository provisioning.
 - The third-party `NDuma/ResearchAstute` repository is a separate public resource. Its license and ownership scope remain review-required; it is excluded from the canonical Research-Astute project plane.
 - Integration status: owner organization and dedicated repository verified; curated record population and adapter workflow pending.
 
@@ -73,7 +73,7 @@
 ## Architecture inference
 
 The three-plane model preserves independent ownership and reuse:
-1. Research Astute holds reusable research references and curated knowledge artifacts.
+1. Research Astute is the target home for reusable research references and curated knowledge artifacts; its private repository is in workflow provisioning.
 2. Search Astutely holds discovery runs, normalized search results, deduplication, source snapshots, and query lineage.
 3. Termux MonoRepo holds development orchestration, project profiles, task routing, tool profiles, CI, QA, and release policy.
 4. The game repository holds the playable product and versioned game-specific assets.
@@ -91,3 +91,11 @@ This architecture is a proposal based on repository evidence and the user's stat
 - Blender MCP: DCC-MCP Blender v0.2.30 pinned candidate; live workstation session and self-hosted Blender runner verification remain pending.
 
 - Engine evaluation: Godot 4.7.2 is the provisional prototype lead; Compatibility is the low-tier/web baseline, Mobile is the higher-tier mobile path, and physical-device benchmarks gate final selection.
+
+
+## Organization inventory
+
+- `Research-Astute`: five visible public repositories; no private repository appeared in the authenticated organization inventory. The one-private-repository provisioner is merged; run 46114028269 is queued.
+- `search-astute-ly`: four visible public repositories; current inventory shows no private repository. Owner dashboard previously associated it with Enterprise account `AdAstraNeoNexus`; the organization origin/transfer audit remains unresolved.
+- `timerloggedout-spec`: the personal account already has one private repository (`appid-registrar`); the product repository `cell-the-living-machine` is public.
+- Search Astutely repositories remain untouched; no mirror or transfer has been performed.

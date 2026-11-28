@@ -23,10 +23,15 @@ repositories:
     role: project_profiles_lanes_tooling_ci_qa_orchestration
   research:
     research_astute:
-      repository: NDuma/ResearchAstute
-      url: https://github.com/NDuma/ResearchAstute
-      role: reusable_research_references
-      reuse_status: rights_review_required
+      organization: Research-Astute
+      url: https://github.com/Research-Astute
+      repository: Research-Astute/molecular-biology-research
+      repository_id: 183701786
+      repository_visibility: private
+      role: reusable_molecular_biology_research
+      reuse_status: repository_created_curated_records_pending
+      integration_hub: Research-Astute/manus-ui-research-hub
+      adapter_lab: Research-Astute/manus-ui-adapter-lab
     search_astutely:
       organization: search-astute-ly
       url: https://github.com/search-astute-ly
@@ -36,7 +41,9 @@ repositories:
         - search-astute-ly/redesigned-octo-rotary-phone
         - search-astute-ly/manus-public-ui-research
       role: search_execution_result_aggregation_source_snapshots
-      integration_status: endpoint_and_connector_pending
+      existing_research_repository: search-astute-ly/manus-public-ui-research
+      existing_research_repository_scope: public_manus_ui_source_inventory
+      integration_status: account_preservation_and_scientific_search_endpoint_pending
 
 architecture:
   contract: versioned_manifests_and_api_adapters

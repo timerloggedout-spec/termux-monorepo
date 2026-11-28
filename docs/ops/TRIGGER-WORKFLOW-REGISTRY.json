@@ -94,10 +94,11 @@
     {
       "id": "workflow-event-index",
       "path": "docs/ops/generated/workflow-event-index.json",
-      "role": "complete workflow-level event, schedule, jobs, authority, concurrency, and action-pin index derived from generated catalog with source-verified corrections",
-      "schema": "workflow-event-index/v1",
+      "role": "source-derived workflow event filters, dispatch input schemas, workflow/job permissions, job selectors, concurrency, action references, and Git blob provenance reconciled to the generated catalog",
+      "schema": "workflow-event-index/v2",
       "workflow_count": 332,
-      "observed_at": "2026-11-27"
+      "observed_at": "2026-11-28",
+      "generator": "scripts/ci/workflow_registry.py"
     },
     {
       "id": "comment-trigger-census",

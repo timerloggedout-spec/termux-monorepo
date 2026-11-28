@@ -189,6 +189,26 @@ jobs:
             self.assertEqual(item["event_config"]["push"]["paths"], ["ops/requests/project-visibility-public.yaml"])
             self.assertEqual(item["permissions"]["jobs"]["publish"]["contents"], "write")
 
+    def test_catalog_presence_is_distinct_from_missing_authority_metadata(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            workflow_dir = root / ".github/workflows"
+            workflow_dir.mkdir(parents=True)
+            source = """\\
+name: Catalogued writer
+on: [push]
+jobs:
+  publish:
+    steps:
+      - run: gh api --method POST /orgs/example/repos
+"""
+            (workflow_dir / "catalogued.yml").write_text(source, encoding="utf-8")
+            catalog = {"source_fingerprint": "x", "workflows": [{"path": ".github/workflows/catalogued.yml"}]}
+            index = workflow_registry.build_index(root, catalog)
+            self.assertTrue(index["workflows"][0]["catalog_present"])
+            self.assertEqual(index["uncatalogued_source_writers"], [])
+            self.assertEqual(index["reconciliation"]["missing_from_catalog"], [])
+
     def test_write_and_check_generate_stable_v2_outputs(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

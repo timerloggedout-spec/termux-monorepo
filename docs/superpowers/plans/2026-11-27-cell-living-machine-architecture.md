@@ -35,9 +35,12 @@
 ### Task 1: Establish project profile control plane
 
 **Files:**
-- Create: `docs/projects/registry.yaml`
-- Create: `docs/projects/schemas/project-profile.schema.json`
-- Create: `docs/projects/cell-the-living-machine/PROJECT_PROFILE.yaml`
+- Create: `.config/llm_map/profiles/projects/cell-the-living-machine.json`
+- Create: `ops/projects/manifests/cell-the-living-machine.yaml`
+- Create: `ops/projects/registry.yaml`
+- Create: `ops/projects/registry.schema.json`
+- Create: `ops/projects/README.md`
+- Reuse: `ops/projects/profile.schema.json` (`project-profile/v1`)
 
 **Interfaces:**
 - Consumes: existing game-lane taxonomy, anchored entity references, research-seed intake.
@@ -52,7 +55,7 @@
 ### Task 2: Record the three-plane integration architecture
 
 **Files:**
-- Create: `docs/proposals/active/cell-the-living-machine/PROJECT_PROFILE.yaml`
+- Create: `docs/proposals/active/cell-the-living-machine/PROJECT_PROFILE.yaml` (review pointer to canonical scope profile and manifest)
 - Create: `docs/proposals/active/cell-the-living-machine/source.md`
 
 **Interfaces:**

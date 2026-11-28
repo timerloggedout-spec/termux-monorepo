@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="A teammate-facing workspace for opportunities, challenges, collaboration, proposals and delivery evidence.">
+<meta name="theme-color" content="#0b1017">
+<title>Hackathon Desk · Tribute</title>
+<link rel="canonical" href="https://timerloggedout-spec.github.io/tribute/hackathon.html">
+<link rel="stylesheet" href="./dashboard.css">
+<link rel="stylesheet" href="./hackathon.css">
+<script src="./hackathon.js" defer></script>
+<script src="./hackathon-page.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<nav aria-label="Primary navigation">
+  <a class="brand" href="./index.html">Tribute</a>
+  <a href="#overview" aria-current="page">Overview</a><a href="#opportunities">Opportunities</a><a href="#challenges">Challenges</a>
+  <a href="#teammates">Teammates</a><a href="#proposals">Proposals</a><a href="#pipelines">Pipelines</a><a href="#guide">Guide</a>
+</nav>
+<header class="hero-wrap">
+  <div class="hero-copy">
+    <p class="eyebrow">TEAMMATE WORKSPACE · TRIBUTE</p>
+    <h1>Hackathon <span>Desk</span></h1>
+    <p class="lede">Find the next opportunity, understand the rules and gates, connect your work to a team, and follow delivery evidence from proposal to publication.</p>
+    <div class="hero-actions"><a class="action primary" href="#opportunities">Explore opportunities</a><a class="action" href="#teammates">Join the workflow</a></div>
+  </div>
+  <aside class="hero-status" aria-live="polite" aria-atomic="true">
+    <span class="eyebrow">FEED HEALTH</span><strong id="overall-state">Loading sources…</strong><span id="overall-detail">Checking the published evidence feeds</span>
+    <button id="refresh" class="refresh" type="button">Refresh feeds</button>
+  </aside>
+</header>
+<main id="main">
+<section id="overview" aria-labelledby="overview-title">
+  <div class="section-heading"><div><p class="eyebrow">START HERE</p><h2 id="overview-title">Your workspace</h2></div><p class="section-note">Source-backed status · GitHub owns identity and repository permissions</p></div>
+  <div class="metric-grid" id="metrics">
+    <article class="metric"><span>Opportunities</span><strong>—</strong><small>Loading QUE priority feed</small></article>
+    <article class="metric"><span>Challenge events</span><strong>—</strong><small>Loading public projection</small></article>
+    <article class="metric"><span>Pipeline traversals</span><strong>—</strong><small>Loading desk and queue feeds</small></article>
+    <article class="metric"><span>Dispatch claims</span><strong>—</strong><small>Embedded QUE queue projection</small></article>
+  </div>
+  <div class="next-steps">
+    <article><span class="step-no">01</span><div><h3>Choose a challenge</h3><p>Review the event rules, registration state, dates and participation gates.</p><a href="#challenges">Browse challenges →</a></div></article>
+    <article><span class="step-no">02</span><div><h3>Set your contribution scope</h3><p>Keep project, event, venue and teammate scopes explicit and independent.</p><a href="#teammates">Teammate onboarding →</a></div></article>
+    <article><span class="step-no">03</span><div><h3>Ship through GitHub</h3><p>Use the existing proposal, issue, branch, pull-request and review lifecycle.</p><a href="#proposals">Open contribution paths →</a></div></article>
+  </div>
+</section>
+<section id="opportunities" aria-labelledby="opportunities-title">
+  <div class="section-heading"><div><p class="eyebrow">QUE PRIORITY FEED</p><h2 id="opportunities-title">Opportunities</h2></div><div class="feed-meta" id="opportunity-meta">Waiting for source</div></div>
+  <div class="toolbar"><label for="opportunity-search">Filter opportunities</label><input id="opportunity-search" type="search" placeholder="Search name, host, state…"></div>
+  <div class="card-grid" id="opportunity-list"><p class="empty">Loading opportunities…</p></div>
+</section>
+<section id="challenges" aria-labelledby="challenges-title">
+  <div class="section-heading"><div><p class="eyebrow">PUBLIC CHALLENGE PROJECTION</p><h2 id="challenges-title">Challenges & events</h2></div><div class="feed-meta" id="challenge-meta">Waiting for source</div></div>
+  <div class="card-grid" id="challenge-list"><p class="empty">Loading challenge events…</p></div>
+</section>
+<section id="countdowns" aria-labelledby="countdowns-title">
+  <div class="section-heading"><div><p class="eyebrow">RECORDED EVENT INSTANTS</p><h2 id="countdowns-title">Deadlines & countdowns</h2></div><div class="feed-meta" id="countdown-meta">Waiting for source</div></div>
+  <div class="card-grid" id="countdown-list"><p class="empty">Loading countdowns…</p></div>
+</section>
+<section id="teammates" aria-labelledby="teammates-title">
+  <div class="section-heading"><div><p class="eyebrow">COLLABORATION</p><h2 id="teammates-title">Teammate onboarding</h2></div><p class="section-note">Identity and access remain GitHub-managed</p></div>
+  <div class="two-col">
+    <article class="panel"><span class="panel-kicker">YOUR CONTRIBUTION IDENTITY</span><h3>Connect through GitHub</h3><p>Choose your GitHub profile and use GitHub sign-in for repository actions. A profile link is self-selected; repository membership and write access remain controlled by GitHub.</p><a class="action primary" href="https://github.com/settings/profile" target="_blank" rel="noopener noreferrer">Open GitHub profile</a></article>
+    <article class="panel"><span class="panel-kicker">SCOPE MODEL</span><h3>Four independent scopes</h3><ul class="scope-list"><li><b>Project</b><span>Repository, deliverable and contribution boundary</span></li><li><b>Event</b><span>Registration, rules, match and submission state</span></li><li><b>Venue</b><span>Execution requirements, evidence and receipts</span></li><li><b>Teammate</b><span>Collaboration relationship and assigned responsibilities</span></li></ul><p class="callout">A teammate relationship alone grants no event-entry or venue-execution rights.</p></article>
+  </div>
+  <div class="panel onboarding"><h3>Contribution path</h3><ol class="path-list"><li><b>Read the event rules</b><span>Confirm format, eligibility, dates and submission destination.</span></li><li><b>Choose an existing project or propose a new one</b><span>Keep source evidence and verification attached to the intake.</span></li><li><b>Request the required GitHub access</b><span>Repository administrators decide membership and permissions.</span></li><li><b>Work in a focused branch</b><span>Commit small changes and open a pull request with evidence.</span></li><li><b>Review, validate and submit</b><span>Preserve receipts and verify the official submission destination.</span></li></ol></div>
+</section>
+<section id="proposals" aria-labelledby="proposals-title">
+  <div class="section-heading"><div><p class="eyebrow">IDEA → REVIEW → DELIVERY</p><h2 id="proposals-title">Proposals & contribution</h2></div></div>
+  <div class="card-grid three">
+    <article class="panel"><span class="panel-kicker">DISCOVER</span><h3>Active proposals</h3><p>Review the proposal registry, active scopes, owners and implementation status.</p><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/proposals/registry.yaml" target="_blank" rel="noopener noreferrer">Open proposal registry →</a></article>
+    <article class="panel"><span class="panel-kicker">PROPOSE</span><h3>Submit an idea</h3><p>Use the repository proposal process to capture intent, source evidence, constraints and acceptance criteria.</p><a href="https://github.com/timerloggedout-spec/termux-monorepo/issues/new/choose" target="_blank" rel="noopener noreferrer">Open issue forms →</a></article>
+    <article class="panel"><span class="panel-kicker">CONTRIBUTE</span><h3>Open a pull request</h3><p>Use GitHub branches, pull requests, review threads and required checks as the contribution record.</p><a href="https://github.com/timerloggedout-spec/termux-monorepo/pulls" target="_blank" rel="noopener noreferrer">View pull requests →</a></article>
+  </div>
+</section>
+<section id="pipelines" aria-labelledby="pipelines-title">
+  <div class="section-heading"><div><p class="eyebrow">READ-ONLY EVIDENCE</p><h2 id="pipelines-title">Delivery pipelines</h2></div><div class="feed-meta" id="pipeline-meta">Waiting for sources</div></div>
+  <div class="two-col">
+    <article class="panel"><h3>QUE queue tiers</h3><div id="queue-tiers" class="stack-list"><p class="empty">Loading queue…</p></div></article>
+    <article class="panel"><h3>Active dispatch claims</h3><div id="dispatch-claims" class="stack-list"><p class="empty">Loading dispatch claims…</p></div></article>
+  </div>
+  <article class="panel traversal-panel"><h3>Desk traversals</h3><div id="traversals" class="stack-list"><p class="empty">Loading traversals…</p></div></article>
+</section>
+<section id="guide" aria-labelledby="guide-title">
+  <div class="section-heading"><div><p class="eyebrow">HELP & ACCESSIBILITY</p><h2 id="guide-title">Guides & standards</h2></div></div>
+  <div class="card-grid two">
+    <article class="panel"><h3>Teammate guide</h3><p>How to select an event, join a project, request access, contribute through GitHub and preserve delivery evidence.</p><a href="./hackathon-user-guide.html">Read the teammate guide →</a></article>
+    <article class="panel"><h3>Accessibility guide</h3><p>Keyboard navigation, visible focus, responsive reflow, zoom, reduced motion and assistive-technology behavior.</p><a href="./hackathon-accessibility.html">Read the accessibility guide →</a></article>
+  </div>
+</section>
+<footer><span>Hackathon Desk · Static Tribute projection</span><span>Source systems remain authoritative · <a href="./index.html">Tribute home</a> · <a href="https://github.com/timerloggedout-spec/termux-monorepo/pull/5840">Implementation PR</a></span></footer>
+</main>
+</body>
+</html>

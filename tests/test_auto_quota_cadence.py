@@ -70,7 +70,7 @@ def _quota_registry(record_ids):
 
 
 def _snapshot(*, generated_at="2026-11-12T15:30:00Z", arms=None, budgets=None,
-              coverage=None):
+              coverage=None, pools=None):
     return {
         "schema": "ledger-snapshot/v1",
         "generated_at": generated_at,
@@ -78,6 +78,7 @@ def _snapshot(*, generated_at="2026-11-12T15:30:00Z", arms=None, budgets=None,
         "budgets": budgets or {},
         "coverage": coverage or {"complete": True, "stamped_at": generated_at,
                                  "last_quota_terminal": None},
+        "pools": pools or {},
     }
 
 
@@ -88,8 +89,8 @@ def _budget(arm_id, *, total=20, spendable=16, reset_window="midnight PT",
                      "reset_tz": reset_tz}}
 
 
-def _derive(arms, census, registry, snapshot=None, previous=None):
-    return aqc.derive(arms, census, registry, snapshot, previous, NOW)
+def _derive(arms, census, registry, snapshot=None, previous=None, allocations=None):
+    return aqc.derive(arms, census, registry, snapshot, previous, NOW, allocations)
 
 
 def _row(feed, arm_id):
@@ -105,6 +106,7 @@ def test_no_snapshot_defers_everything_quota_unknown():
     assert feed["ledger_read"]["status"] == "unavailable"
     assert feed["ledger_read"]["reason"] == "ledger_snapshot_absent"
     assert feed["pool"]["eligible"] == []
+    assert feed["pool"]["probe_candidates"] == ["alpha", "beta"]
     for row in feed["arms"]:
         assert "quota_unknown" in row["defer_reasons"]
         assert "reset_window_unknown" in row["defer_reasons"]
@@ -372,3 +374,156 @@ def test_main_writes_feed_and_usage_files(tmp_path):
     assert "sources" in feed and feed["sources"]["arms_sha256"]
     usage_rec = json.loads(usage.read_text())
     assert usage_rec["coverage"]["complete"] is False
+
+
+# --- daily pool with no provider quota counter ---
+
+def _daily_pool_arm():
+    return _arm("alpha", budget={
+        "class": "free-tier",
+        "quota_class": "daily_pool_no_provider_quota",
+        "pool_id": "daily-free-inference",
+        "focus": "repo-development",
+        "experiment_label": "QUE-5454",
+        "quota_evidence_ref": "https://provider.example/terms/free-pool",
+        "quota_metric_source": "AUTO QUOTA LEDGER (#5152); ops/quota/registry.json record example.api",
+    })
+
+
+def _daily_pool_snapshot(status="available"):
+    return _snapshot(pools={"daily-free-inference": {
+        "status": status,
+        "observed_at": "2026-11-12T15:59:00Z",
+        "reset_window": "daily",
+        "reset_tz": "UTC",
+        "source_ref": "https://provider.example/terms/free-pool",
+        "experiment_label": "QUE-5454",
+    }})
+
+
+def _daily_pool_allocations(mode="standing", pct=100):
+    return {"pools": [{
+        "id": "daily-free-inference",
+        "allocations": [{"focus": "repo-development", "pct": pct, "mode": mode}],
+    }]}
+
+
+def test_daily_pool_no_provider_quota_is_eligible_without_provider_quota_counter():
+    arm = _daily_pool_arm()
+    registry = _quota_registry(["example.api"])
+    registry["services"][0]["quota_class"] = "daily_pool_no_provider_quota"
+    registry["services"][0]["source"] = "https://provider.example/terms/free-pool"
+    feed = _derive(_registry([arm]), _census(["alpha"]), registry,
+                   _daily_pool_snapshot(), allocations=_daily_pool_allocations())
+    row = _row(feed, "alpha")
+    assert row["status"] == "eligible"
+    assert row["quota_class"] == "daily_pool_no_provider_quota"
+    assert row["pool_id"] == "daily-free-inference"
+    assert row["headroom"] is None
+    assert "quota_unbudgeted" not in row["defer_reasons"]
+    assert "quota_unknown" not in row["defer_reasons"]
+    assert "reset_window_unknown" not in row["defer_reasons"]
+    assert feed["usage_record"]["pool_eligibility"]["alpha"]["status"] == "eligible"
+
+
+def test_daily_pool_missing_pool_snapshot_defers_as_pool_unknown_not_quota_unknown():
+    arm = _daily_pool_arm()
+    registry = _quota_registry(["example.api"])
+    registry["services"][0]["quota_class"] = "daily_pool_no_provider_quota"
+    registry["services"][0]["source"] = "https://provider.example/terms/free-pool"
+    feed = _derive(_registry([arm]), _census(["alpha"]), registry,
+                   _snapshot(), allocations=_daily_pool_allocations())
+    reasons = _row(feed, "alpha")["defer_reasons"]
+    assert "pool_unknown" in reasons
+    assert "quota_unknown" not in reasons
+
+
+def test_daily_pool_exhausted_defers_without_provider_quota_counter():
+    arm = _daily_pool_arm()
+    registry = _quota_registry(["example.api"])
+    registry["services"][0]["quota_class"] = "daily_pool_no_provider_quota"
+    registry["services"][0]["source"] = "https://provider.example/terms/free-pool"
+    feed = _derive(_registry([arm]), _census(["alpha"]), registry,
+                   _daily_pool_snapshot("exhausted"), allocations=_daily_pool_allocations())
+    assert "pool_exhausted" in _row(feed, "alpha")["defer_reasons"]
+
+
+def test_daily_pool_requires_explicit_registry_quota_class_and_evidence():
+    arm = _daily_pool_arm()
+    registry = _quota_registry(["example.api"])
+    feed = _derive(_registry([arm]), _census(["alpha"]), registry,
+                   _daily_pool_snapshot(), allocations=_daily_pool_allocations())
+    assert "quota_class_evidence_missing" in _row(feed, "alpha")["defer_reasons"]
+
+
+def test_daily_pool_requires_nonzero_standing_or_verified_leftover_allocation():
+    arm = _daily_pool_arm()
+    registry = _quota_registry(["example.api"])
+    registry["services"][0]["quota_class"] = "daily_pool_no_provider_quota"
+    registry["services"][0]["source"] = "https://provider.example/terms/free-pool"
+    feed = _derive(_registry([arm]), _census(["alpha"]), registry,
+                   _daily_pool_snapshot(), allocations=_daily_pool_allocations("leftover-only", 0))
+    assert "pool_leftover_unverified" in _row(feed, "alpha")["defer_reasons"]
+
+def test_daily_pool_requires_complete_ledger_coverage():
+    arm = _daily_pool_arm()
+    registry = _quota_registry(["example.api"])
+    registry["services"][0]["quota_class"] = "daily_pool_no_provider_quota"
+    registry["services"][0]["source"] = "https://provider.example/terms/free-pool"
+    snapshot = _daily_pool_snapshot()
+    snapshot["coverage"]["complete"] = False
+    feed = _derive(_registry([arm]), _census(["alpha"]), registry,
+                   snapshot, allocations=_daily_pool_allocations())
+    assert "pool_coverage_incomplete" in _row(feed, "alpha")["defer_reasons"]
+
+def test_daily_pool_rejects_credit_funded_arm():
+    arm = _daily_pool_arm()
+    arm["budget"]["class"] = "credit-funded"
+    registry = _quota_registry(["example.api"])
+    registry["services"][0]["quota_class"] = "daily_pool_no_provider_quota"
+    registry["services"][0]["source"] = "https://provider.example/terms/free-pool"
+    feed = _derive(_registry([arm]), _census(["alpha"]), registry,
+                   _daily_pool_snapshot(), allocations=_daily_pool_allocations())
+    assert "pool_paid_budget_forbidden" in _row(feed, "alpha")["defer_reasons"]
+
+def test_escalation_budget_uses_reserved_capacity_when_primary_is_exhausted():
+    from scripts.ops.auto_quota_cadence import _budget_total
+    budget = {"spendable_primary": 0, "reserved_escalation": 4}
+    assert _budget_total(budget, "primary") == 0
+    assert _budget_total(budget, "escalation") == 4
+
+
+def test_escalation_reserved_headroom_keeps_arm_cadence_eligible():
+    arm = _arm("alpha", budget={
+        "class": "free-tier", "quota_class": "provider_quota_backed",
+        "spendable_primary": 0, "reserved_escalation": 4,
+        "quota_metric_source": "AUTO QUOTA LEDGER (#5152); ops/quota/registry.json record example.api",
+    })
+    snap = _snapshot(
+        arms={"alpha": {DAY: {"draws": 0}}},
+        budgets={"alpha": {"spendable_primary": 0, "reserved_escalation": 4,
+                           "reset_window": "midnight PT", "reset_tz": "America/Los_Angeles"}},
+    )
+    feed = _derive(_registry([arm]), _census(["alpha"]),
+                   _quota_registry(["example.api"]), snap)
+    row = _row(feed, "alpha")
+    assert row["status"] == "eligible"
+    assert row["headroom_by_quota_class"] == {"primary": 0, "escalation": 4}
+    assert feed["pool"]["eligible"] == ["alpha"]
+
+
+def test_arm_deferred_when_primary_and_escalation_budgets_are_exhausted():
+    arm = _arm("alpha", budget={
+        "class": "free-tier", "quota_class": "provider_quota_backed",
+        "spendable_primary": 0, "reserved_escalation": 4,
+        "quota_metric_source": "AUTO QUOTA LEDGER (#5152); ops/quota/registry.json record example.api",
+    })
+    snap = _snapshot(
+        arms={"alpha": {DAY: {"draws": 4}}},
+        budgets={"alpha": {"spendable_primary": 0, "reserved_escalation": 4,
+                           "reset_window": "midnight PT", "reset_tz": "America/Los_Angeles"}},
+    )
+    feed = _derive(_registry([arm]), _census(["alpha"]),
+                   _quota_registry(["example.api"]), snap)
+    assert "quota_exhausted" in _row(feed, "alpha")["defer_reasons"]
+    assert feed["pool"]["eligible"] == []

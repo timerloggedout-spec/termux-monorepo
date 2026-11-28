@@ -229,3 +229,64 @@ def test_cloudflare_missing_account_is_not_listed_or_sent(client, monkeypatch, t
     response = client.post('/v1/chat/completions', json=request_body(f'cloudflare/{model}'))
     assert response.status_code == 503
     assert f'cloudflare/{model}' not in [r['id'] for r in client.get('/v1/models').json()['data']]
+
+
+def test_admission_entry_returns_only_the_exact_current_policy_record(monkeypatch, tmp_path):
+    monkeypatch.setenv("GROQ_API_KEY", "policy-key")
+    admitted = entry()
+    monkeypatch.setenv("LLM_API_HUB_PROVIDER_POLICY", str(policy_file(tmp_path, [admitted])))
+    result = providers.admission_entry("groq", admitted["model"])
+    assert result["provider"] == "groq"
+    assert result["model"] == admitted["model"]
+    assert result["terms_accepted"] is True
+    assert "policy-key" not in json.dumps(result)
+
+
+def test_admission_entry_rejects_duplicate_exact_model(monkeypatch, tmp_path):
+    monkeypatch.setenv("GROQ_API_KEY", "policy-key")
+    monkeypatch.setenv("LLM_API_HUB_PROVIDER_POLICY", str(policy_file(tmp_path, [entry(), entry()])))
+    with pytest.raises(providers.ProviderAdmissionError) as exc:
+        providers.admission_entry("groq", "llama-3.3-70b-versatile")
+    assert exc.value.code == "provider_not_admitted"
+
+
+def activation_entry(**updates):
+    now = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    value = entry(
+        no_cost_verified=True,
+        pricing_source="https://provider.example/pricing",
+        pricing_verified_at=now,
+        terms_source="https://provider.example/terms",
+        terms_verified_at=now,
+        capability_source="https://provider.example/models",
+        capability_verified_at=now,
+        quota_class="daily_pool_no_provider_quota",
+        pool_id="daily-free-pool",
+        pool_evidence_ref="https://provider.example/free-pool",
+    )
+    value.update(updates)
+    return value
+
+
+def test_activation_evidence_accepts_daily_pool_without_provider_quota_counter():
+    assert providers.validate_activation_entry(activation_entry()) is None
+
+
+@pytest.mark.parametrize(("updates", "expected"), [
+    ({"no_cost_verified": False}, "policy_no_cost_not_verified"),
+    ({"pricing_source": ""}, "policy_pricing_source_missing"),
+    ({"terms_source": ""}, "policy_terms_source_missing"),
+    ({"capability_verified_at": "not-a-timestamp"}, "policy_capability_verified_at_invalid"),
+    ({"pricing_verified_at": (datetime.now(timezone.utc) - timedelta(days=31)).isoformat().replace("+00:00", "Z")}, "policy_pricing_verified_at_stale"),
+    ({"terms_verified_at": (datetime.now(timezone.utc) - timedelta(days=366)).isoformat().replace("+00:00", "Z")}, "policy_terms_verified_at_stale"),
+    ({"capability_verified_at": (datetime.now(timezone.utc) - timedelta(days=91)).isoformat().replace("+00:00", "Z")}, "policy_capability_verified_at_stale"),
+    ({"quota_class": "daily_pool_no_provider_quota", "pool_evidence_ref": ""}, "policy_daily_pool_evidence_missing"),
+    ({"quota_class": "provider_quota_backed", "quota_evidence_ref": ""}, "policy_quota_evidence_missing"),
+    ({"quota_class": "quota_not_applicable", "quota_evidence_ref": ""}, "policy_quota_evidence_missing"),
+])
+def test_activation_evidence_rejects_missing_or_invalid_assertions(updates, expected):
+    assert providers.validate_activation_entry(activation_entry(**updates)) == expected
+
+
+def test_unknown_quota_is_not_coerced_to_no_quota():
+    assert providers.validate_activation_entry(activation_entry(quota_class="quota_unknown")) is None

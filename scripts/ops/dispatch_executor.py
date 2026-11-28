@@ -15,18 +15,19 @@ unknown):
      `dispatch-claimed` absent. `dispatch-escalated` does NOT exclude:
      escalation means "unclaimed too long" and the executor IS the
      remedy. The claim (comment + label) is the exactly-once mutex.
-  2. arm selection — #5151 registry + census feed: eligible arms in
-     registry order, free-tier before credit-funded; quota-terminal
-     arms skipped for the arm-day. #5160 clause 5: no arm is a fallback
+  2. arm selection — #5151 registry + census + fresh pool-cadence feed:
+     only arms in the cadence feed's eligible set may dispatch. Registry
+     order and free-tier-before-credit-funded preference remain. #5160
+     clause 5: no arm is a fallback
      of record -- Gemini competes on the same gate; when it is the sole
      eligible arm the fire is stamped `constrained-arm` (never a
      preference).
-  3. quota gate — per-arm budgets read from the registry's Cadence
-     LEDGER (#5152) mirror + the census feed's quota_terminal flags.
-     Draws come from the usage record when present; an absent or
-     stale usage record means `quota_unknown` -> HOLD (the #5160
-     addendum: until #5113 T2 publishes the ledger read contract,
-     ledger reads are unavailable; do not invent a metering leg).
+  3. quota gate — provider-quota-backed arms require per-arm budgets,
+     draws, and reset evidence. Explicit `daily_pool_no_provider_quota`
+     arms instead require a matching pool/focus allocation, fresh shared
+     pool snapshot, reset evidence, and experiment label; no provider
+     quota counter is required. Missing pool evidence means `pool_unknown`,
+     not `quota_unknown`. Unknown quota is never treated as no quota.
      Probe amendment (fold c.6842923762): a quota_unknown outcome
      earns one bounded validation probe per run, and a still-valid
      quota_probe measurement in the #5230 headroom feed converts
@@ -40,10 +41,11 @@ unknown):
      the pre-flight of record is fleet-draw coverage + last
      quota_terminal + reset window, COVERAGE-STAMPED, UPPER-BOUND
      only (QDesk #5152 c.6825931792): unstamped coverage -> HOLD,
-     upper-bound headroom < 1 -> HOLD. A discovered 429 is a
-     pre-flight defect datum, NOT a probe verdict.
-  5. census freshness — a census older than CENSUS_MAX_AGE_HOURS
-     makes eligibility unknown -> HOLD `census_stale`.
+     upper-bound headroom < 1 -> HOLD. No-provider-quota pool stamps carry
+     the pool snapshot and explicitly mark numeric headroom not applicable.
+     A discovered 429 is a pre-flight defect datum, NOT a probe verdict.
+  5. freshness — a census older than CENSUS_MAX_AGE_HOURS or cadence feed
+     older than CADENCE_MAX_AGE_SECONDS makes eligibility unknown -> HOLD.
 
 One conversion per run by default (max_conversions=1): minimal blast
 radius, one auditable stamp set per run. The workflow raises
@@ -74,6 +76,7 @@ from datetime import datetime, timezone
 
 SCHEMA = "dispatch-executor/stamp-v1"
 CENSUS_MAX_AGE_HOURS = 48
+CADENCE_MAX_AGE_SECONDS = 3600
 USAGE_MAX_AGE_HOURS = 48
 CLAIM_MARKER = "PRODUCER CLAIM"
 STAMP_MARKER = "DISPATCH-EXECUTOR STAMP"
@@ -119,25 +122,55 @@ def eligible_filings(filings: list[dict]) -> list[dict]:
     return sorted(out, key=lambda f: f["number"])
 
 
-def census_eligible_arms(registry: dict, census: dict, now: datetime) -> tuple[list[dict], str | None]:
+def census_eligible_arms(registry: dict, census: dict, now: datetime,
+                         cadence: dict | None = None) -> tuple[list[dict], str | None]:
     """Return (eligible arms, hold reason or None).
 
     Eligible = registry status eligible AND census verdict passed AND
-    not quota-terminal for the arm-day. The census feed is the
-    eligibility record of #5151; a stale census makes eligibility
-    unknown -> HOLD.
+    not quota-terminal for the arm-day AND membership in the fresh
+    pool-cadence/v1 feed's pool.eligible set. This makes the cadence
+    route/entitlement/quota-or-pool decision authoritative.
     """
     generated_at = census.get("generated_at")
     if not generated_at:
         return [], "census_unstamped"
     if _age_hours(generated_at, now) > CENSUS_MAX_AGE_HOURS:
         return [], "census_stale"
+    if cadence is None:
+        return [], "cadence_missing"
+    cadence_ids = None
+    if cadence is not None:
+        if not isinstance(cadence, dict) or cadence.get("schema") != "pool-cadence/v1":
+            return [], "cadence_schema_invalid"
+        try:
+            cadence_age = (now - _parse_ts(cadence.get("generated_at"))).total_seconds()
+        except (ValueError, TypeError, AttributeError):
+            cadence_age = None
+        if cadence_age is None or cadence_age < 0 or cadence_age > CADENCE_MAX_AGE_SECONDS:
+            return [], "cadence_stale"
+        pool = cadence.get("pool")
+        if not isinstance(pool, dict) or not isinstance(pool.get("eligible"), list):
+            return [], "cadence_pool_unstamped"
+        if not isinstance(pool.get("eligible"), list):
+            return [], "cadence_pool_unstamped"
+        if any(not isinstance(value, str) or not value for value in pool["eligible"]):
+            return [], "cadence_pool_ids_invalid"
+        cadence_ids = set(pool["eligible"])
+        probe_ids = pool.get("probe_candidates", [])
+        if not isinstance(probe_ids, list) or any(
+            not isinstance(value, str) or not value for value in probe_ids
+        ):
+            return [], "cadence_probe_candidates_invalid"
+        if not cadence_ids and not probe_ids:
+            return [], "cadence_no_eligible_arms"
     census_by_id = {a["arm_id"]: a for a in census.get("arms", [])}
     eligible = []
     for arm in registry.get("arms", []):
         if not arm.get("selectable", False):
             continue
         if arm.get("status") != "eligible":
+            continue
+        if cadence_ids is not None and arm["arm_id"] not in cadence_ids:
             continue
         row = census_by_id.get(arm["arm_id"])
         # Census verdict vocabulary of record (#5151 run 43045718809):
@@ -188,6 +221,52 @@ def quota_headroom(arm: dict, usage: dict | None, now: datetime,
                    quota_class: str) -> tuple[int | None, str | None]:
     """(headroom, hold reason). Primary reads spendable-primary only."""
     budget = arm.get("budget") or {}
+    if budget.get("quota_class") == "daily_pool_no_provider_quota":
+        if budget.get("class") == "credit-funded":
+            return None, "pool_paid_budget_forbidden"
+        pool_id = budget.get("pool_id")
+        usage_data = usage if isinstance(usage, dict) else {}
+        eligibility_map = usage_data.get("pool_eligibility")
+        pools = usage_data.get("pools")
+        coverage = usage_data.get("coverage")
+        if not pool_id or not isinstance(eligibility_map, dict) or not isinstance(pools, dict):
+            return None, "pool_unknown"
+        eligibility = eligibility_map.get(arm["arm_id"])
+        pool = pools.get(pool_id)
+        if not isinstance(eligibility, dict) or not isinstance(pool, dict):
+            return None, "pool_unknown"
+        if not isinstance(coverage, dict) or not coverage.get("complete"):
+            return None, "pool_coverage_incomplete"
+        if eligibility.get("pool_id") != pool_id:
+            return None, "pool_mismatch"
+        if eligibility.get("experiment_label") != budget.get("experiment_label"):
+            return None, "pool_experiment_label_mismatch"
+        if eligibility.get("status") != "eligible":
+            return None, eligibility.get("hold_reason") or (
+                eligibility.get("status") if eligibility.get("status") in {
+                    "pool_unknown", "pool_unstamped", "pool_stale", "pool_exhausted",
+                    "pool_unavailable", "pool_reset_window_unknown", "pool_reset_tz_unknown",
+                    "pool_allocation_unknown", "pool_allocation_zero", "pool_leftover_unverified",
+                } else "pool_unavailable"
+            )
+        if pool.get("status") == "exhausted":
+            return None, "pool_exhausted"
+        if pool.get("status") != "available":
+            return None, "pool_unavailable"
+        if pool.get("experiment_label") != budget.get("experiment_label"):
+            return None, "pool_experiment_label_mismatch"
+        if not pool.get("source_ref") or not pool.get("reset_window") or not pool.get("reset_tz"):
+            return None, "pool_evidence_incomplete"
+        observed_at = eligibility.get("observed_at") or pool.get("observed_at")
+        try:
+            age = (now - _parse_ts(observed_at)).total_seconds() if isinstance(observed_at, str) else None
+        except (ValueError, TypeError, AttributeError):
+            age = None
+        if age is None or age < 0:
+            return None, "pool_unstamped"
+        if age > 3600:
+            return None, "pool_stale"
+        return None, None
     if quota_class == "escalation":
         total = budget.get("reserved_escalation")
     else:
@@ -246,7 +325,7 @@ def measured_headroom(arm: dict, measured: dict | None,
 
 
 def preflight(arm: dict, usage: dict | None, now: datetime,
-              headroom: int,
+              headroom: int | None,
               measured_record: dict | None = None) -> tuple[dict | None, str | None]:
     """Live bucket-total headroom read for the stamp, or a HOLD reason.
 
@@ -261,6 +340,42 @@ def preflight(arm: dict, usage: dict | None, now: datetime,
     pre-flight read (its results are the attempt-2 gate's coverage
     evidence; the gate itself is unchanged).
     """
+    budget = arm.get("budget") or {}
+    if budget.get("quota_class") == "daily_pool_no_provider_quota":
+        pool_id = budget.get("pool_id")
+        usage_data = usage if isinstance(usage, dict) else {}
+        eligibility_map = usage_data.get("pool_eligibility")
+        pools = usage_data.get("pools")
+        coverage = usage_data.get("coverage")
+        if not pool_id or not isinstance(eligibility_map, dict) or not isinstance(pools, dict):
+            return None, "pool_unknown"
+        eligibility = eligibility_map.get(arm["arm_id"])
+        pool = pools.get(pool_id)
+        if not isinstance(eligibility, dict) or not isinstance(pool, dict):
+            return None, "pool_unknown"
+        if not isinstance(coverage, dict) or not coverage.get("complete"):
+            return None, "pool_coverage_incomplete"
+        if eligibility.get("status") != "eligible":
+            return None, eligibility.get("hold_reason") or "pool_unavailable"
+        if eligibility.get("experiment_label") != budget.get("experiment_label"):
+            return None, "pool_experiment_label_mismatch"
+        if pool.get("status") != "available" or pool.get("experiment_label") != budget.get("experiment_label"):
+            return None, "pool_unavailable"
+        return {
+            "bucket": pool_id,
+            "source": "daily-pool-snapshot",
+            "ts": eligibility.get("observed_at") or pool.get("observed_at"),
+            "headroom": None,
+            "headroom_kind": "not_applicable",
+            "reset_window": pool.get("reset_window") or "unknown",
+            "reset_tz": pool.get("reset_tz") or "unknown",
+            "experiment_label": eligibility.get("experiment_label"),
+            "quota_evidence_ref": budget.get("quota_evidence_ref"),
+            "focus": eligibility.get("focus"),
+            "allocation_mode": eligibility.get("allocation_mode"),
+            "allocation_pct": eligibility.get("allocation_pct"),
+            "source_ref": pool.get("source_ref"),
+        }, None
     if measured_record is not None:
         return {
             "bucket": bucket_id_for(arm),
@@ -360,6 +475,10 @@ def build_stamp(filing: dict, arm: dict, quota_class: str,
         "usage": {"quota_class": quota_class},
         "route_id": (arm.get("endpoint") or {}).get("route_id"),
         "quota_class": quota_class,
+        "provider_quota_class": (arm.get("budget") or {}).get("quota_class") or "provider_quota_backed",
+        "pool_id": (arm.get("budget") or {}).get("pool_id"),
+        "experiment_label": (arm.get("budget") or {}).get("experiment_label"),
+        "quota_evidence_ref": (arm.get("budget") or {}).get("quota_evidence_ref"),
         "preflight": preflight_read,
     }
     return stamp
@@ -391,7 +510,8 @@ def decide(filings: list[dict], registry: dict, census: dict,
            max_conversions: int = 1, workflow_ref: str = "",
            workflow_sha: str = "", script_sha: str = "",
            measured: dict | None = None,
-           probe_budget: int = 1) -> dict:
+           probe_budget: int = 1,
+           cadence: dict | None = None) -> dict:
     """Decide the executor's actions for one run. Pure + deterministic.
 
     Probe amendment (QUE #5176 fold c.6842923762; countersign
@@ -405,8 +525,30 @@ def decide(filings: list[dict], registry: dict, census: dict,
     _REGISTRY_ORDER = {a["arm_id"]: i for i, a in enumerate(registry.get("arms", []))}
     decisions: list[dict] = []
     eligible = eligible_filings(filings)
-    arms, census_hold = census_eligible_arms(registry, census, now)
+    arms, census_hold = census_eligible_arms(registry, census, now, cadence)
     ordered = order_arms(arms)
+    # Probe-only candidates are never selectable for dispatch. They are
+    # carried separately by pool-cadence/v1 and used only for one bounded
+    # quota measurement when no fresh quota snapshot exists.
+    cadence_pool = cadence.get("pool") if isinstance(cadence, dict) else {}
+    if not isinstance(cadence_pool, dict):
+        cadence_pool = {}
+    raw_probe_ids = cadence_pool.get("probe_candidates", [])
+    probe_ids = {value for value in raw_probe_ids if isinstance(value, str) and value} if isinstance(raw_probe_ids, list) else set()
+    census_by_id = {row.get("arm_id"): row for row in census.get("arms", [])}
+    probe_candidates = []
+    for candidate in registry.get("arms", []):
+        if candidate.get("arm_id") not in probe_ids:
+            continue
+        if not candidate.get("selectable") or candidate.get("status") != "eligible":
+            continue
+        row = census_by_id.get(candidate.get("arm_id")) or {}
+        if row.get("verdict") not in ("passed", "eligible"):
+            continue
+        terminal = row.get("quota_terminal") or {}
+        if terminal.get("terminal") and terminal.get("date") == now.date().isoformat():
+            continue
+        probe_candidates.append(candidate)
     generic = [a for a in ordered if a["arm_id"] != "gemini-cli"]
     gemini = [a for a in ordered if a["arm_id"] == "gemini-cli"]
     converted = 0
@@ -477,6 +619,14 @@ def decide(filings: list[dict], registry: dict, census: dict,
                 if unknown:
                     by_id = {a["arm_id"]: a for a in generic + gemini}
                     parm = by_id[unknown["arm"]]
+                elif probe_candidates:
+                    # The cadence producer has already excluded any candidate
+                    # with non-quota blockers. Probe-only candidates are never
+                    # appended to the dispatch-eligible arm list above.
+                    parm = probe_candidates[0]
+                else:
+                    parm = None
+                if parm is not None:
                     probe = {
                         "arm": parm["arm_id"],
                         "bucket_id": bucket_id_for(parm),
@@ -577,6 +727,8 @@ def main(argv: list[str] | None = None) -> int:
     decide_p.add_argument("--arms", required=True)
     decide_p.add_argument("--census", required=True)
     decide_p.add_argument("--usage")
+    decide_p.add_argument("--cadence", required=True,
+                          help="pool-cadence/v1 eligibility feed from autoQuotaCadence")
     decide_p.add_argument("--measured",
                           help="bucket-headroom feed (QUE #5230): "
                                "quota_probe measured state")
@@ -613,6 +765,7 @@ def main(argv: list[str] | None = None) -> int:
     registry = _load(args.arms)
     census = _load(args.census)
     usage = _load(args.usage)
+    cadence = _load(args.cadence)
     measured = _load(args.measured)
     result = decide(
         filings, registry, census, usage, now, args.run_id,
@@ -620,6 +773,7 @@ def main(argv: list[str] | None = None) -> int:
         workflow_ref=args.workflow_ref,
         workflow_sha=args.workflow_sha, script_sha=args.script_sha,
         measured=measured,
+        cadence=cadence,
     )
     text = json.dumps(result, indent=2, sort_keys=True)
     if args.out:

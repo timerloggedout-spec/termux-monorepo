@@ -10,7 +10,8 @@ reviewers:
   - id: timerloggedout-spec
     role: operator-authorizer
     status: accepted
-related_prs: []
+related_prs:
+  - 5840
 related_branches:
   - feat/hackathon-desk-full-20261124
 gates_required: [proposal-lifecycle, repo-gate]

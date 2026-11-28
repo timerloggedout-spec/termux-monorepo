@@ -237,8 +237,8 @@ def markdown_index(index: dict[str, Any]) -> str:
         f"Catalog source fingerprint: {index.get('source_fingerprint')}.", "",
         f"Authority conflicts: {len(index['authority_conflicts'])}.",
         f"Uncatalogued source writers: {len(index['uncatalogued_source_writers'])}.", "",
-        "| Workflow | Events | Dispatch inputs | Job selectors | Declared permission authority |",
-        "|---|---|---|---|---|",
+        "| Workflow | Events | Dispatch inputs | Job selectors | Declared permission authority | API write methods |",
+        "|---|---|---|---|---|---|",
     ]
     for item in index["workflows"]:
         inputs = ", ".join(item["workflow_dispatch_inputs"]) or "—"
@@ -246,7 +246,8 @@ def markdown_index(index: dict[str, Any]) -> str:
         authority = item["source_authority"]
         if item["authority_conflict"]:
             authority += f" (catalog: {item['catalog_authority']})"
-        lines.append(f"| {item['path']} | {', '.join(item['events']) or '—'} | {inputs} | {selectors} | {authority} |")
+        methods = ", ".join(item["api_write_methods"]) or "—"
+        lines.append(f"| {item['path']} | {', '.join(item['events']) or '—'} | {inputs} | {selectors} | {authority} | {methods} |")
     if counts["missing_from_catalog"] or counts["missing_from_directory"]:
         lines.extend(["", "## Catalog drift", ""])
         lines.extend(f"- Missing from catalog: {path}" for path in counts["missing_from_catalog"])

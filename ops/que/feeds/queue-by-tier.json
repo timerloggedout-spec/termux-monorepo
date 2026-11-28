@@ -1,27 +1,24 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-28T06:34:58Z",
+ "generated_at": "2026-11-28T06:50:41Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 2,
-   "in_progress": 3,
+   "queued": 3,
+   "in_progress": 2,
    "oldest_queued_at": "2026-11-21T07:17:51Z",
    "by_workflow_queued": {
-    "repo gate": 1,
+    "repo gate": 2,
     "PR scope guard": 1
    }
   },
   "2": {
    "tier": 2,
-   "queued": 2,
-   "in_progress": 1,
-   "oldest_queued_at": "2026-11-28T06:33:26Z",
-   "by_workflow_queued": {
-    "pages build and deployment": 1,
-    "tribute-dashboard-deploy": 1
-   }
+   "queued": 0,
+   "in_progress": 2,
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "3": {
    "tier": 3,
@@ -32,20 +29,17 @@
   },
   "4": {
    "tier": 4,
-   "queued": 15,
-   "in_progress": 14,
+   "queued": 11,
+   "in_progress": 16,
    "oldest_queued_at": "2026-11-21T07:17:51Z",
    "by_workflow_queued": {
-    "lane events recorder": 2,
-    "n8n SHE bridge": 2,
-    "Quota Dispatch Tree": 1,
-    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
+    "Agent Readability Source Contract": 1,
+    "quota-allocation-planner": 1,
+    "quota-served-probe": 1,
+    "Foresight Evidence Spine": 1,
+    "graph-matrix-probe": 1,
     "DO Statement Style": 1,
-    "telemetry-ingest": 1,
-    "Workflow Surface Policy": 1,
-    "RECON INTEL discovery": 1,
-    "PR evidence evaluation": 1,
-    "termux smoke": 1,
+    "termux smoke": 2,
     "Agent PR Jules Handoff": 1,
     "PR Change Effectiveness Ledger": 1,
     "Advisory GitHub Actions lint": 1
@@ -53,8 +47,8 @@
   }
  },
  "totals": {
-  "queued": 19,
-  "in_progress": 18
+  "queued": 14,
+  "in_progress": 20
  },
  "wedged_ancient": [
   {
@@ -87,12 +81,12 @@
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
    "1": 5,
-   "2": 3,
+   "2": 2,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 8,
-  "default_t4": 29,
+  "explicit_total": 7,
+  "default_t4": 27,
   "unmatched": 0,
   "ancient_excluded": 4,
   "operator_excluded": 1

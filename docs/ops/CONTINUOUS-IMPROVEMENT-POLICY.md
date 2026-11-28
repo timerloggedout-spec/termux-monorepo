@@ -43,6 +43,10 @@ Retain asynchronous implementation, issue/PR/review-driven feedback, tests befor
 
 Local adaptation: asynchronous agents are evidence-producing collaborators, not implicit authority to merge, rewrite policy, or suppress findings. Current-SHA evidence and repository gates remain authoritative.
 
+### Engineering toolchain learning
+
+Engineering toolchain observations enter the existing Learnings lane through `docs/ops/ENGINEERING-LEARNINGS-MATRIX.md`. Record runtime compatibility, license/access constraints, format interoperability, solver validity, resource use, failure/recovery and physical-world risk as distinct evidence classes. A PATH probe is an observation, not an installation or correctness claim. Promote reusable learnings only after reproducibility, source attribution and independent review appropriate to the risk.
+
 ### Termux MCP project stewardship
 
 Retain lean-worktree discipline, read-only-by-default reconnaissance, device/resource preflight, explicit mutation boundaries, and operational health evidence.

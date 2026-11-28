@@ -11,6 +11,7 @@
 |---|---|---|---|
 | Repository topology | Single MonoRepo product; dedicated game repo; three-plane network | Dedicated game repo + MonoRepo project profile + Research Astute/Search Astutely research planes | Operator |
 | Cross-repository coupling | Symlink; copied files; API and manifest contracts | Versioned manifests and API contracts; local symlink convenience only | Development + Delivery Reliability |
+| Project profile shape | New independent schema; existing ArchWiz profile contract + domain manifest | Existing `project-profile/v1` scope profile + game-specific project manifest + registry index | Orchestration & Quality Control |
 | Search Astutely identity | Existing connector; GitHub organization; alternate account/org | Treat `search-astute-ly` as verified organization; validate runtime and account ownership | Operator + Research |
 | Research Astute reuse | Direct import; links and references; selective licensed reuse | Reuse references and metadata first; approve content imports by source license and ownership | Research + Operator |
 | Audience progression | Age bands; one difficulty ladder; knowledge lenses | Shared knowledge corpus with Field, Mechanism, Quantitative, Structural, and Research lenses | Game Design + Accessibility |

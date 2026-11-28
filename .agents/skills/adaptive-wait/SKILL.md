@@ -690,3 +690,19 @@ Session 2026-10-19 14:15 PDT / 2026-10-19 21:15 UTC:
 - Recent gates success/skipped. help-wanted execute in_progress on tip. No tip failures. Decision: QUIET / KEEP. No promote.
 - #1286 dual-gate PASS but not on tip base. Master functional. Disjoint: skills updated with recon.
 - Agent-Identity: Grok (Administrator)
+
+
+Session 2026-11-19 07:56 PDT / 15:56 UTC:
+- Watched `timerloggedout-spec/termux-monorepo`, master at `b76fcc524e579818662e15a8eb475d63a593bfba`.
+- Draft PR #5663: `recon/compounding-evidence-2026-11-19`, head `49adce7c0a7e3ce3da0a73f8d5d8a82a7a5f8a85`, 46 commits / 9 files, mergeable. It carries the benchmark registry, compounding RECON report, execution plan, LOOPS.md CYCLE-001, current Muse Temporal addenda, compute allocation overlay, and AEF/SWE registry links. Core checks are progressing.
+- Draft PR #5664: Agentic Wallet + MergeEarn refTemplates registration, head `26eb2c55ffeee22eef6a026de54387e2f85525d6`, 7 commits / 6 files, mergeable. Repository gate, refTemplates continuous evaluation, termux smoke, DO Statement Style, and the main PR governance checks passed. Agent PR Jules Handoff run 44556574713 returned a GitHub App installation API rate-limit response while listing PR comments.
+- Draft PR #5666: Jules handoff API-load guard, head `baeaa8232d28b816ea61da3a96f7ec7257eae403`, 13 commits / 4 files, mergeable. The workflow now gates mutation comment pagination on `jules-handoff-pending`, pins github-script by immutable SHA, and runs a focused Python contract suite in repo gate. The Jules handoff workflow skipped on the ordinary PR sync event; repository checks are progressing.
+- Muse runtime evidence: November 19 workspace export passed its inventory, denylist, and content-scrub gates (T0 698, T1 92,637, 37 manifest-only, 71 excluded, 3 split). Temporal self-host is active on 7233/8233/7234 with a 15-minute keepalive and an empty workflow list; #5632 tracks the first fleet workflow and schedule. HindSight's daily job ran a census only; 326 payloads remain at extraction exit #5553, and #5555 tracks provenance ingestion. Muse image replacement occurs on an approximately two-hour cycle; observer relaunch fragility remains an active workstream.
+- Hark capacity and tailnet visibility remain stale/conflicted; the recorded seat cap expired at 2026-11-19 00:46 PT. Capture a fresh host and lease receipt before new placement.
+- Termux repository stewardship scripts exist, while the Termux MCP connector is unavailable in this session. Device health and pending job IDs 43107–43109 remain a direct-device preflight.
+- Context relationship graph v2 is present; its manifest is dated 2026-10-26, history coverage is partial, and page 2 remains pending. Use direct GitHub evidence for current work until the index is refreshed.
+- Added `LOOPS.md` CYCLE-001 to codify scope → preflight → reconstruct → prioritize → implement → validate → WAIT → adapt → compound → publish → close.
+- Decision: ACTIVE / CONTINUE. Keep PRs #5663, #5664, and #5666 in draft while authoritative checks progress. Preserve the existing Actions N5 proof and the current Muse service/idle distinction. Hold device scheduling for a live Termux preflight and user-selected report time.
+- Wait-cycle refinement: re-fetch exact head and workflow runs after every material commit; while checks progress, do bounded disjoint RECON; classify API quota failures and reduce fan-out before retry; verify the PR number returned by GitHub before writing cross-references; poll when a new state can change the next action.
+- Next authoritative checks: PR #5663 repo gate / DO Statement Style / termux smoke; PR #5666 repo gate and focused contract tests; HindSight retain → stats → recall receipt; first Muse Temporal workflow under #5632; fresh Hark lease/capacity receipt.
+- Agent-Identity: ChatGPT (GitHub repository connector; Termux MCP unavailable).

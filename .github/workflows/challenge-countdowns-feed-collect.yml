@@ -1,4 +1,5 @@
-# Challenge countdowns feed refresh (contract: docs/ops/CHALLENGE-COUNTDOWNS-FEED.md).
+# Implements: HD-002. Challenge countdowns + public challenge projection refresh
+# (contracts: docs/ops/CHALLENGE-COUNTDOWNS-FEED.md and CHALLENGE-PUBLIC-FEED.md).
 # Regenerates the countdown and allowlisted public challenge feeds from
 # their canonical source records and
 # proposes it as a refresh PR — never commits directly. Mirrors the

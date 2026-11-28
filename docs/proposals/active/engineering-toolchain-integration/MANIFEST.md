@@ -66,6 +66,16 @@ The current ChatGPT session exposes GitHub and research/documentation tools. The
 - Current branch head at this record: `b4ad26572f666f77923a74484beda537e760c711` (re-fetch before promotion).
 - Workflow status on earlier superseded SHAs was cancelled; latest-head validation is pending.
 
+
+### 2026-11-28 — ChatGPT — taxonomy, tracking and refTemplates audit
+
+- Added the engineering project identity to `ops/tracking/projects.json` and the cohort to `docs/ops/AGENT-EVALUATION-LANE-REGISTRY.md`; generated tracking projections remain single-writer owned.
+- Added the engineering taxonomy, probe, QUE template, Hub protocol and lane-classification checks to the required Termux smoke gate.
+- Preserved the `refTemplates/` gitignore boundary: tracked reference metadata now lives in `docs/ops/ENGINEERING-REFERENCE-SET.json`; `refTemplates/engineering/` remains a local-only workspace.
+- Corrected access evidence: Onshape Free is $0/public/non-commercial, while its Free-plan card requirement remains unknown; SOLIDWORKS for Makers is paid ($48/year or $15/month before tax), personal/non-commercial, with no free version/trial.
+- Code state before this log update: `5736355324bd4a10b698c910dee53a5cef201643`. The manifest update itself creates a new head; run all final checks against the resulting branch SHA.
+- Current runtime evidence remains repository-only; Termux device probe and runner execution remain blocked pending external receipts.
+
 ## Links
 
 - [ITEMS](./ITEMS.md)

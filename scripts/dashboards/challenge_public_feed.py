@@ -21,7 +21,7 @@ FORBIDDEN_KEYS = {"metrics_internal", "win_probability"}
 DATE_FIELDS = (
     "announced", "reg_open", "reg_close", "build_start", "build_end",
     "submissions_open", "deadline", "judging_end", "winners_at",
-    "register_build", "preliminary_due", "finalists_announced", "final_due",
+    "register_build", "preliminary_due", "finalists_announced", "final_due", "winners",
 )
 
 

@@ -22,9 +22,9 @@
       "id": "workflow-catalog",
       "path": "docs/ops/generated/automation-workflow-catalog.json",
       "role": "generated exhaustive workflow inventory",
-      "observed_workflow_count": 331,
-      "source_fingerprint": "4a497cdac2e70a6fc07866e869010cadb96b90db96ac60a79157414b740ba553",
-      "blob_sha": "5b38351a7881fcc6167e48717f5dc2735cf6b425",
+      "observed_workflow_count": 332,
+      "source_fingerprint": "d1fc2a62d098070ccae2d73efe34528bf17d3c3f1245d3137b4ba80ea41b689e",
+      "blob_sha": "56afde58d2df4f8741c1f650fbc533561888b195",
       "freshness": "generated; refresh through existing automation-docs lane"
     },
     {
@@ -375,7 +375,7 @@
   "workflow_event_catalog": {
     "authoritative_path": "docs/ops/generated/automation-workflow-catalog.json",
     "schema_version": 1,
-    "observed_workflow_count": 331,
+    "observed_workflow_count": 332,
     "supported_event_types": [
       "push",
       "pull_request",
@@ -407,7 +407,7 @@
       "bounded-state-write",
       "writer"
     ],
-    "rule": "Use the generated catalog for exhaustive per-workflow inventory; this registry stores normalized relationships and selected exemplars rather than copying 331 rows."
+    "rule": "Use the generated catalog for exhaustive per-workflow inventory; this registry stores normalized relationships and selected exemplars rather than copying 332 rows."
   },
   "feed_contract": {
     "dashboard_surfaces": [
@@ -477,10 +477,9 @@
     "Unknown mappings remain UNKNOWN and become explicit reconciliation work."
   ],
   "known_gaps": [
-    "Complete inventory of issue forms and their SWARM-DISPATCH blocks has not been normalized into per-template records here.",
     "Complete repository label census and each label's consumer workflow are not embedded; GitHub labels plus owning workflow contracts remain authoritative.",
     "All @mention spellings, slash commands, and HTML comment markers have not been exhaustively extracted.",
-    "Workflow event activity types, branch/path filters, payload schemas, permissions, and inputs require workflow-source parsing beyond the generated catalog's event-name summary.",
+    "Event payload schemas and cross-workflow handoff artifact contracts remain to be normalized; workflow YAML parsing now captures event filters, activity types, dispatch inputs, permissions, job selectors, concurrency, action references, and source blob provenance.",
     "Existing feed schemas and refresh cadence vary by surface; map each surface to its exact feed contract during the next reconciliation pass."
   ],
   "next_reconciliation": {
@@ -516,7 +515,7 @@
     "workflow_trigger_exemplars": {
       "artifact": "docs/ops/generated/workflow-trigger-census.json",
       "markdown": "docs/ops/WORKFLOW-TRIGGER-CENSUS.md",
-      "workflow_count": 7,
+      "workflow_count": 8,
       "status": "SOURCE_VERIFIED_EXEMPLARS",
       "exhaustive": false
     },
@@ -535,7 +534,7 @@
       "status": "IN_SYNC",
       "catalog_fingerprint": "d1fc2a62d098070ccae2d73efe34528bf17d3c3f1245d3137b4ba80ea41b689e",
       "workflow_index": "docs/ops/generated/workflow-event-index.json",
-      "observed_at": "2026-11-27"
+      "observed_at": "2026-11-28"
     },
     "workflow_authority_conflicts": [
       {

@@ -21,4 +21,4 @@ Every promoted learning carries: `learning_id`, `tool_id`, `tool_version`, `sour
 
 ## Promotion
 
-A single run can create an observation. Reusable learning requires reproducibility, source attribution and independent review where the claim affects engineering correctness, safety, licensing or manufacturing. Failed and contradictory observations remain retained. The Learnings lane consumes verified records; this matrix does not create a second memory store.
+A single run can create an observation. Reusable learning requires reproducibility, source attribution and independent review where the claim affects engineering correctness, safety, licensing or manufacturing. Failed and contradictory observations remain retained. The existing Learnings lane remains the sole memory store for promoted, verified records.

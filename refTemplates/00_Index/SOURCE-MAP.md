@@ -1,5 +1,14 @@
 # SOURCE-MAP — refTemplates
 
+## 01_Agent_Runtime — fleet-native wallet template
+
+| Slot | Preferred SOURCE / evidence |
+|---|---|
+| agentic-wallet | Internal fleet-native template: `refTemplates/01_Agent_Runtime/agentic-wallet/{README.md,SPEC.md,SOURCE.txt}`; wallet ledger and MoneyBall design are the mechanics authorities |
+| MergeEarn comparator | https://github.com/Saidur-droid/MergeEarn — owner-reported prior use in wallet-template design; external bounty/work-funding and payout-flow comparator; PR #76 is an interaction reference, not a code or settlement-authority dependency |
+
+MergeEarn is registered as a comparator in the agentic-wallet source lineage. It does not replace the in-repo hash-chained wallet ledger, establish an external payout claim, or authorize chain/mainnet, key custody, or real-money behavior.
+
 ## 15_Research_Repo_Templates (tier A)
 
 | Slot | Preferred SOURCE |

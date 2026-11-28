@@ -123,6 +123,12 @@ jobs:
         with self.assertRaisesRegex(ValueError, r"broken\\.yml.*YAML"):
             workflow_registry.parse_workflow_text(source, ".github/workflows/broken.yml")
 
+    def test_rejects_yaml_without_workflow_events_or_jobs(self) -> None:
+        with self.assertRaisesRegex(ValueError, "missing top-level on event declaration"):
+            workflow_registry.parse_workflow_text("name: Incomplete\\njobs: {}\\n", ".github/workflows/incomplete.yml")
+        with self.assertRaisesRegex(ValueError, "must define at least one job"):
+            workflow_registry.parse_workflow_text("name: Incomplete\\non: [push]\\njobs: {}\\n", ".github/workflows/empty-jobs.yml")
+
     def test_git_blob_sha_matches_git_object_format(self) -> None:
         self.assertEqual(workflow_registry.git_blob_sha(b"name: x\n"), "595a3aeae4904608eee47f61ba721453a70460b0")
 
@@ -174,7 +180,7 @@ jobs:
             workflow_dir.mkdir(parents=True)
             catalog_dir.mkdir(parents=True)
             (workflow_dir / "one.yml").write_text(
-                "name: One\\non: [push]\\njobs: {}\\n", encoding="utf-8"
+                "name: One\\non: [push]\\njobs:\\n  build:\\n    runs-on: ubuntu-latest\\n", encoding="utf-8"
             )
             (catalog_dir / "automation-workflow-catalog.json").write_text(
                 json.dumps({"source_fingerprint": "abc", "workflows": [{"path": ".github/workflows/one.yml", "authority": "read-only-or-advisory"}]}),

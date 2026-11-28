@@ -118,6 +118,24 @@ candidates:
       Pairwise execution-evidence skill ranking + fuzzy scoring + ELO. Powers
       skill search/contribution via approx CLI / hosted arena. Reference treatment only.
 
+
+  - id: artemis_fork
+    repository: timerloggedout-spec/artemis_fork
+    source_url: https://github.com/timerloggedout-spec/artemis_fork.git
+    revision: b8f6ef7f973485059371f6b66f400a7d8a7dcd24
+    branch: termux-adapter
+    target_path: refTemplates/smods/artemis_fork
+    intended_role: android_ui_automation_adapter
+    runtime: Python
+    license: Apache-2.0
+    nested_submodules: false
+    status: approved_for_submodule
+    notes: >-
+      Fork of google/artemis (NL ⇒ Android UI automation, MCP server, AndroidWorld 99%+).
+      Customization: termux/ adapter (connect.sh T1 tailnet ∨ T2 ssh tunnel ∨ T3 self-ADB,
+      doctor.sh, env.termux.example). Agent runs on a host; Termux nodes expose ADB only.
+      Runbook docs/ops/ARTEMIS-TERMUX-ANDROID.md. Device ids opaque per #1477.
+
 exclusions:
   - category: generated_or_sensitive_state
     rule: >-

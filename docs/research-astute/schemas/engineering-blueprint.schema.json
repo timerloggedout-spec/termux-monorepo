@@ -1,0 +1,742 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://researchastute.org/schemas/engineering-blueprint.schema.json",
+  "title": "Engineering Blueprint",
+  "description": "Evidence-traceable system engineering map. Distinguishes sourced facts, analytical inferences, and unresolved questions.",
+  "type": "object",
+  "required": [
+    "blueprint_id",
+    "subject",
+    "scope",
+    "status",
+    "system_boundary",
+    "architecture",
+    "interfaces",
+    "flows",
+    "lifecycle",
+    "assurance",
+    "evidence",
+    "open_questions",
+    "provenance"
+  ],
+  "properties": {
+    "blueprint_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]+$"
+    },
+    "subject": {
+      "type": "object",
+      "required": [
+        "name",
+        "organization",
+        "subject_type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "organization": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subject_type": {
+          "enum": [
+            "organization",
+            "program",
+            "mission",
+            "vehicle",
+            "spacecraft",
+            "launch_system",
+            "energy_system",
+            "manufacturing_system",
+            "software_platform",
+            "subsystem",
+            "technology",
+            "other"
+          ]
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "scope": {
+      "type": "object",
+      "required": [
+        "included",
+        "excluded",
+        "as_of"
+      ],
+      "properties": {
+        "included": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "excluded": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "as_of": {
+          "type": "string",
+          "format": "date"
+        },
+        "operational_context": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "status": {
+      "enum": [
+        "request-seeded",
+        "discovery",
+        "evidence-gathering",
+        "draft-map",
+        "review",
+        "validated",
+        "published",
+        "superseded",
+        "blocked"
+      ]
+    },
+    "confidence": {
+      "enum": [
+        "unassessed",
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "system_boundary": {
+      "type": "object",
+      "required": [
+        "system_of_interest",
+        "inside_boundary",
+        "outside_boundary",
+        "assumptions"
+      ],
+      "properties": {
+        "system_of_interest": {
+          "type": "string"
+        },
+        "inside_boundary": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "outside_boundary": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "stakeholders": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "statement",
+          "class",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "statement": {
+            "type": "string"
+          },
+          "class": {
+            "enum": [
+              "functional",
+              "performance",
+              "interface",
+              "safety",
+              "security",
+              "reliability",
+              "environmental",
+              "operational",
+              "regulatory",
+              "maintainability",
+              "other"
+            ]
+          },
+          "status": {
+            "enum": [
+              "sourced",
+              "derived",
+              "proposed",
+              "open",
+              "verified",
+              "waived"
+            ]
+          },
+          "source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "verification_method": {
+            "enum": [
+              "test",
+              "analysis",
+              "inspection",
+              "demonstration",
+              "review",
+              "pending"
+            ]
+          },
+          "verification_evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "architecture": {
+      "type": "object",
+      "required": [
+        "views",
+        "components",
+        "dependencies"
+      ],
+      "properties": {
+        "views": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "context",
+              "functional",
+              "logical",
+              "physical",
+              "software",
+              "hardware",
+              "deployment",
+              "operational",
+              "data",
+              "safety",
+              "cybersecurity",
+              "manufacturing",
+              "supply-chain",
+              "maintenance",
+              "lifecycle"
+            ]
+          }
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "name",
+              "role",
+              "evidence_state"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "role": {
+                "type": "string"
+              },
+              "category": {
+                "enum": [
+                  "mechanical",
+                  "electrical",
+                  "power",
+                  "propulsion",
+                  "thermal",
+                  "avionics",
+                  "controls",
+                  "software",
+                  "data",
+                  "communications",
+                  "structures",
+                  "materials",
+                  "manufacturing",
+                  "human",
+                  "facility",
+                  "service",
+                  "other"
+                ]
+              },
+              "parent_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "evidence_state": {
+                "enum": [
+                  "source-confirmed",
+                  "analyst-inferred",
+                  "open"
+                ]
+              },
+              "source_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "notes": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "from",
+              "to",
+              "dependency_type"
+            ],
+            "properties": {
+              "from": {
+                "type": "string"
+              },
+              "to": {
+                "type": "string"
+              },
+              "dependency_type": {
+                "enum": [
+                  "power",
+                  "data",
+                  "mechanical",
+                  "thermal",
+                  "fluid",
+                  "control",
+                  "material",
+                  "software",
+                  "operational",
+                  "supply",
+                  "facility",
+                  "other"
+                ]
+              },
+              "description": {
+                "type": "string"
+              },
+              "source_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "endpoints",
+          "interface_type",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "endpoints": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "string"
+            }
+          },
+          "interface_type": {
+            "enum": [
+              "mechanical",
+              "electrical",
+              "power",
+              "thermal",
+              "fluid",
+              "data",
+              "software-api",
+              "communications",
+              "human-machine",
+              "manufacturing",
+              "environmental",
+              "organizational",
+              "other"
+            ]
+          },
+          "contract": {
+            "type": "string"
+          },
+          "units_and_conventions": {
+            "type": "string"
+          },
+          "failure_modes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "enum": [
+              "documented",
+              "partially-documented",
+              "inferred",
+              "unknown"
+            ]
+          },
+          "source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "flows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "flow_type",
+          "steps"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "flow_type": {
+            "enum": [
+              "energy",
+              "mass",
+              "propellant",
+              "thermal",
+              "data",
+              "command",
+              "telemetry",
+              "material",
+              "manufacturing",
+              "human",
+              "logistics",
+              "other"
+            ]
+          },
+          "steps": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "sequence",
+                "element"
+              ],
+              "properties": {
+                "sequence": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "element": {
+                  "type": "string"
+                },
+                "input": {
+                  "type": "string"
+                },
+                "output": {
+                  "type": "string"
+                },
+                "control_or_feedback": {
+                  "type": "string"
+                },
+                "source_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "lifecycle": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "phase",
+          "activities"
+        ],
+        "properties": {
+          "phase": {
+            "enum": [
+              "concept",
+              "design",
+              "analysis",
+              "development",
+              "manufacturing",
+              "integration",
+              "verification",
+              "validation",
+              "deployment",
+              "operations",
+              "maintenance",
+              "upgrade",
+              "retirement",
+              "recycling",
+              "disposal",
+              "other"
+            ]
+          },
+          "activities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "entry_exit_criteria": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "assurance": {
+      "type": "object",
+      "required": [
+        "hazards",
+        "failure_modes",
+        "verification_plan",
+        "cybersecurity"
+      ],
+      "properties": {
+        "hazards": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "hazard",
+              "status"
+            ],
+            "properties": {
+              "hazard": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "identified",
+                  "analyzed",
+                  "mitigated",
+                  "accepted",
+                  "open"
+                ]
+              },
+              "controls": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "source_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "failure_modes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "verification_plan": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cybersecurity": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "safety_case": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "evidence_id",
+          "claim_or_artifact",
+          "evidence_state",
+          "source_url",
+          "retrieved_at"
+        ],
+        "properties": {
+          "evidence_id": {
+            "type": "string"
+          },
+          "claim_or_artifact": {
+            "type": "string"
+          },
+          "evidence_state": {
+            "enum": [
+              "primary-source",
+              "secondary-source",
+              "analyst-inference",
+              "unverified-lead"
+            ]
+          },
+          "source_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "publisher": {
+            "type": "string"
+          },
+          "published_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "retrieved_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "locator": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "rights_status": {
+            "enum": [
+              "open",
+              "metadata-only",
+              "restricted",
+              "unknown",
+              "pending-review"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "created_by",
+        "created_at",
+        "schema_version",
+        "method"
+      ],
+      "properties": {
+        "created_by": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "schema_version": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string"
+        },
+        "reviewers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "supersedes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

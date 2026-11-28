@@ -14,6 +14,13 @@
 - `ops/projects/profile.schema.json` already defines the ArchWiz `project-profile/v1` scope contract. `docs/ops/ARCHWIZ-CONCEPT-MAP.md` directs project profiles into a separate project-scope family under `.config/llm_map/profiles/projects/`, with scope over repositories, issue classes, lanes, and artifact stores.
 - `docs/ops/RESEARCH-TRIGGERS.md` and `.github/ISSUE_TEMPLATE/research-service.yml` route research services into `docs/repositories/research-seeds/*.json`.
 
+## Dedicated game repository
+
+- Repository: https://github.com/timerloggedout-spec/cell-the-living-machine
+- Provisioned through the existing MonoRepo Repository Provisioner workflow, run `46108047424`; workflow job and all four steps completed successfully.
+- Repository ID: `1475194740`; owner: `timerloggedout-spec`; visibility: private; default branch: `main`.
+- Seeded README, architecture, knowledge lenses, research/provenance, engine evaluation, decision log, project-control links, contribution guide, and license-decision record.
+
 ## Research Astute
 
 - Repository: https://github.com/NDuma/ResearchAstute

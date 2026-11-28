@@ -15,7 +15,7 @@ Snapshot: `feat/trigger-workflow-registry-refresh`, 2026-11-27. This index carri
 
 ## Coverage semantics
 
-For all catalog records, the index carries event names, schedules, jobs, authority, concurrency text, and action pins. It does not claim per-workflow activity types, branch/path filters, input schemas, permissions, or job-level `if` expressions. The source-level exemplar census captures those details for selected workflows; the next parser pass should enrich the remaining source-level fields.
+For all catalog records, the index carries event names, schedules, jobs, authority, concurrency text, and action pins. It does not claim per-workflow activity types, branch/path filters, input schemas, permissions, or job-level `if` expressions. The source-level v2 generator is scripts/ci/workflow_registry.py. It parses each workflow YAML for complete event filters, workflow_dispatch inputs, workflow/job permissions, job selectors, concurrency, action references, and source blob SHAs; the trusted master refresh writes the enriched snapshot.
 
 Catalog source fingerprint: `d1fc2a62d098070ccae2d73efe34528bf17d3c3f1245d3137b4ba80ea41b689e`.
 Machine-readable index: `docs/ops/generated/workflow-event-index.json`.

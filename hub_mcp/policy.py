@@ -112,7 +112,7 @@ _CAPABILITIES: dict[str, CapabilitySpec] = {
         description="Run the repository's deterministic Termux smoke gate.",
         timeout_seconds=180,
         command=("python3", "{repository}/scripts/ci/termux_smoke.py"),
-    ),,
+    ),
     "engineering.toolchain_probe": CapabilitySpec(
         name="engineering.toolchain_probe",
         approval=ApprovalLevel.OBSERVE,

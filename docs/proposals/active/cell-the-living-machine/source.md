@@ -27,7 +27,7 @@
 - Signed-in GitHub account `timerloggedout-spec` is listed as an organization owner.
 - Existing `manus-ui-research-hub` is an integration hub for public-source Manus UI research and deterministic development lanes. Its `.gitmodules` pins `search-astute-ly/manus-public-ui-research` and `Research-Astute/manus-ui-adapter-lab`.
 - Existing `manus-ui-research-hub` and `manus-ui-adapter-lab` have a Manus UI / deterministic adapter scope. They provide an integration pattern; the molecular biology research store uses a dedicated repository.
-- New reusable science repository: https://github.com/Research-Astute/molecular-biology-research
+- Target reusable science repository: https://github.com/Research-Astute/molecular-biology-research
 - Target visibility: private; default branch: `main`; repository ID awaits the provisioning workflow receipt.
 - Research contracts: `RESEARCH_ASTUTE_CONTRACT.yaml`; the 26-provider candidate catalog remains in the MonoRepo at `DATA_SOURCES.yaml`; the private Research Astute registry seed and initial mechanism dossiers await repository provisioning.
 - The third-party `NDuma/ResearchAstute` repository is a separate public resource. Its license and ownership scope remain review-required; it is excluded from the canonical Research-Astute project plane.

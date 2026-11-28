@@ -13,7 +13,7 @@ reviewers:
 related_prs: []
 related_branches:
   - feat/hackathon-desk-full-20261124
-gates_required: [proposal-lifecycle, repo-gate, termux-smoke]
+gates_required: [proposal-lifecycle, repo-gate]
 ---
 
 # MANIFEST — hackathon-desk
@@ -67,7 +67,8 @@ Build a teammate-facing Hackathon Desk inside the existing Tribute dashboard. Th
 - [ ] ICM map-change proposal reviewed through the ICM human checkpoint
 - [ ] Implementation plan reviewed
 - [ ] Focused tests and accessibility checks pass
-- [ ] Repository gate and Termux smoke pass on the same head
+- [ ] Repository gate, focused tests, and accessibility checks pass on the same head
+- [x] Termux runtime remains offline and is excluded from execution; no Termux runtime validation is claimed
 - [ ] Required PR checks complete and head SHA re-fetched
 - [ ] Deployment freshness and live route verified
 - [ ] All items terminal and proposal closed through the lifecycle

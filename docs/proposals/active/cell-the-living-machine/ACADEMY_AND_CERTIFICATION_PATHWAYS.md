@@ -33,6 +33,20 @@ Official starting points:
 - https://www.nvidia.com/en-us/training/open-source/
 - https://www.nvidia.com/en-us/learn/ai-learning-essentials/
 
+## NVIDIA Skills catalog matches
+
+The live NVIDIA Skills catalog includes three strong matches for the production platform:
+
+| Skill | Project use | Environment boundary |
+|---|---|---|
+| omniverse-cad-to-simready | Convert source CAD/3D assets into simulation-ready USD, assign reviewed materials/physics, validate conformance and package assets. | Studio pipeline; managed Content Agents and OVRTX stages require a configured provider, Docker, NVIDIA Container Toolkit and NVIDIA GPU. |
+| omniverse-usd-performance-tuning | Diagnose USD stage load time, memory and FPS; optimize reusable definitions while preserving downstream behavior. | Studio/compute pipeline; requires a verified USD Optimize runtime and supported validation tools. |
+| omniverse-content-services | Plan USD content access, versioning, collaboration and distributed compute across projects and systems of record. | Shared content infrastructure and digital-twin collaboration. |
+
+Catalog source: https://github.com/NVIDIA/skills/blob/main/skills.sh.json
+
+These are catalog matches, not installed skills or proof that the required infrastructure is provisioned. Each skill remains an optional studio workflow. The game client continues to target low-tier devices independently of NVIDIA workstation/compute requirements.
+
 ## Internal academy design
 The project can host open curricula, structured labs, challenge scenarios, peer review and evidence portfolios. Vendor credentials remain issued and verified by the relevant provider. Internal game achievements are labeled as project achievements and never represented as AMD/NVIDIA certification.
 

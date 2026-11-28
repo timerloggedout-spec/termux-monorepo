@@ -225,7 +225,7 @@ jobs:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             (root / ".github/workflows").mkdir(parents=True)
-            (root / ".github/workflows/actual.yml").write_text("name: Actual\non: [push]\njobs: {}\n", encoding="utf-8")
+            (root / ".github/workflows/actual.yml").write_text("name: Actual\non: [push]\npermissions:\n  contents: read\njobs:\n  build:\n    steps:\n      - run: gh api --method POST /orgs/example/repos\n", encoding="utf-8")
             catalog = {"source_fingerprint": "x", "workflows": [{"path": ".github/workflows/stale.yml", "authority": "writer"}]}
             index = workflow_registry.build_index(root, catalog)
             self.assertEqual(index["reconciliation"]["status"], "DRIFT")

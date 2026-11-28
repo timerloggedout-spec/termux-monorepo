@@ -134,7 +134,7 @@ def parse_workflow_text(source: str, path: str) -> dict[str, Any]:
     api_write_methods = sorted({
         method.upper()
         for method in re.findall(
-            r"\\bgh\\s+api\\s+(?:--method(?:=|\\s+)|-X\\s+)(POST|PATCH|PUT|DELETE)\\b",
+            r"\bgh\s+api\s+(?:--method(?:=|\s+)|-X\s+)(POST|PATCH|PUT|DELETE)\b",
             source,
             flags=re.IGNORECASE,
         )

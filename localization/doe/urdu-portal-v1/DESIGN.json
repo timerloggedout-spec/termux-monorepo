@@ -1,14 +1,90 @@
 {
-  "schema_version":1,"campaign_id":"urdu-portal-v1","status":"registered_not_run",
-  "hypothesis":"Provider-assisted Urdu drafts differ in adequacy, fluency, terminology consistency, and correction effort; a reviewed human baseline remains the publication control.",
-  "surface":"teammate-portal","target_locale":"ur","regional_profile":"ur-PK",
-  "cohort":{"id":"teammate-portal-ui-v1","fixture":"localization/catalogs/teammate-portal/en.json","fixture_revision":"1","task_count":12},
-  "factors":{"provider":["azure-translator","deepl","google-cloud-translation","openai","human-baseline"],"model_version":["provider_reported_exact_version","human_reviewed"],"prompt_glossary":["plain","domain_glossary","contextual_instructions"],"review_condition":["blind_native_review","unreviewed_machine_draft"]},
-  "design":"screening_then_replication","assignment":{"order":"randomized_per_task","reviewer_blinding":true,"baseline":"human-baseline","preserve_unavailable_cells":true},
-  "primary_outcome":{"name":"blinded_human_quality","scale":"1-5","aggregation":"mean_with_distribution"},
-  "secondary_outcomes":["adequacy","fluency","terminology_consistency","rtl_render_defects","reviewer_correction_effort_minutes","latency_ms","provider_cost"],
-  "covariates":["task_length","message_type","script_complexity","reviewer_experience"],
-  "promotion_rule":"human approval required; provider ranking alone never publishes translations",
-  "analysis":{"method":"factorial_screening_then_replication","retain_raw_records":true,"report_uncertainty":true,"latency_is_quality_proxy":false},
-  "limitations":["Provider support, model/version, price, and regional availability are verified at execution time.","The initial 12-message cohort supports screening; replication is required before a provider-wide claim.","Human review scores require rubric calibration and inter-rater agreement reporting."]
+  "schema_version": 1,
+  "campaign_id": "urdu-portal-v1",
+  "status": "registered_not_run",
+  "hypothesis": "Provider-assisted Urdu drafts differ in adequacy, fluency, terminology consistency, and correction effort; a reviewed human baseline remains the publication control.",
+  "surface": "teammate-portal",
+  "target_locale": "ur",
+  "regional_profile": "ur-PK",
+  "cohort": {
+    "id": "teammate-portal-ui-v1",
+    "fixture": "localization/catalogs/teammate-portal/en.json",
+    "fixture_revision": "1",
+    "task_count": 12,
+    "task_keys": [
+      "page.title",
+      "page.description",
+      "nav.language",
+      "nav.english",
+      "nav.urdu",
+      "status.done",
+      "status.source",
+      "section.done_board",
+      "section.dispatch",
+      "section.reference",
+      "section.route",
+      "content.english_fallback"
+    ]
+  },
+  "factors": {
+    "provider": [
+      "azure-translator",
+      "deepl",
+      "google-cloud-translation",
+      "openai",
+      "human-baseline"
+    ],
+    "model_version": [
+      "provider_reported_exact_version",
+      "human_reviewed"
+    ],
+    "prompt_glossary": [
+      "plain",
+      "domain_glossary",
+      "contextual_instructions"
+    ],
+    "review_condition": [
+      "blind_native_review",
+      "unreviewed_machine_draft"
+    ]
+  },
+  "design": "screening_then_replication",
+  "assignment": {
+    "order": "randomized_per_task",
+    "reviewer_blinding": true,
+    "baseline": "human-baseline",
+    "preserve_unavailable_cells": true
+  },
+  "primary_outcome": {
+    "name": "blinded_human_quality",
+    "scale": "1-5",
+    "aggregation": "mean_with_distribution"
+  },
+  "secondary_outcomes": [
+    "adequacy",
+    "fluency",
+    "terminology_consistency",
+    "rtl_render_defects",
+    "reviewer_correction_effort_minutes",
+    "latency_ms",
+    "provider_cost"
+  ],
+  "covariates": [
+    "task_length",
+    "message_type",
+    "script_complexity",
+    "reviewer_experience"
+  ],
+  "promotion_rule": "human approval required; provider ranking alone never publishes translations",
+  "analysis": {
+    "method": "factorial_screening_then_replication",
+    "retain_raw_records": true,
+    "report_uncertainty": true,
+    "latency_is_quality_proxy": false
+  },
+  "limitations": [
+    "Provider support, model/version, price, and regional availability are verified at execution time.",
+    "The initial 12-message cohort supports screening; replication is required before a provider-wide claim.",
+    "Human review scores require rubric calibration and inter-rater agreement reporting."
+  ]
 }

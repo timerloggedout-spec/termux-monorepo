@@ -76,6 +76,18 @@ class LocalizationReviewRegressionTests(unittest.TestCase):
         with patch.object(localization, "read", side_effect=altered_read):
             errors = localization.validate()
         self.assertTrue(any("catalog must be localization/catalogs/teammate-portal/ur.json" in error for error in errors), errors)
+    def test_manifest_source_catalog_must_match_source_locale(self):
+        original_read = localization.read
+
+        def altered_read(path):
+            data = original_read(path)
+            if path == "localization/manifests/teammate-portal.json":
+                data["translations"][0]["source_catalog"] = "localization/glossaries/teammate-portal/ur.json"
+            return data
+
+        with patch.object(localization, "read", side_effect=altered_read):
+            errors = localization.validate()
+        self.assertTrue(any("source catalog must be localization/catalogs/teammate-portal/en.json" in error for error in errors), errors)
     def test_feedback_schema_requires_nonempty_translation_identifiers(self):
         schema = json.loads(Path("localization/schemas/feedback.schema.json").read_text(encoding="utf-8"))
         properties = schema["properties"]

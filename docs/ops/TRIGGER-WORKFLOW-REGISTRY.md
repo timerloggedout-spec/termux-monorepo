@@ -109,7 +109,7 @@ The generated catalog at `docs/ops/generated/automation-workflow-catalog.json` i
 - concurrency policy;
 - pinned Actions.
 
-The catalog's event-name summary remains compact. `scripts/ci/workflow_registry.py` parses each workflow YAML and preserves activity types, branch/path filters, dispatch input schemas, workflow/job permissions, job selectors, concurrency, action references, and Git blob SHAs. It detects explicit `gh api` POST/PATCH/PUT/DELETE methods and reports uncatalogued source writers. The generated v2 snapshot is refreshed by the trusted master automation lane after the generator lands.
+The catalog's event-name summary remains compact. `scripts/ci/workflow_registry.py` parses each workflow YAML and preserves activity types, branch/path filters, dispatch input schemas, workflow/job permissions, job selectors, concurrency, action references, and Git blob SHAs. It detects explicit `gh api` POST/PATCH/PUT/DELETE methods and reports uncatalogued source writers. The trusted master automation lane refreshes the v2 snapshot and synchronizes registry JSON counts, catalog fingerprint/blob SHA, authority conflicts, and uncatalogued writer records. The generator's --write and --check modes cover the machine-readable index, Markdown companion, and registry reconciliation metadata.
 
 ## 6. Label consumer census
 

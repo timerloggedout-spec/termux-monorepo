@@ -13,6 +13,8 @@
 | CLM-09 | Establish search-result aggregation and research-seed synchronization with Search Astutely. | P1 | blocked_external | Research & Intelligence + Delivery Reliability | Verified API/connector, source snapshots, stable IDs, deduplication, update cadence, and failure-state tests. | CLM-02 |
 | CLM-10 | Establish cross-repository integration contracts, release provenance, and link validation. | P2 | proposed | Delivery Reliability / CI-CD | Manifest contract, repository identity checks, source revision pins, and CI validation. | CLM-01, CLM-07, CLM-09 |
 
+| CLM-11 | Map player/specialist audiences and connect the game to the existing hackathon/challenge opportunity registry. | P2 | in_progress | Research & Intelligence + Game Development & Production | Audience/lens map, challenge-category crosswalk, current event references, and source-of-truth links. | CLM-01, CLM-05 |
+
 ## Execution boundary
 
 CLM-01 is the initial documentation/control-plane increment. CLM-02 through CLM-06 are research and design increments. CLM-07 and CLM-09 depend on external account/API actions. CLM-08 begins after the project repository, source map, and acceptance contract are ready.

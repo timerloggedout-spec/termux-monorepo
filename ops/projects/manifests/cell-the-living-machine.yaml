@@ -90,9 +90,17 @@ game:
       - id: engineering_factory_cell
         scope: compact_3d_automated_production_cell
         systems: [input_storage, transport, processing_machine, power, sensor, output_inspection]
+        reference_kernel: simulation/reference/factory_cell.py
+        tests: tests/test_factory_cell.py
+        implementation_status: engine_neutral_reference_passed
         evidence_gate: deterministic_simulation_and_engineering_review
 
 engineering_platform:
+  player_profile_schema: schemas/player-profile.schema.json
+  design_artifact_schema: schemas/design-artifact.schema.json
+  bill_of_materials_schema: schemas/bill-of-materials.schema.json
+  reference_simulation_workflow: .github/workflows/reference-simulation-tests.yml
+  blender_asset_validation_workflow: .github/workflows/blender-asset-validation.yml
   shared_equipment_registry: ops/equipment/registry.yaml
   equipment_asset_schema: ops/equipment/asset.schema.json
   equipment_reservation_schema: ops/equipment/reservation.schema.json
@@ -196,6 +204,15 @@ content_pipeline:
   source_classes: [experimental_structure, predicted_structure, curated_annotation, primary_literature, educational_visual, gameplay_abstraction]
 
 tooling:
+  blender_mcp:
+    adapter: dcc-mcp-blender
+    version: 0.2.30
+    status: pinned_candidate_local_session_pending
+    profile: tools/blender-mcp/manifest.yaml
+  mobile_delivery:
+    priority: low_tier_android_and_browser_first
+    renderers: [godot_compatibility, godot_mobile, desktop_forward_plus]
+    physical_device_benchmark: pending
   molecular_visualization:
     candidates: [Blender, Molecular_Nodes]
     status: candidate_review

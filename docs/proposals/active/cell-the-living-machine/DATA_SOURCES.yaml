@@ -1,0 +1,153 @@
+schema: molecular-data-source-catalog/v1
+project_ref: project:cell-the-living-machine
+status: candidate_catalog
+policy: "Catalog membership indicates a research candidate. Adapter admission requires API, license, attribution, rate, and provenance review."
+
+sources:
+  - id: RCSB_PDB
+    domain: experimental_structures
+    url: https://www.rcsb.org/
+    api_docs: https://www1.rcsb.org/docs/programmatic-access/web-apis-overview
+    access: public_search_and_data_apis
+    identifiers: [PDB_ID, entity_id, assembly_id, UniProt_accession]
+    formats: [PDB, mmCIF, JSON]
+    usage_review: source_specific_attribution_and_data_terms
+    priority: critical
+  - id: EMDB
+    domain: cryo_em_maps_and_metadata
+    url: https://www.ebi.ac.uk/emdb/
+    api_docs: https://www.ebi.ac.uk/emdb/documentation
+    access: public_REST_API
+    identifiers: [EMD_ID, PDB_ID]
+    formats: [map, metadata, validation_reports]
+    usage_review: source_specific_data_policy
+    priority: high
+  - id: BMRB
+    domain: biomolecular_NMR_data
+    url: https://bmrb.io/
+    api_docs: https://bmrb.io/
+    access: public_data_portal_api_review
+    identifiers: [BMRB_ID, PDB_ID, UniProt_accession]
+    formats: [NMR_constraints, chemical_shifts, metadata]
+    usage_review: source_specific_terms_review
+    priority: medium
+  - id: AlphaFold_DB
+    domain: predicted_protein_structures
+    url: https://alphafold.ebi.ac.uk/
+    api_docs: https://www.ebi.ac.uk/training/online/courses/navigating-alphafold-database/what-is-the-afdb/accessing-searching-afdb/
+    access: public_API_and_bulk_downloads
+    identifiers: [UniProt_accession, AlphaFold_model_ID]
+    formats: [mmCIF, PDB, JSON_PAE, pLDDT]
+    usage_review: CC-BY-4.0_with_required_attribution_and_citations
+    priority: critical
+    evidence_label: computational_prediction
+  - id: UniProtKB
+    domain: protein_sequence_and_function
+    url: https://www.uniprot.org/
+    api_docs: https://www.uniprot.org/api-documentation/
+    access: public_REST_API_and_downloads
+    identifiers: [UniProt_accession, GeneID, RefSeq_accession]
+    formats: [JSON, TSV, FASTA]
+    usage_review: source_specific_terms_and_attribution
+    priority: critical
+  - id: NCBI_Entrez
+    domain: genes_proteins_nucleotides_and_literature
+    url: https://www.ncbi.nlm.nih.gov/
+    api_docs: https://ncbi.nlm.nih.gov/home/develop/api/
+    access: public_E_Utilities_and_PUG
+    identifiers: [GeneID, RefSeq_accession, PMID, PMCID, PubChem_CID]
+    formats: [JSON, XML, FASTA, text]
+    usage_review: API_usage_policy_and_source_specific_rights
+    priority: critical
+  - id: InterPro
+    domain: protein_families_domains_and_function
+    url: https://www.ebi.ac.uk/interpro/
+    api_docs: https://www.ebi.ac.uk/interpro/api/
+    access: public_API
+    identifiers: [InterPro_ID, UniProt_accession, Pfam_ID]
+    formats: [JSON, TSV]
+    usage_review: source_specific_terms_and_attribution
+    priority: high
+  - id: Reactome
+    domain: curated_pathways_and_reactions
+    url: https://reactome.org/
+    api_docs: https://reactome.org/dev/content-service/
+    access: public_REST_Content_Service
+    identifiers: [Reactome_stable_ID, UniProt_accession, ChEBI_ID, GO_ID]
+    formats: [JSON, TSV]
+    usage_review: source_specific_license_and_attribution
+    priority: high
+  - id: KEGG
+    domain: pathways_and_molecular_networks
+    url: https://www.genome.jp/kegg/
+    api_docs: https://www.kegg.jp/kegg/rest/
+    access: REST_service_terms_review
+    identifiers: [KEGG_ID, gene_ID, compound_ID, reaction_ID]
+    formats: [text, image, KGML]
+    usage_review: commercial_and_redistribution_terms_review
+    priority: medium
+  - id: ChEBI
+    domain: chemical_entities_and_ontologies
+    url: https://www.ebi.ac.uk/chebi/
+    api_docs: https://www.ebi.ac.uk/chebi/tools
+    access: public_REST_API
+    identifiers: [CHEBI_ID, InChI, SMILES]
+    formats: [JSON]
+    usage_review: source_specific_terms_and_attribution
+    priority: high
+  - id: PubChem
+    domain: chemical_structures_and_assay_records
+    url: https://pubchem.ncbi.nlm.nih.gov/
+    api_docs: https://pubchem.ncbi.nlm.nih.gov/docs/pug-rest
+    access: public_PUG_REST
+    identifiers: [PubChem_CID, SID, AID]
+    formats: [JSON, SDF, XML]
+    usage_review: source_specific_terms_and_attribution
+    priority: high
+  - id: PubMed
+    domain: biomedical_literature
+    url: https://pubmed.ncbi.nlm.nih.gov/
+    api_docs: https://ncbi.nlm.nih.gov/home/develop/api/
+    access: public_E_Utilities
+    identifiers: [PMID, DOI, PMCID]
+    formats: [XML, JSON]
+    usage_review: NCBI_usage_policy_and_article_license_review
+    priority: critical
+  - id: Europe_PMC
+    domain: biomedical_literature_and_full_text
+    url: https://europepmc.org/
+    api_docs: https://europepmc.org/RestfulWebService
+    access: public_REST_API
+    identifiers: [PMID, PMCID, DOI, Europe_PMC_ID]
+    formats: [JSON, XML, full_text_XML]
+    usage_review: article_level_license_and_reuse_review
+    priority: high
+  - id: BioCyc_EcoCyc
+    domain: organism_specific_metabolism_and_pathways
+    url: https://biocyc.org/
+    api_docs: https://biocyc.org/web-services.shtml
+    access: service_and_account_terms_review
+    identifiers: [BioCyc_frame_ID, EcoCyc_gene_ID, reaction_ID]
+    formats: [BioPAX, SBML, tabular]
+    usage_review: account_tier_and_redistribution_terms_review
+    priority: medium
+  - id: PDB_101
+    domain: structural_biology_education
+    url: https://pdb101.rcsb.org/
+    api_docs: https://pdb101.rcsb.org/
+    access: public_educational_resources
+    identifiers: [PDB_ID, content_asset_ID]
+    formats: [web, PDF, images]
+    usage_review: asset_level_license_and_attribution
+    priority: high
+
+admission_requirements:
+  - documented API contract and current endpoint
+  - source-specific terms and redistribution review
+  - stable accession and cross-reference strategy
+  - release/version metadata and retrieval timestamp
+  - citation and attribution fields
+  - rate limits and caching strategy
+  - checksum and update detection
+  - evidence-class preservation
+  - test fixture and failure-mode coverage

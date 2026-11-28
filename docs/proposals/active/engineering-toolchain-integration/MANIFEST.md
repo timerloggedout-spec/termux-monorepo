@@ -37,16 +37,16 @@ On 2026-11-28 the Operator requested active integration of the researched engine
 
 1. Engineering is an independently owned sibling domain to Reverse Engineering. Each domain retains its own taxonomy, vocabulary and validator.
 2. `ops/engineering/taxonomy.json` is the engineering taxonomy SSOT. It records discipline, tool role, license class, access cost, card requirement, formats, source URL, runtime target and stage-based toolchains.
-3. `docs/integrations/registry.json` remains the only integration portfolio. Engineering tool records reference it; they do not create a competing provider catalog.
+3. `docs/integrations/registry.json` remains the only integration portfolio. Engineering tool records reference this portfolio and preserve a single provider catalog.
 4. The Termux Agentic Hub exposes fixed, named, shell-free capabilities for taxonomy validation and read-only local tool inventory. GUI and compute-heavy applications use an explicitly approved remote Linux runner.
-5. QUE/QDesk remain the only task admission, claim, lease, escalation and operator-review plane. Engineering adds task metadata and intake contracts, not another queue.
+5. QUE/QDesk remain the only task admission, claim, lease, escalation and operator-review plane. Engineering adds task metadata and intake contracts while QUE/QDesk retain the complete queue lifecycle.
 6. DoE owns experiment design; MVT is nested within DoE; ATES supplies the execution harness. Engineering experiments use the canonical cohort × task × arm × repetition identity.
 7. refTemplates supply pinned references and upstream source lineage. They remain read-only inputs until a specific adaptation is reviewed and adopted.
 8. Engineering outputs remain source-first and portable. Native design files, neutral exchange artifacts, solver inputs, tool versions, environment fingerprints, validation reports and output hashes travel together.
 
 ## Runtime truth
 
-The current ChatGPT session exposes GitHub and research/documentation tools. The installed Termux-related plugin is recognized as installed, while no direct Termux device-operation function is exposed in this session. Repository code can define and test the device-side capability contract; actual device inventory and remote-runner execution require a live Termux receipt.
+This ChatGPT session exposes GitHub and research/documentation tools. The installed Termux-related plugin is recognized as installed; a live Termux runtime receipt remains the evidence gate for device inventory and remote-runner execution. Repository code defines and tests the device-side capability contract.
 
 ## Review log
 
@@ -72,7 +72,7 @@ The current ChatGPT session exposes GitHub and research/documentation tools. The
 - Added the engineering project identity to `ops/tracking/projects.json` and the cohort to `docs/ops/AGENT-EVALUATION-LANE-REGISTRY.md`; generated tracking projections remain single-writer owned.
 - Added the engineering taxonomy, probe, QUE template, Hub protocol and lane-classification checks to the required Termux smoke gate.
 - Preserved the `refTemplates/` gitignore boundary: tracked reference metadata now lives in `docs/ops/ENGINEERING-REFERENCE-SET.json`; `refTemplates/engineering/` remains a local-only workspace.
-- Corrected access evidence: Onshape Free is $0/public/non-commercial, while its Free-plan card requirement remains unknown; SOLIDWORKS for Makers is paid ($48/year or $15/month before tax), personal/non-commercial, with no free version/trial.
+- Corrected access evidence: Onshape Free is $0/public/non-commercial, while its Free-plan card requirement remains unknown; SOLIDWORKS for Makers is paid ($48/year or $15/month before tax), personal/non-commercial, and available through paid subscriptions.
 - Code state before this log update: `5736355324bd4a10b698c910dee53a5cef201643`. The manifest update itself creates a new head; run all final checks against the resulting branch SHA.
 - Current runtime evidence remains repository-only; Termux device probe and runner execution remain blocked pending external receipts.
 

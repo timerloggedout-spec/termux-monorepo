@@ -8,7 +8,7 @@ Pipeline: source data → Blender scene → validated asset build → glTF/USD i
 ## Blender MCP selection
 Primary candidate: DCC-MCP Blender adapter — https://github.com/dcc-mcp/dcc-mcp-blender
 
-The adapter embeds a Streamable HTTP MCP server in Blender and provides typed tools for scene inspection, modeling, mesh/UV operations, rigging, materials, rendering, interchange, validation and asset-pipeline manifests. Its repository documents a DCC-MCP CLI and agent skill workflow. The project will pin a reviewed release and verify current installation instructions before enabling it in a developer environment.
+The adapter embeds a Streamable HTTP MCP server in Blender and provides typed tools for scene inspection, modeling, mesh/UV operations, rigging, materials, rendering, interchange, validation and asset-pipeline manifests. Its repository documents a DCC-MCP CLI and agent skill workflow. The project pins candidate release v0.2.30 at source commit 5a9d7d489ebf0d6af5c5e3166453eeee5a7fce66 (PyPI package dcc-mcp-blender==0.2.30; wheel SHA-256 2b0b3cd491e139fd7c01cd7859bb8155a7e7115e05c76b1f306db0856f285d4e). Upstream CI lists Blender 4.5 LTS and 5.2 targets. The repository setup guide is tools/blender-mcp/README.md; local installation and live-session verification remain pending.
 
 Secondary candidate: MCP for Blender — https://github.com/ahujasid/mcp-for-blender
 
@@ -22,6 +22,8 @@ The repository maintains a versioned Blender tool profile in GAME_DEVELOPMENT_TO
 The repository records tool versions and configuration templates. Each developer installs the adapter in their local Blender/MCP host. Credentials, machine-specific endpoints and local paths remain in local configuration or approved secret stores.
 
 ## DCC-MCP developer setup
+
+The game repository pins the adapter in tools/blender-mcp/manifest.yaml and provides the developer setup in tools/blender-mcp/README.md.
 1. Install Blender and the DCC-MCP Blender adapter from its official release/extension distribution.
 2. Install the DCC-MCP CLI using the upstream installation instructions.
 3. Enable the adapter in Blender and launch a local Blender session.

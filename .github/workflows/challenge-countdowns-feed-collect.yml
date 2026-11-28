@@ -53,6 +53,7 @@ jobs:
           set -euo pipefail
           python3 -B scripts/dashboards/challenge_countdowns_feed.py \
             --root . --out apps/tribute-dashboard/data/challenge-countdowns-feed.json
+          python3 -B scripts/dashboards/challenge_public_feed.py --root . --out apps/tribute-dashboard/data/challenge-public-feed.json
       - name: Propose the refresh as a PR
         run: |
           set -euo pipefail

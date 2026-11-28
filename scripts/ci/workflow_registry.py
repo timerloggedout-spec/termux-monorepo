@@ -127,7 +127,7 @@ def parse_workflow_text(source: str, path: str) -> dict[str, Any]:
 
 
 def git_blob_sha(content: bytes) -> str:
-    header = f"blob {len(content)}\\0".encode("ascii")
+    header = f"blob {len(content)}\0".encode("ascii")
     return hashlib.sha1(header + content).hexdigest()
 
 
@@ -210,13 +210,13 @@ def markdown_index(index: dict[str, Any]) -> str:
         "The index describes configured behavior. Workflow-run evidence establishes execution; job conclusions and artifacts establish outcomes.", "",
         "Machine-readable index: `docs/ops/generated/workflow-event-index.json`.", "",
     ])
-    return "\\n".join(lines)
+    return "\n".join(lines)
 
 
 def rendered_outputs(root: Path = ROOT) -> tuple[str, str]:
     index = build_index(root)
     return (
-        json.dumps(index, indent=2, sort_keys=True, ensure_ascii=False) + "\\n",
+        json.dumps(index, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
         markdown_index(index),
     )
 

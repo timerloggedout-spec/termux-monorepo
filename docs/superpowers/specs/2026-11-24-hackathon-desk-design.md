@@ -30,13 +30,15 @@ Build one accessible teammate-facing page inside the existing Tribute dashboard 
 
 ## Architecture
 
-The Hackathon Desk is a static page under apps/tribute-dashboard/, using the shared dashboard.css design system. A small browser module validates and normalizes existing public feeds, renders modules, and exposes source/freshness states. The page consumes the QUE priority feed and challenge coordinator from the public repository raw-content endpoint, plus existing dashboard mirror feeds for countdown, desk, queue, and dispatch projections.
+The Hackathon Desk is a static page under apps/tribute-dashboard/, using the shared dashboard.css design system. A small browser module validates and normalizes public feeds, renders modules, and exposes source/freshness states. The page consumes the QUE priority feed from `https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/que/feeds/opportunity-priority.json` and a generated `./data/challenge-public-feed.json` projection. It consumes existing dashboard mirror feeds for countdown, desk, QUE queue, and dispatch projections through relative `./data/` URLs.
+
+The browser MUST NOT request or receive `ops/challenge/coordinator.json`. A deterministic build-time generator produces `challenge-public-feed/v1` from an explicit allowlist of public event, status, date, gate, and source fields. The generator recursively excludes `metrics_internal` and `win_probability` at every nesting level; tests scan the entire serialized artifact and fail on either key. The generated projection ships inside the dashboard deployment tree. Missing, invalid, or stale projections render an explicit unavailable state.
 
 All browser actions remain navigational. Sign-in, proposal submission, issue creation, branch/PR contribution, and review actions open GitHub pages; GitHub authenticates the teammate and enforces repository permissions. The portal does not create a separate login session or retain credentials.
 
 ## Approaches
 
-1. **Static Tribute projection with GitHub-owned contribution actions — selected.** Reuses the current static dashboard, feeds, navigation, and GitHub Issues/PRs. It has the smallest trust boundary and no new secrets or service. Authentication occurs on GitHub when a teammate acts.
+1. **Static Tribute projection with GitHub-owned contribution actions — selected.** Reuses the current static dashboard, feeds, navigation, and GitHub Issues/PRs. It has the smallest trust boundary and no new secrets or service. Authentication occurs on GitHub when a teammate acts. A profile URL selected by the teammate is self-asserted and is not proof of account ownership.
 2. **Custom OAuth-backed portal.** Could provide an in-page signed-in profile and API actions, but requires a backend, OAuth application, secret custody, session security, and a new permission surface. Those resources and approval paths are outside the current brief.
 3. **Standalone public information page with manual links.** Lowest effort, but omits live feed integration and pipeline evidence and duplicates existing navigation without delivering the requested Desk.
 
@@ -48,7 +50,7 @@ Primary navigation: Overview, Opportunities, Challenges, Hackathons, Teammates, 
 - Opportunities: ranked QUE records, state, priority, public gate status, source, and freshness.
 - Challenges: coordinator event records, verified gates, status, submission evidence, and deadline references.
 - Hackathons: event timeline and countdowns derived from recorded instants; expired/closed items remain visible with truthful state.
-- Teammates: onboarding checklist, role expectations, verified GitHub identity link, contribution-history links, and optional contact guidance.
+- Teammates: onboarding checklist, role expectations, a clearly labelled self-selected GitHub profile link (identity ownership remains unverified until a separate approved verification mechanism exists), contribution-history links, and optional contact guidance.
 - Proposals: proposal process, active registry link, proposal issue form, and review expectations.
 - Pipelines: read-only stage view from existing queue, desk, and dispatch feeds; each state links to evidence.
 - Guide and Accessibility: standalone documentation pages.

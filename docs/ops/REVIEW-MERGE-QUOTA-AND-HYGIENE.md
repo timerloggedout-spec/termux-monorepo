@@ -216,6 +216,6 @@ Workflow: `.github/workflows/localization-validate.yml`
 
 - Trigger scope: path-filtered pull requests and path-filtered pushes to `master`.
 - Workload: one `ubuntu-latest` validation job per matching event; Python 3.12; pinned Markdown and JSON Schema dependencies; contract validation plus localization unit tests.
-- Dispatch shape: event-driven, with no cron schedule, workflow fan-out, or external API polling.
+- Dispatch shape: event-driven, with path-filtered pull-request and master-push triggers.
 - Capacity treatment: the repository is public, so standard GitHub-hosted runner compute follows the public-repository free-use policy. The job still consumes workflow-run queue capacity, trigger volume, and runner concurrency.
-- Oversight: count actual runs after merge and compare the observed run rate with the repository's Actions capacity snapshot. The current evidence establishes workload shape, not quota exhaustion.
+- Oversight: count actual runs after merge and compare the observed run rate with the repository's Actions capacity snapshot. The current evidence establishes workload shape; quota exhaustion remains unverified.

@@ -12,6 +12,8 @@ description: Discover, route, validate and evaluate FOSS-first mechanical CAD, e
 - Architecture: `docs/architecture/engineering-domain.md`
 - Queue contract: `docs/ops/ENGINEERING-QUE-QDESK-CONTRACT.md`
 - Experiment plan: `docs/ops/ENGINEERING-DOE-MVT-PLAN.md`
+- Remote runner profile: `docs/ops/ENGINEERING-REMOTE-RUNNER-PROFILE.md`
+- Reference set: `refTemplates/engineering/references.json`
 
 ## Routing
 1. Classify discipline, lifecycle stage, input artifact, expected output and verification method.

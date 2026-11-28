@@ -5,6 +5,35 @@ judges, etc." The tracking system (`ops/challenge/coordinator.json` +
 Neon DB + opportunity ledger) covers all of it, **public sources only**,
 every fact sourced + `fetched_at`, gaps `NOT_ESTABLISHED`.
 
+## Devpost expansion
+
+The event-level lifecycle remains owned by this challenge OSINT lane. The global Devpost software directory is a separate discovery surface and requires its own adapter; the authenticated Devpost event connector does not expose general directory search. The proposed adapter boundary, BEFORE/DURING/AFTER lifecycle, directory schema, cadence, podium capture, and graph integration are specified in [`DEVPOST-OBSERVATORY-EXPANSION.md`](DEVPOST-OBSERVATORY-EXPANSION.md). That document is an architecture proposal; its proposed directory cadence is not configured until a workflow is deployed and observed.
+
+## GitLab AI Hackathon source family
+
+GitLab's AI Hackathon sources are tracked as a distinct public-source family,
+separate from Devpost's global software directory and separate from the
+existing event records. The source hierarchy, event distinctions, Discord
+onboarding, reusable participant template, date discrepancies, and future-cycle
+watch disposition are recorded in
+[`GITLAB-AI-HACKATHON-OSINT.md`](GITLAB-AI-HACKATHON-OSINT.md).
+
+The machine-readable URL inventory is
+`ops/challenge/osint/gitlab-sources.json`. It records the supplied root group
+and DevSecOps Flow subgroup, the Transcend and Project Templates subgroups,
+the Participant Template project, the 312-project Transcend catalog snapshot,
+Devpost event/gallery/participants/rules/resources pages, the GitLab Community
+Hackathon pages, and the official Discord/documentation links. The 312-project public Transcend catalog snapshot is `ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json`.
+The supplied DevSecOps Flow URL resolved to an **empty subgroup** at the
+2026-11-22 observation; retain it as a URL-addressed subgroup source.
+
+The February–March 2026 GitLab AI Hackathon and October 2026 Life After Code /
+Transcend edition are closed. The next GitLab Community Hackathon is published
+for **January 21–28, 2027 UTC** (candidate C17); owner onboarding, registration,
+issue assignment, and contribution state: NOT_ESTABLISHED. This URL inventory
+is a source register; integration with the current weekly event watcher is
+pending.
+
 ## Surfaces
 
 - **EVENTS** — organizer intel (`events[].organizers[]`), rules/prize

@@ -1,0 +1,464 @@
+{
+  "schema": "challenge-osint-source-registry/v1",
+  "observed_at": "2026-11-22T10:00:14Z",
+  "provenance": {
+    "seed_urls": [
+      "https://gitlab.com/gitlab-ai-hackathon",
+      "https://gitlab.com/gitlab-ai-hackathon/gitlab-devsecops-flow-hackathon"
+    ],
+    "method": "Public signed-out GitLab page observation, official Devpost connector reads, and official GitLab/Devpost documentation.",
+    "scope": "Source inventory; integration with the current challenge watcher is pending."
+  },
+  "sources": [
+    {
+      "id": "gitlab-ai-hackathon-root",
+      "url": "https://gitlab.com/gitlab-ai-hackathon",
+      "kind": "gitlab_group",
+      "relation": "root_group",
+      "observation": "Public root group ID 121124982; first-level inventory includes seven subgroups and three direct projects.",
+      "coverage": "observed",
+      "fetched_at": "2026-11-22",
+      "platform_id": "121124982"
+    },
+    {
+      "id": "gitlab-devsecops-flow-hackathon",
+      "url": "https://gitlab.com/gitlab-ai-hackathon/gitlab-devsecops-flow-hackathon",
+      "kind": "gitlab_subgroup",
+      "relation": "child_of:gitlab-ai-hackathon-root",
+      "platform_id": "126794830",
+      "observation": "Observed child counts: subgroups 0; projects 0.",
+      "coverage": "observed_empty",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-transcend-subgroup",
+      "url": "https://gitlab.com/gitlab-ai-hackathon/transcend",
+      "kind": "gitlab_subgroup",
+      "relation": "child_of:gitlab-ai-hackathon-root",
+      "platform_id": "132494471",
+      "observation": "Sibling subgroup created 2026-05-18; archived=false; 312 public projects and zero child subgroups. Project descriptions reference Transcend showcase workspaces; exact event-cycle mapping remains NOT_ESTABLISHED.",
+      "coverage": "partial_listing",
+      "fetched_at": "2026-11-22",
+      "project_catalog_snapshot": "ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json",
+      "event_cycle_mapping": "NOT_ESTABLISHED"
+    },
+    {
+      "id": "gitlab-project-templates-subgroup",
+      "url": "https://gitlab.com/gitlab-ai-hackathon/project-templates",
+      "kind": "gitlab_subgroup",
+      "relation": "child_of:gitlab-ai-hackathon-root",
+      "observation": "Public listing contains the Participant Template project.",
+      "coverage": "observed",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-participant-template",
+      "url": "https://gitlab.com/gitlab-ai-hackathon/project-templates/participant-template",
+      "kind": "gitlab_project",
+      "relation": "child_of:gitlab-project-templates-subgroup",
+      "platform_id": "77423853",
+      "observation": "Public project; main branch; agents/, flows/, LICENSE, README.md; README links to work_items/1, currently unavailable.",
+      "coverage": "observed",
+      "fetched_at": "2026-11-22",
+      "onboarding_item_url": "https://gitlab.com/gitlab-ai-hackathon/project-templates/participant-template/-/work_items/1"
+    },
+    {
+      "id": "gitlab-profile-project",
+      "url": "https://gitlab.com/gitlab-ai-hackathon/gitlab-profile/-/blob/main/README.md",
+      "kind": "gitlab_project_readme",
+      "relation": "child_of:gitlab-ai-hackathon-root",
+      "observation": "README points participants to the Devpost GitLab AI Hackathon page.",
+      "coverage": "observed",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-ai-hackathon-devpost",
+      "url": "https://gitlab.devpost.com/",
+      "kind": "devpost_event",
+      "relation": "event:gitlab-ai-hackathon-2026",
+      "observation": "Connector status closed; submissions 2026-02-09T15:45:00Z to 2026-03-25T18:00:00Z; prize pool USD 65000.",
+      "coverage": "connector_complete",
+      "fetched_at": "2026-11-22T09:59:57Z"
+    },
+    {
+      "id": "gitlab-ai-hackathon-rules",
+      "url": "https://gitlab.devpost.com/rules",
+      "kind": "official_rules",
+      "relation": "event:gitlab-ai-hackathon-2026",
+      "coverage": "connector_complete",
+      "fetched_at": "2026-11-22T09:59:57Z"
+    },
+    {
+      "id": "gitlab-ai-hackathon-dates",
+      "url": "https://gitlab.devpost.com/details/dates",
+      "kind": "event_dates",
+      "relation": "event:gitlab-ai-hackathon-2026",
+      "coverage": "connector_complete",
+      "fetched_at": "2026-11-22T09:59:56Z"
+    },
+    {
+      "id": "gitlab-ai-hackathon-resources",
+      "url": "https://gitlab.devpost.com/resources",
+      "kind": "event_resources",
+      "relation": "event:gitlab-ai-hackathon-2026",
+      "coverage": "connector_complete",
+      "fetched_at": "2026-11-22T09:59:57Z"
+    },
+    {
+      "id": "gitlab-ai-hackathon-updates",
+      "url": "https://gitlab.devpost.com/updates",
+      "kind": "event_announcements",
+      "relation": "event:gitlab-ai-hackathon-2026",
+      "coverage": "connector_complete",
+      "fetched_at": "2026-11-22T09:59:57Z"
+    },
+    {
+      "id": "gitlab-transcend-devpost",
+      "url": "https://gitlab-transcend.devpost.com/",
+      "kind": "devpost_event",
+      "relation": "event:gitlab-transcend-life-after-code-2026",
+      "observation": "Life After Code closed; public Devpost page displays 3,313 participants and USD 45,000 prize pool.",
+      "coverage": "connector_complete",
+      "fetched_at": "2026-11-22T10:00:14Z"
+    },
+    {
+      "id": "gitlab-transcend-rules",
+      "url": "https://gitlab-transcend.devpost.com/rules",
+      "kind": "official_rules",
+      "relation": "event:gitlab-transcend-life-after-code-2026",
+      "coverage": "connector_complete",
+      "fetched_at": "2026-11-22T10:00:14Z"
+    },
+    {
+      "id": "gitlab-community-hackathon",
+      "url": "https://contributors.gitlab.com/hackathon",
+      "kind": "community_hackathon",
+      "relation": "program:gitlab-community-hackathon",
+      "observation": "October 2026 edition closed (76 prize winners; 636 merged MRs); next edition published for January 21–28, 2027 UTC.",
+      "coverage": "observed_upcoming",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-community-hackathon-rules",
+      "url": "https://contributors.gitlab.com/docs/hackathon-rules",
+      "kind": "official_rules",
+      "relation": "program:gitlab-community-hackathon",
+      "observation": "Live public rules page returned terms version 2026-10-v2; search-index copy returned 2026-10-v1. Preserve version discrepancy; live page was fetched 2026-11-22.",
+      "coverage": "observed",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-community-hackathon-forum",
+      "url": "https://forum.gitlab.com/t/our-next-gitlab-hackathon-starts-october-6th/135317",
+      "kind": "organizer_announcement",
+      "relation": "program:gitlab-community-hackathon",
+      "coverage": "observed",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-discord-ai-hackathon",
+      "url": "https://discord.com/invite/gitlab",
+      "kind": "community_channel",
+      "relation": "program:gitlab-ai-hackathon-2026",
+      "observation": "Official event materials direct participants to #ai-hackathon; channel messages: uncollected in this pass.",
+      "coverage": "invite_verified_channel_content_uncollected",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "devpost-discord",
+      "url": "https://info.devpost.com/blog/join-the-devpost-discord",
+      "kind": "community_channel",
+      "relation": "program:gitlab-ai-hackathon-2026",
+      "coverage": "linked_by_official_event_resources",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-duo-agents-docs",
+      "url": "https://docs.gitlab.com/user/duo_agent_platform/agents/",
+      "kind": "technical_documentation",
+      "relation": "technology:gitlab-duo-agent-platform",
+      "coverage": "linked_by_official_event_resources",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-duo-flows-docs",
+      "url": "https://docs.gitlab.com/user/duo_agent_platform/flows/",
+      "kind": "technical_documentation",
+      "relation": "technology:gitlab-duo-agent-platform",
+      "coverage": "linked_by_official_event_resources",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-duo-prompt-library",
+      "url": "https://about.gitlab.com/gitlab-duo/prompt-library/",
+      "kind": "technical_reference",
+      "relation": "technology:gitlab-duo-agent-platform",
+      "coverage": "linked_by_official_event_resources",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-flow-schema",
+      "url": "https://gitlab.com/gitlab-org/modelops/applied-ml/code-suggestions/ai-assist/-/blob/main/docs/flow_registry/v1.md",
+      "kind": "schema_reference",
+      "relation": "technology:gitlab-duo-agent-platform",
+      "coverage": "linked_by_public_onboarding",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-getting-started-guide",
+      "url": "https://about.gitlab.com/blog/gitlab-duo-agent-platform-complete-getting-started-guide/",
+      "kind": "technical_guide",
+      "relation": "technology:gitlab-duo-agent-platform",
+      "coverage": "linked_by_official_event_resources",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-community-hackathon-onboarding",
+      "url": "https://contributors.gitlab.com/start",
+      "kind": "onboarding",
+      "relation": "event:gitlab-community-hackathon-2027-jan",
+      "observation": "Contributor Platform onboarding entry; current event page describes a personal onboarding issue delivered by email within five minutes.",
+      "coverage": "observed",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-community-hackathon-issue-finder",
+      "url": "https://contributors.gitlab.com/issues",
+      "kind": "issue_finder",
+      "relation": "event:gitlab-community-hackathon-2027-jan",
+      "observation": "Issue finder used to choose a quick-win issue and obtain assignment before opening an MR.",
+      "coverage": "observed",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-community-hackathon-contribution-points",
+      "url": "https://contributors.gitlab.com/docs/user-guide#contribution-points",
+      "kind": "scoring_documentation",
+      "relation": "event:gitlab-community-hackathon-2027-jan",
+      "coverage": "linked_by_official_event_page",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-community-discord",
+      "url": "https://discord.gg/gitlab",
+      "kind": "community_channel",
+      "relation": "event:gitlab-community-hackathon-2027-jan",
+      "observation": "Current Community Hackathon rules direct questions to #hackathon or #contribute; channel messages: uncollected in this pass.",
+      "coverage": "invite_verified_channel_content_uncollected",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-transcend-project-catalog",
+      "url": "https://gitlab.com/api/v4/groups/132494471/projects?include_subgroups=true&per_page=100",
+      "kind": "group_project_catalog",
+      "relation": "child_projects_of:gitlab-transcend-subgroup",
+      "observation": "Four public API pages returned 312 unique public projects; all are public and active (archived=false). Exact event-cycle mapping remains NOT_ESTABLISHED.",
+      "coverage": "full_listing",
+      "fetched_at": "2026-11-22",
+      "pages": 4,
+      "page_size": 100,
+      "project_count": 312,
+      "archived_count": 0,
+      "snapshot_path": "ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json"
+    },
+    {
+      "id": "gitlab-transcend-sample-work-item",
+      "url": "https://gitlab.com/gitlab-ai-hackathon/transcend/27098937/-/work_items/1",
+      "kind": "sample_workspace_onboarding",
+      "relation": "project:gitlab-ai-hackathon/transcend/27098937",
+      "observation": "Sample workspace issue points to the Showcase Track guide, #transcend-hackathon, and office hours.",
+      "coverage": "observed",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-participant-template-onboarding",
+      "url": "https://gitlab.com/gitlab-ai-hackathon/project-templates/participant-template/-/work_items/1",
+      "kind": "template_onboarding_link",
+      "relation": "project:gitlab-participant-template",
+      "observation": "README-linked work item was unavailable at fetch time.",
+      "coverage": "unavailable",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-ai-hackathon-project-gallery",
+      "url": "https://gitlab.devpost.com/project-gallery",
+      "kind": "event_project_gallery",
+      "relation": "event:gitlab-ai-hackathon-2026",
+      "observation": "Official event project gallery and winner surface.",
+      "coverage": "linked_by_official_event_page",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-ai-hackathon-participants",
+      "url": "https://gitlab.devpost.com/participants",
+      "kind": "event_participants",
+      "relation": "event:gitlab-ai-hackathon-2026",
+      "observation": "Public event page displays 6,920 participants; connector search listing displayed 6,922.",
+      "coverage": "source_discrepancy",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-ai-hackathon-discussions",
+      "url": "https://gitlab.devpost.com/forum_topics",
+      "kind": "event_discussions",
+      "relation": "event:gitlab-ai-hackathon-2026",
+      "coverage": "linked_by_official_event_page",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-ai-hackathon-example-project-issue",
+      "url": "https://gitlab.com/gitlab-ai-hackathon/participants/621485/-/issues/1",
+      "kind": "participant_project_example",
+      "relation": "event:gitlab-ai-hackathon-2026",
+      "observation": "Official event page links this public participant issue as a repository example.",
+      "coverage": "linked_by_official_event_page",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-transcend-showcase-guide",
+      "url": "https://contributors.gitlab.com/transcend-hackathon",
+      "kind": "event_guide",
+      "relation": "event:gitlab-transcend-life-after-code-2026",
+      "coverage": "linked_by_sample_workspace_onboarding",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-custom-agents-tutorial",
+      "url": "https://gitlab.navattic.com/custom-agents",
+      "kind": "interactive_tutorial",
+      "relation": "technology:gitlab-duo-agent-platform",
+      "coverage": "linked_by_official_event_page",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-custom-flows-tutorial",
+      "url": "https://gitlab.navattic.com/custom-flows?g=cmjfm8wcq000004l3dretbtgp&s=0%20%5C",
+      "kind": "interactive_tutorial",
+      "relation": "technology:gitlab-duo-agent-platform",
+      "coverage": "linked_by_official_event_page",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-participants-test-lee",
+      "url": "https://gitlab.com/gitlab-ai-hackathon/participants-test-lee",
+      "kind": "gitlab_subgroup",
+      "relation": "child_of:gitlab-ai-hackathon-root",
+      "platform_id": "123069139",
+      "observation": "Public subgroup with 2 child projects; classified as participant-test workspace.",
+      "coverage": "observed_count",
+      "project_count": 2,
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-participants-test-mattias",
+      "url": "https://gitlab.com/gitlab-ai-hackathon/participants-test-mattias",
+      "kind": "gitlab_subgroup",
+      "relation": "child_of:gitlab-ai-hackathon-root",
+      "platform_id": "123068969",
+      "observation": "Public subgroup with 24 child projects; classified as participant-test workspace.",
+      "coverage": "observed_count",
+      "project_count": 24,
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-test-subgroup",
+      "url": "https://gitlab.com/gitlab-ai-hackathon/test",
+      "kind": "gitlab_subgroup",
+      "relation": "child_of:gitlab-ai-hackathon-root",
+      "platform_id": "122493198",
+      "observation": "Public subgroup with one CI component test project.",
+      "coverage": "observed_count",
+      "project_count": 1,
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-ci-project",
+      "url": "https://gitlab.com/gitlab-ai-hackathon/ci",
+      "kind": "gitlab_project",
+      "relation": "child_of:gitlab-ai-hackathon-root",
+      "platform_id": "77418162",
+      "observation": "Public CI project; contains agents/, .gitlab-ci.yml, LICENSE, README.md. README states the CI configuration applies to participant projects and is enforced by the Security Policies project.",
+      "coverage": "observed",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-security-policies-project",
+      "url": "https://gitlab.com/gitlab-ai-hackathon/security-policies",
+      "kind": "gitlab_project",
+      "relation": "child_of:gitlab-ai-hackathon-root",
+      "platform_id": "77418381",
+      "observation": "Public project containing .gitlab/security-policies, LICENSE, and README.md.",
+      "coverage": "observed",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-ci-component-test-project",
+      "url": "https://gitlab.com/gitlab-ai-hackathon/test/ci-component-test",
+      "kind": "gitlab_project",
+      "relation": "child_of:gitlab-test-subgroup",
+      "platform_id": "77782807",
+      "observation": "Public CI component test project in the root group's Test subgroup.",
+      "coverage": "observed",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-hackathon-events-index",
+      "url": "https://contributors.gitlab.com/hackathon-events",
+      "kind": "program_index",
+      "relation": "program:gitlab-hackathon-family",
+      "observation": "Official index distinguishes the Transcend cash-prize Devpost event from the Community Hackathon swag-credit contribution event.",
+      "coverage": "observed",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-transcend-october-2026-group",
+      "url": "https://gitlab.com/groups/gitlab-ai-hackathon/transcend-october-2026",
+      "kind": "gitlab_subgroup",
+      "relation": "child_of:gitlab-ai-hackathon-root",
+      "platform_id": "142538134",
+      "parent_group_id": "121124982",
+      "archived": true,
+      "created_at": "2026-09-17T09:11:36.776Z",
+      "child_subgroup_count": 1273,
+      "child_project_count": 1820,
+      "observation": "Archived October 2026 showcase group. Owner-published boundary: keep observability disabled at group scope and keep secrets out of group-level settings. Participant onboarding allows optional observability within each participant subgroup.",
+      "coverage": "full_listing",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-transcend-october-2026-project-catalog",
+      "url": "https://gitlab.com/api/v4/groups/142538134/projects?include_subgroups=true&per_page=100",
+      "kind": "group_project_catalog",
+      "relation": "child_projects_of:gitlab-transcend-october-2026-group",
+      "observation": "19 public API pages returned 1,820 unique projects; all 1,820 are public and archived.",
+      "coverage": "full_listing",
+      "page_size": 100,
+      "pages": 19,
+      "project_count": 1820,
+      "snapshot_path": "ops/challenge/osint/gitlab-transcend-october-2026-projects-2026-11-22.ndjson",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-transcend-october-2026-subgroup-catalog",
+      "url": "https://gitlab.com/api/v4/groups/142538134/subgroups?per_page=100",
+      "kind": "group_subgroup_catalog",
+      "relation": "child_subgroups_of:gitlab-transcend-october-2026-group",
+      "observation": "13 public API pages returned 1,273 unique participant subgroups; all are public and archived.",
+      "coverage": "full_listing",
+      "page_size": 100,
+      "pages": 13,
+      "subgroup_count": 1273,
+      "snapshot_path": "ops/challenge/osint/gitlab-transcend-october-2026-subgroups-2026-11-22.ndjson",
+      "fetched_at": "2026-11-22"
+    },
+    {
+      "id": "gitlab-transcend-october-2026-sample-work-item",
+      "url": "https://gitlab.com/gitlab-ai-hackathon/transcend-october-2026/621485/showcase/-/work_items/1",
+      "kind": "sample_workspace_onboarding",
+      "relation": "group:gitlab-transcend-october-2026-group",
+      "observation": "Archived sample issue describes participant subgroup/project provisioning, the Transcend guide, #transcend-hackathon, office hours, and optional per-participant observability.",
+      "coverage": "observed_read_only",
+      "fetched_at": "2026-11-22"
+    }
+  ]
+}

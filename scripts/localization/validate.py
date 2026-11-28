@@ -150,8 +150,12 @@ def validate() -> list[str]:
         catalog_path = ROOT / expected_catalog
         if not catalog_path.is_file():
             errors.append(f"manifest: missing translation catalog {expected_catalog}")
-        if translation.get("source_catalog") and not (ROOT / translation["source_catalog"]).is_file():
-            errors.append(f"manifest: missing source catalog {translation['source_catalog']}")
+        expected_source_catalog = f"localization/catalogs/teammate-portal/{source_locale}.json"
+        source_catalog_ref = translation.get("source_catalog", expected_source_catalog)
+        if source_catalog_ref != expected_source_catalog:
+            errors.append(f"manifest: translation {locale} source catalog must be {expected_source_catalog}")
+        if not (ROOT / expected_source_catalog).is_file():
+            errors.append(f"manifest: missing source catalog {expected_source_catalog}")
         freshness = translation["freshness"]
         recorded_hash = freshness["source_hash"]
         is_fresh = actual_source_hash is not None and recorded_hash == actual_source_hash

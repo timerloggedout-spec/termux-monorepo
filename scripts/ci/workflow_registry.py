@@ -65,7 +65,7 @@ def source_authority(permission_data: dict[str, Any], job_names: list[str]) -> s
     ] if job_names else [workflow, *[mapping(value) for value in job_permissions.values()]]
     if any(value == "write-all" for group in groups for value in group.values()):
         return "writer"
-    if any(scope in {"contents", "pull-requests"} and value == "write"
+    if any(value == "write" and scope not in {"issues", "checks", "security-events", "id-token"}
            for group in groups for scope, value in group.items()):
         return "writer"
     if any(scope in {"issues", "checks"} and value == "write"

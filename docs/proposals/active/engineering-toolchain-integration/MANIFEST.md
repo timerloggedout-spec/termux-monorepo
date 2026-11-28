@@ -56,6 +56,16 @@ The current ChatGPT session exposes GitHub and research/documentation tools. The
 - Head SHA at PR creation: `b7fba382c7b8661a11c7444468a0ce5a35c9bcf7`; subsequent commits on the branch require fresh checks.
 - Runtime status: repository adapters implemented; live Termux probe and remote CAD/CAE execution remain pending device/runner evidence.
 
+
+### 2026-11-28 — ChatGPT — integration expansion
+
+- Added active QUE issue-form intake with unique admission identity and existing project-task parser compatibility tests.
+- Added ArchWiz cockpit option [21] for the read-only engineering inventory.
+- Added engineering taxonomy, probe, Hub protocol and issue-template tests to the required Termux smoke suite.
+- Added a public standard GitHub-hosted runner and self-hosted runner profile; actual provisioning remains blocked by workflow permission and runner availability.
+- Current branch head at this record: `b4ad26572f666f77923a74484beda537e760c711` (re-fetch before promotion).
+- Workflow status on earlier superseded SHAs was cancelled; latest-head validation is pending.
+
 ## Links
 
 - [ITEMS](./ITEMS.md)

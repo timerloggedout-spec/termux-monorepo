@@ -1,0 +1,47 @@
+{
+  "name": "CELL: THE LIVING MACHINE",
+  "class": "custom-project",
+  "scope": {
+    "repos": [
+      "timerloggedout-spec/termux-monorepo",
+      "timerloggedout-spec/cell-the-living-machine"
+    ],
+    "issue_classes": [
+      "project-task",
+      "game-development-task",
+      "research:service",
+      "research:provider",
+      "proposal"
+    ],
+    "lanes": [
+      "Game Development & Production",
+      "Game Player Machines & Genre Teams",
+      "Game QA & Accessibility",
+      "Game ML Research",
+      "Research & Intelligence",
+      "Orchestration & Quality Control",
+      "Delivery Reliability / CI-CD",
+      "Design of Experiments"
+    ],
+    "artifact_stores": [
+      "ops/projects/manifests/cell-the-living-machine.yaml",
+      "docs/proposals/active/cell-the-living-machine/",
+      "cell-the-living-machine/releases/"
+    ],
+    "exclude": [
+      "**/*key*",
+      "**/.npmrc*",
+      "**/*token*",
+      "**/.env*",
+      "**/.git/**",
+      "**/secrets/**",
+      "**/private-keys/**"
+    ]
+  },
+  "surfaces": [
+    "github-repo",
+    "github-issues",
+    "artifact-store",
+    "external-linked"
+  ]
+}

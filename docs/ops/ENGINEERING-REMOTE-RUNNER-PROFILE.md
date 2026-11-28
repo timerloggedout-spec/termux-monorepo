@@ -1,6 +1,6 @@
-# Engineering Remote Runner Profile — FOSS / free / no-card posture
+# Engineering Remote Runner Profile — FOSS / free / card-free posture
 
-**Status:** design profile; runner not provisioned
+**Status:** design profile; runner provisioning pending
 **Owner/lane:** Tooling / Delivery Reliability
 **Canonical for:** remote execution target selection and cost/data boundaries for engineering toolchains
 
@@ -21,12 +21,12 @@ Official references:
 
 ## Self-hosted free lane
 
-Use a user-owned Linux workstation or server as a self-hosted runner for confidential data, GUI/desktop applications, large solvers, hardware-in-the-loop fixtures and workloads exceeding hosted runner limits. GitHub does not charge runner-minute fees for self-hosted runners; the owner supplies hardware, power, maintenance, network and physical security.
+Use a user-owned Linux workstation or server as a self-hosted runner for confidential data, GUI/desktop applications, large solvers, hardware-in-the-loop fixtures and workloads exceeding hosted runner limits. GitHub applies zero runner-minute fees to self-hosted runners; the owner supplies hardware, power, maintenance, network and physical security.
 
 Required controls:
 - dedicated unprivileged runner account and isolated work directory;
 - ephemeral or resettable runner where feasible;
-- no secrets in job logs or untrusted pull-request execution;
+- keep secrets out of job logs and untrusted pull-request execution;
 - network egress allowlist and pinned tool images/packages;
 - resource ceilings, timeouts and cancellation handling;
 - immutable input/output hashes and retained validation receipts;
@@ -47,8 +47,8 @@ Required controls:
 ## Current blockers
 
 1. Workflow-file changes under `.github/workflows/**` require an Operator PAT or a custom GitHub App with Workflows write permission under `docs/proposals/AGENTIC-PERMISSIONS.md`. This branch therefore adds the issue template and code contracts without adding an execution workflow.
-2. The current session has no Termux device-operation function and no verified self-hosted engineering runner.
-3. Public runner free usage is not a confidentiality guarantee. Data classification determines whether a job may use a public repository runner.
+2. Termux device-operation capability is unavailable in this session; self-hosted engineering runner verification remains pending.
+3. Public runner usage requires data-classification controls and approved synthetic/non-confidential inputs.
 
 ## Acceptance
 

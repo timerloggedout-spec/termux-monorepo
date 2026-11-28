@@ -130,6 +130,19 @@ def parse_workflow_text(source: str, path: str) -> dict[str, Any]:
         reference for reference in action_refs
         if re.fullmatch(r"[0-9a-fA-F]{40}", reference.rsplit("@", 1)[1])
     )
+    declared_permission_authority = source_authority(permission_data, [str(name) for name in jobs])
+    api_write_methods = sorted({
+        method.upper()
+        for method in re.findall(
+            r"\\bgh\\s+api\\s+(?:--method(?:=|\\s+)|-X\\s+)(POST|PATCH|PUT|DELETE)\\b",
+            source,
+            flags=re.IGNORECASE,
+        )
+    })
+    source_level_authority = "writer" if api_write_methods else declared_permission_authority
+    authority_basis = "declared GitHub workflow/job permissions"
+    if api_write_methods:
+        authority_basis += " + explicit gh api write methods"
     return {
         "path": path,
         "name": str(document.get("name") or Path(path).stem),
@@ -142,8 +155,10 @@ def parse_workflow_text(source: str, path: str) -> dict[str, Any]:
         "concurrency": document.get("concurrency") or {},
         "action_refs": sorted(action_refs),
         "action_pins": action_pins,
-        "source_authority": source_authority(permission_data, [str(name) for name in jobs]),
-        "authority_basis": "declared GitHub workflow/job permissions",
+        "source_authority": source_level_authority,
+        "declared_permission_authority": declared_permission_authority,
+        "api_write_methods": api_write_methods,
+        "authority_basis": authority_basis,
     }
 
 
@@ -199,6 +214,10 @@ def build_index(root: Path = ROOT, catalog: dict[str, Any] | None = None) -> dic
             "missing_from_directory": missing_from_directory,
         },
         "authority_conflicts": [item["path"] for item in records if item["authority_conflict"]],
+        "uncatalogued_source_writers": sorted(
+            item["path"] for item in records
+            if item["catalog_authority"] is None and item["source_authority"] == "writer"
+        ),
         "workflows": records,
     }
 
@@ -214,7 +233,8 @@ def markdown_index(index: dict[str, Any]) -> str:
         f"| Indexed records | {counts['indexed_count']} |",
         f"| Reconciliation | `{counts['status']}` |", "",
         f"Catalog source fingerprint: `{index.get('source_fingerprint')}`.", "",
-        f"Authority conflicts: {len(index['authority_conflicts'])}.", "",
+        f"Authority conflicts: {len(index['authority_conflicts'])}.",
+        f"Uncatalogued source writers: {len(index['uncatalogued_source_writers'])}.", "",
         "| Workflow | Events | Dispatch inputs | Job selectors | Declared permission authority |",
         "|---|---|---|---|---|",
     ]

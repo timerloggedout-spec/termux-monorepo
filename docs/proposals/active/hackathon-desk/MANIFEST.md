@@ -43,8 +43,8 @@ Build a teammate-facing Hackathon Desk inside the existing Tribute dashboard. Th
 - Desk feed supplies traversal/status evidence; deprecated priority-timebox data is excluded from opportunity ranking.
 - Public teammate UI excludes metrics_internal, win_probability, internal admin feeds, credentials, and private operational metrics.
 - The public portal is a read-only projection. GitHub Issues, Pull Requests, and repository pages enforce identity and write permissions.
-- Discord contact details remain optional and unpublished until teammate opt-in. A Discord handle is a contact reference, not a GitHub identity.
-- Existing challenge, proposal, QUE, and dispatch systems remain authoritative. The Desk adds no parallel scheduler, state store, dispatch engine, or permission model.
+- Discord contact details remain optional and unpublished until teammate opt-in. A Discord handle serves as a contact reference; GitHub remains the contribution identity.
+- Existing challenge, proposal, QUE, and dispatch systems remain authoritative. The Desk reuses the existing scheduler, state store, dispatch engine, and permission model.
 - ICM map edits remain behind the human review checkpoint in docs/icm/maintenance/02_design/.
 
 ## Operator decisions recorded
@@ -69,7 +69,7 @@ Build a teammate-facing Hackathon Desk inside the existing Tribute dashboard. Th
 - [ ] Implementation plan reviewed
 - [ ] Focused tests and accessibility checks pass
 - [ ] Repository gate, focused tests, and accessibility checks pass on the same head
-- [x] Termux device/session execution is recorded as NOT PERFORMED — OFFLINE; any Ubuntu-hosted `agentic termux smoke` result is recorded separately as Linux CI only
+- [x] Termux device/session execution status: OFFLINE; any Ubuntu-hosted `agentic termux smoke` result is recorded separately as Linux CI only
 - [ ] Required PR checks complete and head SHA re-fetched
 - [ ] Deployment freshness and live route verified
 - [ ] All items terminal and proposal closed through the lifecycle

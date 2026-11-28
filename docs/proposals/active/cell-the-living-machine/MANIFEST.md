@@ -19,7 +19,7 @@ related_branches:
   - feature/cell-living-machine-architecture
 related_repos:
   - https://github.com/timerloggedout-spec/termux-monorepo
-  - https://github.com/NDuma/ResearchAstute
+  - https://github.com/Research-Astute/molecular-biology-research
   - https://github.com/search-astute-ly
 gates_required:
   - repo-gate
@@ -40,7 +40,7 @@ A + B + C operate together with separate ownership:
 |---|---|---|
 | A — Game product | Dedicated `cell-the-living-machine` repository | Game source, assets, runtime, builds, tests, release artifacts |
 | B — Developer control plane | `timerloggedout-spec/termux-monorepo` | Project profile, game lanes, specialist contexts, tool profiles, CI, QA routing, integration contracts |
-| C1 — Reusable research | `NDuma/ResearchAstute` | Curated research references, notes, reusable research assets after rights review |
+| C1 — Reusable research | `Research-Astute/molecular-biology-research` | Reusable molecular/cellular biology research records, source registry, mechanisms, claims, and provenance |
 | C2 — Search aggregation | `search-astute-ly` organization | Search jobs, aggregated results, snapshots, source links, research-discovery workflows |
 | C3 — Scientific authorities | External scientific databases | Canonical structures, sequences, annotations, pathways, molecules, and literature records |
 
@@ -62,8 +62,8 @@ The full iJEP Studio channel is the initial visual and topic-discovery surface. 
 
 - MonoRepo scope profile: drafted under `.config/llm_map/profiles/projects/`; project manifest and registry are in `ops/projects/`; draft PR #5949 is open.
 - Dedicated game repository: created as private `timerloggedout-spec/cell-the-living-machine` (repository ID `1475194740`, default branch `main`); planning scaffold committed.
-- Research Astute: repository identified; reusable content scope requires rights and license review.
-- Search Astutely: organization identified; candidate repositories found; search-aggregation runtime and connector identity require verification.
+- Research Astute: owner organization verified; private `molecular-biology-research` repository created (ID `183701786`) as the reusable science evidence store.
+- Search Astutely: owner organization verified; current `manus-public-ui-research` repository is scoped to public Manus UI research. Scientific search aggregation endpoint and Enterprise account preservation require review.
 - Scientific database catalog: 26 candidate sources mapped across nine research domains; source-specific adapter admission follows API, terms, and provenance review.
 - Engine and renderer: selection pending a bounded prototype comparison.
 
@@ -94,6 +94,9 @@ The full iJEP Studio channel is the initial visual and topic-discovery surface. 
 - [ITEMS](./ITEMS.md)
 - [DEBATE](./DEBATE.md)
 - [Source evidence](./source.md)
+- [Research Astute contract](./RESEARCH_ASTUTE_CONTRACT.yaml)
+- [Search aggregation contract](./SEARCH_AGGREGATION_CONTRACT.yaml)
+- [Research Astute science repository](https://github.com/Research-Astute/molecular-biology-research)
 - [Scope profile pointer](./PROJECT_PROFILE.yaml)
 - [Canonical scope profile](../../../../.config/llm_map/profiles/projects/cell-the-living-machine.json)
 - [Game project manifest](../../../../ops/projects/manifests/cell-the-living-machine.yaml)

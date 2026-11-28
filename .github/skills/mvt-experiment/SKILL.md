@@ -18,3 +18,21 @@ RECON -> SELECT -> RESOLVE -> MEASURE -> WAIT -> VALIDATE -> RE-FETCH -> COMPARE
 
 ## Adapters
 Forensics/Restore, fragment matching, reverse-pointer mapping, Chrono/time-loop analysis, notation taxonomy, workflow reliability, GitHub Actions, Linear, Notion, Hex, and Vercel may consume this contract. Adapters must emit the same evidence fields and must not mutate experiment refs.
+
+
+## Canonical evidence and failure semantics
+
+- The authoritative output contract is `docs/ops/corpus/EXPERIMENT.schema.json` (schema_version `1.0`). Do not emit private adapter schemas such as `agent-mvt-v1` as the canonical experiment record.
+- Resolve baseline and candidate to immutable 40-hex commit SHAs before comparison. Never substitute a branch name or mutable ref in the canonical SHA fields.
+- Execute the same selected suite independently against both detached refs. Record both exit codes; a missing exit code is a failed/incomplete observation, never a pass.
+- Terminal record status is `passed` only when both suites exit zero, `failed` when either fails or a terminal result is missing, and `observed` for metadata-only comparison. A pre-resolution failure is preserved in a separate explicitly non-canonical failure envelope; it must not invent SHAs.
+- Emit evidence under an unconditional/always path and upload it for success, failure, cancellation, and partial execution. Workflow success is not equivalent to experiment success.
+- Keep failed stage, failure reason, run identity, attempt, and artifact URL in the evidence. Promotion remains separate and reviewed.
+- Validate every canonical record against the checked-in JSON Schema before upload. Schema validation failure is itself a failed evidence-emission stage.
+
+## Team MVT comparability
+
+- A/B are the only same-task primary comparison arms in the current five-lane matrix.
+- C/D/E are adversarial, integration-manager, and provider-umbrella diagnostic lanes. Preserve their evidence, but do not pool them with A/B or use them to estimate the same treatment effect.
+- The GitHub matrix does not guarantee dispatch order. Record sequence control as uncontrolled; do not infer a randomized or counterbalanced sequence from a computed slot.
+- Manager policy must be an explicit input/default, not derived from wall-clock minute.

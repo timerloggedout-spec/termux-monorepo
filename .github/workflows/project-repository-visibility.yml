@@ -1,112 +1,109 @@
 name: Project Repository Visibility
 
 on:
-  issues:
-    types: [opened]
+  push:
+    branches: [master]
+    paths:
+      - ops/requests/project-visibility-public.yaml
 
 permissions: {}
 
 concurrency:
-  group: project-visibility-${{ github.event.issue.number || github.run_id }}
+  group: project-visibility-cell-the-living-machine
   cancel-in-progress: false
 
 jobs:
   promote-approved-project:
-    if: >-
-      github.event_name == 'issues' &&
-      startsWith(github.event.issue.title, '[publish-project]') &&
-      github.event.issue.author_association == 'OWNER' &&
-      github.event.sender.login == github.event.issue.user.login
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
       contents: read
-      issues: write
     env:
       GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
       EXPECTED_AUTH_OWNER: timerloggedout-spec
       TARGET_REPOSITORY: timerloggedout-spec/cell-the-living-machine
-      ISSUE_NUMBER: ${{ github.event.issue.number }}
-      ISSUE_BODY: ${{ github.event.issue.body }}
+      EXPECTED_REPOSITORY_ID: "1475194740"
+      REQUEST_FILE: ops/requests/project-visibility-public.yaml
     steps:
-      - name: Validate owner authorization and exact target
+      - name: Read and validate the versioned owner request
         id: request
         shell: bash
         run: |
           set -euo pipefail
           : "${GH_TOKEN:?Configure an authenticated operator Actions secret}"
+          test -f "$REQUEST_FILE"
 
-          target="$(printf '%s\n' "$ISSUE_BODY" | sed -n 's/^target_repository:[[:space:]]*//p' | head -n1)"
-          visibility="$(printf '%s\n' "$ISSUE_BODY" | sed -n 's/^requested_visibility:[[:space:]]*//p' | head -n1)"
-          requested_by="$(gh api user --jq '.login')"
-          actor_permission="$(gh api "repos/${GITHUB_REPOSITORY}/collaborators/${GITHUB_ACTOR}/permission" --jq '.permission')"
+          target="$(sed -n 's/^target_repository:[[:space:]]*//p' "$REQUEST_FILE" | head -n1)"
+          visibility="$(sed -n 's/^requested_visibility:[[:space:]]*//p' "$REQUEST_FILE" | head -n1)"
+          approved_by="$(sed -n 's/^approved_by:[[:space:]]*//p' "$REQUEST_FILE" | head -n1)"
+          repository_id="$(sed -n 's/^repository_id:[[:space:]]*//p' "$REQUEST_FILE" | head -n1)"
+          request_id="$(sed -n 's/^request_id:[[:space:]]*//p' "$REQUEST_FILE" | head -n1)"
+          authenticated_owner="$(gh api user --jq '.login')"
+          actor_permission="$(gh api "repos/${GITHUB_REPOSITORY}/collaborators/$approved_by/permission" --jq '.permission')"
 
-          if [[ "$requested_by" != "$EXPECTED_AUTH_OWNER" ]]; then
-            echo "::error::Operator credential identity failed owner verification."
-            exit 1
-          fi
-          if [[ "$actor_permission" != "admin" ]]; then
-            echo "::error::Issue actor requires repository admin permission."
-            exit 1
-          fi
-          if [[ "$target" != "$TARGET_REPOSITORY" || "$visibility" != "public" ]]; then
-            echo "::error::Request must match the exact allowlisted repository and public visibility."
-            exit 1
-          fi
+          [[ "$target" == "$TARGET_REPOSITORY" ]]
+          [[ "$visibility" == "public" ]]
+          [[ "$approved_by" == "$EXPECTED_AUTH_OWNER" ]]
+          [[ "$repository_id" == "$EXPECTED_REPOSITORY_ID" ]]
+          [[ -n "$request_id" ]]
+          [[ "$authenticated_owner" == "$EXPECTED_AUTH_OWNER" ]]
+          [[ "$actor_permission" == "admin" ]]
 
           current="$(gh api "repos/$TARGET_REPOSITORY" --jq '[.id, .full_name, .private, .default_branch] | @tsv')"
           IFS=$'\t' read -r repo_id full_name is_private default_branch <<< "$current"
-          if [[ "$full_name" != "$TARGET_REPOSITORY" || -z "$repo_id" || -z "$default_branch" ]]; then
-            echo "::error::Target repository identity verification failed."
-            exit 1
-          fi
+          [[ "$repo_id" == "$EXPECTED_REPOSITORY_ID" ]]
+          [[ "$full_name" == "$TARGET_REPOSITORY" ]]
+          [[ -n "$default_branch" ]]
 
           echo "repo_id=$repo_id" >> "$GITHUB_OUTPUT"
-          echo "full_name=$full_name" >> "$GITHUB_OUTPUT"
           echo "default_branch=$default_branch" >> "$GITHUB_OUTPUT"
           echo "already_public=$([[ "$is_private" == "false" ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          echo "request_id=$request_id" >> "$GITHUB_OUTPUT"
 
-      - name: Promote allowlisted product repository
+      - name: Promote the allowlisted product repository
         id: promote
         if: steps.request.outputs.already_public != 'true'
         shell: bash
-        env:
-          REPO_ID: ${{ steps.request.outputs.repo_id }}
         run: |
           set -euo pipefail
           gh api --method PATCH "repos/$TARGET_REPOSITORY" -F private=false >/dev/null
           verified="$(gh api "repos/$TARGET_REPOSITORY" --jq '[.id, .full_name, .private, .visibility] | @tsv')"
           IFS=$'\t' read -r repo_id full_name is_private visibility <<< "$verified"
-          if [[ "$repo_id" != "$REPO_ID" || "$full_name" != "$TARGET_REPOSITORY" || "$is_private" != "false" || "$visibility" != "public" ]]; then
-            echo "::error::Repository visibility verification failed."
-            exit 1
-          fi
+          [[ "$repo_id" == "$EXPECTED_REPOSITORY_ID" ]]
+          [[ "$full_name" == "$TARGET_REPOSITORY" ]]
+          [[ "$is_private" == "false" ]]
+          [[ "$visibility" == "public" ]]
           echo "verified=true" >> "$GITHUB_OUTPUT"
 
-      - name: Publish non-secret audit receipt
+      - name: Publish a non-secret audit receipt
         shell: bash
         env:
           REPO_ID: ${{ steps.request.outputs.repo_id }}
           DEFAULT_BRANCH: ${{ steps.request.outputs.default_branch }}
           ALREADY_PUBLIC: ${{ steps.request.outputs.already_public }}
+          REQUEST_ID: ${{ steps.request.outputs.request_id }}
         run: |
           set -euo pipefail
-          if [[ "$ALREADY_PUBLIC" == "true" ]]; then
-            state="already_public"
-          else
-            state="promoted_and_verified"
-          fi
-          body="$(cat <<EOF
-          ## Project repository visibility receipt
+          if [[ "$ALREADY_PUBLIC" == "true" ]]; then state="already_public"; else state="promoted_and_verified"; fi
+          {
+            echo "## Project repository visibility receipt"
+            echo
+            echo "- request_id: $REQUEST_ID"
+            echo "- state: $state"
+            echo "- repository: https://github.com/$TARGET_REPOSITORY"
+            echo "- repository_id: $REPO_ID"
+            echo "- visibility: public"
+            echo "- default_branch: $DEFAULT_BRANCH"
+            echo "- authenticated_owner: $EXPECTED_AUTH_OWNER"
+            echo "- credential_reference: existing Actions secret (value withheld)"
+            echo "- workflow_run: https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          } >> "$GITHUB_STEP_SUMMARY"
+          printf 'request_id=%s\nrepository=%s\nrepository_id=%s\nvisibility=public\nstate=%s\n' "$REQUEST_ID" "$TARGET_REPOSITORY" "$REPO_ID" "$state" > "$RUNNER_TEMP/visibility-receipt.txt"
 
-          - state: **$state**
-          - repository: https://github.com/$TARGET_REPOSITORY
-          - repository_id: $REPO_ID
-          - visibility: public
-          - default_branch: $DEFAULT_BRANCH
-          - authorized_actor: $GITHUB_ACTOR
-          - credential_reference: existing Actions secret (value withheld)
-          - workflow_run: https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
-          EOF
-          )"
-          gh issue comment "$ISSUE_NUMBER" --body "$body"
+      - name: Upload visibility receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: project-visibility-receipt
+          path: ${{ runner.temp }}/visibility-receipt.txt
+          retention-days: 90

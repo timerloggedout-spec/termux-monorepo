@@ -11,6 +11,7 @@
 - `docs/recon/team-formation/GAME_DEVELOPMENT_TASK_CARD.yaml` and `schemas/game-development-context.schema.json` provide reusable task and context contracts.
 - `docs/recon/team-formation/LABEL_TAXONOMY.md` defines additive lanes, teams, roles, skills, targets, machine profiles, game catalog, scorecards, and tool profiles.
 - `docs/repositories/README.md` defines the Repository Observatory and research-seed progression. The current research-seed set is small and uses versioned JSON records.
+- `ops/projects/profile.schema.json` already defines the ArchWiz `project-profile/v1` scope contract. `docs/ops/ARCHWIZ-CONCEPT-MAP.md` directs project profiles into a separate project-scope family under `.config/llm_map/profiles/projects/`, with scope over repositories, issue classes, lanes, and artifact stores.
 - `docs/ops/RESEARCH-TRIGGERS.md` and `.github/ISSUE_TEMPLATE/research-service.yml` route research services into `docs/repositories/research-seeds/*.json`.
 
 ## Research Astute
@@ -52,4 +53,4 @@ The three-plane model preserves independent ownership and reuse:
 4. The game repository holds the playable product and versioned game-specific assets.
 5. Scientific databases remain canonical upstream data authorities; the research planes index and reconcile their records.
 
-This architecture is a proposal based on repository evidence and the user's stated responsibilities. Search Astutely service capabilities and Research Astute reuse rights remain pending direct verification.
+This architecture is a proposal based on repository evidence and the user's stated responsibilities. Search Astutely service capabilities and Research Astute reuse rights remain pending direct verification. The project profile follows the existing ArchWiz scope schema; game-specific metadata lives in a linked project manifest.

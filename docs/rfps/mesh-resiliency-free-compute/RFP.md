@@ -4,7 +4,7 @@
 **Tracking issue:** [#1622](https://github.com/timerloggedout-spec/termux-monorepo/issues/1622)  
 **Status:** Planning claimed; research not yet completed  
 **Version:** 0.1.0  
-**Last updated:** 2026-10-24  
+**Last updated:** 2026-11-23  
 **Owner boundary:** Independent of the hackathon Delphi Oracle RFP, PR #1620, Hex, and any AWS account signup.
 
 ## 1. Executive intent
@@ -276,3 +276,15 @@ Publish a decision record with chosen topology, rejected alternatives, score/unc
 ## 16. Change control
 
 Update this RFP through reviewable commits. Any scoring-weight change must state why and preserve the prior version. Provider terms and quota snapshots are append-only observations; do not silently rewrite history. A recommendation is valid only for the workload profile, evidence timestamps, and policy version it evaluated.
+
+
+## Appendix A. Docker registry and self-hosted container boundary
+
+Treat Docker as two separate resources in the mesh:
+
+- **Docker Engine / Compose:** portable, self-hosted worker substrate. Capacity comes from the host and must be metered locally (CPU, memory, disk, uptime, network/egress, architecture).
+- **Docker Hub:** hosted image distribution dependency. Personal currently includes unlimited public repositories, one private repository, and one Docker Scout-enabled repository. Pricing lists 100 pulls/hour/user; the pull-limit guide separately lists 200 authenticated Personal pulls per six hours and 100 anonymous pulls per IPv4 address or IPv6 /64 per six hours. Track the hourly and six-hour caps independently; use live response headers for the observed runner egress scope.
+- **Docker Build Cloud:** Personal accounts may opt into a seven-day trial; continued use requires a paid subscription. It is US-East-only and contributes temporary trial access rather than recurring free capacity to the mesh.
+- **Docker Sandboxes:** individual local sandboxes are free; Docker-managed cloud sandboxes cost $0.07/hour. Keep local free execution separate from metered managed compute.
+
+The existing quota registry and scripts/quota_poll.py own the Docker Hub anonymous pull observation. The read uses the documented token endpoint followed by a manifest HEAD request; Docker documents that HEAD returns ratelimit-limit and ratelimit-remaining without consuming a pull. Missing headers remain unknown. This is a supply-chain/build dependency signal, separate from host health, compute availability, MESH failover, and runtime admission.

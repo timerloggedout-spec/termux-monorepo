@@ -36,3 +36,20 @@ For each observation add:
 - `source_url`, `source_title`, `captured_facts`, `next_recheck_at`
 
 Keep unverified fields as `unknown`. No scores or provider winner should be emitted from this seed worksheet alone.
+
+
+## Docker: container substrate and registry-service dependency
+
+Docker Engine / OCI containers remain the portable, self-hosted execution substrate. The Engine itself is open-source software; host capacity supplies CPU, RAM, storage, and uptime. Docker Hub is a separate hosted image-registry service and belongs in the quota ledger as a build/pull dependency, separate from compute capacity.
+
+| Product | Free entitlement / limit | Evidence | MESH treatment |
+|---|---|---|---|
+| Docker Engine / Compose | Open-source self-hosted runtime; capacity is the operator's host capacity | https://github.com/moby/moby · https://github.com/docker/compose | Portable worker substrate; meter host CPU, RAM, disk, uptime and egress locally; Docker Desktop licensing follows Personal eligibility |
+| Docker Hub Personal | Unlimited public repos; 1 private repo/account; 1 Scout-enabled repo; pricing lists 100 pulls/hour/user | https://www.docker.com/pricing/ | Registry entitlement; plan/account-specific |
+| Docker Hub pull limiter | Official pull guide lists 200 pulls/6h for authenticated Personal and 100 pulls/6h per IPv4 or IPv6 /64 when unauthenticated | https://docs.docker.com/docker-hub/usage/pulls/ | Live anonymous runner-egress check via token + non-consuming HEAD; Personal account windows remain separate |
+| Docker Build Cloud | Personal account: optional 7-day trial; paid subscription required after trial; US East only | https://docs.docker.com/build-cloud/ | Conditional trial only; exclude from standing free-compute capacity |
+| Docker Sandboxes | Local individual sandbox: $0; Docker-managed cloud sandbox: $0.07/hour | https://www.docker.com/pricing/ | Local option is free; managed compute is metered |
+
+**Published window pair:** Docker's pricing page lists 100 pulls/hour/user and its pricing FAQ says pulls pause until the hour resets; the pull-limit guide separately lists 200 authenticated Personal pulls per six hours. Treat these as independent hourly and six-hour caps. The same guide lists 100 anonymous pulls per IPv4 address or IPv6 /64 per six hours. The live anonymous probe measures runner egress scope; authenticated Personal-account usage remains a separate account-side observation.
+
+The quota registry and existing vercel-quota-probe.yml own this check. The poller uses Docker's documented anonymous token endpoint and HEAD request to the ratelimitpreview/test manifest. Docker states that HEAD returns rate headers without consuming a pull. Missing headers produce unknown; Docker may omit headers for unlimited or specially exempt sources.

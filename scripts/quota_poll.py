@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Quota poller: registry + live readings -> ForeSight records, HindSight retains, 3L0 weights.
 
-Stdlib only. Reads ops/quota/registry.json; polls a live source only when its
-credential env var is present; never prints or stores secret values.
+Stdlib only. Reads ops/quota/registry.json; uses configured credentials or a
+documented public token flow for live sources; secret values stay in process.
 Outputs (to --out dir): quota-records.jsonl, hindsight-retain.jsonl,
 routing-weights.json, and one QUOTA line per live reading on stdout.
 """
@@ -111,6 +111,51 @@ def neon_reader(now):
             "neon.storage": {"used": round(st, 3), "elapsed": None}}
 
 
+def dockerhub_anonymous_reader(now):
+    """Read Docker Hub's anonymous pull bucket with the documented HEAD probe.
+
+    Docker documents that HEAD returns rate-limit headers without consuming a
+    pull. The reading is scoped to the runner's public egress IP / IPv6 /64;
+    scope excludes Docker Personal account and private-repository accounting.
+    """
+    token_payload = _get(
+        "https://auth.docker.io/token?" + urllib.parse.urlencode({
+            "service": "registry.docker.io",
+            "scope": "repository:ratelimitpreview/test:pull",
+        })
+    )
+    token = token_payload.get("token") or token_payload.get("access_token")
+    if not isinstance(token, str) or not token:
+        return None
+    req = urllib.request.Request(
+        "https://registry-1.docker.io/v2/ratelimitpreview/test/manifests/latest",
+        headers={**UA, "Authorization": "Bearer " + token,
+                 "Accept": "application/vnd.docker.distribution.manifest.v2+json"},
+        method="HEAD",
+    )
+    with urllib.request.urlopen(req, timeout=20) as response:
+        headers = response.headers
+    limit_raw = headers.get("ratelimit-limit") or headers.get("RateLimit-Limit")
+    remaining_raw = headers.get("ratelimit-remaining") or headers.get("RateLimit-Remaining")
+    if not limit_raw or not remaining_raw:
+        return None
+    limit_match = re.fullmatch(r"\s*(\d+)\s*(?:;\s*w=(\d+))?\s*", limit_raw)
+    remaining_match = re.fullmatch(r"\s*(\d+)\s*(?:;\s*w=(\d+))?\s*", remaining_raw)
+    if not limit_match or not remaining_match:
+        return None
+    limit, remaining = int(limit_match.group(1)), int(remaining_match.group(1))
+    limit_window, remaining_window = limit_match.group(2), remaining_match.group(2)
+    if limit_window and remaining_window and limit_window != remaining_window:
+        return None
+    window = limit_window or remaining_window
+    if limit <= 0 or remaining > limit or (window and int(window) <= 0):
+        return None
+    return {"used": limit - remaining, "limit": limit, "elapsed": None,
+            "extra": {"remaining": remaining, "scope": "anonymous-runner-egress",
+                      "window_seconds": int(window) if window else None,
+                      "basis": "Docker Hub documented non-consuming HEAD rate-limit headers"}}
+
+
 def openrouter_reader(now):
     key = os.environ.get("OPENROUTER_API_KEY")
     if not key:
@@ -209,7 +254,8 @@ def openrouter_key_reader(now):
 
 LIVE = {"github.api.github_token": gh_rate, "github.actions.cache": gh_cache,
         "vercel.deployments": vercel_deploys, "openrouter.free_models": openrouter_reader,
-        "huggingface.hub_api": hf_hub_reader, "openrouter.key": openrouter_key_reader}
+        "huggingface.hub_api": hf_hub_reader, "openrouter.key": openrouter_key_reader,
+        "dockerhub.anonymous_pulls": dockerhub_anonymous_reader}
 MULTI = [render_reader, neon_reader]
 
 

@@ -1,6 +1,6 @@
 # Workflow event index
 
-Snapshot: `feat/trigger-workflow-registry-refresh`, 2026-11-27. This index carries all records from the generated automation workflow catalog and reconciles them against the workflow directory.
+Snapshot: `feat/trigger-workflow-registry-generator`, 2026-11-27. This index carries all records from the generated automation workflow catalog and reconciles them against the workflow directory.
 
 | Coverage | Count |
 |---|---:|

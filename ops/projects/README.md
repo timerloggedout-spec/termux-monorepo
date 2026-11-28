@@ -22,6 +22,7 @@ The scan-profile family at `.config/llm_map/profiles/*.json` retains its device-
 
 ## Current project
 
+- Reusable research store: [Research-Astute/molecular-biology-research](https://github.com/Research-Astute/molecular-biology-research) (repository ID `183701786`).
 - Scope profile: `.config/llm_map/profiles/projects/cell-the-living-machine.json`
 - Project manifest: `ops/projects/manifests/cell-the-living-machine.yaml`
 - Proposal: `docs/proposals/active/cell-the-living-machine/MANIFEST.md`

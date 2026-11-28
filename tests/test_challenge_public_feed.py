@@ -50,10 +50,12 @@ def test_real_coordinator_projects_events_without_internal_metrics():
     assert "queue" not in next(match for match in c11["matches"] if match["id"] == "M2")
     assert c11["deadline"] == c11_source["deadline"]
     assert c11["source_url"] == c11_source["source_url"]
-    assert c11["organizers"][0]["source_url"] == c11_source["organizers"][0]["source_url"]
     assert c11["prizes"]["tiers"][0]["source_url"] == (
         c11_source["prizes"]["tiers"][0]["source_url"]
     )
+    d2 = next(event for event in feed["events"] if event["id"] == "D2")
+    d2_source = source_events["D2"]
+    assert d2["organizers"][0]["source_url"] == d2_source["organizers"][0]["source_url"]
     c12 = next(event for event in feed["events"] if event["id"] == "C12")
     c12_source = source_events["C12"]
     assert c12["dates"]["final_due"] == c12_source["dates"]["final_due"]

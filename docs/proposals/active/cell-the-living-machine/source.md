@@ -37,7 +37,7 @@
 
 - Organization: https://github.com/search-astute-ly
 - Signed-in GitHub account `timerloggedout-spec` is listed as an organization owner.
-- The organization is a member of the `AdAstraNeoNexus` GitHub Enterprise account. Its Enterprise trial is expired and the owner dashboard shows an account-preservation/deletion warning. Account and billing details remain in private owner context; the MonoRepo records the integration state only.
+- The organization is linked to the `AdAstraNeoNexus` GitHub Enterprise account; organization lifecycle and service endpoint review remain owner-side tasks.
 - The organization's `manus-public-ui-research` repository is scoped to public Manus UI source inventories, static assessments, license/provenance reviews, and synthetic fixtures. It serves as a research-lane example rather than a general scientific search service.
 - Candidate repositories visible through GitHub search:
   - https://github.com/search-astute-ly/termux-monorepo_enterprise

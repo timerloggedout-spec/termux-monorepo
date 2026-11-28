@@ -38,7 +38,7 @@ Make the researched FOSS-first engineering ecosystem discoverable and safely rou
 
 1. Termux device-operation capability is unavailable in this session. The Hub capability implementation is reviewable in-repository; device probe receipt remains pending.
 2. Remote engineering runner verification and provisioning remain pending. CAD/EDA/CAE execution adapters follow runner approval.
-3. Local PATH presence does not prove tool startup, GUI availability, solver correctness, format fidelity or engineering validity.
+3. PATH presence confirms executable discovery; tool startup, GUI availability, solver correctness, format fidelity and engineering validity require separate evidence.
 4. License and pricing details must be refreshed against official upstream sources before procurement or distribution.
 5. The current integration is additive; separate active lanes retain their ownership and source-of-truth boundaries.
 

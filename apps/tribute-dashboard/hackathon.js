@@ -151,7 +151,7 @@
     const active = payload.opportunities.map((item) => normalizeOpportunity(item, true));
     const terminal = payload.terminal_opportunities.map((item) => normalizeOpportunity(item, false));
     return {
-      status: fresh.state === "stale" ? "stale" : "fresh",
+      status: fresh.state === "stale" ? "stale" : fresh.state === "unknown" ? "invalid" : "fresh",
       source: payload.source || "ops/que/feeds/opportunity-priority.json",
       generated_at: payload.generated_at || null,
       freshness: fresh,
@@ -293,7 +293,7 @@
       })
       : [];
     return {
-      status: fresh.state === "stale" ? "stale" : "fresh",
+      status: fresh.state === "stale" ? "stale" : fresh.state === "unknown" ? "invalid" : "fresh",
       source: payload.provenance?.producer || "ops/que/feeds/que-queue-feed.json",
       generated_at: payload.generated_at || null,
       freshness: fresh,

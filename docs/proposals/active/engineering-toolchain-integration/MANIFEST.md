@@ -51,3 +51,4 @@ The current ChatGPT session exposes GitHub and research/documentation tools. The
 
 - [ITEMS](./ITEMS.md)
 - [Source and integration map](./source.md)
+- [Superpowers implementation plan](../../../superpowers/plans/2026-11-28-engineering-toolchain-activation.md)

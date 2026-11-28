@@ -194,6 +194,7 @@ def build_index(root: Path = ROOT, catalog: dict[str, Any] | None = None) -> dic
         records.append({
             **source,
             "source_blob_sha": git_blob_sha(content),
+            "catalog_present": relative in catalog_records,
             "catalog_authority": catalog_authority,
             "catalog_domain": catalog_record.get("domain"),
             "authority_conflict": bool(catalog_authority and catalog_authority != source_level),
@@ -217,7 +218,7 @@ def build_index(root: Path = ROOT, catalog: dict[str, Any] | None = None) -> dic
         "authority_conflicts": [item["path"] for item in records if item["authority_conflict"]],
         "uncatalogued_source_writers": sorted(
             item["path"] for item in records
-            if item["catalog_authority"] is None and item["source_authority"] == "writer"
+            if not item["catalog_present"] and item["source_authority"] == "writer"
         ),
         "workflows": records,
     }

@@ -1,0 +1,21 @@
+schema: fabrication-provider-registry/v1
+status: schema_seeded_provider_discovery_pending
+providers: []
+service_categories:
+  - 3d_printing
+  - cnc_machining
+  - laser_cutting
+  - sheet_metal
+  - pcb_fabrication_and_assembly
+  - robotics_and_mechatronics
+  - materials_testing
+  - metrology_and_inspection
+  - scientific_visualization
+  - licensed_laboratory_services
+approval_policy:
+  quote_review: user_approval_required
+  paid_service: explicit_user_approval_required
+  external_submission: explicit_user_approval_required
+  biological_services: licensed_professional_and_biosafety_ethics_review
+schemas:
+  provider: ops/fabrication/provider.schema.json

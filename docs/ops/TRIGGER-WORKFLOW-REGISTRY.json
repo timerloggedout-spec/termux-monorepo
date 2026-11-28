@@ -77,8 +77,8 @@
       "path": "docs/ops/generated/workflow-trigger-census.json",
       "role": "source-verified selected workflow event and selector census",
       "schema": "workflow-trigger-census/v1",
-      "workflow_count": 8,
-      "scope": "eight source-verified exemplars; one additional workflow reconciles directory/catalog drift",
+      "workflow_count": 9,
+      "scope": "nine source-verified exemplars, including the uncatalogued Research Astute provisioner",
       "observed_at": "2026-11-27",
       "uncatalogued_workflow_count": 1
     },
@@ -94,14 +94,14 @@
     {
       "id": "workflow-event-index",
       "path": "docs/ops/generated/workflow-event-index.json",
-      "role": "catalog-level workflow snapshot with source-level v2 enrichment for event filters, inputs, permissions, job selectors, concurrency, action references, Git blob provenance, and declared-permission authority",
+      "role": "catalog-level workflow snapshot with source-level v2 enrichment for event filters, inputs, permissions, job selectors, concurrency, action references, Git blob provenance, declared-permission authority, and explicit gh api write methods",
       "schema": "workflow-event-index/v1",
       "workflow_count": 332,
       "observed_at": "2026-11-28",
       "generator": "scripts/ci/workflow_registry.py",
       "next_schema": "workflow-event-index/v2",
       "refresh": "Generated v2 snapshot is produced by the trusted master refresh after this generator lands",
-      "authority_basis": "Declared GitHub workflow/job permission scopes; external-token effects remain a source-review requirement"
+      "authority_basis": "Declared workflow/job permissions plus explicit gh api write methods; indirect external-token effects remain a source-review requirement"
     },
     {
       "id": "comment-trigger-census",
@@ -408,7 +408,7 @@
       "bounded-state-write",
       "writer"
     ],
-    "rule": "Use the generated catalog for exhaustive per-workflow inventory; this registry stores normalized relationships and selected exemplars rather than copying 332 rows."
+    "rule": "The generated catalog lists 332 workflows while .github/workflows contains 333; research-astute-private-repo-provisioner.yml is the current uncatalogued workflow. The source-derived index preserves all directory workflows and reports this drift."
   },
   "feed_contract": {
     "dashboard_surfaces": [
@@ -517,7 +517,7 @@
     "workflow_trigger_exemplars": {
       "artifact": "docs/ops/generated/workflow-trigger-census.json",
       "markdown": "docs/ops/WORKFLOW-TRIGGER-CENSUS.md",
-      "workflow_count": 8,
+      "workflow_count": 9,
       "status": "SOURCE_VERIFIED_EXEMPLARS",
       "exhaustive": false
     },
@@ -530,13 +530,20 @@
       "live_label_inventory": "UNAVAILABLE_THROUGH_CURRENT_GITHUB_READ_CONNECTOR"
     },
     "workflow_inventory": {
-      "directory_yaml_count": 332,
+      "directory_yaml_count": 333,
       "catalog_record_count": 332,
       "indexed_record_count": 332,
-      "status": "IN_SYNC",
+      "status": "DRIFT",
       "catalog_fingerprint": "d1fc2a62d098070ccae2d73efe34528bf17d3c3f1245d3137b4ba80ea41b689e",
       "workflow_index": "docs/ops/generated/workflow-event-index.json",
-      "observed_at": "2026-11-28"
+      "observed_at": "2026-11-28",
+      "missing_from_catalog": [
+        ".github/workflows/research-astute-private-repo-provisioner.yml"
+      ],
+      "missing_from_index": [
+        ".github/workflows/research-astute-private-repo-provisioner.yml"
+      ],
+      "missing_from_directory": []
     },
     "workflow_authority_conflicts": [
       {
@@ -555,5 +562,21 @@
       "status": "SOURCE_VERIFIED_SELECTED",
       "exhaustive": false
     }
-  }
+  },
+  "workflow_source_authority_overrides": [
+    {
+      "workflow": ".github/workflows/research-astute-private-repo-provisioner.yml",
+      "source_blob_sha": "2b5c96c951221f3b91508d05bfc07aa2624a2182",
+      "catalog_status": "NOT_IN_CATALOG",
+      "declared_permission_authority": "read-only-or-advisory",
+      "source_authority": "writer",
+      "api_write_methods": [
+        "POST"
+      ],
+      "authority_basis": "Explicit gh api --method POST /orgs/$ORG_NAME/repos",
+      "effect": "Creates and verifies the private Research-Astute/molecular-biology-research repository using the configured Actions credential fallback chain.",
+      "risk": "external-organization-repository-creation",
+      "status": "SOURCE_VERIFIED_UNCATALOGUED_WRITER"
+    }
+  ]
 }

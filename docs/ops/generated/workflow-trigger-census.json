@@ -3,7 +3,7 @@
   "repository": "timerloggedout-spec/termux-monorepo",
   "ref": "feat/trigger-workflow-registry-refresh",
   "observed_at": "2026-11-27",
-  "scope": "Selected high-value routing and command workflows; source-verified exemplar set, not a complete parse of all 331 catalogued workflows.",
+  "scope": "Eight source-read workflows demonstrating issue admission, issue intake, workflow handoff, mentions, slash commands, manual dispatch, typed repository events, and path-filtered push automation. The workflow directory contains 332 YAML files while the generated catalog contains 331; project-repository-visibility.yml is absent from that catalog snapshot.",
   "records": [
     {
       "id": "swarm-admission",
@@ -166,6 +166,28 @@
       "gate": "intake job condition and form/input validation",
       "effect": "Delphi RFP intake receipt and finished intake record",
       "authority": "bounded-state-write"
+    },
+    {
+      "id": "project-repository-visibility",
+      "path": ".github/workflows/project-repository-visibility.yml",
+      "blob_sha": "5a42fc64c81632c38ffa892a1a890d685114fcda",
+      "events": [
+        {
+          "name": "push",
+          "branches": [
+            "master"
+          ],
+          "paths": [
+            "ops/requests/project-visibility-public.yaml"
+          ]
+        }
+      ],
+      "selector": "Push to master touching the versioned owner request file",
+      "gate": "Authenticated owner identity + admin permission + exact target repository/name/id + explicit public visibility request + post-patch readback",
+      "effect": "Changes allowlisted product repository visibility to public and writes a non-secret workflow summary receipt",
+      "authority": "writer",
+      "risk": "external-repository-visibility-change",
+      "notes": "Source configuration includes an explicit owner-authored request file and runtime identity/permission checks; the census records configured behavior, not a run result."
     }
   ]
 }

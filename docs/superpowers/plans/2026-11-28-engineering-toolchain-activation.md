@@ -31,6 +31,7 @@ Make the researched FOSS-first engineering ecosystem discoverable and safely rou
 | Tool discoverability | ArchWiz index, skill matrix, integration registry | Canonical links resolve; integration state remains discovered/implemented, runtime unverified |
 | Queue/evaluation/cross-domain contracts | `docs/ops/ENGINEERING-*.md` | Reuse QUE/QDesk and DoE/MVT/ATES ownership; cross-domain links remain citation-only |
 | refTemplates and Learnings | `refTemplates/engineering/`, Learnings matrix | References remain unpinned/read-only; reusable learning requires validated evidence |
+| Remote runner profile | `docs/ops/ENGINEERING-REMOTE-RUNNER-PROFILE.md` | Public standard runner vs self-hosted placement, resource and data constraints, and workflow permission blocker |
 | Review and gates | PR + repo-gate + Siglary + Termux smoke | Same immutable head SHA; no promotion from pending/skipped checks |
 
 ## Known constraints

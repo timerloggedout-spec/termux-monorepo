@@ -7,7 +7,8 @@ Snapshot: current master source inventory, 2026-11-28. Current machine-readable 
 | Workflow YAML files in directory | 333 |
 | Generated catalog records | 332 |
 | Indexed records (current v1 snapshot) | 332 |
-| Directory/catalog drift | 1 |\n| Uncatalogued source writers | 1 |
+| Directory/catalog drift | 1 |
+| Uncatalogued source writers | 1 |
 
 ## Catalog reconciliation gap
 

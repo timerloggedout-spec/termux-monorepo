@@ -26,6 +26,9 @@ jobs:
       EXPECTED_REPOSITORY_ID: "1475194740"
       REQUEST_FILE: ops/requests/project-visibility-public.yaml
     steps:
+      - name: Checkout the versioned owner request
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
       - name: Read and validate the versioned owner request
         id: request
         shell: bash
@@ -101,9 +104,3 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
           printf 'request_id=%s\nrepository=%s\nrepository_id=%s\nvisibility=public\nstate=%s\n' "$REQUEST_ID" "$TARGET_REPOSITORY" "$REPO_ID" "$state" > "$RUNNER_TEMP/visibility-receipt.txt"
 
-      - name: Upload visibility receipt
-        uses: actions/upload-artifact@v4
-        with:
-          name: project-visibility-receipt
-          path: ${{ runner.temp }}/visibility-receipt.txt
-          retention-days: 90

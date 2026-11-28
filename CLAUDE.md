@@ -31,14 +31,14 @@ For each nontrivial change, begin with [context-relationship reconnaissance](doc
 ## Execution contract
 
 - Target `master` for integration work; use `master-staging` when the active lane names it.
-- Run `python3 scripts/ci/repo_gate.py`, `python3 scripts/ci/validate_siglary_mandate.py --base origin/master`, and `python3 scripts/ci/termux_smoke.py` before promotion.
+- Run `python3 scripts/ci/repo_gate.py` and `python3 scripts/ci/validate_siglary_mandate.py --base origin/master` before promotion. Run `python3 scripts/ci/termux_smoke.py` when `scripts/ci/gate_admission.py` admits the changed paths or when manually dispatched; unavailable diff evidence admits smoke.
 - Register implementation scope in `docs/proposals/active/<id>/ITEMS.md` before execution.
 - Cite `Implements: <ITEM-ID>` in commits ∧ pull requests.
 - Extract independently reviewable work from mega-PRs #2 ∧ #6 when their status is `GO=FALSE`.
 - Route credentials, history rewrites, and Class 3/4 material through the human-only permissions in `docs/proposals/AGENTIC-PERMISSIONS.md`.
 - Record credential names in issue #184; retain secret values in approved secret storage.
 - Record consensus through a Review log ∨ `DEBATE.md`.
-- Apply Fully Automated Agentic Development (FA-ADE): auto-promote when the dual gates (`repo_gate.py` ∧ `termux_smoke.py`) ∧ the Siglary validator (`scripts/ci/validate_siglary_mandate.py`) pass on the exact candidate SHA ∧ the task outcome is verified.
+- Apply Fully Automated Agentic Development (FA-ADE): auto-promote when repo-gate and the Siglary validator pass on the exact candidate SHA, plus Termux smoke when the shared path classifier requires it; record `SKIPPED` with reason for other slices.
 
 ## Operating motion
 

@@ -12,6 +12,8 @@ related_branches: []
 gates_required: [repo-gate, termux-smoke]
 ---
 
+Gate semantics: `repo-gate` is universal. `termux-smoke` is surface-conditional under `docs/ops/GATE-ADMISSION-MATRIX.md`; record `SKIPPED` with reason when the shared classifier marks the Termux surface inapplicable.
+
 # MANIFEST — PROPOSAL-ID
 
 ## Summary

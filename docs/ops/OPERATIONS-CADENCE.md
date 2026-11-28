@@ -120,7 +120,7 @@ Prioritize issue/PR agent responders, review/reconciliation writers, provider ex
 
 After legacy schedules are migrated or explicitly excepted, switch the audit from advisory to enforcement for workflow changes.
 
-Promotion remains a separate decision. Passing cadence validation never authorizes merge/deployment. Dual-gate (termux-smoke + repo-gate) before promote.
+Promotion remains a separate decision. Cadence validation informs admission; repo-gate and Siglary validation apply to every candidate, plus termux-smoke when the shared path classifier admits the Termux surface. Record `SKIPPED` with reason for other slices.
 
 ## Evidence identity
 

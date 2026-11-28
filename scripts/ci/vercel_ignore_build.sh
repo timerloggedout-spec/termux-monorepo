@@ -34,6 +34,9 @@ case "$PROJECT" in
   demo-portal)
     PATHS=(':(top)demo-portal/public/')
     ;;
+  historical-corpus-explorer)
+    PATHS=(':(top)apps/historical-corpus-explorer/')
+    ;;
   *)
     echo "[vercel-ignore] unknown project '$PROJECT'; continue build"
     exit 1

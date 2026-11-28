@@ -70,7 +70,7 @@ This skill supplements the repository control plane; it does not replace it.
 1. `CLAUDE.md` is the primary collaborator entry and hard-rule source.
 2. `docs/proposals/registry.yaml`, each active proposal's `MANIFEST.md` / `ITEMS.md`, and `docs/proposals/PROCESS.md` define authorized work and lifecycle.
 3. `docs/proposals/AGENTIC-PERMISSIONS.md` defines human-only edges and permission boundaries.
-4. `docs/ARCHW1Z-GATE.md` defines dual-gate requirements.
+4. `docs/ARCHW1Z-GATE.md` defines surface-aware gate admission.
 5. `docs/icm/CLAUDE.md` routes to the owning subsystem and impact sources.
 6. This skill and upstream Superpowers workflows apply within those boundaries.
 
@@ -78,7 +78,7 @@ Repository rules that override generic upstream defaults:
 
 - Do not invent implementation scope outside an accepted/executing proposal item; add and register an item first.
 - Target `master` for integration unless the current lane explicitly specifies `master-staging`.
-- Preserve the dual gates: `python3 scripts/ci/repo_gate.py` and `python3 scripts/ci/termux_smoke.py`.
+- Keep `python3 scripts/ci/repo_gate.py` universal. Run `python3 scripts/ci/termux_smoke.py` when `scripts/ci/gate_admission.py` admits the changed paths or when manually dispatched; record `SKIPPED` with the classifier reason for other slices. Diff uncertainty admits smoke.
 - Cite `Implements: <ITEM-ID>` in the PR/commit context.
 - Do not merge NO-GO mega-PRs; extract independently reviewable work.
 - Do not commit Class 3/4 artifacts, credentials, browser profiles, raw session stores, or secrets.

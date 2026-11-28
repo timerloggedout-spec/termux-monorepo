@@ -16,6 +16,7 @@ Notation: caveman micro dense · states = {CLOSED · OPEN · RESOLVED · TRANSIE
 | vultr (D2) | payment only post-gift-code ⇒ card-BLOCK (gate D2-NOCARD; $200 gift code first) | CLOSED-at-payment-step | D2 d8f72f94 |
 | meta app verification | card option (dual w/ SMS-WALL below) | CLOSED-via-card | social 628089aa |
 | devin API (DEVINdeepWiki indexing) | API access = paid organizations only ("API access is only available for paid organizations"); org timerloggedout-spec = Free plan, credits exhausted, ∅ card ⇒ upgrade = card | CLOSED — re-opens ⇔ paid org exists; blocks automated DEVINdeepWiki refresh (org/effort vars armed; owner manual refresh 2026-11-01 = stopgap) | provisioning a78e43e6 |
+| Devin free-tier/referral lead | Operator report 2026-11-27: free-tier availability and referral marketing replenishment | UNVERIFIED — verify current API eligibility, quota balance, billing boundary, and explicit Devin referral-credit terms before admission | Operator report 2026-11-27 |
 
 ∀ "owner top-up item" framings RETIRED · ∀ "re-fire on top-up" promises VOID.
 

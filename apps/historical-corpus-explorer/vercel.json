@@ -1,0 +1,4 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "ignoreCommand": "f=\"$(git rev-parse --show-toplevel)/scripts/ci/vercel_ignore_build.sh\"; if [ -f \"$f\" ]; then bash \"$f\" historical-corpus-explorer; else echo \"[vercel-ignore] helper absent; build\"; exit 1; fi"
+}

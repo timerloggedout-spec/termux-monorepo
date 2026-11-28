@@ -1,25 +1,33 @@
 # ArchW1z Gate Spine
 
-> **Status:** LIVE
-> **Branches:** `master-staging` (hygiene) · `termux-smoke` (runtime surface)
+> **Status:** LIVE  
+> **Branches:** `master-staging` (hygiene lane) · `termux-smoke` (runtime lane)
 
-## Two gates, one constitution
+## One universal floor, one conditional runtime gate
 
+```text
+every pull request / integration push
+          │
+          ▼
+      repo-gate ─────────────── universal hygiene / portability / secrets / ratchet
+          │
+          ▼
+   surface admission
+      ├── Termux smoke ─────── Termux execution paths or manual dispatch
+      ├── dangle census ────── reference-bearing source/target roots
+      ├── Vercel ───────────── project path + affected-project + quota policy
+      └── Devin ────────────── optional bounded worker with verified capacity
+          │
+          ▼
+Siglary validation + applicable evidence on exact candidate SHA
+          │
+          ▼
+        master
 ```
-repo-gate          hygiene / portability / secrets / ratchet
-       ↓
-termux-smoke       agent runtime surface is alive
-       ↓
-language / provider gates (later)
-       ↓
-master
-```
 
-Every change that wants to reach `master` should survive both gates.
+The repository gate is universal. Termux smoke is conditional on the changed execution surface. The workflow check remains visible; its smoke steps execute when `scripts/ci/gate_admission.py` returns `required=true`.
 
----
-
-## Gate 1 — repo-gate + Siglary (on `master-staging`)
+## Gate 1 — repo-gate + Siglary
 
 ```bash
 python3 scripts/ci/repo_gate.py
@@ -27,66 +35,86 @@ python3 scripts/ci/validate_siglary_mandate.py --base origin/master
 ```
 
 Workflow: `.github/workflows/repo-gate.yml`
-Docs: this file + original Critical-Eval recommendation
 
-### Design rules (non-negotiable)
+### Design rules
 
-- **stdlib only** — no pip, no cargo, no node, no network
-- **index-based** — reads `git ls-files`, never the working tree
-- **device-friendly** — same command works on Termux and in CI
-- **HARD checks** scoped to *changed* files
-- **RATCHET** on whole-repo debt counters (debt may only shrink)
+- **stdlib only** — Python standard library, shell, and Git.
+- **index-based** — read `git ls-files`, then validate changed paths.
+- **device-friendly** — same command on Termux and CI.
+- **HARD checks** scoped to changed files.
+- **RATCHET** on whole-repository debt counters; debt trends toward zero.
 
-### What it enforces
+### Enforcement
 
-| Check | Scope | Failure mode |
-|-------|-------|--------------|
+| Check | Scope | Result |
+|---|---|---|
 | Python / shell / JSON syntax | changed files | HARD |
 | Portable symlinks | changed symlinks | HARD |
-| No new session artifacts | changed paths | HARD |
-| No browser credential stores | changed paths | HARD |
-| No committed backups | changed paths | HARD |
+| Session artifacts | changed paths | HARD |
+| Browser credential stores | changed paths | HARD |
+| Committed backups | changed paths | HARD |
 | High-confidence secrets | changed content | HARD |
 | Debt counters | whole index | RATCHET |
 
-Baseline: `scripts/ci/baseline.json`
-Lower debt with: `python3 scripts/ci/repo_gate.py --write-baseline`
+Baseline: `scripts/ci/baseline.json`  
+Debt review: `python3 scripts/ci/repo_gate.py --write-baseline`
 
----
-
-## Gate 2 — termux-smoke (on `termux-smoke`)
+## Gate 2 — Termux runtime smoke
 
 ```bash
 python3 scripts/ci/termux_smoke.py
-python3 scripts/ci/termux_smoke.py --with-optional   # agent surfaces
-python3 scripts/ci/termux_smoke.py --json            # for agents
+python3 scripts/ci/termux_smoke.py --with-optional
+python3 scripts/ci/termux_smoke.py --json
 ```
 
-Workflow: `.github/workflows/termux-smoke.yml`
-Full docs: [`docs/TERMUX-SMOKE.md`](TERMUX-SMOKE.md)
+Workflow: `.github/workflows/termux-smoke.yml`  
+Admission helper: `scripts/ci/gate_admission.py`  
+Full guide: [TERMUX-SMOKE.md](TERMUX-SMOKE.md)
 
-### What it enforces (required)
+### Admission contract
 
-- Python ≥ 3.9
-- Gate scripts present and compile
-- git on PATH
-- bash on Termux (soft elsewhere)
-- writable TMPDIR
+- A matching Termux path admits core smoke, regression tests, and optional agent probes.
+- Manual `workflow_dispatch` admits smoke.
+- Missing base/head or diff evidence admits smoke.
+- A complete path list with no Termux surface match records `SKIPPED` with reason `Termux surface unchanged`.
+- The PR lane classifier consumes the same path predicate and records `termux_smoke_required` independently from check-run status.
 
-### Optional probes (`--with-optional`)
+The bucket-headroom PyYAML/pytest suite runs through its own path-scoped workflow: `.github/workflows/bucket-headroom-contract.yml`. Workflow YAML contracts use `.github/workflows/workflow-gate-contracts.yml`; the repo gate retains its stdlib-only runtime.
 
-- deepcli / multi-ai launcher compile (no network)
-- archwiz sample modules compile
-- termux-api presence note
+### Runtime contract
 
----
+| Check | Requirement |
+|---|---|
+| Python ≥ 3.9 | required |
+| Gate scripts present and compile | required |
+| git on PATH | required |
+| bash on Termux | required |
+| writable TMPDIR | required |
+| deepcli / multi-ai launcher compile | optional |
+| archwiz sample modules compile | optional |
+| termux-api presence | observation |
 
-## Integration order (ArchW1z)
+## Reference and provider lanes
 
-```
+### Dangle census
+
+`scripts/ci/dangle_check.py` retains the current baseline ratchet and finding scopes `.github/` + `apps/`. Pull-request admission also covers target roots such as `docs/`, `scripts/`, `ops/`, `config/`, `workspace/`, `archwiz/`, `.agents/`, and `tests/`.
+
+### Vercel
+
+The linked `historical-corpus-explorer` project uses `apps/historical-corpus-explorer` as its root, affected-project deployment filtering, and a project-scoped ignore command. Its 2026-11-27 quota incident and provider verification state are recorded in [DEPLOYMENT-LANES.md](ops/DEPLOYMENT-LANES.md).
+
+### Devin
+
+Devin remains an optional bounded worker. Admission uses current API eligibility, available free quota, billing boundary, task fit, and explicit referral-credit provenance. The 2026-11-27 operator report is recorded as a lead pending provider/account evidence.
+
+## Integration order
+
+```text
 P0  credential / session-store containment
     repo-gate
-    termux-smoke          ← now live
+    Siglary validation
+    Termux smoke when the surface classifier admits it
     deterministic configuration
     session SSOT schema
 
@@ -94,6 +122,7 @@ P1  dispatch event boundary
     DeepForge launcher resolver
     provider capability contract
     content-addressed index correctness
+    dangle target-path validation
 
 P2  DeepForge ↔ Rust protocol
     MCP
@@ -101,20 +130,12 @@ P2  DeepForge ↔ Rust protocol
     multi-provider parity
 ```
 
-## How to land work
+## Promotion contract
 
-1. Branch off `master-staging` or `termux-smoke`.
-2. Smallest atomic change that preserves invariants.
-3. Push → both gates run on PR.
-4. Green on both → candidate for `master`.
+1. Run repo-gate on every candidate.
+2. Run Siglary validation on the exact candidate SHA.
+3. Run Termux smoke when the shared classifier admits the Termux surface; record `SKIPPED` with reason for other slices.
+4. Run reference and provider lanes when their admission conditions match.
+5. Promote when every applicable required gate passes on the same immutable SHA and the task outcome is verified.
 
-Do **not** treat `master` as the integration point for large TER-*
-branches.
-
-## Next ratchet targets
-
-- `tracked_session_artifacts` → 0
-- `tracked_browser_credential_stores` → 0
-- `tracked_browser_profile_files` → 0
-- `tracked_backup_files` → 0
-- Reduce `device_absolute_symlinks`
+Use small atomic changes. Target `master` for integration work; use the active staging lane when the proposal names it.

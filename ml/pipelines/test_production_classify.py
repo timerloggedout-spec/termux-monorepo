@@ -10,7 +10,11 @@ from unittest import mock
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from ml.pipelines import production_classify
-from ml.pipelines.production_classify import build_pr_dict, classify_all
+from ml.pipelines.production_classify import (
+    _fetch_changed_paths,
+    build_pr_dict,
+    classify_all,
+)
 
 NOW = datetime(2026, 10, 28, tzinfo=timezone.utc)
 GREEN = [{"name": "hygiene + portability gate", "conclusion": "success"},
@@ -38,6 +42,24 @@ class BuildPrDict(unittest.TestCase):
         self.assertEqual(d["gates"], {"repo-gate": True, "termux-smoke": True})
         d = build_pr_dict(pr(), [], NOW)
         self.assertEqual(d["gates"], {"repo-gate": False, "termux-smoke": False})
+
+    def test_non_termux_paths_mark_smoke_inapplicable(self):
+        checks = [{"name": "hygiene + portability gate", "conclusion": "success"}]
+        d = build_pr_dict(pr(), checks, NOW, changed_paths=["docs/notes.md"])
+        self.assertFalse(d["termux_smoke_required"])
+        feed = classify_all([d], NOW)
+        self.assertEqual(feed["prs"][0]["lane"], "CANDIDATE")
+
+    def test_termux_paths_keep_smoke_required(self):
+        checks = [{"name": "hygiene + portability gate", "conclusion": "success"}]
+        d = build_pr_dict(pr(), checks, NOW, changed_paths=["archwiz/probe.py"])
+        self.assertTrue(d["termux_smoke_required"])
+        feed = classify_all([d], NOW)
+        self.assertEqual(feed["prs"][0]["lane"], "NEED_EVIDENCE")
+
+    def test_uncertain_changed_paths_keep_smoke_required(self):
+        d = build_pr_dict(pr(), [], NOW, changed_paths=None)
+        self.assertTrue(d["termux_smoke_required"])
 
     def test_age_and_shape(self):
         d = build_pr_dict(pr(), GREEN, NOW)

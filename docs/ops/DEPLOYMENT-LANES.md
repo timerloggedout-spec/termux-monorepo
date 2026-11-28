@@ -88,3 +88,16 @@ This changes the status from **reference-only** to **optional operational adapte
 The bridge is deliberately inert until `N8N_SHE_WEBHOOK_URL` is configured. It sends only an allowlisted workflow receipt and never forwards GitHub credentials or arbitrary event payloads.
 
 n8n remains optional and does not replace GitHub Actions, SHE reducers, or the system-of-record boundary.
+
+
+## Historical Corpus Explorer Vercel admission — 2026-11-27
+
+The linked Vercel project `historical-corpus-explorer` was building from repository entrypoint `.`. Its latest 24-hour inventory contained 96 deployments, including 42 from `master` and 54 across refresh/feature branches. A documentation/test-only PR received a `build-rate-limit` status.
+
+The project settings update was accepted at 2026-11-27T21:55:45Z:
+
+- `rootDirectory=apps/historical-corpus-explorer`
+- `enableAffectedProjectsDeployments=true`
+- `commandForIgnoringBuildStep` compares the exact previous/current SHAs against `apps/historical-corpus-explorer/`
+
+The repository now carries `apps/historical-corpus-explorer/vercel.json` and a matching project case in `scripts/ci/vercel_ignore_build.sh`. The project remains a protected preview surface. The first post-update docs/test head has zero deployment records for its SHA; its GitHub Vercel status remains `build-rate-limit`. Verify provider behavior with a fresh unrelated change and a relevant app change before promoting the provider gate to fully validated.

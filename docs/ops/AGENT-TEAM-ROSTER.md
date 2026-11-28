@@ -10,7 +10,7 @@ This roster distinguishes **observed repository collaborators** from merely conf
 | OmniRoute | peer provider lane | existing routing work + MVT lane | independent peer when credential/capacity is available |
 | Jules / google-labs-jules | bounded builder/escalation | historical Jules branches/workflows | admit when expected marginal value exceeds another peer pass; not default review sink |
 | CodeRabbit | review/autofix collaborator | repository branches + #300/#95 | review signal must be classified as disposition/probe/status before feeding forward |
-| Devin | implementation specialist | repository `devin/*` branches + prior integration work | bounded task worker; attribution remains provenance-based |
+| Devin | implementation specialist | repository `devin/*` branches + prior integration work | optional bounded worker; admit with current API eligibility, free quota, task fit, billing boundary, and explicit Devin referral-credit evidence; operator report 2026-11-27 awaits provider/account receipt |
 | Mistral / Vibe | provider/CLI collaborator | repository `vibe/mistralai-*` history | candidate specialist; availability must be observed |
 | Manus | replay/recon/automation specialist | #265 + `manus/*` branches | evidence/recon and specialized automation; not a generic reviewer |
 | Blocks | GitHub collaboration integration | observed `blocksorg[bot]` issue comments | treat generated onboarding/command responses as external collaboration signals, not correctness evidence |

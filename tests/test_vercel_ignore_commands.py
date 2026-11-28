@@ -19,6 +19,9 @@ CONFIGS = {
         "tribute-dashboard", "scripts/ci/tribute_status.py"
     ),
     "demo-portal/public/vercel.json": ("demo-portal", "demo-portal/public/index.html"),
+    "apps/historical-corpus-explorer/vercel.json": (
+        "historical-corpus-explorer", "apps/historical-corpus-explorer/index.html"
+    ),
 }
 
 
@@ -36,6 +39,12 @@ class VercelIgnoreCommandTests(unittest.TestCase):
                 self.assertIn("scripts/ci/vercel_ignore_build.sh", command)
                 self.assertIn(project, command)
                 self.assertLessEqual(len(command), 256)
+
+        explorer_command = json.loads(
+            (ROOT / "apps/historical-corpus-explorer/vercel.json").read_text(encoding="utf-8")
+        )["ignoreCommand"]
+        self.assertIn("helper absent; build", explorer_command)
+        self.assertIn("exit 1", explorer_command)
 
         helper = (ROOT / "scripts/ci/vercel_ignore_build.sh").read_text(encoding="utf-8")
         self.assertIn("VERCEL_GIT_PREVIOUS_SHA", helper)

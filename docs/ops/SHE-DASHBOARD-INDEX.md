@@ -16,7 +16,9 @@ This is the navigation entry point for the SHE dashboard contract and its surrou
 - ISSUE-TEMPLATE-CENSUS.md — source-derived census of all 14 YAML issue forms.
 - `generated/issue-template-census.json` — machine-readable template census with source blob SHAs.
 - WORKFLOW-TRIGGER-CENSUS.md — source-verified selected workflow event/selector examples.
+- WORKFLOW-EVENT-INDEX.md — catalog-level index of all 332 workflow YAML files.
 - `generated/workflow-trigger-census.json` — machine-readable workflow trigger exemplars with source blob SHAs.
+- `generated/workflow-event-index.json` — machine-readable 332-workflow event and authority index.
 - LABEL-CONSUMER-CENSUS.md — source-backed label producers, selectors, queue states, and consumers.
 - `generated/label-consumer-census.json` — machine-readable label relationship records and coverage limits.
 

@@ -1,11 +1,11 @@
-# Proposal profile pointer
+# Project profile references
 
-The canonical project profile lives at:
+**Canonical scope profile:** `.config/llm_map/profiles/projects/cell-the-living-machine.json`
 
-`docs/projects/cell-the-living-machine/PROJECT_PROFILE.yaml`
+**Scope schema:** `ops/projects/profile.schema.json` (`project-profile/v1`)
 
-The project registry lives at:
+**Game-specific manifest:** `ops/projects/manifests/cell-the-living-machine.yaml`
 
-`docs/projects/registry.yaml`
+**Project registry:** `ops/projects/registry.yaml`
 
-This proposal retains the profile reference here so the review package and the project control plane resolve to one canonical record.
+The scope profile follows the existing ArchWiz project-profile contract. The game manifest carries the product, research, content, specialist, and release details.

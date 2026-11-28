@@ -35,6 +35,7 @@
     ["D2 proposals", tribute + "d2-proposals.html", "d2-proposals"],
     ["Linguist", tribute + "linguist.html", "linguist"],
     ["Delphi RFP", tribute + "delphi-rfp.html", "delphi-rfp"],
+    ["RFP & DoE views", tribute + "experiment-views.html", "experiment-views"],
     ["Delphi ledger", tribute + "delphi-ledger.html", "delphi-ledger"],
     ["Classifiers", tribute + "classifiers.html", "classifiers"],
     ["PR lanes", tribute + "pr-lanes.html", "pr-lanes"],

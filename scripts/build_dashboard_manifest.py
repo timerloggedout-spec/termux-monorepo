@@ -22,6 +22,7 @@ TITLE_OVERRIDES = {
     "doe.html": "DoE",
     "delphi-rfp.html": "Delphi RFP",
     "delphi-ledger.html": "Delphi Ledger",
+    "experiment-views.html": "RFP & DoE Views",
     "mvt.html": "MVT",
     "pr-lanes.html": "PR Lanes",
 }

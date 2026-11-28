@@ -1,0 +1,209 @@
+{
+  "schema_version": "rfp-published-views/v1",
+  "feed_status": "catalogue_seed",
+  "generated_at": null,
+  "source": {
+    "repository": "timerloggedout-spec/termux-monorepo",
+    "governance": "docs/ops/DOE-FAMILY.md",
+    "taxonomy": "docs/ops/DOE-TAXONOMY.md",
+    "phase_map": "docs/ops/ACTIONS-MATRIX-UPGRADE-PLAN.md",
+    "phase_issue": "https://github.com/timerloggedout-spec/termux-monorepo/issues/631"
+  },
+  "methods": [
+    {
+      "id": "RFP-V1",
+      "name": "RFP baseline",
+      "kind": "incumbent",
+      "status": "baseline",
+      "design": "Existing mandated pipeline",
+      "description": "Current internal RFP mandate and comparison baseline."
+    },
+    {
+      "id": "RFP-V13",
+      "name": "13-phase pipeline",
+      "kind": "pipeline",
+      "status": "comparative-option",
+      "design": "Ordered governance phases with asynchronous workstreams",
+      "description": "Canonical 13-phase sequence; independent workstreams may overlap when dependencies and readiness permit."
+    },
+    {
+      "id": "RFP-VD",
+      "name": "Dependency-driven",
+      "kind": "pipeline",
+      "status": "candidate",
+      "design": "Dependency DAG and execution waves",
+      "description": "Candidate topology driven by explicit prerequisites and readiness."
+    },
+    {
+      "id": "RFP-VH",
+      "name": "Hybrid",
+      "kind": "composition",
+      "status": "candidate",
+      "design": "13-phase governance plus dependency-driven execution",
+      "description": "Candidate composition; evaluate interactions and hand-offs as a distinct treatment."
+    }
+  ],
+  "phases": [
+    {
+      "id": "P01",
+      "order": 1,
+      "name": "Initiation",
+      "theme": "Purpose"
+    },
+    {
+      "id": "P02",
+      "order": 2,
+      "name": "Challenge",
+      "theme": "Obstacle"
+    },
+    {
+      "id": "P03",
+      "order": 3,
+      "name": "Activation",
+      "theme": "Movement"
+    },
+    {
+      "id": "P04",
+      "order": 4,
+      "name": "Form",
+      "theme": "Architecture"
+    },
+    {
+      "id": "P05",
+      "order": 5,
+      "name": "Empowerment",
+      "theme": "Core"
+    },
+    {
+      "id": "P06",
+      "order": 6,
+      "name": "Balance",
+      "theme": "Rhythm"
+    },
+    {
+      "id": "P07",
+      "order": 7,
+      "name": "Alignment",
+      "theme": "Attunement"
+    },
+    {
+      "id": "P08",
+      "order": 8,
+      "name": "Integrity",
+      "theme": "Modeling"
+    },
+    {
+      "id": "P09",
+      "order": 9,
+      "name": "Realization",
+      "theme": "Intent"
+    },
+    {
+      "id": "P10",
+      "order": 10,
+      "name": "Manifestation",
+      "theme": "Production"
+    },
+    {
+      "id": "P11",
+      "order": 11,
+      "name": "Release",
+      "theme": "Dissolution"
+    },
+    {
+      "id": "P12",
+      "order": 12,
+      "name": "Cooperation",
+      "theme": "Review"
+    },
+    {
+      "id": "P13",
+      "order": 13,
+      "name": "Transcendence",
+      "theme": "Evolution"
+    }
+  ],
+  "design_classes": [
+    {
+      "id": "full-factorial",
+      "name": "Full factorial",
+      "status": "implemented",
+      "generator": "full_factorial",
+      "purpose": "All declared factor combinations and interactions."
+    },
+    {
+      "id": "taguchi-l9",
+      "name": "Orthogonal array / Taguchi L9",
+      "status": "implemented",
+      "generator": "taguchi_l9",
+      "purpose": "Balanced screening across up to four factors with three levels."
+    },
+    {
+      "id": "fractional-factorial",
+      "name": "Fractional factorial",
+      "status": "skill-named",
+      "generator": null,
+      "purpose": "Screening under a reduced run budget; declare aliases and resolution."
+    },
+    {
+      "id": "plackett-burman",
+      "name": "Plackett–Burman",
+      "status": "skill-named",
+      "generator": null,
+      "purpose": "Economical main-effect screening."
+    },
+    {
+      "id": "foldover",
+      "name": "Foldover augmentation",
+      "status": "candidate",
+      "generator": null,
+      "purpose": "Follow-up runs to resolve screening aliases."
+    },
+    {
+      "id": "central-composite",
+      "name": "Central composite",
+      "status": "candidate",
+      "generator": null,
+      "purpose": "Quadratic response-surface modeling."
+    },
+    {
+      "id": "box-behnken",
+      "name": "Box–Behnken",
+      "status": "candidate",
+      "generator": null,
+      "purpose": "Quadratic modeling without corner points."
+    },
+    {
+      "id": "mixture",
+      "name": "Mixture design",
+      "status": "candidate",
+      "generator": null,
+      "purpose": "Treatments defined by proportions that sum to a fixed total."
+    },
+    {
+      "id": "split-plot",
+      "name": "Split-plot",
+      "status": "candidate",
+      "generator": null,
+      "purpose": "Separate randomization levels for hard-to-change factors."
+    },
+    {
+      "id": "latin-hypercube",
+      "name": "Latin hypercube",
+      "status": "candidate",
+      "generator": null,
+      "purpose": "Space-filling exploration; coverage is distinct from factorial effect estimation."
+    },
+    {
+      "id": "sequential-adaptive",
+      "name": "Sequential / adaptive",
+      "status": "skill-named",
+      "generator": null,
+      "purpose": "Evidence-driven follow-up with predeclared stopping rules."
+    }
+  ],
+  "campaigns": [],
+  "workstreams": [],
+  "experiments": [],
+  "runs": []
+}

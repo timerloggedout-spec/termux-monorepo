@@ -1,26 +1,23 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-28T02:44:55Z",
+ "generated_at": "2026-11-28T03:19:04Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 7,
-   "in_progress": 0,
+   "queued": 2,
+   "in_progress": 2,
    "oldest_queued_at": "2026-11-21T07:17:51Z",
    "by_workflow_queued": {
-    "repo gate": 2,
-    "Orchestration Regression Guard": 1,
-    "PR scope guard": 2,
-    "delphi-gate": 1,
-    "dispatch-watchdog": 1
+    "repo gate": 1,
+    "PR scope guard": 1
    }
   },
   "2": {
    "tier": 2,
    "queued": 2,
    "in_progress": 1,
-   "oldest_queued_at": "2026-11-28T02:44:20Z",
+   "oldest_queued_at": "2026-11-28T03:18:33Z",
    "by_workflow_queued": {
     "pages build and deployment": 1,
     "tribute-dashboard-deploy": 1
@@ -35,41 +32,23 @@
   },
   "4": {
    "tier": 4,
-   "queued": 35,
-   "in_progress": 17,
+   "queued": 7,
+   "in_progress": 18,
    "oldest_queued_at": "2026-11-21T07:17:51Z",
    "by_workflow_queued": {
-    "Agent Throughput Evidence": 3,
-    "PR production ledger": 2,
-    "Workflow Surface Policy": 1,
-    "Lane matrix event-driven inventory": 1,
-    "DO Statement Style": 3,
-    "Repository development evaluation": 1,
-    "DeepSeek CI \u2013 Agentic Automation": 1,
-    "Action Effectiveness Ledger": 2,
-    "RECON INTEL discovery": 1,
-    "termux smoke": 3,
-    "PR Change Effectiveness Ledger": 2,
-    "Agent PR Jules Handoff": 2,
-    "Sweep Accountability": 1,
-    "CellCog review": 1,
-    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
-    "Context Relationship + Lead/Lag Audit": 1,
-    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
-    "graph-matrix-probe": 1,
-    "quota-served-probe": 1,
-    "que-cadence-kick": 1,
-    "quota-allocation-planner": 1,
-    "Foresight Evidence Spine": 1,
-    "Peer review orchestrator": 1,
+    "hitl-control-plane-verify": 1,
+    "DO Statement Style": 1,
     "Quota Dispatch Tree": 1,
+    "termux smoke": 1,
+    "Agent PR Jules Handoff": 1,
+    "PR Change Effectiveness Ledger": 1,
     "Advisory GitHub Actions lint": 1
    }
   }
  },
  "totals": {
-  "queued": 44,
-  "in_progress": 18
+  "queued": 11,
+  "in_progress": 21
  },
  "wedged_ancient": [
   {
@@ -101,13 +80,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 7,
+   "1": 4,
    "2": 3,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 10,
-  "default_t4": 52,
+  "explicit_total": 7,
+  "default_t4": 25,
   "unmatched": 0,
   "ancient_excluded": 4,
   "operator_excluded": 1

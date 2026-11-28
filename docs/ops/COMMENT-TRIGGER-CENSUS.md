@@ -1,6 +1,6 @@
 # Comment trigger census
 
-Snapshot: `feat/trigger-workflow-registry-refresh`, 2026-11-27. Seventeen source-read workflows establish distinct comment selectors across slash commands, agent mentions, provider commands, and HTML markers.
+Snapshot: `feat/trigger-workflow-registry-generator`, 2026-11-27. Seventeen source-read workflows establish distinct comment selectors across slash commands, agent mentions, provider commands, and HTML markers.
 
 | Workflow | Selector | Guards | Class |
 |---|---|---|---|

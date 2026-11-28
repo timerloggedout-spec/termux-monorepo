@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://timerloggedout-spec.github.io/termux-monorepo/polyglot/mapping.schema.json",
+  "title": "Linguist capability mapping",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "mapping_id",
+    "capability_id",
+    "target_id",
+    "mapping_kind",
+    "status",
+    "coverage",
+    "loss_profile"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "mapping_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capability_id": {
+      "type": "string"
+    },
+    "target_id": {
+      "type": "string"
+    },
+    "mapping_kind": {
+      "enum": [
+        "syntax",
+        "semantic",
+        "ir",
+        "abi_ffi",
+        "compiler",
+        "codec",
+        "runtime_kernel",
+        "transport_protocol",
+        "packaging",
+        "surface_rendering"
+      ]
+    },
+    "status": {
+      "enum": [
+        "research",
+        "specified",
+        "implemented",
+        "verified",
+        "deprecated"
+      ]
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "supported",
+        "unsupported"
+      ],
+      "properties": {
+        "supported": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unsupported": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "partial": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "loss_profile": {
+      "enum": [
+        "lossless",
+        "conditionally_lossless",
+        "lossy",
+        "uncharacterized"
+      ]
+    },
+    "round_trip_tests": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "implementation_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "version_constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

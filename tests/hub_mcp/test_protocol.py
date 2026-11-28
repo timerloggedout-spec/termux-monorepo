@@ -56,6 +56,22 @@ class HubProtocolTests(TestCase):
         with self.assertRaisesRegex(JobValidationError, "requires OPERATE"):
             Job.from_mapping(payload(capability="repository.repo_gate"), now=now)
 
+    def test_engineering_probe_is_an_observe_capability(self):
+        now = datetime(2026, 8, 15, 12, 0, tzinfo=UTC)
+        job = Job.from_mapping(payload(capability="engineering.toolchain_probe"), now=now)
+        self.assertEqual(job.capability, "engineering.toolchain_probe")
+        self.assertEqual(get_capability(job.capability).approval.name, "OBSERVE")
+
+    def test_engineering_taxonomy_validation_requires_operate(self):
+        now = datetime(2026, 8, 15, 12, 0, tzinfo=UTC)
+        with self.assertRaisesRegex(JobValidationError, "requires OPERATE"):
+            Job.from_mapping(payload(capability="engineering.taxonomy_validate"), now=now)
+        job = Job.from_mapping(
+            payload(capability="engineering.taxonomy_validate", approval_level="OPERATE"),
+            now=now,
+        )
+        self.assertEqual(get_capability(job.capability).approval.name, "OPERATE")
+
     def test_redact_common_tailscale_secret(self):
         self.assertNotIn("tskey", redact("token=tskey-api-ABCDEFGHIJKLMNOP"))
 

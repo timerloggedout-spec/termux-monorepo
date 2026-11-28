@@ -79,8 +79,13 @@ game:
   scales: [molecular, membrane, organelle, cellular, tissue, organism]
   core_loop: [explore, define, design, build, simulate, validate, make, inspect, improve, publish]
   engine:
-    selection: pending_prototype_comparison
-    candidates: [godot, unity, unreal, browser_runtime]
+    selection: provisional_godot_prototype_lead
+    prototype_version: 4.7.2
+    baseline_renderer: compatibility
+    higher_tier_renderers: [mobile, forward_plus]
+    candidates: [godot, unity_6_urp, unreal_5, browser_runtime]
+    decision_record: docs/proposals/active/cell-the-living-machine/ENGINE_DECISION.md
+    final_selection: pending_physical_device_benchmarks
   first_slice:
     parallel_vertical_slices:
       - id: biological_membrane

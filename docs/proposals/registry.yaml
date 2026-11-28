@@ -1,7 +1,31 @@
 version: 1
-updated_at: '2026-11-21T00:00:00Z'
+updated_at: '2026-11-28T00:00:00Z'
 updated_by: ChatGPT
 proposals:
+  - id: cell-the-living-machine
+    title: "CELL: THE LIVING MACHINE — science, engineering and real-world creation platform"
+    author: ChatGPT
+    status: draft
+    priority: P1
+    path: active/cell-the-living-machine/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author-executor
+        status: executing
+    related_issues: []
+    related_prs: []
+    related_branches:
+      - feature/cell-living-machine-architecture-v2
+    related_repos:
+      - https://github.com/Research-Astute/molecular-biology-research
+      - https://github.com/timerloggedout-spec/cell-the-living-machine
+      - https://github.com/search-astute-ly
+    gates_required:
+      - repo-gate
+      - termux-smoke
   - id: repository-architecture-entry
     title: Repository architecture entry, system taxonomy, and data-flow map
     author: ChatGPT

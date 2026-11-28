@@ -1,0 +1,119 @@
+schema: game-audience-opportunity-map/v1
+project_ref: project:cell-the-living-machine
+status: proposed
+
+audience_policy:
+  knowledge_access: ubiquitous
+  design_dimensions: [knowledge_lens, information_density, challenge_profile, interface_support, domain_context]
+  shared_knowledge_graph: true
+
+audience_segments:
+  - id: curious_explorers
+    needs: [visual_orientation, intuitive_explanations, discovery]
+    lenses: [field, mechanism]
+    challenge_profiles: [guided, exploratory]
+    contribution_paths: [feedback, scenario_playtesting]
+  - id: learners_and_students
+    needs: [conceptual_models, causal_explanations, measurable_learning_outcomes]
+    lenses: [field, mechanism, quantitative]
+    challenge_profiles: [guided, exploratory, constrained_resources]
+    contribution_paths: [classroom_trials, learning_outcome_review]
+  - id: educators_and_curriculum_designers
+    needs: [lesson_alignment, assessment, source_traceability, reusable_scenarios]
+    lenses: [field, mechanism, quantitative, research]
+    challenge_profiles: [guided, research_investigation]
+    contribution_paths: [lesson_scenarios, assessment_design, curriculum_review]
+  - id: makers_and_hobbyists
+    needs: [experimentation, parameter_controls, sandbox_systems]
+    lenses: [mechanism, quantitative, structural]
+    challenge_profiles: [exploratory, constrained_resources, coupled_systems]
+    contribution_paths: [scenario_authoring, modding, prototype_feedback]
+  - id: researchers_and_specialists
+    needs: [primary_evidence, methods, structures, uncertainty, quantitative_parameters]
+    lenses: [quantitative, structural, research]
+    challenge_profiles: [coupled_systems, research_investigation]
+    contribution_paths: [scientific_review, data_adapters, mechanism_dossiers]
+  - id: science_communicators_and_visual_artists
+    needs: [visual_clarity, faithful_animation, source_attribution]
+    lenses: [field, structural, research]
+    challenge_profiles: [exploratory, research_investigation]
+    contribution_paths: [visualization, animation_review, explanatory_content]
+  - id: game_developers_and_tools_builders
+    needs: [deterministic_simulation, content_contracts, import_tools, extensibility]
+    lenses: [mechanism, quantitative, structural]
+    challenge_profiles: [constrained_resources, coupled_systems]
+    contribution_paths: [engine_adapters, content_tools, scenario_sdk]
+  - id: accessibility_specialists
+    needs: [alternative_representations, input_flexibility, adjustable_information_density]
+    lenses: [all]
+    challenge_profiles: [all]
+    contribution_paths: [accessibility_audits, assistive_technology_testing]
+
+opportunity_classes:
+  - id: game_jams_and_hackathons
+    registry_source: ops/challenge/coordinator.json
+    fit_facets: [simulation, systems_strategy, exploration, puzzle, educational, sandbox]
+    deliverables: [playable_prototype, vertical_slice, demo, pitch, source_evidence_pack]
+  - id: science_education_challenges
+    registry_source: external_verified_opportunity
+    fit_facets: [educational, exploration, research]
+    deliverables: [lesson_scenarios, assessment, learning_outcomes, educator_guide]
+  - id: scientific_visualization_challenges
+    registry_source: external_verified_opportunity
+    fit_facets: [structural, quantitative, simulation]
+    deliverables: [molecular_viewer, structure_importer, source_linked_visualization]
+  - id: research_data_challenges
+    registry_source: external_verified_opportunity
+    fit_facets: [research, simulation]
+    deliverables: [data_adapter, curated_dataset, provenance_pipeline, reproducible_analysis]
+  - id: ai_and_ml_challenges
+    registry_source: ops/challenge/coordinator.json
+    fit_facets: [game_ml_research, simulation, adaptive_scenarios]
+    deliverables: [research_assistant, model_evaluation, simulation_augmentation]
+  - id: accessibility_challenges
+    registry_source: external_verified_opportunity
+    fit_facets: [all]
+    deliverables: [accessible_controls, captions, text_equivalents, assistive_technology_report]
+  - id: open_source_and_research_collaborations
+    registry_source: external_verified_opportunity
+    fit_facets: [tools_content_pipeline, research, structural]
+    deliverables: [open_data_adapter, reusable_research_record, contributor_workflow]
+
+current_registry_observations:
+  source_of_truth: ops/challenge/coordinator.json
+  schema: docs/ops/CHALLENGE-SCHEMA.md
+  observations:
+    - event_id: D4
+      name: Kiroween 2026
+      host: Devpost (Kiro)
+      status: registering
+      deadline: "2026-12-04T14:00:00-08:00"
+      current_project_record: kiroween-skeleton-crew
+      current_project_state: frozen
+      game_fit: brief_and_project_selection_review_required
+    - event_id: C11
+      name: AMD AI League
+      host: AMD x lablab.ai
+      status: active
+      deadline_state: pending_official_record
+      game_fit: AI_simulation_and_research_tools_candidate
+    - event_id: C12
+      name: "UGREEN Hackathon 2026: Build AI NAS Skills on UGOS"
+      host: UGREEN
+      status: "graduated — ON SLATE"
+      game_fit: specialized_platform_review
+    - event_id: D0_D1_D2_D3_D5
+      status: closed_or_completed
+      game_fit: historical_opportunity_data
+
+recruitment_boundary:
+  registry: ops/challenge-recruitment/registry.json
+  scope: own_team_and_entrants
+  game_audience_pipeline: separate_project_workstream
+  audience_discovery: public_programs_and_community_channels_with_source_evidence
+
+submission_policy:
+  registration_action: owner_approval_required
+  project_entry: challenge_coordinator_record_with_official_brief_evidence
+  event_dates_and_prizes: official_source_verified
+  opportunity_cost: existing_coordinator_schema_and_ledger

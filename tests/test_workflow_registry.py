@@ -197,16 +197,27 @@ jobs:
             workflow_dir.mkdir(parents=True)
             catalog_dir.mkdir(parents=True)
             (workflow_dir / "one.yml").write_text(
-                "name: One\\non: [push]\\njobs:\\n  build:\\n    runs-on: ubuntu-latest\\n", encoding="utf-8"
+                "name: One\\non: [push]\\npermissions:\\n  contents: write\\njobs:\\n  build:\\n    runs-on: ubuntu-latest\\n", encoding="utf-8"
             )
             (catalog_dir / "automation-workflow-catalog.json").write_text(
                 json.dumps({"source_fingerprint": "abc", "workflows": [{"path": ".github/workflows/one.yml", "authority": "read-only-or-advisory"}]}),
                 encoding="utf-8",
             )
+            registry_path = root / "docs/ops/TRIGGER-WORKFLOW-REGISTRY.json"
+            registry_path.write_text(json.dumps({
+                "sources": [{"id": "workflow-catalog"}, {"id": "workflow-event-index"}],
+                "workflow_event_catalog": {},
+                "reconciliation": {"workflow_inventory": {}, "workflow_authority_conflicts": []},
+            }), encoding="utf-8")
             workflow_registry.write_outputs(root)
             self.assertTrue(workflow_registry.check_outputs(root))
             output = json.loads((catalog_dir / "workflow-event-index.json").read_text(encoding="utf-8"))
             self.assertEqual(output["schema_version"], "workflow-event-index/v2")
+            registry = json.loads(registry_path.read_text(encoding="utf-8"))
+            self.assertEqual(registry["sources"][1]["schema"], "workflow-event-index/v2")
+            self.assertEqual(registry["sources"][1]["workflow_count"], 1)
+            self.assertEqual(registry["reconciliation"]["workflow_inventory"]["status"], "IN_SYNC")
+            self.assertEqual(registry["reconciliation"]["workflow_authority_conflicts"][0]["source_authority"], "writer")
             (catalog_dir / "workflow-event-index.json").write_text("{}\\n", encoding="utf-8")
             self.assertFalse(workflow_registry.check_outputs(root))
 
@@ -221,6 +232,7 @@ jobs:
             self.assertEqual(index["reconciliation"]["missing_from_catalog"], [".github/workflows/actual.yml"])
             self.assertEqual(index["reconciliation"]["missing_from_directory"], [".github/workflows/stale.yml"])
             self.assertEqual(index["uncatalogued_source_writers"], [".github/workflows/actual.yml"])
+            self.assertIn(".github/workflows/actual.yml", workflow_registry.markdown_index(index))
 
 
 if __name__ == "__main__":

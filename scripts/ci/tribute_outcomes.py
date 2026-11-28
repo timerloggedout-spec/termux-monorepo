@@ -48,6 +48,16 @@ STAKE_TITLE = re.compile(r"help-wanted:\s*stake\b", re.I)
 YIELD_ACTIONS = {"yield_lane"}
 RETIRE_ACTIONS = {"retire_lane", "retire_lane_cooldown"}
 DROP_ACTIONS = {"drop_candidate"}
+# Orgs the lane account runs itself: anything merged there is self_merge, never a foreign win.
+SELF_OWNERS = {o.strip().lower() for o in os.environ.get("TRIBUTE_SELF_OWNERS", "Research-Astute,search-astute-ly").split(",") if o.strip()}
+LANE_MARKER = re.compile(r"(help-wanted|tribute)[ -]lane|via termux-monorepo|termux-monorepo help-wanted|help-wanted:\s*stake", re.I)
+LANE_HEAD = re.compile(r"^(help-wanted|tribute|fix/|feat/|docs/|chore/)", re.I)
+SEARCH_CAP = 1000
+
+try:  # package import (tests) or script import (CI)
+    from scripts.ci import tribute_audit_rev as audit_rev
+except ImportError:  # pragma: no cover
+    import tribute_audit_rev as audit_rev  # type: ignore
 
 
 def _ts(s):
@@ -74,7 +84,8 @@ def classify(pr: dict, author: str = AUTHOR) -> str:
     """One of real_merge | stake_merge | self_merge | closed_unmerged | open."""
     state = (pr.get("state") or "").lower()
     if pr.get("merged_at"):
-        if (pr.get("merged_by") or "").lower() == author.lower():
+        owner = (pr.get("repo") or "").split("/")[0].lower()
+        if (pr.get("merged_by") or "").lower() == author.lower() or owner in SELF_OWNERS:
             return "self_merge"
         files = pr.get("files")
         if files is not None:
@@ -83,6 +94,43 @@ def classify(pr: dict, author: str = AUTHOR) -> str:
     if state == "closed":
         return "closed_unmerged"
     return "open"
+
+
+def attribution(pr: dict, cls: str, author: str = AUTHOR) -> dict | None:
+    """Who merged a merged PR and in what relationship (owner correction 3, 2026-11-12).
+
+    merged_by            login that pressed merge
+    merger_association   the merger's author_association on the target repo (OWNER/MEMBER/COLLABORATOR/...),
+                         read from the merger's review/comment on the PR; OWNER when the merger owns the repo
+    author_association   the lane account's association on the target repo at read time
+    lane_produced        the PR was opened by the Tribute lane (marker in body/title/head), not by hand
+    collaborator_integration  the merge integrated our work through a collaborator relationship
+                         (we hold COLLABORATOR/MEMBER/OWNER on the target, or the merger is a known collaborator
+                         of the lane account's own repos) rather than a maintainer accepting a stranger's patch
+    attribution_class    maintainer_accept_lane | maintainer_accept_manual | collaborator_integration | self | n/a
+    """
+    if cls not in ("real_merge", "stake_merge", "self_merge"):
+        return None
+    repo_owner = (pr.get("repo") or "").split("/")[0]
+    merged_by = pr.get("merged_by")
+    assoc = pr.get("merger_association")
+    if not assoc and merged_by and repo_owner and merged_by.lower() == repo_owner.lower():
+        assoc = "OWNER"
+    ours = (pr.get("author_association") or "").upper()
+    text = " ".join(str(pr.get(k) or "") for k in ("title", "body"))
+    lane = bool(LANE_MARKER.search(text)) or (pr.get("lane_produced") is True)
+    if pr.get("lane_produced") is False:
+        lane = False
+    known = {u.strip().lower() for u in os.environ.get("TRIBUTE_KNOWN_COLLABORATORS", "").split(",") if u.strip()}
+    collab = ours in ("COLLABORATOR", "MEMBER", "OWNER") or (merged_by or "").lower() in known
+    if cls == "self_merge":
+        klass = "self"
+    elif collab:
+        klass = "collaborator_integration"
+    else:
+        klass = "maintainer_accept_lane" if lane else "maintainer_accept_manual"
+    return {"merged_by": merged_by, "merger_association": assoc or "UNKNOWN", "author_association": ours or "UNKNOWN",
+            "lane_produced": lane, "collaborator_integration": collab, "attribution_class": klass}
 
 
 def outcome_time(pr: dict, cls: str):
@@ -114,13 +162,17 @@ def s1_counts(decisions: list[dict], since: datetime | None = None) -> dict:
 # ---------------------------------------------------------------- report
 def build(prs: list[dict], now: datetime, window: int = 30, decisions: list[dict] | None = None,
           min_rate: float = 0.10, min_decided: int = 10, max_drought_days: int = 21,
-          author: str = AUTHOR, source: str = "live") -> dict:
+          author: str = AUTHOR, source: str = "live", census_check: dict | None = None) -> dict:
     rows = []
     for pr in prs:
         cls = classify(pr, author)
-        rows.append({"url": pr.get("html_url"), "repo": pr.get("repo"), "title": (pr.get("title") or "")[:120],
-                     "class": cls, "at": _iso(outcome_time(pr, cls)), "weight": {"real_merge": 1.0}.get(cls, 0.0)
-                     if cls != "closed_unmerged" else -1.0})
+        row = {"url": pr.get("html_url"), "repo": pr.get("repo"), "title": (pr.get("title") or "")[:120],
+               "class": cls, "at": _iso(outcome_time(pr, cls)), "weight": {"real_merge": 1.0}.get(cls, 0.0)
+               if cls != "closed_unmerged" else -1.0, "created_at": _iso(_ts(pr.get("created_at")))}
+        att = attribution(pr, cls, author)
+        if att:
+            row["attribution"] = att
+        rows.append(row)
     windows = {}
     for w in sorted(set(WINDOWS) | {window}):
         since = now - timedelta(days=w)
@@ -163,6 +215,10 @@ def build(prs: list[dict], now: datetime, window: int = 30, decisions: list[dict
                          "detail": f"{W['closed_unmerged']} PRs closed without merge in {window}d (counted as failures)"})
     s1 = s1_counts(decisions or [])
     status = "FAIL" if failures else ("WARN" if warnings else "OK")
+    # Primary SLO (owner correction 1): whole corpus + activity-aware recency; windows above are secondary.
+    corpus = audit_rev.corpus_items({"prs": rows}, decisions or [])
+    primary = audit_rev.slo_primary(corpus, now, min_rate=min_rate, min_decided=min_decided)
+    attributions = [{"url": r["url"], **r["attribution"]} for r in rows if r["class"] == "real_merge" and r.get("attribution")]
     return {
         "schema": SCHEMA,
         "generated_at": _iso(now),
@@ -178,6 +234,10 @@ def build(prs: list[dict], now: datetime, window: int = 30, decisions: list[dict
                    "self_merges_excluded": totals["self_merge"], "closed_unmerged": totals["closed_unmerged"],
                    "open": totals["open"]},
         "windows": windows,
+        "windows_role": "secondary (primary view = audit_rev whole corpus, slo_primary)",
+        "slo_primary": primary,
+        "real_merge_attribution": attributions,
+        "census_check": census_check,
         "last_real_merge_at": _iso(last_real),
         "days_since_real_merge": drought,
         "system1": s1,
@@ -198,6 +258,17 @@ def markdown(rep: dict) -> str:
              f"real merges **{W['real_merges']}** · stake-only merges **{W['stake_only_merges']}** (weight 0) · "
              f"closed-unmerged **{W['closed_unmerged']}** · real merge rate **{W['real_merge_rate'] if W['real_merge_rate'] is not None else 'n/a'}** · "
              f"open now **{rep['totals']['open']}** · days since real merge **{rep['days_since_real_merge']}**", ""]
+    P = rep.get("slo_primary")
+    if P:
+        c = P["corpus"]
+        lines = [f"## Tribute outcome SLO (primary, whole corpus): **{P['status']}** · activity {P['activity_state']}", "",
+                 f"corpus decided **{c['decided']}** · real **{c['real_merges']}** (lane-produced {c['real_merges_lane']}) · "
+                 f"stake-only **{c['stake_only_merges']}** · closed-unmerged **{c['closed_unmerged']}** · open **{c['open']}** · "
+                 f"rate **{c['real_merge_rate']}** · active attempts since real merge **{P['recency']['active_attempts_since_real']}**", ""]
+        lines += [f"- FAIL `{f['code']}`: {f['detail']}" for f in P["failures"]]
+        lines += [f"- WARN `{w['code']}`: {w['detail']}" for w in P["warnings"]]
+        lines += ["", f"### Secondary: {rep['window_days']}d window ({s['status']})", "",
+                  f"real merges **{W['real_merges']}** · stake-only **{W['stake_only_merges']}** · closed-unmerged **{W['closed_unmerged']}**", ""]
     lines += [f"- FAIL `{f['code']}`: {f['detail']}" for f in s["failures"]]
     lines += [f"- WARN `{w['code']}`: {w['detail']}" for w in s["warnings"]]
     s1 = rep["system1"]
@@ -224,35 +295,105 @@ def _get(path: str):
         return json.loads(r.read().decode())
 
 
-def live_census(author: str = AUTHOR) -> list[dict]:
-    out, seen = [], set()
-    for qual in ("is:merged", "is:closed is:unmerged", "is:open"):
-        q = f"is:pr {qual} author:{author} -user:{author}"
-        for page in range(1, 11):
-            data = _get(f"/search/issues?q={urllib.parse.quote(q)}&per_page=100&page={page}&sort=created&order=asc")
-            items = data.get("items") or []
-            for it in items:
-                url = it.get("html_url")
-                if not url or url in seen:
-                    continue
-                seen.add(url)
-                parts = (it.get("repository_url") or "").rstrip("/").split("/")
-                repo = f"{parts[-2]}/{parts[-1]}"
-                pr = {"html_url": url, "repo": repo, "number": it.get("number"), "title": it.get("title"),
-                      "state": it.get("state"), "created_at": it.get("created_at"), "closed_at": it.get("closed_at"),
-                      "merged_at": (it.get("pull_request") or {}).get("merged_at")}
-                if pr["merged_at"]:
-                    try:
-                        full = _get(f"/repos/{repo}/pulls/{it['number']}")
-                        pr["merged_by"] = (full.get("merged_by") or {}).get("login")
-                        pr["files"] = [{"filename": f.get("filename"), "additions": f.get("additions")}
-                                       for f in _get(f"/repos/{repo}/pulls/{it['number']}/files?per_page=100")]
-                    except Exception as e:  # keep the title heuristic on a read error
-                        print(f"::warning::tribute-outcomes: detail read failed for {url}: {e}", file=sys.stderr)
-                out.append(pr)
-            if len(items) < 100:
-                break
+def search_all(q: str, fetch=None, per_page: int = 100, lo: str = "2008-01-01", hi: str = "2100-01-01") -> tuple[list[dict], int]:
+    """Every search hit for q. Pages until total_count is reached; when total_count exceeds the
+    search API cap (1000) the created: range is bisected so no page cap can truncate the census.
+    Returns (items, total_count reported by the API for the unsplit query)."""
+    fetch = fetch or _get
+
+    def run(query):
+        items, total, page = [], None, 1
+        while True:
+            data = fetch(f"/search/issues?q={urllib.parse.quote(query)}&per_page={per_page}&page={page}&sort=created&order=asc")
+            if total is None:
+                total = int(data.get("total_count") or 0)
+            batch = data.get("items") or []
+            items.extend(batch)
+            if not batch or len(items) >= min(total, SEARCH_CAP) or len(batch) < per_page:
+                return items, total
+            page += 1
+
+    def ranged(a, b):
+        items, total = run(f"{q} created:{a}..{b}")
+        if total <= SEARCH_CAP:
+            return items
+        da, db = datetime.fromisoformat(a), datetime.fromisoformat(b)
+        if (db - da).days < 1:
+            raise RuntimeError(f"census: >{SEARCH_CAP} hits within one day for {q!r}; cannot split further")
+        mid = (da + (db - da) / 2).date()
+        return ranged(a, mid.isoformat()) + ranged((mid + timedelta(days=1)).isoformat(), b)
+
+    items, total = run(q)
+    if total > SEARCH_CAP:
+        items = ranged(lo, hi)
+    return items, total
+
+
+def census_assert(total: int, parts: dict) -> dict:
+    """Owner correction 2: total foreign PRs must equal merged + closed-unmerged + open."""
+    s = sum(parts.values())
+    ok = s == total
+    return {"ok": ok, "total": total, "parts": parts, "sum": s,
+            "detail": ("total == merged + closed_unmerged + open" if ok
+                       else f"census mismatch: total {total} != sum {s} {parts}")}
+
+
+def _attribution_detail(repo: str, number: int, merged_by: str | None) -> dict:
+    full = _get(f"/repos/{repo}/pulls/{number}")
+    out = {"merged_by": (full.get("merged_by") or {}).get("login") or merged_by,
+           "author_association": full.get("author_association"), "body": (full.get("body") or "")[:2000],
+           "head_ref": (full.get("head") or {}).get("ref")}
+    m = (out["merged_by"] or "").lower()
+    assoc = None
+    for path in (f"/repos/{repo}/pulls/{number}/reviews?per_page=100", f"/repos/{repo}/issues/{number}/comments?per_page=100"):
+        try:
+            for ev in _get(path):
+                if ((ev.get("user") or {}).get("login") or "").lower() == m and ev.get("author_association"):
+                    assoc = ev["author_association"]
+        except Exception:
+            pass
+        if assoc:
+            break
+    out["merger_association"] = assoc
     return out
+
+
+def live_census_checked(author: str = AUTHOR) -> tuple[list[dict], dict]:
+    out, seen, parts = [], set(), {}
+    base = f"is:pr author:{author} -user:{author}"
+    _, total = search_all(base)
+    for name, qual in (("merged", "is:merged"), ("closed_unmerged", "is:closed is:unmerged"), ("open", "is:open")):
+        items, t = search_all(f"is:pr {qual} author:{author} -user:{author}")
+        parts[name] = t
+        if len(items) != t:
+            print(f"::warning::tribute-outcomes: {name} fetched {len(items)} != total_count {t}", file=sys.stderr)
+        for it in items:
+            url = it.get("html_url")
+            if not url or url in seen:
+                continue
+            seen.add(url)
+            parts_ = (it.get("repository_url") or "").rstrip("/").split("/")
+            repo = f"{parts_[-2]}/{parts_[-1]}"
+            pr = {"html_url": url, "repo": repo, "number": it.get("number"), "title": it.get("title"),
+                  "state": it.get("state"), "created_at": it.get("created_at"), "closed_at": it.get("closed_at"),
+                  "merged_at": (it.get("pull_request") or {}).get("merged_at"), "body": (it.get("body") or "")[:2000]}
+            if pr["merged_at"]:
+                try:
+                    pr.update({k: v for k, v in _attribution_detail(repo, it["number"], None).items() if v is not None})
+                    pr["files"] = [{"filename": f.get("filename"), "additions": f.get("additions")}
+                                   for f in _get(f"/repos/{repo}/pulls/{it['number']}/files?per_page=100")]
+                except Exception as e:  # keep the title heuristic on a read error
+                    print(f"::warning::tribute-outcomes: detail read failed for {url}: {e}", file=sys.stderr)
+            out.append(pr)
+    chk = census_assert(total, parts)
+    chk["fetched"] = len(out)
+    if chk["ok"] and len(out) != total:
+        chk.update(ok=False, detail=f"fetched {len(out)} unique PRs != total {total}")
+    return out, chk
+
+
+def live_census(author: str = AUTHOR) -> list[dict]:
+    return live_census_checked(author)[0]
 
 
 def read_jsonl(paths: list[str]) -> list[dict]:
@@ -290,17 +431,35 @@ def merge_into(status_path: Path, rep: dict) -> None:
         "real_merge_rate": W["real_merge_rate"],
         "days_since_real_merge": rep["days_since_real_merge"],
     }
+    if rep.get("slo_primary"):
+        P = rep["slo_primary"]
+        doc["tribute_outcomes"].update({
+            "status_windowed": rep["slo"]["status"],
+            "status": P["status"],
+            "status_basis": P["basis"],
+            "activity_state": P["activity_state"],
+            "corpus_real_merges": P["corpus"]["real_merges"],
+            "corpus_real_merges_lane": P["corpus"]["real_merges_lane"],
+            "corpus_decided": P["corpus"]["decided"],
+            "corpus_real_merge_rate": P["corpus"]["real_merge_rate"],
+            "active_attempts_since_real": P["recency"]["active_attempts_since_real"],
+        })
     doc["outcome_semantics"] = ("actioned/skipped/failed are operational receipt states; "
                                 "tribute_outcomes/outcome_slo are the honest merge outcomes")
     status_path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
 
 
 def check(rep: dict) -> int:
-    for f in rep["slo"]["failures"]:
+    """Gate on the primary (whole-corpus, activity-aware) SLO when present; windowed SLO otherwise."""
+    s = rep.get("slo_primary") or rep["slo"]
+    cc = rep.get("census_check") or {}
+    if cc and not cc.get("ok", True):
+        print(f"::error title=Tribute census incomplete::{cc.get('detail')}")
+    for f in s["failures"]:
         print(f"::error title=Tribute outcome SLO FAIL::{f['code']}: {f['detail']}")
-    for w in rep["slo"]["warnings"]:
+    for w in s["warnings"]:
         print(f"::warning title=Tribute outcome SLO::{w['code']}: {w['detail']}")
-    return 1 if rep["slo"]["status"] == "FAIL" else 0
+    return 1 if s["status"] == "FAIL" or (cc and not cc.get("ok", True)) else 0
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -332,8 +491,12 @@ def main(argv: list[str] | None = None) -> int:
     if a.census:
         prs, source = json.loads(Path(a.census).read_text(encoding="utf-8")), f"census:{a.census}"
     else:
-        prs, source = live_census(), "live:search-api"
-    rep = build(prs, now, a.window, read_jsonl(a.decisions), a.min_rate, a.min_decided, a.max_drought_days, source=source)
+        prs, source = None, "live:search-api"
+    census_check = None
+    if prs is None:
+        prs, census_check = live_census_checked()
+    rep = build(prs, now, a.window, read_jsonl(a.decisions), a.min_rate, a.min_decided, a.max_drought_days, source=source,
+                census_check=census_check)
     text = json.dumps(rep, indent=1) + "\n"
     for p in (a.out, a.dashboard):
         if p:

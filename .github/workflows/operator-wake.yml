@@ -2,7 +2,7 @@ name: Operator wake
 
 # Agent/operator plane (docs/ops/CODESPACE-CREDENTIALS-SSOT.md): repo Actions
 # secrets carry the credentials; agents never hold raw token values. This lane
-# exposes five allowlisted operator duties:
+# exposes seven allowlisted operator duties:
 #   inventory — full Actions secret NAME list via scripts/ops/provider_secret_inventory.py
 #               (provider-batch.yml observe pattern; names only, never values)
 #   variables — full Actions repository variable NAME list via the GitHub API
@@ -28,6 +28,7 @@ name: Operator wake
 #   inventory
 #   variables
 #   wake vantage-cost-report strict=true
+#   wake-provider-availability — dispatch the trusted catalog-only provider observer
 #   provision-supabase-url provision-ref=<branch>
 #   audit-phantom-secrets
 #   provision-controller-export — dispatch and watch the manifest-defined export repository
@@ -40,11 +41,11 @@ on:
   workflow_dispatch:
     inputs:
       command:
-        description: 'inventory | variables | wake-vantage-strict | provision-supabase-url | audit-phantom-secrets | provision-controller-export'
+        description: 'inventory | variables | wake-vantage-strict | wake-provider-availability | provision-supabase-url | audit-phantom-secrets | provision-controller-export'
         required: true
         default: 'inventory'
         type: choice
-        options: [inventory, variables, wake-vantage-strict, provision-supabase-url, audit-phantom-secrets, provision-controller-export]
+        options: [inventory, variables, wake-vantage-strict, wake-provider-availability, provision-supabase-url, audit-phantom-secrets, provision-controller-export]
 
 concurrency:
   group: operator-wake-${{ github.event.issue.number || github.event.inputs.command || github.run_id }}
@@ -85,6 +86,8 @@ jobs:
           want_inventory=false
           want_variables=false
           want_wake=false
+          want_provider_availability=false
+          provider_availability_denied=false
           want_provision=false
           want_audit=false
           want_provision_export=false
@@ -95,6 +98,7 @@ jobs:
               inventory) want_inventory=true ;;
               variables) want_variables=true ;;
               wake-vantage-strict) want_wake=true; wake_strict=true ;;
+              wake-provider-availability) want_provider_availability=true ;;
               provision-supabase-url) want_provision=true ;;
               audit-phantom-secrets) want_audit=true ;;
               provision-controller-export) want_provision_export=true ;;
@@ -110,6 +114,9 @@ jobs:
               want_wake=true
               if printf '%s' "$COMMENT_BODY" | grep -q 'strict=true'; then wake_strict=true; fi
             fi
+            if printf '%s' "$COMMENT_BODY" | grep -Eq 'wake-provider-availability'; then
+              want_provider_availability=true
+            fi
             if printf '%s' "$COMMENT_BODY" | grep -Eq 'provision-supabase-url'; then
               want_provision=true
               prov_ref_line=$(printf '%s' "$COMMENT_BODY" | grep -oE 'provision-ref=[A-Za-z0-9._/-]+' | head -1 || true)
@@ -123,6 +130,12 @@ jobs:
             if printf '%s' "$COMMENT_BODY" | grep -Eq 'provision-controller-export'; then
               want_provision_export=true
             fi
+          fi
+
+          if [ "$want_provider_availability" = true ] && [ "${GITHUB_ACTOR:-}" != "${GITHUB_REPOSITORY_OWNER:-}" ]; then
+            provider_availability_denied=true
+            want_provider_availability=false
+            report="${report}"$'\n'"- provider availability dispatch: DENIED (repository owner only)"
           fi
 
           if [ "$want_inventory" = true ]; then
@@ -191,6 +204,37 @@ jobs:
                       fi
                     fi
                   fi
+                fi
+              fi
+            fi
+          fi
+
+          if [ "$want_provider_availability" = true ]; then
+            report="${report}"$'\n'"- wake provider-availability.yml (catalog GETs only; trusted master; existing provider credentials remain inside Actions)"
+            since_provider=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+            if ! gh workflow run provider-availability.yml -R "$GITHUB_REPOSITORY" --ref master; then
+              report="${report}"$'\n'"- provider availability dispatch: FAILED (see run log)"
+            else
+              provider_run=""
+              for _ in $(seq 1 12); do
+                sleep 5
+                provider_run=$(gh run list -R "$GITHUB_REPOSITORY" --workflow provider-availability.yml --event workflow_dispatch --limit 5 --json databaseId,createdAt --jq "[.[] | select(.createdAt >= \"${since_provider}\")][0].databaseId // empty" 2>/dev/null || true)
+                [ -n "$provider_run" ] && break
+              done
+              if [ -z "$provider_run" ]; then
+                report="${report}"$'\n'"- provider availability dispatch: accepted but run not located within polling window"
+              else
+                provider_conclusion=""
+                for _ in $(seq 1 30); do
+                  sleep 10
+                  provider_pair=$(gh run view "$provider_run" -R "$GITHUB_REPOSITORY" --json status,conclusion --jq '.status + "/" + (.conclusion // "pending")' 2>/dev/null || true)
+                  case "$provider_pair" in completed/*) provider_conclusion="${provider_pair#completed/}"; break ;; esac
+                done
+                if [ -z "$provider_conclusion" ]; then
+                  report="${report}"$'\n'"- provider availability run ${provider_run}: still running at poll deadline (conclusion pending)"
+                else
+                  provider_url=$(gh run view "$provider_run" -R "$GITHUB_REPOSITORY" --json url --jq '.url' 2>/dev/null || true)
+                  report="${report}"$'\n'"- provider availability run ${provider_run}: ${provider_conclusion} ${provider_url}"
                 fi
               fi
             fi
@@ -282,8 +326,8 @@ jobs:
             fi
           fi
 
-          if [ "$want_inventory" = false ] && [ "$want_variables" = false ] && [ "$want_wake" = false ] && [ "$want_provision" = false ] && [ "$want_audit" = false ]; then
-            report="${report}"$'\n'"- no allowlisted command found (supported: inventory; variables; wake vantage-cost-report [strict=true]; provision-supabase-url [provision-ref=<branch>]; audit-phantom-secrets)"
+          if [ "$want_inventory" = false ] && [ "$want_variables" = false ] && [ "$want_wake" = false ] && [ "$want_provider_availability" = false ] && [ "$provider_availability_denied" = false ] && [ "$want_provision" = false ] && [ "$want_audit" = false ]; then
+            report="${report}"$'\n'"- no allowlisted command found (supported: inventory; variables; wake vantage-cost-report [strict=true]; wake-provider-availability; provision-supabase-url [provision-ref=<branch>]; audit-phantom-secrets)"
           fi
           {
             echo "report<<REPORT_EOF"

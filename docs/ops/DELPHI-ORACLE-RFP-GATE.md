@@ -51,6 +51,12 @@ The concurrency group keeps only **one pending run**: during a burst of filings,
 
 **Flywheel**: every confirmed or missed forecast moves each role's `gate_pass_rate` (EWMA α 0.2) and Elo (±16) on the append-only `Delphi panel weights ledger` issue (`delphi:weights`). Changed weights change every RFP's input hash, so the next wake re-scores the queue with the sharper panel. Throughput grows as confidence grows; registry caps bound it.
 
+## Complete open-RFP census and pagination
+
+The gate's open `delphi:rfp` census uses the GitHub Issues API with explicit `per_page=100&page=N` pagination. It continues until a short page, filters pull-request-shaped entries (the Issues API includes both issues and PRs), de-duplicates issue numbers across page boundaries, and processes a stable ascending issue-number list.
+
+The census has a 100-page safety cap. A full final page at the cap is an incomplete census and fails closed; the gate must not publish a board or describe the partial set as the complete queue. API rate-limit deferral remains distinct from an incomplete/malformed census. The focused regression suite covers more than 100 issues, duplicate page-boundary entries, PR filtering and cap exhaustion.
+
 ## Idempotency and storage
 
 - One concurrency group; each run processes all open RFPs and skips any whose input hash (surface facts + role weights + registry entry + live readings) matches its last ledger comment.

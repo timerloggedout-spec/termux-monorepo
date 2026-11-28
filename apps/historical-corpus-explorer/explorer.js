@@ -2,6 +2,8 @@
   "use strict";
   const $ = (id) => document.getElementById(id);
   const state = { projection: null, nodes: [], edges: [], nodeIds: new Set(), edgeIds: new Set() };
+  let activeAtlasLayer = "all";
+  let activeAtlasDomain = "all";
   const MAX_RESULTS = 200;
 
   function text(id, value) {
@@ -124,6 +126,152 @@
     text("record-note", state.nodes.length.toLocaleString() + " nodes · " + state.edges.length.toLocaleString() + " edges loaded locally. Showing " + matched.length.toLocaleString() + " result(s), capped at " + MAX_RESULTS + ".");
   }
 
+
+  function safeEvidenceUrl(value, sourceSha) {
+    try {
+      const url = new URL(value);
+      return url.protocol === "https:" && url.hostname === "github.com" &&
+        url.pathname.startsWith("/timerloggedout-spec/termux-monorepo/blob/" + sourceSha + "/");
+    }
+    catch (_) { return false; }
+  }
+
+  function renderAtlas(data) {
+    if (!validObject(data) || data.projection !== "domain_atlas" ||
+        data.schema_version !== "1.0" || !/^[0-9a-f]{40}$/.test(data.source_sha) ||
+        !Array.isArray(data.domains) || !Array.isArray(data.relationships)) {
+      throw new Error("Unsupported Domain Atlas projection or missing immutable source SHA.");
+    }
+    const domainMap = new Map();
+    for (const domain of data.domains) {
+      if (!validObject(domain) || typeof domain.id !== "string" ||
+          domainMap.has(domain.id) || !Array.isArray(domain.sources) ||
+          !domain.sources.length) throw new Error("Domain Atlas contains an invalid or duplicate domain.");
+      domainMap.set(domain.id, domain);
+      for (const source of domain.sources) {
+        if (!validObject(source) || !safeEvidenceUrl(source.url, data.source_sha) ||
+            typeof source.path !== "string" || typeof source.claim !== "string") {
+          throw new Error("Domain source evidence must use an HTTPS URL, path, and claim.");
+        }
+      }
+    }
+    const relationshipIds = new Set();
+    for (const edge of data.relationships) {
+      if (!validObject(edge) || typeof edge.id !== "string" ||
+          relationshipIds.has(edge.id) || !domainMap.has(edge.source) ||
+          !domainMap.has(edge.target) || !Array.isArray(edge.layers) ||
+          !edge.layers.length || edge.layers.some((layer) => !["semantic", "operational"].includes(layer)) ||
+          !["verified", "candidate", "unknown"].includes(edge.classification) ||
+          !Array.isArray(edge.evidence)) throw new Error("Domain Atlas contains an invalid relationship.");
+      relationshipIds.add(edge.id);
+      if (edge.classification === "verified" && !edge.evidence.length)
+        throw new Error("Verified Domain Atlas relationships require evidence.");
+      for (const item of edge.evidence) {
+        if (!validObject(item) || !safeEvidenceUrl(item.url, data.source_sha) ||
+            typeof item.path !== "string" || typeof item.claim !== "string")
+          throw new Error("Relationship evidence must use HTTPS URLs, paths, and claims.");
+      }
+    }
+    state.atlas = data;
+    renderAtlasDomains();
+    renderAtlasRelationships();
+    text("atlas-status", data.domains.length + " domains · " + data.relationships.length + " curated relationships · source " + data.source_sha.slice(0, 12));
+  }
+
+  function renderAtlasDomains() {
+    const box = $("atlas-domains");
+    clear(box);
+    for (const domain of state.atlas.domains) {
+      const card = el("article", "panel");
+      card.appendChild(el("strong", "", domain.name));
+      card.appendChild(el("div", "label", domain.role));
+      card.appendChild(el("p", "muted", domain.summary));
+      const inspect = el("button", "", activeAtlasDomain === domain.id ? "Selected domain" : "Inspect connections");
+      inspect.type = "button";
+      inspect.dataset.atlasDomain = domain.id;
+      inspect.setAttribute("aria-pressed", String(activeAtlasDomain === domain.id));
+      inspect.addEventListener("click", () => {
+        activeAtlasDomain = domain.id;
+        renderAtlasDomains();
+        renderAtlasRelationships();
+      });
+      card.appendChild(inspect);
+      if (activeAtlasLayer === "evidence") {
+        const sources = el("div", "findings");
+        for (const source of domain.sources) {
+          const link = el("a", "", source.path);
+          link.href = source.url;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          sources.appendChild(link);
+        }
+        card.appendChild(sources);
+      } else {
+        card.appendChild(el("div", "label", domain.sources.length + " source document(s) · select Evidence view"));
+      }
+      box.appendChild(card);
+    }
+  }
+
+  function renderAtlasRelationships() {
+    const body = $("atlas-relationships");
+    clear(body);
+    const domains = new Map(state.atlas.domains.map((domain) => [domain.id, domain]));
+    const rows = state.atlas.relationships.filter((edge) =>
+      (activeAtlasLayer === "all" || activeAtlasLayer === "evidence" ||
+        edge.layers.includes(activeAtlasLayer)) &&
+      (activeAtlasDomain === "all" || edge.source === activeAtlasDomain || edge.target === activeAtlasDomain));
+    for (const edge of rows) {
+      const tr = el("tr");
+      tr.appendChild(el("td", "", edge.type + " · " + edge.classification));
+      tr.appendChild(el("td", "", domains.get(edge.source).name + " → " + domains.get(edge.target).name));
+      tr.appendChild(el("td", "", edge.layers.join(", ")));
+      const evidenceCell = el("td");
+      if (activeAtlasLayer !== "evidence") {
+        evidenceCell.appendChild(el("span", "muted", edge.evidence.length + " source reference(s) · select Evidence view"));
+      } else if (!edge.evidence.length) {
+        evidenceCell.appendChild(el("span", "muted", "Evidence unavailable"));
+      } else {
+        for (const item of edge.evidence) {
+          const wrapper = el("div");
+          const link = el("a", "", item.path);
+          link.href = item.url;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          wrapper.appendChild(link);
+          wrapper.appendChild(el("div", "muted", item.claim));
+          evidenceCell.appendChild(wrapper);
+        }
+      }
+      tr.appendChild(evidenceCell);
+      body.appendChild(tr);
+    }
+    if (!rows.length) {
+      const tr = el("tr");
+      const td = el("td", "", "No relationships are registered for this layer.");
+      td.colSpan = 4;
+      tr.appendChild(td);
+      body.appendChild(tr);
+    }
+    document.querySelectorAll("[data-atlas-layer]").forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.dataset.atlasLayer === activeAtlasLayer));
+    });
+    document.querySelectorAll("[data-atlas-domain]").forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.dataset.atlasDomain === activeAtlasDomain));
+    });
+  }
+
+  async function loadAtlas() {
+    try {
+      const response = await fetch("./data/domain-atlas.json", { cache: "no-store", credentials: "same-origin" });
+      if (!response.ok) throw new Error("Curated domain map unavailable (HTTP " + response.status + ").");
+      renderAtlas(await response.json());
+    } catch (error) {
+      text("atlas-status", error.message);
+      $("atlas-status").className = "notice";
+    }
+  }
+
   async function readFile(input, label) {
     const file = input.files && input.files[0];
     if (!file) return null;
@@ -174,5 +322,24 @@
   $("search-button").addEventListener("click", renderSearch);
   $("query").addEventListener("keydown", (event) => { if (event.key === "Enter") renderSearch(); });
   $("reload").addEventListener("click", loadPublished);
+  document.querySelectorAll("[data-atlas-domain]").forEach((button) => {
+    button.addEventListener("click", () => {
+      activeAtlasDomain = button.dataset.atlasDomain;
+      if (state.atlas) {
+        renderAtlasDomains();
+        renderAtlasRelationships();
+      }
+    });
+  });
+  document.querySelectorAll("[data-atlas-layer]").forEach((button) => {
+    button.addEventListener("click", () => {
+      activeAtlasLayer = button.dataset.atlasLayer;
+      if (state.atlas) {
+        renderAtlasDomains();
+        renderAtlasRelationships();
+      }
+    });
+  });
+  loadAtlas();
   loadPublished();
 })();

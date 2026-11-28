@@ -1,0 +1,208 @@
+{
+  "schema_version": "1.0",
+  "projection": "domain_atlas",
+  "source_ref": "master",
+  "source_sha": "084cffa6155f3e22dc0d9d687b4064a5fb0d9090",
+  "domains": [
+    {
+      "id": "github-evidence",
+      "name": "GitHub Evidence",
+      "role": "source",
+      "summary": "Commits, pull requests, issues, reviews, checks, and Actions provide durable source evidence.",
+      "sources": [
+        {
+          "path": "docs/ops/SHE-DASHBOARD-PRD.md",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/084cffa6155f3e22dc0d9d687b4064a5fb0d9090/docs/ops/SHE-DASHBOARD-PRD.md",
+          "claim": "Defines the source-of-truth hierarchy and SHE dashboard information architecture."
+        }
+      ]
+    },
+    {
+      "id": "context-relationship-graph",
+      "name": "Context Relationship Graph",
+      "role": "evidence substrate",
+      "summary": "A metadata-only, schema-governed graph connects repository records and GitHub history with verified and candidate relationships kept distinct.",
+      "sources": [
+        {
+          "path": "docs/ops/CONTEXT-RELATIONSHIP-INDEX.md",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/084cffa6155f3e22dc0d9d687b4064a5fb0d9090/docs/ops/CONTEXT-RELATIONSHIP-INDEX.md",
+          "claim": "Defines the metadata-only graph model and its GitHub-backed source relationships."
+        },
+        {
+          "path": "docs/icm/objects/knowledge/context-relationship-index.md",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/084cffa6155f3e22dc0d9d687b4064a5fb0d9090/docs/icm/objects/knowledge/context-relationship-index.md",
+          "claim": "Identifies the canonical schema, compiler, corpus, query, and publication surfaces."
+        }
+      ]
+    },
+    {
+      "id": "she",
+      "name": "SHE Dashboard",
+      "role": "read-only projection",
+      "summary": "System Health and Effectiveness projects canonical evidence into operator, researcher, and forensic-review surfaces.",
+      "sources": [
+        {
+          "path": "docs/ops/SHE-DASHBOARD-PRD.md",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/084cffa6155f3e22dc0d9d687b4064a5fb0d9090/docs/ops/SHE-DASHBOARD-PRD.md",
+          "claim": "Defines SHE as a read-only evidence projection."
+        },
+        {
+          "path": "docs/ops/SHE-DASHBOARD-SNAPSHOT-CONTRACT.md",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/084cffa6155f3e22dc0d9d687b4064a5fb0d9090/docs/ops/SHE-DASHBOARD-SNAPSHOT-CONTRACT.md",
+          "claim": "Defines provenance-bound snapshots and coverage semantics."
+        }
+      ]
+    },
+    {
+      "id": "agent-control-plane",
+      "name": "Agent Team Control Plane",
+      "role": "orchestration",
+      "summary": "BIUDL coordinates scout, build, reconnaissance, experiments, telemetry, review, Moneyball, admission, and synthesis lanes.",
+      "sources": [
+        {
+          "path": "docs/architecture/AGENT-TEAM-CONTROL-PLANE.md",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/084cffa6155f3e22dc0d9d687b4064a5fb0d9090/docs/architecture/AGENT-TEAM-CONTROL-PLANE.md",
+          "claim": "Defines the BIUDL agent-team loop and telemetry lineage."
+        }
+      ]
+    },
+    {
+      "id": "execution-telemetry",
+      "name": "Execution Telemetry",
+      "role": "measurement",
+      "summary": "Metadata-first JSONL events and observational throughput reducers describe task, tool, handoff, latency, and complexity signals.",
+      "sources": [
+        {
+          "path": "docs/ops/AGENT-THROUGHPUT-METRICS.md",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/084cffa6155f3e22dc0d9d687b4064a5fb0d9090/docs/ops/AGENT-THROUGHPUT-METRICS.md",
+          "claim": "Defines metadata-first observations and quality-aware throughput metrics."
+        },
+        {
+          "path": "docs/ops/AGENT-THROUGHPUT-EVENT.schema.json",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/084cffa6155f3e22dc0d9d687b4064a5fb0d9090/docs/ops/AGENT-THROUGHPUT-EVENT.schema.json",
+          "claim": "Defines structured execution telemetry event fields."
+        }
+      ]
+    },
+    {
+      "id": "moneyball-3l0",
+      "name": "Moneyball / 3L0",
+      "role": "analytics and evaluation",
+      "summary": "Moneyball consumes sanitized evidence for outcome scoring and cohort analysis; GitHub Actions and the repository corpus retain execution and durable evidence authority.",
+      "sources": [
+        {
+          "path": "docs/ops/HEX-MONEYBALL-INTEGRATION.md",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/084cffa6155f3e22dc0d9d687b4064a5fb0d9090/docs/ops/HEX-MONEYBALL-INTEGRATION.md",
+          "claim": "Defines sanitized evidence transport and the Moneyball analytics contract."
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "id": "github-produces-context-graph",
+      "source": "github-evidence",
+      "target": "context-relationship-graph",
+      "type": "PRODUCES",
+      "layers": [
+        "semantic",
+        "operational"
+      ],
+      "classification": "verified",
+      "evidence": [
+        {
+          "path": "docs/ops/CONTEXT-RELATIONSHIP-INDEX.md",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/084cffa6155f3e22dc0d9d687b4064a5fb0d9090/docs/ops/CONTEXT-RELATIONSHIP-INDEX.md",
+          "claim": "The graph normalizes repository files and GitHub commits, pull requests, issues, reviews, and references."
+        }
+      ]
+    },
+    {
+      "id": "context-graph-projects-she",
+      "source": "context-relationship-graph",
+      "target": "she",
+      "type": "PROJECTED_INTO",
+      "layers": [
+        "semantic",
+        "operational"
+      ],
+      "classification": "verified",
+      "evidence": [
+        {
+          "path": "docs/ops/SHE-DASHBOARD-PRD.md",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/084cffa6155f3e22dc0d9d687b4064a5fb0d9090/docs/ops/SHE-DASHBOARD-PRD.md",
+          "claim": "SHE projects the canonical GitHub corpus through pure reducers into dashboard snapshots and UI surfaces."
+        },
+        {
+          "path": "docs/ops/SHE-DASHBOARD-SNAPSHOT-CONTRACT.md",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/084cffa6155f3e22dc0d9d687b4064a5fb0d9090/docs/ops/SHE-DASHBOARD-SNAPSHOT-CONTRACT.md",
+          "claim": "Dashboard snapshots preserve source SHA, generation time, coverage, and manifest identity."
+        }
+      ]
+    },
+    {
+      "id": "agent-control-emits-telemetry",
+      "source": "agent-control-plane",
+      "target": "execution-telemetry",
+      "type": "EMITS_AND_MEASURES",
+      "layers": [
+        "semantic",
+        "operational"
+      ],
+      "classification": "verified",
+      "evidence": [
+        {
+          "path": "docs/architecture/AGENT-TEAM-CONTROL-PLANE.md",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/084cffa6155f3e22dc0d9d687b4064a5fb0d9090/docs/architecture/AGENT-TEAM-CONTROL-PLANE.md",
+          "claim": "The control-plane chart places telemetry in the agent-team loop and defines SHA-to-run-to-job-to-step-to-artifact lineage."
+        },
+        {
+          "path": "docs/ops/AGENT-THROUGHPUT-METRICS.md",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/084cffa6155f3e22dc0d9d687b4064a5fb0d9090/docs/ops/AGENT-THROUGHPUT-METRICS.md",
+          "claim": "Agents emit metadata-first JSONL events for task, tool, retry, handoff, and active-window observations."
+        }
+      ]
+    },
+    {
+      "id": "telemetry-feeds-moneyball",
+      "source": "execution-telemetry",
+      "target": "moneyball-3l0",
+      "type": "FEEDS_ANALYSIS",
+      "layers": [
+        "semantic",
+        "operational"
+      ],
+      "classification": "candidate",
+      "evidence": [
+        {
+          "path": "docs/ops/HEX-MONEYBALL-INTEGRATION.md",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/084cffa6155f3e22dc0d9d687b4064a5fb0d9090/docs/ops/HEX-MONEYBALL-INTEGRATION.md",
+          "claim": "The Moneyball contract consumes sanitized GitHub Actions evidence artifacts; direct binding from this throughput-event stream to Moneyball records remains a candidate pending exact run, attempt, and source-SHA reconciliation."
+        },
+        {
+          "path": "docs/ops/AGENT-THROUGHPUT-METRICS.md",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/084cffa6155f3e22dc0d9d687b4064a5fb0d9090/docs/ops/AGENT-THROUGHPUT-METRICS.md",
+          "claim": "Throughput events and reducers are observational inputs for quality-aware agent measurement."
+        }
+      ]
+    },
+    {
+      "id": "moneyball-surfaces-in-she",
+      "source": "moneyball-3l0",
+      "target": "she",
+      "type": "PROJECTED_INTO",
+      "layers": [
+        "semantic",
+        "operational"
+      ],
+      "classification": "verified",
+      "evidence": [
+        {
+          "path": "docs/ops/SHE-DASHBOARD-PRD.md",
+          "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/084cffa6155f3e22dc0d9d687b4064a5fb0d9090/docs/ops/SHE-DASHBOARD-PRD.md",
+          "claim": "The SHE information architecture includes Moneyball and 3L0 cohort and manager comparisons."
+        }
+      ]
+    }
+  ]
+}

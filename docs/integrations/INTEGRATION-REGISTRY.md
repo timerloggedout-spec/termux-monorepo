@@ -45,6 +45,7 @@
 | PromptLayer | P1 | Named candidate; no runtime proof in this change | Planned; observational only | Prompt registry/version lineage comparison hypothesis |
 | PostHog | P1 | Named candidate; no runtime proof in this change | Planned; observational only | Event analytics and experiment assignment comparison hypothesis |
 | Braintrust | P1 | Named candidate; no runtime proof in this change | Planned; observational only | Dataset/evaluation and scoring comparison hypothesis |
+| OpenAI Codex Security | P1 | Official public repository and v0.10.0 package metadata verified; no package installed or scan executed | Candidate; adapter planned, not runtime-validated | Advisory vulnerability scanning, finding validation, patch proposals, and fix verification |
 
 The four CEEL entries are separate candidate participants, not claims of authenticated accounts or implemented adapters. Feature descriptions are hypotheses to verify against version-pinned official documentation and bounded tests.
 

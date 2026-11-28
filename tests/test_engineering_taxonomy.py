@@ -35,6 +35,12 @@ class EngineeringTaxonomyTests(TestCase):
         })
         self.assertEqual(validate(taxonomy), [])
 
+    def test_invalid_execution_target_is_rejected(self):
+        taxonomy = deepcopy(load_taxonomy())
+        node = next(item for item in taxonomy["nodes"] if item["id"] == "kicad")
+        node["metadata"]["execution_target"] = "unbounded-shell"
+        self.assertTrue(any("invalid execution_target" in error for error in validate(taxonomy)))
+
     def test_unknown_parent_is_rejected(self):
         taxonomy = deepcopy(load_taxonomy())
         taxonomy["nodes"].append({

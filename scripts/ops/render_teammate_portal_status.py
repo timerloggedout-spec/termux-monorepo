@@ -49,37 +49,44 @@ def git_blob_hash(path):
     return hashlib.sha1(header + data).hexdigest()
 
 
+def translation_is_fresh(locale, root=None):
+    if locale == "en":
+        return True
+    root_path = repository_root(root)
+    try:
+        manifest = load_manifest(root_path)
+    except FileNotFoundError:
+        return False
+    translation = next(
+        (item for item in manifest["translations"] if item["locale"] == locale),
+        None,
+    )
+    if translation is None:
+        return False
+    source_catalog = root_path / translation.get(
+        "source_catalog",
+        "localization/catalogs/teammate-portal/en.json",
+    )
+    return bool(
+        source_catalog.is_file()
+        and translation["freshness"].get("state") == "fresh"
+        and translation["freshness"].get("source_hash") == f"git-blob:{git_blob_hash(source_catalog)}"
+    )
+
+
 def load_catalog(locale, root=None):
     root_path = repository_root(root)
     catalog_dir = root_path / "localization" / "catalogs" / "teammate-portal"
     source_path = catalog_dir / "en.json"
     source_messages = json.loads(source_path.read_text(encoding="utf-8"))["messages"]
-    if locale == "en":
+    if locale == "en" or not translation_is_fresh(locale, root_path):
         return source_messages
 
-    try:
-        manifest = load_manifest(root_path)
-        translation = next(
-            (item for item in manifest["translations"] if item["locale"] == locale),
-            None,
-        )
-        source_catalog = root_path / (
-            translation.get("source_catalog", "localization/catalogs/teammate-portal/en.json")
-            if translation else "localization/catalogs/teammate-portal/en.json"
-        )
-        is_fresh = bool(
-            translation
-            and source_catalog.is_file()
-            and translation["freshness"].get("state") == "fresh"
-            and translation["freshness"].get("source_hash") == f"git-blob:{git_blob_hash(source_catalog)}"
-        )
-        target_path = catalog_dir / f"{locale}.json"
-        if not is_fresh or not target_path.is_file():
-            return source_messages
-        target_messages = json.loads(target_path.read_text(encoding="utf-8"))["messages"]
-        return {**source_messages, **target_messages}
-    except FileNotFoundError:
+    target_path = catalog_dir / f"{locale}.json"
+    if not target_path.is_file():
         return source_messages
+    target_messages = json.loads(target_path.read_text(encoding="utf-8"))["messages"]
+    return {**source_messages, **target_messages}
 
 
 def review_notice(locale, root=None):
@@ -109,7 +116,8 @@ def review_notice(locale, root=None):
 
 
 def page(title, body, locale="en", title_key=None, root=None):
-    direction = "rtl" if locale == "ur" else "ltr"
+    content_locale = locale if translation_is_fresh(locale, root) else "en"
+    direction = "rtl" if content_locale == "ur" else "ltr"
     english_href = "../index.html" if locale == "ur" else "./index.html"
     urdu_href = "./index.html" if locale == "ur" else "./ur/index.html"
     messages = load_catalog(locale, root)
@@ -130,7 +138,7 @@ def page(title, body, locale="en", title_key=None, root=None):
     )
     style = CSS + (rtl_css if locale == "ur" else "")
     return (
-        f'<!doctype html><html lang="{locale}" dir="{direction}"><head><meta charset="utf-8">'
+        f'<!doctype html><html lang="{content_locale}" dir="{direction}"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width,initial-scale=1">'
         f'<title>{html.escape(title)}</title><style>{style}</style></head>'
         f'<body><main>{nav}{notice}{body}</main></body></html>'
@@ -245,13 +253,20 @@ def main():
         messages_en, rows, done, pr_state, args.source_ref, args.source_sha,
         now, issues, DOCS, args.repo, args.pr,
     )
-    body_ur = (
-        f'<p lang="ur" dir="rtl">{html.escape(messages_ur["content.english_fallback"])}</p>'
-        + render_body(
-            messages_ur, rows, done, pr_state, args.source_ref, args.source_sha,
-            now, issues, DOCS, args.repo, args.pr,
-        )
+    urdu_content = render_body(
+        messages_ur, rows, done, pr_state, args.source_ref, args.source_sha,
+        now, issues, DOCS, args.repo, args.pr,
     )
+    if translation_is_fresh("ur"):
+        body_ur = (
+            f'<p lang="ur" dir="rtl">{html.escape(messages_ur["content.english_fallback"])}</p>'
+            + urdu_content
+        )
+    else:
+        body_ur = (
+            f'<p lang="en" dir="ltr">{html.escape(messages_ur["content.english_fallback"])}</p>'
+            f'<div lang="en" dir="ltr">{urdu_content}</div>'
+        )
     (out / "index.html").write_text(
         page(messages_en["page.title"], body_en, "en", title_key="page.title"),
         encoding="utf-8",

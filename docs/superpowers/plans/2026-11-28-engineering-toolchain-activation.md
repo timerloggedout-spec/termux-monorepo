@@ -30,7 +30,7 @@ Make the researched FOSS-first engineering ecosystem discoverable and safely rou
 | Engineering regression suite | `tests/test_engineering_taxonomy.py` | Taxonomy, orphan rejection, probe output, free-tier vs paid separation |
 | Tool discoverability | ArchWiz index/cockpit, skill matrix, Integration Intelligence, `ops/tracking/projects.json`, evaluation-lane registry | Engineering lane classifies into repository tracking; evaluation lane remains observational; runtime unverified |
 | Queue/evaluation/cross-domain contracts | `docs/ops/ENGINEERING-*.md` | Reuse QUE/QDesk and DoE/MVT/ATES ownership; cross-domain links remain citation-only |
-| refTemplates and Learnings | `refTemplates/engineering/`, Learnings matrix | References remain unpinned/read-only; reusable learning requires validated evidence |
+| refTemplates and Learnings | `docs/ops/ENGINEERING-REFERENCE-SET.json`, local `refTemplates/engineering/`, Learnings matrix | Tracked metadata stays in docs; local source checkouts remain gitignored and read-only; reusable learning requires validated evidence |
 | Remote runner profile | `docs/ops/ENGINEERING-REMOTE-RUNNER-PROFILE.md` | Public standard runner vs self-hosted placement, resource and data constraints, and workflow permission blocker |
 | Review and gates | PR + repo-gate + Siglary + Termux smoke | Same immutable head SHA; no promotion from pending/skipped checks |
 

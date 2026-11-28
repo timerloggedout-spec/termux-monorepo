@@ -14,7 +14,6 @@ on:
     branches: [master]
     paths:
       - 'scripts/ci/build_repo_index.py'
-      - 'scripts/ci/func_index.py'
       - 'workspace/llm_map/bloat_exclusions.lst'
       - 'workspace/llm_map/project_mapping.json'
       - '.github/workflows/archwiz-repo-index.yml'

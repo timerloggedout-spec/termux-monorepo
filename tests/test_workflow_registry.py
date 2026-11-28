@@ -47,6 +47,7 @@ jobs:
       deployments: write
     steps:
       - uses: actions/checkout@0123456789012345678901234567890123456789
+      - uses: actions/setup-python@v5
   validate:
     if: contains(github.event.comment.body, '/deploy')
     runs-on: ubuntu-latest
@@ -68,6 +69,11 @@ jobs:
         self.assertEqual(record["job_selectors"]["validate"]["if"], "contains(github.event.comment.body, '/deploy')")
         self.assertEqual(record["job_selectors"]["deploy"]["needs"], ["validate"])
         self.assertEqual(record["concurrency"]["cancel-in-progress"], "false")
+        self.assertEqual(record["action_refs"], [
+            "actions/checkout@0123456789012345678901234567890123456789",
+            "actions/setup-python@v5",
+            "example/automation/.github/workflows/reusable.yml@abcdefabcdefabcdefabcdefabcdefabcdefabcd",
+        ])
         self.assertEqual(record["action_pins"], [
             "actions/checkout@0123456789012345678901234567890123456789",
             "example/automation/.github/workflows/reusable.yml@abcdefabcdefabcdefabcdefabcdefabcdefabcd",

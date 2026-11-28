@@ -1,0 +1,29 @@
+# ITEMS — brr-cross-repo-doe
+
+| ID | Priority | Status | Scope | Acceptance criteria |
+|---|---:|---|---|---|
+| BRRDOE-001 | P1 | committed | Register the separate cross-repository BRR DoE lane and define its source/authority boundaries. | Proposal and campaign are registered; BRR, #5552, #5640, context graph, and DoE ownership are explicit; no duplicate collector/scheduler/queue is introduced. |
+| BRRDOE-002 | P1 | committed | Preregister a blocked four-arm retrieval comparison over frozen cross-repository evidence and an adjudicated task set. | Lexical, BRR, graph, and fused arms; factors, blocks, metrics, thresholds, source identity, and decision rules are pinned in DESIGN.json; state remains design-only pending runtime inputs. |
+| BRRDOE-003 | P1 | implemented_validation_pending | Implement a deterministic offline evaluator for supplied BRR/commit/regression/graph snapshots. | Repository-qualified identity; verified/candidate separation; partial coverage; untestable states; and deterministic rankings have regression tests. |
+| BRRDOE-004 | P1 | queued | Validate exact-head CI and integrate with the existing VM-published cross-repository evidence cycle. | Python tests, canonical EXPERIMENT schema, proposal registry, repo-gate, and termux-smoke pass; runtime receipts bind to source SHA and complete coverage; at least one consumer read is evidenced. |
+
+## Implementation evidence
+
+- PR: [#5832](https://github.com/timerloggedout-spec/termux-monorepo/pull/5832)
+- Feature branch: `feat/brr-cross-repo-doe-20261123`
+- Each source write is committed to the remote feature branch.
+- Exact-head repo-gate, termux-smoke, and proposal-lifecycle results remain pending.
+
+## Validation commands
+
+```bash
+python3 -m unittest discover -s tests -p 'test_brr_cross_repo_doe.py' -v
+python3 -m py_compile scripts/doe/brr_cross_repo_doe.py
+python3 scripts/proposals/validate_registry.py
+python3 scripts/ci/repo_gate.py
+python3 scripts/ci/termux_smoke.py
+```
+
+## State discipline
+
+A committed design is `COMMITTED`; a CI execution is `EXECUTED`; passing tests on the exact source SHA is `VALIDATED`; a live BRR export and named consumer read are separate runtime acceptance evidence. The private-store dependency currently keeps live execution pending.

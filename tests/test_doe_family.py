@@ -31,13 +31,39 @@ def test_family_members_match_design_records():
                   for m in fam["members"]}
     assert "mvt-campaigns" in member_ids
     assert "design-classes" in member_ids
-    # Every committed design record is a family campaign member.
-    design_ids = set()
-    for design_path in CAMPAIGNS.glob("*/DESIGN.json"):
-        design = json.loads(design_path.read_text())
-        design_ids.add(design["campaign_id"])
-    campaign_ids = {c["campaign_id"] for c in feed["data"]["campaigns"]}
+    # Active campaign designs are campaigns; proposal-only designs and
+    # observational registers remain visible as their own member kinds.
+    designs = [
+        json.loads(path.read_text())
+        for path in CAMPAIGNS.glob("*/DESIGN.json")
+    ]
+    design_ids = {
+        design["campaign_id"] for design in designs
+        if design.get("member_kind", "campaign") == "campaign"
+        and design.get("status") != "proposed_not_admitted"
+    }
+    candidate_ids = {
+        design["campaign_id"] for design in designs
+        if design.get("member_kind", "campaign") == "campaign"
+        and design.get("status") == "proposed_not_admitted"
+    }
+    register_ids = {
+        design["campaign_id"] for design in designs
+        if design.get("member_kind") == "register"
+    }
+    campaign_ids = {campaign["campaign_id"] for campaign in feed["data"]["campaigns"]}
     assert campaign_ids == design_ids
+    member_by_id = {
+        member.get("member_id") or member.get("campaign_id"): member
+        for member in fam["members"]
+    }
+    for candidate_id in candidate_ids:
+        assert member_by_id[candidate_id]["kind"] == "campaign_candidate"
+        assert member_by_id[candidate_id]["state"] == "proposal_only_not_admitted"
+        assert candidate_id not in campaign_ids
+    for register_id in register_ids:
+        assert member_by_id[register_id]["kind"] == "register"
+        assert register_id not in campaign_ids
 
 
 def test_intake_rule_pilot2_not_admitted():
@@ -65,7 +91,12 @@ def test_campaign_states_agree_with_records_on_disk():
 def test_run_records_conform_to_experiment_schema():
     schema = json.loads(
         (ROOT / "docs/ops/corpus/EXPERIMENT.schema.json").read_text())
-    records = sorted(CAMPAIGNS.glob("*/records/*.json"))
+    feed = _doe_feed()
+    records = sorted(
+        path
+        for campaign in feed["data"]["campaigns"]
+        for path in (ROOT / campaign["design_record"].replace("DESIGN.json", "records")).glob("*.json")
+    )
     for rec_path in records:
         rec = json.loads(rec_path.read_text())
         jsonschema.validate(rec, schema)

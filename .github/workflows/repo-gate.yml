@@ -60,6 +60,14 @@ jobs:
       - name: Index-only scope regressions
         run: python3 -B -m unittest discover -s tests -p 'test_repo_gate_index_scope.py' -v
 
+      - name: BRR cross-repository DoE contracts
+        run: python3 -B -m unittest discover -s tests -p 'test_brr_cross_repo_doe.py' -v
+
+      - name: DoE family and surface-feed registration
+        run: |
+          python3 -B -m unittest discover -s tests -p 'test_doe_family.py' -v
+          python3 -B -m unittest discover -s tests -p 'test_surface_feeds.py' -v
+
       - name: ATES outcome receipt contracts
         run: python3 -m unittest discover -s tests -p 'test_ates_*receipt*.py' -v
 

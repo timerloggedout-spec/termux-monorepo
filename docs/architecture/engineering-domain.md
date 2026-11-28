@@ -18,6 +18,8 @@ Establish Engineering as a first-class domain for mechanical design, electronics
 - Queue contract: `docs/ops/ENGINEERING-QUE-QDESK-CONTRACT.md`
 - DoE/MVT plan: `docs/ops/ENGINEERING-DOE-MVT-PLAN.md`
 - Cross-domain matrix: `docs/ops/ENGINEERING-RE-REFERENCE-MATRIX.md`
+- Learnings matrix: `docs/ops/ENGINEERING-LEARNINGS-MATRIX.md`
+- refTemplates references: `refTemplates/engineering/references.json` (reference-only; pin before adoption)
 
 ## Domain hierarchy
 

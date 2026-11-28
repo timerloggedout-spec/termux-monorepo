@@ -168,3 +168,23 @@ def test_configured_instance_identity():
            "status": "observed", "provenance": "manual",
            "confidence": "high"}
     jsonschema.validate(rec, schema)
+
+
+def test_cull_contract_preserves_royalty_claims_and_throughput_history():
+    schema = json.loads(
+        (ROOT / "docs/ops/DOE-CULL-RECORD.schema.json").read_text())
+    contract = (ROOT / "docs/ops/DOE-CULL-ROYALTY-THROUGHPUT-CONTRACT.md").read_text()
+    throughput = (ROOT / "docs/ops/AGENT-THROUGHPUT-METRICS.md").read_text()
+    lane = json.loads((ROOT / "ops/agentic-gambling/lane.json").read_text())
+    required = set(schema["required"])
+    assert {"royalty_account_ref", "royalty_disposition",
+            "throughput_card_ref", "throughput_snapshot_sha256",
+            "wallet_balance_at_cull", "pool_destination"} <= required
+    assert schema["properties"]["royalty_disposition"]["const"] == "preserve_origin_claims"
+    assert schema["properties"]["new_lifecycle_state"]["const"] == "culled"
+    assert "Cull never transfers, burns, forfeits, nets, or reassigns" in contract
+    assert "Historical cards remain visible after cull" in contract
+    assert "Cull itself contributes no task completion" in contract
+    assert "lifecycle_state=culled" in throughput
+    residual = next(c for c in lane["components"] if c["id"] == "residuals-royalties")
+    assert residual["cull_rule"].startswith("Cull settles neither accrued royalties")

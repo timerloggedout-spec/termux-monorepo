@@ -75,6 +75,14 @@ SHE should display throughput beside evidence quality dimensions:
 
 Do **not** add a `MIN_ATES_THRESHOLD` merge gate. A threshold would optimize the proxy and could incentivize agents to split work, inflate action counts, or trade correctness for speed.
 
+## Participant lifecycle and cull continuity
+
+A participant's throughput card is a longitudinal projection, not an active-roster row. Culling appends a lifecycle transition (`active_eligible=false`, `lifecycle_state=culled`) while preserving the same participant/cohort identity, source events, cumulative metrics, quality evidence, and historical leaderboard visibility. Current active leaderboards filter culled participants; historical cohorts retain them. Re-admission appends a new lifecycle interval and continues the existing series.
+
+Cull itself contributes no task completion, weighted work, action, or throughput. Missing historical evidence remains null. The cull record references the card snapshot hash and royalty account independently; wallet, royalty, and telemetry journals retain separate hash chains and replay verifiers.
+
+See [DoE Cull · Royalty · Throughput Continuity Contract](DOE-CULL-ROYALTY-THROUGHPUT-CONTRACT.md) and [DoE Cull Record schema](DOE-CULL-RECORD.schema.json).
+
 ## Quality lane
 
 `.github/workflows/agent-quality-lane.yml` is a dedicated check for the telemetry contract. It verifies:

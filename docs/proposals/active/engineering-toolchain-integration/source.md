@@ -20,7 +20,7 @@ The request covers the complete engineering stack previously researched and its 
 
 ## Tool coverage
 
-Mechanical: FreeCAD, OpenSCAD, SolveSpace, LibreCAD; Onshape Free is a proprietary cloud tier with public-document/non-commercial constraints; SOLIDWORKS remains a paid interoperability target.
+Mechanical: FreeCAD, OpenSCAD, SolveSpace, LibreCAD; Onshape Free is a proprietary $0 cloud tier with public-document/non-commercial constraints; its Free-plan card requirement is unconfirmed by the pricing page. SOLIDWORKS for Makers is paid ($48/year or $15/month before tax), personal/non-commercial, with no free version or trial; commercial SOLIDWORKS licensing is separate.
 
 Electronics/electrical: KiCad, LibrePCB, QElectroTech, ngspice and Qucs-S.
 

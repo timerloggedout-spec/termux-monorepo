@@ -75,6 +75,28 @@ class LocalizationReviewRegressionTests(unittest.TestCase):
                 messages = renderer.load_catalog("en")
         self.assertEqual(messages["page.title"], "Tooling catalog")
 
+    def test_stale_urdu_catalog_falls_back_to_source_messages(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            catalog_dir = root / "localization" / "catalogs" / "teammate-portal"
+            catalog_dir.mkdir(parents=True)
+            (catalog_dir / "en.json").write_text(json.dumps({"messages": {"page.title": "English fallback"}}), encoding="utf-8")
+            (catalog_dir / "ur.json").write_text(json.dumps({"messages": {"page.title": "پرانا ترجمہ"}}), encoding="utf-8")
+            manifest_dir = root / "localization" / "manifests"
+            manifest_dir.mkdir(parents=True)
+            (manifest_dir / "teammate-portal.json").write_text(json.dumps({
+                "translations": [{
+                    "locale": "ur",
+                    "source_catalog": "localization/catalogs/teammate-portal/en.json",
+                    "freshness": {"source_hash": "git-blob:stale", "state": "fresh"},
+                    "review": {"status": "review_required"},
+                    "publication": "preview_only"
+                }]
+            }), encoding="utf-8")
+            with patch.dict(os.environ, {"POLYGLOT_REPO_ROOT": temp}):
+                messages = renderer.load_catalog("ur")
+        self.assertEqual(messages["page.title"], "English fallback")
+
     def test_page_title_comes_from_selected_catalog(self):
         messages = {
             "page.title": "Catalog page title",
@@ -83,7 +105,7 @@ class LocalizationReviewRegressionTests(unittest.TestCase):
             "nav.urdu": "Urdu",
         }
         with patch.object(renderer, "load_catalog", return_value=messages):
-            page = renderer.page("Hard-coded title", "<p>body</p>", "en")
+            page = renderer.page("Hard-coded title", "<p>body</p>", "en", title_key="page.title")
         self.assertIn("<title>Catalog page title</title>", page)
 
     def test_urdu_review_notice_reflects_manifest_state(self):

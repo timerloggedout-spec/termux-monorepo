@@ -1,6 +1,6 @@
 # Label consumer census
 
-Snapshot: `feat/trigger-workflow-registry-refresh`, 2026-11-27. This census maps source-referenced labels to producers and consumers. It is a selected, source-backed relationship set, not a live exhaustive repository label inventory.
+Snapshot: `feat/trigger-workflow-registry-generator`, 2026-11-27. This census maps source-referenced labels to producers and consumers. It is a selected, source-backed relationship set, not a live exhaustive repository label inventory.
 
 | Label | Role | Producer | Consumer | State |
 |---|---|---|---|---|

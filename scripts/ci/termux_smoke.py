@@ -224,6 +224,7 @@ def check_engineering_toolchain_contract(report: SmokeReport) -> None:
             sys.executable, "-B", "-m", "unittest", "discover",
             "-s", "tests/hub_mcp", "-p", "test_protocol.py", "-v",
         ], 45.0),
+        ("tracking-tests", [sys.executable, "-B", "tests/test_repo_tracking.py"], 45.0),
     ]
     details = []
     for name, argv, timeout in commands:

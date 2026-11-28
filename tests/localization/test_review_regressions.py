@@ -51,6 +51,31 @@ class LocalizationReviewRegressionTests(unittest.TestCase):
             errors = localization.validate()
         self.assertTrue(any("language_tag" in error for error in errors), errors)
 
+    def test_locale_tag_must_match_registry_id(self):
+        original_read = localization.read
+
+        def altered_read(path):
+            data = original_read(path)
+            if path == "localization/registry/locales.json":
+                next(item for item in data["locales"] if item["id"] == "ur")["language_tag"] = "en"
+            return data
+
+        with patch.object(localization, "read", side_effect=altered_read):
+            errors = localization.validate()
+        self.assertTrue(any("must match its locale id" in error for error in errors), errors)
+
+    def test_manifest_catalog_must_match_translation_locale(self):
+        original_read = localization.read
+
+        def altered_read(path):
+            data = original_read(path)
+            if path == "localization/manifests/teammate-portal.json":
+                data["translations"][0]["catalog"] = "localization/glossaries/teammate-portal/ur.json"
+            return data
+
+        with patch.object(localization, "read", side_effect=altered_read):
+            errors = localization.validate()
+        self.assertTrue(any("catalog must be localization/catalogs/teammate-portal/ur.json" in error for error in errors), errors)
     def test_feedback_schema_requires_nonempty_translation_identifiers(self):
         schema = json.loads(Path("localization/schemas/feedback.schema.json").read_text(encoding="utf-8"))
         properties = schema["properties"]
@@ -127,6 +152,7 @@ class LocalizationReviewRegressionTests(unittest.TestCase):
                 rendered = renderer.page("اردو", "<p>English fallback</p>", "ur", title_key="page.title")
         self.assertIn('<html lang="en" dir="ltr">', rendered)
         self.assertIn("<title>English fallback</title>", rendered)
+        self.assertNotIn("body{direction:rtl", rendered)
 
     def test_page_title_comes_from_selected_catalog(self):
         messages = {

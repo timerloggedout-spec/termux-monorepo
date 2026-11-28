@@ -82,6 +82,19 @@ def validate(taxonomy: dict[str, Any]) -> list[str]:
             errors.append(f"{node_id}: invalid license_class")
         if metadata.get("access") not in (axes.get("access") or []):
             errors.append(f"{node_id}: invalid access class")
+        if metadata.get("commercial_use") not in (
+            "allowed-under-license",
+            "restricted",
+            "personal-noncommercial",
+            "proprietary",
+        ):
+            errors.append(f"{node_id}: invalid commercial_use")
+        if metadata.get("execution_target") not in (
+            "local-or-remote",
+            "vendor-cloud",
+            "vendor-commercial",
+        ):
+            errors.append(f"{node_id}: invalid execution_target")
         if metadata.get("payment_card_required") not in (True, False, "unknown"):
             errors.append(f"{node_id}: payment_card_required must be boolean or unknown")
         if not isinstance(metadata.get("probe_commands"), list) or not all(

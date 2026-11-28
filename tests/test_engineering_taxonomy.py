@@ -22,6 +22,17 @@ class EngineeringTaxonomyTests(TestCase):
                 self.assertIn(node["metadata"]["access"], taxonomy["axes"]["access"])
                 self.assertTrue(node["metadata"]["source_url"])
 
+    def test_polyhierarchy_with_multiple_valid_parents_is_accepted(self):
+        taxonomy = deepcopy(load_taxonomy())
+        taxonomy["nodes"].append({
+            "id": "mechanical-electronics-interface",
+            "kind": "category",
+            "name": "Mechanical-electronics interface",
+            "parents": ["mechanical-engineering", "electronics-engineering"],
+            "tags": {"discipline": ["mechanical", "electronics"]},
+        })
+        self.assertEqual(validate(taxonomy), [])
+
     def test_unknown_parent_is_rejected(self):
         taxonomy = deepcopy(load_taxonomy())
         taxonomy["nodes"].append({

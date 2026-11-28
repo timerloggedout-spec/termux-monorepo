@@ -98,7 +98,7 @@ Eight routing workflows have now been source-read and recorded in `docs/ops/gene
 
 ## 5. Workflow event catalog
 
-The generated catalog at `docs/ops/generated/automation-workflow-catalog.json` is the exhaustive per-workflow inventory. The inspected snapshot reports 331 workflows and records:
+The generated catalog at `docs/ops/generated/automation-workflow-catalog.json` is the exhaustive per-workflow inventory. The current generated catalog reports 332 workflows and records:
 
 - workflow name and path;
 - domain;

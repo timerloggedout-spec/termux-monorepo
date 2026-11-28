@@ -337,7 +337,7 @@
         "license_class": "proprietary",
         "access": "cloud-free-tier",
         "price_usd": "0",
-        "payment_card_required": false,
+        "payment_card_required": "unknown",
         "commercial_use": "restricted",
         "execution_target": "vendor-cloud",
         "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
@@ -353,10 +353,10 @@
       }
     },
     {
-      "id": "solidworks",
+      "id": "solidworks-makers",
       "kind": "tool",
-      "name": "SOLIDWORKS",
-      "description": "SOLIDWORKS engineering tool; runtime availability is established only by the Termux toolchain probe or a pinned remote-run receipt.",
+      "name": "SOLIDWORKS for Makers",
+      "description": "SOLIDWORKS for Makers is a paid personal/non-commercial product; general commercial SOLIDWORKS licensing is separate.",
       "parents": [
         "mechanical-engineering"
       ],
@@ -374,7 +374,7 @@
         "access": "commercial-paid",
         "price_usd": "paid",
         "payment_card_required": "unknown",
-        "commercial_use": "proprietary",
+        "commercial_use": "personal-noncommercial",
         "execution_target": "vendor-commercial",
         "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
         "probe_commands": [],
@@ -385,8 +385,9 @@
           "IGES",
           "DXF"
         ],
-        "source_url": "https://www.solidworks.com/",
-        "evidence_state": "catalogued; runtime unverified"
+        "source_url": "https://www.solidworks.com/solution/solidworks-makers",
+        "evidence_state": "catalogued; runtime unverified",
+        "price_display": "USD 48/year or 15/month, excluding taxes"
       }
     },
     {

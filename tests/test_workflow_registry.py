@@ -150,6 +150,27 @@ jobs:
             self.assertEqual(item["event_config"]["push"]["paths"], ["ops/requests/project-visibility-public.yaml"])
             self.assertEqual(item["permissions"]["jobs"]["publish"]["contents"], "write")
 
+    def test_write_and_check_generate_stable_v2_outputs(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            workflow_dir = root / ".github/workflows"
+            catalog_dir = root / "docs/ops/generated"
+            workflow_dir.mkdir(parents=True)
+            catalog_dir.mkdir(parents=True)
+            (workflow_dir / "one.yml").write_text(
+                "name: One\\non: [push]\\njobs: {}\\n", encoding="utf-8"
+            )
+            (catalog_dir / "automation-workflow-catalog.json").write_text(
+                json.dumps({"source_fingerprint": "abc", "workflows": [{"path": ".github/workflows/one.yml", "authority": "read-only-or-advisory"}]}),
+                encoding="utf-8",
+            )
+            workflow_registry.write_outputs(root)
+            self.assertTrue(workflow_registry.check_outputs(root))
+            output = json.loads((catalog_dir / "workflow-event-index.json").read_text(encoding="utf-8"))
+            self.assertEqual(output["schema_version"], "workflow-event-index/v2")
+            (catalog_dir / "workflow-event-index.json").write_text("{}\\n", encoding="utf-8")
+            self.assertFalse(workflow_registry.check_outputs(root))
+
     def test_build_index_reports_directory_catalog_drift(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

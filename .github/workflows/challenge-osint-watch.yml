@@ -1,5 +1,5 @@
 # challenge-osint-watch (contract: docs/ops/CHALLENGE-OSINT.md).
-# Full-spectrum public OSINT for the challenge slate: weekly + on
+# Full-spectrum public OSINT for admitted events and candidates: daily + on
 # coordinator change, recompute the coverage matrix and append official
 # page snapshots (prize/rules/schedule change detection) via
 # scripts/challenge/osint_watch.py; mirror snapshots to Neon; propose
@@ -9,13 +9,14 @@ name: challenge-osint-watch
 on:
   workflow_dispatch:
   schedule:
-    - cron: '17 8 * * 3'
+    - cron: '17 8 * * *'
   push:
     branches: [master]
     paths:
       - 'ops/challenge/coordinator.json'
       - 'scripts/challenge/osint_watch.py'
       - 'scripts/challenge/field_size_scrape.py'
+      - 'docs/ops/CHALLENGE-OSINT.md'
 
 concurrency:
   group: challenge-osint-watch

@@ -8,7 +8,7 @@
 | ETI-04 | Bind engineering work to existing QUE/QDesk admission and execution. | P1 | executing | QUE / QDesk | Engineering issue form declares issue-dispatch/v1, tier 3 and existing project-task route; tests verify admission matching and the QUE parser contract. | ETI-01, ETI-03 |
 | ETI-05 | Connect toolchain benchmarks to DoE/MVT/ATES and Learnings. | P1 | executing | DoE / MVT / ATES | Experiment factors, immutable fingerprints, repeated arms, terminal states, evidence receipts and learning handoff. | ETI-01, ETI-02 |
 | ETI-06 | Cross-link engineering with Reverse Engineering and refTemplates. | P1 | executing | Reverse Engineering / Research | Shared artifact and hardware/firmware links with independent taxonomies, pinned source lineage and citation-only cross-surface references. | ETI-01 |
-| ETI-07 | Define free/no-card remote execution for GUI and compute-heavy tools. | P1 | proposed | Tooling / Delivery Reliability | Runner capability matrix, install provenance, resource budgets, network boundary, artifact retention and cost/card gate. | ETI-01, ETI-02 |
+| ETI-07 | Define free/no-card remote execution for GUI and compute-heavy tools. | P1 | executing | Tooling / Delivery Reliability | Runner capability matrix, install provenance, resource budgets, network boundary, artifact retention and cost/card gate. | ETI-01, ETI-02 |
 | ETI-08 | Verify device runtime and current-SHA repository gates. | P1 | blocked_external | Termux Runtime / Delivery Reliability | Live Termux inventory receipt, tests, repo-gate, termux-smoke, exact SHA and review evidence. | ETI-02, ETI-03, ETI-04, ETI-05, ETI-07 |
 
 ## Execution boundary

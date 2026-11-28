@@ -1,17 +1,16 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-28T05:45:38Z",
+ "generated_at": "2026-11-28T06:14:01Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 4,
-   "in_progress": 0,
-   "oldest_queued_at": "2026-11-28T05:43:42Z",
+   "queued": 3,
+   "in_progress": 1,
+   "oldest_queued_at": "2026-11-28T06:12:53Z",
    "by_workflow_queued": {
-    "PR scope guard": 1,
-    "repo gate": 2,
-    "Orchestration Regression Guard": 1
+    "repo gate": 1,
+    "PR scope guard": 2
    }
   },
   "2": {
@@ -30,40 +29,39 @@
   },
   "4": {
    "tier": 4,
-   "queued": 94,
-   "in_progress": 25,
-   "oldest_queued_at": "2026-11-28T05:43:40Z",
+   "queued": 96,
+   "in_progress": 16,
+   "oldest_queued_at": "2026-11-28T06:10:16Z",
    "by_workflow_queued": {
-    "Agent Throughput Evidence": 34,
-    "DO Statement Style": 5,
-    "Issue Comment Router \u2014 modular fan-out reduction": 1,
-    "Sweep Accountability": 2,
-    "lane events recorder": 28,
+    "Quota Dispatch Tree": 1,
+    "Agent Throughput Evidence": 19,
+    "lane events recorder": 52,
     "repo-tracking-collect": 1,
-    "termux smoke": 2,
-    "Advisory CodeQL analysis": 1,
-    "ArchWiz Markov Trellis Lab": 1,
-    "Workflow Surface Evidence": 1,
-    "Agent PR Jules Handoff": 1,
-    "RECON INTEL discovery": 1,
-    "Repository development evaluation": 1,
-    "localization-validate": 3,
-    "PR Change Effectiveness Ledger": 1,
-    "proposal-lifecycle": 2,
-    "Operations Cadence Audit": 1,
-    "Advisory GitHub Actions lint": 1,
+    "Agent feedback \u2192 Linear subtasks": 1,
     "Agent review \u2192 auto Jules": 1,
-    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
-    "Foresight Evidence Spine": 1,
-    "hitl-control-plane-verify": 2,
-    "que-cadence-kick": 1,
-    "graph-matrix-probe": 1
+    "Peer review orchestrator": 1,
+    "Gemini review after peers": 2,
+    "RECON INTEL discovery": 1,
+    "PR Change Effectiveness Ledger": 1,
+    "DO Statement Style": 2,
+    "CellCog review": 1,
+    "Repository development evaluation": 1,
+    "termux smoke": 1,
+    "archwiz dangle check": 1,
+    "Agent Readability Source Contract": 1,
+    "Lane matrix event-driven inventory": 1,
+    "Agent PR Jules Handoff": 1,
+    "PR production ledger": 2,
+    "Sweep Accountability": 2,
+    "PR evidence evaluation": 1,
+    "n8n SHE bridge": 1,
+    "Context Relationship + Lead/Lag Audit": 1
    }
   }
  },
  "totals": {
-  "queued": 98,
-  "in_progress": 26
+  "queued": 99,
+  "in_progress": 18
  },
  "wedged_ancient": [],
  "wedged_excluded_from_counts": true,
@@ -76,7 +74,7 @@
    "4": 0
   },
   "explicit_total": 5,
-  "default_t4": 119,
+  "default_t4": 112,
   "unmatched": 0,
   "ancient_excluded": 0,
   "operator_excluded": 0

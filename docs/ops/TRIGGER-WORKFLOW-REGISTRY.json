@@ -98,6 +98,15 @@
       "schema": "workflow-event-index/v1",
       "workflow_count": 332,
       "observed_at": "2026-11-27"
+    },
+    {
+      "id": "comment-trigger-census",
+      "path": "docs/ops/generated/comment-trigger-census.json",
+      "role": "source-verified comment mentions, slash commands, provider commands, and HTML marker selectors",
+      "schema": "comment-trigger-census/v1",
+      "record_count": 17,
+      "scope": "selected exemplars; not exhaustive",
+      "observed_at": "2026-11-27"
     }
   ],
   "concepts": [
@@ -534,6 +543,13 @@
         "reason": "Source executes a GitHub REST PATCH to change an external repository visibility and verifies the result.",
         "status": "SOURCE_VERIFIED_CONFLICT"
       }
-    ]
+    ],
+    "comment_triggers": {
+      "artifact": "docs/ops/generated/comment-trigger-census.json",
+      "markdown": "docs/ops/COMMENT-TRIGGER-CENSUS.md",
+      "record_count": 17,
+      "status": "SOURCE_VERIFIED_SELECTED",
+      "exhaustive": false
+    }
   }
 }

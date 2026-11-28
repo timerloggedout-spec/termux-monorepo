@@ -6,6 +6,7 @@ Invoked from `scripts/ci/termux_smoke.py` (core) and `--with-optional`.
 | Suite | Path | Required in core? | Network? | Source | Status |
 |-------|------|-------------------|----------|--------|--------|
 | **connectors** | `scripts/ci/termux_smoke/connectors/` | presence + compile (core soft-required) | no | #70 project-management / connectors | active |
+| engineering-toolchain | inline in termux_smoke.py | yes | no | ETI-01/02: taxonomy, PATH inventory, engineering and Hub protocol tests | active |
 | deepcli | (inline in termux_smoke.py) | no | no | legacy | active |
 | archwiz | (inline in termux_smoke.py) | no | no | legacy | active |
 | termux-api | (inline) | no | no | legacy | active |

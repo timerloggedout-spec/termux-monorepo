@@ -12,7 +12,7 @@ reviewers:
     status: accepted
 related_prs: [5942]
 related_branches:
-  - feat/polyglot-urdu-portal-20261127-v2
+  - feat/polyglot-urdu-portal-20261127-clean
 gates_required: [repo-gate, termux-smoke]
 ---
 

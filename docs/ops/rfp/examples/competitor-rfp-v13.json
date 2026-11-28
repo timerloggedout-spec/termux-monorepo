@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "candidate_id": "RFP-V13",
+  "name": "Canonical 13-phase RFP process",
+  "classification": "pipeline_method",
+  "description": "Established governance option with asynchronous overlapping workstreams.",
+  "source": {
+    "kind": "internal_lane",
+    "uri": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/RFP-COMPETITOR-ADMISSIONS-AND-LANE-MIXING.md",
+    "revision": "master",
+    "observed_at": "2026-11-23T00:00:00Z",
+    "artifact_sha256": null,
+    "license_status": "not_applicable",
+    "license_ref": null
+  },
+  "identity": {
+    "version": "1.0",
+    "source_revision": "master",
+    "configuration_sha256": null,
+    "provider": null,
+    "model": null,
+    "configured_instance_key": null,
+    "pipeline_version": "RFP-V13",
+    "phase_topology": "13-phase; async overlap permitted"
+  },
+  "capability_contract": {
+    "inputs": [
+      "RFP opportunity",
+      "source evidence",
+      "external constraints"
+    ],
+    "outputs": [
+      "evaluated proposal",
+      "decision receipt"
+    ],
+    "capabilities": [
+      "discovery",
+      "normalization",
+      "evaluation",
+      "routing",
+      "review"
+    ],
+    "intended_rfp_scope": "Internal RFP mandate execution",
+    "dependencies": [],
+    "supported_phases": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ]
+  },
+  "relationships": [
+    {
+      "relation": "competes_with",
+      "candidate_id": "RFP-V1"
+    }
+  ],
+  "lifecycle": {
+    "state": "eligible_for_design",
+    "updated_at": "2026-11-23T00:00:00Z",
+    "state_history": [
+      {
+        "state": "discovered",
+        "at": "2026-11-23T00:00:00Z",
+        "reason": "Seeded from the established 13-phase governance model.",
+        "evidence_ref": null
+      }
+    ]
+  },
+  "admission": {
+    "decision": "candidate_only",
+    "basis": [
+      "Documented governance option; campaign pre-registration remains a separate gate."
+    ],
+    "campaign_id": null,
+    "production_authority": false,
+    "review_at": null
+  },
+  "owner": "DoE family",
+  "evidence_refs": [
+    "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/DOE-FAMILY.md"
+  ]
+}

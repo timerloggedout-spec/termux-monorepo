@@ -1572,3 +1572,14 @@ Awareness is event-driven. GitHub push, pull-request, release, issue, workflow-c
 The four initial platform factors are Langfuse, PromptLayer, PostHog and Braintrust. Their capabilities remain hypotheses until pinned documentation and runtime evidence exist. The native repository baseline is mandatory. Combination and interaction effects must be measured rather than assumed; the 2^4 full-factorial comparison has 16 cells when all four factors are executable.
 
 Every dispatched run continues to emit exactly one canonical experiment record under docs/ops/corpus/EXPERIMENT.schema.json. Candidate status, proposal status, execution state, outcome validation and promotion remain distinct. Delphi/EGM and repository dual gates retain their existing authority.
+
+
+## RFP pipeline competitor admission and lane mixing
+
+The RFP pipeline remains an internal mandate. DoE admits and compares extensible pipeline versions and competitor methods, and treats lane composition as a first-class experimental treatment. The canonical 13-phase option retains its phase sequence while allowing asynchronous workstreams to overlap. Verified external due dates constrain only affected opportunities and workstreams.
+
+- Contract: `docs/ops/RFP-COMPETITOR-ADMISSIONS-AND-LANE-MIXING.md`
+- Canonical phase map: `docs/ops/ACTIONS-MATRIX-UPGRADE-PLAN.md` and Issue #631
+- Discovery and capability graph: CEEL design and `docs/integrations/capability-opportunity-graph.json`
+
+The contract reuses the family experiment schema, configured-instance identity, CEEL discovery, Delphi proposal/evaluation lifecycle, and existing lane registries. Candidate admission, experiment admission, execution, validation, and production promotion remain separate states. Mixed lanes receive explicit compatibility checks, hand-off stamps, and interaction-effect evaluation. This section is the family index; the linked contract owns the detailed admission and composition rules.

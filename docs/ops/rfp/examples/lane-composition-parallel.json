@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.0",
+  "composition_id": "RFP-MIX-PARALLEL-001",
+  "version": "0.1.0",
+  "pattern": "parallel_arms",
+  "task_contract": {
+    "contract_id": "rfp-evaluation/v1",
+    "inputs": [
+      "normalized RFP brief",
+      "evidence bundle"
+    ],
+    "outputs": [
+      "scored evaluation",
+      "decision receipt"
+    ],
+    "success_criteria": [
+      "same evidence basis",
+      "traceable provenance",
+      "independent outcome scoring"
+    ]
+  },
+  "lanes": [
+    {
+      "lane_id": "lane-baseline",
+      "candidate_id": "RFP-V1",
+      "role": "baseline_pipeline",
+      "configured_instance_key": null,
+      "phase_ownership": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "required": true
+    },
+    {
+      "lane_id": "lane-candidate",
+      "candidate_id": "RFP-V13",
+      "role": "candidate_pipeline",
+      "configured_instance_key": null,
+      "phase_ownership": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "required": true
+    }
+  ],
+  "topology": [
+    {
+      "from_lane": "lane-baseline",
+      "to_lane": "lane-candidate",
+      "transition": "parallel",
+      "condition": "Assign equivalent randomized units under the preregistered campaign.",
+      "input_mapping": {
+        "brief": "same normalized brief",
+        "evidence": "same frozen evidence bundle"
+      }
+    }
+  ],
+  "compatibility": {
+    "schema_compatibility": "pending",
+    "provenance_preservation": "pending",
+    "security_review": "pending",
+    "license_review": "pending",
+    "capacity_review": "pending",
+    "failure_semantics": "pending",
+    "human_approval": "pending",
+    "notes": [
+      "Illustrative design record; compatibility gates remain pending."
+    ]
+  },
+  "design": {
+    "campaign_id": "rfp-mix-pilot-001",
+    "design_class": "parallel comparative arms",
+    "factors": [
+      {
+        "name": "pipeline_version",
+        "levels": [
+          "RFP-V1",
+          "RFP-V13"
+        ]
+      }
+    ],
+    "responses": [
+      "decision_quality",
+      "evidence_traceability",
+      "cycle_time",
+      "resource_cost"
+    ],
+    "baseline": "RFP-V1",
+    "randomization": "Randomize equivalent RFP units across arms after task stratification.",
+    "blocking": "Stratify by RFP category and complexity.",
+    "replication": "Independent RFP units; preregister minimum sample and power basis.",
+    "stopping_rule": "Stop at preregistered sample or safety/validity boundary; require independent confirmation before promotion."
+  },
+  "governance": {
+    "state": "draft",
+    "owner": "DoE family",
+    "production_routing_authorized": false,
+    "decision_refs": [],
+    "review_at": null
+  }
+}

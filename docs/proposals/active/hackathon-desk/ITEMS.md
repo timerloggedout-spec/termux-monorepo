@@ -6,7 +6,7 @@
 | ID | Work item | Acceptance evidence | State |
 |---|---|---|---|
 | HD-001 | Register the proposal and define the static GitHub-authenticated contribution architecture. | Registry, manifest, source, design, and plan agree on authority boundaries. | Implemented |
-| HD-002 | Add tested feed adapters for QUE opportunities, challenge coordinator records, countdowns, desk traversals, dispatch state, and queue state. | Fixtures cover valid, empty, malformed, stale, and unavailable feeds; provenance and timestamps render. | In progress — public challenge projection, generated artifact, recursive exclusions, and refresh wiring committed; browser feed normalizers remain pending |
+| HD-002 | Add tested feed adapters for QUE opportunities, challenge coordinator records, countdowns, desk traversals, dispatch state, and queue state. | Fixtures cover valid, empty, malformed, stale, and unavailable feeds; provenance and timestamps render. | In progress — allowlisted challenge projection, generated artifact, all six feed normalizers, Node/Python tests, and refresh wiring committed; current-head CI pending |
 | HD-003 | Build responsive Hackathon Desk shell and Opportunities, Challenges, Hackathons, Proposals, and Pipeline views. | Navigation, cards, filters, status labels, source links, and mobile layouts work from canonical inputs. | Pending |
 | HD-004 | Build teammate onboarding and GitHub contribution entry points. | GitHub identity is linked only by the teammate; repository permissions remain GitHub-enforced; Discord is optional and consent-based. | Pending |
 | HD-005 | Integrate proposal creation and review navigation. | Existing proposal lifecycle, issue form, active registry, and PR process are linked without a second proposal store. | Pending |

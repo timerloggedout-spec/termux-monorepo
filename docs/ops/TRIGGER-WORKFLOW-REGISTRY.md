@@ -93,7 +93,7 @@ See `docs/ops/REVIEW-PUBLISHING.md` for current publish workflow and preview rul
 
 ## 4. Workflow trigger exemplars
 
-Eight routing workflows have now been source-read and recorded in `docs/ops/generated/workflow-trigger-census.json`, with a human-readable companion at `docs/ops/WORKFLOW-TRIGGER-CENSUS.md`. The sample covers QUE admission, project-task intake, admission-following game-development queueing, Jules labels and mentions, Gemini `/build`, provider commands, and Delphi marker/manual intake. Each record includes the workflow blob SHA and configured event/selector/gate/effect. This is an exemplar set; the generated catalog lists 331 workflows while the live `.github/workflows/` directory contains 332 YAML files. `project-repository-visibility.yml` is the source-verified uncatalogued entry and is recorded as a reconciliation gap.
+Eight routing workflows have now been source-read and recorded in `docs/ops/generated/workflow-trigger-census.json`, with a human-readable companion at `docs/ops/WORKFLOW-TRIGGER-CENSUS.md`. The sample covers QUE admission, project-task intake, admission-following game-development queueing, Jules labels and mentions, Gemini `/build`, provider commands, and Delphi marker/manual intake. Each record includes the workflow blob SHA and configured event/selector/gate/effect. This is an exemplar set; the generated catalog and live `.github/workflows/` directory now both contain 332 YAML workflows. The complete catalog-level event index is `docs/ops/generated/workflow-event-index.json`, with a human-readable companion at `docs/ops/WORKFLOW-EVENT-INDEX.md`.
 
 ## 5. Workflow event catalog
 
@@ -186,6 +186,7 @@ Use existing feed freshness contracts, including `generated_at`, source SHA, and
 - Workflow inventory: `docs/ops/generated/automation-workflow-catalog.json`
 - Issue-template census: `docs/ops/ISSUE-TEMPLATE-CENSUS.md` and `docs/ops/generated/issue-template-census.json`
 - Workflow trigger census: `docs/ops/WORKFLOW-TRIGGER-CENSUS.md` and `docs/ops/generated/workflow-trigger-census.json`
+- Workflow event index: `docs/ops/WORKFLOW-EVENT-INDEX.md` and `docs/ops/generated/workflow-event-index.json`
 - Label consumer census: `docs/ops/LABEL-CONSUMER-CENSUS.md` and `docs/ops/generated/label-consumer-census.json`
 - Issue dispatch contract: `docs/ops/ISSUE-TEMPLATE-DISPATCH.md`
 - Surface ownership map: `docs/ops/SURFACES-MAP.md`

@@ -26,7 +26,7 @@ Make the researched FOSS-first engineering ecosystem discoverable and safely rou
 |---|---|---|
 | Taxonomy and toolchain registry | `ops/engineering/{__init__.py,taxonomy.json,taxonomy.py}` | Standard-library validator checks IDs, parent graph, axes, tool metadata, ordered stages, tool references and overlap values |
 | Termux inventory | `scripts/engineering/toolchain_probe.py` | Mocked PATH test proves read-only detection; JSON output separates catalogued from detected |
-| Hub capability wiring | `hub_mcp/policy.py`, `tests/hub_mcp/test_protocol.py` | OBSERVE admission for probe; OPERATE required for taxonomy validation; unknown arbitrary commands remain rejected |
+| Hub capability wiring | `hub_mcp/policy.py`, `tests/hub_mcp/test_protocol.py`, `scripts/ci/termux_smoke.py` | OBSERVE admission for probe; OPERATE required for taxonomy validation; targeted taxonomy, probe, QUE template and Hub tests run in required Termux smoke |
 | Engineering regression suite | `tests/test_engineering_taxonomy.py` | Taxonomy, orphan rejection, probe output, free-tier vs paid separation |
 | Tool discoverability | ArchWiz index, skill matrix, integration registry | Canonical links resolve; integration state remains discovered/implemented, runtime unverified |
 | Queue/evaluation/cross-domain contracts | `docs/ops/ENGINEERING-*.md` | Reuse QUE/QDesk and DoE/MVT/ATES ownership; cross-domain links remain citation-only |

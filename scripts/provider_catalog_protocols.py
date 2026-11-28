@@ -5,6 +5,11 @@ import re
 from typing import Any, Callable
 from urllib.parse import urlencode
 
+try:
+    from scripts.provider_catalog_results import CatalogRows
+except ImportError:
+    from provider_catalog_results import CatalogRows  # type: ignore
+
 PROVIDERS = ("cloudflare", "cohere", "ollama", "ovhcloud")
 SECRET_ENV = {"cloudflare": ("CLOUDFLARE_API_TOKEN",), "cohere": ("COHERE_API_KEY",), "ollama": ("OLLAMA_API_KEY",), "ovhcloud": ("OVHCLOUD_API_KEY",)}
 ENDPOINTS = {
@@ -26,7 +31,7 @@ def endpoint(provider: str, account_id: str | None = None) -> str:
     return ENDPOINTS[provider]
 
 
-def normalize_models(provider: str, body: Any) -> list[dict[str, Any]]:
+def normalize_models(provider: str, body: Any) -> CatalogRows:
     if not isinstance(body, dict):
         raise ValueError("invalid_response_shape")
     if provider == "cloudflare":
@@ -38,48 +43,54 @@ def normalize_models(provider: str, body: Any) -> list[dict[str, Any]]:
             items = body.get("data")
     else:
         raise ValueError("unsupported_provider")
-    if not isinstance(items, list) or any(not isinstance(x, dict) for x in items):
+    if not isinstance(items, list):
         raise ValueError("invalid_response_shape")
-    output, seen = [], set()
-    for item in items:
-        if provider == "ovhcloud" and not isinstance(item.get("available"), bool):
-            raise ValueError("invalid_model")
-        model_id = item.get("id") if provider in ("cloudflare", "ovhcloud") else item.get("name")
-        if not isinstance(model_id, str) or not model_id.strip() or any(ord(c) < 32 for c in model_id):
-            raise ValueError("invalid_model")
-        if model_id in seen:
+    output, seen, diagnostics = [], set(), []
+    for index, item in enumerate(items):
+        if not isinstance(item, dict):
+            diagnostics.append({"row_index": index, "error": "invalid_model"})
             continue
-        seen.add(model_id)
-        row = {"provider": provider, "id": model_id, "name": item.get("name"),
+        try:
+            if provider == "ovhcloud" and not isinstance(item.get("available"), bool):
+                raise ValueError("invalid_model")
+            model_id = item.get("id") if provider in ("cloudflare", "ovhcloud") else item.get("name")
+            if not isinstance(model_id, str) or not model_id.strip() or any(ord(c) < 32 for c in model_id):
+                raise ValueError("invalid_model")
+            if model_id in seen:
+                continue
+            row = {"provider": provider, "id": model_id, "name": item.get("name"),
                        "pricing": {}, "pricing_classification": "unknown", "access_classification": "catalog_pricing_only",
                        "access_source": None, "access_source_observed": None, "cadence": "catalog", "free_suffix": False,
                        "context_length": item.get("context_length") if isinstance(item.get("context_length"), int) and not isinstance(item.get("context_length"), bool) and item["context_length"] > 0 else None,
-                       "max_output_tokens": None, "raw_source": f"{provider}:official_catalog"}
-        if provider == "ovhcloud":
-            metadata = item.get("metadata")
-            if metadata is not None and not isinstance(metadata, dict):
-                raise ValueError("invalid_model")
-            metadata = metadata or {}
-            specs = metadata.get("model_specs", {})
-            if not isinstance(specs, dict):
-                raise ValueError("invalid_model")
-            capabilities = specs.get("capabilities", {})
-            if not isinstance(capabilities, dict):
-                raise ValueError("invalid_model")
-            usage = metadata.get("usage_information", {})
-            if not isinstance(usage, dict):
-                raise ValueError("invalid_model")
-            row["active"] = item["available"]
-            row["provider_capabilities"] = dict(capabilities)
-            if "pricing" in usage:
-                row["raw_pricing_metadata"] = usage["pricing"]
-        output.append(row)
-    return output
+                       "max_output_tokens": None, "readiness": "unknown", "raw_source": f"{provider}:official_catalog"}
+            if provider == "ovhcloud":
+                metadata = item.get("metadata")
+                if metadata is not None and not isinstance(metadata, dict):
+                    raise ValueError("invalid_model")
+                metadata = metadata or {}
+                specs = metadata.get("model_specs", {})
+                if not isinstance(specs, dict):
+                    raise ValueError("invalid_model")
+                capabilities = specs.get("capabilities", {})
+                if not isinstance(capabilities, dict):
+                    raise ValueError("invalid_model")
+                usage = metadata.get("usage_information", {})
+                if not isinstance(usage, dict):
+                    raise ValueError("invalid_model")
+                row["active"] = item["available"]
+                row["provider_capabilities"] = dict(capabilities)
+                if "pricing" in usage:
+                    row["raw_pricing_metadata"] = usage["pricing"]
+            output.append(row)
+            seen.add(model_id)
+        except ValueError as exc:
+            diagnostics.append({"row_index": index, "error": str(exc)})
+    return CatalogRows(output, diagnostics)
 
 
 def poll(provider: str, token: str, get_json: Callable, account_id: str | None = None) -> tuple[list[dict], dict]:
     base = endpoint(provider, account_id)
-    rows, headers, seen, seen_pages = [], {}, set(), set()
+    rows, headers, seen, seen_pages, diagnostics = [], {}, set(), set(), []
     next_token = None
     if provider == "ovhcloud":
         body, response_headers = get_json(base, None)
@@ -96,12 +107,13 @@ def poll(provider: str, token: str, get_json: Callable, account_id: str | None =
         body, response_headers = get_json(url, token)
         headers.update(response_headers)
         batch = normalize_models(provider, body)
+        diagnostics.extend({**item, "page": page} for item in batch.diagnostics)
         for row in batch:
             if row['id'] not in seen:
                 rows.append(row)
                 seen.add(row['id'])
         if provider == "ollama" or (provider == "cloudflare" and len(body['data']) < 100):
-            return rows, headers
+            return CatalogRows(rows, diagnostics), headers
         if provider == "cloudflare":
             identities = tuple(row['id'] for row in batch)
             if identities in seen_pages:
@@ -110,7 +122,7 @@ def poll(provider: str, token: str, get_json: Callable, account_id: str | None =
             continue
         next_token = body.get("next_page_token")
         if next_token in (None, ""):
-            return rows, headers
+            return CatalogRows(rows, diagnostics), headers
         if not isinstance(next_token, str) or len(next_token) > 2048 or next_token in seen_pages or any(ord(c) < 32 for c in next_token):
             raise ValueError("invalid_pagination")
         seen_pages.add(next_token)

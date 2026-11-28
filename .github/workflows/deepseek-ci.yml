@@ -1,13 +1,8 @@
 name: DeepSeek CI – Agentic Automation
 
-# Template webWrapper accounts:
-#   Account-1 / primary  — PRIORITY (default; interactive + CI)
-#   Account-2 / secondary — alternate / cookies_2 lineage
-#
-# chat_session_id is created via /api/v0/chat_session/create before completion.
-# Streaming SSE read timeout allows multi-minute thinking.
-# GitLab CI/CD is a separate scope.
-# Hard-fail on missing cookies/token/session (no soft-skip).
+# All agent work stays on the Origin/Pinggy Termux WebWrapper route.
+# The preflight uses the authenticated read-only agent list endpoint; an
+# unavailable proxy skips only this DeepSeek-specific job.
 
 on:
   pull_request:
@@ -31,11 +26,17 @@ concurrency:
   group: deepseek-ci-${{ github.event.pull_request.number || github.event.issue.number || github.event.comment.id || github.run_id }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  pull-requests: read
+  issues: read
+  actions: read
+
 jobs:
-  deepseek-agent:
+  proxy-preflight:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
-    # Skip bot noise on issue_comment / review_comment; always run for PR + dispatch.
+    timeout-minutes: 3
+    # Skip bot noise on issue_comment / review_comment; preserve existing PR + dispatch triggers.
     # Parentheses required: && binds tighter than || in GHA expressions.
     if: >-
       (github.event_name != 'issue_comment' && github.event_name != 'pull_request_review_comment') ||
@@ -50,50 +51,68 @@ jobs:
           contains(github.event.comment.body, 'DeepSeek')
         )
       )
-    permissions:
-      contents: write
-      pull-requests: write
-      issues: write
-      actions: read
-
-    env:
-      # ARCHWIZ_GITHUB_TOKEN (4RCHW12) supersedes all other GH tokens
-      OPERATOR_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
-      GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
-      # Prefer dispatch payload when provided; otherwise use the real event
-      GITHUB_EVENT: ${{ github.event.inputs.event_payload != '' && github.event.inputs.event_payload || toJson(github.event) }}
-      # Account-1 / primary is PRIORITY default
-      DEEPSEEK_ACCOUNT: ${{ github.event.inputs.account || 'account-1' }}
-      # Model auth — names from docs/ops/DEEPSEEK-CI.md + Issue #184 catalog.
-      # First non-empty wins inside session_manager._token_from_env.
-      # Cookies are primary auth path for the webWrapper (WASM + 🍪).
-      DEEPSEEK_TOKEN_PRIMARY: ${{ secrets.DEEPSEEK_API_KEY }}
-      DEEPSEEK_TOKEN: ${{ secrets.DEEPSEEK_API_KEY }}
-      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
-      DEEPSEEK_AUTH_TOKEN: ${{ secrets.DEEPSEEK_AUTH_TOKEN }}
-      NEXUSCLI_TOKEN: ${{ secrets.NEXUSCLI_TOKEN }}
-      DEEPSEEK_COOKIES: ${{ secrets.DEEPSEEK_COOKIES || secrets.DEEPSEEK_COOKIES_1 || secrets.COOKIES }}
-      DEEPSEEK_COOKIES_1: ${{ secrets.DEEPSEEK_COOKIES_1 }}
-      DEEPSEEK_TOKEN_SECONDARY: ${{ secrets.DEEPSEEK_TOKEN_SECONDARY || secrets.DEEPSEEK_TOKEN_ACCOUNT_2 || secrets.DEEPSEEK_COOKIES_2 }}
-      DEEPSEEK_COOKIES_2: ${{ secrets.DEEPSEEK_COOKIES_2 }}
-      # Captured browser sessions include aws-waf-token alongside ds_session_id.
-      # The value is consumed only by session_manager and persists in the existing
-      # permission-restricted session cache; it is never logged or uploaded.
-      DEEPSEEK_AWS_WAF_TOKEN: ${{ secrets.DEEPSEEK_AWS_WAF_TOKEN }}
-      DEEPSEEK_THINKING: "true"
-      DEEPSEEK_EXPERT: "true"
-      DEEPSEEK_CONNECT_TIMEOUT: "30"
-      DEEPSEEK_READ_TIMEOUT: "1200"
-      WASM_SOURCE_COMMIT: "ee1807049fd93d087bc14055b2ae6cbffb5dbf82"
-      WASM_RAW_BASE: "https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo"
-
+    outputs:
+      available: ${{ steps.proxy.outputs.available }}
+      reason: ${{ steps.proxy.outputs.reason }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
-          fetch-depth: 0
-          token: ${{ env.OPERATOR_TOKEN }}
-          persist-credentials: true
+          persist-credentials: false
+      - name: Setup Python
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: '3.11'
+      - name: Check Origin/Pinggy agent API
+        id: proxy
+        timeout-minutes: 2
+        env:
+          DEEPSEEK_AGENT_URL: ${{ secrets.DEEPSEEK_AGENT_URL }}
+          DEEPSEEK_AGENT_TOKEN: ${{ secrets.DEEPSEEK_AGENT_TOKEN }}
+        run: python scripts/deepseek_agent_proxy.py --check
+
+  deepseek-agent:
+    needs: proxy-preflight
+    if: needs.proxy-preflight.outputs.available == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      # Prefer dispatch payload when provided; otherwise use the real event.
+      GITHUB_EVENT: ${{ github.event.inputs.event_payload != '' && github.event.inputs.event_payload || toJson(github.event) }}
+      DEEPSEEK_ACCOUNT: ${{ github.event.inputs.account || 'account-1' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Setup Python
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: '3.11'
+      - name: Build agent payload
+        env:
+          EVENT_JSON: ${{ env.GITHUB_EVENT }}
+          EVENT_NAME: ${{ github.event_name }}
+          ACCOUNT: ${{ env.DEEPSEEK_ACCOUNT }}
+        run: |
+          set -euo pipefail
+          TASK_TEXT=$(jq -r '.comment.body // .issue.body // .issue.title // .pull_request.body // .pull_request.title // .inputs.event_payload // ""' <<<"$EVENT_JSON")
+          if [ -z "$TASK_TEXT" ] || [ "$TASK_TEXT" = "{}" ]; then
+            TASK_TEXT="Handle this GitHub event as the DeepSeek CI agent."
+          fi
+          jq -n \
+            --arg task "Handle this GitHub event using the existing Origin Termux WebWrapper agent: $TASK_TEXT" \
+            --arg source "github:$EVENT_NAME" \
+            --arg repo "$GITHUB_REPOSITORY" \
+            --arg event "$EVENT_NAME" \
+            --arg actor "$GITHUB_ACTOR" \
+            --arg ref "$GITHUB_REF" \
+            --arg run_url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            --arg account "$ACCOUNT" \
+            --arg event_payload "$EVENT_JSON" \
+            --arg repo_path_local "/data/data/com.termux/files/home" \
+            '{task:$task,source:$source,context:{repo:$repo,event:$event,actor:$actor,ref:$ref,run_url:$run_url,account:$account,event_payload:$event_payload,repo_path_local:$repo_path_local}}' \
+            > agent_payload.json
 
       - name: Emit ATES task-boundary identity
         env:
@@ -124,90 +143,42 @@ jobs:
           path: ${{ runner.temp }}/ates-task-boundary.json
           if-no-files-found: ignore
           retention-days: 14
-      - name: Setup Node.js (for PoW WASM)
-        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af  # v4.1.0
-        with:
-          node-version: '20'
 
-      - name: Setup Python
-        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b  # v5.3.0
-        with:
-          python-version: '3.11'
-          cache: 'pip'
+      - name: Start and poll Origin/Pinggy agent
+        id: agent
+        timeout-minutes: 42
+        env:
+          DEEPSEEK_AGENT_URL: ${{ secrets.DEEPSEEK_AGENT_URL }}
+          DEEPSEEK_AGENT_TOKEN: ${{ secrets.DEEPSEEK_AGENT_TOKEN }}
+        run: python scripts/deepseek_agent_proxy.py --run --payload agent_payload.json --start-output agent_start.json --status-output agent_status_final.json --max-polls 180 --poll-interval 10
 
-      - name: Install Python dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install requests pyyaml
-          python -c "import requests; print('requests', requests.__version__)"
-
-      - name: Stage DeepSeek PoW WASM & solver
+      - name: Extract agent summary
+        if: steps.agent.outputs.skipped == ''
+        timeout-minutes: 2
         run: |
           set -euo pipefail
-          mkdir -p deepcli/wasm
-          if [ -f deepcli/deepseek.wasm ] && [ -f deepcli/pow_solver.js ]; then
-            cp -f deepcli/deepseek.wasm deepcli/wasm/deepseek.wasm
-            cp -f deepcli/pow_solver.js deepcli/wasm/pow_solver.js
-            echo "✓ Using checked-out WASM/solver from deepcli/"
-          else
-            echo "⚠ WASM files not found in deepcli/, fetching from commit $WASM_SOURCE_COMMIT"
-            curl -sSfL "$WASM_RAW_BASE/$WASM_SOURCE_COMMIT/deepcli/deepseek.wasm" -o deepcli/wasm/deepseek.wasm
-            curl -sSfL "$WASM_RAW_BASE/$WASM_SOURCE_COMMIT/deepcli/pow_solver.js" -o deepcli/wasm/pow_solver.js
-            echo "✓ Fetched WASM/solver from raw.githubusercontent"
-          fi
-          if [ ! -s deepcli/wasm/deepseek.wasm ] || [ ! -s deepcli/wasm/pow_solver.js ]; then
-            echo "::error::WASM files missing or empty after staging"
-            exit 1
-          fi
-          ls -lh deepcli/wasm/
-
-      # Persistent session reuse is intentional: the cache retains the browser
-      # cookie jar (including aws-waf-token), chat session, and PoW-compatible state.
-      # Scope the cache to this repository and exact Git ref; do not restore a
-      # broad prefix from another branch or pull-request head.
-      - name: Cache DeepSeek session (Account-1 / primary)
-        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57  # v4.2.0
-        id: cache-session
-        with:
-          path: ${{ runner.temp }}/.deepseek-cache
-          key: deepseek-session-${{ github.repository_id }}-${{ github.ref }}-account1-${{ runner.os }}-${{ hashFiles('deepcli/session_manager.py') }}
-
-      - name: Run DeepSeek CI Agent (Account-1 priority)
-        timeout-minutes: 40
-        env:
-          PYTHONPATH: ${{ github.workspace }}
-          # runner.temp ONLY valid at step level — was the post-#174 master gate breaker
-          DEEPSEEK_CACHE_DIR: ${{ runner.temp }}/.deepseek-cache
-        run: |
-          python -m deepcli.ci_mode \
-            --event "$GITHUB_EVENT" \
-            --workspace "$GITHUB_WORKSPACE" \
-            --cache-dir "$DEEPSEEK_CACHE_DIR" \
-            --account "$DEEPSEEK_ACCOUNT"
+          jq -r '.tail // [] | join("\n")' agent_status_final.json > agent_tail.txt
+          if [ ! -s agent_tail.txt ]; then printf 'Agent phase: %s\n' "$(jq -r '.phase // "unknown"' agent_status_final.json)" > agent_tail.txt; fi
 
       - name: Failure diagnostics
         if: failure()
-        timeout-minutes: 5
+        timeout-minutes: 2
         run: |
-          set -uo pipefail
           echo "::group::Workflow failure context"
           echo "event: ${{ github.event_name }}"
           echo "actor: ${{ github.actor }}"
           echo "ref: ${{ github.ref }}"
           echo "run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           echo "::endgroup::"
-          for f in deepseek_output.json; do
-            if [ -f "$f" ]; then
-              echo "::group::--- $f ---"
-              cat "$f" || true
-              echo "::endgroup::"
-            fi
-          done
 
-      - name: Upload results
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08  # v4.6.2
+      - name: Upload Origin agent results
         if: always()
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.2
         with:
-          name: deepseek-output
-          path: ./deepseek_output.json
+          name: deepseek-origin-agent-${{ github.run_id }}
+          path: |
+            agent_start.json
+            agent_status_final.json
+            agent_tail.txt
           if-no-files-found: ignore
+          retention-days: 14

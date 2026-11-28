@@ -27,9 +27,10 @@ def test_price_classification():
     assert provider_model_catalog.price_classification({"pricing": {"prompt": 0, "completion": 0}}) == "free_zero_price"
     assert provider_model_catalog.price_classification({"pricing": {"prompt": "0.0", "completion": "0.0"}}) == "free_zero_price"
 
-    # Float conversions
+    # Decimal conversion remains exact even below binary-float range.
     assert provider_model_catalog.price_classification({"pricing": {"prompt": "0.000", "completion": "0.000"}}) == "free_zero_price"
     assert provider_model_catalog.price_classification({"pricing": {"prompt": "0.001", "completion": "0.002"}}) == "paid"
+    assert provider_model_catalog.price_classification({"pricing": {"prompt": "1e-10000", "completion": "0"}}) == "paid"
 
     # Invalid or non-dict pricing
     assert provider_model_catalog.price_classification({"pricing": {}}) == "unknown"
@@ -62,6 +63,22 @@ def test_get_json():
         data, headers = provider_model_catalog.get_json("https://example.com", token="tok")
         assert data == {"data": []}
         assert headers == {"x-ratelimit-remaining": "100", "retry-after": "10"}
+
+
+def test_get_json_preserves_the_exact_decimal_wire_token():
+    from unittest.mock import MagicMock
+    response = MagicMock()
+    response.__enter__.return_value = response
+    response.read.return_value = b'{"data":[{"id":"tiny","pricing":{"prompt":1e-10000,"completion":0}}]}'
+    response.headers = {}
+    opener = MagicMock()
+    opener.open.return_value = response
+    with patch("urllib.request.build_opener", return_value=opener):
+        payload, _ = provider_model_catalog.get_json("https://example.com", token="tok")
+    price = payload["data"][0]["pricing"]["prompt"]
+    assert isinstance(price, provider_model_catalog.provider_catalog_json.ExactDecimal)
+    assert price.raw_token == "1e-10000"
+    assert provider_model_catalog.price_classification({"pricing": payload["data"][0]["pricing"]}) == "paid"
 
 
 def test_poll():
@@ -112,6 +129,25 @@ def test_main(tmp_path):
         assert ret == 0
         assert output_file.exists()
 
+
+def test_main_serializes_exact_prices_and_reports_row_diagnostics(tmp_path):
+    output_file = tmp_path / "catalog-exact.json"
+    exact_price = provider_model_catalog.provider_catalog_json.ExactDecimal("1e-10000")
+    payload = {"data": [
+        {"id": "tiny-priced-model", "pricing": {"prompt": exact_price, "completion": 0}},
+        {"id": 7},
+    ]}
+    with patch.dict("os.environ", {"OPENROUTER_API_KEY": "sk-test"}, clear=True), \
+         patch("scripts.provider_model_catalog.get_json", return_value=(payload, {})):
+        assert provider_model_catalog.main(["--providers", "openrouter", "--output", str(output_file)]) == 0
+    text = output_file.read_text()
+    assert '"prompt": 1e-10000' in text
+    document = json.loads(text, parse_float=provider_model_catalog.provider_catalog_json.ExactDecimal)
+    assert document["models"][0]["pricing_classification"] == "paid"
+    assert document["models"][0]["readiness"] == "unknown"
+    assert document["row_diagnostics"] == [{"error": "invalid_model", "provider": "openrouter", "row_index": 1}]
+
+
 def test_native_provider_normalization_and_auth_headers():
     fixtures = {
         "groq": ({"data": [{"id":"g1", "context_window":8192,"max_completion_tokens":1024,"active":True}]}, "Authorization", "Bearer secret"),
@@ -142,7 +178,7 @@ def test_gemini_pagination_and_repeat_token_rejection():
         with pytest.raises(ValueError): provider_model_catalog.poll("gemini","tok")
 
 def test_strict_catalog_shapes_prices_and_provider_specific_free_suffix():
-    for payload in ({}, {"data":{}}, {"data":[None]}, {"data":[{"id":7}]}):
+    for payload in ({}, {"data":{}}):
         with patch.object(provider_model_catalog,"get_json",return_value=(payload,{})):
             with pytest.raises(ValueError): provider_model_catalog.poll("groq","t")
     for val in (True,float("nan"),float("inf"),"NaN"):
@@ -152,6 +188,18 @@ def test_strict_catalog_shapes_prices_and_provider_specific_free_suffix():
         groq,_=provider_model_catalog.poll("groq","t")
         openrouter,_=provider_model_catalog.poll("openrouter","t")
     assert not groq[0]["free_suffix"] and openrouter[0]["free_suffix"]
+
+
+def test_native_poll_keeps_good_rows_and_reports_invalid_rows():
+    payload = {"data": [None, {"id": "good"}, {"id": 7}]}
+    with patch.object(provider_model_catalog, "get_json", return_value=(payload, {})):
+        rows, _ = provider_model_catalog.poll("groq", "t")
+    assert [row["id"] for row in rows] == ["good"]
+    assert rows[0]["readiness"] == "unknown"
+    assert rows.diagnostics == [
+        {"row_index": 0, "error": "invalid_model"},
+        {"row_index": 2, "error": "invalid_model"},
+    ]
 
 def test_secret_alias_and_legacy_default_providers():
     with patch.dict("os.environ",{"GOOGLE_API_KEY":"g"},clear=True):

@@ -1,7 +1,12 @@
 """Documented bearer model-list catalogs; public listing never grants admission."""
 from __future__ import annotations
 
-import math
+from decimal import Decimal, InvalidOperation
+
+try:
+    from scripts.provider_catalog_results import CatalogRows
+except ImportError:
+    from provider_catalog_results import CatalogRows  # type: ignore
 
 ENDPOINTS = {
     "unorouter": "https://api.unorouter.com/v1/models",
@@ -33,22 +38,28 @@ SOURCES = {
 
 
 def _rate(value):
-    """Return a finite, non-negative numeric rate or None for invalid input."""
-    if isinstance(value, bool) or not isinstance(value, (int, float)):
+    """Return an exact, finite, non-negative numeric rate or None for invalid input."""
+    if isinstance(value, bool) or not isinstance(value, (int, float, Decimal)):
         return None
     try:
-        number = float(value)
-    except (OverflowError, ValueError):
+        number = value if isinstance(value, Decimal) else Decimal(str(value))
+    except (InvalidOperation, OverflowError, ValueError):
         return None
-    return number if math.isfinite(number) and number >= 0 else None
+    return number if number.is_finite() and number >= 0 else None
+
+
+def _per_million_to_token_rate(rate):
+    """Scale by 10^-6 without context rounding or subnormal underflow."""
+    sign, digits, exponent = rate.as_tuple()
+    return Decimal((sign, digits, exponent - 6))
 
 
 def _pricing(item, provider):
     """Normalize provider-specific price shapes without guessing free access."""
     pricing = item.get("pricing")
     if provider == "requesty":
-        # The official wire schema is an ARRAY, not {tiers:[...]}. Thresholds
-        # can make a later tier paid; use every tier, never only the first.
+        # The official wire schema places pricing tiers in a top-level ARRAY.
+        # Evaluate every tier because later thresholds can identify paid access.
         if not isinstance(pricing, list) or not pricing:
             return {}, "unknown"
         parsed, all_rates = [], []
@@ -85,7 +96,7 @@ def _pricing(item, provider):
             if not isinstance(section, dict) or section.get("unit") != "1M tokens":
                 return None
             rate = _rate(section.get("price_per_million_t"))
-            return rate / 1_000_000 if rate is not None else None
+            return _per_million_to_token_rate(rate) if rate is not None else None
         inp, out = per_token("input"), per_token("output")
         # An underflowing nonzero price must never be relabeled free.
         zero = all(isinstance(pricing.get(side), dict) and pricing[side].get("price_per_million_t") == 0 for side in ("input", "output"))
@@ -119,13 +130,17 @@ def poll(provider, token, get_json):
     """Fetch and normalize one provider catalog using its documented wire shape."""
     payload, headers = get_json(ENDPOINTS[provider], token)
     items = payload.get("data") if isinstance(payload, dict) else None
-    if not isinstance(items, list) or any(not isinstance(item, dict) for item in items):
+    if not isinstance(items, list):
         raise ValueError("invalid_response_shape")
-    rows, seen = [], set()
-    for item in items:
+    rows, seen, diagnostics = [], set(), []
+    for index, item in enumerate(items):
+        if not isinstance(item, dict):
+            diagnostics.append({"row_index": index, "error": "invalid_model"})
+            continue
         model_id = item.get("id")
         if not isinstance(model_id, str) or not model_id.strip() or any(ord(c) < 32 or ord(c) == 127 for c in model_id):
-            raise ValueError("invalid_model")
+            diagnostics.append({"row_index": index, "error": "invalid_model"})
+            continue
         if model_id in seen:
             continue
         seen.add(model_id)
@@ -136,7 +151,7 @@ def poll(provider, token, get_json):
             "pricing": pricing, "pricing_classification": price_class,
             "access_classification": "catalog_pricing_only", "access_source": None,
             "access_source_observed": None, "cadence": "catalog",
-            "free_suffix": model_id.endswith(":free"), "context_length": None,
+            "free_suffix": model_id.endswith(":free"), "context_length": None, "readiness": "unknown",
             "max_output_tokens": None, "raw_source": f"{provider}:/v1/models",
         }
         for source, dest in (("context_length", "context_length"), ("context_window", "context_length"), ("max_output_tokens", "max_output_tokens")):
@@ -151,4 +166,4 @@ def poll(provider, token, get_json):
             row["account_free_tier_candidate"] = item.get("access_tier") == "free"
             row["quota_status"] = "unknown"
         rows.append(row)
-    return rows, headers
+    return CatalogRows(rows, diagnostics), headers

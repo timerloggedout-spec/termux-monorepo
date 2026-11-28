@@ -1,7 +1,9 @@
 import math
+from decimal import Decimal
 import pytest
 from scripts import provider_extension_catalogs as ext
 from scripts import provider_model_catalog as catalog
+from scripts import provider_catalog_protocols as protocols
 from llm_api_hub.server import provider_extensions as runtime
 
 
@@ -20,7 +22,7 @@ def tier(inp=0, out=0, threshold=0, **kw):
 
 def test_requesty_uses_documented_array_and_all_tiers_and_optional_charge_fields():
     assert ext._pricing({"pricing": [tier(), tier(threshold=1000)]}, "requesty") == ({"prompt": 0, "completion": 0}, "free_zero_price")
-    assert ext._pricing({"pricing": [tier(), tier(out=2e-9, threshold=1000)]}, "requesty") == ({"prompt": 0, "completion": 2e-9}, "paid")
+    assert ext._pricing({"pricing": [tier(), tier(out=2e-9, threshold=1000)]}, "requesty") == ({"prompt": Decimal(0), "completion": Decimal("2e-9")}, "paid")
     assert ext._pricing({"pricing": [tier(caching_price=1)]}, "requesty")[1] == "paid"
     assert ext._pricing({"pricing": [tier()], "input_price": 1}, "requesty")[1] == "unknown"
     assert ext._pricing({"pricing": [tier()], "input_price": 0}, "requesty")[1] == "free_zero_price"
@@ -29,7 +31,7 @@ def test_requesty_uses_documented_array_and_all_tiers_and_optional_charge_fields
     assert ext._pricing({"input_price": 0, "output_price": 0}, "requesty")[1] == "unknown"
 
 
-@pytest.mark.parametrize("bad", [True, -1, math.nan, math.inf, "0", 10**1000, None])
+@pytest.mark.parametrize("bad", [True, -1, math.nan, math.inf, "0", None])
 def test_requesty_invalid_numeric_prices_are_unknown(bad):
     assert ext._pricing({"pricing": [tier(out=bad)]}, "requesty")[1] == "unknown"
 
@@ -44,17 +46,19 @@ def route_price(inp=0, out=0):
 
 
 def test_routeway_nested_per_million_rates_and_cache_prices():
-    assert ext._pricing({"pricing": route_price(0, 2.5)}, "routeway") == ({"prompt": 0, "completion": 0.0000025}, "paid")
+    assert ext._pricing({"pricing": route_price(0, 2.5)}, "routeway") == ({"prompt": Decimal(0), "completion": Decimal("0.0000025")}, "paid")
     assert ext._pricing({"pricing": route_price()}, "routeway")[1] == "free_zero_price"
     p = route_price()
     p["caching"] = {"read": {"unit": "1M tokens", "price_per_million_t": 1}}
     assert ext._pricing({"pricing": p}, "routeway")[1] == "paid"
     p["input"]["unit"] = "tokens"
     assert ext._pricing({"pricing": p}, "routeway")[1] == "unknown"
-    assert ext._pricing({"pricing": route_price(1e-320, 0)}, "routeway")[1] == "paid"
+    result = ext._pricing({"pricing": route_price(Decimal("1e-1000000"), 0)}, "routeway")
+    assert result[1] == "paid"
+    assert result[0]["prompt"] == Decimal((0, (1,), -1000006))
 
 
-@pytest.mark.parametrize("bad", [True, -1, math.nan, math.inf, "0", 10**1000, None])
+@pytest.mark.parametrize("bad", [True, -1, math.nan, math.inf, "0", None])
 def test_routeway_invalid_numeric_prices_are_unknown(bad):
     assert ext._pricing({"pricing": route_price(bad)}, "routeway")[1] == "unknown"
 
@@ -72,6 +76,7 @@ def test_poller_uses_existing_transport_and_keeps_free_access_separate_from_pric
     assert row["account_free_tier_candidate"] is True and row["quota_status"] == "unknown"
     assert row["access_classification"] == "catalog_pricing_only"
     assert row["raw_source"] == "xkiro:/v1/models"
+    assert row["readiness"] == "unknown"
 
 
 def test_catalog_dispatch_uses_annotated_official_schema(monkeypatch):
@@ -84,7 +89,7 @@ def test_catalog_dispatch_uses_annotated_official_schema(monkeypatch):
     assert "quota_remaining" not in row and "runtime_eligible" not in row
 
 
-@pytest.mark.parametrize("payload", [None, [], {}, {"data": None}, {"data": [None]}, {"data": [{"id": []}]}, {"data": [{"id": "m\n"}]}])
+@pytest.mark.parametrize("payload", [None, [], {}, {"data": None}])
 def test_malformed_catalog_shapes_fail_closed(payload):
     with pytest.raises(ValueError):
         ext.poll("routeway", "", lambda *a: (payload, {}))
@@ -104,6 +109,42 @@ def test_missing_keys_report_canonical_secret_name_only(monkeypatch):
         monkeypatch.delenv(key, raising=False)
         value, env_name = catalog.resolve_secret(provider)
         assert value is None and env_name == key
+
+
+def test_row_diagnostics_preserve_good_extension_rows_and_readiness_is_unknown():
+    rows, _ = ext.poll("routeway", "", lambda *a: ({"data": [None, {"id": "good"}, {"id": "bad\n"}]}, {}))
+    assert [row["id"] for row in rows] == ["good"]
+    assert rows[0]["readiness"] == "unknown"
+    assert rows.diagnostics == [
+        {"row_index": 0, "error": "invalid_model"},
+        {"row_index": 2, "error": "invalid_model"},
+    ]
+
+
+def test_official_catalog_diagnostics_keep_ovh_capability_and_pricing_metadata():
+    rows = protocols.normalize_models("ovhcloud", {"data": [
+        None,
+        {"id": "available-model", "available": True, "metadata": {
+            "model_specs": {"capabilities": {"chat": True}},
+            "usage_information": {"pricing": {"token": "opaque"}},
+        }},
+        {"id": "bad", "available": "unknown"},
+    ]})
+    assert len(rows) == 1
+    assert rows[0]["readiness"] == "unknown"
+    assert rows[0]["active"] is True
+    assert rows[0]["provider_capabilities"] == {"chat": True}
+    assert rows[0]["raw_pricing_metadata"] == {"token": "opaque"}
+    assert rows.diagnostics == [
+        {"row_index": 0, "error": "invalid_model"},
+        {"row_index": 2, "error": "invalid_model"},
+    ]
+
+
+def test_exact_decimal_serializer_emits_original_json_number_token():
+    token = catalog.provider_catalog_json.ExactDecimal("1e-10000")
+    serialized = catalog.provider_catalog_json.dumps_exact({"prompt": token})
+    assert '"prompt": 1e-10000' in serialized
 
 
 def test_agentrouter_is_catalog_only_not_an_admitted_inference_transport():

@@ -13,18 +13,20 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
-import math
 import os
 import re
 import tempfile
 import urllib.error
 import urllib.request
 from urllib.parse import urlencode
+from decimal import Decimal, InvalidOperation
 
 try:
-    from scripts import provider_catalog_protocols, provider_extension_catalogs, provider_quota_managers
+    from scripts import provider_catalog_json, provider_catalog_protocols, provider_catalog_results, provider_extension_catalogs, provider_quota_managers
 except ImportError:
+    import provider_catalog_json  # type: ignore
     import provider_catalog_protocols  # type: ignore
+    import provider_catalog_results  # type: ignore
     import provider_extension_catalogs  # type: ignore
     import provider_quota_managers  # type: ignore
 
@@ -184,7 +186,7 @@ def _request(url: str, token: str | None = None, header_name: str = "Authorizati
             body = response.read(8 * 1024 * 1024 + 1)
             if len(body) > 8 * 1024 * 1024:
                 raise ValueError("response_too_large")
-            payload = json.loads(body)
+            payload = json.loads(body, parse_float=provider_catalog_json.ExactDecimal)
             if url == ENDPOINTS["ovhcloud"] and isinstance(payload, list):
                 payload = {"data": payload}
             if not isinstance(payload, dict):
@@ -215,7 +217,7 @@ def _gemini_pages(token: str) -> tuple[dict, dict]:
         payload, response_headers = _request(ENDPOINTS["gemini"], token, "x-goog-api-key", page_token)
         metadata.update(response_headers)
         batch = payload.get("models")
-        if not isinstance(batch, list) or any(not isinstance(item, dict) for item in batch):
+        if not isinstance(batch, list):
             raise ValueError("invalid_response_shape")
         rows.extend(batch)
         next_token = payload.get("nextPageToken")
@@ -237,15 +239,15 @@ def price_classification(data: dict) -> str:
         if isinstance(value, bool) or value is None:
             return "unknown"
         try:
-            number = float(value)
-        except (TypeError, ValueError, OverflowError):
+            number = value if isinstance(value, Decimal) else Decimal(str(value))
+        except (InvalidOperation, TypeError, ValueError, OverflowError):
             return "unknown"
-        if not math.isfinite(number):
+        if not number.is_finite() or number < 0:
             return "unknown"
         values.append(number)
     if values == [0, 0]:
         return "free_zero_price"
-    return "paid" if min(values) >= 0 else "unknown"
+    return "paid"
 
 
 def _positive_int(value):
@@ -258,20 +260,25 @@ def poll(provider: str, token: str) -> tuple[list[dict], dict]:
         return provider_catalog_protocols.poll(provider, token, get_json, os.environ.get("CLOUDFLARE_ACCOUNT_ID"))
     payload, response_headers = _gemini_pages(token) if provider == "gemini" else get_json(ENDPOINTS[provider], token)
     items = payload.get("models" if provider == "gemini" else "data")
-    if not isinstance(items, list) or any(not isinstance(item, dict) for item in items):
+    if not isinstance(items, list):
         raise ValueError("invalid_response_shape")
-    rows = []
+    rows, diagnostics = [], []
     seen: set[str] = set()
     raw_source = f"{provider}:/v1/models"
 
-    for item in items:
+    for index, item in enumerate(items):
+        if not isinstance(item, dict):
+            diagnostics.append({"row_index": index, "error": "invalid_model"})
+            continue
         model_id = item.get("name") if provider == "gemini" else item.get("id")
         if not isinstance(model_id, str) or not model_id.strip():
-            raise ValueError("invalid_model")
+            diagnostics.append({"row_index": index, "error": "invalid_model"})
+            continue
         if provider == "gemini" and model_id.startswith("models/"):
             model_id = model_id[7:]
         if not model_id or any(ord(char) < 32 for char in model_id):
-            raise ValueError("invalid_model")
+            diagnostics.append({"row_index": index, "error": "invalid_model"})
+            continue
         if model_id in seen:
             continue
         seen.add(model_id)
@@ -326,6 +333,7 @@ def poll(provider: str, token: str) -> tuple[list[dict], dict]:
             "max_output_tokens": max_out,
             "capabilities": item.get("capabilities") if provider == "mistral" and isinstance(item.get("capabilities"), dict) else item.get("supportedGenerationMethods") if provider == "gemini" and isinstance(item.get("supportedGenerationMethods"), list) else None,
             "active": item.get("active") if provider == "groq" and isinstance(item.get("active"), bool) else None,
+            "readiness": "unknown",
             "raw_source": raw_source,
         })
 
@@ -346,9 +354,10 @@ def poll(provider: str, token: str) -> tuple[list[dict], dict]:
             "free_suffix": False,
             "context_length": trial["context_length"],
             "max_output_tokens": trial["max_output_tokens"],
+            "readiness": "unknown",
             "raw_source": f"{provider}:/v1/models + documented-model-page",
         })
-    return rows, response_headers
+    return provider_catalog_results.CatalogRows(rows, diagnostics), response_headers
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -360,6 +369,7 @@ def main(argv: list[str] | None = None) -> int:
     observed_at = dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
     rows: list[dict] = []
     errors: list[dict] = []
+    row_diagnostics: list[dict] = []
     providers = [p.strip() for p in args.providers.split(",") if p.strip()]
     provider_observations: dict[str, dict] = {}
 
@@ -374,6 +384,7 @@ def main(argv: list[str] | None = None) -> int:
         try:
             provider_rows, headers = poll(provider, token)
             rows.extend(provider_rows)
+            row_diagnostics.extend({"provider": provider, **item} for item in getattr(provider_rows, "diagnostics", ()))
             provider_observations[provider] = {
                 "catalog_observed_at": observed_at,
                 "response_headers": headers,
@@ -382,6 +393,7 @@ def main(argv: list[str] | None = None) -> int:
                 "catalog_contract_source": "provider_runtime_observation" if provider == "modelscope" else "official_documentation",
                 "account_endpoint": None,
                 "account_endpoint_status": "not_documented",
+                "readiness": "unknown",
                 "documented_entitlements": DOCUMENTED_ENTITLEMENTS.get(provider, []),
                 "quota_note": "Account-level balance/quota is not asserted unless exposed by an authoritative provider endpoint or response metadata. Cadence entitlements are public claims only.",
                 "quota_manager": provider_quota_managers.catalog_quota_status(
@@ -405,6 +417,7 @@ def main(argv: list[str] | None = None) -> int:
         },
         "provider_observations": provider_observations,
         "models": rows,
+        "row_diagnostics": row_diagnostics,
         "errors": errors,
     }
     output_dir = os.path.dirname(os.path.abspath(args.output))
@@ -412,7 +425,7 @@ def main(argv: list[str] | None = None) -> int:
     fd, temp_path = tempfile.mkstemp(prefix=".catalog-", suffix=".tmp", dir=output_dir)
     try:
         with os.fdopen(fd, "w", encoding="utf-8") as fh:
-            json.dump(document, fh, indent=2, sort_keys=True)
+            fh.write(provider_catalog_json.dumps_exact(document, indent=2, sort_keys=True))
             fh.write("\n")
             fh.flush()
             os.fsync(fh.fileno())
@@ -422,7 +435,7 @@ def main(argv: list[str] | None = None) -> int:
             os.unlink(temp_path)
 
     eligible = [r for r in rows if r["pricing_classification"] == "free_zero_price" or r["free_suffix"] or r["access_classification"] == "free_trial"]
-    print(f"catalog_models={len(rows)} eligible_free_zero_trial={len(eligible)} errors={len(errors)}")
+    print(f"catalog_models={len(rows)} eligible_free_zero_trial={len(eligible)} errors={len(errors)} row_diagnostics={len(row_diagnostics)}")
     for provider, observation in provider_observations.items():
         print(f"QUOTA_STATUS {provider}: {json.dumps(observation['quota_manager'], sort_keys=True)}")
     for row in eligible:

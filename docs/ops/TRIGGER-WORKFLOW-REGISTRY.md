@@ -9,14 +9,14 @@
 
 One navigable relationship index for repository entry methods, GitHub events, selectors (labels, mentions, comment commands), admission gates, workflows, effects, and evidence feeds.
 
-This registry is an **index and normalized relationship layer**. Existing specialized contracts remain authoritative for their domains. The generated workflow catalog remains the exhaustive workflow inventory; this registry deliberately avoids copying its 331 workflow rows.
+This registry is an **index and normalized relationship layer**. Existing specialized contracts remain authoritative for their domains. The generated workflow catalog remains the exhaustive workflow inventory; this registry deliberately avoids copying its 332 workflow rows.
 
 ## Authority map
 
 | Concern | Source of record | Registry role |
 |---|---|---|
 | Workflow inventory | `docs/ops/generated/automation-workflow-catalog.json` | Link and normalize relationships |
-| Workflow catalog generation | `scripts/ci/automation_docs.py` | Preserve existing generator |
+| Workflow catalog generation | `scripts/ci/automation_docs.py` | Preserve existing generator |\n| Workflow event index generation | `scripts/ci/workflow_registry.py` | Parse source YAML and reconcile catalog records |
 | Issue-template dispatch | `docs/ops/ISSUE-TEMPLATE-DISPATCH.md` | Reference `issue-dispatch/v1` |
 | QUE admission | `.github/workflows/swarm-admission.yml`, `scripts/ops/swarm_admission.py`, `ops/quota/dispatch-tiers.json` | Model admission gate |
 | Research intake | `docs/ops/RESEARCH-TRIGGERS.md` | Link research-specific triggers |

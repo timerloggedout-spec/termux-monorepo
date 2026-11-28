@@ -80,6 +80,22 @@ jobs:
         ])
         self.assertEqual(record["action_pins"], ["actions/checkout@0123456789012345678901234567890123456789"])
 
+    def test_job_permissions_override_workflow_permissions_for_authority(self) -> None:
+        source = """\\
+name: Scoped permissions
+on: [push]
+permissions:
+  contents: write
+jobs:
+  verify:
+    permissions:
+      contents: read
+    steps:
+      - run: echo verify
+"""
+        record = workflow_registry.parse_workflow_text(source, ".github/workflows/scoped.yml")
+        self.assertEqual(record["source_authority"], "read-only-or-advisory")
+
     def test_parses_sequence_event_syntax(self) -> None:
         source = "name: Compact\non: [push, workflow_dispatch]\njobs:\n  test:\n    runs-on: ubuntu-latest\n"
         record = workflow_registry.parse_workflow_text(source, ".github/workflows/compact.yml")

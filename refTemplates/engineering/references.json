@@ -1,0 +1,29 @@
+{
+  "schema": "engineering-reference-set/v1",
+  "status": "catalogued-unpinned",
+  "authority": "ops/engineering/taxonomy.json",
+  "references": [
+    {"id":"freecad","url":"https://github.com/FreeCAD/FreeCAD","license":"LGPL-2.1-or-later","state":"reference-only"},
+    {"id":"openscad","url":"https://github.com/openscad/openscad","license":"GPL-2.0-or-later","state":"reference-only"},
+    {"id":"solvespace","url":"https://github.com/solvespace/solvespace","license":"GPL-3.0-or-later","state":"reference-only"},
+    {"id":"librecad","url":"https://github.com/LibreCAD/LibreCAD","license":"GPL-2.0-or-later","state":"reference-only"},
+    {"id":"kicad","url":"https://gitlab.com/kicad/code/kicad","license":"GPL-3.0-or-later","state":"reference-only"},
+    {"id":"librepcb","url":"https://github.com/LibrePCB/LibrePCB","license":"GPL-3.0-or-later","state":"reference-only"},
+    {"id":"qelectrotech","url":"https://github.com/qelectrotech/qelectrotech-source-mirror","license":"GPL-2.0-or-later","state":"reference-only"},
+    {"id":"ngspice","url":"https://sourceforge.net/p/ngspice/ngspice/","license":"GPL-2.0-or-later","state":"reference-only"},
+    {"id":"qucs-s","url":"https://github.com/ra3xdh/qucs_s","license":"GPL-2.0-or-later","state":"reference-only"},
+    {"id":"gmsh","url":"https://github.com/live-clones/gmsh","license":"GPL-2.0-or-later","state":"reference-only"},
+    {"id":"calculix","url":"https://github.com/Dhondtguido/CalculiX","license":"GPL-2.0-or-later","state":"reference-only"},
+    {"id":"elmer","url":"https://github.com/ElmerCSC/elmerfem","license":"GPL-2.0-or-later","state":"reference-only"},
+    {"id":"openfoam","url":"https://develop.openfoam.com/Development/openfoam","license":"GPL-3.0-or-later","state":"reference-only"},
+    {"id":"openems","url":"https://github.com/thliebig/openEMS","license":"GPL-3.0-or-later","state":"reference-only"},
+    {"id":"fenics","url":"https://github.com/FEniCS/dolfinx","license":"LGPL-3.0-or-later","state":"reference-only"},
+    {"id":"salome","url":"https://github.com/SalomePlatform/medcoupling","license":"LGPL-2.1-or-later","state":"reference-only"},
+    {"id":"yosys","url":"https://github.com/YosysHQ/yosys","license":"ISC","state":"reference-only"},
+    {"id":"openroad","url":"https://github.com/The-OpenROAD-Project/OpenROAD","license":"BSD-3-Clause","state":"reference-only"},
+    {"id":"klayout","url":"https://github.com/KLayout/klayout","license":"GPL-3.0-or-later","state":"reference-only"},
+    {"id":"blender","url":"https://github.com/blender/blender","license":"GPL-3.0-or-later","state":"reference-only"}
+  ],
+  "pinning_policy": "Resolve the official upstream repository and pin a tag/commit before vendoring, submoduling, benchmarking or executing third-party examples.",
+  "observed_at": "2026-11-28"
+}

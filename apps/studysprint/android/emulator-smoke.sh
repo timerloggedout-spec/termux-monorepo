@@ -36,27 +36,26 @@ ACCEL=off
   -gpu swiftshader_indirect -accel "$ACCEL" -port 5554 \
   >> "$OUT/emulator.log" 2>&1 &
 EMU_PID=$!
-REC_STARTED=0
+REC_PATH=""
 cleanup() {
   # Video evidence (#4420, owner standing requirement): stop the
   # screen recording and pull it BEFORE the emulator dies, on
   # every exit path -- verdict exits included (the trap fires on
   # EXIT). SIGINT makes screenrecord finalize the mp4 cleanly.
-  # Attempt 3 landed NO mp4 with every step /dev/null'd -- the
-  # mechanics now log into the artifact (record.log) and the pull
+  # All mechanics log into the artifact (record.log); the pull
   # retries once, so a silent no-video run cannot recur.
-  if [ "$REC_STARTED" = "1" ]; then
+  if [ -n "$REC_PATH" ]; then
     {
-      echo "-- cleanup: stop + pull --"
+      echo "-- cleanup: stop + pull $REC_PATH --"
       "$ADB" -s emulator-5554 shell pkill -2 screenrecord 2>&1
       sleep 3
-      "$ADB" -s emulator-5554 shell ls -la /sdcard/smoke.mp4 2>&1
-      "$ADB" -s emulator-5554 pull /sdcard/smoke.mp4 \
+      "$ADB" -s emulator-5554 shell ls -la "$REC_PATH" 2>&1
+      "$ADB" -s emulator-5554 pull "$REC_PATH" \
         "$OUT/smoke.mp4" 2>&1
       if [ ! -s "$OUT/smoke.mp4" ]; then
         echo "-- pull retry after settle --"
         sleep 3
-        "$ADB" -s emulator-5554 pull /sdcard/smoke.mp4 \
+        "$ADB" -s emulator-5554 pull "$REC_PATH" \
           "$OUT/smoke.mp4" 2>&1
       fi
       ls -la "$OUT/smoke.mp4" 2>&1
@@ -80,21 +79,49 @@ echo "booted"
 
 echo "== record (video evidence, #4420) =="
 # 175s cap: screenrecord's own ceiling is 180s; the gate's
-# install + launch + per-view walk fits well inside it. If a
-# future gate outgrows the cap, the stills remain the evidence
-# of record and the truncated video says so by its length.
-# The screenrecord stderr goes to a device-side file (never
-# /dev/null) and the start is verified by the file's presence,
-# both logged to record.log in the artifact.
-"$ADB" -s emulator-5554 shell \
-  "screenrecord --time-limit 175 /sdcard/smoke.mp4 >/sdcard/screenrecord.log 2>&1 &" \
-  >/dev/null 2>&1 && REC_STARTED=1 || true
-{
-  echo "-- record start (REC_STARTED=$REC_STARTED) --"
-  sleep 1
-  "$ADB" -s emulator-5554 shell ls -la /sdcard/smoke.mp4 2>&1
-  "$ADB" -s emulator-5554 shell cat /sdcard/screenrecord.log 2>&1
-} > "$OUT/record.log" 2>&1 || true
+# install + launch + per-view walk fits well inside it.
+#
+# Attempt ladder (attempt-4 finding): the plain detached form
+# exited 0 on the host yet never executed on the device -- no
+# mp4, no device-side log -- while uiautomator dumps to the
+# same /sdcard succeeded in the same run. So the start is now
+# a LADDER: each form is tried in order and VERIFIED by the
+# output file's presence before the gate proceeds; every
+# attempt logs into record.log; REC_PATH remembers which
+# form/path won, and the cleanup pulls from exactly there.
+# A run with no working form says so in record.log instead of
+# failing silently.
+start_recording() {
+  local forms=(
+    "screenrecord --time-limit 175 /sdcard/smoke.mp4 >/sdcard/screenrecord.log 2>&1 &"
+    "setsid screenrecord --time-limit 175 /sdcard/smoke.mp4 >/sdcard/screenrecord.log 2>&1 </dev/null &"
+    "screenrecord --time-limit 175 /data/local/tmp/smoke.mp4 >/data/local/tmp/screenrecord.log 2>&1 &"
+  )
+  local paths=(/sdcard/smoke.mp4 /sdcard/smoke.mp4 /data/local/tmp/smoke.mp4)
+  : > "$OUT/record.log"
+  local i
+  for i in 0 1 2; do
+    echo "-- record attempt $((i + 1)): ${forms[$i]}" >> "$OUT/record.log"
+    "$ADB" -s emulator-5554 shell "${forms[$i]}" >/dev/null 2>&1 || true
+    sleep 2
+    if "$ADB" -s emulator-5554 shell "test -e ${paths[$i]}" \
+        >/dev/null 2>&1; then
+      REC_PATH="${paths[$i]}"
+      echo "RECORDING via attempt $((i + 1)): $REC_PATH" \
+        >> "$OUT/record.log"
+      return 0
+    fi
+    "$ADB" -s emulator-5554 shell \
+      "cat /sdcard/screenrecord.log /data/local/tmp/screenrecord.log" \
+      >> "$OUT/record.log" 2>&1 || true
+    "$ADB" -s emulator-5554 shell pkill -2 screenrecord \
+      >/dev/null 2>&1 || true
+  done
+  echo "RECORDING FAILED: no form produced a file (logs above)" \
+    >> "$OUT/record.log"
+  return 0
+}
+start_recording
 
 echo "== install $APK =="
 timeout 300 "$ADB" -s emulator-5554 install -r "$APK" | tee "$OUT/install.log"

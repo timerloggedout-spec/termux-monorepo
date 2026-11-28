@@ -64,6 +64,10 @@ class EngineeringTaxonomyTests(TestCase):
         kicad = next(item for item in report["tools"] if item["id"] == "kicad")
         self.assertTrue(kicad["detected"])
         self.assertEqual(kicad["matched_command"], "kicad-cli")
+        onshape = next(item for item in report["tools"] if item["id"] == "onshape-free")
+        self.assertEqual(onshape["detection_state"], "external")
+        self.assertIsNone(onshape["detected"])
+        self.assertEqual(report["summary"]["external"], 2)
 
     def test_integration_registry_and_reference_catalog_are_enrolled(self):
         root = Path(__file__).resolve().parents[1]

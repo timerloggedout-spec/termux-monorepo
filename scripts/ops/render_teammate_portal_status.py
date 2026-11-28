@@ -63,10 +63,10 @@ def translation_is_fresh(locale, root=None):
     )
     if translation is None:
         return False
-    source_catalog = root_path / translation.get(
-        "source_catalog",
-        "localization/catalogs/teammate-portal/en.json",
-    )
+    expected_source_catalog = "localization/catalogs/teammate-portal/en.json"
+    if translation.get("source_catalog", expected_source_catalog) != expected_source_catalog:
+        return False
+    source_catalog = root_path / expected_source_catalog
     return bool(
         source_catalog.is_file()
         and translation["freshness"].get("state") == "fresh"

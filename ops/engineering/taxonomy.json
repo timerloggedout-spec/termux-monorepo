@@ -1,0 +1,1251 @@
+{
+  "schema": "engineering-taxonomy/v1",
+  "name": "engineering",
+  "updated_at": "2026-11-28",
+  "authority": "repository-maintained-tool-and-domain-taxonomy",
+  "description": "Engineering disciplines, FOSS and free-tier tools, portable artifacts and stage-based toolchains. Sibling domain to ops/reverse_engineering/taxonomy.json.",
+  "axes": {
+    "discipline": [
+      "mechanical",
+      "electronics",
+      "electrical",
+      "simulation",
+      "manufacturing",
+      "semiconductor",
+      "visualization"
+    ],
+    "tool_role": [
+      "parametric-cad",
+      "code-cad",
+      "drafting",
+      "cloud-cad",
+      "commercial-cad",
+      "eda",
+      "electrical-schematics",
+      "circuit-simulation",
+      "meshing",
+      "fea-solver",
+      "multiphysics-solver",
+      "cfd-solver",
+      "em-solver",
+      "pde-fem",
+      "cad-mesh-preprocessor",
+      "rtl-synthesis",
+      "physical-design",
+      "ic-layout-verification",
+      "technical-visualization"
+    ],
+    "access": [
+      "local-free",
+      "cloud-free-tier",
+      "commercial-paid"
+    ],
+    "method": [
+      "parametric",
+      "declarative",
+      "schematic",
+      "numerical",
+      "finite-element",
+      "finite-volume",
+      "fdtd",
+      "rtl-to-gds",
+      "visual"
+    ],
+    "environment": [
+      "linux-desktop",
+      "android-termux",
+      "remote-linux-runner",
+      "vendor-cloud"
+    ]
+  },
+  "nodes": [
+    {
+      "id": "engineering",
+      "kind": "category",
+      "name": "Engineering",
+      "description": "Cross-discipline engineering design, analysis, verification and making; independent sibling of Reverse Engineering.",
+      "parents": [],
+      "tags": {}
+    },
+    {
+      "id": "mechanical-engineering",
+      "kind": "category",
+      "name": "Mechanical engineering",
+      "description": "Mechanical engineering domain.",
+      "parents": [
+        "engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "mechanical"
+        ]
+      }
+    },
+    {
+      "id": "electronics-engineering",
+      "kind": "category",
+      "name": "Electronics engineering",
+      "description": "Electronics engineering domain.",
+      "parents": [
+        "engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "electronics"
+        ]
+      }
+    },
+    {
+      "id": "electrical-engineering",
+      "kind": "category",
+      "name": "Electrical engineering",
+      "description": "Electrical engineering domain.",
+      "parents": [
+        "engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "electrical"
+        ]
+      }
+    },
+    {
+      "id": "simulation-engineering",
+      "kind": "category",
+      "name": "Computational engineering and simulation",
+      "description": "Computational engineering and simulation domain.",
+      "parents": [
+        "engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "simulation"
+        ]
+      }
+    },
+    {
+      "id": "manufacturing-engineering",
+      "kind": "category",
+      "name": "Manufacturing engineering",
+      "description": "Manufacturing engineering domain.",
+      "parents": [
+        "engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "manufacturing"
+        ]
+      }
+    },
+    {
+      "id": "semiconductor-engineering",
+      "kind": "category",
+      "name": "Semiconductor engineering",
+      "description": "Semiconductor engineering domain.",
+      "parents": [
+        "engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "semiconductor"
+        ]
+      }
+    },
+    {
+      "id": "visualization-engineering",
+      "kind": "category",
+      "name": "3D visualization and technical communication",
+      "description": "3D visualization and technical communication domain.",
+      "parents": [
+        "engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "visualization"
+        ]
+      }
+    },
+    {
+      "id": "freecad",
+      "kind": "tool",
+      "name": "FreeCAD",
+      "description": "FreeCAD engineering tool; runtime availability is established only by the Termux toolchain probe or a pinned remote-run receipt.",
+      "parents": [
+        "mechanical-engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "mechanical"
+        ],
+        "tool_role": [
+          "parametric-cad"
+        ]
+      },
+      "metadata": {
+        "license": "LGPL-2.1-or-later",
+        "license_class": "foss",
+        "access": "local-free",
+        "price_usd": "0",
+        "payment_card_required": "false",
+        "commercial_use": "check-license-text",
+        "execution_target": "local-or-remote",
+        "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
+        "probe_commands": [
+          "FreeCAD",
+          "freecad",
+          "freecadcmd"
+        ],
+        "formats": [
+          "FCStd",
+          "STEP",
+          "IGES",
+          "STL",
+          "DXF"
+        ],
+        "source_url": "https://www.freecad.org/",
+        "evidence_state": "catalogued; runtime unverified"
+      }
+    },
+    {
+      "id": "openscad",
+      "kind": "tool",
+      "name": "OpenSCAD",
+      "description": "OpenSCAD engineering tool; runtime availability is established only by the Termux toolchain probe or a pinned remote-run receipt.",
+      "parents": [
+        "mechanical-engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "mechanical"
+        ],
+        "tool_role": [
+          "code-cad"
+        ]
+      },
+      "metadata": {
+        "license": "GPL-2.0-or-later",
+        "license_class": "foss",
+        "access": "local-free",
+        "price_usd": "0",
+        "payment_card_required": "false",
+        "commercial_use": "check-license-text",
+        "execution_target": "local-or-remote",
+        "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
+        "probe_commands": [
+          "openscad"
+        ],
+        "formats": [
+          "SCAD",
+          "STL",
+          "3MF",
+          "DXF"
+        ],
+        "source_url": "https://openscad.org/",
+        "evidence_state": "catalogued; runtime unverified"
+      }
+    },
+    {
+      "id": "solvespace",
+      "kind": "tool",
+      "name": "SolveSpace",
+      "description": "SolveSpace engineering tool; runtime availability is established only by the Termux toolchain probe or a pinned remote-run receipt.",
+      "parents": [
+        "mechanical-engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "mechanical"
+        ],
+        "tool_role": [
+          "parametric-cad"
+        ]
+      },
+      "metadata": {
+        "license": "GPL-3.0-or-later",
+        "license_class": "foss",
+        "access": "local-free",
+        "price_usd": "0",
+        "payment_card_required": "false",
+        "commercial_use": "check-license-text",
+        "execution_target": "local-or-remote",
+        "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
+        "probe_commands": [
+          "solvespace"
+        ],
+        "formats": [
+          "STEP",
+          "DXF",
+          "STL"
+        ],
+        "source_url": "https://solvespace.com/",
+        "evidence_state": "catalogued; runtime unverified"
+      }
+    },
+    {
+      "id": "librecad",
+      "kind": "tool",
+      "name": "LibreCAD",
+      "description": "LibreCAD engineering tool; runtime availability is established only by the Termux toolchain probe or a pinned remote-run receipt.",
+      "parents": [
+        "mechanical-engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "mechanical"
+        ],
+        "tool_role": [
+          "drafting"
+        ]
+      },
+      "metadata": {
+        "license": "GPL-2.0-or-later",
+        "license_class": "foss",
+        "access": "local-free",
+        "price_usd": "0",
+        "payment_card_required": "false",
+        "commercial_use": "check-license-text",
+        "execution_target": "local-or-remote",
+        "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
+        "probe_commands": [
+          "librecad"
+        ],
+        "formats": [
+          "DXF"
+        ],
+        "source_url": "https://librecad.org/",
+        "evidence_state": "catalogued; runtime unverified"
+      }
+    },
+    {
+      "id": "onshape-free",
+      "kind": "tool",
+      "name": "Onshape Free",
+      "description": "Onshape Free engineering tool; runtime availability is established only by the Termux toolchain probe or a pinned remote-run receipt.",
+      "parents": [
+        "mechanical-engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "mechanical"
+        ],
+        "tool_role": [
+          "cloud-cad"
+        ]
+      },
+      "metadata": {
+        "license": "proprietary",
+        "license_class": "proprietary",
+        "access": "cloud-free-tier",
+        "price_usd": "0",
+        "payment_card_required": "false",
+        "commercial_use": "restricted",
+        "execution_target": "vendor-cloud",
+        "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
+        "probe_commands": [],
+        "formats": [
+          "STEP",
+          "IGES",
+          "STL",
+          "DXF"
+        ],
+        "source_url": "https://www.onshape.com/en/pricing",
+        "evidence_state": "catalogued; runtime unverified"
+      }
+    },
+    {
+      "id": "solidworks",
+      "kind": "tool",
+      "name": "SOLIDWORKS",
+      "description": "SOLIDWORKS engineering tool; runtime availability is established only by the Termux toolchain probe or a pinned remote-run receipt.",
+      "parents": [
+        "mechanical-engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "mechanical"
+        ],
+        "tool_role": [
+          "commercial-cad"
+        ]
+      },
+      "metadata": {
+        "license": "proprietary",
+        "license_class": "proprietary",
+        "access": "commercial-paid",
+        "price_usd": "paid",
+        "payment_card_required": "unknown",
+        "commercial_use": "proprietary",
+        "execution_target": "vendor-commercial",
+        "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
+        "probe_commands": [],
+        "formats": [
+          "SLDPRT",
+          "SLDASM",
+          "STEP",
+          "IGES",
+          "DXF"
+        ],
+        "source_url": "https://www.solidworks.com/",
+        "evidence_state": "catalogued; runtime unverified"
+      }
+    },
+    {
+      "id": "kicad",
+      "kind": "tool",
+      "name": "KiCad",
+      "description": "KiCad engineering tool; runtime availability is established only by the Termux toolchain probe or a pinned remote-run receipt.",
+      "parents": [
+        "electronics-engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "electronics"
+        ],
+        "tool_role": [
+          "eda"
+        ]
+      },
+      "metadata": {
+        "license": "GPL-3.0-or-later",
+        "license_class": "foss",
+        "access": "local-free",
+        "price_usd": "0",
+        "payment_card_required": "false",
+        "commercial_use": "check-license-text",
+        "execution_target": "local-or-remote",
+        "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
+        "probe_commands": [
+          "kicad-cli",
+          "kicad"
+        ],
+        "formats": [
+          "KICAD_SCH",
+          "KICAD_PCB",
+          "Gerber",
+          "IPC-2581",
+          "STEP"
+        ],
+        "source_url": "https://www.kicad.org/",
+        "evidence_state": "catalogued; runtime unverified"
+      }
+    },
+    {
+      "id": "librepcb",
+      "kind": "tool",
+      "name": "LibrePCB",
+      "description": "LibrePCB engineering tool; runtime availability is established only by the Termux toolchain probe or a pinned remote-run receipt.",
+      "parents": [
+        "electronics-engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "electronics"
+        ],
+        "tool_role": [
+          "eda"
+        ]
+      },
+      "metadata": {
+        "license": "GPL-3.0-or-later",
+        "license_class": "foss",
+        "access": "local-free",
+        "price_usd": "0",
+        "payment_card_required": "false",
+        "commercial_use": "check-license-text",
+        "execution_target": "local-or-remote",
+        "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
+        "probe_commands": [
+          "librepcb-cli",
+          "librepcb"
+        ],
+        "formats": [
+          "LP",
+          "Gerber",
+          "STEP"
+        ],
+        "source_url": "https://librepcb.org/",
+        "evidence_state": "catalogued; runtime unverified"
+      }
+    },
+    {
+      "id": "qelectrotech",
+      "kind": "tool",
+      "name": "QElectroTech",
+      "description": "QElectroTech engineering tool; runtime availability is established only by the Termux toolchain probe or a pinned remote-run receipt.",
+      "parents": [
+        "electrical-engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "electrical"
+        ],
+        "tool_role": [
+          "electrical-schematics"
+        ]
+      },
+      "metadata": {
+        "license": "GPL-2.0-or-later",
+        "license_class": "foss",
+        "access": "local-free",
+        "price_usd": "0",
+        "payment_card_required": "false",
+        "commercial_use": "check-license-text",
+        "execution_target": "local-or-remote",
+        "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
+        "probe_commands": [
+          "qelectrotech"
+        ],
+        "formats": [
+          "QET",
+          "PDF",
+          "SVG"
+        ],
+        "source_url": "https://qelectrotech.org/",
+        "evidence_state": "catalogued; runtime unverified"
+      }
+    },
+    {
+      "id": "ngspice",
+      "kind": "tool",
+      "name": "ngspice",
+      "description": "ngspice engineering tool; runtime availability is established only by the Termux toolchain probe or a pinned remote-run receipt.",
+      "parents": [
+        "electronics-engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "electronics"
+        ],
+        "tool_role": [
+          "circuit-simulation"
+        ]
+      },
+      "metadata": {
+        "license": "GPL-2.0-or-later",
+        "license_class": "foss",
+        "access": "local-free",
+        "price_usd": "0",
+        "payment_card_required": "false",
+        "commercial_use": "check-license-text",
+        "execution_target": "local-or-remote",
+        "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
+        "probe_commands": [
+          "ngspice"
+        ],
+        "formats": [
+          "SPICE",
+          "RAW",
+          "LOG"
+        ],
+        "source_url": "https://ngspice.sourceforge.io/",
+        "evidence_state": "catalogued; runtime unverified"
+      }
+    },
+    {
+      "id": "qucs-s",
+      "kind": "tool",
+      "name": "Qucs-S",
+      "description": "Qucs-S engineering tool; runtime availability is established only by the Termux toolchain probe or a pinned remote-run receipt.",
+      "parents": [
+        "electronics-engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "electronics"
+        ],
+        "tool_role": [
+          "circuit-simulation"
+        ]
+      },
+      "metadata": {
+        "license": "GPL-2.0-or-later",
+        "license_class": "foss",
+        "access": "local-free",
+        "price_usd": "0",
+        "payment_card_required": "false",
+        "commercial_use": "check-license-text",
+        "execution_target": "local-or-remote",
+        "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
+        "probe_commands": [
+          "qucs-s"
+        ],
+        "formats": [
+          "QCS",
+          "SPICE",
+          "S2P"
+        ],
+        "source_url": "https://ra3xdh.github.io/",
+        "evidence_state": "catalogued; runtime unverified"
+      }
+    },
+    {
+      "id": "gmsh",
+      "kind": "tool",
+      "name": "Gmsh",
+      "description": "Gmsh engineering tool; runtime availability is established only by the Termux toolchain probe or a pinned remote-run receipt.",
+      "parents": [
+        "simulation-engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "simulation"
+        ],
+        "tool_role": [
+          "meshing"
+        ]
+      },
+      "metadata": {
+        "license": "GPL-2.0-or-later",
+        "license_class": "foss",
+        "access": "local-free",
+        "price_usd": "0",
+        "payment_card_required": "false",
+        "commercial_use": "check-license-text",
+        "execution_target": "local-or-remote",
+        "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
+        "probe_commands": [
+          "gmsh"
+        ],
+        "formats": [
+          "MSH",
+          "GEO",
+          "UNV"
+        ],
+        "source_url": "https://gmsh.info/",
+        "evidence_state": "catalogued; runtime unverified"
+      }
+    },
+    {
+      "id": "calculix",
+      "kind": "tool",
+      "name": "CalculiX",
+      "description": "CalculiX engineering tool; runtime availability is established only by the Termux toolchain probe or a pinned remote-run receipt.",
+      "parents": [
+        "simulation-engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "simulation"
+        ],
+        "tool_role": [
+          "fea-solver"
+        ]
+      },
+      "metadata": {
+        "license": "GPL-2.0-or-later",
+        "license_class": "foss",
+        "access": "local-free",
+        "price_usd": "0",
+        "payment_card_required": "false",
+        "commercial_use": "check-license-text",
+        "execution_target": "local-or-remote",
+        "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
+        "probe_commands": [
+          "ccx",
+          "cgx"
+        ],
+        "formats": [
+          "INP",
+          "FRD",
+          "DAT"
+        ],
+        "source_url": "https://www.calculix.de/",
+        "evidence_state": "catalogued; runtime unverified"
+      }
+    },
+    {
+      "id": "elmer",
+      "kind": "tool",
+      "name": "Elmer",
+      "description": "Elmer engineering tool; runtime availability is established only by the Termux toolchain probe or a pinned remote-run receipt.",
+      "parents": [
+        "simulation-engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "simulation"
+        ],
+        "tool_role": [
+          "multiphysics-solver"
+        ]
+      },
+      "metadata": {
+        "license": "GPL-2.0-or-later",
+        "license_class": "foss",
+        "access": "local-free",
+        "price_usd": "0",
+        "payment_card_required": "false",
+        "commercial_use": "check-license-text",
+        "execution_target": "local-or-remote",
+        "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
+        "probe_commands": [
+          "ElmerSolver",
+          "ElmerGrid"
+        ],
+        "formats": [
+          "SIF",
+          "VTU"
+        ],
+        "source_url": "https://www.elmerfem.org/",
+        "evidence_state": "catalogued; runtime unverified"
+      }
+    },
+    {
+      "id": "openfoam",
+      "kind": "tool",
+      "name": "OpenFOAM",
+      "description": "OpenFOAM engineering tool; runtime availability is established only by the Termux toolchain probe or a pinned remote-run receipt.",
+      "parents": [
+        "simulation-engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "simulation"
+        ],
+        "tool_role": [
+          "cfd-solver"
+        ]
+      },
+      "metadata": {
+        "license": "GPL-3.0-or-later",
+        "license_class": "foss",
+        "access": "local-free",
+        "price_usd": "0",
+        "payment_card_required": "false",
+        "commercial_use": "check-license-text",
+        "execution_target": "local-or-remote",
+        "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
+        "probe_commands": [
+          "foamRun",
+          "simpleFoam"
+        ],
+        "formats": [
+          "OpenFOAM-case",
+          "VTK"
+        ],
+        "source_url": "https://www.openfoam.com/",
+        "evidence_state": "catalogued; runtime unverified"
+      }
+    },
+    {
+      "id": "openems",
+      "kind": "tool",
+      "name": "openEMS",
+      "description": "openEMS engineering tool; runtime availability is established only by the Termux toolchain probe or a pinned remote-run receipt.",
+      "parents": [
+        "simulation-engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "simulation"
+        ],
+        "tool_role": [
+          "em-solver"
+        ]
+      },
+      "metadata": {
+        "license": "GPL-3.0-or-later",
+        "license_class": "foss",
+        "access": "local-free",
+        "price_usd": "0",
+        "payment_card_required": "false",
+        "commercial_use": "check-license-text",
+        "execution_target": "local-or-remote",
+        "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
+        "probe_commands": [
+          "openEMS"
+        ],
+        "formats": [
+          "XML",
+          "HDF5",
+          "S-parameters"
+        ],
+        "source_url": "https://openems.de/",
+        "evidence_state": "catalogued; runtime unverified"
+      }
+    },
+    {
+      "id": "fenics",
+      "kind": "tool",
+      "name": "FEniCSx",
+      "description": "FEniCSx engineering tool; runtime availability is established only by the Termux toolchain probe or a pinned remote-run receipt.",
+      "parents": [
+        "simulation-engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "simulation"
+        ],
+        "tool_role": [
+          "pde-fem"
+        ]
+      },
+      "metadata": {
+        "license": "LGPL-3.0-or-later",
+        "license_class": "foss",
+        "access": "local-free",
+        "price_usd": "0",
+        "payment_card_required": "false",
+        "commercial_use": "check-license-text",
+        "execution_target": "local-or-remote",
+        "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
+        "probe_commands": [
+          "dolfinx",
+          "fenics"
+        ],
+        "formats": [
+          "XDMF",
+          "HDF5",
+          "VTK"
+        ],
+        "source_url": "https://fenicsproject.org/",
+        "evidence_state": "catalogued; runtime unverified"
+      }
+    },
+    {
+      "id": "salome",
+      "kind": "tool",
+      "name": "SALOME",
+      "description": "SALOME engineering tool; runtime availability is established only by the Termux toolchain probe or a pinned remote-run receipt.",
+      "parents": [
+        "simulation-engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "simulation"
+        ],
+        "tool_role": [
+          "cad-mesh-preprocessor"
+        ]
+      },
+      "metadata": {
+        "license": "LGPL-2.1-or-later",
+        "license_class": "foss",
+        "access": "local-free",
+        "price_usd": "0",
+        "payment_card_required": "false",
+        "commercial_use": "check-license-text",
+        "execution_target": "local-or-remote",
+        "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
+        "probe_commands": [
+          "salome"
+        ],
+        "formats": [
+          "MED",
+          "UNV",
+          "STEP"
+        ],
+        "source_url": "https://www.salome-platform.org/",
+        "evidence_state": "catalogued; runtime unverified"
+      }
+    },
+    {
+      "id": "yosys",
+      "kind": "tool",
+      "name": "Yosys",
+      "description": "Yosys engineering tool; runtime availability is established only by the Termux toolchain probe or a pinned remote-run receipt.",
+      "parents": [
+        "semiconductor-engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "semiconductor"
+        ],
+        "tool_role": [
+          "rtl-synthesis"
+        ]
+      },
+      "metadata": {
+        "license": "ISC",
+        "license_class": "foss",
+        "access": "local-free",
+        "price_usd": "0",
+        "payment_card_required": "false",
+        "commercial_use": "check-license-text",
+        "execution_target": "local-or-remote",
+        "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
+        "probe_commands": [
+          "yosys"
+        ],
+        "formats": [
+          "Verilog",
+          "RTLIL",
+          "JSON"
+        ],
+        "source_url": "https://yosyshq.net/yosys/",
+        "evidence_state": "catalogued; runtime unverified"
+      }
+    },
+    {
+      "id": "openroad",
+      "kind": "tool",
+      "name": "OpenROAD",
+      "description": "OpenROAD engineering tool; runtime availability is established only by the Termux toolchain probe or a pinned remote-run receipt.",
+      "parents": [
+        "semiconductor-engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "semiconductor"
+        ],
+        "tool_role": [
+          "physical-design"
+        ]
+      },
+      "metadata": {
+        "license": "BSD-3-Clause",
+        "license_class": "foss",
+        "access": "local-free",
+        "price_usd": "0",
+        "payment_card_required": "false",
+        "commercial_use": "check-license-text",
+        "execution_target": "local-or-remote",
+        "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
+        "probe_commands": [
+          "openroad"
+        ],
+        "formats": [
+          "LEF",
+          "DEF",
+          "ODB",
+          "GDSII"
+        ],
+        "source_url": "https://openroad.readthedocs.io/",
+        "evidence_state": "catalogued; runtime unverified"
+      }
+    },
+    {
+      "id": "klayout",
+      "kind": "tool",
+      "name": "KLayout",
+      "description": "KLayout engineering tool; runtime availability is established only by the Termux toolchain probe or a pinned remote-run receipt.",
+      "parents": [
+        "semiconductor-engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "semiconductor"
+        ],
+        "tool_role": [
+          "ic-layout-verification"
+        ]
+      },
+      "metadata": {
+        "license": "GPL-3.0-or-later",
+        "license_class": "foss",
+        "access": "local-free",
+        "price_usd": "0",
+        "payment_card_required": "false",
+        "commercial_use": "check-license-text",
+        "execution_target": "local-or-remote",
+        "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
+        "probe_commands": [
+          "klayout"
+        ],
+        "formats": [
+          "GDSII",
+          "OASIS",
+          "LEF",
+          "DEF"
+        ],
+        "source_url": "https://www.klayout.de/",
+        "evidence_state": "catalogued; runtime unverified"
+      }
+    },
+    {
+      "id": "blender",
+      "kind": "tool",
+      "name": "Blender",
+      "description": "Blender engineering tool; runtime availability is established only by the Termux toolchain probe or a pinned remote-run receipt.",
+      "parents": [
+        "visualization-engineering"
+      ],
+      "tags": {
+        "discipline": [
+          "visualization"
+        ],
+        "tool_role": [
+          "technical-visualization"
+        ]
+      },
+      "metadata": {
+        "license": "GPL-3.0-or-later",
+        "license_class": "foss",
+        "access": "local-free",
+        "price_usd": "0",
+        "payment_card_required": "false",
+        "commercial_use": "check-license-text",
+        "execution_target": "local-or-remote",
+        "termux_runtime": "unverified; remote-runner preferred for GUI or compute-heavy work",
+        "probe_commands": [
+          "blender"
+        ],
+        "formats": [
+          "BLEND",
+          "glTF",
+          "USD",
+          "STL",
+          "OBJ"
+        ],
+        "source_url": "https://www.blender.org/",
+        "evidence_state": "catalogued; runtime unverified"
+      }
+    }
+  ],
+  "workflow_stages": [
+    "requirements",
+    "model",
+    "schematic",
+    "simulate",
+    "layout",
+    "mesh",
+    "solve",
+    "verify",
+    "manufacture",
+    "inspect",
+    "document"
+  ],
+  "toolchains": [
+    {
+      "id": "mechanical-product-design",
+      "category": "mechanical-engineering",
+      "stages": [
+        {
+          "stage": "requirements",
+          "tools": [],
+          "output": "versioned requirements and constraints"
+        },
+        {
+          "stage": "model",
+          "tools": [
+            "freecad",
+            "openscad",
+            "solvespace"
+          ],
+          "output": "native parametric source plus STEP/STL exchange"
+        },
+        {
+          "stage": "mesh",
+          "tools": [
+            "gmsh",
+            "salome"
+          ],
+          "output": "versioned mesh and meshing parameters"
+        },
+        {
+          "stage": "solve",
+          "tools": [
+            "calculix",
+            "elmer"
+          ],
+          "output": "solver input, result fields and convergence receipt"
+        },
+        {
+          "stage": "manufacture",
+          "tools": [
+            "freecad"
+          ],
+          "output": "CAM operations and machine-neutral package"
+        },
+        {
+          "stage": "inspect",
+          "tools": [
+            "freecad"
+          ],
+          "output": "dimensional and tolerance inspection record"
+        }
+      ]
+    },
+    {
+      "id": "electronics-product-design",
+      "category": "electronics-engineering",
+      "stages": [
+        {
+          "stage": "requirements",
+          "tools": [],
+          "output": "requirements, constraints and BOM"
+        },
+        {
+          "stage": "schematic",
+          "tools": [
+            "kicad",
+            "librepcb",
+            "qelectrotech"
+          ],
+          "output": "schematic source and netlist"
+        },
+        {
+          "stage": "simulate",
+          "tools": [
+            "ngspice",
+            "qucs-s"
+          ],
+          "output": "SPICE deck and simulation output"
+        },
+        {
+          "stage": "layout",
+          "tools": [
+            "kicad",
+            "librepcb"
+          ],
+          "output": "PCB source, stackup and board exports"
+        },
+        {
+          "stage": "verify",
+          "tools": [
+            "kicad",
+            "librepcb"
+          ],
+          "output": "ERC/DRC reports"
+        },
+        {
+          "stage": "manufacture",
+          "tools": [
+            "kicad",
+            "librepcb"
+          ],
+          "output": "Gerber/IPC-2581, drill files and BOM"
+        }
+      ]
+    },
+    {
+      "id": "semiconductor-rtl-to-gds",
+      "category": "semiconductor-engineering",
+      "stages": [
+        {
+          "stage": "requirements",
+          "tools": [],
+          "output": "RTL specification and verification plan"
+        },
+        {
+          "stage": "model",
+          "tools": [
+            "yosys"
+          ],
+          "output": "synthesized netlist and reports"
+        },
+        {
+          "stage": "layout",
+          "tools": [
+            "openroad"
+          ],
+          "output": "placement/routing database and timing reports"
+        },
+        {
+          "stage": "verify",
+          "tools": [
+            "klayout"
+          ],
+          "output": "DRC/LVS and layout inspection evidence"
+        },
+        {
+          "stage": "document",
+          "tools": [
+            "klayout"
+          ],
+          "output": "GDSII/OASIS and reproducibility manifest"
+        }
+      ]
+    },
+    {
+      "id": "multiphysics-simulation",
+      "category": "simulation-engineering",
+      "stages": [
+        {
+          "stage": "mesh",
+          "tools": [
+            "gmsh",
+            "salome"
+          ],
+          "output": "mesh and meshing parameters"
+        },
+        {
+          "stage": "solve",
+          "tools": [
+            "calculix",
+            "elmer",
+            "openfoam",
+            "openems",
+            "fenics"
+          ],
+          "output": "solver inputs, results and convergence data"
+        },
+        {
+          "stage": "verify",
+          "tools": [
+            "gmsh",
+            "salome"
+          ],
+          "output": "mesh quality and result-integrity checks"
+        }
+      ]
+    }
+  ],
+  "overlap_matrix": {
+    "methods": [
+      "parametric",
+      "declarative",
+      "schematic",
+      "numerical",
+      "finite-element",
+      "finite-volume",
+      "fdtd",
+      "rtl-to-gds",
+      "visual"
+    ],
+    "values": [
+      "central",
+      "supporting",
+      "peripheral"
+    ],
+    "rows": {
+      "mechanical-engineering": {
+        "parametric": "central",
+        "declarative": "supporting",
+        "numerical": "supporting",
+        "finite-element": "supporting",
+        "visual": "supporting"
+      },
+      "electronics-engineering": {
+        "schematic": "central",
+        "numerical": "central",
+        "visual": "peripheral"
+      },
+      "electrical-engineering": {
+        "schematic": "central",
+        "visual": "supporting"
+      },
+      "simulation-engineering": {
+        "numerical": "central",
+        "finite-element": "central",
+        "finite-volume": "central",
+        "fdtd": "central"
+      },
+      "manufacturing-engineering": {
+        "parametric": "supporting",
+        "numerical": "supporting"
+      },
+      "semiconductor-engineering": {
+        "rtl-to-gds": "central",
+        "numerical": "supporting"
+      },
+      "visualization-engineering": {
+        "visual": "central"
+      }
+    }
+  },
+  "cross_domain_links": [
+    {
+      "registry": "ops/reverse_engineering/taxonomy.json",
+      "relationship": "shared hardware, firmware and artifact-evidence relationships; preserve independent domain ownership"
+    },
+    {
+      "registry": "docs/integrations/registry.json",
+      "relationship": "tool discovery, adapter state and access evidence"
+    },
+    {
+      "registry": "docs/architecture/AGENT-EVALUATION-FRAMEWORK.md",
+      "relationship": "engineering tool and workflow evaluations use the canonical DoE/MVT/ATES evidence model"
+    }
+  ]
+}

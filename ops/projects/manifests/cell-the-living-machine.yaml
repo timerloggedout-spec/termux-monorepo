@@ -6,7 +6,7 @@ status: proposed
 created_at: "2026-11-27"
 owner: timerloggedout-spec
 scope_profile: .config/llm_map/profiles/projects/cell-the-living-machine.json
-purpose: "Original molecular-to-cellular simulation game grounded in structural biology and cellular systems"
+purpose: "Original science and engineering creation platform connecting molecular/cellular simulation, industrial automation, digital twins, fabrication and real-world production"
 
 repositories:
   product:
@@ -16,7 +16,7 @@ repositories:
     default_branch: main
     ownership: confirmed
     repository_id: 1475194740
-    visibility: private
+    visibility: planned_public
   control_plane:
     full_name: timerloggedout-spec/termux-monorepo
     url: https://github.com/timerloggedout-spec/termux-monorepo
@@ -71,18 +71,40 @@ architecture:
 game:
   project_kind: new_game
   dimensions: [3d, mixed]
-  genre_facets: [simulation, systems_strategy, exploration, puzzle, educational, rpg_progression]
-  session_model: single_player_first
+  genre_facets: [simulation, systems_strategy, exploration, puzzle, educational, rpg_progression, engineering, factory_automation, sandbox, creator, digital_twin, manufacturing]
+  session_model: shared_player_identity_across_modes_and_game_types
   time_model: simulation_with_scenario_challenges
   scales: [molecular, membrane, organelle, cellular, tissue, organism]
-  core_loop: [observe, hypothesize, manipulate, simulate, interpret, improve]
+  core_loop: [explore, define, design, build, simulate, validate, make, inspect, improve, publish]
   engine:
     selection: pending_prototype_comparison
     candidates: [godot, unity, unreal, browser_runtime]
   first_slice:
-    scope: single_cell_membrane
-    mechanisms: [sodium_potassium_pump, aquaporin, atp_synthase]
-    evidence_gate: source_linked_scientific_review
+    parallel_vertical_slices:
+      - id: biological_membrane
+        scope: single_cell_membrane
+        mechanisms: [sodium_potassium_pump, aquaporin, atp_synthase]
+        evidence_gate: source_linked_scientific_review
+      - id: engineering_factory_cell
+        scope: compact_3d_automated_production_cell
+        systems: [input_storage, transport, processing_machine, power, sensor, output_inspection]
+        evidence_gate: deterministic_simulation_and_engineering_review
+
+engineering_platform:
+  concept_to_production: [discover, define, design, simulate, review, prototype, fabricate, inspect, iterate, publish]
+  internal_equipment_registry: shared_across_projects_and_grants
+  external_services: provider_directory_with_user_approval
+  player_identity: central_cross_game_profile
+  fabrication: human_reviewed_quote_and_handoff
+  biological_services: licensed_provider_and_biosafety_review
+
+project_documents:
+  engineering_and_make: docs/proposals/active/cell-the-living-machine/ENGINEERING_AND_MAKE.md
+  player_profile: docs/proposals/active/cell-the-living-machine/PLAYER_PROFILE_PLATFORM.md
+  hardware_rendering: docs/proposals/active/cell-the-living-machine/HARDWARE_AND_RENDERING.md
+  blender_mcp: docs/proposals/active/cell-the-living-machine/VISUAL_PIPELINE_AND_BLENDER_MCP.md
+  academy_pathways: docs/proposals/active/cell-the-living-machine/ACADEMY_AND_CERTIFICATION_PATHWAYS.md
+  public_private_protocol: docs/proposals/active/cell-the-living-machine/PUBLIC_WORK_AND_REPOSITORY_PROTOCOL.md
 
 knowledge_access:
   policy: ubiquitous

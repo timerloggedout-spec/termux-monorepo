@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/equipment/reservation.schema.json",
+  "title": "Equipment Reservation",
+  "type": "object",
+  "required": ["reservation_id", "asset_id", "project_id", "time_window", "operator_refs", "approval_state", "cost_allocation"],
+  "properties": {
+    "reservation_id": {"type": "string"},
+    "asset_id": {"type": "string"},
+    "project_id": {"type": "string"},
+    "grant_refs": {"type": "array", "items": {"type": "string"}},
+    "time_window": {
+      "type": "object",
+      "required": ["start", "end", "timezone"],
+      "properties": {
+        "start": {"type": "string", "format": "date-time"},
+        "end": {"type": "string", "format": "date-time"},
+        "timezone": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "operator_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "qualification_checks": {"type": "array", "items": {"type": "string"}},
+    "safety_review_ref": {"type": "string"},
+    "approval_state": {"enum": ["requested", "facility_review", "approved", "rejected", "completed", "cancelled"]},
+    "cost_allocation": {
+      "type": "object",
+      "required": ["project_cost_code"],
+      "properties": {
+        "project_cost_code": {"type": "string"},
+        "grant_cost_codes": {"type": "array", "items": {"type": "string"}},
+        "estimated_cost": {"type": "number", "minimum": 0},
+        "actual_cost": {"type": "number", "minimum": 0},
+        "currency": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "handoff": {"type": "object"},
+    "audit_refs": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

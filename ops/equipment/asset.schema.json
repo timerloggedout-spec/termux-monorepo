@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/equipment/asset.schema.json",
+  "title": "Shared Equipment Asset",
+  "type": "object",
+  "required": ["asset_id", "asset_type", "owner_org", "status", "capabilities", "custody", "safety", "provenance"],
+  "properties": {
+    "asset_id": {"type": "string", "pattern": "^asset:[a-z0-9][a-z0-9._-]+$"},
+    "asset_type": {"type": "string"},
+    "program_refs": {"type": "array", "items": {"type": "string"}},
+    "manufacturer": {"type": "string"},
+    "model": {"type": "string"},
+    "serial_secret_ref": {"type": "string"},
+    "owner_org": {"type": "string"},
+    "custody": {
+      "type": "object",
+      "required": ["custodian_ref", "facility_id"],
+      "properties": {
+        "custodian_ref": {"type": "string"},
+        "facility_id": {"type": "string"},
+        "location_scope": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "capabilities": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "work_envelope": {"type": "object"},
+    "materials": {"type": "array", "items": {"type": "string"}},
+    "operating_limits": {"type": "object"},
+    "qualification": {"type": "array", "items": {"type": "object"}},
+    "safety": {
+      "type": "object",
+      "required": ["risk_class", "controls", "operator_qualification_refs"],
+      "properties": {
+        "risk_class": {"enum": ["general", "controlled", "specialist", "restricted"]},
+        "controls": {"type": "array", "items": {"type": "string"}},
+        "operator_qualification_refs": {"type": "array", "items": {"type": "string"}},
+        "facility_approval_required": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "calibration": {"type": "object"},
+    "maintenance": {"type": "object"},
+    "availability": {"enum": ["available", "reserved", "maintenance", "calibration", "retired", "restricted"]},
+    "grant_constraints": {"type": "array", "items": {"type": "string"}},
+    "cost_model": {"type": "object"},
+    "status": {"enum": ["planned", "procurement", "commissioning", "active", "maintenance", "retired"]},
+    "provenance": {
+      "type": "object",
+      "required": ["recorded_at", "recorded_by", "review_state"],
+      "properties": {
+        "recorded_at": {"type": "string", "format": "date-time"},
+        "recorded_by": {"type": "string"},
+        "review_state": {"enum": ["candidate", "verified", "review_required", "superseded"]},
+        "source_refs": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

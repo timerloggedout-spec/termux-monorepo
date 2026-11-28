@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/fabrication/provider.schema.json",
+  "title": "Fabrication and Professional Service Provider",
+  "type": "object",
+  "required": ["provider_id", "legal_entity", "regions", "capabilities", "terms", "verification_state"],
+  "properties": {
+    "provider_id": {"type": "string"},
+    "legal_entity": {"type": "string"},
+    "public_name": {"type": "string"},
+    "regions": {"type": "array", "items": {"type": "string"}},
+    "capabilities": {"type": "array", "items": {"type": "object"}},
+    "materials": {"type": "array", "items": {"type": "string"}},
+    "equipment_classes": {"type": "array", "items": {"type": "string"}},
+    "certifications": {"type": "array", "items": {"type": "object"}},
+    "quote_interface": {"type": "object"},
+    "lead_time": {"type": "object"},
+    "file_requirements": {"type": "array", "items": {"type": "string"}},
+    "terms": {
+      "type": "object",
+      "required": ["ip", "confidentiality", "commercial_scope", "safety"],
+      "properties": {
+        "ip": {"type": "string"},
+        "confidentiality": {"type": "string"},
+        "commercial_scope": {"type": "string"},
+        "safety": {"type": "string"},
+        "insurance_liability": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "verification_state": {"enum": ["candidate", "identity_verified", "capability_verified", "terms_reviewed", "approved", "suspended"]},
+    "reviewed_at": {"type": "string", "format": "date-time"},
+    "source_refs": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

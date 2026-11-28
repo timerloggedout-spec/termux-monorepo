@@ -52,11 +52,11 @@ test('target-lane backlog suppresses with lane_cap', () => {
   const r = evaluateAdmission({
     pressure: P({ 'context-relationship-backfill': 2 }), force: false,
   });
-  const hourly = r.records.find((x) => x.lane === 'dispatch_hourly');
-  assert.equal(hourly.admitted, false);
-  assert.equal(hourly.reason, 'lane_cap');
-  assert.equal(hourly.saturated_workflow, 'context-relationship-backfill');
-  assert.equal(hourly.lane_inflight, 2); // standard cap = 2
+  const backfill = r.records.find((x) => x.lane === 'dispatch_context_backfill');
+  assert.equal(backfill.admitted, false);
+  assert.equal(backfill.reason, 'lane_cap');
+  assert.equal(backfill.saturated_workflow, 'context-relationship-backfill');
+  assert.equal(backfill.lane_inflight, 2); // standard cap = 2
   // heavy class cap = 1: a single in-flight tribute-execute saturates hw_execute
   const r2 = evaluateAdmission({ pressure: P({ 'tribute-execute': 1 }), force: false });
   const exec = r2.records.find((x) => x.lane === 'dispatch_hw_execute');
@@ -112,7 +112,42 @@ test('stale-critical lane preempts lane and global caps', () => {
   assert.equal(r3.records.find((x) => x.lane === 'dispatch_q6').admitted, false);
 });
 
-// 6. Force override: "all" admits everything regardless of pressure.
+// 6. Workflow age treats active work as fresh, missing history as stale,
+// and completed history according to its completion timestamp.
+test('workflow age suppresses active duplicates and recovers missing or stale history', () => {
+  const now = Date.parse('2026-11-19T12:00:00Z');
+  assert.equal(admission.workflowAgeMinutes(null, now), 1e9);
+  assert.equal(admission.workflowAgeMinutes({ status: 'queued', created_at: '2026-11-19T10:00:00Z' }, now), 0);
+  assert.equal(admission.workflowAgeMinutes({ status: 'in_progress', created_at: '2026-11-19T10:00:00Z' }, now), 0);
+  assert.equal(admission.workflowAgeMinutes({ status: 'completed', created_at: '2026-11-19T10:00:00Z', updated_at: '2026-11-19T10:40:00Z' }, now), 80);
+  assert.equal(admission.workflowAgeMinutes({ status: 'completed', created_at: 'invalid' }, now), 1e9);
+});
+
+// Reconciliation outputs own independent workflow membership and staleness.
+test('hourly reconciliation lanes have independent admission and freshness', () => {
+  assert.deepEqual(OUTPUT_LANES.dispatch_reconciliation, ['reconciliation-engine']);
+  assert.deepEqual(OUTPUT_LANES.dispatch_context_backfill, ['context-relationship-backfill']);
+  assert.equal(OUTPUT_LANES.dispatch_hourly.includes('reconciliation-engine'), false);
+  assert.equal(OUTPUT_LANES.dispatch_hourly.includes('context-relationship-backfill'), false);
+  const r = evaluateAdmission({
+    pressure: P({}), force: false,
+    staleness: {
+      dispatch_reconciliation: { stale_min: 151, threshold_min: 75 },
+      dispatch_context_backfill: { stale_min: 80, threshold_min: 75 },
+    },
+  });
+  assert.equal(r.admitted.dispatch_reconciliation, true);
+  assert.equal(r.admitted.dispatch_context_backfill, true);
+  const preempt = evaluateAdmission({
+    pressure: P({ 'reconciliation-engine': 2 }), force: false,
+    staleness: { dispatch_reconciliation: { stale_min: 151, threshold_min: 75 } },
+  });
+  const recon = preempt.records.find((x) => x.lane === 'dispatch_reconciliation');
+  assert.equal(recon.admitted, true);
+  assert.equal(recon.reason, 'stale_critical_override');
+});
+
+// 7. Force override: "all" admits everything regardless of pressure.
 test('force override admits everything', () => {
   const byWorkflow = Object.fromEntries(
     Object.values(OUTPUT_LANES).flat().map((w) => [w, 9]));
@@ -141,6 +176,10 @@ test('quota dispatcher has demand wakes and schedule-only phase windows', () => 
   assert.match(workflow, /pull_request_target:/);
   assert.match(workflow, /workflow_run:\s+workflows:\s+\["lane events recorder"\]/);
   assert.match(workflow, /const firstCycle = context\.eventName === 'schedule'/);
+  assert.match(workflow, /const reconciliationStaleMin = await workflowAgeMin\('reconciliation-engine\.yml'\)/);
+  assert.match(workflow, /const contextBackfillStaleMin = await workflowAgeMin\('context-relationship-backfill\.yml'\)/);
+  assert.match(workflow, /verdicts\.dispatch_reconciliation = \(reconciliationStaleMin > 75 \|\| force\)/);
+  assert.match(workflow, /verdicts\.dispatch_context_backfill = \(contextBackfillStaleMin > 75 \|\| force\)/);
   assert.match(workflow, /const slow = context\.eventName === 'schedule'/);
   assert.match(workflow, /const eventDemand = \['pull_request_target', 'workflow_run', 'push'\]/);
   assert.match(workflow, /repoChanged && \(slow \|\| eventDemand\)/);

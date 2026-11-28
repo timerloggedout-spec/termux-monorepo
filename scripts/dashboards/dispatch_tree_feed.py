@@ -59,6 +59,8 @@ STALE_VAR_FILES = {
     "hwExecuteStaleMin": ["tribute-execute.yml"],
     "hwAssistStaleMin": ["tribute-llm-assist.yml"],
     "paStaleMin": ["provider-availability.yml"],
+    "reconciliationStaleMin": ["reconciliation-engine.yml"],
+    "contextBackfillStaleMin": ["context-relationship-backfill.yml"],
 }
 
 
@@ -72,13 +74,20 @@ def _parse_ts(s: str | None) -> datetime | None:
     return datetime.strptime(s, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
 
 
-def parse_tree(text: str) -> dict:
-    """Extract guard, decide outputs + rule expressions, and matrix lanes."""
+def parse_tree(text: str, admission_text: str = "") -> dict:
+    """Extract admission cap, decide outputs + rule expressions, and matrix lanes."""
     guard = re.search(r"const paused = busy >= (\d+)", text)
-    threshold = int(guard.group(1)) if guard else None
+    if guard:
+        threshold = int(guard.group(1))
+    else:
+        # The dispatcher delegates its managed-run cap to this module.
+        cap = re.search(r"const GLOBAL_CAP = (\d+)", admission_text)
+        threshold = int(cap.group(1)) if cap else None
 
     outputs: dict[str, str] = {}
-    for m in re.finditer(r"core\.setOutput\('([a-z0-9_]+)',\s*(.+?)\);\s*$", text, re.M):
+    # Verdict expressions are the source of truth; core.setOutput(name, ...)
+    # publishes them dynamically after admission has been evaluated.
+    for m in re.finditer(r"^\s*verdicts\.([a-z0-9_]+)\s*=\s*(.+?);\s*$", text, re.M):
         outputs[m.group(1)] = m.group(2).strip()
 
     # matrix: lane -> the decide output that gates it
@@ -131,14 +140,39 @@ def lane_state(entry: dict, rule: dict, snap_lanes: dict, read_at: datetime) -> 
     due = None
     measured_age = None
     if stale is not None:
-        # The tree measures specific workflows' ages (max, for hw-pair);
-        # due is judged on that measured age, not this lane's own age.
+        # Mirror workflowAgeMinutes in dispatch_admission.js: active runs
+        # are fresh, completed runs age from updated_at, and missing or
+        # unreadable history is stale so the feed matches dispatch behavior.
         ages = []
         for wf in stale["measured_workflows"]:
             m_runs = snap_lanes.get(wf.removesuffix(".yml"), [])
-            if m_runs and _parse_ts(m_runs[0]["created_at"]):
+            latest_measured = m_runs[0] if m_runs else None
+            if latest_measured is None:
+                ages.append(1e9)
+            elif stale["variable"] in {"reconciliationStaleMin", "contextBackfillStaleMin"}:
+                # workflowAgeMinutes: active runs are fresh; completed runs
+                # age from updated_at, with missing/unreadable history stale.
+                if latest_measured.get("status") != "completed":
+                    ages.append(0)
+                else:
+                    try:
+                        stamp = _parse_ts(
+                            latest_measured.get("updated_at") or latest_measured.get("created_at")
+                        )
+                    except (TypeError, ValueError):
+                        stamp = None
+                    ages.append(
+                        round((read_at - stamp).total_seconds() / 60, 1) if stamp else 1e9
+                    )
+            else:
+                # laneAgeMin and provider-availability use created_at for
+                # every status; retain their established scheduler semantics.
+                try:
+                    stamp = _parse_ts(latest_measured.get("created_at"))
+                except (TypeError, ValueError):
+                    stamp = None
                 ages.append(
-                    round((read_at - _parse_ts(m_runs[0]["created_at"])).total_seconds() / 60, 1)
+                    round((read_at - stamp).total_seconds() / 60, 1) if stamp else 1e9
                 )
         if ages:
             measured_age = max(ages)
@@ -149,7 +183,7 @@ def lane_state(entry: dict, rule: dict, snap_lanes: dict, read_at: datetime) -> 
         "workflow_file": f"{lane}.yml",
         "output": entry["output"],
         "rule_expression": rule["outputs"].get(entry["output"]),
-        "admission_gated": "!paused" in (rule["outputs"].get(entry["output"]) or ""),
+        "admission_gated": entry["output"] not in {"dispatch_stall_watch", "dispatch_hw_refresh"},
         "staleness": stale,
         "manifest_staleness": rule.get("manifest_stale", {}).get(entry["output"]),
         "latest_run": latest,
@@ -162,7 +196,8 @@ def lane_state(entry: dict, rule: dict, snap_lanes: dict, read_at: datetime) -> 
 
 def build_feed(prev_feed: dict | None = None) -> dict:
     text = TREE.read_text()
-    rule = parse_tree(text)
+    admission_text = (ROOT / "scripts" / "ci" / "dispatch_admission.js").read_text()
+    rule = parse_tree(text, admission_text)
     snap = json.loads(SNAP.read_text())
     read_at = _parse_ts(snap["read_at"])
 

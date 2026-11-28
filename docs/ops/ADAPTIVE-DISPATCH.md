@@ -29,7 +29,7 @@ state store, command bus, dispatch gate, or current authority.
 | Trusted PR demand (`pull_request_target`) | Immediate central-dispatch wake | Quota fan-out only for same-repository branches; fork PRs remain Matrix-visible but cannot wake the quota fan-out |
 | Selected lane completion (`workflow_run` via lane-events recorder) | Immediate event wake | Re-evaluate dependent work and freshness for the watched tribute/SHE lanes |
 | Canonical source-record push | Immediate event wake | Reconcile changed tracking/dependency state |
-| 30-minute schedule | Cadence clock only | Run 30-minute and hourly/modulo-based 3h/4h/6h/12h slots; recover time-only stale lanes |
+| 30-minute schedule | Cadence clock + age recovery | Run phase-based 30-minute and modulo slots; independently recover reconciliation-engine and context-relationship-backfill when each lane exceeds 75 minutes since its latest completed run |
 | Authorized Issue command | Explicit human force request | Force the managed dispatch fan-out with an auditable receipt |
 
 The Lane Matrix is not part of the Quota Dispatch Tree. It has its own PR
@@ -48,6 +48,7 @@ immediately. Event wakes do not replay scheduled modulo phase slots.
 - Per-lane caps and the global managed-run cap apply to normal work.
 - A failed pressure read fails closed for gated lanes.
 - Staleness-critical lanes retain only their documented preemption behavior.
+- `reconciliation-engine` and `context-relationship-backfill` have independent 75-minute age thresholds. A queued/in-progress latest run counts as fresh; missing history counts as stale; each output remains separately admission-gated. The 30-minute schedule provides bounded recovery after GitHub schedule jitter.
 - Each target workflow keeps its own concurrency, validation, and promotion
   authority.
 - An authenticated force request overrides this dispatcher's admission pressure

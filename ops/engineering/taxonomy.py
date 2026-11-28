@@ -33,6 +33,7 @@ def validate(tax):
             for field in ("license","license_class","access","payment_card_required","execution_target","probe_commands","source_url"):
                 if field not in metadata: errors.append(f"{node_id}: missing metadata field {field!r}")
             if metadata.get("access") not in (axes.get("access") or []): errors.append(f"{node_id}: invalid access class")
+            if metadata.get("payment_card_required") not in (True, False, "unknown"): errors.append(f"{node_id}: payment_card_required must be boolean or unknown")
             if not isinstance(metadata.get("probe_commands",[]),list): errors.append(f"{node_id}: probe_commands must be a list")
             if not (node.get("tags") or {}).get("tool_role"): errors.append(f"{node_id}: tool requires a tool_role tag")
     if "engineering" not in by_id or by_id.get("engineering",{}).get("parents")!=[]: errors.append("engineering root node is missing or has parents")

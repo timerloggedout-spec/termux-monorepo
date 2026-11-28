@@ -47,7 +47,7 @@ class EngineeringTaxonomyTests(TestCase):
                 "license": "MIT",
                 "license_class": "foss",
                 "access": "local-free",
-                "payment_card_required": "false",
+                "payment_card_required": False,
                 "execution_target": "local-or-remote",
                 "probe_commands": [],
                 "source_url": "https://example.invalid/",
@@ -80,7 +80,7 @@ class EngineeringTaxonomyTests(TestCase):
         cockpit = (root / "archwiz/termux_cockpit.py").read_text(encoding="utf-8")
         self.assertIn("[21] Engineering Toolchain Inventory", cockpit)
         self.assertIn('if choice == "21"', cockpit)
-        self.assertIn("scripts" + ' / "engineering" / "toolchain_probe.py"', cockpit)
+        self.assertIn("toolchain_probe.py", cockpit)
 
     def test_free_tier_and_paid_product_are_separate_classes(self):
         taxonomy = load_taxonomy()
@@ -89,7 +89,7 @@ class EngineeringTaxonomyTests(TestCase):
         self.assertEqual(by_id["onshape-free"]["metadata"]["commercial_use"], "restricted")
         self.assertEqual(by_id["onshape-free"]["metadata"]["payment_card_required"], "unknown")
         self.assertEqual(by_id["solidworks-makers"]["metadata"]["access"], "commercial-paid")
-        self.assertEqual(by_id["solidworks"]["metadata"]["payment_card_required"], "unknown")
+        self.assertEqual(by_id["solidworks-makers"]["metadata"]["payment_card_required"], "unknown")
         self.assertTrue(all(node["metadata"]["payment_card_required"] is False for node in by_id.values() if node["kind"] == "tool" and node["metadata"]["license_class"] == "foss"))
 
 

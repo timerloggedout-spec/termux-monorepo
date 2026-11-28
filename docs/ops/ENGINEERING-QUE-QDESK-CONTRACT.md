@@ -33,7 +33,7 @@ An engineering task carries these typed fields in its normal QUE filing:
 
 ## Active intake surface
 
-The repository issue form `.github/ISSUE_TEMPLATE/engineering-toolchain.yml` declares `issue-dispatch/v1`, lane `engineering-toolchain`, tier 3 and route `project-task-dispatch.yml`. Its unique `[engineering]` title prefix lets the existing `swarm-admission.yml` match the filing; the rendered `Task / spec`, `Scope` and `Done-evidence` headings feed the existing project-task intake parser. QUE admission stamps `swarm-admitted` or `deferred-by-tier`; the existing project dispatch and QDesk claim/lease flow remain the execution owners.
+The repository issue form `.github/ISSUE_TEMPLATE/engineering-toolchain.yml` declares `issue-dispatch/v1`, lane `engineering-toolchain`, tier 3 and route `project-task-dispatch.yml`. Its unique `[engineering]` title prefix lets the existing `swarm-admission.yml` match the filing; the rendered engineering fields and the `Task / spec`, `Scope` and `Done-evidence` headings feed the existing project-task intake parser. The parser preserves domain, toolchain, stage, source/expected artifacts, environment, verification, access, physical effect and risk in the routing receipt. QUE admission stamps `swarm-admitted` or `deferred-by-tier`; the existing project dispatch and QDesk claim/lease flow remain the execution owners.
 
 ## Queue ownership
 

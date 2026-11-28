@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "4a497cdac2e70a6fc07866e869010cadb96b90db96ac60a79157414b740ba553",
-  "workflow_count": 331,
+  "source_fingerprint": "d1fc2a62d098070ccae2d73efe34528bf17d3c3f1245d3137b4ba80ea41b689e",
+  "workflow_count": 332,
   "workflows": [
     {
       "action_pins": [],
@@ -4037,6 +4037,23 @@
       "triggers": [
         "pull_request",
         "pull_request_target"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: project-visibility-cell-the-living-machine cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "promote-approved-project"
+      ],
+      "name": "Project Repository Visibility",
+      "path": ".github/workflows/project-repository-visibility.yml",
+      "schedules": [],
+      "triggers": [
+        "push"
       ]
     },
     {

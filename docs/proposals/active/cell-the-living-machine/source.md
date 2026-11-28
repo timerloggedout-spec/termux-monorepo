@@ -16,9 +16,9 @@
 ## Research Astute
 
 - Repository: https://github.com/NDuma/ResearchAstute
-- README: description marked as in progress; Biology section lists PhyloAnnotator, a Mittweida resource, and SimTK.
+- README: description remains in progress; Biology section lists PhyloAnnotator, a Mittweida resource, and SimTK.
 - `resources_tools.md`: short Biology resource list with those three links.
-- LICENSE: contains an unresolved licensing discussion followed by Apache License 2.0 text. Treat the repository's reuse terms as review-required until the owner confirms the intended license and file coverage.
+- LICENSE: contains an open licensing discussion followed by Apache License 2.0 text. The intended license and file coverage require owner confirmation before content reuse.
 - Integration status: reference discovery available; automated ingestion and reusable-content rights pending review.
 
 ## Search Astutely
@@ -29,9 +29,9 @@
   - https://github.com/search-astute-ly/termux-monorepo_enterprise_too
   - https://github.com/search-astute-ly/redesigned-octo-rotary-phone
   - https://github.com/search-astute-ly/manus-public-ui-research
-- The two Enterprise-named repositories are accessible to the connected GitHub identity with admin/push permissions in repository search results. Their inspected README surfaces describe Termux recovery and developer environment planning; this inspection did not establish a canonical search-aggregation API or result store.
-- The requested plugin reference `Plugin_60aea7460bd4819199fd97a9553a5e12` did not resolve to a currently listed public plugin. Plugin discovery for the name/capability returned Scite, Firecrawl, Notion, and other adjacent services; no Search Astutely connector was identified.
-- `AsAstraNeoNexus` did not resolve in the connected GitHub repository/owner search performed for this pass. Account ownership, Enterprise trial status, migration state, and the account-header deletion notice require a direct account/organization settings review by the owner.
+- The two Enterprise-named repositories are accessible to the connected GitHub identity with admin/push permissions in repository search results. Their inspected README surfaces describe Termux recovery and developer environment planning; a canonical search-aggregation API and result store remain unverified.
+- The requested plugin reference `Plugin_60aea7460bd4819199fd97a9553a5e12` returned `plugin_not_found` from plugin dependency lookup. Plugin discovery for the name/capability surfaced Scite, Firecrawl, Notion, and other adjacent services; a Search Astutely connector remains unverified.
+- `AsAstraNeoNexus` is absent from the connected GitHub repository/owner search performed for this pass. Account ownership, Enterprise trial status, migration state, and the account-header deletion notice require direct account/organization settings review by the owner.
 - Integration status: organization identity verified; service endpoint, canonical data repository, connector, account relationship, and migration state pending verification.
 
 ## iJEP Studio
@@ -41,7 +41,7 @@
 - Official site describes structural biology animation, scientific review, use of real structural references, and a production workflow involving structural data.
 - Initial topic seeds include ATP synthase, aquaporin, sodium-potassium pump, ribosome, DNA replication, chromatin, molecular motors, and cellular processes.
 - Inventory scope includes every video and short, title, description, duration, publication date, transcript where available, linked papers, PDB/EMDB accessions, source organisms, comments with technical value, and rights status.
-- iJEP media and 3D assets remain reference-only until the applicable license and permission are recorded.
+- iJEP media and 3D assets carry reference-only status until the applicable license and permission are recorded.
 
 ## Architecture inference
 

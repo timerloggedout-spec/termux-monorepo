@@ -25,21 +25,40 @@ IMPERATIVE = {
     "publish", "record", "reconcile", "refresh", "refine", "register", "remove", "rename", "repair",
     "replace", "require", "restore", "route", "run", "set", "snapshot", "split", "sync",
     "test", "update", "use", "validate", "verify", "wire", "collect", "generate", "regenerate", "rebuild",
+    "finalize", "trigger", "integrate", "consolidate",
 }
 STYLE_PATHS = [
     "AGENTS.md", "moniker.md", "CLAUDE.md", "GEMINI.md", "SKILLS.md",
     ".agents/skills", ".github/skills", ".github/workflows",
-    "docs/ops", "docs/proposals",
+    "docs/ops", "docs/proposals", "docs/governance",
 ]
-
 errors: list[str] = []
 
+def is_exempt_line(line: str, in_fence: bool) -> tuple[bool, bool]:
+    stripped = line.lstrip()
+    if stripped.startswith("```") or stripped.startswith("~~~"):
+        return True, not in_fence
+    if in_fence or stripped.startswith(">"):
+        return True, in_fence
+    return False, in_fence
 
 def inspect_text(label: str, value: str) -> None:
+    in_fence = False
     for number, line in enumerate(value.splitlines(), 1):
-        if NEGATIVE_FIRST.match(line):
+        exempt, in_fence = is_exempt_line(line, in_fence)
+        if not exempt and NEGATIVE_FIRST.match(line):
             errors.append(f"{label}:{number}: lead with the intended DO action")
 
+def exempt_line_numbers(path: Path) -> set[int]:
+    exempt: set[int] = set()
+    in_fence = False
+    if not path.is_file():
+        return exempt
+    for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        ignored, in_fence = is_exempt_line(line, in_fence)
+        if ignored:
+            exempt.add(number)
+    return exempt
 
 def inspect_git_range(base: str, head: str) -> None:
     diff = subprocess.run(
@@ -47,15 +66,23 @@ def inspect_git_range(base: str, head: str) -> None:
         check=True, capture_output=True, text=True,
     ).stdout
     current_path = "changed-file"
+    new_line = 0
+    exempt_by_path: dict[str, set[int]] = {}
     for line in diff.splitlines():
         if line.startswith("+++ b/"):
             current_path = line[6:]
+            exempt_by_path[current_path] = exempt_line_numbers(Path(current_path))
+        elif line.startswith("@@"):
+            match = re.search(r"\+(\d+)", line)
+            if match:
+                new_line = int(match.group(1))
         elif line.startswith("+") and not line.startswith("+++"):
             added = line[1:]
-            if NEGATIVE_FIRST.match(added):
-                errors.append(
-                    f"{current_path}: lead with the intended DO action: {added.strip()}"
-                )
+            if new_line not in exempt_by_path.get(current_path, set()) and NEGATIVE_FIRST.match(added):
+                errors.append(f"{current_path}: lead with the intended DO action: {added.strip()}")
+            new_line += 1
+        elif line.startswith(" "):
+            new_line += 1
 
     subjects = subprocess.run(
         ["git", "log", "--no-merges", f"{base}..{head}", "--format=%s"],
@@ -72,27 +99,19 @@ def inspect_git_range(base: str, head: str) -> None:
         first = description.split(maxsplit=1)
         verb = first[0].lower() if first else ""
         if verb not in IMPERATIVE:
-            errors.append(
-                f"commit subject requires an imperative action verb after its scope: {subject}"
-            )
-
+            errors.append(f"commit subject requires an imperative action verb after its scope: {subject}")
 
 def inspect_pr_commits() -> None:
-    if EVENT_NAME != "pull_request" or not BASE_REF:
-        return
-    subprocess.run(["git", "fetch", "origin", BASE_REF], check=True)
-    inspect_git_range(f"origin/{BASE_REF}", "HEAD")
-
+    if EVENT_NAME == "pull_request" and BASE_REF:
+        subprocess.run(["git", "fetch", "origin", BASE_REF], check=True)
+        inspect_git_range(f"origin/{BASE_REF}", "HEAD")
 
 def inspect_push_commits(event: dict) -> None:
-    if EVENT_NAME != "push":
-        return
-    before = event.get("before") or ""
-    after = event.get("after") or "HEAD"
-    if not before or set(before) == {"0"}:
-        return
-    inspect_git_range(before, after)
-
+    if EVENT_NAME == "push":
+        before = event.get("before") or ""
+        after = event.get("after") or "HEAD"
+        if before and set(before) != {"0"}:
+            inspect_git_range(before, after)
 
 def inspect_event() -> None:
     if not EVENT_PATH or not Path(EVENT_PATH).is_file():
@@ -110,19 +129,15 @@ def inspect_event() -> None:
     elif EVENT_NAME in {"issue_comment", "pull_request_review_comment", "discussion_comment", "commit_comment"}:
         inspect_text("comment.body", event.get("comment", {}).get("body") or "")
 
-
 event = {}
 if EVENT_PATH and Path(EVENT_PATH).is_file():
     event = json.loads(Path(EVENT_PATH).read_text(encoding="utf-8"))
-
 inspect_pr_commits()
 inspect_push_commits(event)
 inspect_event()
-
 if errors:
     print("DO-statement style: FAIL")
     for error in errors:
         print(f" - {error}")
     sys.exit(1)
-
 print("DO-statement style: PASS")

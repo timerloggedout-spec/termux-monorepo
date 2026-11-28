@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Build the public Hackathon Desk challenge projection.
 
+Implements: HD-002.
+
 Source of truth: ops/challenge/coordinator.json
 Public contract: challenge-public-feed/v1
 The output is a strict allowlist. Internal estimates, opportunity-cost data,

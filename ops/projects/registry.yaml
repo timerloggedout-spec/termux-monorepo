@@ -1,0 +1,12 @@
+schema: project-registry/v1
+updated_at: "2026-11-27"
+projects:
+  - project_id: project:cell-the-living-machine
+    name: "CELL: THE LIVING MACHINE"
+    class: custom-project
+    scope_profile: ../../.config/llm_map/profiles/projects/cell-the-living-machine.json
+    manifest: manifests/cell-the-living-machine.yaml
+    proposal: ../../docs/proposals/active/cell-the-living-machine/MANIFEST.md
+    product_repository: timerloggedout-spec/cell-the-living-machine
+    product_repository_state: provisioning_pending
+    status: proposed

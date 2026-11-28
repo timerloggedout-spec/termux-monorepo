@@ -1,0 +1,103 @@
+---
+id: cell-the-living-machine
+title: "CELL: THE LIVING MACHINE — molecular-to-cellular simulation game"
+author: ChatGPT
+posted_at: 2026-11-27
+source: source.md
+status: draft
+priority: P1
+reviewers:
+  - id: timerloggedout-spec
+    role: operator-authorizer
+    status: requested
+  - id: ChatGPT
+    role: author-executor
+    status: executing
+related_issues: []
+related_prs: []
+related_branches:
+  - feature/cell-living-machine-architecture
+related_repos:
+  - https://github.com/timerloggedout-spec/termux-monorepo
+  - https://github.com/NDuma/ResearchAstute
+  - https://github.com/search-astute-ly
+gates_required:
+  - repo-gate
+  - termux-smoke
+---
+
+# MANIFEST — cell-the-living-machine
+
+## Summary
+
+Establish an original science game that makes molecular and cellular systems playable through exploration, simulation, systems strategy, puzzles, and specialist research. The project uses three coordinated planes: Research Astute for reusable research references; Search Astutely for search execution, aggregation, and result snapshots; and Termux MonoRepo for developer lanes, tools, project profiles, and orchestration. A dedicated game repository owns the playable product and is registered as a project in MonoRepo.
+
+## Architecture decision
+
+A + B + C operate together with separate ownership:
+
+| Plane | Canonical owner | Responsibility |
+|---|---|---|
+| A — Game product | Dedicated `cell-the-living-machine` repository | Game source, assets, runtime, builds, tests, release artifacts |
+| B — Developer control plane | `timerloggedout-spec/termux-monorepo` | Project profile, game lanes, specialist contexts, tool profiles, CI, QA routing, integration contracts |
+| C1 — Reusable research | `NDuma/ResearchAstute` | Curated research references, notes, reusable research assets after rights review |
+| C2 — Search aggregation | `search-astute-ly` organization | Search jobs, aggregated results, snapshots, source links, research-discovery workflows |
+| C3 — Scientific authorities | External scientific databases | Canonical structures, sequences, annotations, pathways, molecules, and literature records |
+
+Cross-plane integration uses stable project IDs, repository IDs, versioned manifests, source accessions, and API contracts. Local symlinks may support a developer workspace view; manifests and versioned interfaces remain the cross-repository contract.
+
+## Existing game-lane fit
+
+The MonoRepo already defines Game Development & Production, Game Player Machines & Genre Teams, Game QA & Accessibility, and Game ML Research. The project attaches to these existing lanes and uses their separate responsibilities. Genre remains an additive facet set rather than a fixed team identity.
+
+## Audience and progression model
+
+Knowledge access is ubiquitous. Every participant can reach the same underlying knowledge graph. Field, Mechanism, Quantitative, Structural, and Research lenses vary explanatory resolution and instrumentation. Challenge profiles tune resource constraints, time pressure, uncertainty, and scenario coupling. Progression follows demonstrated curiosity and mastery signals rather than age.
+
+## Seed surface
+
+The full iJEP Studio channel is the initial visual and topic-discovery surface. The inventory process captures videos, shorts, descriptions, source references, comments with technical value, linked papers, structure IDs, and asset rights. iJEP Studio's own production descriptions emphasize scientific review and real structural references; media reuse follows the creator's published license terms and any separately granted permissions.
+
+## Current status
+
+- MonoRepo project profile: proposed in this branch.
+- Dedicated game repository: provisioning pending; GitHub repository-creation action is outside the current connected GitHub tool surface.
+- Research Astute: repository identified; reusable content scope requires rights and license review.
+- Search Astutely: organization identified; candidate repositories found; search-aggregation runtime and connector identity require verification.
+- Scientific database catalog: initial source map prepared; source-specific adapter admission follows API, terms, and provenance review.
+- Engine and renderer: selection pending a bounded prototype comparison.
+
+## Review log
+
+### 2026-11-27 — ChatGPT
+
+- Disposition: draft package created for Operator review.
+- Evidence: current MonoRepo game-lane documents, game context schema, research-seed intake, GitHub organization/repository search, ResearchAstute README/resources/license files, and official database API documentation.
+- Decision: use A + B + C with separate repositories and manifests; use versioned API contracts across repository boundaries.
+
+## Checklist
+
+- [x] Proposal package and scoped items created.
+- [x] Existing game-lane fit recorded.
+- [x] Three-plane architecture and project profile drafted.
+- [x] Scientific database discovery catalog drafted.
+- [x] Knowledge-lens model drafted.
+- [ ] Operator review and acceptance recorded.
+- [ ] Dedicated game repository provisioned.
+- [ ] Search Astutely runtime and account ownership verified.
+- [ ] Research Astute reuse and licensing scope approved.
+- [ ] Engine selection and prototype acceptance contract approved.
+- [ ] Source and science review completed for the first playable slice.
+
+## Links
+
+- [ITEMS](./ITEMS.md)
+- [DEBATE](./DEBATE.md)
+- [Source evidence](./source.md)
+- [Project profile](./PROJECT_PROFILE.yaml)
+- [Research map](./RESEARCH_MAP.yaml)
+- [Database catalog](./DATA_SOURCES.yaml)
+- [Content taxonomy](./CONTENT_TAXONOMY.yaml)
+- [Game design](./GAME_DESIGN.md)
+- [Provenance contract](./PROVENANCE.md)
+- [Implementation plan](../../../superpowers/plans/2026-11-27-cell-living-machine-architecture.md)

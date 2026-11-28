@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
+import { GET as healthGET } from "../api/health.ts";
 import { GET, POST, DELETE } from "../api/mcp/[server].ts";
 import { withMcpAuth } from "../api/auth.ts";
 
@@ -31,6 +32,48 @@ test("GET, POST, DELETE are exported as functions from the dynamic router", () =
   assert.equal(typeof GET, "function", "GET must be exported as a function");
   assert.equal(typeof POST, "function", "POST must be exported as a function");
   assert.equal(typeof DELETE, "function", "DELETE must be exported as a function");
+});
+
+test("public health endpoint reports configured static bearer without exposing its value", async () => {
+  const previousToken = process.env.MCP_AUTH_TOKEN;
+  process.env.MCP_AUTH_TOKEN = "test-secret";
+
+  try {
+    const response = healthGET();
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get("cache-control"), "no-store");
+    const body = await response.json();
+    assert.equal(body.service, "mcp-hub");
+    assert.equal(body.status, "configured");
+    assert.equal(body.auth_mode, "static_bearer");
+    assert.equal(body.auth_configured, true);
+    assert.equal(body.mcp_protocol_probe, "not_performed");
+    assert.equal(body.upstream_probe, "not_performed");
+    assert.equal(JSON.stringify(body).includes("test-secret"), false);
+  } finally {
+    if (previousToken === undefined) {
+      delete process.env.MCP_AUTH_TOKEN;
+    } else {
+      process.env.MCP_AUTH_TOKEN = previousToken;
+    }
+  }
+});
+
+test("public health endpoint returns 503 when static bearer is not configured", async () => {
+  const previousToken = process.env.MCP_AUTH_TOKEN;
+  delete process.env.MCP_AUTH_TOKEN;
+
+  try {
+    const response = healthGET();
+    assert.equal(response.status, 503);
+    const body = await response.json();
+    assert.equal(body.status, "not_ready");
+    assert.equal(body.auth_configured, false);
+  } finally {
+    if (previousToken !== undefined) {
+      process.env.MCP_AUTH_TOKEN = previousToken;
+    }
+  }
 });
 
 test("unauthenticated requests are rejected with 401 before server resolution", async () => {

@@ -28,7 +28,7 @@ repositories:
       organization: Research-Astute
       url: https://github.com/Research-Astute
       repository: Research-Astute/molecular-biology-research
-      repository_id: 183701786
+      repository_state: provisioning_pending
       repository_visibility: private
       role: reusable_molecular_biology_research
       reuse_status: repository_created_curated_records_pending
@@ -196,7 +196,9 @@ opportunity_mapping:
 research_catalog:
   candidate_source_count: 26
   canonical_registry: Research-Astute/molecular-biology-research/sources/registry.yaml
-  canonical_registry_revision: e9c51ef1619aa76604db8b8d0de292586d5aa08a
+  canonical_registry_revision: pending_seed_commit
+  canonical_registry_state: provisioning_pending
+  candidate_source_count: 26
   project_snapshot: docs/proposals/active/cell-the-living-machine/DATA_SOURCES.yaml
   research_map_path: docs/proposals/active/cell-the-living-machine/RESEARCH_MAP.yaml
   adapter_admission: source_specific_api_terms_and_provenance_review

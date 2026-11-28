@@ -65,6 +65,7 @@ jobs:
         self.assertEqual(record["workflow_dispatch_inputs"]["target"]["options"], ["staging", "production"])
         self.assertTrue(record["workflow_dispatch_inputs"]["target"]["required"])
         self.assertEqual(record["permissions"]["workflow"], {"contents": "read"})
+        self.assertEqual(record["authority_basis"], "declared GitHub workflow/job permissions")
         self.assertEqual(record["permissions"]["jobs"]["deploy"], {"contents": "write", "deployments": "write"})
         self.assertEqual(record["job_selectors"]["deploy"]["if"], "github.ref == 'refs/heads/main'")
         self.assertEqual(record["job_selectors"]["validate"]["if"], "contains(github.event.comment.body, '/deploy')")

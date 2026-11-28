@@ -93,7 +93,7 @@ See `docs/ops/REVIEW-PUBLISHING.md` for current publish workflow and preview rul
 
 ## 4. Workflow trigger exemplars
 
-Seven routing workflows have now been source-read and recorded in `docs/ops/generated/workflow-trigger-census.json`, with a human-readable companion at `docs/ops/WORKFLOW-TRIGGER-CENSUS.md`. The sample covers QUE admission, project-task intake, admission-following game-development queueing, Jules labels and mentions, Gemini `/build`, provider commands, and Delphi marker/manual intake. Each record includes the workflow blob SHA and configured event/selector/gate/effect. This is an exemplar set; the 331-workflow catalog remains the exhaustive inventory.
+Eight routing workflows have now been source-read and recorded in `docs/ops/generated/workflow-trigger-census.json`, with a human-readable companion at `docs/ops/WORKFLOW-TRIGGER-CENSUS.md`. The sample covers QUE admission, project-task intake, admission-following game-development queueing, Jules labels and mentions, Gemini `/build`, provider commands, and Delphi marker/manual intake. Each record includes the workflow blob SHA and configured event/selector/gate/effect. This is an exemplar set; the generated catalog lists 331 workflows while the live `.github/workflows/` directory contains 332 YAML files. `project-repository-visibility.yml` is the source-verified uncatalogued entry and is recorded as a reconciliation gap.
 
 ## 5. Workflow event catalog
 

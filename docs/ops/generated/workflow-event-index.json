@@ -5,13 +5,25 @@
   "observed_at": "2026-11-27",
   "coverage": {
     "workflow_directory_yaml_count": 332,
-    "catalog_workflow_count": 331,
-    "supplemental_source_read_count": 1,
+    "catalog_workflow_count": 332,
+    "catalog_record_count": 332,
     "coverage_complete": true,
-    "detail_level": "catalog event names, schedules, jobs, authority, concurrency, action pins; activity/branch/path filters, inputs and job-level selectors remain source-detail gaps",
+    "detail_level": "catalog event names, schedules, jobs, authority, concurrency, action pins; source-read overrides recorded where the catalog conflicts with workflow source",
     "catalog_path": "docs/ops/generated/automation-workflow-catalog.json",
     "catalog_blob_sha": "56afde58d2df4f8741c1f650fbc533561888b195",
     "catalog_source_fingerprint": "d1fc2a62d098070ccae2d73efe34528bf17d3c3f1245d3137b4ba80ea41b689e"
+  },
+  "reconciliation": {
+    "directory_catalog": "IN_SYNC",
+    "authority_conflicts": [
+      {
+        "workflow": ".github/workflows/project-repository-visibility.yml",
+        "catalog_authority": "read-only-or-advisory",
+        "source_authority": "writer",
+        "reason": "workflow invokes GitHub REST PATCH to change an external repository's private flag; post-change readback verifies public visibility",
+        "source_blob_sha": "5a42fc64c81632c38ffa892a1a890d685114fcda"
+      }
+    ]
   },
   "workflows": [
     {
@@ -4256,12 +4268,26 @@
       "jobs": [
         "promote-approved-project"
       ],
-      "authority": "read-only-or-advisory",
+      "authority": "writer",
       "concurrency": "group: project-visibility-cell-the-living-machine cancel-in-progress: false",
       "action_pins": [
         "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
       ],
-      "catalog_source": "docs/ops/generated/automation-workflow-catalog.json"
+      "catalog_source": "docs/ops/generated/automation-workflow-catalog.json",
+      "catalog_authority": "read-only-or-advisory",
+      "authority_override": {
+        "basis": "source read shows gh api --method PATCH repos/$TARGET_REPOSITORY -F private=false followed by readback verification",
+        "source_blob_sha": "5a42fc64c81632c38ffa892a1a890d685114fcda",
+        "status": "SOURCE_VERIFIED_CONFLICT"
+      },
+      "event_filters": {
+        "branches": [
+          "master"
+        ],
+        "paths": [
+          "ops/requests/project-visibility-public.yaml"
+        ]
+      }
     },
     {
       "id": "project-task-dispatch",
@@ -6317,33 +6343,6 @@
         "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
       ],
       "catalog_source": "docs/ops/generated/automation-workflow-catalog.json"
-    },
-    {
-      "id": "project-repository-visibility",
-      "path": ".github/workflows/project-repository-visibility.yml",
-      "name": "Project Repository Visibility",
-      "triggers": [
-        "push"
-      ],
-      "event_filters": {
-        "branches": [
-          "master"
-        ],
-        "paths": [
-          "ops/requests/project-visibility-public.yaml"
-        ]
-      },
-      "schedules": [],
-      "jobs": [
-        "promote-approved-project"
-      ],
-      "authority": "writer",
-      "concurrency": "project-visibility-cell-the-living-machine; cancel-in-progress=false",
-      "action_pins": [
-        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
-      ],
-      "source_blob_sha": "5a42fc64c81632c38ffa892a1a890d685114fcda",
-      "catalog_source": "source-read supplemental entry"
     }
   ]
 }

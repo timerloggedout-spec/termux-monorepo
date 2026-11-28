@@ -7,7 +7,8 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts" / "tracking"))
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts" / "tracking"))
 from repo_tracking import (build_doe_join, classify, derive_next, derive_state,  # noqa: E402
                            _find_instances, NOT_ESTABLISHED)
 
@@ -18,7 +19,7 @@ PROJECTS_PATH = ROOT / "ops" / "tracking" / "projects.json"
 def test_engineering_toolchain_is_registered_in_lane_tracking():
     registry = json.loads(PROJECTS_PATH.read_text(encoding="utf-8"))
     assert "engineering" in registry["domains"]
-    match = classify("Engineering toolchain activation", registry["projects"])
+    match = classify("Engineering toolchain activation feat/engineering-toolchain-activation", registry["projects"])
     assert match is not None
     assert match["id"] == "engineering-toolchain-integration"
     assert match["lane"] == "engineering-toolchain"

@@ -25,6 +25,7 @@ External evaluators consume that evidence through bounded adapters.
 | Braintrust | evaluation datasets, scorers and experiment lineage (candidate hypotheses; verify by version) | evaluation comparison participant | observational; not runtime-verified |
 | SWE-style reference suites | issue-to-patch/software-engineering task outcomes | bounded external reference comparison | observational |
 | Local cohort harnesses | project-specific task success, cost, latency, regressions | highest-fidelity manager experiments | evidence source owned by this repository |
+| Engineering toolchain cohorts | CAD/EDA/CAE/RTL correctness, artifact fidelity, reproducibility, solver convergence, resource use and physical-world risk | same-task, same-input, pinned-environment comparisons through DoE/MVT/ATES; see `docs/ops/ENGINEERING-DOE-MVT-PLAN.md` | repository receipts + independent engineering review; observational evidence with certification and merge authority retained by their established review gates |
 
 ### Gamut is not one thing
 

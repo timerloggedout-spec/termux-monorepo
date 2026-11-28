@@ -23,8 +23,7 @@ import argparse
 import re
 import sys
 
-# form field id -> rendered section label (must match
-# .github/ISSUE_TEMPLATE/project-task.yml labels exactly)
+# form field id -> rendered section label (matches issue-form labels exactly)
 FIELDS = {
     "entry": "Entry",
     "task": "Task / spec",
@@ -32,6 +31,16 @@ FIELDS = {
     "done-evidence": "Done-evidence",
     "target-repo": "Target repo",
     "instance-stamps": "Instance stamps (post-hoc)",
+    "engineering-domain": "Engineering domain",
+    "toolchain-id": "Toolchain ID",
+    "stage": "Stage",
+    "source-artifacts": "Source artifacts",
+    "expected-artifacts": "Expected artifacts",
+    "environment-fingerprint": "Environment fingerprint",
+    "verification-plan": "Verification plan",
+    "access-class": "Access class",
+    "physical-world-effect": "Physical-world effect",
+    "risk-tier": "Risk tier",
 }
 REQUIRED = ("entry", "task", "scope", "done-evidence")
 DEFAULT_TARGET_REPO = "timerloggedout-spec/termux-monorepo"
@@ -71,18 +80,37 @@ def validate(fields: dict) -> list:
 
 
 def receipt_comment(issue_number: int, fields: dict) -> str:
+    engineering_labels = (
+        ("engineering-domain", "domain"),
+        ("toolchain-id", "toolchain"),
+        ("stage", "stage"),
+        ("source-artifacts", "source artifacts"),
+        ("expected-artifacts", "expected artifacts"),
+        ("environment-fingerprint", "environment"),
+        ("verification-plan", "verification"),
+        ("access-class", "access"),
+        ("physical-world-effect", "physical-world effect"),
+        ("risk-tier", "risk tier"),
+    )
+    engineering_context = "\n".join(
+        f"- {label}: {fields[key]}"
+        for key, label in engineering_labels
+        if str(fields.get(key, "")).strip()
+    )
+    if engineering_context:
+        engineering_context = "\n- engineering context:\n" + engineering_context
     return (
         "[MUSEai]@{role:{project-task-dispatch}} ROUTING RECEIPT — "
         "task accepted into the system.\n\n"
         f"- intake id: issue #{issue_number}\n"
         f"- entry: {fields.get('entry', '')}\n"
         f"- scope: {fields.get('scope', '')}\n"
-        f"- target repo: {fields.get('target-repo', '')}\n"
-        "- selection: system across all wired providers "
-        "(no provider is named at intake, by design)\n"
+        f"- target repo: {fields.get('target-repo', '')}"
+        f"{engineering_context}\n"
+        "- selection: system across all wired providers; the dispatch system resolves the provider at pickup\n"
         "- instance stamps: pending — filled post-hoc after execution "
         "{resolved provider x model · session/run ids · outcomes}\n\n"
-        "Status: `dispatch-queued` — NOT owned until claimed.\n\n"
+        "Status: `dispatch-queued` — ownership begins at claim.\n\n"
         "Claim/lease: the producing seat claims at pickup with "
         "`scripts/dispatch/claim_task.py` (claim comment + "
         "`dispatch-claimed` label). Unclaimed tasks are flagged at "

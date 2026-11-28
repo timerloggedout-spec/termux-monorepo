@@ -20,6 +20,7 @@
 | Replay | evolutionary-replay | `.agents/skills/evolutionary-replay/SKILL.md` | bounded policy replay with preserved history |
 | Evaluation | pr-evidence-evaluation | `.github/skills/pr-evidence-evaluation/SKILL.md` | current-SHA evidence quality |
 | Evaluation | mvt-experiment | `.github/skills/mvt-experiment/SKILL.md` | controlled experiment lane |
+| Engineering | engineering-toolchains | `.agents/skills/engineering-toolchains/SKILL.md` | FOSS-first CAD/EDA/CAE/RTL toolchain discovery, stage routing and evidence capture |
 | Discovery | find-skills | `.agents/skills/find-skills/SKILL.md` | external skill discovery/install guidance |
 
 ## Other repository-native skill files

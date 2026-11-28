@@ -1,0 +1,143 @@
+# SWARM-DISPATCH-BEGIN
+# schema: issue-dispatch/v1
+# lane: engineering-toolchain
+# que_tier: 3
+# payload_class: engineering-toolchain
+# route: project-task-dispatch.yml
+# after:
+# chain:
+# SWARM-DISPATCH-END
+name: Engineering Toolchain Task
+description: File mechanical CAD, electronics, simulation, manufacturing or semiconductor work through the existing QUE/QDesk admission and claim plane.
+title: "[engineering] "
+body:
+  - type: dropdown
+    id: engineering-domain
+    attributes:
+      label: Engineering domain
+      options:
+        - Mechanical
+        - Electronics
+        - Electrical
+        - Simulation
+        - Manufacturing
+        - Semiconductor
+        - Visualization
+    validations:
+      required: true
+  - type: input
+    id: toolchain-id
+    attributes:
+      label: Toolchain ID
+      description: Stable ID from ops/engineering/taxonomy.json (for example electronics-product-design).
+    validations:
+      required: true
+  - type: input
+    id: stage
+    attributes:
+      label: Stage
+      description: Current stage from the engineering taxonomy.
+    validations:
+      required: true
+  - type: textarea
+    id: source-artifacts
+    attributes:
+      label: Source artifacts
+      description: Repository paths or immutable artifact references, with hashes where available.
+    validations:
+      required: true
+  - type: textarea
+    id: expected-artifacts
+    attributes:
+      label: Expected artifacts
+      description: Required output files and formats (for example STEP, Gerber, SPICE, MSH, GDSII).
+    validations:
+      required: true
+  - type: input
+    id: environment-fingerprint
+    attributes:
+      label: Environment fingerprint
+      description: OS, architecture, runner image and pinned tool versions; use unknown when unmeasured.
+    validations:
+      required: false
+  - type: textarea
+    id: verification-plan
+    attributes:
+      label: Verification plan
+      description: Deterministic checks, reference outputs, solver convergence and reviewer evidence.
+    validations:
+      required: true
+  - type: dropdown
+    id: access-class
+    attributes:
+      label: Access class
+      options:
+        - local-free
+        - cloud-free-tier
+        - commercial-paid
+    validations:
+      required: true
+  - type: dropdown
+    id: physical-world-effect
+    attributes:
+      label: Physical-world effect
+      options:
+        - none
+        - fabrication-submission
+        - device-programming
+        - physical-actuation
+    validations:
+      required: true
+  - type: dropdown
+    id: risk-tier
+    attributes:
+      label: Risk tier
+      options:
+        - informational
+        - engineering-review
+        - safety-critical
+    validations:
+      required: true
+  - type: dropdown
+    id: entry
+    attributes:
+      label: Entry
+      options:
+        - Engineering
+        - D0
+        - D1
+        - D2
+        - D3
+        - D4
+        - D5
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: task
+    attributes:
+      label: Task / spec
+      description: Exact work scope, constraints, dependencies and requested outcome.
+    validations:
+      required: true
+  - type: input
+    id: scope
+    attributes:
+      label: Scope
+      description: Paths/repos the task may touch.
+    validations:
+      required: true
+  - type: textarea
+    id: done-evidence
+    attributes:
+      label: Done-evidence
+      description: Tests, PR, artifacts, validation reports and receipts that prove completion.
+    validations:
+      required: true
+  - type: input
+    id: target-repo
+    attributes:
+      label: Target repo
+      value: timerloggedout-spec/termux-monorepo
+    validations:
+      required: false

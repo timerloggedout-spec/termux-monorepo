@@ -148,6 +148,11 @@ def check_repo_layout(report: SmokeReport) -> None:
         "scripts/ci/validate_sim_memory.py",
         "scripts/agent_evolution/sim_memory.py",
         "tests/fixtures/sim-memory-smoke.jsonl",
+        "ops/engineering/taxonomy.json",
+        "ops/engineering/taxonomy.py",
+        "scripts/engineering/toolchain_probe.py",
+        ".agents/skills/engineering-toolchains/SKILL.md",
+        ".github/ISSUE_TEMPLATE/engineering-toolchain.yml",
     ]
     missing = [p for p in required_paths if not (REPO_ROOT / p).exists()]
     if missing:
@@ -203,6 +208,33 @@ def check_sim_memory_contract(report: SmokeReport) -> None:
     else:
         report.add(CheckResult("sim-memory-contract", "PASS", detail or "ok"))
 
+
+
+
+def check_engineering_toolchain_contract(report: SmokeReport) -> None:
+    """Validate the engineering taxonomy, probe and QUE/Hub contracts."""
+    commands = [
+        ("taxonomy", [sys.executable, "-B", "-m", "ops.engineering.taxonomy", "validate"], 20.0),
+        ("inventory", [sys.executable, "-B", "scripts/engineering/toolchain_probe.py", "--json"], 20.0),
+        ("engineering-tests", [
+            sys.executable, "-B", "-m", "unittest", "discover",
+            "-s", "tests", "-p", "test_engineering*.py", "-v",
+        ], 45.0),
+        ("hub-policy-tests", [
+            sys.executable, "-B", "-m", "unittest", "discover",
+            "-s", "tests/hub_mcp", "-p", "test_protocol.py", "-v",
+        ], 45.0),
+        ("tracking-tests", [sys.executable, "-B", "tests/test_repo_tracking.py"], 45.0),
+    ]
+    details = []
+    for name, argv, timeout in commands:
+        rc, out, err = run_cmd(argv, timeout=timeout)
+        result = (out or err or f"rc={rc}").replace("\n", " | ")[:180]
+        details.append(f"{name}={'PASS' if rc == 0 else 'FAIL'}: {result}")
+        if rc != 0:
+            report.add(CheckResult("engineering-toolchain-contract", "FAIL", "; ".join(details)))
+            return
+    report.add(CheckResult("engineering-toolchain-contract", "PASS", "; ".join(details)))
 
 def check_git_available(report: SmokeReport) -> None:
     if shutil.which("git") is None:
@@ -398,6 +430,7 @@ def main() -> int:
     check_repo_gate_importable(report)
     check_self_compile(report)
     check_sim_memory_contract(report)
+    check_engineering_toolchain_contract(report)
 
     if not args.light:
         check_git_available(report)

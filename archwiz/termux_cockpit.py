@@ -89,6 +89,7 @@ def menu() -> None:
         "[15] Live View                  [16] Documentation Refresh",
         "[17] Promote Sandbox            [18] Dual-Gate Validation",
         "[19] Foresight Snapshot         [20] Hyper-Forge Status",
+        "[21] Engineering Toolchain Inventory",
         "[a] Auto mode                  [r] Review mode",
         "[q] Quit",
     ])
@@ -149,6 +150,7 @@ def action(choice: str) -> bool:
         print(f"  python          : {sys.version.split()[0]}")
         print("  canonical state : repository / protocol / GitHub evidence")
         return True
+    if choice == "21": return run(ROOT / "scripts" / "engineering" / "toolchain_probe.py", "--json") == 0
     if choice in {"a", "r"}:
         os.environ["ARCHWIZ_MODE"] = "auto" if choice == "a" else "review"
         print(c(GREEN, f"mode={os.environ['ARCHWIZ_MODE']}"))

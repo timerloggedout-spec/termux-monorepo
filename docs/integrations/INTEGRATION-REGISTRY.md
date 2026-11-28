@@ -10,6 +10,7 @@
 | Integration | Priority | Session evidence | Repository adapter / integration state | Intended role |
 |---|---:|---|---|---|
 | Superpowers | P0 | Skill installed in this session and repository-local skill exists | Native skill implemented | Engineering methodology |
+| FOSS Engineering Toolchains | P1 | FOSS/free-tier tool sources catalogued; Termux runtime unverified | Engineering taxonomy + read-only Hub inventory probe implemented; execution adapters pending | Mechanical CAD, electronics, simulation, manufacturing and semiconductor design |
 | API Impact Mapper | P0 | Connector tools exposed; a SHA-bound advisory PR lane exists | Planned; PR #4019 advisory lane remains proposed pending validation | API evolution and PR impact analysis |
 | Context7 | P0 | Documentation tools exposed | Planned | Version-aware upstream documentation |
 | Mintlify | P0 | Authenticated deployment and repository source verified | Native repository integration | Published developer documentation |

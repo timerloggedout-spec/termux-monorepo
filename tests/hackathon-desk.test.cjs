@@ -14,7 +14,10 @@ test("normalizes fresh opportunity records with source and freshness", () => {
     generated_at: stamp(now - HOUR),
     stale_after_hours: 24,
     source: "ops/que/feeds/opportunity-priority.json",
-    opportunities: [{ id: "C13", name: "RFP", rank: 1, tier: 3, score: 120, state: "candidate" }],
+    opportunities: [{
+      id: "C13", name: "RFP", rank: 1, tier: 3, score: 120, state: "candidate",
+      priority_timebox: { wall: "2026-12-01T00:00:00Z", source: "recorded", verbatim: { private: true } },
+    }],
     terminal_opportunities: [{ id: "D1", name: "Submitted", rank: null, state: "complete" }],
   }, now);
 
@@ -23,6 +26,8 @@ test("normalizes fresh opportunity records with source and freshness", () => {
   assert.equal(result.records.length, 2);
   assert.equal(result.records[0].id, "C13");
   assert.equal(result.records[0].rank, 1);
+  assert.equal(result.records[0].priority_timebox.wall, "2026-12-01T00:00:00Z");
+  assert.equal("verbatim" in result.records[0].priority_timebox, false);
   assert.equal(result.records[1].active, false);
 });
 
@@ -57,13 +62,19 @@ test("normalizes public challenges while retaining C11 matches and C12 dates", (
     generated_at: "2026-11-28T12:00:00Z",
     source: "ops/challenge/coordinator.json",
     events: [
-      { id: "C11", name: "AMD AI League", matches: [{ id: "M5", name: "AI-Powered Code Repository Repair" }] },
+      {
+        id: "C11", name: "AMD AI League",
+        dates: { deadline: { at: "2026-12-01T11:00:00-08:00", tz: "America/Los_Angeles", source: "official" } },
+        matches: [{ id: "M5", name: "AI-Powered Code Repository Repair" }],
+      },
       { id: "C12", name: "UGREEN Hackathon", dates: { final_due: "2026-11-30T23:45:00-08:00" } },
     ],
   }, Date.parse("2026-11-28T12:00:00Z"));
 
   assert.equal(result.status, "fresh");
-  assert.equal(result.records.find((event) => event.id === "C11").matches[0].id, "M5");
+  const c11 = result.records.find((event) => event.id === "C11");
+  assert.equal(c11.matches[0].id, "M5");
+  assert.equal(c11.dates.deadline.at, "2026-12-01T11:00:00-08:00");
   assert.equal(result.records.find((event) => event.id === "C12").dates.final_due,
     "2026-11-30T23:45:00-08:00");
 });

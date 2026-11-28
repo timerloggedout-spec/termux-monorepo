@@ -21,8 +21,8 @@ Enroll engineering projects and example artifacts in the existing refTemplates w
 2. Record the official project URL, resolved upstream repository, commit/tag, license, observed date and checksums in the tracked reference-set manifest before adopting a fixture.
 3. Keep references read-only. A copied or adapted model, symbol, footprint, solver deck or RTL block requires a separate source/adaptation record and license review.
 4. Retain only the minimal fixtures required for reproducible tests; avoid storing large generated meshes, rendered media or build products in Git.
-5. Link reference evidence from the engineering taxonomy, DoE/MVT run receipts and Reverse Engineering crosswalk. The reference catalog itself does not grant execution or manufacturing authority.
+5. Link reference evidence from the engineering taxonomy, DoE/MVT run receipts and Reverse Engineering crosswalk. Execution and manufacturing authority remain separate approvals.
 
 ## Current status
 
-Twenty FOSS tools are catalogued as reference-only; Onshape Free and SOLIDWORKS remain separately classified proprietary products. No upstream repository revision has been pinned in this branch, and no third-party source has been vendored.
+Twenty FOSS tools are catalogued as reference-only; Onshape Free and SOLIDWORKS remain separately classified proprietary products. Upstream repository revisions remain unpinned in this branch; third-party source vendoring remains outside this integration slice.

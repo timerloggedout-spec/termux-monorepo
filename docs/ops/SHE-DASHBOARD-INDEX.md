@@ -17,6 +17,8 @@ This is the navigation entry point for the SHE dashboard contract and its surrou
 - `generated/issue-template-census.json` — machine-readable template census with source blob SHAs.
 - WORKFLOW-TRIGGER-CENSUS.md — source-verified selected workflow event/selector examples.
 - `generated/workflow-trigger-census.json` — machine-readable workflow trigger exemplars with source blob SHAs.
+- LABEL-CONSUMER-CENSUS.md — source-backed label producers, selectors, queue states, and consumers.
+- `generated/label-consumer-census.json` — machine-readable label relationship records and coverage limits.
 - The registry indexes (and does not duplicate) the generated 331-workflow catalog at `docs/ops/generated/automation-workflow-catalog.json`.
 
 ## Visual pipeline

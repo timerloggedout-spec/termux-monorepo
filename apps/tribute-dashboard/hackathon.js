@@ -251,7 +251,9 @@
     const envelope = collectionEnvelope(payload, SCHEMAS.countdown, "entries", now, 72);
     if (envelope.status === "invalid" || envelope.status === "unavailable") return envelope;
     envelope.records = envelope.records.map((entry) => ({
-      ...pick(entry, ["id", "title", "status", "opens", "closes", "prizes", "submission"]),
+      ...pick(entry, ["id", "title", "status", "prizes", "submission"]),
+      opens: Object.prototype.hasOwnProperty.call(entry, "opens") ? normalizeDateValue(entry.opens) : undefined,
+      closes: Object.prototype.hasOwnProperty.call(entry, "closes") ? normalizeDateValue(entry.closes) : undefined,
       countdown: countdownState(entry, now),
     }));
     return envelope;

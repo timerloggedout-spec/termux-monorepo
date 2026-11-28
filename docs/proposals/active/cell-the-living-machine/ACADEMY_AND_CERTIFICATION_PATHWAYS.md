@@ -19,6 +19,12 @@ Official starting points:
 - https://www.amd.com/en/developer/browse-by-resource-type/training.html
 - https://gpuopen.com/learn/
 
+## AMD certification status
+
+AMD's official ROCm Certified Associate program is live through AMD AI Academy. The online Associate path is free and includes five modules covering ROCm setup, AMD Instinct architecture, ROCm libraries/frameworks, HIP and CUDA porting, and profiling/optimization, followed by an exam. The issued credential includes a verifiable badge; AMD's current program agreement specifies a 24-month validity period. Professional is listed for Q1 2027 and Expert as coming soon. Recheck the official program page before enrollment and renewal.
+
+AMD AI Academy also offers self-paced learning paths and course-completion certificates. Course certificates and the formal ROCm Certified Associate credential remain distinct records.
+
 ## NVIDIA pathway
 | Path | Focus | Evidence / credential |
 |---|---|---|
@@ -32,6 +38,18 @@ Official starting points:
 - https://www.nvidia.com/en-us/training/
 - https://www.nvidia.com/en-us/training/open-source/
 - https://www.nvidia.com/en-us/learn/ai-learning-essentials/
+
+## AMD Skills catalog matches
+
+AMD also publishes an official agent-skill catalog at https://github.com/amd/skills. The project maps these workflow candidates:
+
+| Skill | Project use | Execution tier |
+|---|---|---|
+| local-ai-app-integration | Integrate local AI services into the creator experience for offline support, privacy-sensitive workflows and reduced cloud inference costs. | Client/workstation integration; verify target hardware and runtime support. |
+| rocm-doctor | Diagnose ROCm, HIP, PyTorch and llama.cpp environments used by studio and research infrastructure. | AMD GPU development and compute infrastructure. |
+| tracelens-analysis-orchestrator | Analyze PyTorch profiler traces and prioritize system/kernel performance work. | AMD GPU training/inference and studio performance engineering. |
+
+These are agent skills, separate from AMD-issued course certificates and ROCm certification credentials. The official catalog evolves; record the selected skill revision and evaluate its supported hardware before adding it to a production workflow.
 
 ## NVIDIA Skills catalog matches
 

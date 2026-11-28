@@ -79,3 +79,21 @@ This keeps Wingman, Devin, Loopy, and future orchestration systems useful as pat
 - .agents/skills/adaptive-feedback-cycle/SKILL.md
 - .agents/skills/context-relationship-graph/SKILL.md
 - .github/skills/workflow-orchestration/SKILL.md
+
+
+## Session capability inventory as a treatment source
+
+Use `ops/capabilities/chatgpt/current.json` to resolve the current dated ChatGPT session catalog. The manifest pins the skill catalog, tool-definition chunks, namespace counts and source hashes.
+
+Treat catalog entries as discovery candidates. For an experiment or adapter proposal, capture:
+
+- snapshot date and manifest SHA-256;
+- provider namespace and exact tool identifier;
+- exact skill URI and source group, when applicable;
+- adapter version and declared operation scope;
+- permission tier, context strategy and execution environment;
+- orchestration/cycle/attempt identity and evidence references.
+
+Use provider namespace, skill composition, tool selection, manager policy, context strategy and approval tier as candidate DoE treatment factors. Record execution through the canonical event, evidence-envelope and action/effect contracts. Keep catalog availability, account authorization, execution state, task outcome and promotion as separate fields.
+
+A session tool definition supplies an interface description. Repository execution authority remains in the named provider adapter, `hub_mcp/policy.py`, harness admission and the existing approval gates.

@@ -13,6 +13,7 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 |-------|---------|
 | [`SKILLS.md`](../../SKILLS.md) | Short collaborator pointer |
 | This file | Full inventory + role matrix |
+| ChatGPT session capability catalog | [`CHATGPT-CAPABILITY-INVENTORY.md`](CHATGPT-CAPABILITY-INVENTORY.md) and [`ops/capabilities/chatgpt/current.json`](../../ops/capabilities/chatgpt/current.json) |
 | Each `**/SKILL.md` | Executable skill body |
 
 ## Role load matrix

@@ -10,6 +10,7 @@
 | Integration | Priority | Session evidence | Repository adapter / integration state | Intended role |
 |---|---:|---|---|---|
 | Superpowers | P0 | Skill installed in this session and repository-local skill exists | Native skill implemented | Engineering methodology |
+| ChatGPT Session Capability Inventory | P0 | 571 skill descriptors and 4,897 tool definitions exposed in the 2026-11-25 session snapshot | Versioned discovery export; operation adapters remain separately governed | Skill, connector and tool discovery for mapping and DoE cohorts |
 | API Impact Mapper | P0 | Connector tools exposed; a SHA-bound advisory PR lane exists | Planned; PR #4019 advisory lane remains proposed pending validation | API evolution and PR impact analysis |
 | Context7 | P0 | Documentation tools exposed | Planned | Version-aware upstream documentation |
 | Mintlify | P0 | Authenticated deployment and repository source verified | Native repository integration | Published developer documentation |

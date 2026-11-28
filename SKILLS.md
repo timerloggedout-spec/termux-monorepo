@@ -5,6 +5,7 @@
 | Need | Path |
 |------|------|
 | **Full inventory + role load matrix** | [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) |
+| ChatGPT session skills / connectors / tools | [`docs/ops/CHATGPT-CAPABILITY-INVENTORY.md`](docs/ops/CHATGPT-CAPABILITY-INVENTORY.md) |
 | **Superpowers engineering methodology** | [`.agents/skills/superpowers/SKILL.md`](.agents/skills/superpowers/SKILL.md) |
 | **Primary agent entry (BIUDL)** | [`CLAUDE.md`](CLAUDE.md) |
 | **DO phrasing / framing guide** | [`docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md`](docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md) |

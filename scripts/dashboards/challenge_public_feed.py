@@ -21,6 +21,7 @@ FORBIDDEN_KEYS = {"metrics_internal", "win_probability"}
 DATE_FIELDS = (
     "announced", "reg_open", "reg_close", "build_start", "build_end",
     "submissions_open", "deadline", "judging_end", "winners_at",
+    "register_build", "preliminary_due", "finalists_announced", "final_due",
 )
 
 
@@ -63,7 +64,7 @@ def _organizers(value):
     for item in value:
         if not isinstance(item, dict):
             continue
-        row = _pick_scalars(item, ("name", "role", "fetched_at"))
+        row = _pick_scalars(item, ("name", "role", "fetched_at", "source"))
         url = _https(item.get("source_url"))
         if url:
             row["source_url"] = url
@@ -75,16 +76,23 @@ def _organizers(value):
 def _gates(value):
     if not isinstance(value, list):
         return []
-    return [_pick_scalars(item, ("id", "label", "blocks", "status"))
+    return [_pick_scalars(item, ("id", "label", "blocks", "status", "state", "text"))
             for item in value if isinstance(item, dict)]
 
 
 def _prizes(value):
     if not isinstance(value, dict):
         return None
-    out = _pick_scalars(value, ("status", "pool"))
+    out = _pick_scalars(value, ("status", "pool", "source", "notes"))
+    raw_tiers = value.get("tiers", [])
+    if isinstance(raw_tiers, str):
+        out["tiers"] = raw_tiers
+        return out
     tiers = []
-    for item in value.get("tiers", []):
+    for item in raw_tiers if isinstance(raw_tiers, list) else []:
+        if isinstance(item, str):
+            tiers.append({"place": item, "award": None, "source_url": None})
+            continue
         if not isinstance(item, dict):
             continue
         row = _pick_scalars(item, ("place", "award"))
@@ -107,11 +115,14 @@ def _event(record):
     if not isinstance(record, dict):
         raise ValueError("each coordinator event must be an object")
     out = _pick_scalars(
-        record, ("id", "name", "host", "platform", "status")
+        record, ("id", "name", "host", "platform", "status", "format",
+                 "kind", "league_window", "rules_state", "claim_gate", "deadline",
+                 "fetched_at")
     )
-    official_url = _https(record.get("official_url"))
-    if official_url:
-        out["official_url"] = official_url
+    for url_field in ("official_url", "source_url"):
+        url = _https(record.get(url_field))
+        if url:
+            out[url_field] = url
 
     platforms = record.get("also_platforms")
     if isinstance(platforms, list):
@@ -126,8 +137,18 @@ def _event(record):
         out["dates"] = dates
 
     constraints = record.get("constraints")
-    if isinstance(constraints, list):
+    if isinstance(constraints, str):
+        out["constraints"] = constraints
+    elif isinstance(constraints, list):
         out["constraints"] = [v for v in constraints if isinstance(v, str)]
+
+    matches = record.get("matches")
+    if isinstance(matches, list):
+        out["matches"] = [
+            _pick_scalars(item, ("id", "name", "points", "state", "tasks",
+                                 "rules", "deadline", "dates"))
+            for item in matches if isinstance(item, dict)
+        ]
 
     gates = _gates(record.get("gates"))
     if gates:

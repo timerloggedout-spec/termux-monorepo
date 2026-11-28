@@ -156,6 +156,8 @@ free-tier / mesh-resiliency engineering (device pull queue, quota systems);
 | C10 | Agentware — Hackathon Raptors | Build **Nov 27–30, 2026**; submissions close Dec 7, 18:00 UTC (organizer page, checked 2026-10-30) | Autonomous agent; **new code only** in the 72h window (pre-window code disqualifies) | Free; Discord | I1 △ — repo-maintenance agent framing; 72h new-code constraint = rebuild, not reuse |
 | C11 | AMD AI League — AMD × lablab.ai. **REGISTERED 2026-10-30 (see R6) — state Approved.** | League Sep 1 – **Dec 1, 2026**; submission deadline **Dec 1, 2026, 11:00 AM PST**; final Match ends Nov 14 (official event page, read 2026-10-30) | **Individual participation only** (no teams). Points league: Onboarding (300 pts: AMD sign-up, claim $100 GPU credits, first Academy course, complete AMD profile, join lablab Discord — **required for Match participation**, join AMD Discord) ∘ Academy course milestones (5 courses = League-podium eligibility gate) ∘ 6 Matches (Match 4 LIVE: Intelligent Web Information Retrieval, 1,800 pts; Match 5: AI-Powered Code Repository Repair, 2,100 pts; Match 6 Nov 10–14, 2,400 pts; closed Matches stay open for points only) ∘ per-Match project submitted via event page (solo-team create ⇒ Submit Project) | Free; lablab account + AMD SSO (live); no card at any step (verified at join) | Prizes: League podium $2,500/$1,500/$1,000 (gate: ≥5 Academy courses) · per Match $500 cash / $250 GPU credits / $100 GPU credits top-50 · Referral Leaders $1,000/$600/$400 · ROCm Certified Associate credential. Fit: Match 4 = web-retrieval agent (fleet web-RE surface); Match 5 = repo-repair multi-agent. **Candidate, unassigned — packet decision = Manager** |
 
+| C17 | GitLab Community Hackathon — January 2027 (Contributor Platform) | **Jan 21–28, 2027 UTC**; qualifying MRs merge within 31 days after event end | Accept Contributor Platform rules; start onboarding; choose an eligible GitLab issue; get assigned BEFORE opening an MR; open MR during the seven-day event; maintainer merge within 31 days. AI allowed with review/testing responsibility; 20 MRs + 20 issues/day caps; scripted labeling prohibited. | Entry fee: NOT_ESTABLISHED; store credits (200 / 150 / 100 for top three; 50 per qualifying merged MR); cash component: NONE_LISTED. | Contribution-lane fit; code/docs/translation/issue work. Owner onboarding, rule acceptance, issue assignment, and contribution state: NOT_ESTABLISHED; Devpost registration: NOT_REQUIRED. See C17 in coordinator candidate_events. |
+
 ### Idea bank (unassigned concepts)
 
 | # | Idea | Source | Concept (1-line) | Matched ⇒ status |
@@ -696,12 +698,104 @@ PR #1970 merged 2e99fadd).
   recording demonstrating your application no later than **Thursday,
   Nov. 19 at 12 p.m. PT**." Countdown now carries Nov 19 12:00 PT.
 
+### GitLab program-family watchlist — future editions and historical editions
+
+Keep the programs separate. The February–March AI Hackathon and October
+Transcend edition are closed; the Community Hackathon has an upcoming
+January 2027 event.
+
+| Program | State | Verified window / result | Planning disposition |
+|---|---|---|---|
+| GitLab AI Hackathon — “You Orchestrate. AI Accelerates.” | CLOSED | Submissions Feb 9–Mar 25; judging Mar 30–Apr 17; winners Apr 22; $65,000 pool | Watch next edition; next dates NOT_ESTABLISHED |
+| GitLab Transcend — “Life After Code” | CLOSED | Submissions Oct 5–27; judging/results timeline has rules-vs-connector discrepancies; $45,000 pool | Watch next edition; next dates NOT_ESTABLISHED |
+| GitLab Community Hackathon | **UPCOMING — C17** | **Jan 21–28, 2027 UTC**; qualifying MRs merge within 31 days after event end | Candidate event; 200/150/100 store credits for top three; 50 credits per qualifying merged MR |
+
+The October 2026 Community Hackathon edition is historical: the current
+Contributor Platform page reports 76 prize winners and 636 merged MRs.
+Live rules page version is 2026-10-v2; the search-index copy returned 2026-10-v1. Preserve the version discrepancy.
+
+**Source hierarchy:** `https://gitlab.com/gitlab-ai-hackathon` is the public root
+group. The supplied
+`https://gitlab.com/gitlab-ai-hackathon/gitlab-devsecops-flow-hackathon`
+resolves to a subgroup, observed empty on 2026-11-22. The sibling
+`/transcend` subgroup has 312 public projects with event-cycle mapping
+NOT_ESTABLISHED. The archived `/transcend-october-2026` subgroup contains
+1,273 child subgroups and 1,820 public archived projects. The
+`/project-templates/participant-template` project is the public agent/flow starter.
+The source map and evidence are in
+`docs/ops/GITLAB-AI-HACKATHON-OSINT.md`,
+`ops/challenge/osint/gitlab-sources.json`, the 312-project sibling snapshot
+`ops/challenge/osint/gitlab-transcend-projects-2026-11-22.json`, and the
+October 2026 subgroup/project snapshots under
+`ops/challenge/osint/gitlab-transcend-october-2026-subgroups-2026-11-22.ndjson` and
+`ops/challenge/osint/gitlab-transcend-october-2026-projects-2026-11-22.ndjson`.
+
+**Entry path:** C17 uses Contributor Platform rule acceptance and onboarding;
+Devpost registration is NOT_REQUIRED. The sequence is accept rules → start
+onboarding → choose an issue → obtain assignment → open an MR in the event
+window → get it merged within the 31-day post-event window. Owner onboarding,
+rule acceptance, issue assignment, and contribution state remain
+NOT_ESTABLISHED. The February–March AI Hackathon group-access request window
+is historical and closed.
+
+### C12 — UGREEN Hackathon 2026 on AI NAS — R1 SUBMITTED; R2 CONDITIONAL
+
+- **Round 1 receipt:** Receipts Vault is published on Devpost at
+  https://devpost.com/software/receipts-vault. The authenticated project
+  record reports published_at = submitted_at =
+  2026-11-15T22:16:33-08:00, before the Round 1 wall
+  (2026-11-15 23:45 PT). The coordinator now records registration and
+  Round 1 submission as complete.
+- **Schedule correction (official Devpost announcement #47894, sent
+  2026-11-22T03:02:11Z):** Top 30 finalists and invitations Nov 27;
+  assigned remote-NAS testing Nov 28–Dec 4; final submission Dec 6 at
+  11:45 PM PT; winners Dec 12.
+- **Source conflict:** the Devpost key-dates endpoint still returned the
+  earlier winner date when re-read Nov 23. The later official announcement
+  governs; the conflict remains recorded in the coordinator.
+- **Round 2 gate:** conditional on finalist invitation. Preserve the
+  Round 1 package; if invited, complete the assigned NAS testing day and
+  final package/demo by the updated wall.
+
+### C18 — Build with AI — PICO Space Program — UPCOMING / SUBMISSIONS OPEN
+
+- **Program window:** Nov 18, 2026–Feb 1, 2027; winners announced Feb 25.
+  Devpost lists a $50,000 cash pool, $10,000 top prize, and 32 prizes.
+- **Tracks:** Android/Kotlin and Unity/C#. The official emulator supports
+  development without a headset.
+- **Kickoff:** Tue Nov 24, 10:00 AM PT. Luma lists 10:00 AM–12:15 PM PT;
+  the supplied Discord post lists 10:00 AM–12:00 PM PT. Preserve this
+  15-minute discrepancy until the organizer clarifies. Calendar entry
+  uses the Luma end time.
+- **Eligibility/registration gates:** age 18+; eligible country/territory
+  (Quebec excluded); Devpost country, GitHub username, and Discord
+  username fields; explicit agreement to Official Rules and Devpost Terms.
+  The registration form's country dropdown is narrower than the rules
+  eligibility text, so verify the selected country before registration.
+- **Build/submission gates:** PICO developer account; join the PICO Space
+  Program Discord; choose a track; build or significantly port/update the
+  app after Nov 18; test on PICO or the official emulator; publish source
+  with license, APK, test instructions, and public YouTube demo under
+  three minutes; disclose AI tools/models. AI-agent use is required for
+  Agentic Workflow and Frontier Models award categories.
+- **Participation state:** user requested participation Nov 23.
+  Account-specific eligibility and Devpost registration, Luma RSVP, track,
+  and project remain pending confirmation. Personal identifiers are kept
+  out of this public register.
+- **Sources:** https://pico-space-program.devpost.com/ ;
+  https://pico-space-program.devpost.com/rules ;
+  https://luma.com/g2wipwwq ;
+  https://developer.picoxr.com/ ;
+  https://discord.gg/bCFgjmjKCr .
+
 ## 5. Sweep sources
 
 AWS Builder Center hackathons listing; Devpost (AI/agent, Nov–Dec 2026);
-lablab.ai events; Builder.io hackathon page; Aha.io academy events;
-vendor developer-competition pages (Google, Microsoft, Anthropic,
-Hugging Face). Each sweep re-verifies deadlines from the official page
+GitLab AI Hackathon group + Transcend subgroup + Participant Template;
+GitLab Contributor Platform hackathon + rules + onboarding + issue finder;
+GitLab Community Discord; lablab.ai events; Builder.io hackathon page;
+Aha.io academy events; vendor developer-competition pages (Google,
+Microsoft, Anthropic, Hugging Face). Each sweep re-verifies deadlines from the official page
 before touching §3. **November watcher (owner, 2026-10-27):** through the
 fall season the sweep scopes November listings on every source, Aha.io
 included.

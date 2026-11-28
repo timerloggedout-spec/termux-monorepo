@@ -23,6 +23,33 @@ sets) or `null` — never inferred, never reconstructed from plausibility.
 | `scope` | what the Manager owns (the lane + countdown-critical path) |
 | `subs[]` | per-event sub-coordinators: `{suffix, event_id, chat_id}` — suffixes `-d1`..`-d5` on the Manager moniker (coordination identities, `docs/ops/AGENT-MONIKERS.md`); `chat_id` is null while a sub has no chat of its own |
 
+## candidate_events[] — pre-admission opportunity records
+
+`candidate_events[]` holds discovered opportunities before they are
+graduated into the canonical `events[]` lane. These records support
+screening, planning, and source-backed registration preparation. Registration,
+group membership, project creation, and submission remain independent states
+with their own evidence.
+
+| field | meaning |
+|---|---|
+| `id`, `name`, `host`, `platform`, `official_url` | stable candidate identity and official source |
+| `status` | screening/watch/hold/upcoming disposition, with evidence |
+| `dates{}` | announced window, merge/submission cutoff, timezone, and observation basis |
+| `prizes{}` | published reward tiers and source URL; unpublished values remain NOT_ESTABLISHED |
+| `fit_angle` | evidence-backed relationship to available project/contribution capabilities |
+| `gates[]` / `gates` | eligibility, onboarding, assignment, and submission requirements from official rules |
+| `screen` | current opportunity assessment and explicit unknowns |
+| `submission_mechanics` | official entry sequence and required artifacts |
+| `moniker` | assigned entrant moniker after registry assignment; null while unassigned |
+| `source_urls[]`, `fetched_at` | source provenance and freshness |
+
+Candidate records may carry additional program-specific evidence fields
+(e.g. institution-gap or rescreen data). Keep source facts
+distinct from fit analysis. Graduate a candidate into `events[]` only
+when the Challenge Management Manager admits it to the managed event
+slate; registration and submission remain independent states.
+
 ## events[]
 
 One object per packet (D0–D5), mirroring log §4. Plus slate-history events (e.g. `STRANDS-DECIDER`, added 2026-10-28: closed, not D-numbered, no moneyball intake — carried for history + opportunity_cost).

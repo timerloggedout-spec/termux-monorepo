@@ -97,6 +97,20 @@ jobs:
         record = workflow_registry.parse_workflow_text(source, ".github/workflows/scoped.yml")
         self.assertEqual(record["source_authority"], "read-only-or-advisory")
 
+    def test_classifies_declared_non_advisory_write_scopes_as_writers(self) -> None:
+        source = """\\
+name: Action control
+on: [workflow_dispatch]
+permissions:
+  actions: write
+jobs:
+  cancel:
+    steps:
+      - run: echo control
+"""
+        record = workflow_registry.parse_workflow_text(source, ".github/workflows/action-control.yml")
+        self.assertEqual(record["source_authority"], "writer")
+
     def test_parses_sequence_event_syntax(self) -> None:
         source = "name: Compact\non: [push, workflow_dispatch]\njobs:\n  test:\n    runs-on: ubuntu-latest\n"
         record = workflow_registry.parse_workflow_text(source, ".github/workflows/compact.yml")

@@ -154,9 +154,18 @@
           "role": "typed-blender-scene-modeling-rendering-validation-mcp",
           "source": "https://github.com/dcc-mcp/dcc-mcp-blender",
           "license": "MIT-source-and-pypi; Blender Extensions package GPL-3.0-or-later",
-          "availability_state": "candidate_review",
+          "availability_state": "pinned_candidate",
           "security_profile": "typed-tools-loopback-local-session",
-          "verification": "release-pin-and-local-session-smoke-required"
+          "verification": "local_install_and_live_session_smoke_pending",
+          "version": "0.2.30",
+          "release": "v0.2.30",
+          "source_commit": "5a9d7d489ebf0d6af5c5e3166453eeee5a7fce66",
+          "pypi_package": "dcc-mcp-blender==0.2.30",
+          "wheel_sha256": "2b0b3cd491e139fd7c01cd7859bb8155a7e7115e05c76b1f306db0856f285d4e",
+          "blender_targets": [
+            "4.5 LTS",
+            "5.2"
+          ]
         },
         {
           "id": "openusd",

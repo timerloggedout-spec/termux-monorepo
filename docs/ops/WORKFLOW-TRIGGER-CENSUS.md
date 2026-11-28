@@ -1,6 +1,6 @@
 # Workflow trigger census — selected routes
 
-Snapshot: `feat/trigger-workflow-registry-generator`, 2026-11-27. Scope: nine source-read workflows demonstrating issue admission, issue intake, workflow handoff, mentions, slash commands, manual dispatch, and typed repository events. This is a verified exemplar set, not the exhaustive 333-workflow directory inventory. The generated automation catalog contains 332 entries. `research-astute-private-repo-provisioner.yml` is present in the directory but absent from the catalog; `project-repository-visibility.yml` is catalogued with an authority mismatch.
+Snapshot: `feat/trigger-workflow-registry-generator`, 2026-11-28. Scope: nine source-read workflows demonstrating issue admission, issue intake, workflow handoff, mentions, slash commands, manual dispatch, and typed repository events. This is a verified exemplar set, not the exhaustive 333-workflow directory inventory. The generated automation catalog contains 332 entries. `research-astute-private-repo-provisioner.yml` is present in the directory but absent from the catalog; `project-repository-visibility.yml` is catalogued with an authority mismatch.
 
 | Workflow | Event(s) | Selector / gate | Authority |
 |---|---|---|---|

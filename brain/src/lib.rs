@@ -6,6 +6,7 @@ mod shared_brain;
 pub use shared_brain::*;
 
 pub mod extensions;
+pub mod adapters;
 pub use extensions::{
     invoke_extension, BrainExtension, ExtensionContext, ExtensionContractError,
     ExtensionDescriptor, ExtensionInvocationError, BRAIN_EXTENSION_CONTRACT_VERSION,

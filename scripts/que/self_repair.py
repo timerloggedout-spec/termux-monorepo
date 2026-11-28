@@ -32,6 +32,8 @@ from typing import Any
 
 # Script execution sets sys.path[0] to scripts/que; add the repository root for the shared intake module.
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import sie_pipeline  # noqa: E402
 from scripts.que.branch_reconciliation_intake import branch_reconciliation_groups
 
 REPO = os.environ.get("GITHUB_REPOSITORY", "timerloggedout-spec/termux-monorepo")
@@ -97,9 +99,28 @@ def item_key(path: str, sig: str) -> str:
 
 
 def item_body(item: dict) -> str:
-    rec = "\n".join(f"- run {r['url']} @ `{r['sha'][:8]}`" for r in item["receipts"][:5])
+    rec = "\\n".join(f"- run {r['url']} @ `{r['sha'][:8]}`" for r in item["receipts"][:5])
+    source_kind = item.get("source_kind") or ("feed_freshness" if item.get("step") == "freshness" else "workflow_run")
+    source_id = item.get("source_id") or item["path"]
+    latest_receipt = (item.get("receipts") or [{}])[0]
+    source_revision = item.get("source_revision") or latest_receipt.get("sha") or item["sig"]
+    source_sha = source_revision if re.fullmatch(r"[0-9a-f]{40}", source_revision) else None
+    event_source_id, event_source_revision = source_id, source_revision
+    if source_kind == "workflow_run" and latest_receipt.get("id") is not None:
+        event_source_id = f"{source_id}:{latest_receipt['id']}"
+        event_source_revision = f"{source_revision}:attempt:{latest_receipt.get('run_attempt') or 1}"
+    stage_receipt = sie_pipeline.build_receipt(
+        source_kind=source_kind, source_id=source_id,
+        source_revision=source_revision, failure_class=item["sig"],
+        repository=REPO, ref="master", sha=source_sha,
+        evidence_refs=[r["url"] for r in item["receipts"] if r.get("url")],
+        owner_role=item.get("room"),
+        event_source_id=event_source_id,
+        event_source_revision=event_source_revision,
+    )
+    stage_json = json.dumps(stage_receipt, sort_keys=True, indent=2)
     detail = item.get("detail", "")
-    detail_section = f"\n## Branch reconciliation\n{detail}\n" if detail else ""
+    detail_section = f"\\n## Branch reconciliation\\n{detail}\\n" if detail else ""
     return f"""{MARK.format(key=item['key'])}
 class: `{item.get('class', 'self-repair')}` · workflow: `{item['path']}` · signature: `{item['sig']}` · priority: {item['priority']}
 
@@ -108,6 +129,11 @@ class: `{item.get('class', 'self-repair')}` · workflow: `{item['path']}` · sig
 - failing step: `{item['step'] or 'n/a'}`
 - error: {item['message'] or 'n/a'}
 {rec}
+
+## SIE stage receipt
+```json
+{stage_json}
+```
 {detail_section}
 ## Loop (PROPOSAL.md)
 - [ ] Research: diagnosis note with receipts (run URL ∧ SHA)
@@ -226,7 +252,9 @@ def failing_groups(gh: GH, window_h: int) -> list[dict]:
             "path": path, "name": latest["name"], "room": room, "step": step, "message": message,
             "sig": sig, "key": item_key(path, sig), "failures": len(rs), "total": max(total, len(rs)),
             "window_h": window_h, "priority": priority(len(rs), max(total, len(rs)), path),
-            "receipts": [{"url": r["html_url"], "sha": r["head_sha"]} for r in sorted(rs, key=lambda r: r["created_at"], reverse=True)],
+            "receipts": [{"url": r["html_url"], "sha": r["head_sha"], "id": r["id"],
+                          "run_attempt": r.get("run_attempt", 1)}
+                         for r in sorted(rs, key=lambda r: r["created_at"], reverse=True)],
         })
     # Bootstrap order: branch gates first, then priority.
     return sorted(out, key=lambda g: (Path(g["path"]).name not in BRANCH_GATES, -g["priority"]))
@@ -254,6 +282,19 @@ def stale_feeds(gh: GH) -> list[dict]:
                 "receipts": [{"url": c[0]["html_url"], "sha": c[0]["sha"]}],
             })
     return out
+
+
+def queue_stall_groups() -> list[dict]:
+    """Read the canonical QUE dispatch watchdog feed as SIE observations."""
+    path = HERE / "ops" / "que" / "feeds" / "stall-gap-feed.json"
+    if not path.exists():
+        return []
+    from sie_event_adapter import queue_stall_groups
+    try:
+        return queue_stall_groups(json.loads(path.read_text(encoding="utf-8")))
+    except (OSError, ValueError, TypeError) as exc:
+        print(f"::warning::QUE stall feed unreadable; retain prior intake: {exc}")
+        return []
 
 
 def open_items(gh: GH) -> dict[str, dict]:
@@ -351,7 +392,7 @@ def main(argv: list[str] | None = None) -> int:
     gh = GH(os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN") or "")
     summary = {"observe": [], "promote": [], "learn": []}
     try:
-        groups = failing_groups(gh, a.window_hours) + stale_feeds(gh)
+        groups = failing_groups(gh, a.window_hours) + stale_feeds(gh) + queue_stall_groups()
         if a.branch_inventory:
             groups += branch_reconciliation_groups(a.branch_inventory)
         summary["observe"] = file_items(gh, groups, a.dry_run, a.max_new)

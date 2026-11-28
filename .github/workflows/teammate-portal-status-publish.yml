@@ -18,8 +18,8 @@ on:
     branches: [master]
     paths:
       - "docs/proposals/active/hackathon-desk/**"
-      - "docs/superpowers/specs/2026-11-24-hackathon-desk-design.md"
-      - "docs/superpowers/plans/2026-11-24-hackathon-desk.md"
+      - "localization/**"
+      - "scripts/ops/render_teammate_portal_status.py"
   schedule:
     - cron: "17,47 * * * *"
 

@@ -108,9 +108,13 @@ def parse_workflow_text(source: str, path: str) -> dict[str, Any]:
         raise ValueError(f"{path}: YAML parse failure: {exc}") from exc
     if not isinstance(document, dict):
         raise ValueError(f"{path}: YAML root must be a mapping")
+    if "on" not in document or not event_config(document.get("on")):
+        raise ValueError(f"{path}: missing top-level on event declaration")
     events = event_config(document.get("on"))
     permission_data = permissions(document)
     jobs = mapping(document.get("jobs"))
+    if not jobs:
+        raise ValueError(f"{path}: workflow must define at least one job")
     action_refs = {
         str(step["uses"])
         for job in jobs.values()

@@ -76,6 +76,15 @@ This ChatGPT session exposes GitHub and research/documentation tools. The instal
 - Code state before this log update: `5736355324bd4a10b698c910dee53a5cef201643`. The manifest update itself creates a new head; run all final checks against the resulting branch SHA.
 - Current runtime evidence remains repository-only; Termux device probe and runner execution remain blocked pending external receipts.
 
+
+### 2026-11-28 — ChatGPT — active intake and inventory refinement
+
+- Extended the existing project-task parser to preserve engineering domain, toolchain, stage, artifacts, environment, verification, access, physical effect and risk in the QUE routing receipt.
+- Added tests for issue-template identity, queue admission, metadata parsing and receipt rendering.
+- Distinguished local executable presence from vendor-hosted products in the inventory report; external products use `detection_state=external`.
+- Formatted the validator and inventory probe for maintainable review; added license, access, card, commercial-use and execution-target validation.
+- Code state before this log update: `39f90f962b2cd265887bd582d37ab8f41398c88b`; the manifest update creates a new head for final validation.
+
 ## Links
 
 - [ITEMS](./ITEMS.md)

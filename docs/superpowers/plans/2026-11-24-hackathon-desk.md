@@ -44,13 +44,13 @@
 
 **Interfaces:**
 - Produces: an allowlisted `challenge-public-feed/v1` artifact plus HackathonDesk.normalizeOpportunityFeed(payload, now), normalizeChallengeFeed(payload), normalizeCountdownFeed(payload), normalizePipelineFeed(payload), and safeExternalUrl(value).
-- The browser fetches `https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/que/feeds/opportunity-priority.json` for ranked opportunities and `./data/challenge-public-feed.json` for challenge events/gates. It fetches countdown, desk, QUE queue, and dispatch mirrors from `./data/challenge-countdowns-feed.json`, `./data/desk-feed.json`, `./data/que-queue-feed.json`, and `./data/dispatch-state-feed.json`.
+- The browser fetches `https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/que/feeds/opportunity-priority.json` for ranked opportunities and `./data/challenge-public-feed.json` for challenge events/gates. It fetches countdown, desk, QUE queue, and dispatch mirrors from `./data/challenge-countdowns-feed.json`, `./data/desk-feed.json`, and `./data/que-queue-feed.json`. Pipeline dispatch evidence is read from the `dispatch_claims` object embedded in the QUE queue feed; the separate `dispatch-state-feed.json` is empty on master and stays outside browser requests until it contains a valid published contract.
 - The browser MUST NOT fetch `ops/challenge/coordinator.json`. The generator copies only explicitly allowlisted public fields, recursively excludes `metrics_internal` and `win_probability`, and tests the exclusion at every nesting level. The generated artifact is deployed with the dashboard tree.
 - Returns normalized records with source, generated_at, freshness, and explicit status values.
 
 - [ ] Write Python tests first for the projection allowlist, nested forbidden-key exclusion, deterministic output, and coordinator input failures.
 - [ ] Write Node tests for fresh/stale/missing/malformed opportunity feeds, public challenge projection states, closed events, null deadlines, and safe URL validation.
-- [ ] Assert the deployed opportunity URL and all four dashboard-relative feed URLs resolve from the deployed Hackathon Desk origin; treat unavailable feeds as explicit unavailable states.
+- [ ] Assert the deployed opportunity URL and all three dashboard-relative feed URLs resolve from the deployed Hackathon Desk origin; treat unavailable feeds as explicit unavailable states.
 - [ ] Run pytest -q tests/test_hackathon_desk.py and node --test tests/hackathon-desk.test.cjs; verify each new behavior fails for its expected reason.
 - [ ] Implement pure normalizers and escaping/link validation in hackathon.js.
 - [ ] Run focused Node tests and pytest -q tests/test_hackathon_desk.py.
@@ -120,7 +120,7 @@
 - Test: tests/hackathon-desk.test.cjs, tests/test_hackathon_desk.py
 
 **Interfaces:**
-- Consumes: proposal process links and desk/queue/dispatch feed normalizers.
+- Consumes: proposal process links and desk/queue feed normalizers and the embedded dispatch-claims projection.
 - Produces: read-only proposal workflow entry points and evidence-backed pipeline states.
 
 - [ ] Write tests for issue form navigation, stale pipeline feeds, and source evidence links.

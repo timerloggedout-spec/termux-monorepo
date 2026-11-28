@@ -22,6 +22,8 @@ lanes:
   - lane_id: agentic-security
     orgs: [termux-monorepo, Research-Astute]
     inputs: [OTel, sandboxing, provenance, tool-permissions, OpenShell, WSO2-Agent-Manager]
+    program_anchors: [google-fairwind]
+    admission_charter: docs/research/AGENTIC-SECURITY-PROGRAM-ADMISSIONS.md
     contributors: [gemini, openrouter, felo, huggingface]
   - lane_id: malware-reverse-engineering
     orgs: [termux-monorepo, Research-Astute]
@@ -36,7 +38,17 @@ lanes:
   - lane_id: foss-developer-tools
     orgs: [termux-monorepo, Research-Astute]
     inputs: [Tree-sitter, Lizard, Radon, FOSS-runtimes]
-
+  - lane_id: sponsored-research-public-goods
+    orgs: [Research-Astute, termux-monorepo]
+    charter: docs/research/SPONSORED-RESEARCH-PUBLIC-GOODS-LANE.md
+    domains: [education, learning-sciences, formative-assessment, k12-ai-infrastructure, digital-public-goods]
+    inputs: [grant-opportunities, public-goods-catalogs, learning-sciences-frameworks, open-licensing, downstream-adoption-evidence]
+    opportunity_anchors: [C13]
+    integration: documented-contract-only
+    integration_status: external-source-adapter-not-established
+    canonical_opportunity_source: ops/challenge/coordinator.json#C13
+    readiness_pipeline: [docs/ops/OPPORTUNITY-CYCLE.md, entries/c13/prep-manifest.json, entries/c13/submission-requirements.json]
+    reference_surfaces: [docs/ops/FORESIGHT-EVIDENCE-SPINE.md, docs/icm/objects/knowledge/context-relationship-index.md, docs/proposals/active/notation-sets/ITEMS.md]
   - lane_id: mcp-admission-security
     orgs: [termux-monorepo, Research-Astute]
     inputs: [MCP, tool-schema-hashes, authorization, delegation, provenance, OpenTelemetry]

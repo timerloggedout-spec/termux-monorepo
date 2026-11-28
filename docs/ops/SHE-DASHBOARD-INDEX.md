@@ -9,6 +9,17 @@ This is the navigation entry point for the SHE dashboard contract and its surrou
 - SHE-DASHBOARD-UI-UX-CONTROL-PLANE.md — implementation-ready interactive UI/UX, responsive behavior, accessibility, surface matrix, and promotion gates.
 - SHE-DASHBOARD-ARCHITECTURE.mmd — authoritative architecture source.
 
+## Trigger registry
+
+- TRIGGER-WORKFLOW-REGISTRY.md — canonical relationship index for entry methods, events, routing, workflows, and evidence.
+- `TRIGGER-WORKFLOW-REGISTRY.json` — machine-readable registry (`trigger-workflow-registry/v1`).
+- ISSUE-TEMPLATE-CENSUS.md — source-derived census of all 14 YAML issue forms.
+- `generated/issue-template-census.json` — machine-readable template census with source blob SHAs.
+- WORKFLOW-TRIGGER-CENSUS.md — source-verified selected workflow event/selector examples.
+- `generated/workflow-trigger-census.json` — machine-readable workflow trigger exemplars with source blob SHAs.
+- LABEL-CONSUMER-CENSUS.md — source-backed label producers, selectors, queue states, and consumers.
+- `generated/label-consumer-census.json` — machine-readable label relationship records and coverage limits.
+
 ## Visual pipeline
 
 ```text

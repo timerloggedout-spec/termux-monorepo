@@ -90,6 +90,14 @@
       "label_count": 13,
       "scope": "selected examples; not exhaustive",
       "observed_at": "2026-11-27"
+    },
+    {
+      "id": "workflow-event-index",
+      "path": "docs/ops/generated/workflow-event-index.json",
+      "role": "complete workflow-level event, schedule, jobs, authority, concurrency, and action-pin index derived from generated catalog with source-verified corrections",
+      "schema": "workflow-event-index/v1",
+      "workflow_count": 332,
+      "observed_at": "2026-11-27"
     }
   ],
   "concepts": [
@@ -510,14 +518,22 @@
     },
     "workflow_inventory": {
       "directory_yaml_count": 332,
-      "catalog_record_count": 331,
-      "uncatalogued_workflows": [
-        ".github/workflows/project-repository-visibility.yml"
-      ],
-      "status": "SOURCE_VERIFIED_DRIFT",
-      "catalog_fingerprint": "4a497cdac2e70a6fc07866e869010cadb96b90db96ac60a79157414b740ba553",
-      "workflow_census": "docs/ops/generated/workflow-trigger-census.json",
+      "catalog_record_count": 332,
+      "indexed_record_count": 332,
+      "status": "IN_SYNC",
+      "catalog_fingerprint": "d1fc2a62d098070ccae2d73efe34528bf17d3c3f1245d3137b4ba80ea41b689e",
+      "workflow_index": "docs/ops/generated/workflow-event-index.json",
       "observed_at": "2026-11-27"
-    }
+    },
+    "workflow_authority_conflicts": [
+      {
+        "workflow": ".github/workflows/project-repository-visibility.yml",
+        "catalog_authority": "read-only-or-advisory",
+        "source_authority": "writer",
+        "source_blob_sha": "5a42fc64c81632c38ffa892a1a890d685114fcda",
+        "reason": "Source executes a GitHub REST PATCH to change an external repository visibility and verifies the result.",
+        "status": "SOURCE_VERIFIED_CONFLICT"
+      }
+    ]
   }
 }

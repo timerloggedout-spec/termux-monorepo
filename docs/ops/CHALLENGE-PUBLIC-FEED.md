@@ -57,9 +57,11 @@ and this projection generator. It proposes both dashboard JSON artifacts in
 one refresh PR. The Tribute deployment copies the dashboard tree, so the
 projection ships with the page.
 
-The separate `apps/tribute-dashboard/data/dispatch-state-feed.json` is empty
-on master and is not a browser dependency. The Hackathon Desk reads the
-`dispatch_claims` projection embedded in the QUE queue feed.
+The versioned `dispatch-state-feed/v1` is an existing published source. The
+QUE collector folds it into `dispatch_claims` in `que-queue-feed/v1`; the
+Hackathon Desk reads that embedded projection and selects display fields
+without rendering ranking scores/components. This avoids a second dispatch
+request while preserving the source lineage.
 
 ## Failure behavior
 

@@ -46,8 +46,8 @@ Make the researched FOSS-first engineering ecosystem discoverable and safely rou
 ```sh
 python3 -m ops.engineering.taxonomy validate
 python3 scripts/engineering/toolchain_probe.py --json
-python3 -m unittest tests.test_engineering_taxonomy -v
-python3 -m unittest tests.hub_mcp.test_protocol -v
+python3 -m unittest discover -s tests -p 'test_engineering_taxonomy.py' -v
+python3 -m unittest discover -s tests/hub_mcp -p 'test_protocol.py' -v
 python3 scripts/ci/repo_gate.py
 python3 scripts/ci/validate_siglary_mandate.py --base origin/master
 python3 scripts/ci/termux_smoke.py

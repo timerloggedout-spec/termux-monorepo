@@ -146,7 +146,6 @@
 - Produces: onboarding, navigation, proposal, contribution, pipeline, permissions, accessibility, and troubleshooting documentation.
 
 - [ ] Write failing tests for guide links and required sections.
-- [ ] Write failing tests for guide links and required sections.
 - [ ] Verify RED.
 - [ ] Write both guides and connect them from the page using pinned-master raw-content URLs.
 - [ ] Verify the feature-branch raw URLs for both guides return successfully before promotion; validate headings and required sections.

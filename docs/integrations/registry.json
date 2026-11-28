@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "registry_id": "termux-monorepo.integration-intelligence",
   "repository": "timerloggedout-spec/termux-monorepo",
-  "updated_at": "2026-11-11",
+  "updated_at": "2026-11-28",
   "authority": "repository-maintained-inventory",
   "capability_scope": "Session-scoped audit of explicitly requested integrations; see INTEGRATION-PORTFOLIO.md for observed access, blockers, and next validation steps. CEEL candidate integrations are inventory-only until independently validated.",
   "integrations": [
@@ -509,6 +509,20 @@
       "write_boundary": "No dataset upload, prompt/completion transfer, scoring mutation or deployment until data classification, retention, scopes and cost ceiling are approved.",
       "next_step": "Verify dataset/version lineage, scorer reproducibility, experiment export and cost controls using sanitized fixtures.",
       "sensitivity": "evaluation-dataset-and-score-metadata"
+    },
+    {
+      "id": "engineering-toolchains",
+      "name": "FOSS Engineering Toolchains",
+      "category": "engineering-tooling",
+      "priority": "P1",
+      "discovery_state": "discovered",
+      "session_evidence": "Official project sources and prior license/access research identify the FOSS and free-tier tool family. Repository taxonomy and a read-only Termux/Linux executable probe are implemented in this branch; no device-side probe or engineering job has been executed in this session.",
+      "repo_skill_path": ".agents/skills/engineering-toolchains/SKILL.md",
+      "repo_adapter_state": "repo_adapter_implemented",
+      "authority": "engineering-taxonomy-and-read-only-tool-inventory",
+      "write_boundary": "The implemented Hub capabilities validate the taxonomy and probe PATH presence only. CAD/EDA/CAE execution, package installation, remote-runner provisioning, fabrication submission, device programming and physical actuation require separate named capabilities, current environment evidence and approval.",
+      "next_step": "Run engineering.toolchain_probe on the Termux device; pin actual tool versions and runner image; add per-tool execution adapters only after format, resource, license and security checks.",
+      "sensitivity": "engineering-design-artifacts"
     }
   ]
 }

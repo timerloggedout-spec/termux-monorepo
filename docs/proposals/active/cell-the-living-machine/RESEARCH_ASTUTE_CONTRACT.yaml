@@ -1,0 +1,52 @@
+schema: reusable-research-store-contract/v1
+provider: Research-Astute
+organization: Research-Astute
+repository: Research-Astute/molecular-biology-research
+repository_id: 183701786
+visibility: private
+purpose: "Reusable, provenance-first molecular and cellular biology research records."
+
+record_lifecycle:
+  states: [candidate, source_verified, terms_reviewed, curated, project_approved, superseded]
+  transitions:
+    - candidate_to_source_verified
+    - source_verified_to_terms_reviewed
+    - terms_reviewed_to_curated
+    - curated_to_project_approved
+    - curated_to_superseded
+
+record_families:
+  - source_provider
+  - biological_entity
+  - molecular_structure
+  - sequence_annotation
+  - interaction
+  - pathway_reaction
+  - enzyme_kinetics
+  - cell_context
+  - literature
+  - scientific_claim
+  - educational_asset
+
+required_provenance:
+  - stable_record_id
+  - canonical_source_url
+  - upstream_accession
+  - source_revision
+  - retrieved_at
+  - evidence_class
+  - attribution
+  - license_or_terms
+  - checksum
+  - curator
+  - review_date
+
+intake:
+  source: Search-Astutely candidate snapshots
+  deduplicate_by: [canonical_url, DOI, PMID, PDB_ID, UniProt_accession, source_accession]
+  preserve_original_snapshot: true
+
+consumption:
+  project_reference: stable_record_id_and_revision
+  initial_consumer: project:cell-the-living-machine
+  shared_reuse: enabled_after_curated_state

@@ -30,6 +30,10 @@ Semiconductor: Yosys, OpenROAD and KLayout.
 
 Technical visualization: Blender, linked to the existing 3D asset pipeline.
 
+## refTemplates placement
+
+The repository ignores `refTemplates/` by policy. This proposal keeps upstream project metadata in `docs/ops/ENGINEERING-REFERENCE-SET.json` and uses `refTemplates/engineering/` only as a local, gitignored shallow-clone workspace. Source revisions remain unpinned until a specific reference is adopted through the documented review path.
+
 ## FOSS and access policy
 
 Local FOSS applications are free to obtain and run under their respective licenses; commercial-use rights follow each license and upstream dependency. Cloud-free tiers are recorded separately from FOSS. A free tier with public documents or non-commercial limits is not classified as FOSS. Paid proprietary products remain interoperability targets, not baseline dependencies. Card requirements are recorded as false, true or unknown from evidence.

@@ -77,6 +77,8 @@ for statement in (
     "cp apps/tribute-dashboard/matrix.md _user_site/matrix/index.md",
     "main-landing-studysprint-link",
     "force:false",
+    "types: [closed]",
+    "github.event.pull_request.merged == true",
     "cp -a _tribute/. _user_site/tribute/",
 ):
     require(statement in workflow, f"Pages deployment does not publish mirror: {statement}")

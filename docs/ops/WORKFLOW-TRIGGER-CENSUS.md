@@ -1,6 +1,6 @@
 # Workflow trigger census — selected routes
 
-Snapshot: `feat/trigger-workflow-registry-refresh`, 2026-11-27. Scope: seven source-read workflows demonstrating issue admission, issue intake, workflow handoff, mentions, slash commands, manual dispatch, and typed repository events. This is a verified exemplar set, not the exhaustive 331-workflow inventory.
+Snapshot: `feat/trigger-workflow-registry-refresh`, 2026-11-27. Scope: eight source-read workflows demonstrating issue admission, issue intake, workflow handoff, mentions, slash commands, manual dispatch, and typed repository events. This is a verified exemplar set, not the exhaustive 332-workflow directory inventory. The generated automation catalog contains 331 entries; `project-repository-visibility.yml` is present in the workflow directory but absent from that catalog snapshot.
 
 | Workflow | Event(s) | Selector / gate | Authority |
 |---|---|---|---|
@@ -20,6 +20,8 @@ Snapshot: `feat/trigger-workflow-registry-refresh`, 2026-11-27. Scope: seven sou
 - Provider command dispatch accepts manual input or `repository_dispatch` type `provider-command`; provider and action are bounded by the workflow's allowlist checks.
 - Game-development dispatch is a downstream `workflow_run` consumer of successful `swarm-admission` runs and validates the one-run handoff artifact before queueing.
 
+| `project-repository-visibility` | `push` (master, path-filtered) | Versioned owner request + authenticated owner/admin + repository identity checks | writer |
+
 ## Evidence and limits
 
-Each record stores the source blob SHA. Event subscriptions and selectors above are extracted from workflow YAML/job conditions; runtime outcomes still require workflow-run evidence. This census records configured behavior, not proof that a route fired successfully.
+Each record stores the source blob SHA. Event subscriptions and selectors above are extracted from workflow YAML/job conditions; runtime outcomes still require workflow-run evidence. The live workflow directory contained 332 YAML files; `docs/ops/generated/automation-workflow-catalog.json` contains 331 records. The additional `project-repository-visibility.yml` workflow is source-read and added here as an explicit catalog reconciliation gap. This census records configured behavior, not proof that a route fired successfully.

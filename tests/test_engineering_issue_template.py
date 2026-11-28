@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from unittest import TestCase
 
-from scripts.dispatch.project_task import parse_issue_body, validate
+from scripts.dispatch.project_task import parse_issue_body, receipt_comment, validate
 from scripts.ops.swarm_admission import match_template, parse_block, template_identity
 
 
@@ -46,6 +46,27 @@ electronics-product-design
 ### Stage
 schematic
 
+### Source artifacts
+hardware/board.kicad_sch
+
+### Expected artifacts
+Gerber, BOM
+
+### Environment fingerprint
+ubuntu-24.04; KiCad 9.x
+
+### Verification plan
+ERC and DRC fixtures
+
+### Access class
+local-free
+
+### Physical-world effect
+none
+
+### Risk tier
+engineering-review
+
 ### Entry
 Engineering
 
@@ -65,6 +86,13 @@ timerloggedout-spec/termux-monorepo
         self.assertEqual(validate(fields), [])
         self.assertEqual(fields["entry"], "Engineering")
         self.assertEqual(fields["scope"], "ops/engineering/**")
+        self.assertEqual(fields["engineering-domain"], "Electronics")
+        self.assertEqual(fields["toolchain-id"], "electronics-product-design")
+        self.assertEqual(fields["stage"], "schematic")
+        receipt = receipt_comment(123, fields)
+        self.assertIn("- domain: Electronics", receipt)
+        self.assertIn("- toolchain: electronics-product-design", receipt)
+        self.assertIn("- risk tier: engineering-review", receipt)
 
 
 if __name__ == "__main__":

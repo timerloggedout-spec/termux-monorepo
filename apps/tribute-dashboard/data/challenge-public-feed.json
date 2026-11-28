@@ -1,0 +1,847 @@
+{
+  "schema": "challenge-public-feed/v1",
+  "generated_at": "2026-11-28T05:26:16Z",
+  "source": "ops/challenge/coordinator.json",
+  "coordinator_schema_version": 1,
+  "events": [
+    {
+      "id": "STRANDS-DECIDER",
+      "name": "Agent Experience Hackathon: Strands Decider",
+      "host": "AWS Builder Center",
+      "platform": "aws-builder-center",
+      "status": "closed",
+      "official_url": "https://builder.aws.com/build/hackathons/4f50957c-1d08-37ab-b11c-97516b9adeb4/agent-experience-hackathon",
+      "organizers": [
+        {
+          "name": "AWS Builder Center (Amazon Web Services)",
+          "role": "host",
+          "fetched_at": "2026-10-28",
+          "source_url": "https://builder.aws.com/build/hackathons/4f50957c-1d08-37ab-b11c-97516b9adeb4/agent-experience-hackathon"
+        }
+      ],
+      "dates": {
+        "announced": "NOT_ESTABLISHED",
+        "reg_open": "NOT_ESTABLISHED",
+        "reg_close": "NOT_ESTABLISHED",
+        "build_start": {
+          "at": "2026-10-16T00:00:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "official page timeline: Launch October 16"
+        },
+        "build_end": {
+          "at": "2026-10-23T23:59:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "official page timeline: Projects due by October 23"
+        },
+        "submissions_open": "NOT_ESTABLISHED",
+        "deadline": {
+          "at": "2026-10-23T23:59:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "official page timeline: Projects due by October 23"
+        },
+        "judging_end": "NOT_ESTABLISHED",
+        "winners_at": "NOT_ESTABLISHED"
+      },
+      "constraints": [
+        "Agent using Strands Decider 2B for a meaningful decision paired with Amazon Bedrock; Builder Center article; public repo link with >=1 reusable Decider 2B decision pattern; public demo video <3 min; tags #strands-decider-2b + one pattern tag; original unpublished agent (all verbatim from official page, read 2026-10-28)"
+      ],
+      "prizes": {
+        "status": "ESTABLISHED",
+        "pool": "$16,800",
+        "notes": "Verbatim official page (firsthand 2026-10-28): 'Three winning projects will be selected. Each receives $5,000 in AWS credits and one AWS Builder swag bundle worth about $600... Total prize pool: $16,800.' Identical prize structure to D1 = same Agent Experience series template (verified on both pages, not a conflation).",
+        "tiers": [
+          {
+            "place": "winner (3 selected)",
+            "award": "$5,000 in AWS credits and one AWS Builder swag bundle worth about $600 (jacket, backpack, keyboard); official winner's certificate",
+            "source_url": "https://builder.aws.com/build/hackathons/4f50957c-1d08-37ab-b11c-97516b9adeb4/agent-experience-hackathon"
+          }
+        ]
+      },
+      "registration": {
+        "state": "joined"
+      },
+      "submission": {
+        "state": "none"
+      }
+    },
+    {
+      "id": "D0",
+      "name": "Weekend Challenge: Give your Agent a Tool",
+      "host": "AWS Builder Center",
+      "platform": "aws-builder-center",
+      "status": "closed",
+      "official_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool",
+      "organizers": [
+        {
+          "name": "AWS Builder Center (Amazon Web Services)",
+          "role": "host",
+          "fetched_at": "2026-10-28",
+          "source_url": "https://builder.aws.com"
+        }
+      ],
+      "dates": {
+        "announced": "NOT_ESTABLISHED",
+        "reg_open": "NOT_ESTABLISHED",
+        "reg_close": "NOT_ESTABLISHED",
+        "build_start": "NOT_ESTABLISHED",
+        "build_end": "NOT_ESTABLISHED",
+        "submissions_open": "NOT_ESTABLISHED",
+        "deadline": {
+          "at": "2026-10-26T13:00:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "challenge log section 4 D0 countdown-data; window Oct 23 - Oct 26 1:00 PM PDT per Gmail join receipt"
+        },
+        "judging_end": "NOT_ESTABLISHED",
+        "winners_at": "NOT_ESTABLISHED"
+      },
+      "constraints": [
+        "Open to builders 18 or older with a Builder Center profile. See Rules for country and employee exclusions. (verbatim, official page read 2026-10-28)",
+        "Submit a previously unpublished project that includes: The agent you started with and what it could already do (verbatim, official page read 2026-10-28)",
+        "The one new tool you added and why you picked it (verbatim, official page read 2026-10-28)",
+        "At least one AWS service as part of the agent or tool (verbatim, official page read 2026-10-28)",
+        "In the \"demo\" field of your project submission, include a link to a short (less than 3 minute) public video (e.g. YouTube, Vimeo, Facebook), showing what your agent can do now that it could not do before (verbatim, official page read 2026-10-28)"
+      ],
+      "prizes": {
+        "status": "ESTABLISHED",
+        "pool": "$1,000",
+        "notes": "Firsthand recheck 2026-10-28 on official page: Prizes line verbatim 'The top 5 projects each receive $100 in AWS credits and an AWS Builder Backpack'; Awards list values each award at $200. Pool reconciliation: $1,000 = 5 x $200 total award value; credits subtotal $500; backpack implied value $100 per award ($200-$100). Supersedes the credits-only reading in PR #2219.",
+        "tiers": [
+          {
+            "place": "1) winner (top 5)",
+            "award": "$100 in AWS Promotional Credits and an AWS Builder Backpack",
+            "source_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool"
+          },
+          {
+            "place": "2) winner (top 5)",
+            "award": "$100 in AWS Promotional Credits and an AWS Builder Backpack",
+            "source_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool"
+          },
+          {
+            "place": "3) winner (top 5)",
+            "award": "$100 in AWS Promotional Credits and an AWS Builder Backpack",
+            "source_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool"
+          },
+          {
+            "place": "4) winner (top 5)",
+            "award": "$100 in AWS Promotional Credits and an AWS Builder Backpack",
+            "source_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool"
+          },
+          {
+            "place": "5) winner (top 5)",
+            "award": "$100 in AWS Promotional Credits and an AWS Builder Backpack",
+            "source_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool"
+          }
+        ]
+      },
+      "registration": {
+        "state": "joined"
+      },
+      "submission": {
+        "state": "none"
+      }
+    },
+    {
+      "id": "D1",
+      "name": "Strands SDK: Workshop to Ship",
+      "host": "AWS Builder Center",
+      "platform": "aws-builder-center",
+      "status": "submitted - PUBLISHED 2026-11-03; in edit window until the Nov 4 23:59 PT freeze",
+      "official_url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship",
+      "organizers": [
+        {
+          "name": "AWS Builder Center (Amazon Web Services)",
+          "role": "host",
+          "fetched_at": "2026-10-28",
+          "source_url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship"
+        }
+      ],
+      "dates": {
+        "announced": "NOT_ESTABLISHED",
+        "reg_open": "NOT_ESTABLISHED",
+        "reg_close": "NOT_ESTABLISHED",
+        "build_start": {
+          "at": "2026-10-28T00:00:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "official challenge page: hackathon window October 28 to November 4 (read 2026-10-28)"
+        },
+        "build_end": {
+          "at": "2026-11-04T23:59:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official challenge page: projects due by November 4"
+        },
+        "submissions_open": {
+          "at": "2026-10-28T00:00:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "official challenge page (window open = launch October 28)"
+        },
+        "deadline": {
+          "at": "2026-11-04T23:59:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "challenge log section 4 D1 countdown-data; official page timeline: Projects due by November 4"
+        },
+        "judging_end": "NOT_ESTABLISHED",
+        "winners_at": "NOT_ESTABLISHED"
+      },
+      "constraints": [
+        "Complete the free Strands SDK workshop on Builder Center during the hackathon window (October 28 to November 4). Workshop completion is required to qualify.",
+        "Your project submission must include: (1) An agent built with the Strands Agents SDK that addresses a real-world social good challenge. (2) A project article on Builder Center describing the agent, what it does, and the social good problem it addresses. (3) A link to a public repository with the agent's source code. (4) A short, publicly available demo video, under three minutes, showing the agent working. (5) An original agent that has not been published before."
+      ],
+      "gates": [
+        {
+          "id": "G-07",
+          "label": "Builder profile complete (mandatory fields: name, country, image, about, social link)",
+          "blocks": "D1 submission validity",
+          "status": "cleared"
+        },
+        {
+          "id": "D1-WORKSHOP",
+          "label": "Free Strands workshop completed in-window (Oct 28-Nov 4) on the owner Builder account — evidence standard: Workshop Studio completion page + per-module EXIT:0 receipts + preserved notebooks (no badge/certificate is issued for this workshop)",
+          "blocks": "D1 qualification",
+          "status": "cleared"
+        }
+      ],
+      "prizes": {
+        "status": "ESTABLISHED",
+        "pool": "$16,800",
+        "notes": "Firsthand recheck 2026-10-28 on D1's own official page: prizes verbatim + Awards list x3 at $5,600 each, pool $16,800 — genuinely Workshop to Ship's, not carried over from Strands Decider (identical figures = same series template, both pages verified).",
+        "tiers": [
+          {
+            "place": "winner (3 selected)",
+            "award": "$5,000 in AWS Promotional Credits and one AWS Builder swag bundle worth about $600 (jacket, backpack, keyboard); official winner's certificate",
+            "source_url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship"
+          }
+        ]
+      },
+      "registration": {
+        "state": "joined"
+      },
+      "submission": {
+        "state": "SUBMITTED - PUBLISHED",
+        "at": "2026-11-03T10:01:00-08:00"
+      }
+    },
+    {
+      "id": "D2",
+      "name": "Vultr: Agent Rush Hackathon",
+      "host": "lablab.ai (Vultr)",
+      "platform": "lablab-ai",
+      "status": "registered - PICK DECIDED (B Quarantine Browser Clerk); build sequence firing 2026-11-04; landing Nov 7, wall Nov 8 15:00 PT",
+      "official_url": "https://lablab.ai/ai-hackathons/vultr-hackathon",
+      "also_platforms": [
+        "vultr"
+      ],
+      "organizers": [
+        {
+          "name": "lablab.ai",
+          "role": "host",
+          "fetched_at": "2026-10-28",
+          "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon"
+        },
+        {
+          "name": "Vultr",
+          "role": "sponsor",
+          "fetched_at": "2026-10-28",
+          "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon"
+        }
+      ],
+      "dates": {
+        "announced": "NOT_ESTABLISHED",
+        "reg_open": "NOT_ESTABLISHED",
+        "reg_close": "NOT_ESTABLISHED",
+        "build_start": {
+          "at": "2026-11-03T15:00:00Z",
+          "tz": "UTC",
+          "source": "lablab event page Events block (read 2026-10-30): 2026-11-03T15:00Z to 2026-11-08T22:00Z — VERDICT: Nov 3 governs kickoff + $200 gift-code timing (\"Gift code available at kickoff\"); the slate briefs \"opens Nov 5\" appears nowhere on the official page. Manager interim rule confirmed."
+        },
+        "build_end": {
+          "at": "2026-11-08T22:00:00Z",
+          "tz": "UTC",
+          "source": "lablab event page Events block (read 2026-10-30). Submission deadline stays Nov 8 15:00 PT per the official schedule read at enrollment."
+        },
+        "submissions_open": "NOT_ESTABLISHED",
+        "deadline": {
+          "at": "2026-11-08T15:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "challenge log section 3 C2 (official page read 2026-10-26): submissions end Nov 8, 2026, 3:00 PM PST"
+        },
+        "judging_end": "NOT_ESTABLISHED",
+        "winners_at": "NOT_ESTABLISHED"
+      },
+      "constraints": [
+        "Please register for both [the LabLab platform and the LabLab Discord server] in order to participate.",
+        "Important: Submit on LabLab for judging. Your official project submission must be completed on LabLab to be considered for hackathon judging and prizes.",
+        "Containment-first is required. (Challenge 1: Blast Radius Zero)",
+        "Teams consist of 1-6 people."
+      ],
+      "gates": [
+        {
+          "id": "D2-NOCARD",
+          "label": "No-card path only (fleet card rule): lablab registration + Discord + published Vultr participant credits",
+          "blocks": "any D2 participation step that would require a payment instrument",
+          "status": "closed"
+        }
+      ],
+      "prizes": {
+        "status": "ESTABLISHED",
+        "pool": "$14,000 in cash and Vultr credits, plus up to $1,000 in onsite raffle prizes",
+        "notes": "Every participant gets $200 in free Vultr credits. Onsite raffle (3 individual winners, in-person only): PlayStation 5 Standard, Apple AirPods 5 with Wireless Charging Case, Razer DeathAdder V3 HyperSpeed.",
+        "tiers": [
+          {
+            "place": "1st place",
+            "award": "$5,000 cash prize + $3,000 in Vultr credits",
+            "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon"
+          },
+          {
+            "place": "2nd place",
+            "award": "$3,000 cash prize + $1,000 in Vultr credits",
+            "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon"
+          },
+          {
+            "place": "3rd place",
+            "award": "$1,000 cash prize + $1,000 in Vultr credits",
+            "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon"
+          }
+        ]
+      },
+      "registration": {
+        "state": "registered — ENROLLED (screening form submitted; organizer review = email confirmation pending)"
+      },
+      "submission": {
+        "state": "DRAFT saved on lablab (NOT submitted) - 76%"
+      }
+    },
+    {
+      "id": "D3",
+      "name": "Agent-Native Hackathon",
+      "host": "Builder.io",
+      "platform": "builder-io",
+      "status": "closed - wall 2026-11-09 passed unsubmitted; Clips demo published post-wall 2026-11-12; late-submit rejected by the closed form (terminal record 2026-11-12)",
+      "official_url": "https://builder.io/hackathon",
+      "organizers": [
+        {
+          "name": "Builder.io",
+          "role": "host",
+          "fetched_at": "2026-10-28",
+          "source_url": "https://builder.io/hackathon"
+        }
+      ],
+      "dates": {
+        "announced": "NOT_ESTABLISHED",
+        "reg_open": "NOT_ESTABLISHED",
+        "reg_close": "NOT_ESTABLISHED",
+        "build_start": {
+          "at": "2026-10-27T00:00:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "Official Rules (read 2026-10-28): October 27, 2026: Hackathon begins; building can start immediately."
+        },
+        "build_end": {
+          "at": "2026-11-09T23:59:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "Official Rules: final submission deadline (build ends with submissions)."
+        },
+        "submissions_open": {
+          "at": "2026-10-27T00:00:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "Official Rules schedule (hackathon begins Oct 27; submission via the project submission form)."
+        },
+        "deadline": {
+          "at": "2026-11-09T23:59:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "Official Rules verbatim: Monday, November 9, 2026 at 11:59 PM PT: Final submission deadline. (Supersedes the 2026-10-26 read of Nov 2.)"
+        },
+        "judging_end": "NOT_ESTABLISHED",
+        "winners_at": {
+          "at": "2026-11-13",
+          "tz": "America/Los_Angeles",
+          "source": "Official Rules: November 13, 2026: Target winner announcement, subject to verification. (Date only; no time published.)"
+        }
+      },
+      "constraints": [
+        "Submit original work or meaningful new development completed during the Hackathon, beginning October 27, 2026. Identify pre-existing work, templates, libraries, third-party assets, and what changed during the event.",
+        "Record a public Clips demonstration showing the actual application in use. The recording must be viewable without a login or access request.",
+        "Recording a clip alone does not submit an entry."
+      ],
+      "gates": [
+        {
+          "id": "D3-CLIPS-STORAGE",
+          "label": "Connect clip storage (Builder.io or S3-compatible backend) on the created Clips account",
+          "blocks": "demo recording upload",
+          "status": "closed"
+        }
+      ],
+      "prizes": {
+        "status": "ESTABLISHED",
+        "pool": "$10,000 USD across five ranked cash prizes",
+        "notes": "Each winning entry may receive at most one ranked cash prize. Recognition categories (Best Overall App, Best Productivity App, Most Creative App, Best Use of Agent-Native) add no cash.",
+        "tiers": [
+          {
+            "place": "Grand Prize",
+            "award": "$5,000 USD",
+            "source_url": "https://builder.io/hackathon/rules"
+          },
+          {
+            "place": "2nd Place",
+            "award": "$2,500 USD",
+            "source_url": "https://builder.io/hackathon/rules"
+          },
+          {
+            "place": "3rd Place",
+            "award": "$1,500 USD",
+            "source_url": "https://builder.io/hackathon/rules"
+          },
+          {
+            "place": "4th Place",
+            "award": "$750 USD",
+            "source_url": "https://builder.io/hackathon/rules"
+          },
+          {
+            "place": "5th Place",
+            "award": "$250 USD",
+            "source_url": "https://builder.io/hackathon/rules"
+          }
+        ]
+      },
+      "registration": {
+        "state": "not required"
+      },
+      "submission": {
+        "state": "none - NO submission made. Late-submit attempted 2026-11-12T07:20:00-08:00 under the Desk conditional election; the form was closed (\"deadline has passed\" - wall was 2026-11-09 23:59 PT). Attempt of record: issue #5137 comment 6827691564."
+      }
+    },
+    {
+      "id": "D4",
+      "name": "Kiroween 2026",
+      "host": "Devpost (Kiro)",
+      "platform": "devpost",
+      "status": "registering",
+      "official_url": "https://kiroween.devpost.com",
+      "also_platforms": [
+        "kiro"
+      ],
+      "organizers": [
+        {
+          "name": "Kiro",
+          "role": "host",
+          "fetched_at": "2026-10-28",
+          "source_url": "https://kiroween.devpost.com"
+        },
+        {
+          "name": "Devpost",
+          "role": "platform",
+          "fetched_at": "2026-10-28",
+          "source_url": "https://kiroween.devpost.com"
+        }
+      ],
+      "dates": {
+        "announced": "NOT_ESTABLISHED",
+        "reg_open": {
+          "at": "2026-10-13T08:30:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30)"
+        },
+        "reg_close": {
+          "at": "2026-12-04T14:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30)"
+        },
+        "build_start": {
+          "at": "2026-10-30T09:00:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30): Submission Period opens Oct 30, 2026 9:00 AM PT (CORRECTS the 13:00 dates-page value carried earlier; rules prevail)"
+        },
+        "build_end": {
+          "at": "2026-12-04T14:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official page: until Friday, December 4, 2026 at 2:00 PM Pacific Time"
+        },
+        "submissions_open": {
+          "at": "2026-10-30T09:00:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30)"
+        },
+        "deadline": {
+          "at": "2026-12-04T14:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official page (read 2026-10-28): Friday, December 4, 2026 at 2:00 PM Pacific Time"
+        },
+        "judging_end": {
+          "at": "2027-01-29T13:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30): Judging Period Dec 16, 2026 - Jan 29, 2027"
+        },
+        "winners_at": {
+          "at": "2027-02-03T09:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30): on or around Feb 3, 2027"
+        }
+      },
+      "constraints": [
+        "Do not start building your project yet.",
+        "Only new projects created during the submission period will be eligible."
+      ],
+      "gates": [
+        {
+          "id": "D4-ACCOUNTS",
+          "label": "Devpost account + Kiro user ID created (fleet Google identity route)",
+          "blocks": "D4 registration completion",
+          "status": "open"
+        },
+        {
+          "id": "D4-ELIGIBILITY",
+          "label": "No project creation or build start before 2026-10-30T09:00:00-07:00 (official rules s.1 Submission Period open; mechanical gate in the brief and in the generator cycle code; label corrected 2026-10-30 from the stale 13:00 dates-page value)",
+          "blocks": "any D4 build start",
+          "status": "cleared"
+        }
+      ],
+      "prizes": {
+        "status": "ESTABLISHED",
+        "pool": "$94,000 cash + subscription/credit prizes (announced as $100,000 in cash prizes)",
+        "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30) (s.8 Prizes)",
+        "notes": "Normalized to the fleet {place, award, source_url} tier shape 2026-11-03 (entries lane, per Desk data note / PR #4625). One Overall OR one Category prize per project, plus any number of Bonus prizes.",
+        "tiers": [
+          {
+            "place": "Overall - 1st",
+            "award": "$30,000",
+            "source_url": "https://kiroween.devpost.com/rules"
+          },
+          {
+            "place": "Overall - 2nd",
+            "award": "$20,000",
+            "source_url": "https://kiroween.devpost.com/rules"
+          },
+          {
+            "place": "Overall - 3rd",
+            "award": "$10,000",
+            "source_url": "https://kiroween.devpost.com/rules"
+          },
+          {
+            "place": "Category - Best Resurrection",
+            "award": "$5,000",
+            "source_url": "https://kiroween.devpost.com/rules"
+          },
+          {
+            "place": "Category - Best Frankenstein",
+            "award": "$5,000",
+            "source_url": "https://kiroween.devpost.com/rules"
+          },
+          {
+            "place": "Category - Best Skeleton Crew",
+            "award": "$5,000",
+            "source_url": "https://kiroween.devpost.com/rules"
+          },
+          {
+            "place": "Category - Best Costume Contest",
+            "award": "$5,000",
+            "source_url": "https://kiroween.devpost.com/rules"
+          },
+          {
+            "place": "Bonus - Best Startup Project",
+            "award": "$10,000",
+            "source_url": "https://kiroween.devpost.com/rules"
+          },
+          {
+            "place": "Bonus - Best Ghost of Kiroween Past",
+            "award": "$2,000",
+            "source_url": "https://kiroween.devpost.com/rules"
+          },
+          {
+            "place": "Bonus - Best Kiro Crew App",
+            "award": "$1,000",
+            "source_url": "https://kiroween.devpost.com/rules"
+          },
+          {
+            "place": "Bonus - Best Demo",
+            "award": "$1,000",
+            "source_url": "https://kiroween.devpost.com/rules"
+          },
+          {
+            "place": "Bonus - Best Student Project",
+            "award": "1-year Kiro Pro Max subscription (~$1,500) x4",
+            "source_url": "https://kiroween.devpost.com/rules"
+          },
+          {
+            "place": "Bonus - Bonus Blog Prize",
+            "award": "2,000 Kiro credits x100",
+            "source_url": "https://kiroween.devpost.com/rules"
+          },
+          {
+            "place": "Bonus - Social Blitz Prize",
+            "award": "3-month Kiro Pro+ subscription x5",
+            "source_url": "https://kiroween.devpost.com/rules"
+          }
+        ]
+      },
+      "registration": {
+        "state": "in progress (delegated)"
+      },
+      "submission": {
+        "state": "none"
+      }
+    },
+    {
+      "id": "D5",
+      "name": "AI Builder Day Hackathon - November 2026",
+      "host": "Aha! (Aha.io)",
+      "platform": "aha-io",
+      "status": "registering - SPOT DECLINED 2026-11-17 (Aha! cancellation, Gmail 1a1e770287389fb9); Manager ruling ISSUED 2026-11-17: claim OFF unless Aha! support reinstates pre-wall (appeal fired by D5 seat); construction proceeds claim-free; concept frozen C1 IdeaInbox; moniker Understudy issued (PR #5560)",
+      "official_url": "https://www.aha.io/academy/events/ai-builder-day-hackathon-november-2026",
+      "organizers": [
+        {
+          "name": "Aha!",
+          "role": "host",
+          "fetched_at": "2026-10-28",
+          "source_url": "https://www.aha.io/academy/events/ai-builder-day-hackathon-november-2026"
+        }
+      ],
+      "dates": {
+        "announced": "NOT_ESTABLISHED",
+        "reg_open": "NOT_ESTABLISHED",
+        "reg_close": "NOT_ESTABLISHED",
+        "build_start": {
+          "at": "2026-11-17T09:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official event page (read 2026-10-28): Kick off Nov. 17 at 9 a.m. PT; Build Nov. 17-19"
+        },
+        "build_end": {
+          "at": "2026-11-19T12:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official Contest Rules: submissions no later than Thursday, Nov. 19 at 12 p.m. PT"
+        },
+        "submissions_open": {
+          "at": "2026-11-17T09:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official event page: build window opens at kickoff (submission mechanics per the Contest Rules)"
+        },
+        "deadline": {
+          "at": "2026-11-19T12:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official Contest Rules verbatim (read 2026-10-28): Each team must submit a video recording demonstrating your application no later than Thursday, Nov. 19 at 12 p.m. PT."
+        },
+        "judging_end": "NOT_ESTABLISHED",
+        "winners_at": {
+          "at": "2026-11-20T11:30:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official event page: Show it off / awards Nov. 20 at 11:30 a.m. PT"
+        }
+      },
+      "constraints": [
+        "Anonymous registrations will not be accepted. We will review complete registrations and email you to confirm your spot.",
+        "Each team must submit a video recording demonstrating your application no later than Thursday, Nov. 19 at 12 p.m. PT.",
+        "You may participate individually, or in a team of up to three eligible persons."
+      ],
+      "gates": [
+        {
+          "id": "D5-SPOT",
+          "label": "Spot confirmation email from Aha!'s registration review",
+          "blocks": "D5 build commitment",
+          "status": "open",
+          "state": "DECLINED - CLOSED 2026-11-17: Aha!/Zoom host cancellation (Gmail msg 1a1e770287389fb9, 2026-11-16 18:57 PT: \"we are unable to confirm your participation in this event\"); reminder msg 1a1e559948230ab0 (2026-11-16 09:13 PT) superseded. Kickoff webinar access revoked."
+        }
+      ],
+      "prizes": {
+        "status": "ESTABLISHED",
+        "notes": "Judges also select an honorable mention in each category; the rules state no separate prize for honorable mention. No cash prizes published. Each team receives a 14-day free trial of Aha! Builder plus AI credits to build with (Contest Rules section 3).",
+        "tiers": [
+          {
+            "place": "winner - Best replacement app",
+            "award": "Six-month subscription to Aha! Builder (approx. retail value $744) for each member of the winning team; AI Builder badge and certificate (event page)",
+            "source_url": "https://www.aha.io/hackathon/ai-builder-day-contest-rules"
+          },
+          {
+            "place": "winner - Most innovative user interface",
+            "award": "Six-month subscription to Aha! Builder (approx. retail value $744) for each member of the winning team; AI Builder badge and certificate (event page)",
+            "source_url": "https://www.aha.io/hackathon/ai-builder-day-contest-rules"
+          }
+        ]
+      },
+      "registration": {
+        "state": "DECLINED - registration canceled by host 2026-11-16 (not pending since 2026-10-28)"
+      },
+      "submission": {
+        "state": "none"
+      }
+    },
+    {
+      "id": "C11",
+      "name": "AMD AI League",
+      "host": "AMD x lablab.ai",
+      "platform": "lablab.ai",
+      "status": "active",
+      "format": "individual participation only (no teams)",
+      "kind": "candidate_event",
+      "league_window": "2026-09-01 / 2026-12-01",
+      "rules_state": "League-wide shared rules published (official Match 1 & 2 brief: container contract, ROCm base image, hard gates); Match 4 + Match 5: NO match-specific detail page, rubric, or pre-work/originality rule published (checked firsthand 2026-10-30). Match 5 claim-gate holds until Manager rules-check.",
+      "claim_gate": "No claim language for any candidate match (esp. Match 5 repo-repair x Repo Replay) until Manager rules-check vs the 2026-10-29 start.",
+      "deadline": "2026-12-01T11:00:00-08:00",
+      "fetched_at": "2026-10-30",
+      "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge",
+      "matches": [
+        {
+          "id": "M1",
+          "name": "Onboarding: Get Started With AMD",
+          "points": 300,
+          "state": "open throughout the League",
+          "tasks": "AMD sign-up (done), claim $100 GPU credits, first Academy course, complete AMD profile, join lablab Discord (required for Match participation), join AMD Discord"
+        },
+        {
+          "id": "M2",
+          "name": "Optical Character Recognition",
+          "points": 1200,
+          "state": "closed for prizes — points only"
+        },
+        {
+          "id": "M3",
+          "name": "Retrieval-Augmented Generation",
+          "points": 1500,
+          "state": "closed for prizes — points only"
+        },
+        {
+          "id": "M4",
+          "name": "Intelligent Web Information Retrieval",
+          "points": 1800,
+          "state": "LIVE (as of 2026-10-30)",
+          "rules": "card brief only + league-wide shared rules; no harness published",
+          "deadline": "2026-12-01T11:00:00-08:00 (league submission deadline)"
+        },
+        {
+          "id": "M5",
+          "name": "AI-Powered Code Repository Repair",
+          "points": 2100,
+          "state": "coming soon (Nov)",
+          "rules": "card text only; nothing else published yet"
+        },
+        {
+          "id": "M6",
+          "name": "Can Your AI Master the Unknown?",
+          "points": 2400,
+          "state": "coming soon",
+          "dates": "2026-11-10 / 2026-11-14"
+        }
+      ],
+      "gates": [
+        {
+          "id": "AMD-ACADEMY-5",
+          "label": "Complete >=5 AMD Academy courses (league podium gate)",
+          "blocks": "C11 league podium eligibility ($2,500/$1,500/$1,000)",
+          "status": "open"
+        },
+        {
+          "id": "AMD-GPU100",
+          "label": "Claim $100 AMD GPU credits (Match 1 onboarding task, timed claim)",
+          "blocks": "C11 Match 1 points (+100) and GPU build capacity",
+          "status": "open"
+        },
+        {
+          "id": "AMD-M1-ONBOARDING",
+          "label": "Match 1 remainder: complete AMD profile (+50), join AMD Discord (+50), join lablab Discord (REQUIRED for Match participation)",
+          "blocks": "C11 Match 1 completion + Match participation eligibility",
+          "status": "open"
+        }
+      ],
+      "prizes": {
+        "status": "ESTABLISHED",
+        "pool": "League podium $2,500/$1,500/$1,000 (gate: >=5 Academy courses) + per-Match awards + Referral Leaders $1,000/$600/$400",
+        "notes": "Normalized from a plain string to the fleet object shape 2026-11-03 (entries lane, per Desk data note / PR #4625). Plus: ROCm Certified Associate credential (+500 pts).",
+        "tiers": [
+          {
+            "place": "League 1st",
+            "award": "$2,500",
+            "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge"
+          },
+          {
+            "place": "League 2nd",
+            "award": "$1,500",
+            "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge"
+          },
+          {
+            "place": "League 3rd",
+            "award": "$1,000",
+            "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge"
+          },
+          {
+            "place": "Per-Match 1st",
+            "award": "$500 cash",
+            "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge"
+          },
+          {
+            "place": "Per-Match 2nd",
+            "award": "$250 GPU credits",
+            "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge"
+          },
+          {
+            "place": "Per-Match top-50",
+            "award": "$100 GPU credits",
+            "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge"
+          },
+          {
+            "place": "Referral 1st",
+            "award": "$1,000",
+            "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge"
+          },
+          {
+            "place": "Referral 2nd",
+            "award": "$600",
+            "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge"
+          },
+          {
+            "place": "Referral 3rd",
+            "award": "$400",
+            "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge"
+          }
+        ]
+      },
+      "registration": {
+        "state": "Approved"
+      },
+      "submission": {
+        "state": "none"
+      }
+    },
+    {
+      "id": "C12",
+      "name": "UGREEN Hackathon 2026: Build AI NAS Skills on UGOS",
+      "host": "UGREEN",
+      "platform": "Devpost (ugreenhackathon.devpost.com)",
+      "status": "graduated — ON SLATE (Manager, 2026-11-03); Round 1 in execution prep",
+      "official_url": "https://ai.ugreen.com/pages/ugreen-hackathon",
+      "organizers": [
+        {
+          "name": "UGREEN",
+          "role": "host/sponsor",
+          "source": "official event page"
+        }
+      ],
+      "dates": {
+        "register_build": "2026-10-22 → 2026-11-15",
+        "preliminary_due": "2026-11-15T23:45:00-08:00",
+        "finalists_announced": "2026-11-21",
+        "final_due": "2026-11-30T23:45:00-08:00",
+        "winners": "2026-12-06"
+      },
+      "constraints": "ROUND 1 (due Nov 15 23:45 PT, Devpost): (1) Project Proposal PDF <=1MB, ten items in <=500 English words total; (2) Pre-test Skill Package ZIP per the Uliya Skill Development Standard — SKILL.md (frontmatter name + description <=1024 chars) + optional linked references; ZIP <=10MB, <=1MB/file, <=100 files; scripts/binaries/manifests PROHIBITED in the package; package need NOT be installable/operational in Round 1; NO repo link, NO video for Round 1. NEW-WORK CLAUSE: idea may pre-date the hackathon, but the submitted Skill + core workflow must be newly developed during it; no reuse of previously developed Skills/materials. ROUND 2 (finalists, invited Nov 21): one assigned remote-NAS testing day Nov 22-28; final ZIP + public YouTube demo <=3 min by Nov 30 23:45 PT; do not delete Round 1 materials.",
+      "gates": [
+        {
+          "id": "C12-REGISTRATION",
+          "state": "open",
+          "text": "Join the hackathon on Devpost (account exists, in-boundary); not yet executed as of graduation."
+        },
+        {
+          "id": "C12-R2-CONDITIONAL",
+          "state": "conditional",
+          "text": "Round 2 exists only if invited as a finalist (Nov 21): one assigned remote-NAS testing day Nov 22-28 + final package/video by Nov 30 23:45 PT."
+        }
+      ],
+      "prizes": {
+        "pool": "$46,000 cash",
+        "source": "Devpost event page, read firsthand 2026-11-03",
+        "tiers": "Grand $20,000 · 2nd $10,000 · 3rd $6,000 · Most Creative $5,000 x2"
+      },
+      "registration": {
+        "state": "not_yet"
+      },
+      "submission": {
+        "state": "none"
+      }
+    }
+  ]
+}

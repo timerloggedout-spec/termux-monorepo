@@ -1,6 +1,7 @@
-# Challenge countdowns feed refresh (contract: docs/ops/CHALLENGE-COUNTDOWNS-FEED.md).
-# Regenerates apps/tribute-dashboard/data/challenge-countdowns-feed.json
-# from the challenge entries log (the SSOT for deadline instants) and
+# Implements: HD-002. Challenge countdowns + public challenge projection refresh
+# (contracts: docs/ops/CHALLENGE-COUNTDOWNS-FEED.md and CHALLENGE-PUBLIC-FEED.md).
+# Regenerates the countdown and allowlisted public challenge feeds from
+# their canonical source records and
 # proposes it as a refresh PR — never commits directly. Mirrors the
 # linguist-panel-feed-collect pattern (issue #1880).
 name: challenge-countdowns-feed-collect
@@ -16,6 +17,7 @@ on:
       - 'ops/challenge/coordinator.json'
       - 'scripts/challenge_entries/countdowns.py'
       - 'scripts/dashboards/challenge_countdowns_feed.py'
+      - 'scripts/dashboards/challenge_public_feed.py'
 
 concurrency:
   group: challenge-countdowns-feed-collect
@@ -52,23 +54,24 @@ jobs:
           set -euo pipefail
           python3 -B scripts/dashboards/challenge_countdowns_feed.py \
             --root . --out apps/tribute-dashboard/data/challenge-countdowns-feed.json
+          python3 -B scripts/dashboards/challenge_public_feed.py --root . --out apps/tribute-dashboard/data/challenge-public-feed.json
       - name: Propose the refresh as a PR
         run: |
           set -euo pipefail
-          if git diff --quiet -- apps/tribute-dashboard/data/challenge-countdowns-feed.json; then
-            echo "feed unchanged; no refresh PR"
+          if git diff --quiet -- apps/tribute-dashboard/data/challenge-countdowns-feed.json apps/tribute-dashboard/data/challenge-public-feed.json; then
+            echo "challenge feeds unchanged; no refresh PR"
             exit 0
           fi
           branch="challenge-countdowns-feed/refresh"
           git config user.name "challenge-countdowns-feed-collect"
           git config user.email "actions@github.com"
           git checkout -B "$branch"
-          git add apps/tribute-dashboard/data/challenge-countdowns-feed.json
-          git commit -m "chore(countdowns): refresh challenge-countdowns-feed.json"
+          git add apps/tribute-dashboard/data/challenge-countdowns-feed.json apps/tribute-dashboard/data/challenge-public-feed.json
+          git commit -m "chore(challenges): refresh public challenge feeds"
           git push -f origin "$branch"
           gh pr create --base master --head "$branch" \
-            --title "chore(countdowns): refresh challenge-countdowns-feed.json" \
-            --body "Automated challenge countdowns feed refresh (collector: scripts/dashboards/challenge_countdowns_feed.py; contract: docs/ops/CHALLENGE-COUNTDOWNS-FEED.md). Instants are derived from docs/ops/CHALLENGE-ENTRIES-LOG.md at collection time; nothing is copied forward." \
+            --title "chore(challenges): refresh public challenge feeds" \
+            --body "Automated refresh of challenge-countdowns-feed.json and challenge-public-feed.json. The public projection is generated from ops/challenge/coordinator.json by scripts/dashboards/challenge_public_feed.py with an explicit allowlist; the countdown feed derives deadline instants from docs/ops/CHALLENGE-ENTRIES-LOG.md." \
             || echo "refresh PR already open"
         env:
           GH_TOKEN: ${{ steps.swarm.outputs.token }}

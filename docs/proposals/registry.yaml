@@ -1418,3 +1418,26 @@ proposals:
     gates_required:
       - repo-gate
       - termux-smoke
+
+  - id: hackathon-desk
+    title: "Hackathon Desk — teammate collaboration portal, guide, and accessibility"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/hackathon-desk/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues: []
+    related_prs:
+      - 5840
+    related_branches:
+      - feat/hackathon-desk-full-20261124
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+

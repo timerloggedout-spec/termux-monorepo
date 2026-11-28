@@ -1,0 +1,67 @@
+name: Hackathon Desk Contract
+
+on:
+  pull_request:
+    paths:
+      - "apps/tribute-dashboard/hackathon*"
+      - "apps/tribute-dashboard/data/challenge-public-feed.json"
+      - "scripts/dashboards/challenge_public_feed.py"
+      - "tests/test_challenge_public_feed.py"
+      - "tests/hackathon-desk.test.cjs"
+      - "tests/test_hackathon_desk.py"
+      - "docs/ops/CHALLENGE-PUBLIC-FEED.md"
+      - "docs/proposals/active/hackathon-desk/**"
+      - "docs/superpowers/plans/2026-11-24-hackathon-desk.md"
+      - "docs/superpowers/specs/2026-11-24-hackathon-desk-design.md"
+      - ".github/workflows/challenge-countdowns-feed-collect.yml"
+      - ".github/workflows/hackathon-desk-contract.yml"
+  push:
+    branches: [master]
+    paths:
+      - "apps/tribute-dashboard/hackathon*"
+      - "apps/tribute-dashboard/data/challenge-public-feed.json"
+      - "scripts/dashboards/challenge_public_feed.py"
+      - "tests/test_challenge_public_feed.py"
+      - "tests/hackathon-desk.test.cjs"
+      - "tests/test_hackathon_desk.py"
+      - "docs/ops/CHALLENGE-PUBLIC-FEED.md"
+      - ".github/workflows/challenge-countdowns-feed-collect.yml"
+      - ".github/workflows/hackathon-desk-contract.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hackathon-desk-contract-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  contract:
+    name: public feed and desk contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install Python test runner
+        run: python3 -m pip install --disable-pip-version-check --quiet pytest
+      - name: Validate public challenge projection
+        run: python3 -m pytest -q tests/test_challenge_public_feed.py
+      - name: Validate Hackathon Desk Python contracts when present
+        run: |
+          if [ -f tests/test_hackathon_desk.py ]; then
+            python3 -m pytest -q tests/test_hackathon_desk.py
+          fi
+      - name: Validate Hackathon Desk Node contracts when present
+        run: |
+          if [ -f tests/hackathon-desk.test.cjs ]; then
+            node --test tests/hackathon-desk.test.cjs
+          fi

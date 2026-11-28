@@ -19,17 +19,11 @@ Official starting points:
 - https://www.amd.com/en/developer/browse-by-resource-type/training.html
 - https://gpuopen.com/learn/
 
-## AMD certification status
-
-AMD's official ROCm Certified Associate program is live through AMD AI Academy. The online Associate path is free and includes five modules covering ROCm setup, AMD Instinct architecture, ROCm libraries/frameworks, HIP and CUDA porting, and profiling/optimization, followed by an exam. The issued credential includes a verifiable badge; AMD's current program agreement specifies a 24-month validity period. Professional is listed for Q1 2027 and Expert as coming soon. Recheck the official program page before enrollment and renewal.
-
-AMD AI Academy also offers self-paced learning paths and course-completion certificates. Course certificates and the formal ROCm Certified Associate credential remain distinct records.
-
 ## NVIDIA pathway
 | Path | Focus | Evidence / credential |
 |---|---|---|
 | NVIDIA Deep Learning Institute | Deep learning, AI, data science and accelerated computing | Course certificate where offered |
-| OpenUSD Development | Reusable 3D assets, scene composition and interoperability | OpenUSD developer certification path |
+| OpenUSD Development | Reusable 3D assets, scene composition and interoperability | NVIDIA-Certified Associate OpenUSD Foundations and Workflows plus NVIDIA-Certified Professional OpenUSD Development |
 | Omniverse / digital twins | 3D collaboration, simulation and industrial digital twins | Reproducible USD scene and simulation artifact |
 | Isaac / Physical AI | Robotics, simulation, policy training and sim-to-real | Simulation and deployment evidence |
 | CUDA / TensorRT | GPU programming, inference and performance | Benchmarks and course credentials |
@@ -69,7 +63,7 @@ NVIDIA currently lists two OpenUSD credentials that directly support the shared 
 
 | Credential | Exam profile | Best fit |
 |---|---|---|
-| NVIDIA-Certified Associate OpenUSD Foundations and Workflows (NCA-OUSD / NCA-OFW naming appears across NVIDIA pages) | 50–60 multiple-choice questions, 1 hour, $125, no hands-on lab; valid for 2 years. | Workflow designers, technical program managers, industrial/3D specialists and collaborators planning OpenUSD pipelines. |
+| NVIDIA-Certified Associate OpenUSD Foundations and Workflows (NCA-OUSD; localized pages also use NCA-OFW) | 50–60 multiple-choice questions, 1 hour, $125, no hands-on lab; valid for 2 years. | Workflow designers, technical program managers, industrial/3D specialists and collaborators planning OpenUSD pipelines. |
 | NVIDIA-Certified Professional OpenUSD Development (NCP-OUSD) | 60–70 questions, 2 hours, $200; validates pipeline development, maintenance and optimization; 2–3 years of OpenUSD plus Python/C++ experience or completion of study-guide materials; valid for 2 years. | OpenUSD developers, pipeline engineers and 3D platform architects. |
 
 The free Learn OpenUSD curriculum prepares learners for the certification pathway. NVIDIA's open-source course materials currently carry no completion certificate; the formal exam credentials issue digital badges and optional certificates. Verify exam code, price, eligibility and policy on the live NVIDIA certification pages before scheduling.

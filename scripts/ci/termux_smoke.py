@@ -229,7 +229,7 @@ def check_engineering_toolchain_contract(report: SmokeReport) -> None:
     details = []
     for name, argv, timeout in commands:
         rc, out, err = run_cmd(argv, timeout=timeout)
-        result = (out or err or f"rc={rc}").replace("\\n", " | ")[:180]
+        result = (out or err or f"rc={rc}").replace("\n", " | ")[:180]
         details.append(f"{name}={'PASS' if rc == 0 else 'FAIL'}: {result}")
         if rc != 0:
             report.add(CheckResult("engineering-toolchain-contract", "FAIL", "; ".join(details)))

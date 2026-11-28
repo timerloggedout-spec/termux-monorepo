@@ -14,7 +14,7 @@
 | SolveSpace | Constraint-based 2D/3D CAD | GPL FOSS; free local use | STEP, DXF, STL | Remote Linux preferred |
 | LibreCAD | 2D drafting | GPL FOSS; free local use | DXF | Remote Linux preferred |
 | Onshape Free | Cloud parametric CAD | Proprietary $0 free tier; public documents and non-commercial use; card requirement for this tier is unconfirmed | STEP, IGES, STL, DXF | Browser/cloud; separate access evidence |
-| SOLIDWORKS for Makers | CAD interoperability | Proprietary paid personal/non-commercial tier: $48/year or $15/month before tax; no free version or trial; not a commercial-use baseline | SLDPRT, SLDASM, STEP, IGES, DXF | Paid target; excluded from free baseline |
+| SOLIDWORKS for Makers | CAD interoperability | Proprietary paid personal/non-commercial tier: $48/year or $15/month before tax; paid subscriptions only; commercial licensing remains separate | SLDPRT, SLDASM, STEP, IGES, DXF | Paid target; excluded from free baseline |
 
 ## Electronics and electrical design
 
@@ -49,14 +49,14 @@
 
 ## Access and evidence semantics
 
-- `FOSS + local-free`: no subscription or card is required to obtain the application; license obligations and dependency licenses still apply.
+- `FOSS + local-free`: subscription-free, card-free local acquisition; license obligations and dependency licenses still apply.
 - `cloud-free-tier`: proprietary hosted service with a free usage tier; terms, document visibility and commercial restrictions remain explicit.
 - `commercial-paid`: paid proprietary product; retained as interoperability target only.
-- `detected`: the named executable is present on the probed PATH. This does not prove the application works, has GUI dependencies, or can complete an engineering job.
+- `detected`: the named executable is present on the probed PATH. PATH presence confirms executable discovery; startup, GUI dependencies, job completion and engineering validity require separate checks.
 - `remote-runner-preferred`: heavy GUI/solver workloads use an approved, pinned runner with bounded resources and artifact retention.
 
 The probe currently establishes only executable presence. Tool version, solver correctness, format round-trip, resource use and engineering validity require separate validation receipts.
 
 ## Remote execution profile
 
-The default free hosted lane is a standard GitHub Actions runner on this public repository for synthetic/non-confidential fixtures. The documented `ubuntu-latest` x64 VM provides 4 CPU, 16 GB RAM and 14 GB SSD; standard runners are free for public repositories. Pin the Ubuntu image and tool versions for reproducibility. Self-hosted runners have no GitHub runner-minute charge and are the preferred lane for confidential CAD, GUI workflows and large solvers; hardware, power and maintenance remain owner costs. See [Engineering Remote Runner Profile](ENGINEERING-REMOTE-RUNNER-PROFILE.md) and the [official GitHub billing](https://docs.github.com/en/actions/concepts/billing-and-usage) / [runner specification](https://docs.github.com/en/actions/how-tos/write-workflows/choose-where-workflows-run/choose-the-runner-for-a-job) references.
+The default free hosted lane is a standard GitHub Actions runner on this public repository for synthetic/non-confidential fixtures. The documented `ubuntu-latest` x64 VM provides 4 CPU, 16 GB RAM and 14 GB SSD; standard runners are free for public repositories. Pin the Ubuntu image and tool versions for reproducibility. Self-hosted runners carry zero GitHub runner-minute charge and are the preferred lane for confidential CAD, GUI workflows and large solvers; hardware, power and maintenance remain owner costs. See [Engineering Remote Runner Profile](ENGINEERING-REMOTE-RUNNER-PROFILE.md) and the [official GitHub billing](https://docs.github.com/en/actions/concepts/billing-and-usage) / [runner specification](https://docs.github.com/en/actions/how-tos/write-workflows/choose-where-workflows-run/choose-the-runner-for-a-job) references.

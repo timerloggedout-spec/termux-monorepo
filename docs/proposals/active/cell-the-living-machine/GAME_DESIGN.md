@@ -52,7 +52,9 @@ A single cell membrane provides the first playable system. Three mechanisms crea
 2. Aquaporin — selective water transport, osmotic gradients, and permeability.
 3. ATP synthase — proton motive force, rotary catalysis, and energy conversion.
 
-The slice demonstrates the observe → manipulate → simulate → interpret loop. It includes one guided scenario, one open sandbox, source-linked mechanism cards, a parameter inspector, and a deterministic scenario replay.
+The biological slice demonstrates the observe → manipulate → simulate → interpret loop. It includes one guided scenario, one open sandbox, source-linked mechanism cards, a parameter inspector, and a deterministic scenario replay.
+
+A parallel industrial slice uses a compact 3D factory cell with input storage, transport, one processing machine, power, sensor and output inspection. The player configures production order, buffer capacity and transport paths, then compares throughput, work-in-progress, bottlenecks, energy, yield and downtime. The scenario exports a versioned factory graph and bill of materials. Both slices share the same player identity, creator portfolio, project graph, simulation test harness and accessibility contracts.
 
 ## Knowledge lenses
 

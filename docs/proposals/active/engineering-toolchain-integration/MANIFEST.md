@@ -14,7 +14,8 @@ reviewers:
     role: author-executor
     status: executing
 related_issues: []
-related_prs: []
+related_prs:
+  - 5957
 related_branches:
   - feat/engineering-toolchain-activation
 gates_required:
@@ -46,6 +47,14 @@ On 2026-11-28 the Operator requested active integration of the researched engine
 ## Runtime truth
 
 The current ChatGPT session exposes GitHub and research/documentation tools. The installed Termux-related plugin is recognized as installed, while no direct Termux device-operation function is exposed in this session. Repository code can define and test the device-side capability contract; actual device inventory and remote-runner execution require a live Termux receipt.
+
+## Review log
+
+### 2026-11-28 — ChatGPT
+
+- Disposition: initial integration slice opened as draft PR #5957 against master.
+- Head SHA at PR creation: `b7fba382c7b8661a11c7444468a0ce5a35c9bcf7`; subsequent commits on the branch require fresh checks.
+- Runtime status: repository adapters implemented; live Termux probe and remote CAD/CAE execution remain pending device/runner evidence.
 
 ## Links
 

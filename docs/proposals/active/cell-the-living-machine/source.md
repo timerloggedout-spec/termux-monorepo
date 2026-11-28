@@ -30,9 +30,11 @@
   - https://github.com/search-astute-ly/termux-monorepo_enterprise_too
   - https://github.com/search-astute-ly/redesigned-octo-rotary-phone
   - https://github.com/search-astute-ly/manus-public-ui-research
-- The two Enterprise-named repositories are accessible to the connected GitHub identity with admin/push permissions in repository search results. Their inspected README surfaces describe Termux recovery and developer environment planning; a canonical search-aggregation API and result store remain unverified.
+- The two Enterprise-named repositories are accessible to the connected GitHub identity `timerloggedout-spec` with admin/push permissions in repository search results. Their inspected README surfaces describe Termux recovery and developer environment planning; a canonical search-aggregation API and result store remain unverified.
+- The connected GitHub identity is `timerloggedout-spec`; its organization and membership listing returned empty lists. Repository-level grants provide access to the `search-astute-ly` repositories.
 - The requested plugin reference `Plugin_60aea7460bd4819199fd97a9553a5e12` returned `plugin_not_found` from plugin dependency lookup. Plugin discovery for the name/capability surfaced Scite, Firecrawl, Notion, and other adjacent services; a Search Astutely connector remains unverified.
-- `AsAstraNeoNexus` is absent from the connected GitHub repository/owner search performed for this pass. Account ownership, Enterprise trial status, migration state, and the account-header deletion notice require direct account/organization settings review by the owner.
+- `AsAstraNeoNexus` remains unverified in the connected GitHub scope. Account ownership, Enterprise trial status, migration state, and the account-header deletion notice require direct account/organization settings review by the owner.
+- The `manus-public-ui-research` repository describes a public userscript/library research lane; the inspected README gives it a separate scope from search aggregation. `redesigned-octo-rotary-phone` is a small placeholder-style repository with no search-service contract surfaced in its README.
 - Integration status: organization identity verified; service endpoint, canonical data repository, connector, account relationship, and migration state pending verification.
 
 ## iJEP Studio

@@ -48,6 +48,15 @@ def test_real_coordinator_projects_events_without_internal_metrics():
     assert isinstance(c12["prizes"]["tiers"], str)
 
 
+def test_committed_projection_matches_current_collector():
+    feed_path = ROOT / "apps" / "tribute-dashboard" / "data" / "challenge-public-feed.json"
+    generated = _module().build_feed(ROOT)
+    committed = json.loads(feed_path.read_text(encoding="utf-8"))
+    assert generated.pop("generated_at")
+    assert committed.pop("generated_at")
+    assert generated == committed
+
+
 def test_projection_is_closed_allowlist_and_preserves_public_gate_fields(tmp_path):
     source = tmp_path / "ops/challenge/coordinator.json"
     source.parent.mkdir(parents=True)

@@ -1,0 +1,99 @@
+schema: game-content-taxonomy/v1
+project_ref: project:cell-the-living-machine
+
+scales:
+  - id: molecular
+    entities: [protein, nucleic_acid, lipid, metabolite, ion, ligand, cofactor]
+  - id: membrane
+    entities: [bilayer, channel, transporter, receptor, membrane_potential, gradient]
+  - id: organelle
+    entities: [mitochondrion, nucleus, endoplasmic_reticulum, golgi, lysosome, chloroplast]
+  - id: cellular
+    entities: [cell_type, cytoskeleton, vesicle, signaling_network, cell_cycle]
+  - id: tissue
+    entities: [cell_community, extracellular_matrix, tissue_context]
+  - id: organism
+    entities: [organism, organ_system, homeostasis, environment]
+
+mechanic_families:
+  - transport_and_gradients
+  - energy_conversion
+  - molecular_binding_and_kinetics
+  - conformational_change
+  - protein_folding_and_quality_control
+  - gene_expression_and_regulation
+  - replication_and_repair
+  - signaling_and_feedback
+  - trafficking_and_compartmentalization
+  - immune_recognition_and_response
+  - cellular_stress_and_recovery
+  - population_and_ecological_context
+
+genre_facets:
+  - simulation
+  - systems_strategy
+  - exploration
+  - puzzle
+  - educational
+  - rpg_progression
+  - sandbox
+  - challenge_scenario
+  - research_investigation
+
+knowledge_lenses:
+  shared_knowledge_graph: true
+  access_policy: ubiquitous
+  age_based_routing: excluded
+  lenses:
+    - id: field
+      representation: "visual overview, plain-language orientation, core purpose"
+      controls: [labels, guided_highlights, glossary, optional_narration]
+    - id: mechanism
+      representation: "causal sequence, interacting components, state transitions"
+      controls: [step_trace, interaction_map, state_inspector]
+    - id: quantitative
+      representation: "kinetics, thermodynamics, gradients, rates, equations, parameter sweeps"
+      controls: [equation_view, charts, parameter_controls, uncertainty_bands]
+    - id: structural
+      representation: "atomic coordinates, chains, domains, residues, ligands, conformational states"
+      controls: [structure_viewer, accession_links, residue_inspector, confidence_overlay]
+    - id: research
+      representation: "primary papers, methods, experimental conditions, competing models, open questions"
+      controls: [citation_graph, methods_panel, evidence_comparison, provenance_trace]
+
+challenge_profiles:
+  - id: guided
+    parameters: [hint_density, starting_resources, system_coupling]
+  - id: exploratory
+    parameters: [discovery_freedom, optional_objectives, observation_tools]
+  - id: constrained_resources
+    parameters: [ATP_budget, ion_budget, transport_capacity, recovery_reserve]
+  - id: time_pressure
+    parameters: [scenario_clock, reaction_rate, event_frequency]
+  - id: coupled_systems
+    parameters: [pathway_interdependence, feedback_loops, perturbation_scope]
+  - id: research_investigation
+    parameters: [evidence_conflicts, incomplete_observations, model_uncertainty]
+
+accessibility:
+  adjustable_information_density: true
+  text_equivalents: true
+  captions_and_transcripts: true
+  reduced_motion: true
+  color_independent_encoding: true
+  keyboard_and_touch_support: true
+  assistive_technology_review: required
+
+content_record:
+  required_fields:
+    - content_id
+    - title
+    - scale
+    - mechanic_family
+    - source_refs
+    - evidence_class
+    - learning_outcomes
+    - gameplay_rules
+    - uncertainty
+    - rights_status
+    - review_status

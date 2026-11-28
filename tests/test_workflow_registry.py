@@ -82,6 +82,23 @@ jobs:
         ])
         self.assertEqual(record["action_pins"], ["actions/checkout@0123456789012345678901234567890123456789"])
 
+    def test_detects_explicit_gh_api_writes_beyond_declared_permissions(self) -> None:
+        source = """\\
+name: Private repository provisioner
+on: [push]
+permissions:
+  contents: read
+jobs:
+  provision:
+    steps:
+      - run: gh api --method POST "/orgs/$ORG_NAME/repos"
+"""
+        record = workflow_registry.parse_workflow_text(source, ".github/workflows/provisioner.yml")
+        self.assertEqual(record["declared_permission_authority"], "read-only-or-advisory")
+        self.assertEqual(record["source_authority"], "writer")
+        self.assertEqual(record["api_write_methods"], ["POST"])
+        self.assertIn("explicit gh api write methods", record["authority_basis"])
+
     def test_job_permissions_override_workflow_permissions_for_authority(self) -> None:
         source = """\\
 name: Scoped permissions
@@ -203,6 +220,7 @@ jobs:
             self.assertEqual(index["reconciliation"]["status"], "DRIFT")
             self.assertEqual(index["reconciliation"]["missing_from_catalog"], [".github/workflows/actual.yml"])
             self.assertEqual(index["reconciliation"]["missing_from_directory"], [".github/workflows/stale.yml"])
+            self.assertEqual(index["uncatalogued_source_writers"], [".github/workflows/actual.yml"])
 
 
 if __name__ == "__main__":

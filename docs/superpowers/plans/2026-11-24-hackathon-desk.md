@@ -141,7 +141,7 @@
 - Produces: onboarding, navigation, proposal, contribution, pipeline, permissions, accessibility, and troubleshooting documentation.
 
 - [ ] Write failing tests for guide links and required sections.
-- [ ] Verify the deployed guide URLs `https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/teammates/HACKATHON-DESK-GUIDE.md` and `https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/teammates/ACCESSIBILITY.md` return successfully from the deployed page; source-tree existence alone is insufficient.
+- [ ] Verify the deployed guide URLs `https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/teammates/HACKATHON-DESK-GUIDE.md` and `https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/teammates/ACCESSIBILITY.md` return successfully from the canonical deployed route `https://timerloggedout-spec.github.io/tribute/hackathon.html`; source-tree existence alone is insufficient.
 - [ ] Verify RED.
 - [ ] Write both guides and connect them from the page using the deployed raw-content URLs.
 - [ ] Run documentation link, heading, and deployed-URL checks.

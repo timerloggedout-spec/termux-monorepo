@@ -323,24 +323,35 @@ def rendered_registry(root: Path, index: dict[str, Any]) -> str | None:
         for item in reconciliation.get("workflow_authority_conflicts", [])
         if isinstance(item, dict) and item.get("workflow")
     }
-    conflicts = []
-    for workflow in index["authority_conflicts"]:
-        item = records[workflow]
-        conflicts.append({
-            **previous_conflicts.get(workflow, {}),
-            "workflow": workflow,
-            "catalog_authority": item["catalog_authority"],
-            "source_authority": item["source_authority"],
-            "source_blob_sha": item["source_blob_sha"],
-            "status": "SOURCE_VERIFIED_CONFLICT",
-        })
-    reconciliation["workflow_authority_conflicts"] = conflicts
-
     previous_overrides = {
         item.get("workflow"): item
         for item in registry.get("workflow_source_authority_overrides", [])
         if isinstance(item, dict) and item.get("workflow")
     }
+    conflicts = []
+    for workflow in index["authority_conflicts"]:
+        item = records[workflow]
+        previous = previous_conflicts.get(workflow) or previous_overrides.get(workflow, {})
+        reason = previous.get("reason") or (
+            f"Explicit gh api write methods ({', '.join(item['api_write_methods'])}) exceed the declared permission classification."
+            if item["api_write_methods"]
+            else "Declared workflow/job permission scopes indicate source authority above the catalog classification."
+        )
+        conflicts.append({
+            **previous,
+            "workflow": workflow,
+            "catalog_status": "CATALOGUED",
+            "catalog_authority": item["catalog_authority"],
+            "source_authority": item["source_authority"],
+            "declared_permission_authority": item["declared_permission_authority"],
+            "api_write_methods": item["api_write_methods"],
+            "authority_basis": item["authority_basis"],
+            "source_blob_sha": item["source_blob_sha"],
+            "reason": reason,
+            "status": "SOURCE_VERIFIED_CONFLICT",
+        })
+    reconciliation["workflow_authority_conflicts"] = conflicts
+
     overrides = []
     for workflow in index["uncatalogued_source_writers"]:
         item = records[workflow]

@@ -17,7 +17,7 @@ Repository-owned localization contract for websites, Teammate Portal, and docume
 3. Set dir=rtl for Urdu surfaces and isolate embedded LTR tokens (URLs, code, identifiers).
 4. Keep stable message keys independent of translated wording.
 5. Bind each translation to a source hash and translation revision.
-6. Publish reviewed translations only; route missing/stale entries to the declared fallback.
+6. Resolve missing message keys and stale catalogs through the declared source-locale fallback. Show fresh, unapproved translations only as review-required previews; publish only approved, fresh translations.
 7. Record provider, model/version, glossary, prompt, and evaluation cohort for every DOE treatment.
 8. Preserve raw outcomes and uncertainty; rank quality before latency or cost.
 9. Keep feedback optional, consent-based, anonymous by default, and revision-linked.

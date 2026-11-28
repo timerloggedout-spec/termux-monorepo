@@ -1,5 +1,5 @@
 version: 1
-updated_at: '2026-11-28T00:00:00Z'
+updated_at: '2026-11-28T05:27:00Z'
 updated_by: ChatGPT
 proposals:
   - id: cell-the-living-machine
@@ -1415,6 +1415,27 @@ proposals:
     related_prs: []
     related_branches:
       - feat/repository-provisioner-workflow
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: polyglot-localization
+    title: PolyGlot localization — Urdu-first Teammate Portal and provider DOE
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/polyglot-localization/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues: []
+    related_prs:
+      - 5942
+    related_branches:
+      - feat/polyglot-urdu-portal-20261127-clean
     gates_required:
       - repo-gate
       - termux-smoke

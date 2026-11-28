@@ -209,3 +209,13 @@ Use this order to minimize duplicate work and preserve unique changes:
 | Research / planning | #1284, #1274, #1246 | Keep experimental and procurement contracts separate from production promotion gates |
 
 For each older PR or branch, compare the unique commit set against `master`, inspect its changed-file overlap with active PRs, check for a merged replacement, and record one disposition: `keep`, `extract`, `superseded`, `blocked`, or `archive`. Age is evidence for triage, not a disposition by itself.
+
+## PolyGlot localization validation workload
+
+Workflow: `.github/workflows/localization-validate.yml`
+
+- Trigger scope: path-filtered pull requests and path-filtered pushes to `master`.
+- Workload: one `ubuntu-latest` validation job per matching event; Python 3.12; pinned Markdown and JSON Schema dependencies; contract validation plus localization unit tests.
+- Dispatch shape: event-driven, with path-filtered pull-request and master-push triggers.
+- Capacity treatment: the repository is public, so standard GitHub-hosted runner compute follows the public-repository free-use policy. The job still consumes workflow-run queue capacity, trigger volume, and runner concurrency.
+- Oversight: count actual runs after merge and compare the observed run rate with the repository's Actions capacity snapshot. The current evidence establishes workload shape; quota exhaustion remains unverified.

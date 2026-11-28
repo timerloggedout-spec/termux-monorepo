@@ -133,6 +133,7 @@ Start with **one** of these routes. Use [architecture.md](architecture.md) for r
 | Skills + adaptive WAIT | [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) · [Superpowers](.agents/skills/superpowers/SKILL.md) | Engineering methodology, ops skills, admission/queue stalls, evidence-led loop. |
 | Integration Intelligence | [`docs/integrations/README.md`](docs/integrations/README.md) | Provider registry, adapter boundaries, event schema, phased integration roadmap. |
 | Deployment lanes (Vercel / Pages) | [`docs/DEPLOYMENT-LANES.md`](docs/DEPLOYMENT-LANES.md) | Live Vercel projects, Pages status, hosting identity rules. |
+| PolyGlot localization / accessibility | [`localization/README.md`](localization/README.md) · [`docs/localization/ACCESSIBILITY.md`](docs/localization/ACCESSIBILITY.md) | Locale registry, catalogs, mappings, manifests, Urdu-first Teammate Portal, and accessibility acceptance. |
 | README / docs image optimize | [`docs/ops/IMAGE-ASSET-PIPELINE.md`](docs/ops/IMAGE-ASSET-PIPELINE.md) | Fail-closed resize + validate before embed. |
 | Review safety and tracked-state debt | [`docs/CREDENTIAL-EXPOSURE.md`](docs/CREDENTIAL-EXPOSURE.md) | Credential exposure findings and safe remediation boundary. |
 

@@ -38,6 +38,14 @@ def test_real_coordinator_projects_events_without_internal_metrics():
     assert FORBIDDEN.isdisjoint(set(_walk_keys(feed)))
     assert all("projects" not in event for event in feed["events"])
     assert all("opportunity_cost" not in event for event in feed["events"])
+    c11 = next(event for event in feed["events"] if event["id"] == "C11")
+    assert [match["id"] for match in c11["matches"]] == ["M1", "M2", "M3", "M4", "M5", "M6"]
+    assert c11["matches"][4]["name"] == "AI-Powered Code Repository Repair"
+    assert "queue" not in c11["matches"][1]
+    assert c11["deadline"] == "2026-12-01T11:00:00-08:00"
+    c12 = next(event for event in feed["events"] if event["id"] == "C12")
+    assert c12["dates"]["final_due"] == "2026-11-30T23:45:00-08:00"
+    assert isinstance(c12["prizes"]["tiers"], str)
 
 
 def test_projection_is_closed_allowlist_and_preserves_public_gate_fields(tmp_path):
@@ -59,7 +67,7 @@ def test_projection_is_closed_allowlist_and_preserves_public_gate_fields(tmp_pat
             },
             "gates": [{
                 "id": "G1", "label": "Public gate", "blocks": True,
-                "status": "open", "evidence": [{"secret": "drop"}],
+                "status": "open", "text": "Public gate text", "evidence": [{"secret": "drop"}],
                 "metrics_internal": {"win_probability": 0.9},
             }],
             "prizes": {
@@ -87,7 +95,8 @@ def test_projection_is_closed_allowlist_and_preserves_public_gate_fields(tmp_pat
         "at": "2026-12-01T00:00:00Z", "tz": "UTC", "source": "official page"
     }
     assert event["gates"] == [{
-        "id": "G1", "label": "Public gate", "blocks": True, "status": "open"
+        "id": "G1", "label": "Public gate", "blocks": True,
+        "status": "open", "text": "Public gate text"
     }]
     assert event["prizes"]["tiers"] == [{
         "place": "1st", "award": "$100", "source_url": "https://example.com/rules"

@@ -1,5 +1,5 @@
-# 🪄 ArchWiz Tool Index — v20260614.1930
-**28 tools** across **7 categories**.
+# 🪄 ArchWiz Tool Index — v20261128
+**30 tools** across **8 categories**.
 
 ## Cockpit & Pipeline
 - **archwiz.py** — Dashboard: legacy cockpit plus the Termux Hyper-Forge entry point
@@ -41,6 +41,11 @@
 - **CONSIDERATIONS.md** — Running design log & prompt engineering
 - **METHODOLOGY_INDEX.md** — Every approach tried, what broke, what stuck
 - **CONCEPT_INDEX.md** — Every idea, feature, and concept cataloged
+
+## Engineering Toolchain
+- **ops/engineering/taxonomy.py** — Validates and queries the independent Engineering taxonomy and ordered CAD/EDA/CAE/RTL toolchains
+- **scripts/engineering/toolchain_probe.py** — Read-only inventory of registered engineering CLI executables on Termux/Linux PATH; emits JSON evidence
+- **.agents/skills/engineering-toolchains/SKILL.md** — Routes mechanical CAD, electronics, simulation, manufacturing, semiconductor and cross-domain engineering work
 
 ## Installed FOSS Stack
 - **ruff** — Python linter + auto‑fix

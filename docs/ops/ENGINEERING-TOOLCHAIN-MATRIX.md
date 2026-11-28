@@ -13,8 +13,8 @@
 | OpenSCAD | Code-defined parametric CAD | GPL FOSS; free local use | SCAD, STL, 3MF, DXF | CLI candidate; probe required |
 | SolveSpace | Constraint-based 2D/3D CAD | GPL FOSS; free local use | STEP, DXF, STL | Remote Linux preferred |
 | LibreCAD | 2D drafting | GPL FOSS; free local use | DXF | Remote Linux preferred |
-| Onshape Free | Cloud parametric CAD | Proprietary $0 free tier; no card required; public documents and non-commercial constraints | STEP, IGES, STL, DXF | Browser/cloud; separate access evidence |
-| SOLIDWORKS | Commercial CAD interoperability | Proprietary paid product; not a free/no-card baseline | SLDPRT, SLDASM, STEP, IGES, DXF | Paid target; excluded from free baseline |
+| Onshape Free | Cloud parametric CAD | Proprietary $0 free tier; public documents and non-commercial use; card requirement for this tier is unconfirmed | STEP, IGES, STL, DXF | Browser/cloud; separate access evidence |
+| SOLIDWORKS for Makers | CAD interoperability | Proprietary paid personal/non-commercial tier: $48/year or $15/month before tax; no free version or trial; not a commercial-use baseline | SLDPRT, SLDASM, STEP, IGES, DXF | Paid target; excluded from free baseline |
 
 ## Electronics and electrical design
 

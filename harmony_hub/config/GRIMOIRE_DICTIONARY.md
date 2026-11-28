@@ -14,6 +14,7 @@
 | `gr1m01r3` | `Grimoire` | `Scorebook` | All spells & history |
 | `b1dd3r` | `Bidder` | `Impresario` | ELO task wagerer |
 | `w4g3r` | `Wager` | `Bet` | ELO-based bid |
+| `r3vwr1gh7` | `Rev-wRight` | `Provenance Replay` | Session Provenance Code Extraction Engine |
 
 ## Specialist Agents
 

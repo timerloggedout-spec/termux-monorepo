@@ -48,11 +48,11 @@ def validate(tax):
     for node_id in by_id:
         if colors[node_id]==WHITE: visit(node_id,[])
     def reaches_root(node_id,seen=None):
-        seen=set() if seen is None else seen
+        path=set() if seen is None else set(seen)
         if node_id=="engineering": return True
-        if node_id in seen: return False
-        seen.add(node_id)
-        return any(parent in by_id and reaches_root(parent,seen) for parent in by_id[node_id].get("parents",[]))
+        if node_id in path: return False
+        path.add(node_id)
+        return any(parent in by_id and reaches_root(parent,path) for parent in by_id[node_id].get("parents",[]))
     for node_id in by_id:
         if node_id!="engineering" and not reaches_root(node_id): errors.append(f"{node_id}: does not descend from engineering")
     stages=tax.get("workflow_stages") or []

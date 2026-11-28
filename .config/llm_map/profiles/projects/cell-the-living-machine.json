@@ -1,0 +1,64 @@
+{
+  "name": "CELL: THE LIVING MACHINE",
+  "class": "custom-project",
+  "scope": {
+    "repos": [
+      "timerloggedout-spec/termux-monorepo",
+      "timerloggedout-spec/cell-the-living-machine",
+      "Research-Astute/molecular-biology-research",
+      "search-astute-ly/manus-public-ui-research"
+    ],
+    "issue_classes": [
+      "project-task",
+      "game-development-task",
+      "research:service",
+      "research:provider",
+      "proposal"
+    ],
+    "lanes": [
+      "Game Development & Production",
+      "Game Player Machines & Genre Teams",
+      "Game QA & Accessibility",
+      "Game ML Research",
+      "Research & Intelligence",
+      "Orchestration & Quality Control",
+      "Delivery Reliability / CI-CD",
+      "Design of Experiments",
+      "Engineering & Manufacturing",
+      "3D Art & Visualization",
+      "Platform Performance",
+      "Academy & Certification"
+    ],
+    "artifact_stores": [
+      "ops/projects/manifests/cell-the-living-machine.yaml",
+      "docs/proposals/active/cell-the-living-machine/",
+      "cell-the-living-machine/releases/",
+      "docs/proposals/active/cell-the-living-machine/ENGINEERING_AND_MAKE.md",
+      "docs/proposals/active/cell-the-living-machine/PLAYER_PROFILE_PLATFORM.md",
+      "docs/proposals/active/cell-the-living-machine/HARDWARE_AND_RENDERING.md",
+      "docs/proposals/active/cell-the-living-machine/VISUAL_PIPELINE_AND_BLENDER_MCP.md",
+      "docs/proposals/active/cell-the-living-machine/ACADEMY_AND_CERTIFICATION_PATHWAYS.md",
+      "docs/proposals/active/cell-the-living-machine/PUBLIC_WORK_AND_REPOSITORY_PROTOCOL.md",
+      "ops/equipment/registry.yaml",
+      "ops/equipment/asset.schema.json",
+      "ops/equipment/reservation.schema.json",
+      "ops/fabrication/registry.yaml",
+      "ops/fabrication/provider.schema.json"
+    ],
+    "exclude": [
+      "**/*key*",
+      "**/.npmrc*",
+      "**/*token*",
+      "**/.env*",
+      "**/.git/**",
+      "**/secrets/**",
+      "**/private-keys/**"
+    ]
+  },
+  "surfaces": [
+    "github-repo",
+    "github-issues",
+    "artifact-store",
+    "external-linked"
+  ]
+}

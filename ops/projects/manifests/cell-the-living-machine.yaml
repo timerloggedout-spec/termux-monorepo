@@ -1,0 +1,212 @@
+schema: game-project-manifest/v1
+project_id: project:cell-the-living-machine
+slug: cell-the-living-machine
+display_name: "CELL: THE LIVING MACHINE"
+status: proposed
+created_at: "2026-11-27"
+owner: timerloggedout-spec
+scope_profile: .config/llm_map/profiles/projects/cell-the-living-machine.json
+purpose: "Original science and engineering creation platform connecting molecular/cellular simulation, industrial automation, digital twins, fabrication and real-world production"
+
+repositories:
+  product:
+    full_name: timerloggedout-spec/cell-the-living-machine
+    url: https://github.com/timerloggedout-spec/cell-the-living-machine
+    lifecycle: active
+    default_branch: main
+    ownership: confirmed
+    repository_id: 1475194740
+    visibility: planned_public
+  control_plane:
+    full_name: timerloggedout-spec/termux-monorepo
+    url: https://github.com/timerloggedout-spec/termux-monorepo
+    role: project_profiles_lanes_tooling_ci_qa_orchestration
+  research:
+    research_astute:
+      organization: Research-Astute
+      url: https://github.com/Research-Astute
+      repository: Research-Astute/molecular-biology-research
+      repository_id: 183701786
+      repository_visibility: private
+      role: reusable_molecular_biology_research
+      reuse_status: repository_created_curated_records_pending
+      integration_hub: Research-Astute/manus-ui-research-hub
+      adapter_lab: Research-Astute/manus-ui-adapter-lab
+    search_astutely:
+      organization: search-astute-ly
+      url: https://github.com/search-astute-ly
+      candidate_repositories:
+        - search-astute-ly/termux-monorepo_enterprise
+        - search-astute-ly/termux-monorepo_enterprise_too
+        - search-astute-ly/redesigned-octo-rotary-phone
+        - search-astute-ly/manus-public-ui-research
+      role: search_execution_result_aggregation_source_snapshots
+      existing_research_repository: search-astute-ly/manus-public-ui-research
+      existing_research_repository_scope: public_manus_ui_source_inventory
+      integration_status: organization_lifecycle_and_scientific_search_endpoint_pending
+
+architecture:
+  contract: versioned_manifests_and_api_adapters
+  stable_project_ref: project:cell-the-living-machine
+  local_workspace_links: optional_symlinks
+  source_identity: canonical_url_plus_upstream_accession_plus_version
+  provenance: required_for_every_external_claim_and_asset
+  planes:
+    - id: product
+      owner: dedicated_game_repository
+      outputs: [game_source, assets, runtime, builds, tests, releases]
+    - id: developer_control
+      owner: termux-monorepo
+      outputs: [project_profile, lanes, tool_profiles, task_routing, ci, qa, release_contracts]
+    - id: reusable_research
+      owner: research_astute
+      outputs: [curated_references, research_notes, reusable_knowledge_artifacts]
+    - id: search_aggregation
+      owner: search_astutely
+      outputs: [queries, result_sets, normalized_records, source_snapshots, deduplication_lineage]
+    - id: scientific_authorities
+      owner: upstream_databases
+      outputs: [structures, sequences, annotations, pathways, molecules, literature]
+
+game:
+  project_kind: new_game
+  dimensions: [3d, mixed]
+  genre_facets: [simulation, systems_strategy, exploration, puzzle, educational, rpg_progression, engineering, factory_automation, sandbox, creator, digital_twin, manufacturing]
+  session_model: shared_player_identity_across_modes_and_game_types
+  time_model: simulation_with_scenario_challenges
+  scales: [molecular, membrane, organelle, cellular, tissue, organism]
+  core_loop: [explore, define, design, build, simulate, validate, make, inspect, improve, publish]
+  engine:
+    selection: pending_prototype_comparison
+    candidates: [godot, unity, unreal, browser_runtime]
+  first_slice:
+    parallel_vertical_slices:
+      - id: biological_membrane
+        scope: single_cell_membrane
+        mechanisms: [sodium_potassium_pump, aquaporin, atp_synthase]
+        evidence_gate: source_linked_scientific_review
+      - id: engineering_factory_cell
+        scope: compact_3d_automated_production_cell
+        systems: [input_storage, transport, processing_machine, power, sensor, output_inspection]
+        evidence_gate: deterministic_simulation_and_engineering_review
+
+engineering_platform:
+  shared_equipment_registry: ops/equipment/registry.yaml
+  equipment_asset_schema: ops/equipment/asset.schema.json
+  equipment_reservation_schema: ops/equipment/reservation.schema.json
+  fabrication_provider_registry: ops/fabrication/registry.yaml
+  fabrication_provider_schema: ops/fabrication/provider.schema.json
+  concept_to_production: [discover, define, design, simulate, review, prototype, fabricate, inspect, iterate, publish]
+  internal_equipment_registry: shared_across_projects_and_grants
+  external_services: provider_directory_with_user_approval
+  player_identity: central_cross_game_profile
+  fabrication: human_reviewed_quote_and_handoff
+  biological_services: licensed_provider_and_biosafety_review
+
+project_documents:
+  engineering_and_make: docs/proposals/active/cell-the-living-machine/ENGINEERING_AND_MAKE.md
+  player_profile: docs/proposals/active/cell-the-living-machine/PLAYER_PROFILE_PLATFORM.md
+  hardware_rendering: docs/proposals/active/cell-the-living-machine/HARDWARE_AND_RENDERING.md
+  blender_mcp: docs/proposals/active/cell-the-living-machine/VISUAL_PIPELINE_AND_BLENDER_MCP.md
+  academy_pathways: docs/proposals/active/cell-the-living-machine/ACADEMY_AND_CERTIFICATION_PATHWAYS.md
+  public_private_protocol: docs/proposals/active/cell-the-living-machine/PUBLIC_WORK_AND_REPOSITORY_PROTOCOL.md
+
+knowledge_access:
+  policy: ubiquitous
+  age_classification: excluded_from_progression
+  shared_knowledge_graph: true
+  lenses:
+    - id: field
+      purpose: intuitive_orientation_visual_cues_plain_language
+    - id: mechanism
+      purpose: causal_steps_interactions_state_transitions
+    - id: quantitative
+      purpose: kinetics_gradients_thermodynamics_equations
+    - id: structural
+      purpose: accessions_chains_domains_residues_conformations_confidence
+    - id: research
+      purpose: papers_methods_uncertainty_competing_models_open_questions
+  challenge_profiles:
+    - guided
+    - exploratory
+    - constrained_resources
+    - time_pressure
+    - coupled_systems
+    - research_investigation
+
+lanes:
+  primary:
+    - Game Development & Production
+    - Research & Intelligence
+    - Orchestration & Quality Control
+  supporting:
+    - Game Player Machines & Genre Teams
+    - Game QA & Accessibility
+    - Game ML Research
+    - Delivery Reliability / CI-CD
+    - Design of Experiments
+
+specialists:
+  contexts:
+    - game_design_systems
+    - gameplay_engineering
+    - engine_runtime_architecture
+    - graphics_rendering
+    - 3d_art_environment
+    - animation_rigging
+    - physics_simulation
+    - ui_ux_accessibility
+    - tools_content_pipeline
+    - platform_performance
+    - build_release_cicd
+    - ml_vision_telemetry
+    - scientific_research
+    - structural_biology
+    - cell_biology
+    - scientific_visualization
+    - science_communication
+  work_package_limit: 3
+  reviewer_separation: development_and_qa
+
+opportunity_mapping:
+  path: docs/proposals/active/cell-the-living-machine/AUDIENCE_AND_OPPORTUNITY_MAP.yaml
+  challenge_registry: ops/challenge/coordinator.json
+  challenge_schema: docs/ops/CHALLENGE-SCHEMA.md
+  recruitment_registry: ops/challenge-recruitment/registry.json
+  audience_policy: ubiquitous_knowledge_access_with_independent_challenge_profiles
+
+research_catalog:
+  candidate_source_count: 26
+  canonical_registry: Research-Astute/molecular-biology-research/sources/registry.yaml
+  canonical_registry_revision: e9c51ef1619aa76604db8b8d0de292586d5aa08a
+  project_snapshot: docs/proposals/active/cell-the-living-machine/DATA_SOURCES.yaml
+  research_map_path: docs/proposals/active/cell-the-living-machine/RESEARCH_MAP.yaml
+  adapter_admission: source_specific_api_terms_and_provenance_review
+
+content_pipeline:
+  seed_surface: https://www.youtube.com/@iJEPStudio
+  inventory_status: metadata_inventory_complete_source_extraction_pending
+  inventory_path: docs/proposals/active/cell-the-living-machine/research/ijep-studio-channel-inventory.json
+  inventory_count: 125
+  required_fields: [video_id, title, description, published_at, duration, transcript_ref, topic_tags, source_refs, structure_accessions, rights_status]
+  source_classes: [experimental_structure, predicted_structure, curated_annotation, primary_literature, educational_visual, gameplay_abstraction]
+
+tooling:
+  molecular_visualization:
+    candidates: [Blender, Molecular_Nodes]
+    status: candidate_review
+  game_engine:
+    status: pending_selection
+  data_adapters:
+    status: research_and_contract_review
+
+quality:
+  science_integrity: source_claim_traceability
+  accessibility: [captions, transcripts, text_equivalents, adjustable_motion, color_independent_encoding, input_flexibility, adjustable_information_density]
+  deterministic_scenarios: required
+  independent_qa: required
+  source_version_pinning: required
+
+release:
+  status: planning
+  artifacts: [build, source_revision, dependency_manifest, asset_manifest, science_review, qa_report, accessibility_report]

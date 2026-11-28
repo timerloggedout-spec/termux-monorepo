@@ -1,0 +1,20 @@
+schema: shared-equipment-registry/v1
+status: schema_seeded_inventory_pending
+owner: timerloggedout-spec
+programs:
+  - program_id: program:automatalabs
+    display_name: AutoMataLabs
+    status: concept_reference
+    purpose: cross_project_shared_equipment_and_automation_capability
+    asset_ids: []
+assets: []
+reservations: []
+access_policy:
+  authorization: project_scoped
+  grant_controls: grant_terms_and_cost_codes_required
+  operator_controls: current_qualification_and_facility_approval_required
+  safety_review: required_for_controlled_specialist_and_restricted_assets
+  audit: immutable_reservation_and_handoff_records
+schemas:
+  asset: ops/equipment/asset.schema.json
+  reservation: ops/equipment/reservation.schema.json

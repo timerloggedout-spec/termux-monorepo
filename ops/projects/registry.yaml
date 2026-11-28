@@ -1,0 +1,19 @@
+schema: project-registry/v1
+updated_at: "2026-11-27"
+projects:
+  - project_id: project:cell-the-living-machine
+    name: "CELL: THE LIVING MACHINE"
+    class: custom-project
+    scope_profile: ../../.config/llm_map/profiles/projects/cell-the-living-machine.json
+    manifest: manifests/cell-the-living-machine.yaml
+    proposal: ../../docs/proposals/active/cell-the-living-machine/MANIFEST.md
+    product_repository: timerloggedout-spec/cell-the-living-machine
+    product_repository_state: active
+    product_repository_id: 1475194740
+    research_repository: Research-Astute/molecular-biology-research
+    research_repository_id: 183701786
+    product_visibility: private
+    target_visibility: public
+    public_transition: owner_authorized_github_actions_workflow
+    product_default_branch: main
+    status: proposed

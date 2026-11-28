@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "game-project-manifest/v1",
+  "title": "Game Project Manifest",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "project_id",
+    "slug",
+    "display_name",
+    "status",
+    "scope_profile",
+    "repositories",
+    "architecture",
+    "game",
+    "knowledge_access",
+    "lanes",
+    "specialists",
+    "content_pipeline",
+    "quality",
+    "release"
+  ],
+  "properties": {
+    "schema": {
+      "const": "game-project-manifest/v1"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^project:[a-z0-9][a-z0-9-]*$"
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "display_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "proposed",
+        "active",
+        "paused",
+        "archived"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "scope_profile": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repositories": {
+      "type": "object",
+      "required": [
+        "product",
+        "control_plane",
+        "research"
+      ]
+    },
+    "architecture": {
+      "type": "object",
+      "required": [
+        "contract",
+        "stable_project_ref",
+        "planes"
+      ]
+    },
+    "game": {
+      "type": "object",
+      "required": [
+        "project_kind",
+        "genre_facets",
+        "scales",
+        "engine"
+      ]
+    },
+    "knowledge_access": {
+      "type": "object",
+      "required": [
+        "policy",
+        "shared_knowledge_graph",
+        "lenses"
+      ]
+    },
+    "lanes": {
+      "type": "object",
+      "required": [
+        "primary",
+        "supporting"
+      ]
+    },
+    "specialists": {
+      "type": "object",
+      "required": [
+        "contexts"
+      ]
+    },
+    "content_pipeline": {
+      "type": "object",
+      "required": [
+        "seed_surface",
+        "inventory_status",
+        "required_fields",
+        "source_classes"
+      ]
+    },
+    "quality": {
+      "type": "object",
+      "required": [
+        "science_integrity",
+        "accessibility"
+      ]
+    },
+    "release": {
+      "type": "object",
+      "required": [
+        "status",
+        "artifacts"
+      ]
+    }
+  }
+}

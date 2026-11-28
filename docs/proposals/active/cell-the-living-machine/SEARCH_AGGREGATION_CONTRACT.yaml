@@ -1,0 +1,40 @@
+schema: search-aggregation-contract/v1
+provider: Search-Astutely
+organization: search-astute-ly
+service_state: organization_lifecycle_and_endpoint_verification_pending
+purpose: "Capture reproducible scientific search jobs, normalized result sets, source snapshots, and query lineage."
+
+job:
+  required_fields: [job_id, project_ref, query, purpose, sources, filters, initiated_at, initiated_by]
+  optional_fields: [organism, taxonomy_id, date_range, evidence_class, source_type, accession_namespace]
+  source_scope: [RCSB_PDB, PDBe_KB, EMDB, BMRB, AlphaFold_DB, UniProtKB, NCBI_Entrez, InterPro, Reactome, KEGG, IntAct, BioGRID, STRING, SABIO_RK, BRENDA, Rhea, Cellosaurus, Human_Protein_Atlas, Expression_Atlas, PubMed, Europe_PMC, ChEBI, PubChem]
+
+snapshot:
+  required_fields: [snapshot_id, job_id, captured_at, provider, provider_version, query_hash, result_count, raw_response_ref, normalized_response_ref]
+  immutable: true
+  checksum: required
+  preserve_empty_results: true
+
+result:
+  required_fields: [result_id, snapshot_id, source_id, title, canonical_url, retrieved_at, content_type, evidence_class]
+  optional_fields: [author, published_at, source_accession, organism, taxonomy_id, abstract_or_snippet, doi, pmid, pdb_id, uniprot_accession, license, relevance_score, checksum]
+  evidence_class: [experimentally_determined, curated_database_annotation, computational_prediction, primary_literature, educational_representation, gameplay_abstraction]
+
+deduplication:
+  primary_keys: [canonical_url, DOI, PMID, PDB_ID, UniProt_accession, source_accession]
+  retain_all_source_links: true
+  retain_conflicting_versions: true
+  merge_policy: canonical_record_with_provenance_edges
+
+handoff:
+  candidate_snapshot_to_research_astute: required
+  curated_record_to_monorepo: stable_record_id_and_revision
+  project_consumer: project:cell-the-living-machine
+
+integration_gates:
+  - confirm canonical Search Astutely repository/service endpoint
+  - verify Enterprise account preservation and organization lifecycle
+  - document authentication method and secret reference
+  - verify API contract, rate limits, pagination, and versioning
+  - validate snapshot immutability and source provenance
+  - exercise deduplication and re-ingestion fixtures

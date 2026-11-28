@@ -228,6 +228,12 @@ jobs:
                 "sources": [{"id": "workflow-catalog"}, {"id": "workflow-event-index"}],
                 "workflow_event_catalog": {},
                 "reconciliation": {"workflow_inventory": {}, "workflow_authority_conflicts": []},
+                "workflow_source_authority_overrides": [{
+                    "workflow": ".github/workflows/one.yml",
+                    "effect": "Creates external repository",
+                    "risk": "external-repository-creation",
+                    "catalog_status": "NOT_IN_CATALOG",
+                }],
             }), encoding="utf-8")
             workflow_registry.write_outputs(root)
             self.assertTrue(workflow_registry.check_outputs(root))
@@ -237,7 +243,12 @@ jobs:
             self.assertEqual(registry["sources"][1]["schema"], "workflow-event-index/v2")
             self.assertEqual(registry["sources"][1]["workflow_count"], 1)
             self.assertEqual(registry["reconciliation"]["workflow_inventory"]["status"], "IN_SYNC")
-            self.assertEqual(registry["reconciliation"]["workflow_authority_conflicts"][0]["source_authority"], "writer")
+            conflict = registry["reconciliation"]["workflow_authority_conflicts"][0]
+            self.assertEqual(conflict["source_authority"], "writer")
+            self.assertEqual(conflict["api_write_methods"], ["POST"])
+            self.assertEqual(conflict["effect"], "Creates external repository")
+            self.assertEqual(conflict["catalog_status"], "CATALOGUED")
+            self.assertEqual(registry["workflow_source_authority_overrides"], [])
             (catalog_dir / "workflow-event-index.json").write_text("{}\\n", encoding="utf-8")
             self.assertFalse(workflow_registry.check_outputs(root))
 

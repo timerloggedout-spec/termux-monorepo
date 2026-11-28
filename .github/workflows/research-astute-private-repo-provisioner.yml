@@ -1,0 +1,119 @@
+name: Research Astute Private Repository Provisioner
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - ops/requests/research-astute-private-repo.yaml
+
+permissions: {}
+
+concurrency:
+  group: org-private-repo-research-astute
+  cancel-in-progress: false
+
+jobs:
+  provision:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    env:
+      GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
+      EXPECTED_AUTH_OWNER: timerloggedout-spec
+      ORG_NAME: Research-Astute
+      REPO_NAME: molecular-biology-research
+      REPO_DESCRIPTION: Reusable, provenance-first molecular and cellular biology research for science games, education, simulation and R&D.
+      REQUEST_FILE: ops/requests/research-astute-private-repo.yaml
+    steps:
+      - name: Checkout versioned provisioning request
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Verify owner, organization access and private-repository allocation
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          : "${GH_TOKEN:?Configure an authenticated operator Actions secret}"
+          test -f "$REQUEST_FILE"
+
+          requested_org="$(sed -n 's/^target_org:[[:space:]]*//p' "$REQUEST_FILE" | head -n1)"
+          requested_name="$(sed -n 's/^repo_name:[[:space:]]*//p' "$REQUEST_FILE" | head -n1)"
+          requested_visibility="$(sed -n 's/^requested_visibility:[[:space:]]*//p' "$REQUEST_FILE" | head -n1)"
+          approved_by="$(sed -n 's/^approved_by:[[:space:]]*//p' "$REQUEST_FILE" | head -n1)"
+          request_id="$(sed -n 's/^request_id:[[:space:]]*//p' "$REQUEST_FILE" | head -n1)"
+
+          auth_owner="$(gh api user --jq '.login')"
+          org_login="$(gh api "orgs/$ORG_NAME" --jq '.login')"
+          org_admin="$(gh api "repos/$ORG_NAME/manus-ui-research-hub/collaborators/$auth_owner/permission" --jq '.permission')"
+
+          [[ "$auth_owner" == "$EXPECTED_AUTH_OWNER" ]]
+          [[ "$org_login" == "$ORG_NAME" ]]
+          [[ "$org_admin" == "admin" ]]
+          [[ "$requested_org" == "$ORG_NAME" ]]
+          [[ "$requested_name" == "$REPO_NAME" ]]
+          [[ "$requested_visibility" == "private" ]]
+          [[ "$approved_by" == "$EXPECTED_AUTH_OWNER" ]]
+          [[ -n "$request_id" ]]
+
+          existing="$(gh api "repos/$ORG_NAME/$REPO_NAME" --jq '[.id, .full_name, .private] | @tsv' 2>/dev/null || true)"
+          if [[ -n "$existing" ]]; then
+            echo "::error::Target repository already exists; inspect its identity and visibility before proceeding."
+            exit 1
+          fi
+
+          private_repos="$(gh api --paginate "/orgs/$ORG_NAME/repos?type=all&per_page=100" --jq '.[] | select(.private == true) | .full_name' || true)"
+          if [[ -n "$private_repos" ]]; then
+            echo "::error::The one-private-repository allocation is already occupied for $ORG_NAME."
+            printf '%s\n' "$private_repos"
+            exit 1
+          fi
+
+          echo "request_id=$request_id" >> "$GITHUB_OUTPUT"
+          echo "authenticated_owner=$auth_owner" >> "$GITHUB_OUTPUT"
+
+      - name: Create the private reusable research repository
+        id: create
+        shell: bash
+        run: |
+          set -euo pipefail
+          created="$(gh api --method POST "/orgs/$ORG_NAME/repos"             -f "name=$REPO_NAME"             -f "description=$REPO_DESCRIPTION"             -F private=true             -F auto_init=true             -F has_issues=true             -F has_wiki=false)"
+          full_name="$(jq -r '.full_name' <<< "$created")"
+          repo_id="$(jq -r '.id' <<< "$created")"
+          default_branch="$(jq -r '.default_branch' <<< "$created")"
+          private="$(jq -r '.private' <<< "$created")"
+          [[ "$full_name" == "$ORG_NAME/$REPO_NAME" ]]
+          [[ "$private" == "true" ]]
+          [[ -n "$repo_id" && -n "$default_branch" ]]
+          verified="$(gh api "repos/$ORG_NAME/$REPO_NAME" --jq '[.id, .full_name, .private, .default_branch] | @tsv')"
+          IFS=$'\t' read -r verified_id verified_name verified_private verified_branch <<< "$verified"
+          [[ "$verified_id" == "$repo_id" ]]
+          [[ "$verified_name" == "$full_name" ]]
+          [[ "$verified_private" == "true" ]]
+          [[ "$verified_branch" == "$default_branch" ]]
+          echo "repo_id=$repo_id" >> "$GITHUB_OUTPUT"
+          echo "full_name=$full_name" >> "$GITHUB_OUTPUT"
+          echo "default_branch=$default_branch" >> "$GITHUB_OUTPUT"
+
+      - name: Publish non-secret provisioning receipt
+        shell: bash
+        env:
+          REQUEST_ID: ${{ steps.gate.outputs.request_id }}
+          AUTH_OWNER: ${{ steps.gate.outputs.authenticated_owner }}
+          FULL_NAME: ${{ steps.create.outputs.full_name }}
+          REPO_ID: ${{ steps.create.outputs.repo_id }}
+          DEFAULT_BRANCH: ${{ steps.create.outputs.default_branch }}
+        run: |
+          {
+            echo "## Research Astute private repository provisioned"
+            echo
+            echo "- request_id: $REQUEST_ID"
+            echo "- repository: https://github.com/$FULL_NAME"
+            echo "- repository_id: $REPO_ID"
+            echo "- visibility: private"
+            echo "- default_branch: $DEFAULT_BRANCH"
+            echo "- authenticated_owner: $AUTH_OWNER"
+            echo "- private_repo_policy: one private repository for this organization"
+            echo "- credential_reference: existing Actions secret (value withheld)"
+            echo "- workflow_run: https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          } >> "$GITHUB_STEP_SUMMARY"

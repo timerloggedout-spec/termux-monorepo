@@ -7,6 +7,10 @@ on:
     branches: [master]
     paths:
       - 'scripts/ci/automation_docs.py'
+      - 'scripts/ci/workflow_registry.py'
+      - 'tests/test_workflow_registry.py'
+      - 'docs/ops/generated/workflow-event-index.json'
+      - 'docs/ops/WORKFLOW-EVENT-INDEX.md'
       - '.github/workflows/**'
       - '.github/actions/**'
       - 'scripts/model_router.py'
@@ -21,6 +25,10 @@ on:
     types: [opened, synchronize, reopened]
     paths:
       - 'scripts/ci/automation_docs.py'
+      - 'scripts/ci/workflow_registry.py'
+      - 'tests/test_workflow_registry.py'
+      - 'docs/ops/generated/workflow-event-index.json'
+      - 'docs/ops/WORKFLOW-EVENT-INDEX.md'
       - '.github/workflows/**'
       - '.github/actions/**'
       - 'scripts/model_router.py'

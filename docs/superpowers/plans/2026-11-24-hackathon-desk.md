@@ -37,6 +37,8 @@
 
 **Files:**
 - Create: scripts/dashboards/challenge_public_feed.py (allowlisted public projection from the coordinator)
+- Create: docs/ops/CHALLENGE-PUBLIC-FEED.md (public projection contract)
+- Create: .github/workflows/hackathon-desk-contract.yml (focused Python/Node contract checks)
 - Modify: .github/workflows/challenge-countdowns-feed-collect.yml (generate and publish both challenge feeds in the same refresh PR)
 - Create: apps/tribute-dashboard/data/challenge-public-feed.json (generated dashboard artifact)
 - Create: apps/tribute-dashboard/hackathon.js
@@ -46,12 +48,13 @@
 **Interfaces:**
 - Produces: an allowlisted `challenge-public-feed/v1` artifact plus HackathonDesk.normalizeOpportunityFeed(payload, now), normalizeChallengeFeed(payload), normalizeCountdownFeed(payload), normalizePipelineFeed(payload), and safeExternalUrl(value).
 - The browser fetches `https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/que/feeds/opportunity-priority.json` for ranked opportunities and `./data/challenge-public-feed.json` for challenge events/gates. It fetches countdown, desk, QUE queue, and dispatch mirrors from `./data/challenge-countdowns-feed.json`, `./data/desk-feed.json`, and `./data/que-queue-feed.json`. Pipeline dispatch evidence is read from the `dispatch_claims` object embedded in the QUE queue feed; the separate `dispatch-state-feed.json` is empty on master and stays outside browser requests until it contains a valid published contract.
-- The browser MUST NOT fetch `ops/challenge/coordinator.json`. The generator copies only explicitly allowlisted public fields, recursively excludes `metrics_internal` and `win_probability`, and tests the exclusion at every nesting level. The generated artifact is deployed with the dashboard tree.
+- The browser MUST NOT fetch `ops/challenge/coordinator.json`. The generator copies only explicitly allowlisted public fields, recursively excludes `metrics_internal` and `win_probability`, and tests the exclusion at every nesting level. C11 M1–M6 and C12's alternate date keys remain represented. The generated artifact is deployed with the dashboard tree and refreshed alongside the countdown feed.
+- The dedicated Hackathon Desk Contract workflow runs the public-feed projection tests on pull requests and later adds the Desk's Node/Python contracts as those tasks land.
 - Returns normalized records with source, generated_at, freshness, and explicit status values.
 
 - [ ] Write Python tests first for the projection allowlist, nested forbidden-key exclusion, deterministic output, and coordinator input failures.
 - [ ] Write Node tests for fresh/stale/missing/malformed opportunity feeds, public challenge projection states, closed events, null deadlines, and safe URL validation.
-- [ ] Assert the deployed opportunity URL and all three dashboard-relative feed URLs resolve from the deployed Hackathon Desk origin; treat unavailable feeds as explicit unavailable states.
+- [ ] Assert the deployed opportunity URL and all four dashboard-relative feed URLs resolve from the deployed Hackathon Desk origin; treat unavailable feeds as explicit unavailable states.
 - [ ] Run pytest -q tests/test_hackathon_desk.py and node --test tests/hackathon-desk.test.cjs; verify each new behavior fails for its expected reason.
 - [ ] Implement the allowlisted projection generator and wire it into the existing challenge-countdowns-feed-collect workflow so coordinator changes regenerate both feeds in one refresh PR.
 - [ ] Implement pure normalizers and escaping/link validation in hackathon.js.

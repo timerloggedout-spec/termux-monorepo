@@ -10,6 +10,7 @@ Build one webpage where a hackathon teammate can discover opportunities, challen
 |---|---|---|
 | Ranked opportunities | ops/que/feeds/opportunity-priority.json | que.opportunity-priority/v1; generated timestamp and stale/fresh horizon are first-class |
 | Challenge events, participants, gates | ops/challenge/coordinator.json | docs/ops/CHALLENGE-SCHEMA.md; challenge coordinator is the machine source of truth |
+| Browser-safe challenge projection | scripts/dashboards/challenge_public_feed.py → apps/tribute-dashboard/data/challenge-public-feed.json | challenge-public-feed/v1 allowlist; browser never fetches the raw coordinator; nested internal-metric exclusion is tested |
 | Countdown instants and prize projection | apps/tribute-dashboard/data/challenge-countdowns-feed.json | docs/ops/CHALLENGE-COUNTDOWNS-FEED.md; browser derives countdown state from instants |
 | Desk traversals | apps/tribute-dashboard/data/desk-feed.json and ops/challenge/desk-feed.json | Traversal evidence only; deprecated priority-timebox fields do not rank opportunities |
 | Queue and dispatch | apps/tribute-dashboard/data/que-queue-feed.json and apps/tribute-dashboard/data/dispatch-state-feed.json | Existing queue and dispatch projections; read-only |

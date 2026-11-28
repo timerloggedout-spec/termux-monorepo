@@ -29,7 +29,7 @@
 - Existing `manus-ui-research-hub` and `manus-ui-adapter-lab` have a Manus UI / deterministic adapter scope. They provide an integration pattern; the molecular biology research store uses a dedicated repository.
 - New reusable science repository: https://github.com/Research-Astute/molecular-biology-research
 - Repository ID: `183701786`; visibility: private; default branch: `main`.
-- Research contracts: `RESEARCH_ASTUTE_CONTRACT.yaml`; the MonoRepo candidate catalog covers 26 providers; the new repository contains initial mechanism dossiers for sodium-potassium pump, aquaporin, and ATP synthase.
+- Research contracts: `RESEARCH_ASTUTE_CONTRACT.yaml`; `sources/registry.yaml` in Research Astute contains 26 reusable provider records at revision `e9c51ef`; initial mechanism dossiers cover sodium-potassium pump, aquaporin, and ATP synthase.
 - The third-party `NDuma/ResearchAstute` repository is a separate public resource. Its license and ownership scope remain review-required; it is excluded from the canonical Research-Astute project plane.
 - Integration status: owner organization and dedicated repository verified; curated record population and adapter workflow pending.
 

@@ -81,6 +81,18 @@
           },
           "research_repository_id": {
             "type": "integer"
+          },
+          "product_repository_id": {
+            "type": "integer"
+          },
+          "product_visibility": {
+            "enum": [
+              "private",
+              "public"
+            ]
+          },
+          "product_default_branch": {
+            "type": "string"
           }
         }
       }

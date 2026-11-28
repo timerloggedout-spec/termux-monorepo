@@ -68,8 +68,8 @@ class EngineeringTaxonomyTests(TestCase):
         by_id = {node["id"]: node for node in taxonomy["nodes"]}
         self.assertEqual(by_id["onshape-free"]["metadata"]["access"], "cloud-free-tier")
         self.assertEqual(by_id["onshape-free"]["metadata"]["commercial_use"], "restricted")
-        self.assertIs(by_id["onshape-free"]["metadata"]["payment_card_required"], False)
-        self.assertEqual(by_id["solidworks"]["metadata"]["access"], "commercial-paid")
+        self.assertEqual(by_id["onshape-free"]["metadata"]["payment_card_required"], "unknown")
+        self.assertEqual(by_id["solidworks-makers"]["metadata"]["access"], "commercial-paid")
         self.assertEqual(by_id["solidworks"]["metadata"]["payment_card_required"], "unknown")
         self.assertTrue(all(node["metadata"]["payment_card_required"] is False for node in by_id.values() if node["kind"] == "tool" and node["metadata"]["license_class"] == "foss"))
 

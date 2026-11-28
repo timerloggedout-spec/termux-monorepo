@@ -14,6 +14,11 @@
 | CLM-10 | Establish cross-repository integration contracts, release provenance, and link validation. | P2 | proposed | Delivery Reliability / CI-CD | Manifest contract, repository identity checks, source revision pins, and CI validation. | CLM-01, CLM-07, CLM-09 |
 
 | CLM-11 | Map player/specialist audiences and connect the game to the existing hackathon/challenge opportunity registry. | P2 | in_progress | Research & Intelligence + Game Development & Production | Audience/lens map, challenge-category crosswalk, current event references, and source-of-truth links. | CLM-01, CLM-05 |
+| CLM-12 | Define the engineering-to-making platform: industrial automation, creator studio, manufacturing and professional service handoffs. | P1 | proposed | Game Development & Production + Engineering & Manufacturing | Engineering design contract, factory vertical slice, provider directory schema, fabrication handoff and equipment registry. | CLM-05, CLM-07 |
+| CLM-13 | Establish one portable player identity and profile across all game types and project experiences. | P1 | proposed | Platform Architecture + Orchestration & Quality Control | Versioned identity/profile schema, auth boundary, game extension namespaces, offline sync and privacy tests. | CLM-01 |
+| CLM-14 | Establish Blender MCP and high-fidelity 3D asset pipeline with mobile derivatives. | P1 | proposed | 3D Art & Visualization + Tools & Content Pipeline | Reviewed Blender MCP adapter, local setup profile, asset build manifest, scene validation, glTF/USD exports and mobile LOD pipeline. | CLM-07 |
+| CLM-15 | Establish mobile-first renderer tiers, performance budgets and studio rendering workflows. | P1 | proposed | Platform Performance + Graphics & Rendering | Physical-device matrix, low-tier compatibility baseline, renderer comparison, performance telemetry and visual QA. | CLM-07, CLM-14 |
+| CLM-16 | Integrate AMD and NVIDIA academies and verified credential pathways into the project learning system. | P2 | proposed | Academy & Certification + Research & Intelligence | Provider-sourced learning pathways, credential verification model and project-linked practical labs. | CLM-12, CLM-14, CLM-15 |
 
 ## Execution boundary
 

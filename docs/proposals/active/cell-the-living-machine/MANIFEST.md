@@ -62,7 +62,7 @@ The full iJEP Studio channel is the initial visual and topic-discovery surface. 
 
 - MonoRepo scope profile: drafted under `.config/llm_map/profiles/projects/`; project manifest and registry are in `ops/projects/`; draft PR #5949 is open.
 - Dedicated game repository: created as private `timerloggedout-spec/cell-the-living-machine` (repository ID `1475194740`, default branch `main`); planning scaffold committed.
-- Research Astute: owner organization verified; private `molecular-biology-research` repository created (ID `183701786`) as the reusable science evidence store.
+- Research Astute: owner organization verified; private `molecular-biology-research` repository created (ID `183701786`) with a 26-provider reusable source registry and three initial mechanism dossiers.
 - Search Astutely: owner organization verified; current `manus-public-ui-research` repository is scoped to public Manus UI research. Scientific search aggregation endpoint and Enterprise account preservation require review.
 - Scientific database catalog: 26 candidate sources mapped across nine research domains; source-specific adapter admission follows API, terms, and provenance review.
 - Engine and renderer: selection pending a bounded prototype comparison.

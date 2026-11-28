@@ -1,6 +1,6 @@
 # Issue-template census
 
-Source: `.github/ISSUE_TEMPLATE/` on `feat/trigger-workflow-registry-refresh`. Snapshot: 2026-11-27.
+Source: `.github/ISSUE_TEMPLATE/` on `feat/trigger-workflow-registry-generator`. Snapshot: 2026-11-27.
 
 | Measure | Count |
 |---|---:|

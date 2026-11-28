@@ -1,6 +1,6 @@
 # Workflow trigger census — selected routes
 
-Snapshot: `feat/trigger-workflow-registry-generator`, 2026-11-27. Scope: eight source-read workflows demonstrating issue admission, issue intake, workflow handoff, mentions, slash commands, manual dispatch, and typed repository events. This is a verified exemplar set, not the exhaustive 332-workflow directory inventory. The generated automation catalog contains 331 entries; `project-repository-visibility.yml` is present in the workflow directory but absent from that catalog snapshot.
+Snapshot: `feat/trigger-workflow-registry-generator`, 2026-11-27. Scope: eight source-read workflows demonstrating issue admission, issue intake, workflow handoff, mentions, slash commands, manual dispatch, and typed repository events. This is a verified exemplar set, not the exhaustive 333-workflow directory inventory. The generated automation catalog contains 332 entries. `research-astute-private-repo-provisioner.yml` is present in the directory but absent from the catalog; `project-repository-visibility.yml` is catalogued with an authority mismatch.
 
 | Workflow | Event(s) | Selector / gate | Authority |
 |---|---|---|---|
@@ -24,4 +24,4 @@ Snapshot: `feat/trigger-workflow-registry-generator`, 2026-11-27. Scope: eight s
 
 ## Evidence and limits
 
-Each record stores the source blob SHA. Event subscriptions and selectors above are extracted from workflow YAML/job conditions; runtime outcomes still require workflow-run evidence. The live workflow directory contained 332 YAML files; `docs/ops/generated/automation-workflow-catalog.json` contains 331 records. The additional `project-repository-visibility.yml` workflow is source-read and added here as an explicit catalog reconciliation gap. This census records configured behavior, not proof that a route fired successfully.
+Each record stores the source blob SHA. Event subscriptions and selectors above are extracted from workflow YAML/job conditions; runtime outcomes still require workflow-run evidence. The live workflow directory contains 333 YAML files; `docs/ops/generated/automation-workflow-catalog.json` contains 332 records. `research-astute-private-repo-provisioner.yml` is the current uncatalogued workflow. `project-repository-visibility.yml` is catalogued, with a separate catalog/source authority mismatch. This census records configured behavior, not proof that a route fired successfully.

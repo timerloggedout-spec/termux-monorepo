@@ -1,6 +1,71 @@
 {
-  "$schema":"https://json-schema.org/draft/2020-12/schema","title":"Optional translation feedback","type":"object",
-  "required":["schema_version","feedback_id","surface","locale","message_key","translation_revision","consent","rating","submitted_at"],
-  "properties":{"schema_version":{"const":1},"feedback_id":{"type":"string","minLength":1},"surface":{"type":"string"},"locale":{"type":"string"},"message_key":{"type":"string"},"translation_revision":{"type":"string"},"consent":{"const":true},"anonymous":{"type":"boolean","default":true},"rating":{"type":"integer","minimum":1,"maximum":5},"category":{"enum":["meaning","grammar","terminology","tone","rtl_layout","accessibility","other"]},"comment":{"type":"string","maxLength":2000},"submitted_at":{"type":"string","format":"date-time"}},
-  "additionalProperties":false
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Optional translation feedback",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "feedback_id",
+    "surface",
+    "locale",
+    "message_key",
+    "translation_revision",
+    "consent",
+    "rating",
+    "submitted_at"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "feedback_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "surface": {
+      "type": "string"
+    },
+    "locale": {
+      "type": "string"
+    },
+    "message_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "translation_revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "consent": {
+      "const": true
+    },
+    "anonymous": {
+      "type": "boolean",
+      "default": true
+    },
+    "rating": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "category": {
+      "enum": [
+        "meaning",
+        "grammar",
+        "terminology",
+        "tone",
+        "rtl_layout",
+        "accessibility",
+        "other"
+      ]
+    },
+    "comment": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "submitted_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
 }

@@ -69,8 +69,8 @@ jobs:
           git commit -m "chore(challenges): refresh public challenge feeds"
           git push -f origin "$branch"
           gh pr create --base master --head "$branch" \
-            --title "chore(countdowns): refresh challenge-countdowns-feed.json" \
-            --body "Automated challenge countdowns feed refresh (collector: scripts/dashboards/challenge_countdowns_feed.py; contract: docs/ops/CHALLENGE-COUNTDOWNS-FEED.md). Instants are derived from docs/ops/CHALLENGE-ENTRIES-LOG.md at collection time; nothing is copied forward." \
+            --title "chore(challenges): refresh public challenge feeds" \
+            --body "Automated refresh of challenge-countdowns-feed.json and challenge-public-feed.json. The public projection is generated from ops/challenge/coordinator.json by scripts/dashboards/challenge_public_feed.py with an explicit allowlist; the countdown feed derives deadline instants from docs/ops/CHALLENGE-ENTRIES-LOG.md." \
             || echo "refresh PR already open"
         env:
           GH_TOKEN: ${{ steps.swarm.outputs.token }}

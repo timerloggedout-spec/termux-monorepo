@@ -448,3 +448,19 @@ The UI/UX implementation is ready for promotion only when:
 ```
 
 This order deliberately makes the UI useful before the historical corpus is complete while preventing the UI from hiding evidence gaps.
+
+
+## 21. Optional toroidal relationship explorer
+
+The Relationships surface MAY offer a toroidal projection alongside the conventional graph. The projection is a navigation/layout mode over the same versioned snapshot and relationship records.
+
+Required behavior:
+
+- preserve node/edge IDs, filters, selected item, snapshot ID, and source SHA when switching views;
+- expose explicit forward/reverse traversal and explicitly declared `mirror_of` pairs;
+- keep the twelve-slot arrangement as an optional layout preset, never a canonical domain-count requirement;
+- expose relationship type, directionality, evidence status, confidence when supplied, and provenance in the inspector;
+- retain a keyboard-accessible list/table equivalent and reduced-motion behavior;
+- show partial corpus coverage and unavailable evidence in every projection.
+
+The machine contract is `TOROIDAL-DOMAIN-RELATIONSHIP.schema.json`; the full interaction and evidence contract is `TOROIDAL-DOMAIN-RELATIONSHIP-LAYER.md`. The toroidal projection remains read-only and does not introduce a new persistence or execution authority.

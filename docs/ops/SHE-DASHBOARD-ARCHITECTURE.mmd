@@ -9,6 +9,7 @@ flowchart TD
     CORPUS[Historical Evidence Corpus]
     RED[SHE pure reducers]
     SNAP[Versioned dashboard snapshots]
+    PROJ[Relationship projection adapter]
     SNAP --> UI[Read-only SHE UI shell]
     UI --> VERCEL[Vercel interactive SHE]
     UI --> PAGES[GitHub Pages static mirror]
@@ -25,10 +26,13 @@ flowchart TD
     GH --> CORPUS
     CORPUS --> RED
     RED --> SNAP
-    SNAP --> UI
+    SNAP --> PROJ
+    PROJ --> GRAPH[Conventional relationship graph]
+    PROJ --> TORUS[Optional toroidal relationship explorer]
+    GRAPH --> UI
+    TORUS --> UI
     SNAP --> HEX
     UI --> PROV[Evidence / provenance drawer]
-    UI --> GRAPH[Relationships / temporal graph]
     UI --> ARCH[Architecture viewer]
     UI --> OPS[Operations / attention queue]
     UI --> MBUI[Moneyball / experiments]
@@ -56,3 +60,4 @@ flowchart TD
 5. Hex is optional analysis, never the system of record.
 6. Render/n8n examples are optional visual/automation references, never a free-scope dependency.
 7. Partial corpus state is first-class UI state.
+8. Toroidal and conventional graph modes consume the same canonical relationship records; layout never changes evidence semantics or identity.

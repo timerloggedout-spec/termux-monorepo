@@ -1,0 +1,23 @@
+flowchart TB
+  GH["GitHub truth"]
+  CORPUS["Historical Corpus"]
+  ACTIONS["Actions evidence"]
+  REDUCERS["Deterministic SHE reducers"]
+  SNAP["Versioned SHE snapshot"]
+  PROJ["Relationship projection adapter"]
+  GRAPH["Conventional relationship graph"]
+  TORUS["Optional toroidal projection"]
+  INSPECTOR["Node / edge inspector"]
+  PROV["Evidence and provenance drawer"]
+  GH --> CORPUS
+  GH --> ACTIONS
+  CORPUS --> REDUCERS
+  ACTIONS --> REDUCERS
+  REDUCERS --> SNAP
+  SNAP --> PROJ
+  PROJ --> GRAPH
+  PROJ --> TORUS
+  GRAPH --> INSPECTOR
+  TORUS --> INSPECTOR
+  INSPECTOR --> PROV
+  PROV --> GH

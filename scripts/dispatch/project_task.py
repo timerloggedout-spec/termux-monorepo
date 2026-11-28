@@ -23,8 +23,7 @@ import argparse
 import re
 import sys
 
-# form field id -> rendered section label (must match
-# .github/ISSUE_TEMPLATE/project-task.yml labels exactly)
+# form field id -> rendered section label (matches issue-form labels exactly)
 FIELDS = {
     "entry": "Entry",
     "task": "Task / spec",

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from copy import deepcopy
+import json
+from pathlib import Path
 from unittest import TestCase
 from unittest.mock import patch
 
@@ -62,6 +64,23 @@ class EngineeringTaxonomyTests(TestCase):
         kicad = next(item for item in report["tools"] if item["id"] == "kicad")
         self.assertTrue(kicad["detected"])
         self.assertEqual(kicad["matched_command"], "kicad-cli")
+
+    def test_integration_registry_and_reference_catalog_are_enrolled(self):
+        root = Path(__file__).resolve().parents[1]
+        integrations = json.loads((root / "docs/integrations/registry.json").read_text(encoding="utf-8"))
+        entry = next(item for item in integrations["integrations"] if item["id"] == "engineering-toolchains")
+        self.assertEqual(entry["repo_skill_path"], ".agents/skills/engineering-toolchains/SKILL.md")
+        references = json.loads((root / "docs/ops/ENGINEERING-REFERENCE-SET.json").read_text(encoding="utf-8"))
+        self.assertEqual(references["schema"], "engineering-reference-set/v1")
+        self.assertEqual(len(references["references"]), 20)
+        self.assertTrue(all(item["state"] == "reference-only" for item in references["references"]))
+
+    def test_archwiz_cockpit_exposes_read_only_engineering_inventory(self):
+        root = Path(__file__).resolve().parents[1]
+        cockpit = (root / "archwiz/termux_cockpit.py").read_text(encoding="utf-8")
+        self.assertIn("[21] Engineering Toolchain Inventory", cockpit)
+        self.assertIn('if choice == "21"', cockpit)
+        self.assertIn("scripts" + ' / "engineering" / "toolchain_probe.py"', cockpit)
 
     def test_free_tier_and_paid_product_are_separate_classes(self):
         taxonomy = load_taxonomy()

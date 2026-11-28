@@ -78,6 +78,10 @@ def validate() -> list[str]:
         language_tag = item["language_tag"]
         if not BCP47_SHAPE.fullmatch(language_tag):
             errors.append(f"{item['id']}: invalid language_tag shape {language_tag!r}")
+        normalized_id = item["id"].lower()
+        normalized_tag = language_tag.lower()
+        if normalized_tag != normalized_id and not normalized_tag.startswith(normalized_id + "-"):
+            errors.append(f"{item['id']}: language_tag must match its locale id or a regional extension")
         if item["direction"] not in {"ltr", "rtl"}:
             errors.append(f"{item['id']}: invalid direction")
         if item["fallback"] is not None and item["fallback"] not in by_id:
@@ -140,9 +144,12 @@ def validate() -> list[str]:
         locale = translation["locale"]
         if locale not in by_id:
             errors.append(f"manifest: unknown locale {locale}")
-        catalog_path = ROOT / translation["catalog"]
+        expected_catalog = f"localization/catalogs/teammate-portal/{locale}.json"
+        if translation["catalog"] != expected_catalog:
+            errors.append(f"manifest: translation {locale} catalog must be {expected_catalog}")
+        catalog_path = ROOT / expected_catalog
         if not catalog_path.is_file():
-            errors.append(f"manifest: missing translation catalog {translation['catalog']}")
+            errors.append(f"manifest: missing translation catalog {expected_catalog}")
         if translation.get("source_catalog") and not (ROOT / translation["source_catalog"]).is_file():
             errors.append(f"manifest: missing source catalog {translation['source_catalog']}")
         freshness = translation["freshness"]

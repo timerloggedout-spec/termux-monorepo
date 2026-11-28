@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Conversation DAG versioning – C++ style pointers, content‑addressed dedup."""
-import json, hashlib, re
+import json, hashlib, os, re
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 from datetime import datetime, timezone
@@ -74,18 +74,59 @@ class ConversationDAG:
     
     def commit(self, repo_dir: Path) -> str:
         """Persist DAG to repo_dir/objects/ and return version hash."""
+        repo_dir = Path(repo_dir)
+        # Security: protect against path traversal and symlink hijacking
+        if ".." in repo_dir.parts:
+            raise ValueError("Path traversal rejected for repo_dir")
+        if repo_dir.is_symlink():
+            raise ValueError(f"Symlink repository directory rejected: {repo_dir}")
+        repo_dir.mkdir(parents=True, exist_ok=True)
+        try:
+            os.chmod(repo_dir, 0o700)
+        except OSError:
+            pass
+
         objects = repo_dir / 'objects'
+        if objects.is_symlink():
+            raise ValueError(f"Symlink objects directory rejected: {objects}")
         objects.mkdir(parents=True, exist_ok=True)
+        try:
+            os.chmod(objects, 0o700)
+        except OSError:
+            pass
+
         version = self.get_version()
-        # Store each message as blob
+        open_flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC | getattr(os, 'O_NOFOLLOW', 0)
+
+        # Store each message as blob with atomic 0o600 permissions
         for h, ref in self.nodes.items():
-            (objects / f"{h}.json").write_text(json.dumps({
+            blob_path = objects / f"{h}.json"
+            if blob_path.is_symlink():
+                raise ValueError(f"Symlink blob rejected: {blob_path}")
+            payload = json.dumps({
                 'message_id': ref.message_id,
                 'parent_id': ref.parent_id,
                 'role': ref.role,
                 'content_hash': ref.content_hash,
                 'timestamp': ref.timestamp
-            }))
+            })
+            fd = os.open(str(blob_path), open_flags, 0o600)
+            opened = False
+            try:
+                try:
+                    os.fchmod(fd, 0o600)
+                except OSError:
+                    pass
+                with os.fdopen(fd, 'w') as f:
+                    opened = True
+                    f.write(payload)
+            finally:
+                if not opened and fd >= 0:
+                    try:
+                        os.close(fd)
+                    except OSError:
+                        pass
+
         # Store DAG index
         index = {
             'session_id': self.session_id,
@@ -98,13 +139,38 @@ class ConversationDAG:
             'id_to_hash': self.id_to_hash,
             'duplicates': self.dup_map
         }
-        (repo_dir / 'HEAD.json').write_text(json.dumps(index, indent=2))
+        head_path = repo_dir / 'HEAD.json'
+        if head_path.is_symlink():
+            raise ValueError(f"Symlink HEAD.json rejected: {head_path}")
+        head_fd = os.open(str(head_path), open_flags, 0o600)
+        head_opened = False
+        try:
+            try:
+                os.fchmod(head_fd, 0o600)
+            except OSError:
+                pass
+            with os.fdopen(head_fd, 'w') as f:
+                head_opened = True
+                f.write(json.dumps(index, indent=2))
+        finally:
+            if not head_opened and head_fd >= 0:
+                try:
+                    os.close(head_fd)
+                except OSError:
+                    pass
         return version
     
     @classmethod
     def load(cls, repo_dir: Path) -> Optional['ConversationDAG']:
         """Load a persisted DAG."""
+        repo_dir = Path(repo_dir)
+        if ".." in repo_dir.parts:
+            raise ValueError("Path traversal rejected for repo_dir")
+        if repo_dir.is_symlink():
+            raise ValueError(f"Symlink repository directory rejected: {repo_dir}")
         head = repo_dir / 'HEAD.json'
+        if head.is_symlink():
+            raise ValueError(f"Symlink HEAD.json rejected: {head}")
         if not head.exists():
             return None
         index = json.loads(head.read_text())
@@ -116,6 +182,8 @@ class ConversationDAG:
         dag.dup_map = index.get('duplicates', {})
         for h in index['nodes']:
             blob = repo_dir / 'objects' / f'{h}.json'
+            if blob.is_symlink():
+                raise ValueError(f"Symlink blob rejected: {blob}")
             if blob.exists():
                 ref_data = json.loads(blob.read_text())
                 dag.nodes[h] = MessageRef({

@@ -94,11 +94,11 @@ See `docs/ops/REVIEW-PUBLISHING.md` for current publish workflow and preview rul
 
 ## 4. Workflow trigger exemplars
 
-Eight routing workflows have now been source-read and recorded in `docs/ops/generated/workflow-trigger-census.json`, with a human-readable companion at `docs/ops/WORKFLOW-TRIGGER-CENSUS.md`. The sample covers QUE admission, project-task intake, admission-following game-development queueing, Jules labels and mentions, Gemini `/build`, provider commands, and Delphi marker/manual intake. Each record includes the workflow blob SHA and configured event/selector/gate/effect. This is an exemplar set; the generated catalog and live `.github/workflows/` directory now both contain 332 YAML workflows. The complete catalog-level event index is `docs/ops/generated/workflow-event-index.json`, with a human-readable companion at `docs/ops/WORKFLOW-EVENT-INDEX.md`.
+Nine routing workflows have now been source-read and recorded in `docs/ops/generated/workflow-trigger-census.json`, with a human-readable companion at `docs/ops/WORKFLOW-TRIGGER-CENSUS.md`. The sample covers QUE admission, project-task intake, admission-following game-development queueing, Jules labels and mentions, Gemini `/build`, provider commands, Delphi marker/manual intake, and Research Astute private-repository provisioning. Each record includes the workflow blob SHA and configured event/selector/gate/effect. This is an exemplar set. The live `.github/workflows/` directory contains 333 YAML workflows while the generated catalog contains 332; `research-astute-private-repo-provisioner.yml` is uncatalogued. `project-repository-visibility.yml` is catalogued with a source-authority mismatch. The complete catalog-level event index is `docs/ops/generated/workflow-event-index.json`, with a human-readable companion at `docs/ops/WORKFLOW-EVENT-INDEX.md`.
 
 ## 5. Workflow event catalog
 
-The generated catalog at `docs/ops/generated/automation-workflow-catalog.json` is the exhaustive per-workflow inventory. The current generated catalog reports 332 workflows and records:
+The generated catalog at `docs/ops/generated/automation-workflow-catalog.json` is the exhaustive per-workflow inventory. The current generated catalog reports 332 workflows; the live workflow directory contains 333. The source-derived parser reports the additional `research-astute-private-repo-provisioner.yml` as uncatalogued and preserves the directory/catalog drift.
 
 - workflow name and path;
 - domain;
@@ -109,7 +109,7 @@ The generated catalog at `docs/ops/generated/automation-workflow-catalog.json` i
 - concurrency policy;
 - pinned Actions.
 
-The catalog's event-name summary does not fully encode activity types, branch/path filters, selector expressions, inputs, payload schemas, or permissions. Those require parsing the workflow source.
+The catalog's event-name summary remains compact. `scripts/ci/workflow_registry.py` parses each workflow YAML and preserves activity types, branch/path filters, dispatch input schemas, workflow/job permissions, job selectors, concurrency, action references, and Git blob SHAs. It detects explicit `gh api` POST/PATCH/PUT/DELETE methods and reports uncatalogued source writers. The generated v2 snapshot is refreshed by the trusted master automation lane after the generator lands.
 
 ## 6. Label consumer census
 
@@ -160,17 +160,17 @@ Use existing feed freshness contracts, including `generated_at`, source SHA, and
 ## 11. Known gaps — explicit work queue
 
 1. Extend the issue-template census into a refreshable deterministic extractor; initial source census is complete.
-2. Expand the selected workflow trigger census into an exhaustive parser over the workflow catalog, including activity types, branches, paths, inputs, permissions, selector expressions, and outputs.
+2. Complete source-level extraction for workflow_call inputs, outputs, event payload schemas, cross-workflow artifact contracts, and selectors embedded in external scripts; the YAML event/permission parser is implemented.
 3. Census current GitHub labels and identify every workflow/template consumer.
 4. Extract all `@mention` spellings, slash commands, and HTML marker parsers.
 5. Join routes/workflows to `desk.html`, `admin-graph.html`, `proposals.html`, `dispatch-tree.html`, `pr-lanes.html`, and `tracking.html` through `SURFACES-MAP.md` and exact feed contracts.
-6. Generate a deterministic reconciliation report with source fingerprint, timestamp, coverage counts, and unresolved edges.
+6. Validate duplicate IDs, cross-registry references, and unresolved HUD/feed joins against the generated source fingerprint.
 
 ## 12. Automation and update strategy
 
 - Reuse `scripts/ci/automation_docs.py` and its existing workflow catalog refresh lane.
-- Add a dedicated registry extractor only after the field mapping and parser fixtures are agreed.
-- Make extraction deterministic and read-only.
+- Use `scripts/ci/workflow_registry.py` for deterministic YAML parsing, catalog reconciliation, source blob provenance, and v2 event-index generation.
+- Keep extraction deterministic and read-only; the CI refresh lane installs the pinned PyYAML parser, runs focused tests, and commits generated output on trusted master refresh.
 - Validate duplicate IDs, unresolved references, missing provenance, unsupported event names, and authority mismatches.
 - Publish a feed only from validated registry output; preserve partial/unknown coverage explicitly.
 - Keep the source registry and generated runtime feed distinct.

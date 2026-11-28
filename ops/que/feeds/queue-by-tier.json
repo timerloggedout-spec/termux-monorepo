@@ -1,27 +1,26 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-28T03:44:14Z",
+ "generated_at": "2026-11-28T04:12:22Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 2,
-   "in_progress": 0,
+   "queued": 4,
+   "in_progress": 1,
    "oldest_queued_at": "2026-11-21T07:17:51Z",
    "by_workflow_queued": {
+    "Orchestration Regression Guard": 1,
+    "dispatch-watchdog": 1,
     "repo gate": 1,
     "PR scope guard": 1
    }
   },
   "2": {
    "tier": 2,
-   "queued": 2,
-   "in_progress": 1,
-   "oldest_queued_at": "2026-11-28T03:43:28Z",
-   "by_workflow_queued": {
-    "pages build and deployment": 1,
-    "tribute-dashboard-deploy": 1
-   }
+   "queued": 0,
+   "in_progress": 2,
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "3": {
    "tier": 3,
@@ -32,16 +31,13 @@
   },
   "4": {
    "tier": 4,
-   "queued": 9,
-   "in_progress": 16,
+   "queued": 7,
+   "in_progress": 19,
    "oldest_queued_at": "2026-11-21T07:17:51Z",
    "by_workflow_queued": {
-    "Sweep Accountability": 1,
-    "Reviewer metrics collect": 1,
-    "DO Statement Style": 1,
-    "que-cadence-kick": 1,
-    "Context Relationship + Lead/Lag Audit": 1,
-    "termux smoke": 1,
+    "lane events recorder": 1,
+    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
+    "termux smoke": 2,
     "Agent PR Jules Handoff": 1,
     "PR Change Effectiveness Ledger": 1,
     "Advisory GitHub Actions lint": 1
@@ -49,8 +45,8 @@
   }
  },
  "totals": {
-  "queued": 13,
-  "in_progress": 17
+  "queued": 11,
+  "in_progress": 22
  },
  "wedged_ancient": [
   {
@@ -82,13 +78,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 2,
-   "2": 3,
+   "1": 5,
+   "2": 2,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 5,
-  "default_t4": 25,
+  "explicit_total": 7,
+  "default_t4": 26,
   "unmatched": 0,
   "ancient_excluded": 4,
   "operator_excluded": 1

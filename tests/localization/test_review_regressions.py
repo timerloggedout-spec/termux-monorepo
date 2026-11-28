@@ -185,11 +185,53 @@ class LocalizationReviewRegressionTests(unittest.TestCase):
         self.assertIn("review_required", notice)
         self.assertIn("preview_only", notice)
 
+    def test_urdu_reference_links_target_root_level_documents(self):
+        messages = {
+            "page.title": "عنوان",
+            "page.description": "تفصیل",
+            "page.separation": "علیحدگی",
+            "status.done": "مکمل",
+            "status.source": "ماخذ",
+            "section.done_board": "بورڈ",
+            "section.dispatch": "ڈسپیچ",
+            "section.dispatch_label": "ٹیم میٹ پورٹل",
+            "section.reference": "حوالہ",
+            "section.route": "راستہ",
+            "content.empty_dispatch": "کوئی آئٹم نہیں",
+        }
+        rendered = renderer.render_body(
+            messages, [], 0, "open", "source", "abcdef0", "now", [],
+            renderer.DOCS, "owner/repo", 1, locale="ur",
+        )
+        self.assertIn('href="../plan.html"', rendered)
+        self.assertNotIn('href="plan.html"', rendered)
+
+    def test_shell_labels_follow_the_selected_catalog(self):
+        messages = {
+            "page.title": "Catalog title",
+            "page.description": "Catalog description",
+            "page.separation": "Catalog separation",
+            "status.done": "Catalog done",
+            "status.source": "Catalog source",
+            "section.done_board": "Catalog board",
+            "section.dispatch": "Catalog dispatch",
+            "section.dispatch_label": "Catalog label",
+            "section.reference": "Catalog references",
+            "section.route": "Catalog workflow",
+            "content.empty_dispatch": "Catalog empty",
+        }
+        rendered = renderer.render_body(
+            messages, [], 0, "open", "source", "abcdef0", "now", [],
+            renderer.DOCS, "owner/repo", 1,
+        )
+        self.assertIn("<h2>Catalog workflow</h2>", rendered)
     def test_publish_workflow_fetches_renderer_and_both_catalogs_as_one_tooling_unit(self):
         workflow = Path(".github/workflows/teammate-portal-status-publish.yml").read_text(encoding="utf-8")
         self.assertIn("tooling_ref", workflow)
         self.assertIn("localization/catalogs/teammate-portal/en.json", workflow)
         self.assertIn("localization/catalogs/teammate-portal/ur.json", workflow)
+        self.assertIn('for asset in "$renderer" "$en_catalog" "$ur_catalog" "$translation_manifest"; do', workflow)
+        self.assertNotIn('if [ ! -f "$renderer"', workflow)
 
 
 if __name__ == "__main__":

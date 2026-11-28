@@ -1,6 +1,6 @@
 ---
 id: cell-the-living-machine
-title: "CELL: THE LIVING MACHINE — molecular-to-cellular simulation game"
+title: "CELL: THE LIVING MACHINE — science, engineering and real-world making platform"
 author: ChatGPT
 posted_at: 2026-11-27
 source: source.md
@@ -30,7 +30,7 @@ gates_required:
 
 ## Summary
 
-Establish an original science game that makes molecular and cellular systems playable through exploration, simulation, systems strategy, puzzles, and specialist research. The project uses three coordinated planes: Research Astute for reusable research references; Search Astutely for search execution, aggregation, and result snapshots; and Termux MonoRepo for developer lanes, tools, project profiles, and orchestration. The initial database map spans 26 candidate sources across structures, sequences, interactions, pathways, chemistry, enzyme kinetics, cell context, literature, and education. A dedicated game repository owns the playable product and is registered through the MonoRepo project-profile family.
+Establish an original science and engineering creation platform that makes molecular, cellular and industrial systems playable through exploration, simulation, factory automation, engineering design, manufacturing and specialist research. The project uses three coordinated planes: Research Astute for reusable research references; Search Astutely for search execution, aggregation, and result snapshots; and Termux MonoRepo for developer lanes, tools, project profiles, and orchestration. The initial database map spans 26 candidate sources across structures, sequences, interactions, pathways, chemistry, enzyme kinetics, cell context, literature, and education. A dedicated game repository owns the playable product and is registered through the MonoRepo project-profile family.
 
 ## Architecture decision
 
@@ -61,10 +61,14 @@ The full iJEP Studio channel is the initial visual and topic-discovery surface. 
 ## Current status
 
 - MonoRepo scope profile: drafted under `.config/llm_map/profiles/projects/`; project manifest and registry are in `ops/projects/`; draft PR #5949 is open.
-- Dedicated game repository: created as private `timerloggedout-spec/cell-the-living-machine` (repository ID `1475194740`, default branch `main`); planning scaffold committed.
+- Dedicated game repository: created as private `timerloggedout-spec/cell-the-living-machine` (repository ID `1475194740`, default branch `main`); planning scaffold committed; public transition is queued through an owner-authorized GitHub Actions workflow.
 - Research Astute: owner organization verified; private `molecular-biology-research` repository created (ID `183701786`) with a 26-provider reusable source registry and three initial mechanism dossiers.
 - Search Astutely: owner organization verified; current `manus-public-ui-research` repository is scoped to public Manus UI research. Scientific search aggregation endpoint and Enterprise account preservation require review.
 - Scientific database catalog: 26 candidate sources mapped across nine research domains; source-specific adapter admission follows API, terms, and provenance review.
+- Engineering platform: concept-to-production workflow, shared equipment registry, provider directory and central player profile are specified.
+- Visual pipeline: DCC-MCP Blender adapter is the preferred typed-tool candidate; Molecular Nodes and OpenUSD are in the toolchain review.
+- Hardware: low-tier Android and browser compatibility is the baseline; high-fidelity studio rendering is a separate tier.
+- Academy: AMD ROCm and NVIDIA DLI/OpenUSD/Omniverse pathways are mapped to practical portfolio evidence.
 - Engine and renderer: selection pending a bounded prototype comparison.
 
 ## Review log

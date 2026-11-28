@@ -140,7 +140,7 @@
     const normalizeOpportunity = (item, active) => {
       const record = pick(item, [
         "id", "slug", "rank", "tier", "score", "name", "host", "state",
-        "verdict", "prep_state", "next_gate", "days_to_gate",
+        "verdict", "prep_state", "next_gate", "days_to_gate", "source_url", "url",
       ]);
       if (isRecord(item.priority_timebox)) {
         record.priority_timebox = normalizePriorityTimebox(item.priority_timebox);

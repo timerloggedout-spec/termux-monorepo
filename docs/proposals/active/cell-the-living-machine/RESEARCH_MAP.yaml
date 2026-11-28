@@ -8,20 +8,38 @@ research_domains:
       - Which experimentally resolved structures describe each selected molecular machine?
       - Which conformational states and ligand-bound states are available?
       - What resolution, method, construct, organism, and confidence metadata apply?
-    sources: [RCSB_PDB, EMDB, BMRB, AlphaFold_DB]
+    sources: [RCSB_PDB, PDBe_KB, EMDB, BMRB, AlphaFold_DB]
     identifiers: [PDB_ID, EMDB_ID, BMRB_ID, UniProt_accession]
   sequence_and_annotation:
     questions:
       - Which gene and protein sequences correspond to each structure?
       - Which domains, motifs, variants, and functional annotations are curated?
-    sources: [UniProtKB, NCBI_Gene, NCBI_Protein, InterPro, Pfam, Ensembl]
+    sources: [UniProtKB, EMBL_EBI_Proteins_API, NCBI_Gene, NCBI_Protein, InterPro, Pfam, Ensembl]
     identifiers: [UniProt_accession, GeneID, RefSeq_accession, Ensembl_ID, InterPro_ID, Pfam_ID]
   pathways_and_cellular_context:
     questions:
       - Which pathways, reactions, compartments, and interacting entities contextualize each mechanism?
       - Which organism-specific pathway records are curated or inferred?
-    sources: [Reactome, KEGG, BioCyc, EcoCyc, Gene_Ontology]
+    sources: [Reactome, KEGG, BioCyc, EcoCyc, Gene_Ontology, Rhea]
     identifiers: [Reactome_stable_ID, KEGG_ID, BioCyc_frame_ID, GO_ID]
+  molecular_interactions:
+    questions:
+      - Which experimentally curated interactions connect the selected molecular machines?
+      - Which evidence methods, publications, and interaction types support each edge?
+    sources: [IntAct, BioGRID, STRING]
+    identifiers: [IntAct_interaction_ID, BioGRID_interaction_ID, STRING_ID, UniProt_accession, PMID]
+  enzyme_kinetics:
+    questions:
+      - Which measured kinetic parameters and experimental conditions constrain the simulation?
+      - Which reaction definitions and enzyme classifications connect parameters to mechanisms?
+    sources: [SABIO_RK, BRENDA, Rhea]
+    identifiers: [SABIO_entry_ID, BRENDA_ID, Rhea_ID, EC_number, PMID]
+  cell_models_and_expression:
+    questions:
+      - Which cell-line models and expression/localization evidence ground the selected cell context?
+      - Which organism, tissue, cell-line, and assay metadata apply?
+    sources: [Cellosaurus, Human_Protein_Atlas, Expression_Atlas]
+    identifiers: [CVCL_ID, Ensembl_gene_ID, UniProt_accession, Experiment_ID]
   chemistry:
     questions:
       - Which metabolites, ligands, ions, cofactors, and substrates participate?
@@ -51,6 +69,15 @@ crosswalks:
   - from: PDB_ID
     to: EMDB_ID
     provider: wwPDB_cross_references
+  - from: UniProt_accession
+    to: interaction_database_record
+    provider: IntAct_BioGRID_STRING
+  - from: EC_number
+    to: kinetic_parameter_record
+    provider: SABIO_RK_BRENDA
+  - from: cell_line_name
+    to: CVCL_ID
+    provider: Cellosaurus
   - from: protein_or_gene_identifier
     to: pathway_stable_ID
     provider: Reactome_or_KEGG

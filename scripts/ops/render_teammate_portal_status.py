@@ -124,7 +124,7 @@ def page(title, body, locale="en", title_key=None, root=None):
     if title_key:
         title = messages.get(title_key, title)
     nav = (
-        '<nav aria-label="Language">'
+        f'<nav aria-label="{html.escape(messages["nav.language"])}">'
         f'<span>{html.escape(messages["nav.language"])}</span> '
         f'<a href="{english_href}" lang="en" hreflang="en">{html.escape(messages["nav.english"])}</a> · '
         f'<a href="{urdu_href}" lang="ur" hreflang="ur" aria-current="{"page" if locale == "ur" else "false"}">'
@@ -134,7 +134,7 @@ def page(title, body, locale="en", title_key=None, root=None):
     notice = review_notice(locale, root) if locale != "en" else ""
     rtl_css = (
         'body{direction:rtl;text-align:right;font-family:"Noto Naskh Arabic","Noto Sans Arabic",system-ui,sans-serif}'
-        'main{unicode-bidi:plaintext}code,pre,a[dir=ltr]{direction:ltr;unicode-bidi:isolate}'
+        'main{unicode-bidi:plaintext}code,pre,[dir="ltr"]{direction:ltr;unicode-bidi:isolate}'
     )
     style = CSS + (rtl_css if content_locale == "ur" else "")
     return (
@@ -195,9 +195,10 @@ def render_body(messages, rows, done, pr_state, source_ref, source_sha, now, iss
     )
     status = (
         f'<p role="status">{html.escape(messages["status.done"])} <strong>{done}/{len(rows)}</strong> · '
-        f'PR <a href="https://github.com/{repo}/pull/{pr}">#{pr}</a> {html.escape(pr_state)} · '
-        f'{html.escape(messages["status.source"])} <code>{html.escape(source_ref)}</code> @ '
-        f'<code>{html.escape(source_sha[:7])}</code> · {html.escape(now)}</p>'
+        f'<span lang="en" dir="ltr">PR <a href="https://github.com/{repo}/pull/{pr}">#{pr}</a> {html.escape(pr_state)}</span> · '
+        f'{html.escape(messages["status.source"])} '
+        f'<span lang="en" dir="ltr"><code>{html.escape(source_ref)}</code> @ '
+        f'<code>{html.escape(source_sha[:7])}</code> · {html.escape(now)}</span></p>'
     )
     return (
         f'<h1>{html.escape(messages["page.title"])}</h1>'

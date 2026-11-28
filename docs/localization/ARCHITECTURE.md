@@ -1,13 +1,13 @@
 # PolyGlot localization architecture
 
 ## Directory contract
-- localization/registry/: supported BCP 47 locales, direction, fallback, and regional profile.
+- `localization/registry/`: supported BCP 47 locales, direction, fallback, and regional profile.
 - `localization/catalogs/<surface>/<locale>.json`: stable UI message keys and translations.
-- localization/mappings/: canonical source IDs, source paths, message keys, and publication routes.
-- localization/manifests/: source/catalog revisions, provider/model, glossary/prompt versions, reviewer, freshness, and publication state.
-- localization/providers/: normalized adapter contract and provider registry.
+- `localization/mappings/`: canonical source IDs, source paths, message keys, and publication routes.
+- `localization/manifests/`: source/catalog revisions, provider/model, glossary/prompt versions, reviewer, freshness, and publication state.
+- `localization/providers/`: normalized adapter contract and provider registry.
 - `localization/doe/<campaign>/`: pre-registered provider comparison designs and run records.
-- localization/schemas/: machine-readable contracts for locale, mapping, manifest, experiment, and feedback records.
+- `localization/schemas/`: machine-readable contracts for locale, mapping, manifest, experiment, and feedback records.
 - `docs/locales/<locale>/`: localized repository documentation, organized by source path.
 
 ## Runtime boundary

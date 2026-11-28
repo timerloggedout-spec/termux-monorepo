@@ -92,12 +92,11 @@ jobs:
           en_catalog=localization/catalogs/teammate-portal/en.json
           ur_catalog=localization/catalogs/teammate-portal/ur.json
           translation_manifest=localization/manifests/teammate-portal.json
-          if [ ! -f "$renderer" ] || [ ! -f "$en_catalog" ] || [ ! -f "$ur_catalog" ] || [ ! -f "$translation_manifest" ]; then
-            for asset in "$renderer" "$en_catalog" "$ur_catalog" "$translation_manifest"; do
-              mkdir -p "$(dirname "$asset")"
-              gh api -H "Accept: application/vnd.github.raw"                 "repos/${{ github.repository }}/contents/$asset?ref=$TOOLING_REF" > "$asset"
-            done
-          fi
+          for asset in "$renderer" "$en_catalog" "$ur_catalog" "$translation_manifest"; do
+            mkdir -p "$(dirname "$asset")"
+            gh api -H "Accept: application/vnd.github.raw" \
+              "repos/${{ github.repository }}/contents/$asset?ref=$TOOLING_REF" > "$asset"
+          done
           python3 "$renderer"             --out _site/previews/pr-5840/hackathon-desk             --source-ref "$SRC_REF" --source-sha "$(git rev-parse HEAD)"             --repo "${{ github.repository }}" --pr 5840
           touch _site/.nojekyll
           echo "Status page: https://timerloggedout-spec.github.io/previews/pr-5840/hackathon-desk/ (source $SRC_REF; tooling $TOOLING_REF)" >> "$GITHUB_STEP_SUMMARY"

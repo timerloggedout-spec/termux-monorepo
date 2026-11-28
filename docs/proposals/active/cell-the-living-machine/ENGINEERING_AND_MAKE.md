@@ -64,3 +64,6 @@ A production package carries source design revision, geometry checksum, dimensio
 6. Add a reviewed pathway to a harmless physical prototype, such as a simple 3D-printed fixture or enclosure.
 
 The biological membrane slice remains a parallel science vertical slice. Both slices use the same player profile, project graph, engineering design contracts, visual pipeline and QA architecture.
+
+
+Cambrian Genomics is retained as a historical DNA laser-printing concept reference. Current company data lists it as out of business, so the project maps current commercial services through separately verified provider candidates rather than treating Cambrian as an available supplier.

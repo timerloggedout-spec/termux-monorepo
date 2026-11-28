@@ -36,16 +36,22 @@
 ### Task 1: Feed normalization and source freshness
 
 **Files:**
+- Create: scripts/dashboards/challenge_public_feed.py (allowlisted public projection from the coordinator)
+- Create: apps/tribute-dashboard/data/challenge-public-feed.json (generated dashboard artifact)
 - Create: apps/tribute-dashboard/hackathon.js
 - Create: tests/hackathon-desk.test.cjs
 - Create: tests/test_hackathon_desk.py
 
 **Interfaces:**
-- Produces: HackathonDesk.normalizeOpportunityFeed(payload, now), normalizeChallengeFeed(payload), normalizeCountdownFeed(payload), normalizePipelineFeed(payload), safeExternalUrl(value).
+- Produces: an allowlisted `challenge-public-feed/v1` artifact plus HackathonDesk.normalizeOpportunityFeed(payload, now), normalizeChallengeFeed(payload), normalizeCountdownFeed(payload), normalizePipelineFeed(payload), and safeExternalUrl(value).
+- The browser fetches `https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/que/feeds/opportunity-priority.json` for ranked opportunities and `./data/challenge-public-feed.json` for challenge events/gates. It fetches countdown, desk, QUE queue, and dispatch mirrors from `./data/challenge-countdowns-feed.json`, `./data/desk-feed.json`, `./data/que-queue-feed.json`, and `./data/dispatch-state-feed.json`.
+- The browser MUST NOT fetch `ops/challenge/coordinator.json`. The generator copies only explicitly allowlisted public fields, recursively excludes `metrics_internal` and `win_probability`, and tests the exclusion at every nesting level. The generated artifact is deployed with the dashboard tree.
 - Returns normalized records with source, generated_at, freshness, and explicit status values.
 
-- [ ] Write Node tests for fresh/stale/missing/malformed opportunity feeds, closed events, null deadlines, and safe URL validation.
-- [ ] Run node --test tests/hackathon-desk.test.cjs and verify each new behavior fails for the expected reason.
+- [ ] Write Python tests first for the projection allowlist, nested forbidden-key exclusion, deterministic output, and coordinator input failures.
+- [ ] Write Node tests for fresh/stale/missing/malformed opportunity feeds, public challenge projection states, closed events, null deadlines, and safe URL validation.
+- [ ] Assert the deployed opportunity URL and all four dashboard-relative feed URLs resolve from the deployed Hackathon Desk origin; treat unavailable feeds as explicit unavailable states.
+- [ ] Run pytest -q tests/test_hackathon_desk.py and node --test tests/hackathon-desk.test.cjs; verify each new behavior fails for its expected reason.
 - [ ] Implement pure normalizers and escaping/link validation in hackathon.js.
 - [ ] Run focused Node tests and pytest -q tests/test_hackathon_desk.py.
 - [ ] Commit with Implements: HD-002.
@@ -135,9 +141,10 @@
 - Produces: onboarding, navigation, proposal, contribution, pipeline, permissions, accessibility, and troubleshooting documentation.
 
 - [ ] Write failing tests for guide links and required sections.
+- [ ] Verify the deployed guide URLs `https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/teammates/HACKATHON-DESK-GUIDE.md` and `https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/teammates/ACCESSIBILITY.md` return successfully from the deployed page; source-tree existence alone is insufficient.
 - [ ] Verify RED.
-- [ ] Write both guides and connect them from the page.
-- [ ] Run documentation link and heading checks.
+- [ ] Write both guides and connect them from the page using the deployed raw-content URLs.
+- [ ] Run documentation link, heading, and deployed-URL checks.
 - [ ] Commit with Implements: HD-007, HD-008.
 
 ### Task 7: Accessibility and responsive verification
@@ -176,8 +183,8 @@
 
 - [ ] Run node --test tests/hackathon-desk.test.cjs.
 - [ ] Run pytest -q tests/test_hackathon_desk.py and the repository test suite.
-- [ ] Run python3 scripts/ci/repo_gate.py.
-- [ ] Run python3 scripts/ci/termux_smoke.py.
-- [ ] Verify required GitHub jobs on the same immutable head SHA.
-- [ ] Verify deployed page, feed freshness, GitHub navigation, and guide routes.
-- [ ] Update ITEMS.md with evidence and final state.
+- [ ] Update ITEMS.md with implementation evidence and final state, then commit that update before final-head validation.
+- [ ] Run python3 scripts/ci/repo_gate.py and all focused tests/accessibility checks on the resulting head.
+- [ ] Termux remains offline and excluded from execution; do not run Termux or claim Termux runtime validation. Record this gate disposition explicitly.
+- [ ] Verify required GitHub jobs on the same immutable final head SHA; record SHA-dependent run evidence in the PR or an artifact outside the commit.
+- [ ] Verify deployed page, feed freshness, GitHub navigation, public projection, and guide routes against that same deployed commit.

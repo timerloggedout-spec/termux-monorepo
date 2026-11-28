@@ -1,1 +1,576 @@
-{"baseline_ref":"30cc86388b8679ec52cb63a90bd6a981d307dfde","counts":{"by_kind":{"dangling-anchor":3,"dangling-feed-ref":9,"dangling-link":41,"dangling-path-filter":8,"dangling-run-script":3},"known":0,"new":64,"total":64},"findings":[{"kind":"dangling-anchor","line":34,"path":".github/PROJECT_MANAGEMENT.md","ref":"../README.md#-navigation-ssot","surface":"link"},{"kind":"dangling-anchor","line":172,"path":"apps/help-wanted-dashboard/delphi-rfp.html","ref":"#rfp-'+esc(r.parent.number)+'","surface":"link"},{"kind":"dangling-anchor","line":216,"path":"apps/help-wanted-dashboard/delphi-rfp.html","ref":"#rfp-'+esc((s.members||[])[0]||\"","surface":"link"},{"kind":"dangling-feed-ref","line":0,"path":"apps/help-wanted-dashboard/data/3l0-feed.json","ref":"docs/ops/AGENT-TEAM-ORCHESTRATION.md + docs/ops/SCOUT-ROSTER.md + docs/ops/ROUTING-LOGIC-CHAIN.md","surface":"feed"},{"kind":"dangling-feed-ref","line":0,"path":"apps/help-wanted-dashboard/data/3l0-feed.json","ref":"scripts/model_router.py + .github/connectors/llm-peers.yaml","surface":"feed"},{"kind":"dangling-feed-ref","line":0,"path":"apps/help-wanted-dashboard/data/ates-feed.json","ref":".github/workflows/ates-orchestrator-benchmark.yml + .github/workflows/ates-phase-b-run-receipt.yml + .github/workflows/agent-mvt-experiment.yml","surface":"feed"},{"kind":"dangling-feed-ref","line":0,"path":"apps/help-wanted-dashboard/data/ates-feed.json","ref":"docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md (§DoE) + apps/help-wanted-dashboard/data/doe-feed.json","surface":"feed"},{"kind":"dangling-feed-ref","line":0,"path":"apps/help-wanted-dashboard/data/ates-feed.json","ref":"docs/ops/corpus/EXPERIMENT.schema.json + apps/help-wanted-dashboard/data/mvt-feed.json","surface":"feed"},{"kind":"dangling-feed-ref","line":0,"path":"apps/help-wanted-dashboard/data/doe-feed.json","ref":"docs/proposals/active/model-selection-market/DSPY-DOE-LANE.md + scripts/model_selection_market/dspy_doe.py","surface":"feed"},{"kind":"dangling-feed-ref","line":0,"path":"apps/help-wanted-dashboard/data/moneyball-feed.json","ref":"scripts/hex_moneyball_export.py + .github/workflows/hex-moneyball-evidence.yml","surface":"feed"},{"kind":"dangling-feed-ref","line":0,"path":"apps/help-wanted-dashboard/data/mvt-feed.json","ref":".github/workflows/agent-mvt-experiment.yml + .github/workflows/team-mvt.yml","surface":"feed"},{"kind":"dangling-feed-ref","line":0,"path":"apps/help-wanted-dashboard/data/mvt-feed.json","ref":"docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md + apps/help-wanted-dashboard/data/ates-feed.json","surface":"feed"},{"kind":"dangling-link","line":212,"path":".github/PROJECT_MANAGEMENT.md","ref":"../AGENTS.md","surface":"link"},{"kind":"dangling-link","line":349,"path":".github/PROJECT_MANAGEMENT.md","ref":"../AGENTS.md","surface":"link"},{"kind":"dangling-link","line":414,"path":".github/PROJECT_MANAGEMENT.md","ref":"../AGENTS.md","surface":"link"},{"kind":"dangling-link","line":192,"path":"apps/help-wanted-dashboard/admin.html","ref":"'+esc(d.html_url)+'","surface":"link"},{"kind":"dangling-link","line":69,"path":"apps/help-wanted-dashboard/ates.html","ref":"${GH}${esc(d.doc)}","surface":"link"},{"kind":"dangling-link","line":86,"path":"apps/help-wanted-dashboard/ates.html","ref":"./${esc(c.surface)}.html","surface":"link"},{"kind":"dangling-link","line":181,"path":"apps/help-wanted-dashboard/countdowns.html","ref":"'+esc(t.source_url)+'","surface":"link"},{"kind":"dangling-link","line":171,"path":"apps/help-wanted-dashboard/delphi-rfp.html","ref":"'+esc(r.url)+'","surface":"link"},{"kind":"dangling-link","line":104,"path":"apps/help-wanted-dashboard/dispatch-tree.html","ref":"${r.html_url}","surface":"link"},{"kind":"dangling-link","line":77,"path":"apps/help-wanted-dashboard/doe.html","ref":"${GH}${esc(fam.spec)}","surface":"link"},{"kind":"dangling-link","line":89,"path":"apps/help-wanted-dashboard/doe.html","ref":"${GH}${esc(c.design_record)}","surface":"link"},{"kind":"dangling-link","line":96,"path":"apps/help-wanted-dashboard/doe.html","ref":"${GH}${esc(c.design_record)}","surface":"link"},{"kind":"dangling-link","line":127,"path":"apps/help-wanted-dashboard/doe.html","ref":"${GH}${esc((ec.record || \"","surface":"link"},{"kind":"dangling-link","line":31,"path":"apps/help-wanted-dashboard/family.html","ref":"'+GH+'/actions/runs/'+esc(t.run_id)+'","surface":"link"},{"kind":"dangling-link","line":32,"path":"apps/help-wanted-dashboard/family.html","ref":"'+GH+'/blob/master/'+esc(t.source_ref)+'","surface":"link"},{"kind":"dangling-link","line":33,"path":"apps/help-wanted-dashboard/family.html","ref":"'+GH+'/pull/'+esc(p.replace('#',''))+'","surface":"link"},{"kind":"dangling-link","line":33,"path":"apps/help-wanted-dashboard/family.html","ref":"'+esc(p)+'","surface":"link"},{"kind":"dangling-link","line":32,"path":"apps/help-wanted-dashboard/free-tier-value.html","ref":"'+(safeHref(p.source_url)?safeHref(p.source_url):'')+'","surface":"link"},{"kind":"dangling-link","line":34,"path":"apps/help-wanted-dashboard/free-tier-value.html","ref":"'+safeHref(s.evidence_url)+'","surface":"link"},{"kind":"dangling-link","line":52,"path":"apps/help-wanted-dashboard/index.html","ref":"'+esc(t.pr_url||'#')+'","surface":"link"},{"kind":"dangling-link","line":53,"path":"apps/help-wanted-dashboard/index.html","ref":"'+esc(issue)+'","surface":"link"},{"kind":"dangling-link","line":53,"path":"apps/help-wanted-dashboard/index.html","ref":"'+esc(x.run_url)+'","surface":"link"},{"kind":"dangling-link","line":54,"path":"apps/help-wanted-dashboard/index.html","ref":"'+esc(h.url)+'","surface":"link"},{"kind":"dangling-link","line":55,"path":"apps/help-wanted-dashboard/index.html","ref":"'+esc(d.url)+'","surface":"link"},{"kind":"dangling-link","line":64,"path":"apps/help-wanted-dashboard/index.html","ref":"'+esc(p.html_url)+'","surface":"link"},{"kind":"dangling-link","line":38,"path":"apps/help-wanted-dashboard/matrix.html","ref":"'+esc(p.html_url||'#')+'","surface":"link"},{"kind":"dangling-link","line":82,"path":"apps/help-wanted-dashboard/mvt.html","ref":"./${esc(c.surface)}.html","surface":"link"},{"kind":"dangling-link","line":116,"path":"apps/help-wanted-dashboard/oracle.html","ref":"'+GH+'/tree/master/docs/proposals/'+esc(p.path)+'","surface":"link"},{"kind":"dangling-link","line":148,"path":"apps/help-wanted-dashboard/oracle.html","ref":"'+GH+'/blob/master/'+esc(p.documents[k])+'","surface":"link"},{"kind":"dangling-link","line":212,"path":"apps/help-wanted-dashboard/oracle.html","ref":"'+GH+'/issues/1487#issuecomment-'+esc(p.ledger.ballot_comment_id)+'","surface":"link"},{"kind":"dangling-link","line":212,"path":"apps/help-wanted-dashboard/oracle.html","ref":"'+GH+'/issues/1487#issuecomment-'+esc(p.ledger.calibration_comment_id)+'","surface":"link"},{"kind":"dangling-link","line":241,"path":"apps/help-wanted-dashboard/oracle.html","ref":"'+GH+'/tree/master/'+esc(ps.record)+'","surface":"link"},{"kind":"dangling-link","line":29,"path":"apps/help-wanted-dashboard/owner-records.html","ref":"'+GH+esc(r.source.path)+'","surface":"link"},{"kind":"dangling-link","line":95,"path":"apps/help-wanted-dashboard/pr-lanes.html","ref":"'+PR_URL+r.number+'","surface":"link"},{"kind":"dangling-link","line":99,"path":"apps/help-wanted-dashboard/proposals.html","ref":"'+GH+'/issues/'+n+'","surface":"link"},{"kind":"dangling-link","line":100,"path":"apps/help-wanted-dashboard/proposals.html","ref":"'+GH+'/pull/'+n+'","surface":"link"},{"kind":"dangling-link","line":101,"path":"apps/help-wanted-dashboard/proposals.html","ref":"'+esc(p.url)+'","surface":"link"},{"kind":"dangling-link","line":124,"path":"apps/help-wanted-dashboard/proposals.html","ref":"'+esc(p.url)+'","surface":"link"},{"kind":"dangling-link","line":112,"path":"apps/help-wanted-dashboard/telemetry.html","ref":"'+esc(lat.html_url)+'","surface":"link"},{"kind":"dangling-link","line":18,"path":"apps/ops-hitl-control-surface/index.html","ref":"'+esc(e.source_url||\"","surface":"link"},{"kind":"dangling-link","line":23,"path":"apps/project-pages-hub/index.html","ref":"./site-nav.js","surface":"link"},{"kind":"dangling-path-filter","line":8,"path":".github/workflows/actionlint-advisory.yml","ref":"actionlint.yaml","surface":"paths"},{"kind":"dangling-path-filter","line":9,"path":".github/workflows/actionlint-advisory.yml","ref":".actionlint.yaml","surface":"paths"},{"kind":"dangling-path-filter","line":63,"path":".github/workflows/agent-ecc-tools-ops.yml","ref":".github/ecc-tools.yml","surface":"paths"},{"kind":"dangling-path-filter","line":64,"path":".github/workflows/agent-ecc-tools-ops.yml","ref":".github/ecc-tools.yaml","surface":"paths"},{"kind":"dangling-path-filter","line":12,"path":".github/workflows/deepcli-agent-bridge.yml","ref":"deepcli/core.py","surface":"paths"},{"kind":"dangling-path-filter","line":22,"path":".github/workflows/deepcli-agent-bridge.yml","ref":"deepcli/core.py","surface":"paths"},{"kind":"dangling-path-filter","line":14,"path":".github/workflows/doe-cb1-acceptance.yml","ref":"scripts/doe/chronomancer_emitter.py","surface":"paths"},{"kind":"dangling-path-filter","line":15,"path":".github/workflows/doe-cb1-acceptance.yml","ref":"tests/test_chronomancer_emitter.py","surface":"paths"},{"kind":"dangling-run-script","line":13,"path":".github/workflows/doe-bf1-compare.yml","ref":"scripts/backfill_compare.py","surface":"run.script"},{"kind":"dangling-run-script","line":13,"path":".github/workflows/doe-cmp1-census.yml","ref":"scripts/cmp1_census.py","surface":"run.script"},{"kind":"dangling-run-script","line":13,"path":".github/workflows/doe-util1-audit.yml","ref":"scripts/util1_auditor.py","surface":"run.script"}],"mode":"census","root":".","scope":[".github/","apps/"],"tool":"dangle_check"}
+{
+  "tool": "dangle_check",
+  "mode": "census",
+  "root": ".",
+  "findings": [
+    {
+      "kind": "dangling-anchor",
+      "path": ".github/PROJECT_MANAGEMENT.md",
+      "line": 34,
+      "ref": "../README.md#-navigation-ssot",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-anchor",
+      "path": "apps/tribute-dashboard/delphi-rfp.html",
+      "line": 183,
+      "ref": "#rfp-'+esc(r.parent.number)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-anchor",
+      "path": "apps/tribute-dashboard/delphi-rfp.html",
+      "line": 227,
+      "ref": "#rfp-'+esc((s.members||[])[0]||",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-feed-ref",
+      "path": "apps/tribute-dashboard/data/3l0-feed.json",
+      "line": 0,
+      "ref": "docs/ops/AGENT-TEAM-ORCHESTRATION.md + docs/ops/SCOUT-ROSTER.md + docs/ops/ROUTING-LOGIC-CHAIN.md",
+      "surface": "feed"
+    },
+    {
+      "kind": "dangling-feed-ref",
+      "path": "apps/tribute-dashboard/data/3l0-feed.json",
+      "line": 0,
+      "ref": "scripts/model_router.py + .github/connectors/llm-peers.yaml",
+      "surface": "feed"
+    },
+    {
+      "kind": "dangling-feed-ref",
+      "path": "apps/tribute-dashboard/data/ates-feed.json",
+      "line": 0,
+      "ref": ".github/workflows/ates-orchestrator-benchmark.yml + .github/workflows/ates-phase-b-run-receipt.yml + .github/workflows/agent-mvt-experiment.yml",
+      "surface": "feed"
+    },
+    {
+      "kind": "dangling-feed-ref",
+      "path": "apps/tribute-dashboard/data/ates-feed.json",
+      "line": 0,
+      "ref": "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md (§DoE) + apps/tribute-dashboard/data/doe-feed.json",
+      "surface": "feed"
+    },
+    {
+      "kind": "dangling-feed-ref",
+      "path": "apps/tribute-dashboard/data/ates-feed.json",
+      "line": 0,
+      "ref": "docs/ops/corpus/EXPERIMENT.schema.json + apps/tribute-dashboard/data/mvt-feed.json",
+      "surface": "feed"
+    },
+    {
+      "kind": "dangling-feed-ref",
+      "path": "apps/tribute-dashboard/data/doe-feed.json",
+      "line": 0,
+      "ref": "docs/proposals/active/model-selection-market/DSPY-DOE-LANE.md + scripts/model_selection_market/dspy_doe.py",
+      "surface": "feed"
+    },
+    {
+      "kind": "dangling-feed-ref",
+      "path": "apps/tribute-dashboard/data/moneyball-feed.json",
+      "line": 0,
+      "ref": "scripts/hex_moneyball_export.py + .github/workflows/hex-moneyball-evidence.yml",
+      "surface": "feed"
+    },
+    {
+      "kind": "dangling-feed-ref",
+      "path": "apps/tribute-dashboard/data/mvt-feed.json",
+      "line": 0,
+      "ref": ".github/workflows/agent-mvt-experiment.yml + .github/workflows/team-mvt.yml",
+      "surface": "feed"
+    },
+    {
+      "kind": "dangling-feed-ref",
+      "path": "apps/tribute-dashboard/data/mvt-feed.json",
+      "line": 0,
+      "ref": "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md + apps/tribute-dashboard/data/ates-feed.json",
+      "surface": "feed"
+    },
+    {
+      "kind": "dangling-feed-ref",
+      "path": "apps/tribute-dashboard/data/quota-usage.json",
+      "line": 0,
+      "ref": "docs/ops/generated/actions-performance-reconstructed-*.json",
+      "surface": "feed"
+    },
+    {
+      "kind": "dangling-feed-ref",
+      "path": "apps/tribute-dashboard/data/results-index.json",
+      "line": 0,
+      "ref": "ops/telemetry/hindsight-retain-proof.json + ops/telemetry/hindsight-retain-state.json",
+      "surface": "feed"
+    },
+    {
+      "kind": "dangling-link",
+      "path": ".github/PROJECT_MANAGEMENT.md",
+      "line": 212,
+      "ref": "../AGENTS.md",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": ".github/PROJECT_MANAGEMENT.md",
+      "line": 349,
+      "ref": "../AGENTS.md",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": ".github/PROJECT_MANAGEMENT.md",
+      "line": 414,
+      "ref": "../AGENTS.md",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/ops-hitl-control-surface/index.html",
+      "line": 18,
+      "ref": "'+esc(e.source_url||",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/project-pages-hub/index.html",
+      "line": 23,
+      "ref": "./site-nav.js",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/admin.html",
+      "line": 230,
+      "ref": "'+esc(d.html_url)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/ates.html",
+      "line": 82,
+      "ref": "${GH}${esc(d.doc)}",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/ates.html",
+      "line": 99,
+      "ref": "./${esc(c.surface)}.html",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/countdowns.html",
+      "line": 202,
+      "ref": "'+esc(t.source_url)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/countdowns.html",
+      "line": 210,
+      "ref": "'+esc(s.ref)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/d2-proposals.html",
+      "line": 359,
+      "ref": "./dashboard.js",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/d2-proposals.html",
+      "line": 360,
+      "ref": "./shell.js",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/delphi-rfp.html",
+      "line": 182,
+      "ref": "'+esc(r.url)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/desk.html",
+      "line": 357,
+      "ref": "'+esc(x.url)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/dispatch-tree.html",
+      "line": 134,
+      "ref": "${r.html_url}",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/doe.html",
+      "line": 94,
+      "ref": "${GH}${esc(fam.spec)}",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/doe.html",
+      "line": 106,
+      "ref": "${GH}${esc(c.design_record)}",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/doe.html",
+      "line": 113,
+      "ref": "${GH}${esc(c.design_record)}",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/doe.html",
+      "line": 144,
+      "ref": "${GH}${esc((ec.record || ",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/family.html",
+      "line": 36,
+      "ref": "'+GH+'/actions/runs/'+esc(t.run_id)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/family.html",
+      "line": 37,
+      "ref": "'+GH+'/blob/master/'+esc(t.source_ref)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/family.html",
+      "line": 38,
+      "ref": "'+GH+'/pull/'+esc(p.replace('#',''))+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/family.html",
+      "line": 38,
+      "ref": "'+esc(p)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/free-tier-value.html",
+      "line": 39,
+      "ref": "'+(safeHref(p.source_url)?safeHref(p.source_url):'')+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/free-tier-value.html",
+      "line": 41,
+      "ref": "'+safeHref(s.evidence_url)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/index.html",
+      "line": 57,
+      "ref": "'+esc(t.pr_url||'#')+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/index.html",
+      "line": 58,
+      "ref": "'+esc(issue)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/index.html",
+      "line": 58,
+      "ref": "'+esc(x.run_url)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/index.html",
+      "line": 59,
+      "ref": "'+esc(h.url)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/index.html",
+      "line": 60,
+      "ref": "'+esc(d.url)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/index.html",
+      "line": 69,
+      "ref": "'+esc(p.html_url)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/marketing-gantt.html",
+      "line": 98,
+      "ref": "./dashboard.js",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/marketing-gantt.html",
+      "line": 99,
+      "ref": "./shell.js",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/matrix.html",
+      "line": 38,
+      "ref": "'+esc(p.html_url||'#')+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/mvt.html",
+      "line": 95,
+      "ref": "./${esc(c.surface)}.html",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/oracle.html",
+      "line": 127,
+      "ref": "'+GH+'/tree/master/docs/proposals/'+esc(p.path)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/oracle.html",
+      "line": 159,
+      "ref": "'+GH+'/blob/master/'+esc(p.documents[k])+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/oracle.html",
+      "line": 223,
+      "ref": "'+GH+'/issues/1487#issuecomment-'+esc(p.ledger.ballot_comment_id)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/oracle.html",
+      "line": 223,
+      "ref": "'+GH+'/issues/1487#issuecomment-'+esc(p.ledger.calibration_comment_id)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/oracle.html",
+      "line": 258,
+      "ref": "'+GH+'/tree/master/'+esc(ps.record)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/owner-records.html",
+      "line": 29,
+      "ref": "'+GH+esc(r.source.path)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/pools.html",
+      "line": 80,
+      "ref": "./dashboard.js",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/pools.html",
+      "line": 81,
+      "ref": "./shell.js",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/pr-lanes.html",
+      "line": 104,
+      "ref": "'+PR_URL+r.number+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/proposals.html",
+      "line": 114,
+      "ref": "'+gh+'/pull/'+n+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/proposals.html",
+      "line": 130,
+      "ref": "'+GH+'/issues/'+n+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/proposals.html",
+      "line": 132,
+      "ref": "'+esc(p.url)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/proposals.html",
+      "line": 160,
+      "ref": "'+esc(p.url)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/referrals.html",
+      "line": 93,
+      "ref": "'+esc(it.link)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/referrals.html",
+      "line": 94,
+      "ref": "'+esc(it.link_ref)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/referrals.html",
+      "line": 96,
+      "ref": "'+esc(it.badge_svg)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/surfaces-map.html",
+      "line": 80,
+      "ref": "./dashboard.js",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/surfaces-map.html",
+      "line": 81,
+      "ref": "./shell.js",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-link",
+      "path": "apps/tribute-dashboard/telemetry.html",
+      "line": 121,
+      "ref": "'+esc(lat.html_url)+'",
+      "surface": "link"
+    },
+    {
+      "kind": "dangling-path-filter",
+      "path": ".github/workflows/actionlint-advisory.yml",
+      "line": 8,
+      "ref": "actionlint.yaml",
+      "surface": "paths"
+    },
+    {
+      "kind": "dangling-path-filter",
+      "path": ".github/workflows/actionlint-advisory.yml",
+      "line": 9,
+      "ref": ".actionlint.yaml",
+      "surface": "paths"
+    },
+    {
+      "kind": "dangling-path-filter",
+      "path": ".github/workflows/archwiz-repo-index.yml",
+      "line": 17,
+      "ref": "scripts/ci/func_index.py",
+      "surface": "paths"
+    },
+    {
+      "kind": "dangling-path-filter",
+      "path": ".github/workflows/deepcli-agent-bridge.yml",
+      "line": 12,
+      "ref": "deepcli/core.py",
+      "surface": "paths"
+    },
+    {
+      "kind": "dangling-path-filter",
+      "path": ".github/workflows/deepcli-agent-bridge.yml",
+      "line": 22,
+      "ref": "deepcli/core.py",
+      "surface": "paths"
+    },
+    {
+      "kind": "dangling-path-filter",
+      "path": ".github/workflows/doe-cb1-acceptance.yml",
+      "line": 14,
+      "ref": "scripts/doe/chronomancer_emitter.py",
+      "surface": "paths"
+    },
+    {
+      "kind": "dangling-path-filter",
+      "path": ".github/workflows/doe-cb1-acceptance.yml",
+      "line": 15,
+      "ref": "tests/test_chronomancer_emitter.py",
+      "surface": "paths"
+    },
+    {
+      "kind": "dangling-path-filter",
+      "path": ".github/workflows/tribute-dashboard-deploy.yml",
+      "line": 15,
+      "ref": "!apps/tribute-dashboard/data/status.json",
+      "surface": "paths"
+    },
+    {
+      "kind": "dangling-run-script",
+      "path": ".github/workflows/doe-bf1-compare.yml",
+      "line": 13,
+      "ref": "scripts/backfill_compare.py",
+      "surface": "run.script"
+    },
+    {
+      "kind": "dangling-run-script",
+      "path": ".github/workflows/doe-cmp1-census.yml",
+      "line": 13,
+      "ref": "scripts/cmp1_census.py",
+      "surface": "run.script"
+    },
+    {
+      "kind": "dangling-run-script",
+      "path": ".github/workflows/doe-util1-audit.yml",
+      "line": 13,
+      "ref": "scripts/util1_auditor.py",
+      "surface": "run.script"
+    }
+  ],
+  "counts": {
+    "total": 79,
+    "new": 79,
+    "known": 0,
+    "by_kind": {
+      "dangling-anchor": 3,
+      "dangling-feed-ref": 11,
+      "dangling-link": 54,
+      "dangling-path-filter": 8,
+      "dangling-run-script": 3
+    }
+  },
+  "scope": [
+    ".github/",
+    "apps/"
+  ]
+}

@@ -110,7 +110,11 @@ The generated catalog at `docs/ops/generated/automation-workflow-catalog.json` i
 
 The catalog's event-name summary does not fully encode activity types, branch/path filters, selector expressions, inputs, payload schemas, or permissions. Those require parsing the workflow source.
 
-## 6. Labels, mentions, and commands
+## 6. Label consumer census
+
+Thirteen source-referenced labels now have producer/consumer relationship records in `docs/ops/generated/label-consumer-census.json`, with a human-readable companion at `docs/ops/LABEL-CONSUMER-CENSUS.md`. The records distinguish intake selectors, queue states, admission outcomes, domain queues, and learning signals. The repository's live labels collection was unavailable through the current GitHub read connector, so this is a selected source-backed census, not a complete live label inventory. Historical label counts remain dated evidence.
+
+## 7. Labels, mentions, and commands
 
 | Signal | Current interpretation | Reconciliation rule |
 |---|---|---|
@@ -121,7 +125,7 @@ The catalog's event-name summary does not fully encode activity types, branch/pa
 
 Labels are additive taxonomy signals. The registry preserves original names and meaning; it does not rename labels or invent dispatch behavior.
 
-## 7. Registry record model
+## 8. Registry record model
 
 The JSON companion defines stable IDs and these relationships:
 
@@ -138,7 +142,7 @@ entry_method
 
 Every relationship carries status and source provenance. Use `CONFIRMED`, `PARTIAL`, `CANDIDATE`, `UNKNOWN`, or `RETIRED` for inventory confidence. Runtime state remains a separate vocabulary: `QUEUED`, `IN_PROGRESS`, `COMPLETED`, `FAILED`, `CANCELLED`, `SKIPPED`. Admission and promotion states remain separate.
 
-## 8. Feed and HUD integration
+## 9. Feed and HUD integration
 
 The dashboard consumes this registry as a read-only projection and joins it with the existing workflow catalog and per-surface feeds.
 
@@ -148,7 +152,7 @@ Recommended normalized feed fields:
 
 Use existing feed freshness contracts, including `generated_at`, source SHA, and stale indicators. GitHub and owning workflow artifacts remain authoritative. The HUD stays read-only.
 
-## 9. Known gaps — explicit work queue
+## 10. Known gaps — explicit work queue
 
 1. Extend the issue-template census into a refreshable deterministic extractor; initial source census is complete.
 2. Expand the selected workflow trigger census into an exhaustive parser over the workflow catalog, including activity types, branches, paths, inputs, permissions, selector expressions, and outputs.
@@ -157,7 +161,7 @@ Use existing feed freshness contracts, including `generated_at`, source SHA, and
 5. Join routes/workflows to `desk.html`, `admin-graph.html`, `proposals.html`, `dispatch-tree.html`, `pr-lanes.html`, and `tracking.html` through `SURFACES-MAP.md` and exact feed contracts.
 6. Generate a deterministic reconciliation report with source fingerprint, timestamp, coverage counts, and unresolved edges.
 
-## 10. Automation and update strategy
+## 11. Automation and update strategy
 
 - Reuse `scripts/ci/automation_docs.py` and its existing workflow catalog refresh lane.
 - Add a dedicated registry extractor only after the field mapping and parser fixtures are agreed.
@@ -166,7 +170,7 @@ Use existing feed freshness contracts, including `generated_at`, source SHA, and
 - Publish a feed only from validated registry output; preserve partial/unknown coverage explicitly.
 - Keep the source registry and generated runtime feed distinct.
 
-## 11. Non-negotiable boundaries
+## 12. Non-negotiable boundaries
 
 - GitHub remains the source of truth for issues, PRs, labels, comments, workflow runs, and commits.
 - Existing specialized contracts retain authority over their domain.
@@ -182,5 +186,6 @@ Use existing feed freshness contracts, including `generated_at`, source SHA, and
 - Workflow inventory: `docs/ops/generated/automation-workflow-catalog.json`
 - Issue-template census: `docs/ops/ISSUE-TEMPLATE-CENSUS.md` and `docs/ops/generated/issue-template-census.json`
 - Workflow trigger census: `docs/ops/WORKFLOW-TRIGGER-CENSUS.md` and `docs/ops/generated/workflow-trigger-census.json`
+- Label consumer census: `docs/ops/LABEL-CONSUMER-CENSUS.md` and `docs/ops/generated/label-consumer-census.json`
 - Issue dispatch contract: `docs/ops/ISSUE-TEMPLATE-DISPATCH.md`
 - Surface ownership map: `docs/ops/SURFACES-MAP.md`

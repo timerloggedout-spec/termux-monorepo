@@ -60,11 +60,11 @@ The full iJEP Studio channel is the initial visual and topic-discovery surface. 
 
 ## Current status
 
-- MonoRepo scope profile: proposed under `.config/llm_map/profiles/projects/`; game manifest and registry are in `ops/projects/`.
-- Dedicated game repository: provisioning pending; GitHub repository-creation action is outside the current connected GitHub tool surface.
+- MonoRepo scope profile: drafted under `.config/llm_map/profiles/projects/`; project manifest and registry are in `ops/projects/`; draft PR #5949 is open.
+- Dedicated game repository: created as private `timerloggedout-spec/cell-the-living-machine` (repository ID `1475194740`, default branch `main`); planning scaffold committed.
 - Research Astute: repository identified; reusable content scope requires rights and license review.
 - Search Astutely: organization identified; candidate repositories found; search-aggregation runtime and connector identity require verification.
-- Scientific database catalog: initial source map prepared; source-specific adapter admission follows API, terms, and provenance review.
+- Scientific database catalog: 26 candidate sources mapped across nine research domains; source-specific adapter admission follows API, terms, and provenance review.
 - Engine and renderer: selection pending a bounded prototype comparison.
 
 ## Review log
@@ -83,7 +83,7 @@ The full iJEP Studio channel is the initial visual and topic-discovery surface. 
 - [x] Scientific database discovery catalog drafted.
 - [x] Knowledge-lens model drafted.
 - [ ] Operator review and acceptance recorded.
-- [ ] Dedicated game repository provisioned.
+- [x] Dedicated game repository provisioned.
 - [ ] Search Astutely runtime and account ownership verified.
 - [ ] Research Astute reuse and licensing scope approved.
 - [ ] Engine selection and prototype acceptance contract approved.

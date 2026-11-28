@@ -15,9 +15,15 @@ def build_report(taxonomy):
     for node in taxonomy.get("nodes",[]):
         if node.get("kind")!="tool": continue
         meta=node.get("metadata") or {}; commands=meta.get("probe_commands") or []
-        matched=next((command for command in commands if shutil.which(command)),None)
-        tools.append({"id":node["id"],"name":node["name"],"detected":matched is not None,"matched_command":matched,"execution_target":meta.get("execution_target","unknown"),"termux_runtime":meta.get("termux_runtime","unverified"),"license_class":meta.get("license_class","unknown"),"access":meta.get("access","unknown")})
-    return {"schema":"engineering-toolchain-probe/v1","observed_at":datetime.now(timezone.utc).isoformat(),"runtime":"termux" if (os.environ.get("TERMUX_VERSION") or "com.termux" in os.environ.get("PREFIX","")) else sys.platform,"tools":tools,"summary":{"catalogued":len(tools),"detected":sum(1 for item in tools if item["detected"]),"unavailable":sum(1 for item in tools if not item["detected"])}}
+        target=meta.get("execution_target","unknown")
+        if target.startswith("vendor-"):
+            matched=None; detection_state="external"; detected=None
+        else:
+            matched=next((command for command in commands if shutil.which(command)),None)
+            detection_state="present" if matched is not None else "absent"
+            detected=matched is not None
+        tools.append({"id":node["id"],"name":node["name"],"detected":detected,"detection_state":detection_state,"matched_command":matched,"execution_target":target,"termux_runtime":meta.get("termux_runtime","unverified"),"license_class":meta.get("license_class","unknown"),"access":meta.get("access","unknown")})
+    return {"schema":"engineering-toolchain-probe/v1","observed_at":datetime.now(timezone.utc).isoformat(),"runtime":"termux" if (os.environ.get("TERMUX_VERSION") or "com.termux" in os.environ.get("PREFIX","")) else sys.platform,"tools":tools,"summary":{"catalogued":len(tools),"detected":sum(1 for item in tools if item["detection_state"]=="present"),"local_missing":sum(1 for item in tools if item["detection_state"]=="absent"),"external":sum(1 for item in tools if item["detection_state"]=="external")}}
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__); parser.add_argument("--json",action="store_true"); args=parser.parse_args()
